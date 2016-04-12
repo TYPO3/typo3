@@ -211,7 +211,7 @@ function updateQryForm(s) {
 /*]]>*/
 				</script>
 	    <table>
-	    <tr class="tableheader bgColor5"><th colspan="2">Easy SQL check</th></tr>
+	    <tr class="tableheader"><th colspan="2">Easy SQL check</th></tr>
 	    <tr><td colspan="2">
 	    <select name="tx_dbal[QUERY]"size="1" onchange="updateQryForm(this.options[this.selectedIndex].value)">
 	     <option value="SELECT" ' . ($input['QUERY'] === 'SELECT' ? 'selected="selected"' : '') . '>SELECT</option>
@@ -242,7 +242,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 /*]]>*/
 				</script>
 			';
-        $out .= '<tr id="tx-dbal-result" class="bgColor4"><th>Result:</th><td>';
+        $out .= '<tr id="tx-dbal-result"><th>Result:</th><td>';
         switch ($input['QUERY']) {
             case 'SELECT':
                 $qry = $this->getDatabaseConnection()->SELECTquery($input['FIELDS'], $input['FROM'], $input['WHERE'], $input['GROUP'], $input['ORDER'], $input['LIMIT']);
@@ -259,7 +259,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
         }
         $out .= '<pre>' . htmlspecialchars($qry) . '</pre></td></tr>';
         $out .= '
-			<tr class="tableheader bgColor5">
+			<tr class="tableheader">
 				<th colspan="2">RAW SQL check</th>
 			</tr>
 			<tr>
@@ -270,7 +270,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 				</td>
 			</tr>';
         if (!empty($input['RAWSQL'])) {
-            $out .= '<tr class="bgColor4">';
+            $out .= '<tr>';
             $parseResult = $GLOBALS['TYPO3_DB']->SQLparser->parseSQL($input['RAWSQL']);
             if (is_array($parseResult)) {
                 $newQuery = $GLOBALS['TYPO3_DB']->SQLparser->compileSQL($parseResult);

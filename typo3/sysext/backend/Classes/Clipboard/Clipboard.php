@@ -402,7 +402,6 @@ class Clipboard
             foreach ($this->clipData[$pad]['el'] as $k => $v) {
                 if ($v) {
                     list($table, $uid) = explode('|', $k);
-                    $bgColClass = $table == '_FILE' && $this->fileMode || $table != '_FILE' && !$this->fileMode ? 'bgColor4-20' : 'bgColor4';
                     // Rendering files/directories on the clipboard
                     if ($table == '_FILE') {
                         $fileObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($v);
@@ -450,7 +449,7 @@ class Clipboard
 										</div>
 									</td>
 								</tr>';
-                            $localizationData = $this->getLocalizations($table, $rec, $bgColClass, $pad);
+                            $localizationData = $this->getLocalizations($table, $rec, '', $pad);
                             if ($localizationData) {
                                 $lines[] = $localizationData;
                             }

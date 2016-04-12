@@ -169,7 +169,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
             // Combine icon and folderpath:
             $foldernameAndIcon = $aTag_alt . $icon . htmlspecialchars(GeneralUtility::fixed_lgd_cs($subFolder->getName(), $titleLength)) . $aTag_e;
             $lines[] = '
-				<tr class="bgColor4">
+				<tr>
 					<td nowrap="nowrap">' . $foldernameAndIcon . '&nbsp;</td>
 					<td>' . $aTag . '<span title="' . $lang->getLL('addToList', true) . '">' . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . '</span>' . $aTag_e . '</td>
 					<td>&nbsp;</td>

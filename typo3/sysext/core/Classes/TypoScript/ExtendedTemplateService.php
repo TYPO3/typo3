@@ -733,8 +733,6 @@ class ExtendedTemplateService extends TemplateService
             $pointer--;
             $row = $this->hierarchyInfo[$pointer];
             $depthDataArr[$row['templateID']] = $row;
-            $depthDataArr[$row['templateID']]['bgcolor_setup'] = isset($this->clearList_setup_temp[$row['templateID']]) ? ' class="bgColor5"' : '';
-            $depthDataArr[$row['templateID']]['bgcolor_const'] = isset($this->clearList_const_temp[$row['templateID']]) ? ' class="bgColor5"' : '';
             unset($this->clearList_setup_temp[$row['templateID']]);
             unset($this->clearList_const_temp[$row['templateID']]);
             $this->templateTitles[$row['templateID']] = $row['title'];

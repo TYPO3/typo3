@@ -8501,29 +8501,6 @@ button.close {
 .typo3-tstemplate-ceditor-control {
   cursor: pointer;
 }
-.bgColor-20 {
-  background-color: #e3dfdb;
-}
-.bgColor2 {
-  background-color: #585858;
-  color: #ffffff;
-}
-.bgColor3 {
-  background-color: #f6f2e6;
-}
-.bgColor3-20 {
-  background-color: #f7f7f7;
-}
-.bgColor4 {
-  background-color: #f1f1f1;
-  color: #212424;
-}
-.bgColor4-20 {
-  background-color: #f8f9fa;
-}
-.bgColor5 {
-  background-color: #9b9b9b;
-}
 div#typo3-docbody {
   bottom: 0;
   overflow: auto;
@@ -9591,9 +9568,6 @@ table#typo3-EBfiles tr td.c-wCell {
 }
 body#ext-rte-app-rte-select-image-php a {
   text-decoration: none;
-}
-body#ext-rte-app-rte-select-image-php table tr td table tr.bgColor4 td a {
-  text-decoration: underline;
 }
 .slider {
   display: inline-block;

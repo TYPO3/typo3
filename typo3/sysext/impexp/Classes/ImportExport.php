@@ -610,7 +610,6 @@ abstract class ImportExport
                 }
             }
         }
-        $pInfo['class'] = $table == 'pages' ? 'bgColor4-20' : 'bgColor4';
         $pInfo['type'] = 'record';
         $pInfo['size'] = $record['size'];
         $lines[] = $pInfo;
@@ -641,7 +640,6 @@ abstract class ImportExport
                 }
                 $pInfo['ref'] = 'SOFTREF';
                 $pInfo['size'] = '';
-                $pInfo['class'] = 'bgColor3';
                 $pInfo['type'] = 'softref';
                 $pInfo['_softRefInfo'] = $info;
                 $pInfo['type'] = 'softref';
@@ -718,12 +716,11 @@ abstract class ImportExport
             $icon = '<span class="' . $iconClass . '" title="' . htmlspecialchars($pInfo['ref']) . '">' . $this->iconFactory->getIcon($iconName, Icon::SIZE_SMALL)->render() . '</span>';
 
             $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $icon;
-            $pInfo['class'] = $htmlColorClass ?: 'bgColor3';
             $pInfo['type'] = 'rel';
             if (!$staticFixed || $this->showStaticRelations) {
                 $lines[] = $pInfo;
                 if (is_array($record) && is_array($record['rels'])) {
-                    $this->addRelations($record['rels'], $lines, $preCode . '&nbsp;&nbsp;', array_merge($recurCheck, array($pInfo['ref'])), $htmlColorClass);
+                    $this->addRelations($record['rels'], $lines, $preCode . '&nbsp;&nbsp;', array_merge($recurCheck, array($pInfo['ref'])));
                 }
             }
         }
@@ -759,7 +756,6 @@ abstract class ImportExport
             $pInfo['title'] = htmlspecialchars($fI['filename']);
             $pInfo['ref'] = 'FILE';
             $pInfo['size'] = $fI['filesize'];
-            $pInfo['class'] = $htmlColorClass ?: 'bgColor3';
             $pInfo['type'] = 'file';
             // If import mode and there is a non-RTE softreference, check the destination directory:
             if ($this->mode === 'import' && $tokenID && !$fI['RTE_ORIG_ID']) {
@@ -810,7 +806,6 @@ abstract class ImportExport
                 $pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Original)</em>';
                 $pInfo['ref'] = 'FILE';
                 $pInfo['size'] = $fI['filesize'];
-                $pInfo['class'] = $htmlColorClass ?: 'bgColor3';
                 $pInfo['type'] = 'file';
                 $lines[] = $pInfo;
                 unset($this->remainHeader['files'][$ID]);
@@ -831,7 +826,6 @@ abstract class ImportExport
                     $pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Resource)</em>';
                     $pInfo['ref'] = 'FILE';
                     $pInfo['size'] = $fI['filesize'];
-                    $pInfo['class'] = $htmlColorClass ?: 'bgColor3';
                     $pInfo['type'] = 'file';
                     $lines[] = $pInfo;
                     unset($this->remainHeader['files'][$extID]);
@@ -1181,12 +1175,12 @@ abstract class ImportExport
                 foreach ($output as $fN => $state) {
                     $tRows[] = '
 						<tr>
-							<td class="bgColor5">' . $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['columns'][$fN]['label'], true) . ' (' . htmlspecialchars($fN) . ')</td>
-							<td class="bgColor4">' . $state . '</td>
+							<td>' . $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['columns'][$fN]['label'], true) . ' (' . htmlspecialchars($fN) . ')</td>
+							<td>' . $state . '</td>
 						</tr>
 					';
                 }
-                $output = '<table border="0" cellpadding="0" cellspacing="1">' . implode('', $tRows) . '</table>';
+                $output = '<table class="table table-striped table-hover">' . implode('', $tRows) . '</table>';
             } else {
                 $output = 'Match';
             }

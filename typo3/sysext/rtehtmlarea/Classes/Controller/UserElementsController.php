@@ -252,8 +252,8 @@ class UserElementsController
                                 $A = array('<a href="#" onClick="' . $onClickEvent . 'return false;">', '</a>');
                                 $subcats[$k2i] = '<tr>
 									<td></td>
-									<td class="bgColor4" valign="top">' . $A[0] . $logo . $A[1] . '</td>
-									<td class="bgColor4" valign="top">' . $A[0] . '<strong>' . $title . '</strong><br />' . $description . $A[1] . '</td>
+									<td>' . $A[0] . $logo . $A[1] . '</td>
+									<td>' . $A[0] . '<strong>' . $title . '</strong><br />' . $description . $A[1] . '</td>
 								</tr>';
                             }
                         }
@@ -277,10 +277,10 @@ class UserElementsController
                 $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
                 $url = (string)$uriBuilder->buildUriFromRoute('rtehtmlarea_wizard_user_elements', array('OC_key' => ($openKeys[$openK] ? 'C|' : 'O|') . $openK));
 
-                $lines[] = '<tr><td colspan="3" class="bgColor5"><a href="#" title="' . $GLOBALS['LANG']->getLL('expand', true) . '" onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($url) . ');return false;"><i class="fa fa-caret-square-o-' . ($openKeys[$openK] ? 'left' : 'right') . '" title="' . $GLOBALS['LANG']->getLL('expand', true) . '"></i><strong>' . $title . '</strong></a></td></tr>';
+                $lines[] = '<tr><td colspan="3"><a href="#" title="' . $GLOBALS['LANG']->getLL('expand', true) . '" onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($url) . ');return false;"><i class="fa fa-caret-square-o-' . ($openKeys[$openK] ? 'left' : 'right') . '" title="' . $GLOBALS['LANG']->getLL('expand', true) . '"></i><strong>' . $title . '</strong></a></td></tr>';
                 $lines[] = $v;
             }
-            $content .= '<table border="0" cellpadding="1" cellspacing="1">' . implode('', $lines) . '</table>';
+            $content .= '<table class="table table-striped table-hover">' . implode('', $lines) . '</table>';
         }
         $content .= $this->doc->endPage();
         return $content;

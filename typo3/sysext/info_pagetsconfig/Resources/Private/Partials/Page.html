@@ -4,9 +4,9 @@
 <f:if condition="{tsconfParts99}">
     <f:then>
         <div>
-            <table border="0" cellpadding="0" cellspacing="1">
+            <table class="table table-striped table-hover">
                 <f:for each="{lines}" as="line">
-                    <tr><td nowrap="nowrap" class="bgColor5">
+                    <tr><td nowrap="nowrap">
                         <f:if condition="{line.defaultPageTSconfig}">
                             <f:then>
                                 <strong>{f:translate(key: 'LLL:EXT:info_pagetsconfig/Resources/Private/Language/locallang.xlf:editTSconfig_default')}</strong>
@@ -15,8 +15,7 @@
                                 <f:format.raw>{line.title}</f:format.raw>
                             </f:else>
                         </f:if></td></tr>
-                    <tr><td nowrap="nowrap" class="bgColor4"><f:format.raw>{line.content}</f:format.raw><f:render partial="EditIcon" arguments="{editIcon: line.editIcon, editTitle: line.editTitle}" /></td></tr>
-                    <tr><td>&nbsp;</td></tr>
+                    <tr><td nowrap="nowrap"><f:format.raw>{line.content}</f:format.raw><f:render partial="EditIcon" arguments="{editIcon: line.editIcon, editTitle: line.editTitle}" /></td></tr>
                 </f:for>
             </table><br />
             <f:render partial="EditIcon" arguments="{editIcon: editIcon, editTitle: editTitle, editAll: 1}" />
