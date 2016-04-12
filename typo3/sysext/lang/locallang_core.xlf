@@ -347,7 +347,10 @@ Do you want to continue WITHOUT saving?</source>
 				<source>Uncheck all</source>
 			</trans-unit>
 			<trans-unit id="labels.placeholder.override">
-				<source>Override "%s"?</source>
+				<source>Set element specific value (Default: "%s")</source>
+			</trans-unit>
+			<trans-unit id="labels.placeholder.override_not_available">
+				<source>Set element specific value (No default)</source>
 			</trans-unit>
 			<trans-unit id="labels.changeInOrig">
 				<source>Changed in original translation</source>

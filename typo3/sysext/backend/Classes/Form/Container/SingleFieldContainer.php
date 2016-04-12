@@ -253,6 +253,16 @@ class SingleFieldContainer extends AbstractContainer
             $placeholder = empty($parameterArray['fieldConf']['config']['placeholder']) ? '' : $parameterArray['fieldConf']['config']['placeholder'];
             $onChange = 'typo3form.fieldTogglePlaceholder(' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ', !this.checked)';
             $checked = $parameterArray['itemFormElValue'] === null ? '' : ' checked="checked"';
+            $disabled = '';
+            $fallbackValue = 0;
+            if (strlen(BackendUtility::getRecordTitlePrep($placeholder, 20)) > 0) {
+                $overrideLabel = sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'), BackendUtility::getRecordTitlePrep($placeholder, 20));
+            } else {
+                $fallbackValue = 1;
+                $checked = ' checked="checked"';
+                $disabled = ' disabled="disabled"';
+                $overrideLabel = sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override_not_available'), BackendUtility::getRecordTitlePrep($placeholder, 20));
+            }
 
             $resultArray['additionalJavaScriptPost'][] = 'typo3form.fieldTogglePlaceholder('
                 . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ', ' . ($checked ? 'false' : 'true') . ');';
@@ -272,9 +282,9 @@ class SingleFieldContainer extends AbstractContainer
             $placeholderWrap[] =    '<div class="t3-form-field-disable"></div>';
             $placeholderWrap[] =    '<div class="checkbox">';
             $placeholderWrap[] =        '<label>';
-            $placeholderWrap[] =            '<input type="hidden"' . $nullControlNameAttribute . ' value="0" />';
-            $placeholderWrap[] =            '<input type="checkbox"' . $nullControlNameAttribute . ' value="1" id="tce-forms-textfield-use-override-' . $fieldName . '-' . $row['uid'] . '" onchange="' . htmlspecialchars($onChange) . '"' . $checked . ' />';
-            $placeholderWrap[] =            sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'), BackendUtility::getRecordTitlePrep($placeholder, 20));
+            $placeholderWrap[] =            '<input type="hidden"' . $nullControlNameAttribute . ' value="' . $fallbackValue . '" />';
+            $placeholderWrap[] =            '<input type="checkbox"' . $nullControlNameAttribute . ' value="1" id="tce-forms-textfield-use-override-' . $fieldName . '-' . $row['uid'] . '" onchange="' . htmlspecialchars($onChange) . '"' . $checked . $disabled . ' />';
+            $placeholderWrap[] =            $overrideLabel;
             $placeholderWrap[] =        '</label>';
             $placeholderWrap[] =    '</div>';
             $placeholderWrap[] =    '<div class="t3js-formengine-placeholder-placeholder">';
