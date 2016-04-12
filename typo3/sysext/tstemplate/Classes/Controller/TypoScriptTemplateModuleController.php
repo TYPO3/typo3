@@ -169,8 +169,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
         $this->access = is_array($this->pageinfo);
 
-        $this->moduleTemplate->getPageRenderer()->addCssFile(ExtensionManagementUtility::extRelPath('tstemplate') . 'Resources/Public/Css/styles.css');
-
         $lang = $this->getLanguageService();
 
         if ($this->id && $this->access) {

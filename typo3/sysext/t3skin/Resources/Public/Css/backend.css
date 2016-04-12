@@ -8498,9 +8498,6 @@ button.close {
 .t3-row-header a:hover {
   color: #fff;
 }
-.typo3-tstemplate-ceditor-control {
-  cursor: pointer;
-}
 div#typo3-docbody {
   bottom: 0;
   overflow: auto;

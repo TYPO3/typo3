@@ -1159,7 +1159,7 @@ class ExtendedTemplateService extends TemplateService
                     if ($subcat != $params['subcat_name']) {
                         $subcat = $params['subcat_name'];
                         $subcat_name = $params['subcat_name'] ? $this->subCategories[$params['subcat_name']][0] : 'Others';
-                        $output .= '<h3 class="typo3-tstemplate-ceditor-subcat">' . $subcat_name . '</h3>';
+                        $output .= '<h3>' . $subcat_name . '</h3>';
                     }
                     $label = $this->getLanguageService()->sL($params['label']);
                     $label_parts = explode(':', $label, 2);
@@ -1299,7 +1299,7 @@ class ExtendedTemplateService extends TemplateService
                     $checkboxID = 'check-' . $idName;
                     // Handle type=color specially
                     if ($typeDat['type'] === 'color' && substr($params['value'], 0, 2) != '{$') {
-                        $appendedGroupAddon = '<span class="input-group-addon colorbox" id="colorbox-' . $idName . '" class="typo3-tstemplate-ceditor-colorblock" style="background-color:' . $params['value'] . ';"></span>';
+                        $appendedGroupAddon = '<span class="input-group-addon colorbox" id="colorbox-' . $idName . '" style="background-color:' . $params['value'] . ';"></span>';
                     } else {
                         $appendedGroupAddon = '';
                     }
