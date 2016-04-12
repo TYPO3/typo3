@@ -182,7 +182,7 @@ class EditFileController extends AbstractModule
             ));
             $code .= '
                 <div id="c-edit">
-					<textarea rows="30" name="file[editfile][0][data]" wrap="off"  class="text-monospace t3js-enable-tab">' . htmlspecialchars($fileContent) . '</textarea>
+					<textarea rows="30" name="file[editfile][0][data]" wrap="off"  class="form-control text-monospace t3js-enable-tab">' . htmlspecialchars($fileContent) . '</textarea>
 					<input type="hidden" name="file[editfile][0][target]" value="' . $this->fileObject->getUid() . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($hValue) . '" />
 				</div>
