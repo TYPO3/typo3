@@ -49,7 +49,7 @@ class AuthenticationService extends AbstractAuthenticationService
         if ($this->login['status'] !== 'login') {
             return false;
         }
-        if (!$this->login['uident']) {
+        if ((string)$this->login['uident_text'] === '') {
             // Failed Login attempt (no password given)
             $this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s) for username \'%s\' with an empty password!', array(
                 $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']
@@ -88,7 +88,9 @@ class AuthenticationService extends AbstractAuthenticationService
     public function authUser(array $user)
     {
         $OK = 100;
-        if ($this->login['uident'] && $this->login['uname']) {
+        // This authentication service can only work correctly, if a non empty username along with a non empty password is provided.
+        // Otherwise a different service is allowed to check for other login credentials
+        if ((string)$this->login['uident_text'] !== '' && (string)$this->login['uname'] !== '') {
             // Checking password match for user:
             $OK = $this->compareUident($user, $this->login);
             if (!$OK) {
