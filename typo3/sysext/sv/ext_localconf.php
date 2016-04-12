@@ -9,7 +9,7 @@ defined('TYPO3_MODE') or die();
     array(
         'title' => 'User authentication',
         'description' => 'Authentication with username/password.',
-        'subtype' => 'getUserBE,authUserBE,getUserFE,authUserFE,getGroupsFE,processLoginDataBE,processLoginDataFE',
+        'subtype' => 'getUserBE,getUserFE,authUserFE,getGroupsFE,processLoginDataBE,processLoginDataFE',
         'available' => true,
         'priority' => 50,
         'quality' => 50,
