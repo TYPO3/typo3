@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Version\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -44,6 +47,14 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var array
 	 */
 	protected $previewConfiguration = FALSE;
+
+	/**
+	 * Defines whether to force read permissions on pages.
+	 *
+	 * @var bool
+	 * @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getPagePermsClause
+	 */
+	protected $forceReadPermissions = FALSE;
 
 	/**
 	 * hook to check if the preview is activated
@@ -92,33 +103,59 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function initializePreviewUser(&$params, &$pObj) {
+		// if there is a valid BE user, and the full workspace should be previewed, the workspacePreview option should be set
+		$workspaceUid = $this->previewConfiguration['fullWorkspace'];
+		$workspaceRecord = null;
 		if ((is_null($params['BE_USER']) || $params['BE_USER'] === FALSE) && $this->previewConfiguration !== FALSE && $this->previewConfiguration['BEUSER_uid'] > 0) {
-			// New backend user object
-			$BE_USER = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication');
-			$BE_USER->userTS_dontGetCached = 1;
-			$BE_USER->OS = TYPO3_OS;
-			$BE_USER->setBeUserByUid($this->previewConfiguration['BEUSER_uid']);
-			$BE_USER->unpack_uc('');
-			if ($BE_USER->user['uid']) {
-				$BE_USER->fetchGroupData();
+			// First initialize a temp user object and resolve usergroup information
+			/** @var FrontendBackendUserAuthentication $tempBackendUser */
+			$tempBackendUser = $this->createFrontendBackendUser();
+			$tempBackendUser->userTS_dontGetCached = 1;
+			$tempBackendUser->setBeUserByUid($this->previewConfiguration['BEUSER_uid']);
+			if ($tempBackendUser->user['uid']) {
+				$tempBackendUser->unpack_uc('');
+				$tempBackendUser->fetchGroupData();
+				// Handle degradation of admin users
+				if ($tempBackendUser->isAdmin() && ExtensionManagementUtility::isLoaded('workspaces')) {
+					$workspaceRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+						'uid, adminusers, reviewers, members, db_mountpoints',
+						'sys_workspace',
+						'pid=0 AND uid=' . (int)$workspaceUid . BackendUtility::deleteClause('sys_workspace')
+					);
+					// Either use configured workspace mount or current page id, if admin user does not have any page mounts
+					if (empty($tempBackendUser->groupData['webmounts'])) {
+						$tempBackendUser->groupData['webmounts'] = !empty($workspaceRecord['db_mountpoints']) ? $workspaceRecord['db_mountpoints'] : $pObj->id;
+					}
+					// Force add degraded admin user as member of this workspace
+					$workspaceRecord['members'] = 'be_users_' . $this->previewConfiguration['BEUSER_uid'];
+					// Force read permission for degraded admin user
+					$this->forceReadPermissions = TRUE;
+				}
+				// Store only needed information in the real simulate backend
+				$BE_USER = $this->createFrontendBackendUser();
+				$BE_USER->userTS_dontGetCached = 1;
+				$BE_USER->user = $tempBackendUser->user;
+				$BE_USER->user['admin'] = 0;
+				$BE_USER->groupData['webmounts'] = $tempBackendUser->groupData['webmounts'];
+				$BE_USER->groupList = $tempBackendUser->groupList;
+				$BE_USER->userGroups = $tempBackendUser->userGroups;
+				$BE_USER->userGroupsUID = $tempBackendUser->userGroupsUID;
 				$pObj->beUserLogin = TRUE;
 			} else {
 				$BE_USER = NULL;
 				$pObj->beUserLogin = FALSE;
 				$_SESSION['TYPO3-TT-start'] = FALSE;
 			}
+			unset($tempBackendUser);
 			$params['BE_USER'] = $BE_USER;
 		}
-		// if there is a valid BE user, and the full workspace should be
-		// previewed, the workspacePreview option shouldbe set
-		$workspaceUid = $this->previewConfiguration['fullWorkspace'];
 		if (
 			$pObj->beUserLogin
 			&& is_object($params['BE_USER'])
 			&& \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($workspaceUid)
 			&& $params['BE_USER']->isInWebMount($pObj->id)
 		) {
-			if ($workspaceUid == 0 || $workspaceUid >= -1 && $params['BE_USER']->checkWorkspace($workspaceUid)) {
+			if ($workspaceUid == 0 || $workspaceUid >= -1 && $params['BE_USER']->checkWorkspace($workspaceRecord ?: $workspaceUid)) {
 				// Check Access to workspace. Live (0) is OK to preview for all.
 				$pObj->workspacePreview = (int)$workspaceUid;
 			} else {
@@ -126,6 +163,40 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 				$pObj->workspacePreview = -99;
 			}
 		}
+	}
+
+	/**
+	 * Overrides the page permission clause in case an admin
+	 * user has been degraded to a regular user without any user
+	 * group assignments. This method is used as hook callback.
+	 *
+	 * @param array $parameters
+	 * @return string
+	 * @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getPagePermsClause
+	 */
+	public function overridePagePermissionClause(array $parameters) {
+		$clause = $parameters['currentClause'];
+		if ($parameters['perms'] & 1 && $this->forceReadPermissions) {
+			$clause = ' 1=1';
+		}
+		return $clause;
+	}
+
+	/**
+	 * Overrides the row permission value in case an admin
+	 * user has been degraded to a regular user without any user
+	 * group assignments. This method is used as hook callback.
+	 *
+	 * @param array $parameters
+	 * @return int
+	 * @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::calcPerms
+	 */
+	public function overridePermissionCalculation(array $parameters) {
+		$permissions = $parameters['outputPermissions'];
+		if (!($permissions & 1) && $this->forceReadPermissions) {
+			$permissions |= 1;
+		}
+		return $permissions;
 	}
 
 	/**
@@ -271,6 +342,15 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getPreviewLinkLifetime() {
 		$ttlHours = (int)$GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours');
 		return $ttlHours ? $ttlHours : 24 * 2;
+	}
+
+	/**
+	 * @return FrontendBackendUserAuthentication
+	 */
+	protected function createFrontendBackendUser() {
+		return GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication'
+		);
 	}
 
 }
