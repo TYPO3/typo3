@@ -174,10 +174,10 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	public function authUser(array $user) {
 		$OK = 100;
 		$validPasswd = FALSE;
-		if ($this->login['uident'] && $this->login['uname']) {
-			if (!empty($this->login['uident_text'])) {
-				$validPasswd = $this->compareUident($user, $this->login);
-			}
+		// The salted password service can only work correctly, if a non empty username along with a non empty password is provided.
+		// Otherwise a different service is allowed to check for other login credentials
+		if ((string)$this->login['uident_text'] !== '' && (string)$this->login['uname'] !== '') {
+			$validPasswd = $this->compareUident($user, $this->login);
 			if (!$validPasswd) {
 				// Failed login attempt (wrong password)
 				$errorMessage = 'Login-attempt from %s (%s), username \'%s\', password not accepted!';

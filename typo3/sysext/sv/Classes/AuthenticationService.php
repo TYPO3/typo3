@@ -103,7 +103,9 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 */
 	public function authUser(array $user) {
 		$OK = 100;
-		if ($this->login['uident'] && $this->login['uname']) {
+		// This authentication service can only work correctly, if a non empty username along with a non empty password is provided.
+		// Otherwise a different service is allowed to check for other login credentials
+		if ((string)$this->login['uident'] !== '' && (string)$this->login['uname'] !== '') {
 			// Checking password match for user:
 			$OK = $this->compareUident($user, $this->login);
 			if (!$OK) {

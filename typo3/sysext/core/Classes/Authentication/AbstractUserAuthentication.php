@@ -1503,7 +1503,7 @@ abstract class AbstractUserAuthentication {
 				break;
 			default:
 				// normal
-				if ((string)$loginData['uident_text'] === (string)$user[$this->userident_column]) {
+				if ((string)$loginData['uident_text'] !== '' && (string)$loginData['uident_text'] === (string)$user[$this->userident_column]) {
 					$OK = TRUE;
 				}
 		}
