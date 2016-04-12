@@ -119,6 +119,8 @@ call_user_func(function () {
         ],
     ];
 
+    $GLOBALS['TCA']['tt_content']['ctrl']['thumbnail'] = 'assets';
+
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $additionalColumns);
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'bullets_type', 'bullets', 'after:layout');
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('tt_content', 'uploadslayout', 'uploads_description,uploads_type');
