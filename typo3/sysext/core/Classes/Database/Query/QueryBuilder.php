@@ -862,26 +862,6 @@ class QueryBuilder
     }
 
     /**
-     * Returns the WHERE clause "[tablename].[deleted-field] = 0" if a deleted-field
-     * is configured in $GLOBALS['TCA'] for the tablename $table
-     * This function should ALWAYS be called in the backend for selection on tables which
-     * are configured in $GLOBALS['TCA'] since it will ensure consistent selection of records,
-     * even if they are marked deleted (in which case the system must always treat them as non-existent!)
-     *
-     * @param string $table Table name present in $GLOBALS['TCA']
-     * @param string $tableAlias Table alias if any
-     * @return string WHERE clause for filtering out deleted records, eg " AND tablename.deleted=0
-     */
-    public function deleteConstraint(string $table, string $tableAlias = null): string
-    {
-        if (empty($GLOBALS['TCA'][$table]['ctrl']['delete'])) {
-            return '';
-        }
-
-        return $this->quoteIdentifier(($tableAlias ?? $table) . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete']) . '=0';
-    }
-
-    /**
      * Quotes a given input parameter.
      *
      * @param mixed $input The parameter to be quoted.

@@ -728,45 +728,6 @@ class QueryBuilderTest extends UnitTestCase
     }
 
     /**
-     * @return array
-     */
-    public function deleteConstraintProvider()
-    {
-        return [
-            'no delete field' => [
-                ['aTable'],
-                '',
-                ''
-            ],
-            'without alias' => [
-                ['aTable'],
-                'deleted',
-                'aTable.deleted=0'
-            ],
-            'with alias' => [
-                ['aTable', 'a'],
-                'deleted',
-                'a.deleted=0'
-            ]
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider deleteConstraintProvider
-     * @param array $args
-     * @param string $deleteField
-     * @param string $expected
-     */
-    public function deleteConstraint(array $args, string $deleteField, string $expected)
-    {
-        $this->connection->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
-        $GLOBALS['TCA'][$args[0]]['ctrl']['delete'] = $deleteField;
-
-        $this->assertSame($expected, $this->subject->deleteConstraint(...$args));
-    }
-
-    /**
      * @test
      */
     public function queryRestrictionsAreAddedForSelectOnExecute()
