@@ -1,0 +1,276 @@
+//
+// Scaffold
+// ========
+//
+
+
+//
+// Variables
+//
+@scaffold-breakpoint-max: (@screen-md - 1);
+@scaffold-breakpoint: @screen-md;
+
+@scaffold-overlay-bg: rgba(0,0,0,0.65);
+@scaffold-overlay-zindex: @zindex-modal-background;
+
+@scaffold-bg: #f5f5f5;
+@scaffold-color: #333333;
+@scaffold-secondary-bg: #1f1f1e;
+@scaffold-secondary-color: #f5f5f5;
+
+@scaffold-topbar-bg: @scaffold-secondary-bg;
+@scaffold-topbar-color: @scaffold-secondary-color;
+@scaffold-topbar-height: 45px;
+@scaffold-topbar-zindex: @zindex-navbar;
+
+@scaffold-topbar-toolbar-bg: #222;
+@scaffold-topbar-toolbar-color: #fff;
+
+@scaffold-modulemenu-bg: #424242;
+@scaffold-modulemenu-color: #fff;
+@scaffold-modulemenu-snapped-width: 40px;
+@scaffold-modulemenu-expanded-width: 230px;
+@scaffold-modulemenu-zindex: @zindex-navbar;
+
+@scaffold-toolbar-bg: #424242;
+@scaffold-toolbar-color: #fff;
+@scaffold-toolbar-zindex: @zindex-navbar;
+
+@scaffold-content-navigation-width: 300px;
+
+@scaffold-content-toggle-bg: #333;
+@scaffold-content-toggle-color: #fff;
+
+
+//
+// Prevent Browser Rebounce
+//
+html {
+	height: 100%;
+	overflow: hidden;
+}
+body {
+	height: 100%;
+	overflow: auto;
+}
+
+
+//
+// Component
+//
+.scaffold {
+	background-color: @scaffold-bg;
+	color: @scaffold-color;
+	position: relative;
+	padding-top: @scaffold-topbar-height;
+	height: 100vh;
+}
+
+
+//
+// Topbar
+//
+.scaffold-topbar {
+	background-color: @scaffold-topbar-bg;
+	color: @scaffold-topbar-color;
+	height: @scaffold-topbar-height;
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+}
+
+
+//
+// ModuleMenu
+//
+.scaffold-modulemenu {
+	background-color: @scaffold-modulemenu-bg;
+	color: @scaffold-modulemenu-color;
+	position: fixed;
+	top: @scaffold-topbar-height;
+	left: 0;
+	bottom: 0;
+	width: @scaffold-modulemenu-snapped-width;
+	max-width: 100%;
+	z-index: @scaffold-modulemenu-zindex;
+	overflow: hidden;
+	a {
+		color: fade(@scaffold-modulemenu-color, 70%);
+		&:hover {
+			color: @scaffold-modulemenu-color;
+		}
+	}
+	.active > a {
+		color: @scaffold-modulemenu-color;
+	}
+}
+
+
+//
+// Toolbar
+//
+.scaffold-toolbar {
+	overflow: auto;
+	background-color: @scaffold-toolbar-bg;
+	color: @scaffold-toolbar-color;
+	z-index: @scaffold-toolbar-zindex;
+	position: fixed;
+	top: @scaffold-topbar-height;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: none;
+	a {
+		color: fade(@scaffold-toolbar-color, 70%);
+		&:hover {
+			color: @scaffold-toolbar-color;
+		}
+	}
+	.active > a {
+		color: @scaffold-toolbar-color;
+	}
+	@media (min-width: @scaffold-breakpoint) {
+		overflow: visible;
+		background-color: transparent;
+		height: @scaffold-topbar-height;
+		top: 0;
+		left: auto;
+		bottom: auto;
+		display: block;
+	}
+}
+.scaffold-toolbar-expanded,
+.scaffold-search-expanded {
+	 .scaffold-toolbar {
+		@media (max-width: @scaffold-breakpoint-max) {
+			display: block;
+		}
+	 }
+}
+
+
+//
+// Content
+//
+.scaffold-content {
+	position: fixed!important;
+	top: @scaffold-topbar-height;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	@media (max-width: @scaffold-breakpoint-max) {
+		left: 0!important;
+	}
+}
+.scaffold-content-navigation-iframe,
+.scaffold-content-module-iframe {
+	display: block;
+	border: none;
+	height: 100%;
+	width: 100%;
+}
+.scaffold-content-navigation {
+	display: none;
+	position: absolute!important;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: @scaffold-content-navigation-width;
+}
+.scaffold-content-navigation-component {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	// EXTJS PAGETREE FIXES START
+	#typo3-pagetree-treeContainer > div > .x-panel-body {
+		overflow: auto;
+	}
+	// EXTJS PAGETREE FIXES END
+}
+.scaffold-content-module {
+	@media (max-width: @screen-xs-max) {
+		width: 100%;
+	}
+	position: absolute!important;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+
+//
+// Content Overlay
+//
+.scaffold-content-overlay {
+	display: none;
+	position: absolute;
+	z-index: @scaffold-overlay-zindex;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: @scaffold-overlay-bg;
+}
+.scaffold-modulemenu-expanded {
+	.scaffold-content-overlay {
+		display: block;
+		@media (min-width: @scaffold-breakpoint) {
+			display: none;
+		}
+	}
+}
+
+
+//
+// Medium Screen
+//
+.scaffold {
+	@media (min-width: @scaffold-breakpoint) {
+		padding-left: @scaffold-modulemenu-snapped-width;
+	}
+	.scaffold-modulemenu {
+		width: @scaffold-modulemenu-snapped-width;
+		@media (max-width: @scaffold-breakpoint-max) {
+			display: none;
+		}
+	}
+}
+.scaffold-modulemenu-expanded {
+	display: block;
+	padding-left: @scaffold-modulemenu-expanded-width;
+	.scaffold-modulemenu {
+		width: @scaffold-modulemenu-expanded-width;
+		@media (max-width: @scaffold-breakpoint-max){
+			display: block;
+		}
+	}
+	.scaffold-content {
+		transform: translate(@scaffold-modulemenu-expanded-width, 0);
+	}
+}
+.scaffold-content-navigation-expanded {
+	.scaffold-content-navigation {
+		display: block;
+	}
+	.scaffold-content-module {
+		left: @scaffold-content-navigation-width;
+	}
+}
+
+@media (min-width: @scaffold-breakpoint){
+	.scaffold {
+		.scaffold-content {
+			left: @scaffold-modulemenu-snapped-width;
+		}
+	}
+	.scaffold-modulemenu-expanded {
+		.scaffold-content {
+			left: @scaffold-modulemenu-expanded-width;
+			transform: none;
+		}
+	}
+}

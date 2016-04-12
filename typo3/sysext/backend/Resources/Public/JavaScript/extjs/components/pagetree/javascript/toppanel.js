@@ -40,7 +40,7 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 	 *
 	 * @type {Boolean}
 	 */
-	border: false,
+	border: true,
 
 	/**
 	 * Toolbar Object
@@ -248,14 +248,11 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 
 			textField.setHideTrigger(false);
 			this.tree.hide();
-			this.app.ownerCt.getEl().mask('', 'x-mask-loading-message');
-			this.app.ownerCt.getEl().addClass('t3-mask-loading');
 			this.filteringTree.show().refreshTree(function() {
 				if (selectedNode) {
 					this.app.select(selectedNode.attributes.nodeData.id, false);
 				}
 				textField.focus();
-				this.app.ownerCt.getEl().unmask();
 			}, this);
 		}
 

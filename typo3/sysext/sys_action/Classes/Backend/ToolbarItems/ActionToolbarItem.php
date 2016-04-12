@@ -57,7 +57,11 @@ class ActionToolbarItem implements ToolbarItemInterface
     public function getItem()
     {
         $title = htmlspecialchars($this->getLanguageService()->getLL('action_toolbaritem'));
-        return '<span title="' . $title . '">' . $this->iconFactory->getIcon('apps-toolbar-menu-actions', Icon::SIZE_SMALL)->render('inline') . '</span>';
+        $icon = $this->iconFactory->getIcon('apps-toolbar-menu-actions', Icon::SIZE_SMALL)->render('inline');
+        return '
+            <span class="toolbar-item-icon" title="' . $title . '">' . $icon . '</span>
+            <span class="toolbar-item-title">' . $title . '</span>
+        ';
     }
 
     /**
@@ -68,15 +72,22 @@ class ActionToolbarItem implements ToolbarItemInterface
     public function getDropDown()
     {
         $actionMenu = [];
-        $actionMenu[] = '<ul class="dropdown-list">';
+        $actionMenu[] = '<h3 class="dropdown-headline">' . htmlspecialchars($this->getLanguageService()->getLL('sys_action')) . '</h3>';
+        $actionMenu[] = '<hr>';
+        $actionMenu[] = '<div class="dropdown-table">';
         foreach ($this->actionEntries as $linkConf) {
-            $actionMenu[] = '<li>';
-            $actionMenu[] = '<a href="' . htmlspecialchars($linkConf[1]) . '" target="content" class="dropdown-list-link">';
-            $actionMenu[] = $linkConf[2] . ' ' . htmlspecialchars($linkConf[0]);
+            $actionMenu[] = '<div class="dropdown-table-row">';
+            $actionMenu[] = '<div class="dropdown-table-column dropdown-table-icon">';
+            $actionMenu[] = $linkConf[2];
+            $actionMenu[] = '</div>';
+            $actionMenu[] = '<div class="dropdown-table-column dropdown-table-title">';
+            $actionMenu[] = '<a class="t3js-topbar-link" href="' . htmlspecialchars($linkConf[1]) . '" target="contentIframe">';
+            $actionMenu[] = htmlspecialchars($linkConf[0]);
             $actionMenu[] = '</a>';
-            $actionMenu[] = '</li>';
+            $actionMenu[] = '</div>';
+            $actionMenu[] = '</div>';
         }
-        $actionMenu[] = '</ul>';
+        $actionMenu[] = '</div>';
         return implode(LF, $actionMenu);
     }
 

@@ -86,7 +86,7 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 	startLoader: function() {
 		if (this.showLoadingIndicator) {
 			require(['nprogress'], function(NProgress) {
-				NProgress.configure({parent: '#typo3-contentContainer', showSpinner: false});
+				NProgress.configure({parent: '.t3js-scaffold-content-module', showSpinner: false});
 				NProgress.start();
 			});
 		}

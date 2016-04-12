@@ -69,7 +69,12 @@ class HelpToolbarItem implements ToolbarItemInterface
      */
     public function getItem()
     {
-        return $this->iconFactory->getIcon('apps-toolbar-menu-help', Icon::SIZE_SMALL)->render('inline');
+        $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.help'));
+        $icon = $this->iconFactory->getIcon('apps-toolbar-menu-help', Icon::SIZE_SMALL)->render('inline');
+        return '
+            <span class="toolbar-item-icon" title="' . $title . '">' . $icon . '</span>
+            <span class="toolbar-item-title">' . $title . '</span>
+            ';
     }
 
     /**
@@ -80,25 +85,28 @@ class HelpToolbarItem implements ToolbarItemInterface
     public function getDropDown()
     {
         $dropdown = [];
-        $dropdown[] = '<ul class="dropdown-list">';
+        $dropdown[] = '<h3 class="dropdown-headline">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.help')) . '</h3>';
+        $dropdown[] = '<hr>';
+        $dropdown[] = '<div class="dropdown-table">';
         foreach ($this->helpModuleMenu->getChildren() as $module) {
             /** @var BackendModule $module */
-            $moduleIcon = $module->getIcon();
-            $dropdown[] ='<li'
+            $dropdown[] = '<div'
+                . ' class="dropdown-table-row"'
                 . ' id="' . htmlspecialchars($module->getName()) . '"'
-                . ' class="typo3-module-menu-item submodule mod-' . htmlspecialchars($module->getName()) . '" '
                 . ' data-modulename="' . htmlspecialchars($module->getName()) . '"'
                 . ' data-navigationcomponentid="' . htmlspecialchars($module->getNavigationComponentId()) . '"'
                 . ' data-navigationframescript="' . htmlspecialchars($module->getNavigationFrameScript()) . '"'
                 . ' data-navigationframescriptparameters="' . htmlspecialchars($module->getNavigationFrameScriptParameters()) . '"'
                 . '>';
-            $dropdown[] = '<a title="' . htmlspecialchars($module->getDescription()) . '" href="' . htmlspecialchars($module->getLink()) . '" class="dropdown-list-link modlink">';
-            $dropdown[] = '<span class="submodule-icon typo3-app-icon"><span><span>' . $moduleIcon . '</span></span></span>';
-            $dropdown[] = '<span class="submodule-label">' . htmlspecialchars($module->getTitle()) . '</span>';
+            $dropdown[] = '<div class="dropdown-table-column dropdown-table-icon">' . $module->getIcon() . '</div>';
+            $dropdown[] = '<div class="dropdown-table-column dropdown-table-title">';
+            $dropdown[] = '<a title="' . htmlspecialchars($module->getDescription()) . '" href="' . htmlspecialchars($module->getLink()) . '" class="modlink">';
+            $dropdown[] = htmlspecialchars($module->getTitle());
             $dropdown[] = '</a>';
-            $dropdown[] = '</li>';
+            $dropdown[] = '</div>';
+            $dropdown[] = '</div>';
         }
-        $dropdown[] = '</ul>';
+        $dropdown[] = '</div>';
         return implode(LF, $dropdown);
     }
 
@@ -109,7 +117,7 @@ class HelpToolbarItem implements ToolbarItemInterface
      */
     public function getAdditionalAttributes()
     {
-        return ['class' => 'typo3-module-menu-group'];
+        return [];
     }
 
     /**
@@ -130,5 +138,15 @@ class HelpToolbarItem implements ToolbarItemInterface
     public function getIndex()
     {
         return 70;
+    }
+
+    /**
+     * Returns LanguageService
+     *
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

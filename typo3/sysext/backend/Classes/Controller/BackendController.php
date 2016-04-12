@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -94,12 +95,18 @@ class BackendController
     protected $pageRenderer;
 
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
         $this->backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         // Set debug flag for BE development only
         $this->debug = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] === 1;
@@ -119,10 +126,7 @@ class BackendController
             'modulemenu' => 'EXT:backend/Resources/Public/JavaScript/modulemenu.js',
             'evalfield' => 'EXT:backend/Resources/Public/JavaScript/jsfunc.evalfield.js',
             'backend' => 'EXT:backend/Resources/Public/JavaScript/backend.js',
-            'viewport' => 'EXT:backend/Resources/Public/JavaScript/extjs/viewport.js',
             'iframepanel' => 'EXT:backend/Resources/Public/JavaScript/iframepanel.js',
-            'backendcontentiframe' => 'EXT:backend/Resources/Public/JavaScript/extjs/backendcontentiframe.js',
-            'viewportConfiguration' => 'EXT:backend/Resources/Public/JavaScript/extjs/viewportConfiguration.js',
         ];
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LoginRefresh', 'function(LoginRefresh) {
 			LoginRefresh.setIntervalTime(' . MathUtility::forceIntegerInRange((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] - 60, 60) . ');
@@ -130,6 +134,9 @@ class BackendController
 			LoginRefresh.setLogoutUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('logout')) . ');
 			LoginRefresh.initialize();
 		}');
+
+        // load Toolbar class
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar');
 
         // load Utility class
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Utility');
@@ -327,9 +334,8 @@ class BackendController
             $extOnReadyCode .= 'Ext.state.Manager.getProvider().initState(' . json_encode($states) . ');';
         }
 
-        $extOnReadyCode .= '
-			TYPO3.Backend = new TYPO3.Viewport(TYPO3.Viewport.configuration)';
         $this->pageRenderer->addExtOnReadyCode($extOnReadyCode);
+
         // Set document title:
         $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 CMS ' . TYPO3_version . ']' : 'TYPO3 CMS ' . TYPO3_version;
         // Renders the module page
@@ -406,9 +412,8 @@ class BackendController
 
                 // Merge class: Add dropdown class if hasDropDown, add classes from additonal attributes
                 $classes = [];
-                if ($hasDropDown) {
-                    $classes[] = 'dropdown';
-                }
+                $classes[] = 'toolbar-item';
+                $classes[] = 't3js-toolbar-item';
                 if (isset($additionalAttributes['class'])) {
                     $classes[] = $additionalAttributes['class'];
                     unset($additionalAttributes['class']);
@@ -430,7 +435,7 @@ class BackendController
                 $toolbar[] = '<li ' . implode(' ', $liAttributes) . '>';
 
                 if ($hasDropDown) {
-                    $toolbar[] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
+                    $toolbar[] = '<a href="#" class="toolbar-item-link dropdown-toggle" data-toggle="dropdown">';
                     $toolbar[] = $toolbarItem->getItem();
                     $toolbar[] = '</a>';
                     $toolbar[] = '<div class="dropdown-menu" role="menu">';

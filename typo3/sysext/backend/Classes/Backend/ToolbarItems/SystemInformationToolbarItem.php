@@ -376,7 +376,11 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     {
         $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo'));
         $icon = $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render('inline');
-        return '<span title="' . $title . '">' . $icon . '<span id="t3js-systeminformation-counter" class="badge"></span></span>';
+        return '
+            <span class="toolbar-item-icon" title="' . $title . '">' . $icon . '</span>
+            <span class="toolbar-item-title">' . $title . '</span>
+            <span class="toolbar-item-badge t3js-systeminformation-counter badge"></span>
+            ';
     }
 
     /**

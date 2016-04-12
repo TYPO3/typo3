@@ -87,12 +87,12 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     {
         $numDocs = count($this->openDocs);
         $title = htmlspecialchars($this->getLanguageService()->getLL('toolbaritem'));
-
-        $opendocsMenu = [];
-        $opendocsMenu[] = '<span title="' . $title . '">' . $this->iconFactory->getIcon('apps-toolbar-menu-opendocs', Icon::SIZE_SMALL)->render('inline') . '</span>';
-        $opendocsMenu[] = '<span class="badge" id="tx-opendocs-counter">' . $numDocs . '</span>';
-
-        return implode(LF, $opendocsMenu);
+        $icon = $this->iconFactory->getIcon('apps-toolbar-menu-opendocs', Icon::SIZE_SMALL)->render('inline');
+        return '
+            <span class="toolbar-item-icon" title="' . $title . '">' . $icon . '</span>
+            <span class="toolbar-item-title">' . $title . '</span>
+            <span class="toolbar-item-badge badge" id="tx-opendocs-counter">' . $numDocs . '</span>
+            ';
     }
 
     /**
@@ -106,26 +106,40 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         $openDocuments = $this->openDocs;
         $recentDocuments = $this->recentDocs;
         $entries = [];
+
+        $entries[] = '<h3 class="dropdown-headline">';
+        $entries[] = htmlspecialchars($this->getLanguageService()->getLL('toolbaritem'));
+        $entries[] = '</h3>';
+        $entries[] = '<hr>';
+
         if (!empty($openDocuments)) {
-            $entries[] = '<li class="dropdown-header">' . htmlspecialchars($languageService->getLL('open_docs')) . '</li>';
+            $entries[] = '<h3 class="dropdown-headline">';
+            $entries[] = htmlspecialchars($languageService->getLL('open_docs'));
+            $entries[] = '</h3>';
+            $entries[] = '<div class="dropdown-table">';
             $i = 0;
             foreach ($openDocuments as $md5sum => $openDocument) {
                 $i++;
                 $entries[] = $this->renderMenuEntry($openDocument, $md5sum, false, $i == 1);
             }
-            $entries[] = '<li class="divider"></li>';
+            $entries[] = '</div>';
+            $entries[] = '<hr>';
         }
         // If there are "recent documents" in the list, add them
         if (!empty($recentDocuments)) {
-            $entries[] = '<li class="dropdown-header">' . htmlspecialchars($languageService->getLL('recent_docs')) . '</li>';
+            $entries[] = '<h3 class="dropdown-headline">';
+            $entries[] = htmlspecialchars($languageService->getLL('recent_docs'));
+            $entries[] = '</h3>';
+            $entries[] = '<div class="dropdown-table">';
             $i = 0;
             foreach ($recentDocuments as $md5sum => $recentDocument) {
                 $i++;
                 $entries[] = $this->renderMenuEntry($recentDocument, $md5sum, true, $i == 1);
             }
+            $entries[] = '</div>';
         }
         if (!empty($entries)) {
-            $content = '<ul class="dropdown-list">' . implode('', $entries) . '</ul>';
+            $content = implode('', $entries);
         } else {
             $content = '<p>' . htmlspecialchars($languageService->getLL('no_docs')) . '</p>';
         }
@@ -152,9 +166,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         }
         $label = htmlspecialchars(strip_tags(htmlspecialchars_decode($document[0])));
         $icon = $this->iconFactory->getIconForRecord($table, $record, Icon::SIZE_SMALL)->render();
-        $link = BackendUtility::getModuleUrl('record_edit')
-            . '&' . $document[2]
-            . '&returnUrl=' . rawurlencode(BackendUtility::getModuleUrl('web_list') . '&id=' . (int)$document[3]['pid']);
+        $link = BackendUtility::getModuleUrl('record_edit') . '&' . $document[2];
         $pageId = (int)$document[3]['uid'];
         if ($document[3]['table'] !== 'pages') {
             $pageId = (int)$document[3]['pid'];
@@ -163,18 +175,33 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         if (!$isRecentDoc) {
             $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc'));
             // Open document
-            $closeIcon = $this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL)->render('inline');
-            $entry = '
-				<li class="opendoc">
-					<a href="#" class="dropdown-list-link dropdown-link-list-add-close" onclick="' . htmlspecialchars($onClickCode) . '" target="content">' . $icon . ' ' . $label . '</a>
-					<a href="#" class="dropdown-list-link-close" data-opendocsidentifier="' . $md5sum . '" title="' . $title . '">' . $closeIcon . '</a>
-				</li>';
+            $entry  = '<div class="dropdown-table-row t3js-topbar-opendocs-item">';
+            $entry .= '<div class="dropdown-table-column dropdown-table-icon">';
+            $entry .= $icon;
+            $entry .= '</div>';
+            $entry .= '<div class="dropdown-table-column dropdown-table-title">';
+            $entry .= '<a class="dropdown-table-title-ellipsis" href="#" onclick="' . htmlspecialchars($onClickCode) . '" target="contentIframe">';
+            $entry .= $label;
+            $entry .= '</a>';
+            $entry .= '</div>';
+            $entry .= '<div class="dropdown-table-column dropdown-table-actions">';
+            $entry .= '<a href="#" class="dropdown-table-actions-btn dropdown-table-actions-btn-close t3js-topbar-opendocs-close" data-opendocsidentifier="' . $md5sum . '" title="' . $title . '">';
+            $entry .= $this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL)->render('inline');
+            $entry .= '</a>';
+            $entry .= '</div>';
+            $entry .= '</div>';
         } else {
             // Recently used document
-            $entry = '
-				<li>
-					<a href="#" class="dropdown-list-link" onclick="' . htmlspecialchars($onClickCode) . '" target="content">' . $icon . ' ' . $label . '</a>
-				</li>';
+            $entry  = '<div class="dropdown-table-row t3js-topbar-recentdoc">';
+            $entry .= '<div class="dropdown-table-column dropdown-table-icon">';
+            $entry .= $icon;
+            $entry .= '</div>';
+            $entry .= '<div class="dropdown-table-column dropdown-table-title">';
+            $entry .= '<a class="dropdown-table-title-ellipsis" href="#" onclick="' . htmlspecialchars($onClickCode) . '" target="contentIframe">';
+            $entry .= $label;
+            $entry .= '</a>';
+            $entry .= '</div>';
+            $entry .= '</div>';
         }
         return $entry;
     }

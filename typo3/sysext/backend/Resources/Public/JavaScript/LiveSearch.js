@@ -20,8 +20,11 @@ define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], 
 	'use strict';
 
 	var containerSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem';
+	var toolbarItem = '.t3js-toolbar-item-search';
+	var dropdownToggle = '.t3js-toolbar-search-dropdowntoggle';
 	var searchFieldSelector = '.t3js-topbar-navigation-search-field';
 	var formSelector = '.t3js-topbar-navigation-search';
+	var autocompleteContainer = '.t3js-toolbar-search-autocomplete';
 	var url = TYPO3.settings.ajaxUrls['livesearch'];
 	var category = '';
 
@@ -32,18 +35,19 @@ define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], 
 			paramName: 'q',
 			dataType: 'json',
 			minChars: 2,
+			width: '100%',
 			groupBy: 'typeLabel',
-			containerClass: 'dropdown-list',
+			containerClass: 'autocomplete-suggestions ' + autocompleteContainer.substr(1, autocompleteContainer.length),
 			appendTo: containerSelector + ' .dropdown-menu',
 			forceFixPosition: false,
 			preserveInput: true,
 			showNoSuggestionNotice: true,
 			triggerSelectOnValidInput: false,
 			preventBadQueries: false,
-			noSuggestionNotice: '<div class="dropdown-info">' + TYPO3.LLL.liveSearch.listEmptyText + '</div>'
-					+ '<div class="search-list-help-content"><strong>' + TYPO3.LLL.liveSearch.helpTitle + '</strong>'
-					+ '<p>' + TYPO3.LLL.liveSearch.helpDescription + '<br>' + TYPO3.LLL.liveSearch.helpDescriptionPages + '</p>'
-					+ '</div>',
+			noSuggestionNotice: '<h3 class="dropdown-headline">' + TYPO3.LLL.liveSearch.listEmptyText + '</h3>'
+					+ '<p>' + TYPO3.LLL.liveSearch.helpTitle + '</p>'
+					+ '<hr>'
+					+ '<p>' + TYPO3.LLL.liveSearch.helpDescription + '<br>' + TYPO3.LLL.liveSearch.helpDescriptionPages + '</p>',
 			// put the AJAX results in the right format
 			transformResult: function(response) {
 				return {
@@ -62,30 +66,47 @@ define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], 
 				var html = '';
 				// add a divider if it's not the first group
 				if (i > 0) {
-					html = '<div class="divider"></div>';
+					html = '<hr>';
 				}
-				return html + '<div class="dropdown-header">' + category + '</div>';
+				return html + '<h3 class="dropdown-headline">' + category + '</h3>';
 			},
 			// Rendering of each item
 			formatResult: function(suggestion, value) {
-				return '<a class="dropdown-list-link" href="#" data-pageid="' + suggestion.data.pageId + '" data-target="' + suggestion.data.editLink + '">' +
-						suggestion.data.iconHTML + ' ' + suggestion.data.title +
-					'</a>';
+				return ''
+					+ '<div class="dropdown-table">'
+					+ '<div class="dropdown-table-row">'
+					+ '<div class="dropdown-table-column dropdown-table-icon">' + suggestion.data.iconHTML + '</div>'
+					+ '<div class="dropdown-table-column dropdown-table-title">'
+					+ '<a class="dropdown-table-title-ellipsis dropdown-list-link" href="#" data-pageid="' + suggestion.data.pageId + '" data-target="' + suggestion.data.editLink + '">'
+					+ suggestion.data.title
+					+ '</a>'
+					+ '</div>'
+					+ '</div>'
+					+ '</div>'
+					+ '';
 			},
-			onSearchComplete: function() {
-				$(containerSelector).addClass('open');
+			onSearchComplete: function(query, suggestions) {
+				if (!$(toolbarItem).hasClass('open') && $(searchFieldSelector).val().length > 1) {
+					$(dropdownToggle).dropdown('toggle');
+					$(searchFieldSelector).focus();
+				}
 			},
 			beforeRender: function(container) {
 				// Unset height, width and z-index again, should be fixed by the plugin at a later point
-				container.attr('style', '').append('<div class="divider"></div><div>' +
+				container.attr('style', '').append('<hr><div>' +
 					'<a href="#" class="btn btn-primary pull-right t3js-live-search-show-all">' +
 						TYPO3.LLL.liveSearch.showAllResults +
 					'</a>' +
 				'</div>');
-				$(containerSelector).addClass('open');
+				if (!$(toolbarItem).hasClass('open')) {
+					$(dropdownToggle).dropdown('toggle');
+					$(searchFieldSelector).focus();
+				}
 			},
 			onHide: function() {
-				$(containerSelector).removeClass('open');
+				if ($(toolbarItem).hasClass('open')) {
+					$(dropdownToggle).dropdown('toggle');
+				}
 			}
 		});
 
@@ -93,15 +114,19 @@ define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], 
 		$(containerSelector).on('click', '.t3js-live-search-show-all', function(evt) {
 			evt.preventDefault();
 			TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=-1&search_field=' + encodeURIComponent($(searchFieldSelector).val()));
+			$(searchFieldSelector).val('').trigger('change');
 		});
 		$(containerSelector).on('click', '.dropdown-list-link', function(evt) {
 			evt.preventDefault();
 			jump($(this).data('target'), 'web_list', 'web', $(this).data('pageid'));
+			$(searchFieldSelector).val('').trigger('change');
 		});
 
 		$(searchFieldSelector).clearable({
 			onClear: function() {
-				$(containerSelector).removeClass('open');
+				if ($(toolbarItem).hasClass('open')) {
+					$(dropdownToggle).dropdown('toggle');
+				}
 			}
 		});
 

@@ -122,7 +122,7 @@ define(['jquery'], function ($) {
 	 * Attach the Debugger Console to the viewport
 	 */
 	DebugConsole.attachToViewport = function() {
-		var $viewport = $('#typo3-contentContainer');
+		var $viewport = $('.t3js-scaffold-content');
 		if ($viewport.has(DebugConsole.$consoleDom).length === 0) {
 			$viewport.append(DebugConsole.$consoleDom);
 		}

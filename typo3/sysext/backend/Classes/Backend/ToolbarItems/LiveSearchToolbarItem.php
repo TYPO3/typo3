@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
@@ -26,11 +28,17 @@ use TYPO3\CMS\Lang\LanguageService;
 class LiveSearchToolbarItem implements ToolbarItemInterface
 {
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LiveSearch');
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
     /**
@@ -58,11 +66,17 @@ class LiveSearchToolbarItem implements ToolbarItemInterface
     public function getItem()
     {
         return '
-			<form class="typo3-topbar-navigation-search t3js-topbar-navigation-search live-search-wrapper" role="search">
+			<form class="t3js-topbar-navigation-search toolbar-item-search-form live-search-wrapper" role="search">
 				<div class="form-group">
-					<input type="text" class="form-control t3js-topbar-navigation-search-field" placeholder="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.search')) . '" id="live-search-box" autocomplete="off">
+                    <div class="form-control-holder">
+                        <div class="form-control-icon">
+                            ' . $this->iconFactory->getIcon('apps-toolbar-menu-search', Icon::SIZE_SMALL)->render('inline') . '
+                        </div>
+					    <input type="text" class="form-control toolbar-item-search-field t3js-topbar-navigation-search-field" placeholder="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.search')) . '" id="live-search-box" autocomplete="off">
+                    </div>
 				</div>
 			</form>
+            <a href="#" class="dropdown-toggle t3js-toolbar-search-dropdowntoggle" data-toggle="dropdown" aria-expanded="false"></a>
 			<div class="dropdown-menu" role="menu"></div>
 		';
     }
@@ -74,7 +88,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface
      */
     public function getAdditionalAttributes()
     {
-        return ['class' => 'dropdown'];
+        return ['class' => 'toolbar-item-search t3js-toolbar-item-search'];
     }
 
     /**

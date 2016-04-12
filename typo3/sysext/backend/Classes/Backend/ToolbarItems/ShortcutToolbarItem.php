@@ -130,7 +130,11 @@ class ShortcutToolbarItem implements ToolbarItemInterface
     public function getItem()
     {
         $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks'));
-        return '<span title="' . $title . '">' . $this->iconFactory->getIcon('apps-toolbar-menu-shortcut', Icon::SIZE_SMALL)->render('inline') . '</span>';
+        $icon = $this->iconFactory->getIcon('apps-toolbar-menu-shortcut', Icon::SIZE_SMALL)->render('inline');
+        return '
+            <span class="toolbar-item-icon" title="' . $title . '">' . $icon . '</span>
+            <span class="toolbar-item-title">' . $title . '</span>
+            ';
     }
 
     /**
@@ -141,67 +145,57 @@ class ShortcutToolbarItem implements ToolbarItemInterface
     public function getDropDown()
     {
         $languageService = $this->getLanguageService();
-        $shortcutGroup = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksGroup'));
         $shortcutEdit = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksEdit'));
         $shortcutDelete = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksDelete'));
-        $editIcon = '<a href="#" class="dropdown-list-link-edit shortcut-edit" ' . $shortcutEdit . '>'
+        $editIcon = '<a href="#" class="dropdown-table-actions-btn dropdown-table-actions-btn-edit t3js-shortcut-edit" title="' . $shortcutEdit . '">'
             . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render('inline') . '</a>';
-        $deleteIcon = '<a href="#" class="dropdown-list-link-delete shortcut-delete" title="' . $shortcutDelete . '">'
+        $deleteIcon = '<a href="#" class="dropdown-table-actions-btn dropdown-table-actions-btn-delete t3js-shortcut-delete" title="' . $shortcutDelete . '">'
             . $this->iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)->render('inline') . '</a>';
 
-        $shortcutMenu[] = '<ul class="dropdown-list">';
+        $shortcutMenu = [];
+        $shortcutMenu[] = '<h3 class="dropdown-headline">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks')) . '</h3>';
+        $shortcutMenu[] = '<hr>';
 
-        // Render shortcuts with no group (group id = 0) first
-        $noGroupShortcuts = $this->getShortcutsByGroup(0);
-        foreach ($noGroupShortcuts as $shortcut) {
-            $shortcutMenu[] = '
-				<li class="shortcut" data-shortcutid="' . (int)$shortcut['raw']['uid'] . '">
-					<a class="dropdown-list-link dropdown-link-list-add-editdelete" href="#" onclick="' . htmlspecialchars($shortcut['action']) . ' return false;">' .
-                        $shortcut['icon'] . ' ' .
-                        htmlspecialchars($shortcut['label']) .
-                    '</a>
-					' . $editIcon . $deleteIcon . '
-				</li>';
-        }
-        // Now render groups and the contained shortcuts
+        // Render groups and the contained shortcuts
         $groups = $this->getGroupsFromShortcuts();
-        krsort($groups, SORT_NUMERIC);
+        $groupCount = 0;
+        arsort($groups, SORT_NUMERIC);
         foreach ($groups as $groupId => $groupLabel) {
-            if ($groupId != 0) {
-                $shortcutGroup = '';
-                if (count($shortcutMenu) > 1) {
-                    $shortcutGroup .= '<li class="divider"></li>';
+            $shortcuts = $this->getShortcutsByGroup($groupId);
+            if (count($shortcuts) > 0) {
+                if ($groupCount !== 0) {
+                    $shortcutMenu[] = '<hr>';
                 }
-                $shortcutGroup .= '
-					<li class="dropdown-header" id="shortcut-group-' . (int)$groupId . '">
-						' . $groupLabel . '
-					</li>';
-                $shortcuts = $this->getShortcutsByGroup($groupId);
-                $i = 0;
+                $groupCount++;
+                if ($groupLabel) {
+                    $shortcutMenu[] = '<h3 class="dropdown-headline" id="shortcut-group-' . (int)$groupId . '">' . $groupLabel . '</h3>';
+                }
+                $shortcutMenu[] = '<div class="dropdown-table" data-shortcutgroup="' . (int)$groupId . '">';
                 foreach ($shortcuts as $shortcut) {
-                    $i++;
-                    $shortcutGroup .= '
-					<li class="shortcut" data-shortcutid="' . (int)$shortcut['raw']['uid'] . '" data-shortcutgroup="' . (int)$groupId . '">
-						<a class="dropdown-list-link dropdown-link-list-add-editdelete" href="#" onclick="' . htmlspecialchars($shortcut['action']) . ' return false;">' .
-                            $shortcut['icon'] . ' ' .
-                            htmlspecialchars($shortcut['label']) .
-                        '</a>
-						' . $editIcon . $deleteIcon . '
-					</li>';
+                    $shortcutItem  = '<div class="dropdown-table-row t3js-topbar-shortcut" data-shortcutid="' . (int)$shortcut['raw']['uid'] . '" data-shortcutgroup="' . (int)$groupId . '">';
+                    $shortcutItem .= '<div class="dropdown-table-column dropdown-table-icon">';
+                    $shortcutItem .= $shortcut['icon'];
+                    $shortcutItem .= '</div>';
+                    $shortcutItem .= '<div class="dropdown-table-column dropdown-table-title">';
+                    $shortcutItem .= '<a class="dropdown-table-title-ellipsis" href="#" onclick="' . htmlspecialchars($shortcut['action']) . ' return false;">';
+                    $shortcutItem .= htmlspecialchars($shortcut['label']);
+                    $shortcutItem .= '</a>';
+                    $shortcutItem .= '</div>';
+                    $shortcutItem .= '<div class="dropdown-table-column dropdown-table-actions">' . $editIcon . $deleteIcon . '</div>';
+                    $shortcutItem .= '</div>';
+                    $shortcutMenu[] = $shortcutItem;
                 }
-                $shortcutMenu[] = $shortcutGroup;
+                $shortcutMenu[] = '</div>';
             }
         }
-        $shortcutMenu[] = '</ul>';
 
+        $compiledShortcutMenu = implode(LF, $shortcutMenu);
         if (count($shortcutMenu) === 2) {
             // No shortcuts added yet, show a small help message how to add shortcuts
             $title = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks'));
             $icon = '<span title="' . $title . '">' . $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render('inline') . '</span>';
             $label = str_replace('%icon%', $icon, htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_misc.xlf:bookmarkDescription')));
-            $compiledShortcutMenu = '<p>' . $label . '</p>';
-        } else {
-            $compiledShortcutMenu = implode(LF, $shortcutMenu);
+            $compiledShortcutMenu .= '<p>' . $label . '</p>';
         }
 
         return $compiledShortcutMenu;
@@ -477,6 +471,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     public function editFormAction(ServerRequestInterface $request, ResponseInterface $response)
     {
+        $languageService = $this->getLanguageService();
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
@@ -495,11 +490,14 @@ class ShortcutToolbarItem implements ToolbarItemInterface
 
         // build the form
         $content = '
-			<form class="shortcut-form" role="form">
+			<form class="shortcut-form" role="form" data-shortcutid="' . (int)$selectedShortcutId . '">
+                <h3 class="dropdown-headline">
+                    ' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksEdit')) . '
+                </h3>
+                <hr>
 				<div class="form-group">
 					<input type="text" class="form-control" name="shortcut-title" value="' . htmlspecialchars($selectedShortcut['label']) . '">
 				</div>';
-
         $content .= '
 				<div class="form-group">
 					<select class="form-control" name="shortcut-group">';
@@ -509,6 +507,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $content .= '
 					</select>
 				</div>
+                <hr>
 				<input type="button" class="btn btn-default shortcut-form-cancel" value="Cancel">
 				<input type="button" class="btn btn-success shortcut-form-save" value="Save">
 			</form>';

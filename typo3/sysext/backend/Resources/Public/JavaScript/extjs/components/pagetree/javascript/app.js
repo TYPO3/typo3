@@ -43,6 +43,13 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	layout:'fit',
 
 	/**
+	 * Monitor resize
+	 *
+	 * @type {Boolean}
+	 */
+	monitorResize: true,
+
+	/**
 	 * Active tree
 	 *
 	 * @type {TYPO3.Components.PageTree.Tree}
@@ -85,18 +92,19 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 				stateId: 'Pagetree' + TYPO3.Components.PageTree.Configuration.temporaryMountPoint,
 				stateEvents: [],
 				autoScroll: true,
-				autoHeight: false,
-				plugins: new Ext.ux.state.TreePanel(),
+				autoHeight: true,
+				autoWidth: true,
+				plugins: [new Ext.ux.state.TreePanel()],
 				commandProvider: TYPO3.Components.PageTree.Actions,
 				contextMenuProvider: TYPO3.Components.PageTree.ContextMenuDataProvider,
 				treeDataProvider: TYPO3.Components.PageTree.DataProvider,
+				monitorResize: true,
 				app: this,
 				listeners: {
 					resize: {
 						fn: function() {
-							var treeContainer = Ext.getCmp(this.id + '-treeContainer');
-							Ext.getCmp(this.id + '-filteringTree').setSize(treeContainer.getSize());
-							treeContainer.doLayout();
+							this.doLayout(true);
+							TYPO3.Backend.doLayout();
 						},
 						scope: this,
 						buffer: 250
@@ -151,6 +159,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 			this.add({
 				layout: 'border',
 				border: false,
+				monitorResize: true,
 				items: [
 					topPanelItems,
 					{
@@ -158,6 +167,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 						id: this.id + '-treeContainer',
 						region: 'center',
 						layout: 'fit',
+						monitorResize: true,
 						items: [this.mainTree, filteringTree]
 					},
 					deletionDropZone
@@ -175,9 +185,6 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 			}
 			this.doLayout();
 
-			this.ownerCt.on('resize', function() {
-				this.doLayout();
-			});
 		}, this);
 
 		TYPO3.Components.PageTree.App.superclass.initComponent.apply(this, arguments);
@@ -207,7 +214,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 			border: false,
 			id: this.id + '-indicatorBar-temporaryMountPoint',
 			cls: this.id + '-indicatorBar-item',
-
+			scope: this,
 			listeners: {
 				afterrender: {
 					fn: function() {
@@ -411,16 +418,19 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
  *
  * @return {TYPO3.Components.PageTree.App}
  */
-TYPO3.ModuleMenu.App.registerNavigationComponent('typo3-pagetree', function() {
-	TYPO3.Backend.NavigationContainer.PageTree = new TYPO3.Components.PageTree.App();
-
-		// compatibility code
-    top.nav = TYPO3.Backend.NavigationContainer.PageTree;
-    top.nav_frame = TYPO3.Backend.NavigationContainer.PageTree;
-    top.content.nav_frame = TYPO3.Backend.NavigationContainer.PageTree;
-
-	return TYPO3.Backend.NavigationContainer.PageTree;
-});
+require(
+	[
+		'TYPO3/CMS/Backend/modulemenu'
+	],
+	function () {
+		// extjs loading bugfix
+		window.setTimeout(function() {
+			TYPO3.ModuleMenu.App.registerNavigationComponent('typo3-pagetree', function () {
+				return new TYPO3.Components.PageTree.App();
+			});
+		}, 5000);
+	}
+);
 
 // XTYPE Registration
 Ext.reg('TYPO3.Components.PageTree.App', TYPO3.Components.PageTree.App);

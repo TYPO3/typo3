@@ -122,9 +122,11 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     public function getItem()
     {
         $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.clearCache_clearCache'));
-        return '<span title="' . $title . '">'
-            . $this->iconFactory->getIcon('apps-toolbar-menu-cache', Icon::SIZE_SMALL)->render('inline')
-            . '</span>';
+        $icon = $this->iconFactory->getIcon('apps-toolbar-menu-cache', Icon::SIZE_SMALL)->render('inline');
+        return '
+            <span class="toolbar-item-icon" title="' . $title . '">' . $icon . '</span>
+            <span class="toolbar-item-title">' . $title . '</span>
+            ';
     }
 
     /**
@@ -135,17 +137,30 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     public function getDropDown()
     {
         $result = [];
-        $result[] = '<ul class="dropdown-list">';
+        $result[] = '<h3 class="dropdown-headline">';
+        $result[] = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.clearCache_clearCache'));
+        $result[] = '</h3>';
+        $result[] = '<hr>';
+        $result[] = '<div class="dropdown-table">';
         foreach ($this->cacheActions as $cacheAction) {
             $title = $cacheAction['description'] ?: $cacheAction['title'];
-            $result[] = '<li>';
-            $result[] = '<a class="dropdown-list-link" href="' . htmlspecialchars($cacheAction['href']) . '">';
-            $result[] = $cacheAction['icon'] . ' ' . htmlspecialchars($cacheAction['title']);
-            $result[] = '<br/><small>' . htmlspecialchars($title) . '</small>';
+
+            $result[] = '<div class="dropdown-table-row">';
+
+            $result[] = '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">';
+            $result[] = $cacheAction['icon'];
+            $result[] = '</div>';
+
+            $result[] = '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-text">';
+            $result[] = '<a href="' . htmlspecialchars($cacheAction['href']) . '">';
+            $result[] = htmlspecialchars($cacheAction['title']);
+            $result[] = '<br><small class="text-muted">' . htmlspecialchars($title) . '</small>';
             $result[] = '</a>';
-            $result[] = '</li>';
+            $result[] = '</div>';
+
+            $result[] = '</div>';
         }
-        $result[] = '</ul>';
+        $result[] = '</div>';
         return implode(LF, $result);
     }
 

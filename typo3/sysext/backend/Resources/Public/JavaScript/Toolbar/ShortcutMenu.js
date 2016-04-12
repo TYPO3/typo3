@@ -33,9 +33,11 @@ define(['jquery',
 			containerSelector: '#typo3-cms-backend-backend-toolbaritems-shortcuttoolbaritem',
 			toolbarIconSelector: '.dropdown-toggle span.icon',
 			toolbarMenuSelector: '.dropdown-menu',
-			shortcutItemSelector: '.dropdown-menu .shortcut',
-			shortcutDeleteSelector: '.shortcut-delete',
-			shortcutEditSelector: '.shortcut-edit',
+
+			shortcutItemSelector: '.t3js-topbar-shortcut',
+			shortcutDeleteSelector: '.t3js-shortcut-delete',
+			shortcutEditSelector: '.t3js-shortcut-edit',
+
 			shortcutFormTitleSelector: 'input[name="shortcut-title"]',
 			shortcutFormGroupSelector: 'select[name="shortcut-group"]',
 			shortcutFormSaveSelector: '.shortcut-form-save',
@@ -59,22 +61,22 @@ define(['jquery',
 			},
 			cache: false
 		}).done(function(data) {
-			$shortcutRecord.html(data);
+			$(ShortcutMenu.options.containerSelector).find(ShortcutMenu.options.toolbarMenuSelector).html(data);
 		});
 	};
 
 	/**
 	 * Save the data from the in-place-editor for a shortcut
 	 *
-	 * @param {Object} $shortcutRecord
+	 * @param {Object} $shortcutForm
 	 */
-	ShortcutMenu.saveShortcutForm = function($shortcutRecord) {
+	ShortcutMenu.saveShortcutForm = function($shortcutForm) {
 		$.ajax({
 			url: TYPO3.settings.ajaxUrls['shortcut_saveform'],
 			data: {
-				shortcutId: $shortcutRecord.data('shortcutid'),
-				shortcutTitle: $shortcutRecord.find(ShortcutMenu.options.shortcutFormTitleSelector).val(),
-				shortcutGroup: $shortcutRecord.find(ShortcutMenu.options.shortcutFormGroupSelector).val()
+				shortcutId: $shortcutForm.data('shortcutid'),
+				shortcutTitle: $shortcutForm.find(ShortcutMenu.options.shortcutFormTitleSelector).val(),
+				shortcutGroup: $shortcutForm.find(ShortcutMenu.options.shortcutFormGroupSelector).val()
 			},
 			type: 'post',
 			cache: false
@@ -186,18 +188,24 @@ define(['jquery',
 			evt.preventDefault();
 			evt.stopImmediatePropagation();
 			ShortcutMenu.deleteShortcut($(this).closest(ShortcutMenu.options.shortcutItemSelector));
+		}).on('click', ShortcutMenu.options.shortcutFormGroupSelector, function(evt) {
+			evt.preventDefault();
+			evt.stopImmediatePropagation();
 		}).on('click', ShortcutMenu.options.shortcutEditSelector, function(evt) {
 			evt.preventDefault();
 			evt.stopImmediatePropagation();
 			ShortcutMenu.editShortcut($(this).closest(ShortcutMenu.options.shortcutItemSelector));
 		}).on('click', ShortcutMenu.options.shortcutFormSaveSelector, function(evt) {
-			ShortcutMenu.saveShortcutForm($(this).closest(ShortcutMenu.options.shortcutItemSelector));
+			evt.preventDefault();
+			evt.stopImmediatePropagation();
+			ShortcutMenu.saveShortcutForm($(this).closest(ShortcutMenu.options.shortcutFormSelector));
 		}).on('submit', ShortcutMenu.options.shortcutFormSelector, function(evt) {
 			evt.preventDefault();
 			evt.stopImmediatePropagation();
-			ShortcutMenu.saveShortcutForm($(this).closest(ShortcutMenu.options.shortcutItemSelector));
-		}).on('click', ShortcutMenu.options.shortcutFormCancelSelector, function() {
-			// re-render the menu on canceling the update of a shortcut
+			ShortcutMenu.saveShortcutForm($(this).closest(ShortcutMenu.options.shortcutFormSelector));
+		}).on('click', ShortcutMenu.options.shortcutFormCancelSelector, function(evt) {
+			evt.preventDefault();
+			evt.stopImmediatePropagation();
 			ShortcutMenu.refreshMenu();
 		});
 	};

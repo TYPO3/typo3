@@ -1,43 +1,45 @@
-<ul class="dropdown-list" data-count="{count}" data-severityclass="{severityBadgeClass}">
-	<li class="dropdown-header"><f:translate key="systemmessage.header" /></li>
-	<li id="systeminformation_installtool" class="dropdown-intro typo3-module-menu-item submodule mod-system_extinstall" data-modulename="system_extinstall">
-		<f:format.raw><f:translate key="systemmessage.intro" arguments="{0: '{installToolUrl}'}" /></f:format.raw>
-	</li>
-	<li>
-		<dl class="dl-horizontal">
-			<f:for each="{systemInformation}" as="info">
-				<dt title="{info.title}"><f:format.raw>{info.icon}</f:format.raw> {info.title}</dt>
-				<dd><f:if condition="{info.status}">
-					<f:then>
-						<span class="text-{info.status}">{info.value}</span>
-					</f:then>
-					<f:else>
-						{info.value}
-					</f:else>
-				</f:if></dd>
-			</f:for>
-		</dl>
-	</li>
-	<li class="divider"></li>
-	<f:if condition="{messages -> f:count()} > 0">
-		<f:then>
-			<f:for each="{messages}" as="message">
-				<f:if condition="{message.module}">
-					<f:then>
-						<li id="systeminformation_{message.module}" class="t3js-systeminformation-module dropdown-intro typo3-module-menu-item submodule mod-{message.module}" data-modulename="{message.module}">
-							<span class="text-{message.status}"><f:format.raw>{message.text}</f:format.raw></span>
-						</li>
-					</f:then>
-					<f:else>
-						<li>
-							<span class="text-{message.status}"><f:format.raw>{message.text}</f:format.raw></span>
-						</li>
-					</f:else>
-				</f:if>
-			</f:for>
-		</f:then>
-		<f:else>
-			<li><span class="text-success"><f:format.nl2br><f:translate key="systemmessage.allgood" /></f:format.nl2br></span></li>
-		</f:else>
-	</f:if>
-</ul>
+<span class="systeminformationtoolbaritem-container t3js-systeminformation-container" data-count="{count}" data-severityclass="{severityBadgeClass}"></span>
+
+<h3 class="dropdown-headline">
+	<f:translate key="systemmessage.header" />
+</h3>
+<p class="dropdown-text typo3-module-menu-item submodule mod-system_extinstall" data-modulename="system_extinstall">
+	<f:format.raw><f:translate key="systemmessage.intro" arguments="{0: '{installToolUrl}'}" /></f:format.raw>
+</p>
+
+<f:if condition="{systemInformation}">
+	<hr>
+	<div class="dropdown-table">
+		<f:for each="{systemInformation}" as="info">
+			<div class="dropdown-table-row">
+				<div class="dropdown-table-column dropdown-table-icon"><f:format.raw>{info.icon}</f:format.raw></div>
+				<div class="dropdown-table-column dropdown-table-title">{info.title}</div>
+				<div class="dropdown-table-column dropdown-table-value {f:if(condition: info.status, then: 'text-{info.status}')}">{info.value}</div>
+			</div>
+		</f:for>
+	</div>
+</f:if>
+
+<hr>
+
+<f:if condition="{messages -> f:count()} > 0">
+	<f:then>
+		<f:for each="{messages}" as="message">
+			<f:if condition="{message.module}">
+				<f:then>
+					<p id="systeminformation_{message.module}" class="dropdown-text t3js-systeminformation-module typo3-module-menu-item submodule mod-{message.module}" data-modulename="{message.module}">
+						<span class="text-{message.status}"><f:format.raw>{message.text}</f:format.raw></span>
+					</p>
+				</f:then>
+				<f:else>
+					<p class="dropdown-text text-{message.status}">
+						<f:format.raw>{message.text}</f:format.raw>
+					</p>
+				</f:else>
+			</f:if>
+		</f:for>
+	</f:then>
+	<f:else>
+		<p class="dropdown-text text-success"><f:format.nl2br><f:translate key="systemmessage.allgood" /></f:format.nl2br></p>
+	</f:else>
+</f:if>

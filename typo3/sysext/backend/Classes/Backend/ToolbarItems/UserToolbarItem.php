@@ -77,10 +77,10 @@ class UserToolbarItem implements ToolbarItemInterface
         }
 
         $html = [];
-        $html[] = $icon;
-        $html[] = '<span title="' . htmlspecialchars($title) . '">';
+        $html[] = '<span class="toolbar-item-avatar">' . $icon . '</span>';
+        $html[] = '<span class="toolbar-item-name" title="' . htmlspecialchars($title) . '">';
         $html[] = htmlspecialchars($label);
-        $html[] = '<span class="caret"></span></span>';
+        $html[] = '</span>';
 
         return implode(LF, $html);
     }
@@ -96,7 +96,7 @@ class UserToolbarItem implements ToolbarItemInterface
         $languageService = $this->getLanguageService();
 
         $dropdown = [];
-        $dropdown[] = '<ul class="dropdown-list">';
+        $dropdown[] = '<div class="dropdown-table">';
 
         /** @var BackendModuleRepository $backendModuleRepository */
         $backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
@@ -105,33 +105,32 @@ class UserToolbarItem implements ToolbarItemInterface
         if ($userModuleMenu != false && $userModuleMenu->getChildren()->count() > 0) {
             foreach ($userModuleMenu->getChildren() as $module) {
                 /** @var BackendModule $module */
-                $dropdown[] ='<li'
+                $dropdown[] = '<div'
+                    . ' class="dropdown-table-row"'
                     . ' id="' . htmlspecialchars($module->getName()) . '"'
-                    . ' class="typo3-module-menu-item submodule mod-' . htmlspecialchars($module->getName()) . '" '
                     . ' data-modulename="' . htmlspecialchars($module->getName()) . '"'
                     . ' data-navigationcomponentid="' . htmlspecialchars($module->getNavigationComponentId()) . '"'
                     . ' data-navigationframescript="' . htmlspecialchars($module->getNavigationFrameScript()) . '"'
                     . ' data-navigationframescriptparameters="' . htmlspecialchars($module->getNavigationFrameScriptParameters()) . '"'
                     . '>';
-                $dropdown[] = '<a title="' . htmlspecialchars($module->getDescription()) . '" href="' . htmlspecialchars($module->getLink()) . '" class="dropdown-list-link modlink">';
-                $dropdown[] = '<span class="submodule-icon typo3-app-icon"><span><span>' . $module->getIcon() . '</span></span></span>';
-                $dropdown[] = '<span class="submodule-label">' . htmlspecialchars($module->getTitle()) . '</span>';
+                $dropdown[] = '<div class="dropdown-table-column dropdown-table-icon">' . $module->getIcon() . '</div>';
+                $dropdown[] = '<div class="dropdown-table-column dropdown-table-title">';
+                $dropdown[] = '<a title="' . htmlspecialchars($module->getDescription()) . '" href="' . htmlspecialchars($module->getLink()) . '" class="modlink">';
+                $dropdown[] = htmlspecialchars($module->getTitle());
                 $dropdown[] = '</a>';
-                $dropdown[] = '</li>';
+                $dropdown[] = '</div>';
+                $dropdown[] = '</div>';
             }
-            $dropdown[] = '<li class="divider"></li>';
         }
+        $dropdown[] = '</div>';
 
+        $dropdown[] = '<hr>';
         // Logout button
         $buttonLabel = 'LLL:EXT:lang/locallang_core.xlf:' . ($backendUser->user['ses_backuserid'] ? 'buttons.exit' : 'buttons.logout');
-        $dropdown[] = '<li class="reset-dropdown">';
         $dropdown[] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('logout')) . '" class="btn btn-danger pull-right" target="_top">';
         $dropdown[] = $this->iconFactory->getIcon('actions-logout', Icon::SIZE_SMALL)->render('inline') . ' ';
         $dropdown[] = htmlspecialchars($languageService->sL($buttonLabel));
         $dropdown[] = '</a>';
-        $dropdown[] = '</li>';
-
-        $dropdown[] = '</ul>';
 
         return implode(LF, $dropdown);
     }
@@ -144,8 +143,9 @@ class UserToolbarItem implements ToolbarItemInterface
     public function getAdditionalAttributes()
     {
         $result = [];
+        $result['class'] = 'toolbar-item-user';
         if ($this->getBackendUser()->user['ses_backuserid']) {
-            $result['class'] = 'su-user';
+            $result['class'] .= ' su-user';
         }
         return $result;
     }

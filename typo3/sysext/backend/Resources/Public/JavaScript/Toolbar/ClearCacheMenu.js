@@ -28,7 +28,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Notification'], 
 		options: {
 			containerSelector: '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem',
 			menuItemSelector: '.dropdown-menu a',
-			toolbarIconSelector: '.dropdown-toggle span.icon'
+			toolbarIconSelector: '.toolbar-item-icon .t3js-icon',
 		}
 	};
 

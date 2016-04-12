@@ -27,12 +27,12 @@ define(['jquery'], function($) {
 	var WorkspacesMenu = {
 		options: {
 			containerSelector: '#typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem',
-			menuItemSelector: '.dropdown-menu li a.tx-workspaces-switchlink',
+			menuItemSelector: '.t3js-workspaces-switchlink',
 			activeMenuItemSelector: '.dropdown-menu .selected',
 			toolbarItemSelector: '.dropdown-toggle',
 			workspaceBodyClass: 'typo3-in-workspace',	// attached to <body> when in a workspace
-			workspacesTitleInToolbarClass: 'topbar-workspaces-title',
-			workspaceModuleLinkSelector: '.tx-workspaces-modulelink'
+			workspacesTitleInToolbarClass: 'toolbar-item-name',
+			workspaceModuleLinkSelector: '.t3js-workspaces-modulelink'
 		}
 	};
 
@@ -123,8 +123,8 @@ define(['jquery'], function($) {
 
 		// add "selected" class and checkmark
 		var $activeElement = $(WorkspacesMenu.options.menuItemSelector + '[data-workspaceid=' + id + ']', WorkspacesMenu.options.containerSelector);
-		$activeElement.find('i').removeClass(stateInactiveClass).addClass(stateActiveClass);
-		$activeElement.parent().addClass('selected');
+		$activeElement.parent().parent().find('i').removeClass(stateInactiveClass).addClass(stateActiveClass);
+		$activeElement.parent().parent().addClass('selected');
 	};
 
 	/**

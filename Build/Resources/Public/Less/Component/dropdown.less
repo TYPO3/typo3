@@ -1,0 +1,125 @@
+//
+// Dropdowns
+//
+.dropdown-menu {
+	line-height: 1.45em;
+	border: 0;
+	margin: 0;
+	border-radius: 0;
+	a {
+		display: block;
+		&:hover {
+			text-decoration: none;
+		}
+	}
+	hr {
+		border-top: 1px solid rgba(0,0,0,0.25);
+		margin: 1.25em -15px;
+	}
+	> *:last-child {
+		margin-bottom: 0;
+	}
+	.form-group {
+		margin-bottom: 0.75em;
+	}
+	.form-control {
+		border-color: #aaaaaa;
+		color: inherit;
+		border-radius: 0;
+		background-color: #333333;
+		&:focus {
+			box-shadow: none;
+			border-color: #bbbbbb;
+		}
+	}
+	.btn  {
+		border: none;
+		border-radius: 0;
+		padding: 6px 10px;
+	}
+}
+.dropdown-headline {
+	font-size: 1.15em;
+	margin-top: 0;
+	margin-bottom: 0.5em;
+}
+.dropdown-text {
+	a {
+		display: inline-block;
+	}
+}
+div.dropdown-menu {
+	padding: 1.5em;
+}
+.dropdown-list {
+	.list-unstyled();
+	> li {
+		&:extend(.clearfix all);
+		position: relative;
+	}
+	> li + li {
+		margin-top: 0.5em;
+	}
+}
+.dropdown-list-link {
+	display: block;
+	text-decoration: none;
+	&:hover,
+	&:focus {
+		text-decoration: none;
+	}
+}
+
+//
+// Dropdown Table
+//
+.dropdown-table {
+	display: table;
+	width: 100%;
+}
+.dropdown-table-row {
+	display: table-row;
+}
+.dropdown-table-column {
+	display: table-cell;
+	padding-top: 0.25em;
+	padding-bottom: 0.25em;
+	vertical-align: middle;
+}
+.dropdown-table-column-top {
+	vertical-align: top;
+}
+.dropdown-table-icon {
+	width: 16px;
+	padding-right: 0.5em;
+}
+.dropdown-table-title {
+	white-space: nowrap;
+	padding-right: 1.5em;
+}
+.dropdown-table-title-ellipsis {
+	max-width: 230px;
+	overflow: hidden;
+	display: block;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.dropdown-table-actions {
+	white-space: nowrap;
+	text-align: right;
+}
+.dropdown-table-actions-btn {
+	text-align: center;
+	display: inline-block!important;
+	margin-top: -4px;
+	margin-bottom: -4px;
+	padding: 4px;
+	vertical-align: middle;
+}
+.dropdown-table-actions-btn-close:hover,
+.dropdown-table-actions-btn-edit:hover {
+	background-color: @brand-notice;
+}
+.dropdown-table-actions-btn-delete:hover {
+	background-color: @brand-danger;
+}

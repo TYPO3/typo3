@@ -22,18 +22,17 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 
 	/**
 	 *
-	 * @type {{options: {containerSelector: string, hashDataAttributeName: string, closeSelector: string, menuContainerSelector: string, menuItemSelector: string, toolbarIconSelector: string, openDocumentsItemsSelector: string, counterSelector: string}}}
+	 * @type {{options: {containerSelector: string, hashDataAttributeName: string, closeSelector: string, menuContainerSelector: string, toolbarIconSelector: string, openDocumentsItemsSelector: string, counterSelector: string}}}
 	 * @exports TYPO3/CMS/Opendocs/OpendocsMenu
 	 */
 	var OpendocsMenu = {
 		options: {
 			containerSelector: '#typo3-cms-opendocs-backend-toolbaritems-opendocstoolbaritem',
 			hashDataAttributeName: 'opendocsidentifier',
-			closeSelector: '.dropdown-list-link-close',
+			closeSelector: '.t3js-topbar-opendocs-close',
 			menuContainerSelector: '.dropdown-menu',
-			menuItemSelector: '.dropdown-menu li a',
-			toolbarIconSelector: '.dropdown-toggle span.icon',
-			openDocumentsItemsSelector: 'li.opendoc',
+			toolbarIconSelector: '.toolbar-item-icon .t3js-icon',
+			openDocumentsItemsSelector: '.t3js-topbar-opendocs-item',
 			counterSelector: '#tx-opendocs-counter'
 		}
 	};
@@ -110,6 +109,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 	 * closes the menu (e.g. when clicked on an item)
 	 */
 	OpendocsMenu.toggleMenu = function() {
+		$('.scaffold').removeClass('scaffold-toolbar-expanded');
 		$(OpendocsMenu.options.containerSelector).toggleClass('open');
 	};
 

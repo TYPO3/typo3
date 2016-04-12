@@ -1197,6 +1197,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="toolbarItems.bookmarkSavedMessage">
 				<source>The bookmark was saved.</source>
 			</trans-unit>
+			<trans-unit id="toolbarItems.help">
+				<source>Help</source>
+			</trans-unit>
 			<trans-unit id="toolbarItems.search">
 				<source>Search</source>
 			</trans-unit>

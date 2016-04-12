@@ -46,6 +46,9 @@ define(['jquery'], function($) {
 	 * @returns {String}
 	 */
 	Utility.getParameterFromUrl = function(url, parameter) {
+		if (typeof url.split !== 'function') {
+			return '';
+		}
 		var parts = url.split('?'),
 			value = '';
 

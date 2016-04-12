@@ -26,12 +26,12 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Storage'], funct
 	var SystemInformationMenu = {
 		identifier: {
 			containerSelector: '#typo3-cms-backend-backend-toolbaritems-systeminformationtoolbaritem',
-			toolbarIconSelector: '.dropdown-toggle span.icon',
+			toolbarIconSelector: '.toolbar-item-icon .t3js-icon',
 			menuContainerSelector: '.dropdown-menu',
 			moduleLinks: '.t3js-systeminformation-module'
 		},
 		elements: {
-			$counter: $('#t3js-systeminformation-counter')
+			$counter: $('.t3js-systeminformation-counter')
 		}
 	};
 
@@ -77,15 +77,15 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Storage'], funct
 	 * Updates the counter
 	 */
 	SystemInformationMenu.updateCounter = function() {
-		var $ul = $(SystemInformationMenu.identifier.containerSelector).find(SystemInformationMenu.identifier.menuContainerSelector).find('ul'),
-			count = $ul.data('count'),
-			badgeClass = $ul.data('severityclass');
+		var $container = $(SystemInformationMenu.identifier.containerSelector).find(SystemInformationMenu.identifier.menuContainerSelector).find('.t3js-systeminformation-container'),
+			count = $container.data('count'),
+			badgeClass = $container.data('severityclass');
 
 		SystemInformationMenu.elements.$counter.text(count).toggle(parseInt(count) > 0);
 		SystemInformationMenu.elements.$counter.removeClass();
 
 		if (badgeClass !== '') {
-			SystemInformationMenu.elements.$counter.addClass('badge ' + badgeClass);
+			SystemInformationMenu.elements.$counter.addClass('toolbar-item-badge badge ' + badgeClass);
 		}
 	};
 

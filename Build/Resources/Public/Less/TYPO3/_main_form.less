@@ -104,6 +104,22 @@ fieldset[disabled] .form-control {
 
 
 //
+// Form control icon
+//
+.form-control-icon {
+	position: absolute;
+	top: 50%;
+	left: 15px;
+	transform: translate(0, -50%);
+	z-index: 1;
+	+ .form-control,
+	+ .form-control-clearable .form-control {
+		padding-left: 3.25em;
+	}
+}
+
+
+//
 // Form group validation states
 //
 .form-group.has-error {

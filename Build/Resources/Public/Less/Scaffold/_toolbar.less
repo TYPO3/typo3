@@ -1,0 +1,216 @@
+//
+// Toolbar
+//
+@toolbar-item-padding-vertical: 9px;
+@toolbar-item-padding-horizontal: 10px;
+
+@toolbar-color: #ddd;
+@toolbar-height: 45px;
+@toolbar-zindex: @zindex-navbar;
+@toolbar-bg: @navbar-inverse-bg;
+
+@toolbar-navigation-color: @toolbar-color;
+@toolbar-navigation-bg: #2f2f2f;
+@toolbar-navigation-border-color: #111;
+
+@toolbar-dropdown-padding: 16px;
+@toolbar-dropdown-color: @toolbar-navigation-color;
+@toolbar-dropdown-bg: @toolbar-navigation-bg;
+
+@toolbar-dropdown-link-bg: @toolbar-navigation-bg;
+@toolbar-dropdown-link-color: #ddd;
+@toolbar-dropdown-link-hover-bg: #333;
+@toolbar-dropdown-link-hover-color: #fff;
+@toolbar-dropdown-link-active-bg: lighten(@toolbar-dropdown-bg, 15%);
+@toolbar-dropdown-link-active-color: #fff;
+
+@toolbar-navigation-search-bg: @toolbar-navigation-bg;
+@toolbar-navigation-search-hover-bg: @toolbar-dropdown-link-hover-bg;
+@toolbar-navigation-search-focus-bg: @toolbar-dropdown-link-active-bg;
+
+
+.toolbar {
+	padding: 8px;
+	@media (min-width: @scaffold-breakpoint) {
+		padding: 0;
+	}
+	&:after {
+		clear: both;
+		display: table;
+		content: '';
+	}
+}
+
+.toolbar-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+// Toolbar Item
+.toolbar-item {
+	padding: 4px;
+	position: relative;
+	display: block;
+	float: left;
+	width: 100%;
+	@media (min-width: 600px) {
+		width: 50%;
+	}
+	@media (min-width: 750px) {
+		width: 33.33%;
+	}
+	@media (min-width: @scaffold-breakpoint) {
+		padding: 0;
+		width: auto;
+		margin-left: 1px;
+	}
+}
+
+// Dropdown Menu
+.toolbar-item {
+	.dropdown-menu {
+		width: 350px;
+	}
+	@media (max-width: @scaffold-breakpoint-max) {
+		.dropdown-menu {
+			overflow: auto;
+			padding: @grid-gutter-width / 2;
+			position: fixed;
+			max-height: 90%;
+			max-width: 90%;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+		.dropdown-backdrop {
+			background: rgba(0,0,0,0.65);
+		}
+	}
+
+}
+
+// Toolbar Item
+.toolbar-item-avatar {
+	width: 32px;
+	display: inline-block;
+	.avatar {
+		position: absolute;
+		top: 50%;
+		left: 10px;
+		transform: translate(0,-50%);
+	}
+}
+.toolbar-item-badge {
+	position: absolute;
+	bottom: 4px;
+	right: 4px;
+	padding: 3px 4px;
+	border-radius: 0;
+	font-size: 10px;
+	font-weight: normal;
+	min-width: 16px;
+
+}
+
+// Toolbar Item Link
+.toolbar-item-link {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	border: 1px solid rgba(0,0,0,0.5);
+	position: relative;
+	display: block;
+	text-decoration: none;
+	padding: @toolbar-item-padding-vertical @toolbar-item-padding-horizontal;
+	height: @toolbar-height;
+	line-height: @toolbar-height - (@toolbar-item-padding-vertical * 2);
+	&:hover,
+	&:focus {
+		text-decoration: none;
+	}
+	@media (min-width: @scaffold-breakpoint) {
+		border: none;
+	}
+}
+.open {
+	.toolbar-item-link {
+		background-color: #424242;
+	}
+}
+@media (min-width: @scaffold-breakpoint) {
+	.toolbar-item-title {
+		display: none;
+	}
+}
+
+// Search
+.toolbar-item-search {
+	@media (min-width: @scaffold-breakpoint) {
+		width: 300px;
+	}
+	form {
+		padding: 0;
+		margin: 0;
+	}
+	.toolbar-item-link {
+		padding: 0;
+		margin: 0;
+		height: 0;
+	}
+	.form-group {
+		margin: 0;
+	}
+	.close {
+		color: #ffffff;
+		text-shadow: none;
+		opacity: 1;
+	}
+	.dropdown-menu {
+		@media (max-width: @scaffold-breakpoint-max) {
+			top: 114px;
+			left: 14px;
+			right: 14px;
+			width: auto;
+			max-width: none;
+			max-height: none;
+			transform: none;
+			bottom: 14px;
+		}
+		@media (min-width: @scaffold-breakpoint) {
+			left: auto;
+			right: 0;
+		}
+	}
+	.autocomplete-suggestions {
+		position: static!important;
+	}
+	.autocomplete-suggestion {
+		border: none;
+	}
+	&.open {
+		.toolbar-item-search-form {
+			position: relative;
+			z-index: 991;
+		}
+	}
+}
+.toolbar-item-search-field {
+	color: inherit;
+	background-color: @toolbar-navigation-search-bg;
+	margin: 0;
+	border-radius: 0;
+	border: 1px solid rgba(0,0,0,0.5);
+	@media (min-width: @scaffold-breakpoint) {
+		border: none;
+	}
+	height: @toolbar-height;
+	box-shadow: none;
+	&:hover {
+		background-color: @toolbar-navigation-search-hover-bg;
+	}
+	&:focus {
+		box-shadow: none;
+		background-color: @toolbar-navigation-search-focus-bg;
+	}
+}

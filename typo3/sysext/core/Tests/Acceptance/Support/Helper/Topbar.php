@@ -24,7 +24,7 @@ class Topbar
      *
      * @var string
      */
-    public static $containerSelector = '#typo3-top-container';
+    public static $containerSelector = '.t3js-scaffold-topbar';
 
     /**
      * Selector for the dropdown container

@@ -1,35 +1,30 @@
-<ul class="nav nav-modules" data-typo3-role="typo3-module-menu" id="typo3-menu">
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+<ul class="nav nav-modules" data-role="modulemenu" id="menu">
 	<f:for each="{modules}" as="mainModule">
-		<li class="typo3-module-menu-group expanded" id="{mainModule.name}" data-modulename="{mainModule.name}" data-navigationcomponentid="{mainModule.navigationComponentId}" data-navigationframescript="{mainModule.navigationFrameScript}" data-navigationframescriptparameters="{mainModule.navigationFrameScriptParameters}">
-			<div class="typo3-module-menu-group-header">
-				<span class="typo3-app-icon typo3-module-menu-group-icon">
-					<span>
+		<li class="modulemenu-group expanded" id="{mainModule.name}" data-modulename="{mainModule.name}" data-navigationcomponentid="{mainModule.navigationComponentId}" data-navigationframescript="{mainModule.navigationFrameScript}" data-navigationframescriptparameters="{mainModule.navigationFrameScriptParameters}">
+			<div class="modulemenu-group-header">
+				<span class="modulemenu-icon modulemenu-group-icon">
 						<f:if condition="{mainModule.icon}">
 							<f:then>
 								<f:format.raw>{mainModule.icon}</f:format.raw>
 							</f:then>
 							<f:else>
-								<span><i class="fa fa-bars"></i></span>
+								<core:icon identifier="actions-move-move" size="default" alternativeMarkupIdentifier="inline" />
 							</f:else>
 						</f:if>
-					</span>
 				</span>
-				<span class="typo3-module-menu-group-title">
+				<span class="modulemenu-group-title">
 					{mainModule.title} <span class="caret"></span>
 				</span>
 			</div>
-			<ul class="typo3-module-menu-group-container">
+			<ul class="modulemenu-group-container">
 				<f:for each="{mainModule.children}" as="subModule">
-					<li id="{subModule.name}" class="typo3-module-menu-item t3js-mainmodule" data-modulename="{mainModule.name}" data-navigationcomponentid="{subModule.navigationComponentId}" data-navigationframescript="{subModule.navigationFrameScript}" data-navigationframescriptparameters="{subModule.navigationFrameScriptParameters}">
-						<a title="{subModule.description}" href="{subModule.link}" class="typo3-module-menu-item-link">
-							<span class="typo3-app-icon typo3-module-menu-item-icon">
-								<span>
-									<span>
-										<f:format.raw>{subModule.icon}</f:format.raw>
-									</span>
-								</span>
+					<li id="{subModule.name}" class="modulemenu-item t3js-mainmodule" data-modulename="{mainModule.name}" data-navigationcomponentid="{subModule.navigationComponentId}" data-navigationframescript="{subModule.navigationFrameScript}" data-navigationframescriptparameters="{subModule.navigationFrameScriptParameters}">
+						<a title="{subModule.description}" href="{subModule.link}" class="modulemenu-item-link">
+							<span class="modulemenu-icon modulemenu-item-icon">
+                                <f:format.raw>{subModule.icon}</f:format.raw>
 							</span>
-							<span class="typo3-module-menu-item-title">
+							<span class="modulemenu-item-title">
 								{subModule.title}
 							</span>
 						</a>
