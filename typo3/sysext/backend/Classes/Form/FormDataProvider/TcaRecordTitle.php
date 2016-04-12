@@ -127,7 +127,7 @@ class TcaRecordTitle implements FormDataProviderInterface
             }
         }
 
-        $result['recordTitle'] = implode(', ', $titles);
+        $result['recordTitle'] = htmlspecialchars(implode(', ', $titles));
         return $result;
     }
 
