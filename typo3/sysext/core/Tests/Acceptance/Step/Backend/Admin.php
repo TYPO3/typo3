@@ -31,8 +31,22 @@ class Admin extends \AcceptanceTester
     {
         $I = $this;
         $I->amOnPage('/typo3/index.php');
-        $I->setCookie('be_typo_user', $this->sessionCookie, array('path' => '/typo3temp/var/tests/acceptance/'));
-        $I->setCookie('be_lastLoginProvider', '1433416747', array('path' => '/typo3temp/var/tests/acceptance/'));
+
+        // @todo: There is a bug in PhantomJS where adding a cookie fails.
+        // This bug will be fixed in the next PhantomJS version but i also found
+        // this workaround. First reset / delete the cookie and than set it and catch
+        // the webdriver exception as the cookie has been set successful.
+        try {
+            $I->resetCookie('be_typo_user');
+            $I->setCookie('be_typo_user', $this->sessionCookie);
+        } catch (\Facebook\WebDriver\Exception\UnableToSetCookieException $e) {
+        }
+        try {
+            $I->resetCookie('be_lastLoginProvider');
+            $I->setCookie('be_lastLoginProvider', '1433416747');
+        } catch (\Facebook\WebDriver\Exception\UnableToSetCookieException $e) {
+        }
+
         // reload the page to have a logged in backend
         $I->amOnPage('/typo3/index.php');
     }

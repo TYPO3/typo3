@@ -14,34 +14,26 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Kasper;
+use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Admin;
 
 /**
  * This testcase is used to check if the expected information is found when
  * the page module was opened.
  */
-class InfoOnModuleCest
+class PageModuleCest
 {
-    public function _before(Kasper $I)
+    public function _before(Admin $I)
     {
-        $I->loginAsAdmin();
-    }
-
-    public function _after(Kasper $I)
-    {
-        $I->logout();
+        $I->useExistingSession();
     }
 
     /**
-     * @param Kasper $I
+     * @param Admin $I
      */
-    public function tryToTest(Kasper $I)
+    public function checkThatPageModuleHasAHeadline(Admin $I)
     {
-        $I->wantToTest('Info is ok when select page module');
         $I->click('Page');
         $I->switchToIFrame('content');
-        $I->waitForElement('h4');
-        $I->waitForText('Web>Page module');
-        $I->switchToIFrame();
+        $I->canSee('Web>Page module', 'h4');
     }
 }
