@@ -19,7 +19,7 @@ environment:
 
 cache:
   - '%LOCALAPPDATA%\Composer\files'
-  - c:\tools\php -> appveyor.yml
+  - c:\tools\php -> .appveyor.yml
 
 install:
   - IF EXIST c:\tools\php (SET PHP=0)
