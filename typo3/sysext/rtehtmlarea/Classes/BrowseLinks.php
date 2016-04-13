@@ -871,7 +871,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 							<td><label>' . $GLOBALS['LANG']->getLL('anchor_class', TRUE) . ':</label></td>
 							<td colspan="3">
 								<select name="anchor_class" onchange="' . htmlspecialchars($this->getClassOnChangeJS()) . '">
-									' . htmlspecialchars($this->classesAnchorJSOptions[$this->act]) . '
+									' . $this->classesAnchorJSOptions[$this->act] . '
 								</select>
 							</td>
 						</tr>';
