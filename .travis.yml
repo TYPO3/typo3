@@ -68,7 +68,10 @@ script:
     fi
   - >
     if [[ "$ACCEPTANCE_TESTS" == "yes" ]]; then
+        export _JAVA_OPTIONS="-Xms1024m -Xmx1024m";
+        ./bin/selenium-server-standalone >/dev/null 2>&1 &
         php -S 0.0.0.0:8000 >/dev/null 2>&1 &
+        sleep 5;
         export typo3DatabaseName="typo3";
         export typo3DatabaseHost="localhost";
         export typo3DatabaseUsername="root";
