@@ -56,6 +56,10 @@ define(['jquery'], function($) {
 		states: {
 			default: 'default',
 			disabled: 'disabled'
+		},
+		markupIdentifiers: {
+			default: 'default',
+			inline: 'inline'
 		}
 	};
 
@@ -66,10 +70,11 @@ define(['jquery'], function($) {
 	 * @param {String} size
 	 * @param {String} overlayIdentifier
 	 * @param {String} state
+	 * @param {String} markupIdentifier
 	 * @return {Promise<Array>}
 	 */
-	Icons.getIcon = function(identifier, size, overlayIdentifier, state) {
-		return $.when(Icons.fetch(identifier, size, overlayIdentifier, state));
+	Icons.getIcon = function(identifier, size, overlayIdentifier, state, markupIdentifier) {
+		return $.when(Icons.fetch(identifier, size, overlayIdentifier, state, markupIdentifier));
 	};
 
 	/**
@@ -79,10 +84,11 @@ define(['jquery'], function($) {
 	 * @param {string} size
 	 * @param {string} overlayIdentifier
 	 * @param {string} state
+	 * @param {string} markupIdentifier
 	 * @return {String|Promise}
 	 * @private
 	 */
-	Icons.fetch = function(identifier, size, overlayIdentifier, state) {
+	Icons.fetch = function(identifier, size, overlayIdentifier, state, markupIdentifier) {
 		/**
 		 * Icon keys:
 		 *
@@ -90,11 +96,13 @@ define(['jquery'], function($) {
 		 * 1: size
 		 * 2: overlayIdentifier
 		 * 3: state
+		 * 4: markupIdentifier
 		 */
 		size = size || Icons.sizes.default;
 		state = state || Icons.states.default;
+		markupIdentifier = markupIdentifier || Icons.markupIdentifiers.default;
 
-		var icon = [identifier, size, overlayIdentifier, state],
+		var icon = [identifier, size, overlayIdentifier, state, markupIdentifier],
 			cacheIdentifier = icon.join('_');
 
 		if (Icons.isCached(cacheIdentifier)) {

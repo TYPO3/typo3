@@ -84,13 +84,13 @@ class IconFactory
             true
         );
 
-        list($identifier, $size, $overlayIdentifier, $iconState) = $requestedIcon;
+        list($identifier, $size, $overlayIdentifier, $iconState, $alternativeMarkupIdentifier) = $requestedIcon;
         if (empty($overlayIdentifier)) {
             $overlayIdentifier = null;
         }
         $iconState = IconState::cast($iconState);
         $response->getBody()->write(
-            $this->getIcon($identifier, $size, $overlayIdentifier, $iconState)->render()
+            $this->getIcon($identifier, $size, $overlayIdentifier, $iconState)->render($alternativeMarkupIdentifier)
         );
         $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
         return $response;
