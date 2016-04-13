@@ -1721,6 +1721,81 @@ class TcaSelectItemsTest extends UnitTestCase
     /**
      * @test
      */
+    public function addDataForeignTableResolvesIconFromSelicon()
+    {
+        $input = [
+            'databaseRow' => [
+                'aField' => '',
+            ],
+            'tableName' => 'aTable',
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'foreign_table' => 'fTable',
+                            'maxitems' => 1,
+                        ],
+                    ],
+                ]
+            ],
+            'rootline' => [],
+        ];
+
+        // Fake the foreign_table
+        $GLOBALS['TCA']['fTable'] = [
+            'ctrl' => [
+                'label' => 'icon',
+                'selicon_field' => 'icon',
+                'selicon_field_path' => 'uploads/media',
+            ],
+            'columns' =>[
+                'icon' => [],
+            ],
+        ];
+
+        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+        $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
+
+        /** @var LanguageService|ObjectProphecy $languageServiceProphecy */
+        $languageServiceProphecy = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
+
+        /** @var DatabaseConnection|ObjectProphecy $databaseProphecy */
+        $databaseProphecy = $this->prophesize(DatabaseConnection::class);
+        $GLOBALS['TYPO3_DB'] = $databaseProphecy->reveal();
+        $databaseProphecy->sql_error()->shouldBeCalled()->willReturn(false);
+        $databaseProphecy->sql_free_result(Argument::cetera())->willReturn(null);
+        // Query on foreign table is successful
+        $databaseProphecy->exec_SELECT_queryArray(Argument::cetera())->willReturn(true);
+        // Query returns one row, then false on second call
+        $foreignTableRowResultOne = [
+            'uid' => 1,
+            'icon' => 'foo.jpg',
+        ];
+        $databaseProphecy->sql_fetch_assoc(Argument::cetera())->shouldBeCalled()->willReturn($foreignTableRowResultOne, false);
+
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['config']['items'] = [
+            0 => [
+                0 => 'foo.jpg',
+                1 => 1,
+                2 => 'uploads/media/foo.jpg', // combination of selicon_field_path and the row value of field 'icon'
+                3 => null,
+            ],
+        ];
+        $expected['databaseRow']['aField'] = [];
+
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
     public function addDataRemovesItemsByKeepItemsPageTsConfig()
     {
         $input = [

@@ -405,6 +405,7 @@ abstract class AbstractItemProvider
      * @param string $fieldName Current handle field name
      * @param array $items Incoming items
      * @return array Modified item array
+     * @throws \UnexpectedValueException
      */
     protected function addItemsFromForeignTable(array $result, $fieldName, array $items)
     {
@@ -419,6 +420,15 @@ abstract class AbstractItemProvider
         $database = $this->getDatabaseConnection();
 
         $foreignTable = $result['processedTca']['columns'][$fieldName]['config']['foreign_table'];
+
+        if (!is_array($GLOBALS['TCA'][$foreignTable])) {
+            throw new \UnexpectedValueException(
+                'Field ' . $fieldName . ' of table ' . $result['tableName'] . ' reference to foreign table '
+                . $foreignTable . ', but this table is not defined in TCA',
+                1439569743
+            );
+        }
+
         $foreignTableQueryArray = $this->buildForeignTableQuery($result, $fieldName);
         $queryResource = $database->exec_SELECT_queryArray($foreignTableQueryArray);
 
@@ -444,25 +454,28 @@ abstract class AbstractItemProvider
             $labelPrefix = $result['processedTca']['columns'][$fieldName]['config']['foreign_table_prefix'];
             $labelPrefix = $languageService->sL($labelPrefix);
         }
-        $iconFieldName = '';
-        if (!empty($result['processedTca']['ctrl']['selicon_field'])) {
-            $iconFieldName = $result['processedTca']['ctrl']['selicon_field'];
-        }
-        $iconPath = '';
-        if (!empty($result['processedTca']['ctrl']['selicon_field_path'])) {
-            $iconPath = $result['processedTca']['ctrl']['selicon_field_path'];
-        }
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         while ($foreignRow = $database->sql_fetch_assoc($queryResource)) {
             BackendUtility::workspaceOL($foreignTable, $foreignRow);
             if (is_array($foreignRow)) {
-                // Prepare the icon if available:
+                // If the foreign table sets selicon_field, this field can contain an image
+                // that represents this specific row.
+                $iconFieldName = '';
+                if (!empty($GLOBALS['TCA'][$foreignTable]['ctrl']['selicon_field'])) {
+                    $iconFieldName = $GLOBALS['TCA'][$foreignTable]['ctrl']['selicon_field'];
+                }
+                $iconPath = '';
+                if (!empty($GLOBALS['TCA'][$foreignTable]['ctrl']['selicon_field_path'])) {
+                    $iconPath = $GLOBALS['TCA'][$foreignTable]['ctrl']['selicon_field_path'];
+                }
                 if ($iconFieldName && $iconPath && $foreignRow[$iconFieldName]) {
+                    // Prepare the row icon if available
                     $iParts = GeneralUtility::trimExplode(',', $foreignRow[$iconFieldName], true);
-                    $icon = '../' . $iconPath . '/' . trim($iParts[0]);
+                    $icon = $iconPath . '/' . trim($iParts[0]);
                 } else {
+                    // Else, determine icon based on record type, or a generic fallback
                     $icon = $iconFactory->mapRecordTypeToIconIdentifier($foreignTable, $foreignRow);
                 }
                 // Add the item
@@ -881,27 +894,18 @@ abstract class AbstractItemProvider
     }
 
     /**
-     * Build query to fetch foreign records
+     * Build query to fetch foreign records. Helper method of
+     * addItemsFromForeignTable(), do not call otherwise.
      *
      * @param array $result Result array
      * @param string $localFieldName Current handle field name
      * @return array Query array ready to be executed via Database->exec_SELECT_queryArray()
-     * @throws \UnexpectedValueException
      */
     protected function buildForeignTableQuery(array $result, $localFieldName)
     {
         $backendUser = $this->getBackendUser();
 
         $foreignTableName = $result['processedTca']['columns'][$localFieldName]['config']['foreign_table'];
-
-        if (!is_array($GLOBALS['TCA'][$foreignTableName])) {
-            throw new \UnexpectedValueException(
-                'Field ' . $localFieldName . ' of table ' . $result['tableName'] . ' reference to foreign table '
-                . $foreignTableName . ', but this table is not defined in TCA',
-                1439569743
-            );
-        }
-
         $foreignTableClauseArray = $this->processForeignTableClause($result, $foreignTableName, $localFieldName);
 
         $queryArray = [];
