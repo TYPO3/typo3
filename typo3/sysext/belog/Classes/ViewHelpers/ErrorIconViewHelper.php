@@ -26,6 +26,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class ErrorIconViewHelper extends AbstractBackendViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Renders an error icon link as known from the TYPO3 backend.
      * Error codes 2 and three are mapped to "error" and 1 is mapped to "warning".
      *

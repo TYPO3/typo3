@@ -41,6 +41,15 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
 {
     /**
+     * We accept value and children interchangeably, thus we must disable children escaping.
+     *
+     * @var bool
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * If we decode, we must not encode again after that.
+     *
      * @var bool
      */
     protected $escapeOutput = false;

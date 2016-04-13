@@ -1,5 +1,5 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
-<em:format.jsonEncode additionalAttributes="{
+<f:format.raw><em:format.jsonEncode additionalAttributes="{
 	result: result,
 	extension: extension.extensionKey,
 	installationTypeLanguageKey: installationTypeLanguageKey,
@@ -7,4 +7,4 @@
 	errorTitle: '{f:translate(key: \'downloadExtension.dependencies.errorTitle\')}',
 	errorMessage: '{f:render(partial: \'List/UnresolvedDependencies\', arguments: \'{_all}\')}',
 	skipDependencyUri: '{f:uri.action(action: \'installExtensionWithoutSystemDependencyCheck\', format: \'json\', arguments: \'{extension: extension}\')}'
-}" />
+}" /></f:format.raw>

@@ -24,6 +24,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class PagesViewHelper extends AbstractViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Render unordered list for pages
      *
      * @param string $uids

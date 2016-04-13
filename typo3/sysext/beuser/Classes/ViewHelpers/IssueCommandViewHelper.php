@@ -68,6 +68,6 @@ class IssueCommandViewHelper extends AbstractViewHelper
             $parametersArray = GeneralUtility::explodeUrl2Array($arguments['parameters']);
             $urlParameters += $parametersArray;
         }
-        return htmlspecialchars(BackendUtility::getModuleUrl('tce_db', $urlParameters));
+        return BackendUtility::getModuleUrl('tce_db', $urlParameters);
     }
 }

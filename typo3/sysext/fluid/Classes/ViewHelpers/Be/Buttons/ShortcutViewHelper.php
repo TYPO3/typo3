@@ -46,6 +46,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class ShortcutViewHelper extends AbstractBackendViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Renders a shortcut button as known from the TYPO3 backend
      *
      * @param array $getVars list of GET variables to store. By default the current id, module and all module arguments will be stored

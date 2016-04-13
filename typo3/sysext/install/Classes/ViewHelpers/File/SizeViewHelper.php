@@ -35,6 +35,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class SizeViewHelper extends AbstractViewHelper
 {
     /**
+     * Output is escaped already. We must not escape children, to avoid double encoding.
+     *
+     * @var bool
+     */
+    protected $escapeChildren = false;
+
+    /**
      * Get size from file
      *
      * @param bool $format If true, file size will be formatted
@@ -56,6 +63,7 @@ class SizeViewHelper extends AbstractViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
+     * @throws \TYPO3\CMS\Install\ViewHelpers\Exception
      *
      * @return string
      */

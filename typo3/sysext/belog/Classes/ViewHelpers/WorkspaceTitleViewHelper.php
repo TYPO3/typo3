@@ -59,7 +59,7 @@ class WorkspaceTitleViewHelper extends AbstractViewHelper
         $uid = $arguments['uid'];
 
         if (isset(static::$workspaceTitleRuntimeCache[$uid])) {
-            return htmlspecialchars(static::$workspaceTitleRuntimeCache[$uid]);
+            return static::$workspaceTitleRuntimeCache[$uid];
         }
 
         if ($uid === 0) {
@@ -75,6 +75,6 @@ class WorkspaceTitleViewHelper extends AbstractViewHelper
             static::$workspaceTitleRuntimeCache[$uid] = ($workspace === null) ? '' : $workspace->getTitle();
         }
 
-        return htmlspecialchars(static::$workspaceTitleRuntimeCache[$uid]);
+        return static::$workspaceTitleRuntimeCache[$uid];
     }
 }

@@ -37,6 +37,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class BaseViewHelper extends AbstractViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Render the "Base" tag by outputting $request->getBaseUri()
      *
      * Note: renders as <base></base>, because IE6 will else refuse to display

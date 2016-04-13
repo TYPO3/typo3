@@ -68,7 +68,7 @@ class FormatDetailsViewHelper extends AbstractViewHelper
         $detailString = vsprintf($detailString, $substitutes);
         // Remove possible pending other %s
         $detailString = str_replace('%s', '', $detailString);
-        return htmlspecialchars($detailString);
+        return $detailString;
     }
 
     /**

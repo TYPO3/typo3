@@ -32,6 +32,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class HistoryEntryViewHelper extends AbstractViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Get system history record
      *
      * @param int $uid Uid of the log entry
@@ -89,6 +96,6 @@ class HistoryEntryViewHelper extends AbstractViewHelper
                 )
             );
         $historyLink = '<a href="' . htmlspecialchars($historyHref) . '" title="' . htmlspecialchars($titleLable) . '">' . $historyIcon . '</a>';
-        return $historyLabel . '&nbsp;' . $historyLink;
+        return htmlspecialchars($historyLabel) . '&nbsp;' . $historyLink;
     }
 }

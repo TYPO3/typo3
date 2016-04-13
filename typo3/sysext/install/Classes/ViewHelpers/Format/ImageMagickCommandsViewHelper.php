@@ -25,6 +25,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class ImageMagickCommandsViewHelper extends AbstractViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Display image magick commands
      *
      * @param array $commands Given commands
@@ -54,10 +61,10 @@ class ImageMagickCommandsViewHelper extends AbstractViewHelper
 
         $result = array();
         foreach ($commands as $commandGroup) {
-            $result[] = '<strong>Command:</strong>' . LF . $commandGroup[1];
+            $result[] = '<strong>Command:</strong>' . LF . htmlspecialchars($commandGroup[1]);
             // If 3 elements: last one is result
             if (count($commandGroup) === 3) {
-                $result[] = '<strong>Result:</strong>' . LF . $commandGroup[2];
+                $result[] = '<strong>Result:</strong>' . LF . htmlspecialchars($commandGroup[2]);
             }
         }
         return '<pre><code class="language-bash">' . implode(LF, $result) . '</code></pre>';

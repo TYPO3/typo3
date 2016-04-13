@@ -34,6 +34,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class ImageDimensionViewHelper extends AbstractViewHelper
 {
     /**
+     * Output is escaped already. We must not escape children, to avoid double encoding.
+     *
+     * @var bool
+     */
+    protected $escapeChildren = false;
+
+    /**
      * Get width / height from image file
      *
      * @param string $dimension Either width or height
@@ -55,6 +62,7 @@ class ImageDimensionViewHelper extends AbstractViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
+     * @throws \TYPO3\CMS\Install\ViewHelpers\Exception
      *
      * @return string
      */

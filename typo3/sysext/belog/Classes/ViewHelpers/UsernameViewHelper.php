@@ -59,7 +59,7 @@ class UsernameViewHelper extends AbstractViewHelper
         $uid = $arguments['uid'];
 
         if (isset(static::$usernameRuntimeCache[$uid])) {
-            return htmlspecialchars(static::$usernameRuntimeCache[$uid]);
+            return static::$usernameRuntimeCache[$uid];
         }
 
         $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
@@ -68,6 +68,6 @@ class UsernameViewHelper extends AbstractViewHelper
         $user = $backendUserRepository->findByUid($uid);
         // $user may be NULL if user was deleted from DB, set it to empty string to always return a string
         static::$usernameRuntimeCache[$uid] = ($user === null) ? '' : $user->getUserName();
-        return htmlspecialchars(static::$usernameRuntimeCache[$uid]);
+        return static::$usernameRuntimeCache[$uid];
     }
 }

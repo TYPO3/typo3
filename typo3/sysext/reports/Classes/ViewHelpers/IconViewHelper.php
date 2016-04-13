@@ -27,6 +27,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class IconViewHelper extends AbstractBackendViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Renders the icon
      *
      * @param string $icon Icon to be used

@@ -27,6 +27,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class PermissionsViewHelper extends AbstractViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @var array Cached labels for a single permission mask like "Delete page"
      */
     protected static $permissionLabels = array();
@@ -76,18 +83,18 @@ class PermissionsViewHelper extends AbstractViewHelper
                 $mode = 'add';
             }
 
-            $label = htmlspecialchars(static::$permissionLabels[$mask]);
+            $label = static::$permissionLabels[$mask];
             $icon .= '<span style="cursor:pointer"'
-                . ' title="' . $label . '"'
+                . ' title="' . htmlspecialchars($label) . '"'
                 . ' data-toggle="tooltip"'
-                . ' data-page="' . $arguments['pageId'] . '"'
-                . ' data-permissions="' . $arguments['permission'] . '"'
-                . ' data-who="' . $arguments['scope'] . '"'
-                . ' data-bits="' . $mask . '"'
-                . ' data-mode="' . $mode . '"'
-                . ' class="t3-icon change-permission fa ' . $permissionClass . '"></span>';
+                . ' data-page="' . htmlspecialchars($arguments['pageId']) . '"'
+                . ' data-permissions="' . htmlspecialchars($arguments['permission']) . '"'
+                . ' data-who="' . htmlspecialchars($arguments['scope']) . '"'
+                . ' data-bits="' . htmlspecialchars($mask) . '"'
+                . ' data-mode="' . htmlspecialchars($mode) . '"'
+                . ' class="t3-icon change-permission fa ' . htmlspecialchars($permissionClass) . '"></span>';
         }
 
-        return '<span id="' . $arguments['pageId'] . '_' . $arguments['scope'] . '">' . $icon . '</span>';
+        return '<span id="' . htmlspecialchars($arguments['pageId'] . '_' . $arguments['scope']) . '">' . $icon . '</span>';
     }
 }

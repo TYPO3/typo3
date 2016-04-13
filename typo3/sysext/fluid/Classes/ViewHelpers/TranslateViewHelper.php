@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException;
@@ -72,6 +73,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class TranslateViewHelper extends AbstractViewHelper
 {
     /**
+     * Output is escaped already. We must not escape children, to avoid double encoding.
+     *
+     * @var bool
+     */
+    protected $escapeChildren = false;
+
+    /**
      * Render translation
      *
      * @param string $key Translation Key
@@ -116,6 +124,10 @@ class TranslateViewHelper extends AbstractViewHelper
         $extensionName = $arguments['extensionName'];
         $arguments = $arguments['arguments'];
 
+        if ($htmlEscape !== null) {
+            GeneralUtility::deprecationLog('htmlEscape argument has been deprecated and has no functionality any more. Please wrap the view helper in <f:format.raw> if you want to disable HTML escaping, which is enabled by default now.');
+        }
+
         // Wrapper including a compatibility layer for TYPO3 Flow Translation
         if ($id === null) {
             $id = $key;
@@ -133,8 +145,6 @@ class TranslateViewHelper extends AbstractViewHelper
             if (!empty($arguments)) {
                 $value = vsprintf($value, $arguments);
             }
-        } elseif ($htmlEscape) {
-            $value = htmlspecialchars($value);
         }
         return $value;
     }

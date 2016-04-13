@@ -56,6 +56,8 @@ class InfoboxViewHelper extends AbstractViewHelper
     const STATE_ERROR = 2;
 
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
      * @var bool
      */
     protected $escapeOutput = false;

@@ -30,6 +30,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class PageBrowsingViewHelper extends AbstractViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @var string
      */
     protected static $prefixId = 'tx_indexedsearch';
@@ -140,6 +147,6 @@ class PageBrowsingViewHelper extends AbstractViewHelper
             $onclick .= 'document.getElementById(' . GeneralUtility::quoteJSvalue(self::$prefixId . '_freeIndexUid') . ').value=' . GeneralUtility::quoteJSvalue($freeIndexUid) . ';';
         }
         $onclick .= 'document.getElementById(' . GeneralUtility::quoteJSvalue(self::$prefixId) . ').submit();return false;';
-        return '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . $str . '</a>';
+        return '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . htmlspecialchars($str) . '</a>';
     }
 }

@@ -45,6 +45,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class BytesViewHelper extends AbstractViewHelper
 {
     /**
+     * Output is escaped already. We must not escape children, to avoid double encoding.
+     *
+     * @var bool
+     */
+    protected $escapeChildren = false;
+
+    /**
      * @var array
      */
     protected static $units = array();

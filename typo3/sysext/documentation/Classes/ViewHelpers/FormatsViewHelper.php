@@ -30,6 +30,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class FormatsViewHelper extends AbstractViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Renders all format download links.
      *
      * @param \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation
@@ -80,7 +87,7 @@ class FormatsViewHelper extends AbstractViewHelper
             $extension = substr($uri, strrpos($uri, '.') + 1);
             if (strlen($extension) < 5) {
                 // This is direct link to a file
-                $output .= 'href="' . $uri . '" class="btn btn-default"';
+                $output .= 'href="' . htmlspecialchars($uri) . '" class="btn btn-default"';
                 $iconHtml = static::getIconForFileExtension($extension, $iconFactory);
             } else {
                 $output .= 'href="#" onclick="top.TYPO3.Backend.ContentContainer.setUrl(' . GeneralUtility::quoteJSvalue($uri) . ')" class="btn btn-default"';

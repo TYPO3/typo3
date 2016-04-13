@@ -24,6 +24,14 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class DateTimeViewHelper extends AbstractViewHelper
 {
     /**
+     * The rendered children are fed into data() function, which expects an integer.
+     * It reduces overhead and is safe to disable children escaping here.
+     *
+     * @var bool
+     */
+    protected $escapeChildren = false;
+
+    /**
      * Render the given timestamp as date & time
      *
      * @return string
@@ -46,6 +54,6 @@ class DateTimeViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        return htmlspecialchars(BackendUtility::datetime($renderChildrenClosure()));
+        return BackendUtility::datetime($renderChildrenClosure());
     }
 }

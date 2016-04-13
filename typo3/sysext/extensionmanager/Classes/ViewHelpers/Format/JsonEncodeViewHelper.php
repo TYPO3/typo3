@@ -26,6 +26,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class JsonEncodeViewHelper extends AbstractViewHelper
 {
     /**
+     * Rendered children is expected to be an array or object, which cannot be passed through htmlspecialchars.
+     *
+     * @var bool
+     */
+    protected $escapeChildren = false;
+
+    /**
      * Constructor
      *
      * @api

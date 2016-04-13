@@ -49,6 +49,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class PaddingViewHelper extends AbstractViewHelper
 {
     /**
+     * Output is escaped already. We must not escape children, to avoid double encoding.
+     *
+     * @var bool
+     */
+    protected $escapeChildren = false;
+
+    /**
      * Pad a string to a certain length with another string
      *
      * @param int $padLength Length of the resulting string. If the value of pad_length is negative or less than the length of the input string, no padding takes place.

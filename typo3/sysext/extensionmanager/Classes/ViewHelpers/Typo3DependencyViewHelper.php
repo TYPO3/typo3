@@ -29,6 +29,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class Typo3DependencyViewHelper extends AbstractViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Finds and returns the suitable TYPO3 versions of an extension
      *
      * @param Extension $extension

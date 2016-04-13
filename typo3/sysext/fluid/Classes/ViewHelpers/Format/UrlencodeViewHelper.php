@@ -43,14 +43,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class UrlencodeViewHelper extends AbstractViewHelper
 {
     /**
-     * Prevent escaping for further processing
-     *
-     * @var bool
-     */
-    protected $escapeOutput = false;
-
-    /**
-     * Prevent double escaping on child node's output
+     * Output is escaped already. We must not escape children, to avoid double encoding.
      *
      * @var bool
      */

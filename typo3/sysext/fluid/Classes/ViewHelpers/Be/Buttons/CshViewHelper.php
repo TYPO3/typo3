@@ -43,6 +43,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class CshViewHelper extends AbstractBackendViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Render context sensitive help (CSH) for the given table
      *
      * @param string $table Table name ('_MOD_'+module name). If not set, the current module name will be used

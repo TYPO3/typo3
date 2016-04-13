@@ -69,14 +69,4 @@ class TranslateViewHelperTest extends ViewHelperBaseTestcase
         $this->injectDependenciesIntoViewHelper($this->subject);
         $this->assertEquals('default', $this->subject->render(null, 'bar', 'default'));
     }
-
-    /**
-     * @test
-     */
-    public function resultIsNotHtmlEscapedIfSoRequested()
-    {
-        $this->subject = GeneralUtility::makeInstance(TranslateViewHelperFixtureForTranslatedString::class);
-        $this->injectDependenciesIntoViewHelper($this->subject);
-        $this->assertEquals('&lt;p&gt;hello world&lt;/p&gt;', $this->subject->render('foo', null, null, true));
-    }
 }

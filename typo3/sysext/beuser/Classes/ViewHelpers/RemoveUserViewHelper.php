@@ -32,6 +32,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class RemoveUserViewHelper extends AbstractViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Render link with sprite icon to remove user
      *
      * @param \TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser Target backendUser to switch active session to

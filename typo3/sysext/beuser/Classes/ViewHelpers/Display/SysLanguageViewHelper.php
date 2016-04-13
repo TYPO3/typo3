@@ -24,6 +24,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class SysLanguageViewHelper extends AbstractViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Render unordered list for sys_language
      *
      * @param string $uids

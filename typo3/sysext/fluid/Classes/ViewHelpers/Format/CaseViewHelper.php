@@ -92,6 +92,13 @@ class CaseViewHelper extends AbstractViewHelper
     const CASE_CAPITAL_WORDS = 'capitalWords';
 
     /**
+     * Output is escaped already. We must not escape children, to avoid double encoding.
+     *
+     * @var bool
+     */
+    protected $escapeChildren = false;
+
+    /**
      * @var NULL|CharsetConverter
      */
     protected static $charsetConverter = null;

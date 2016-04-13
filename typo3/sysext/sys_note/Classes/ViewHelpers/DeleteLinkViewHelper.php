@@ -56,7 +56,6 @@ class DeleteLinkViewHelper extends AbstractViewHelper
             'cmd[sys_note][' . $arguments['id'] . '][delete]' => 1,
             'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI')
         ];
-        $url = BackendUtility::getModuleUrl('tce_db', $urlParameters);
-        return htmlspecialchars($url);
+        return BackendUtility::getModuleUrl('tce_db', $urlParameters);
     }
 }

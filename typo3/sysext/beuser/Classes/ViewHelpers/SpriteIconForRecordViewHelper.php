@@ -28,6 +28,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Displays spriteIcon for database table and object
      *
      * @param string $table
@@ -53,7 +60,7 @@ class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
      * @param RenderingContextInterface $renderingContext
      *
      * @return string
-     * @throws Exception
+     * @throws \Exception
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {

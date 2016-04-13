@@ -24,6 +24,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class SysFileMountsViewHelper extends AbstractViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Render unordered list for sys_filemounts
      *
      * @param string $uids

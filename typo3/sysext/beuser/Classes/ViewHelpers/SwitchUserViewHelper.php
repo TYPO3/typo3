@@ -29,6 +29,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class SwitchUserViewHelper extends AbstractViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Render link with sprite icon to change current backend user to target
      *
      * @param BackendUser $backendUser Target backendUser to switch active session to

@@ -55,6 +55,6 @@ class GroupListViewHelper extends AbstractViewHelper
             $str[] = $row['gr_list'] === '0,-1' ? 'NL' : $row['gr_list'];
         }
         arsort($str);
-        return htmlspecialchars(implode('|', $str));
+        return implode('|', $str);
     }
 }

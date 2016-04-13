@@ -49,6 +49,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class CurrencyViewHelper extends AbstractViewHelper
 {
     /**
+     * Output is escaped already. We must not escape children, to avoid double encoding.
+     *
+     * @var bool
+     */
+    protected $escapeChildren = false;
+
+    /**
      * @param string $currencySign (optional) The currency sign, eg $ or €.
      * @param string $decimalSeparator (optional) The separator for the decimal point.
      * @param string $thousandsSeparator (optional) The thousands separator.

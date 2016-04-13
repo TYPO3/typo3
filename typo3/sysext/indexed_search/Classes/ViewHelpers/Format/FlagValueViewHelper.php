@@ -54,8 +54,7 @@ class FlagValueViewHelper extends AbstractViewHelper
             $content = ($flags & 128 ? '<title>' : '')
                 . ($flags & 64 ? '<meta/keywords>' : '')
                 . ($flags & 32 ? '<meta/description>' : '');
-
-            return htmlspecialchars($content);
+            return $content;
         }
         return '';
     }
