@@ -24,72 +24,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 class QueryContext
 {
     /**
-     * Global settings
-     *
-     * - showHidden 0/1/-1 => -1 = Inherit from TSFE, based on the table being queried :(
-     *      Effectively requires showHiddenPages & showHiddenRecords from TSFE
-     *      *** Only Frontend ***
-     * - isVersioningPreview => Inherited from PageRepository/TSFE
-     *      If unset filters out records not in DEFAULT versioning state
-     *      If set shows records from the live and the current Workspace (from TSFE!), ignored for table pages
-     *
-     *      => Context effectively only needs the workspace id to do its magic!
-     *
-     * - noVersionPreview => External parameter
-     *      Only used in frontend context, eliminate restrictions from isVersioningPreview
-     *      *** Only Frontend ***
-     * - includeDeleted => External parameter
-     *      Always set for frontend context
-     *      *** Only Backend ***
-     * - fe_user groups list from TSFE
-     *      *** Only Frontend ***
-     * - ignoreEnableFields
-     *      Boolean to select if enable columns are to be checked
-     *      *** Frontend/Backend ***
-     * - enableFieldsToBeIgnored
-     *      List of fields to not use for restriction building
-     *      *** Only Frontend ***
-     *
-     * TSFE Dependencies
-     *
-     * - showHidden
-     *      Inherited from TSFE when -1, depends on the showHiddenPages & showHiddenRecords flags
-     *      to decide the final setting
-     * - isVersioningPreview
-     *      Inherited from PageRepository
-     * - currentWorkspaceId
-     *      Inherited from PageRepository
-     * TCA Dependencies
-     *
-     * - Deleted Field (string or null)
-     * - Enable Columns (array of strings)
-     * - Versioning Information (boolean)
-     *
-     * Goal:
-     *
-     * - QueryRestrictionBuilder needs no Access to TSFE / PageRepository / TCA
-     * - Based on the information in the context object the restrictions will be built.
-     * - Each restriction should be controllable per table.
-     *
-     *
-     * RequireMents
-     *  - Global flags
-     *      showHidden
-     *      includeDeleted
-     *      isVersioningPreview
-     *      noVersionPreview
-     *      currentWorkSpaceId
-     *      frontendUserGroups
-     *      ignoreEnableFields
-     *      enableFieldsToBeIgnored
-     *
-     *  - Per Table
-     *      showHidden => enableField, included in per Table enable field list
-     *      includeDeleted => treat as enableField?
-     *      frontendUserGroups => included in per Table enableFieldList
-     */
-
-    /**
      * The context for which the restraints are to be built.
      *
      * @var QueryContextType
@@ -482,7 +416,7 @@ class QueryContext
      *
      * @return string[]
      */
-    public function getIgnoredEnableFields()
+    public function getIgnoredEnableFields(): array
     {
         return $this->ignoredEnableFields;
     }
@@ -493,7 +427,7 @@ class QueryContext
      * @param string[] $ignoredEnableFields
      * @return \TYPO3\CMS\Core\Database\Query\QueryContext
      */
-    public function setIgnoredEnableFields($ignoredEnableFields): QueryContext
+    public function setIgnoredEnableFields(array $ignoredEnableFields): QueryContext
     {
         $this->ignoredEnableFields = $ignoredEnableFields;
 
