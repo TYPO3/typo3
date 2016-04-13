@@ -7522,6 +7522,47 @@ button.close {
 .module-docheader + .module-body {
   padding-top: 89px;
 }
+.panel-heading a,
+.panel-heading a:hover,
+.panel-heading a:focus a:active {
+  text-decoration: none;
+  color: inherit;
+}
+.panel-heading-left {
+  float: left;
+}
+.panel-heading-right {
+  float: right;
+}
+.panel-title {
+  font-size: 12px;
+}
+.panel-title-icon,
+.panel-title-name {
+  display: inline-block;
+  vertical-align: middle;
+}
+.panel-body > *:last-child {
+  margin-bottom: 0;
+}
+.panel-active {
+  border-color: #444444;
+}
+.panel-active > .panel-heading {
+  color: #ffffff;
+  background-color: #666666;
+  border-color: #444444;
+}
+.panel-active > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #444444;
+}
+.panel-active > .panel-heading .badge {
+  color: #666666;
+  background-color: #ffffff;
+}
+.panel-active > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #444444;
+}
 .clearfix:after,
 .dl-horizontal dd:after,
 .container:after,
@@ -7535,7 +7576,8 @@ button.close {
 .modal-header:after,
 .modal-footer:after,
 .module-docheader:after,
-.module-docheader .module-docheader-bar:after {
+.module-docheader .module-docheader-bar:after,
+.panel-heading:after {
   content: "";
   display: table;
   clear: both;

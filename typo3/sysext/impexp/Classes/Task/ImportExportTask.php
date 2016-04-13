@@ -35,12 +35,20 @@ class ImportExportTask implements TaskInterface
     protected $taskObject;
 
     /**
+     * URL to task module
+     *
+     * @var string
+     */
+    protected $moduleUrl;
+
+    /**
      * Constructor
      *
      * @param TaskModuleController $taskObject
      */
     public function __construct(TaskModuleController $taskObject)
     {
+        $this->moduleUrl = BackendUtility::getModuleUrl('user_task');
         $this->taskObject = $taskObject;
         $this->getLanguageService()->includeLLFile('EXT:impexp/Resources/Private/Language/locallang_csh.xlf');
     }
@@ -82,9 +90,11 @@ class ImportExportTask implements TaskInterface
                 array(
                     'tx_impexp[action]' => 'export',
                     'preset[load]' => 1,
-                    'preset[select]' => $id)
+                    'preset[select]' => $id,
+                    'returnUrl' => $this->moduleUrl
+                )
             );
-            return $this->taskObject->urlInIframe($url);
+            \TYPO3\CMS\Core\Utility\HttpUtility::redirect($url);
         } else {
             // Header
             $lang = $this->getLanguageService();
@@ -137,6 +147,7 @@ class ImportExportTask implements TaskInterface
                     }
                     // Collect all preset information
                     $lines[$key] = array(
+                        'uid' => 'impexp' . $key,
                         'icon' => $icon,
                         'title' => $title,
                         'descriptionHtml' => implode('<br />', $description),

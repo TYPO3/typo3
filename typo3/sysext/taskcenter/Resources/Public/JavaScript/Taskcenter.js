@@ -14,7 +14,10 @@
 /**
  * Module: TYPO3/CMS/Taskcenter/Taskcenter
  */
-define(['jquery', 'jquery-ui/sortable'], function($) {
+define(['jquery',
+		'TYPO3/CMS/Backend/Icons',
+		'jquery-ui/sortable'
+		], function($, Icons) {
 	'use strict';
 
 	/**
@@ -26,47 +29,32 @@ define(['jquery', 'jquery-ui/sortable'], function($) {
 
 	/**
 	 *
-	 */
-	Taskcenter.resizeIframe = function() {
-		var $listFrame = $('#list_frame');
-		if ($listFrame.length > 0) {
-			$listFrame.ready(function() {
-				var parent = $('#typo3-docbody');
-				var parentHeight = parent.height();
-				var parentWidth = parent.width() - $('#taskcenter-menu').width() - 61;
-				$listFrame.css({height: parentHeight + 'px', width: parentWidth + 'px'});
-
-				$(window).on('resize', function() {
-					Taskcenter.resizeIframe();
-				});
-			});
-		}
-	};
-
-	/**
-	 *
 	 * @param {Object} element
+	 * @param {Boolean} isCollapsed
 	 */
-	Taskcenter.doCollapseOrExpand = function(element) {
-		var itemParent = element.parent();
-		var item = element.next('div').next('div').next('div').next('div');
-		var state = itemParent.hasClass('expanded') ? 1 : 0;
-		itemParent.toggleClass('expanded', state);
-		itemParent.toggleClass('collapsed', !state);
-		item.toggle(state);
-		if (state) {
-			element.find('i.fa').removeClass('fa-caret-down').addClass('fa-caret-up');
+	Taskcenter.collapse = function(element, isCollapsed) {
+		var $item = $(element);
+		var $parent = $item.parent();
+		var $icon = $parent.find('.t3js-taskcenter-header-collapse .t3js-icon');
+		var isCollapsed = isCollapsed;
+		var iconName;
+
+		if(isCollapsed) {
+			iconName = 'actions-view-list-expand';
 		} else {
-			element.find('i.fa').removeClass('fa-caret-up').addClass('fa-caret-down');
+			iconName = 'actions-view-list-collapse';
 		}
+		Icons.getIcon(iconName, Icons.sizes.small, null, null, 'inline').done(function(icon) {
+			$icon.replaceWith(icon);
+		});
 
 		$.ajax({
 			url: TYPO3.settings.ajaxUrls['taskcenter_collapse'],
 			type: 'post',
 			cache: false,
 			data: {
-				'item': itemParent.prop('id'),
-				'state': state
+				'item': $parent.data('taskcenterId'),
+				'state': isCollapsed
 			}
 		});
 	};
@@ -96,11 +84,12 @@ define(['jquery', 'jquery-ui/sortable'], function($) {
 	 * Register listeners
 	 */
 	Taskcenter.initializeEvents = function() {
-		$('#taskcenter-menu').find('.down').on('click', function() {
-			Taskcenter.doCollapseOrExpand($(this));
+		$('.t3js-taskcenter-collapse').on('show.bs.collapse', function() {
+			Taskcenter.collapse($(this), 0);
 		});
-
-		Taskcenter.resizeIframe();
+		$('.t3js-taskcenter-collapse').on('hide.bs.collapse', function() {
+			Taskcenter.collapse($(this), 1);
+		});
 		Taskcenter.initializeSorting();
 	};
 

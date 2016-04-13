@@ -1,0 +1,89 @@
+//
+// Panel
+// ======
+// Additions and enhancements of the bootstrap panel component. This file
+// needs to be included directly after the bootstrap panel definitions.
+//
+//
+// Normal Usage
+// ------------
+//
+// <div class="panel panel-default">
+//   <div class="panel-heading">
+//     <div class="panel-heading-right">
+//       <a href="#panelContentId" class="panel-heading-collapse" role="button" data-toggle="collapse" aria-expanded="true">
+//         <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-view-list-collapse" data-identifier="actions-view-list-collapse">
+//           ... IconAPI ...
+//         </span>
+//       </a>
+//     </div>
+//     <div class="panel-heading-left">
+//       <a href="#" class="panel-title">
+//         ... Title ...
+//       </a>
+//     </div>
+//   </div>
+//   <div id="panelContentId" class="panel-collapse collapse in" aria-expanded="true">
+//     <div class="panel-body">
+//       ... Content ...
+//     </div>
+//   </div>
+// </div>
+//
+//
+
+
+//
+// Variables
+//
+@panel-active-text:          #fff;
+@panel-active-border:        #444;
+@panel-active-heading-bg:    #666;
+
+//
+// Heading
+//
+.panel-heading {
+	&:extend(.clearfix all);
+	a,
+	a:hover,
+	a:focus
+	a:active {
+		text-decoration: none;
+		color: inherit;
+	}
+}
+.panel-heading-left {
+	float: left;
+}
+.panel-heading-right {
+	float: right;
+}
+
+//
+// Title
+//
+.panel-title {
+	font-size: @font-size-base;
+}
+.panel-title-icon,
+.panel-title-name {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+//
+// Body
+//
+.panel-body {
+	> *:last-child {
+		margin-bottom: 0;
+	}
+}
+
+//
+// Additional Variations
+//
+.panel-active {
+	.panel-variant(@panel-active-border; @panel-active-text; @panel-active-heading-bg; @panel-active-border);
+}

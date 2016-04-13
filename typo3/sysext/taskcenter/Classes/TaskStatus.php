@@ -33,7 +33,7 @@ class TaskStatus
     {
         // Remove 'el_' in the beginning which is needed for the saveSortingState()
         $item = isset($request->getParsedBody()['item']) ? $request->getParsedBody()['item'] : $request->getQueryParams()['item'];
-        $item = substr(htmlspecialchars($item), 3);
+        $item = htmlspecialchars($item);
         $state = (bool)(isset($request->getParsedBody()['state']) ? $request->getParsedBody()['state'] : $request->getQueryParams()['state']);
 
         $this->getBackendUserAuthentication()->uc['taskcenter']['states'][$item] = $state;

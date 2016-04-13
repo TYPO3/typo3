@@ -132,6 +132,13 @@ class ImportExportController extends BaseScriptClass
     protected $excludeDisabledRecords = false;
 
     /**
+     * Return URL
+     *
+     * @var string
+     */
+    protected $returnUrl;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -158,6 +165,7 @@ class ImportExportController extends BaseScriptClass
         $this->MCONF['name'] = $this->moduleName;
         parent::init();
         $this->vC = GeneralUtility::_GP('vC');
+        $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
         $this->lang = $this->getLanguageService();
     }
 
@@ -288,6 +296,14 @@ class ImportExportController extends BaseScriptClass
                 ->setDisplayName($this->shortcutName)
                 ->setModuleName($this->moduleName);
             $buttonBar->addButton($shortcutButton);
+        }
+        // back button
+        if ($this->returnUrl) {
+            $backButton = $buttonBar->makeLinkButton()
+                ->setHref($this->returnUrl)
+                ->setTitle($this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack'))
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+            $buttonBar->addButton($backButton);
         }
         // Input data grabbed:
         $inData = GeneralUtility::_GP('tx_impexp');
