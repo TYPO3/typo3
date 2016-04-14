@@ -1,90 +1,64 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
-
 <f:layout name="Default" />
-
 <f:section name="Content">
-	<div class="typo3-aboutmodules-inner-docbody">
-		<h1>TYPO3 CMS {TYPO3Version}<br />
-			<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:introtext" />
-		</h1>
 
-		<p class="lead">
+	<div class="container container-small">
+		<f:render partial="Logo" arguments="{_all}" />
+		<p>
 			<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:introtext2" />
 		</p>
-
 		<f:if condition="{warningMessages}">
 			<f:be.infobox title="{warningTitle}" state="2">{warningMessages -> f:format.raw()}</f:be.infobox>
 		</f:if>
-
 		<f:for each="{modules}" as="mainModule">
 			<f:if condition="{mainModule.subModules}">
 				<f:if condition="{mainModule.label}">
 					<h2>{f:translate(key: mainModule.label)}</h2>
 				</f:if>
-				<div class="container-fuid">
-					<div class="row">
-						<f:for each="{mainModule.subModules}" as="subModule" iteration="subModuleIterator">
-							<div class="col-xs-12 col-sm-6">
-								<div class="submodule media clearfix">
-									<a
-										href="#"
-										onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
-										title="{f:if(condition: subModule.shortDescription, then: '{f:translate(key: subModule.shortDescription)}')}"
-										class="pull-left"
-									>
-										<span class="typo3-app-icon media-object" title="{f:if(condition: subModule.label, then: '{f:translate(key: subModule.label)}')}">
-											<span>
-												<span>
-													<core:icon identifier="{subModule.iconIdentifier}" size="default" />
-												</span>
+				<div class="row">
+					<f:for each="{mainModule.subModules}" as="subModule" iteration="subModuleIterator">
+						<div class="col-xs-12 col-sm-6">
+							<a
+								href="#"
+								onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
+								title="{f:if(condition: subModule.shortDescription, then: '{f:translate(key: subModule.shortDescription)}')}"
+								class="panel panel-default t3js-equalheight"
+							>
+								<div class="panel-body">
+									<div class="media">
+										<div class="media-left">
+											<span class="media-object" title="{f:if(condition: subModule.label, then: '{f:translate(key: subModule.label)}')}">
+												<core:icon identifier="{subModule.iconIdentifier}" size="default" />
 											</span>
-										</span>
-									</a>
-
-									<div class="media-body">
-										<f:if condition="{subModule.label}">
-											<strong>
-												<a
-													href="#"
-													onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
-													title="{f:if(condition: subModule.shortDescription, then: '{f:translate(key: subModule.shortDescription)}')}"
-												>{f:translate(key: subModule.label)}</a>
-											</strong><br>
-										</f:if>
-
-										<f:if condition="{subModule.shortDescription}">
-											<small class="text-muted"><f:translate key="{subModule.shortDescription}" /></small><br>
-										</f:if>
-
-										<f:if condition="{subModule.longDescription}">
-											{f:translate(key: subModule.longDescription) -> f:format.raw()}
-										</f:if>
+										</div>
+										<div class="media-body">
+											<f:if condition="{subModule.label}">
+												<h3 class="h4 media-heading">
+													{f:translate(key: subModule.label)}
+													<f:if condition="{subModule.shortDescription}">
+														<br><small class="text-muted"><f:translate key="{subModule.shortDescription}" /></small><br>
+													</f:if>
+												</h3>
+											</f:if>
+											<f:if condition="{subModule.longDescription}">
+												{f:translate(key: subModule.longDescription) -> f:format.raw()}
+											</f:if>
+										</div>
 									</div>
 								</div>
-							</div>
-
-							<f:if condition="{subModuleIterator.isEven}">
-								<f:if condition="{subModuleIterator.isLast} == 0">
-									</div><div class="row">
-								</f:if>
+							</a>
+						</div>
+						<f:if condition="{subModuleIterator.isEven}">
+							<f:if condition="{subModuleIterator.isLast} == 0">
+								</div><div class="row">
 							</f:if>
-						</f:for>
-					</div>
+						</f:if>
+					</f:for>
 				</div>
 			</f:if>
 		</f:for>
-
-		<p class="end-text text-info">
-			<em>
-				(<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:endText" />)
-			</em>
-		</p>
-
-		<p>
-			<small>
-				{copyRightNotice -> f:format.raw()}
-			</small>
-		</p>
-
+		<p><em class="text-muted"><f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:endText" /></em></p>
+		<p>{copyRightNotice -> f:format.raw()}</p>
 	</div>
+
 </f:section>

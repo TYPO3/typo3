@@ -63,6 +63,7 @@ class ModulesController extends ActionController
         parent::initializeView($view);
         // Disable Path
         $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
+        $view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/EqualHeight');
     }
 
     /**

@@ -1,32 +1,36 @@
 <f:if condition="{loadedExtensions}">
-	<div>
-		<h2>
-			<f:translate key="LLL:EXT:lang/locallang_mod_help_about.xlf:extension_authors" />
-		</h2>
-		<p>
-			<f:translate key="LLL:EXT:lang/locallang_mod_help_about.xlf:extension_list_info" />
-		</p>
-		<br/>
-		<table border="0" cellspacing="2" cellpadding="1">
-			<tr>
-				<th><f:translate key="LLL:EXT:lang/locallang_mod_help_about.xlf:extension" /></th>
-				<th><f:translate key="LLL:EXT:lang/locallang_mod_help_about.xlf:extension_author" /></th>
-			</tr>
-
-			<f:for each="{loadedExtensions}" as="loadedExtension">
+	<div class="panel panel-default">
+		<div class="panel-body panel-body-highlightlinks">
+			<h2 class="h3">
+				<f:translate key="LLL:EXT:lang/locallang_mod_help_about.xlf:extension_authors" />
+			</h2>
+			<p>
+				<f:translate key="LLL:EXT:lang/locallang_mod_help_about.xlf:extension_list_info" />
+			</p>
+		</div>
+		<table class="table panel-table">
+			<thead>
 				<tr>
-					<td width="280">
-						{loadedExtension.title} ({loadedExtension.key})
-					</td>
-					<td>
-						<f:link.email
-							email="{loadedExtension.authorEmail}?subject={f:format.urlencode(value:'Thanks for your {loadedExtension.title} extension')}"
-						>
-							{loadedExtension.author}
-						</f:link.email>
-					</td>
+					<th width="35%"><f:translate key="LLL:EXT:lang/locallang_mod_help_about.xlf:extension" /></th>
+					<th><f:translate key="LLL:EXT:lang/locallang_mod_help_about.xlf:extension_author" /></th>
 				</tr>
-			</f:for>
+			</thead>
+			<tbody>
+				<f:for each="{loadedExtensions}" as="loadedExtension">
+					<tr>
+						<td>
+							{loadedExtension.title} ({loadedExtension.key})
+						</td>
+						<td>
+							<f:link.email
+								email="{loadedExtension.authorEmail}?subject={f:format.urlencode(value:'Thanks for your {loadedExtension.title} extension')}"
+							>
+								{loadedExtension.author}
+							</f:link.email>
+						</td>
+					</tr>
+				</f:for>
+			</tbody>
 		</table>
 	</div>
 </f:if>

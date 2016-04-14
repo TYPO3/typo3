@@ -144,6 +144,7 @@ module.exports = function(grunt) {
 				},
 				files: {
 					'nprogress.js': 'nprogress/nprogress.js',
+					'jquery.matchHeight-min.js': 'matchHeight/jquery.matchHeight-min.js',
 					'jquery.dataTables.js': 'datatables/media/js/jquery.dataTables.min.js',
 					'require.js': 'requirejs/require.js',
 					'moment.js': 'moment/moment.js',

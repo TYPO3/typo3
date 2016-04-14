@@ -36,12 +36,13 @@
     "nprogress": "0.2.0",
     "datatables": "1.10.11",
     "autosize": "3.0.15",
-	"cropper": "2.3.0",
+    "cropper": "2.3.0",
     "imagesloaded": "4.1.0",
     "taboverride": "4.0.3",
     "seiyria-bootstrap-slider": "6.1.2",
     "devbridge-autocomplete": "1.2.24",
     "region-flags": "*",
-    "wmdbsystems-typo3-icons": "0.0.10"
+    "wmdbsystems-typo3-icons": "0.0.10",
+    "matchHeight": "matchheight#^0.7.0"
   }
 }

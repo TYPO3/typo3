@@ -41,6 +41,17 @@
 @panel-active-heading-bg:    #666;
 
 //
+// Panel
+//
+.panel {
+	display: block;
+	&:hover,
+	&:focus {
+		text-decoration: none;
+	}
+}
+
+//
 // Heading
 //
 .panel-heading {
@@ -76,8 +87,31 @@
 // Body
 //
 .panel-body {
+	> *:first-child {
+		margin-top: 0;
+	}
 	> *:last-child {
 		margin-bottom: 0;
+	}
+}
+// @TODO workaround to make links visible
+.panel-body-highlightlinks {
+	> p > a {
+		text-decoration: underline;
+	}
+}
+
+//
+// Table
+//
+.panel-table {
+	th:first-child,
+	td:first-child {
+		padding-left: @panel-body-padding;
+	}
+	th:last-child,
+	td:last-child {
+		padding-right: @panel-body-padding;
 	}
 }
 

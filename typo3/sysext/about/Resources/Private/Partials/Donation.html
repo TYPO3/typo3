@@ -1,20 +1,16 @@
-<div>
-	<h2>
-		<f:translate key="LLL:EXT:lang/locallang_mod_help_about.xlf:donation_header" />
-	</h2>
-
-	<p id="donation-description">
-		<f:translate
-			key="LLL:EXT:lang/locallang_mod_help_about.xlf:donation_message"
-			htmlEscape="0"
-		/>
-	</p>
-
-	<p class="text-right">
-		<button
-			class="btn btn-large"
-			onclick="window.open('{TYPO3UrlDonate}');"
-		><f:translate key="LLL:EXT:lang/locallang_mod_help_about.xlf:donation_button" /></button>
-	</p>
-
+<div class="panel panel-default">
+	<div class="panel-body panel-body-highlightlinks">
+		<h2 class="h4">
+			<f:translate key="LLL:EXT:lang/locallang_mod_help_about.xlf:donation_header" />
+		</h2>
+		<p>
+			<f:translate
+				key="LLL:EXT:lang/locallang_mod_help_about.xlf:donation_message"
+				htmlEscape="0"
+			/>
+		</p>
+		<a href="{TYPO3UrlDonate}" class="btn btn-default" title="{f:translate(key:'LLL:EXT:lang/locallang_mod_help_about.xlf:donation_button')}" target="_blank">
+			<f:translate key="LLL:EXT:lang/locallang_mod_help_about.xlf:donation_button" />
+		</a>
+	</div>
 </div>

@@ -7528,8 +7528,22 @@ button.close {
 .module-body > .callout:first-child {
   margin-top: 0;
 }
+.module-body > .container {
+  padding-left: 0;
+  padding-right: 0;
+}
+.module-body .container-small {
+  max-width: 768px;
+}
 .module-docheader + .module-body {
   padding-top: 89px;
+}
+.panel {
+  display: block;
+}
+.panel:hover,
+.panel:focus {
+  text-decoration: none;
 }
 .panel-heading a,
 .panel-heading a:hover,
@@ -7551,8 +7565,22 @@ button.close {
   display: inline-block;
   vertical-align: middle;
 }
+.panel-body > *:first-child {
+  margin-top: 0;
+}
 .panel-body > *:last-child {
   margin-bottom: 0;
+}
+.panel-body-highlightlinks > p > a {
+  text-decoration: underline;
+}
+.panel-table th:first-child,
+.panel-table td:first-child {
+  padding-left: 15px;
+}
+.panel-table th:last-child,
+.panel-table td:last-child {
+  padding-right: 15px;
 }
 .panel-active {
   border-color: #444444;
