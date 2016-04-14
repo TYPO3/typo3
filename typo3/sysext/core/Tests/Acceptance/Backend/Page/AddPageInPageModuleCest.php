@@ -96,7 +96,7 @@ class AddPageInPageModuleCest
         $I->moveMouseOver($pageActions);
         $I->waitForElement('#typo3-pagetree-contextmenu-sub1');
         $I->click($delete);
-        $yesButtonPopup = '#-main > div.x-window.x-window-plain.x-window-dlg > div.x-window-bwrap > div.x-window-bl > div > div > div > div.x-panel-fbar.x-small-editor.x-toolbar-layout-ct > table > tbody > tr > td.x-toolbar-left > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(2) > td.x-btn-mc > em > button';
+        $yesButtonPopup = '#main > div.x-window.x-window-plain.x-window-dlg > div.x-window-bwrap > div.x-window-bl > div > div > div > div.x-panel-fbar.x-small-editor.x-toolbar-layout-ct > table > tbody > tr > td.x-toolbar-left > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(2) > td.x-btn-mc > em > button';
         $I->waitForElement($yesButtonPopup);
         $I->click($yesButtonPopup);
         $I->wait(2);
