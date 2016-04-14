@@ -7812,8 +7812,6 @@ class DataHandler
                 break;
             case 'all':
                 if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.all')) {
-                    // Delete typo3temp/var/Cache manually as quick, straight and brutal approach here
-                    GeneralUtility::flushDirectory(PATH_site . 'typo3temp/var/Cache', true, true);
                     $this->getCacheManager()->flushCaches();
                     $this->databaseConnection->exec_TRUNCATEquery('cache_treelist');
                     // Delete Opcode Cache
@@ -7822,6 +7820,11 @@ class DataHandler
                 break;
             case 'temp_cached':
             case 'system':
+                GeneralUtility::deprecationLog(
+                    'Calling clear_cacheCmd() with arguments \'temp_cached\' or \'system\', using'
+                    . ' the ts config option \'options.clearCache.system\' or using'
+                    . '\'$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'clearCacheSystem\'] has been deprecated.'
+                );
                 if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.system')
                     || ((bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === true && $this->admin)) {
                     $this->getCacheManager()->flushCachesInGroup('system');

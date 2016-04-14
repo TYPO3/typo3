@@ -277,7 +277,6 @@ return array(
         'livesearch' => array(),    // Array: keywords used for commands to search for specific tables
         'isInitialInstallationInProgress' => false,        // Boolean: If TRUE, the installation is 'in progress'. This value is handled within the install tool step installer internally.
         'isInitialDatabaseImportDone' => true,        // Boolean: If TRUE, the database import is finished. This value is handled within the install tool step installer internally.
-        'clearCacheSystem' => false,        // Boolean: If set, the toolbar menu entry for clearing system caches (core cache, class cache, etc.) is visible for admin users.
         'formEngine' => array(
             'nodeRegistry' => array(), // Array: Registry to add or overwrite FormEngine nodes. Main key is a timestamp of the date when an entry is added, sub keys type, priority and class are required. Class must implement TYPO3\CMS\Backend\Form\NodeInterface.
             'nodeResolver' => array(), // Array: Additional node resolver. Main key is a timestamp of the date when an entry is added, sub keys type, priority and class are required. Class must implement TYPO3\CMS\Backend\Form\NodeResolverInterface.

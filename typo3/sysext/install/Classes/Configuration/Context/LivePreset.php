@@ -42,7 +42,6 @@ class LivePreset extends Configuration\AbstractPreset
         'SYS/enableDeprecationLog' => false,
         'SYS/sqlDebug' => 0,
         'SYS/systemLogLevel' => 2,
-        'SYS/clearCacheSystem' => false,
     );
 
     /**

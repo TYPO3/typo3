@@ -863,23 +863,11 @@ Do you want to refresh it now?</source>
 			<trans-unit id="flushPageCachesDescription">
 				<source>Clear frontend and page-related caches.</source>
 			</trans-unit>
-			<trans-unit id="flushAllCachesTitle">
+			<trans-unit id="flushAllCachesTitle2">
 				<source>Flush all caches</source>
 			</trans-unit>
-			<trans-unit id="flushAllCachesDescription">
-				<source>Clear all caches, including frontend caches, and extension-specific caches. Compile-time caches / system caches that are needed for TYPO3 to run are not touched.</source>
-			</trans-unit>
-			<trans-unit id="flushGeneralCachesTitle">
-				<source>Flush general caches</source>
-			</trans-unit>
-			<trans-unit id="flushGeneralCachesDescription">
-				<source>Clear frontend and page-related caches, plus some backend-related caches.</source>
-			</trans-unit>
-			<trans-unit id="flushSystemCachesTitle">
-				<source>Flush all caches</source>
-			</trans-unit>
-			<trans-unit id="flushSystemCachesDescription">
-				<source>Clear all system-related caches, including the class loader, localization, extension configuration file caches and opcode caches. Rebuilding this cache may take some time.</source>
+			<trans-unit id="flushAllCachesDescription2">
+				<source>Clear all system-related caches, including localization, extension configuration, file caches and opcode caches. Rebuilding this cache may take some time.</source>
 			</trans-unit>
 			<trans-unit id="rm.adminFunctions">
 				<source>Admin functions</source>

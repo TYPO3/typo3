@@ -77,8 +77,8 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
         ) {
             $this->cacheActions[] = array(
                 'id' => 'system',
-                'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushSystemCachesTitle')),
-                'description' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushSystemCachesDescription')),
+                'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushAllCachesTitle2')),
+                'description' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushAllCachesDescription2')),
                 'href' => BackendUtility::getModuleUrl('tce_db', ['vC' => $backendUser->veriCode(), 'cacheCmd' => 'all']),
                 'icon' => $this->iconFactory->getIcon('actions-system-cache-clear-impact-high', Icon::SIZE_SMALL)->render()
             );

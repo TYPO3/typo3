@@ -96,7 +96,9 @@ class SilentConfigurationUpgradeService
         'SYS/curlTimeout',
         // #75355
         'BE/niceFlexFormXMLtags',
-        'BE/compactFlexFormXML'
+        'BE/compactFlexFormXML',
+        // #75625
+        'SYS/clearCacheSystem',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)

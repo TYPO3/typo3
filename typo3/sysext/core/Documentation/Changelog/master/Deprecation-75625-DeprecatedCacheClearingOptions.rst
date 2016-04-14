@@ -1,0 +1,31 @@
+=======================================================
+Deprecation: #75625 - Deprecated cache clearing options
+=======================================================
+
+Description
+===========
+
+The following commands have been deprecated and should not be used anymore:
+
+* Method :php:`DataHandler->clear_cacheCmd()` with arguments `system` and `temp_cached`
+* ``userTSconfig`` setting ``options.clearCache.system``
+* Option ``$TYPO3_CONF_VARS['SYS']['clearCacheSystem']``
+
+
+Impact
+======
+
+Directly or indirectly using method ``clear_cacheCmd`` with these arguments will trigger a deprecation log entry.
+
+
+Affected Installations
+======================
+
+All installations with third party extensions using this method are affected.
+
+
+Migration
+=========
+
+If the group of system caches needs to be deleted explicitely, use :php:`flushCachesInGroup('system')`
+of ``CacheManager`` directly.

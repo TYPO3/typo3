@@ -44,7 +44,6 @@ class DebugPreset extends Configuration\AbstractPreset
         'SYS/systemLogLevel' => 0,
         // E_WARNING | E_RECOVERABLE_ERROR | E_DEPRECATED | E_USER_DEPRECATED
         'SYS/exceptionalErrors' => 28674,
-        'SYS/clearCacheSystem' => true,
     );
 
     /**
