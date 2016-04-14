@@ -1173,7 +1173,7 @@ class ContentObjectRenderer
             return '';
         }
         if (is_file(PATH_site . $info['3'])) {
-            $source = $tsfe->absRefPrefix . GeneralUtility::rawUrlEncodeFP($info['3']);
+            $source = $tsfe->absRefPrefix . str_replace('%2F', '/', rawurlencode($info['3']));
         } else {
             $source = $info[3];
         }

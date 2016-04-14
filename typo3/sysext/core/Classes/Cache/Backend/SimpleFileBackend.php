@@ -92,8 +92,8 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
         unset($this->temporaryCacheDirectory);
         $this->cacheDirectory = $finalCacheDirectory;
         $this->cacheEntryFileExtension = $cache instanceof \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend ? '.php' : '';
-        if (strlen($this->cacheDirectory) + 23 > \TYPO3\CMS\Core\Utility\GeneralUtility::getMaximumPathLength()) {
-            throw new \TYPO3\CMS\Core\Cache\Exception('The length of the temporary cache file path "' . $this->cacheDirectory . '" exceeds the ' . 'maximum path length of ' . (\TYPO3\CMS\Core\Utility\GeneralUtility::getMaximumPathLength() - 23) . '. Please consider ' . 'setting the temporaryDirectoryBase option to a shorter path.', 1248710426);
+        if (strlen($this->cacheDirectory) + 23 > PHP_MAXPATHLEN) {
+            throw new \TYPO3\CMS\Core\Cache\Exception('The length of the temporary cache file path "' . $this->cacheDirectory . '" exceeds the ' . 'maximum path length of ' . (PHP_MAXPATHLEN - 23) . '. Please consider ' . 'setting the temporaryDirectoryBase option to a shorter path.', 1248710426);
         }
     }
 

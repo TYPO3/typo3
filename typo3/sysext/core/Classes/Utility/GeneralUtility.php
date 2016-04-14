@@ -694,9 +694,11 @@ class GeneralUtility
      * @param string $verNumberStr Minimum branch number required (format x.y / e.g. "4.0" NOT "4.0.0"!)
      * @return bool Returns TRUE if this setup is compatible with the provided version number
      * @todo Still needs a function to convert versions to branches
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function compat_version($verNumberStr)
     {
+        static::logDeprecatedFunction();
         return VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) >= VersionNumberUtility::convertVersionNumberToInteger($verNumberStr);
     }
 
@@ -891,9 +893,11 @@ class GeneralUtility
      *
      * @param string $microtime Microtime
      * @return int Microtime input string converted to an integer (milliseconds)
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function convertMicrotime($microtime)
     {
+        static::logDeprecatedFunction();
         $parts = explode(' ', $microtime);
         return round(($parts[0] + $parts[1]) * 1000);
     }
@@ -928,10 +932,11 @@ class GeneralUtility
      *
      * @param string $str String which contains eg. "&amp;amp;" which should stay "&amp;". Or "&amp;#1234;" to "&#1234;". Or "&amp;#x1b;" to "&#x1b;
      * @return string Converted result.
-     *
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function deHSCentities($str)
     {
+        static::logDeprecatedFunction();
         return preg_replace('/&amp;([#[:alnum:]]*;)/', '&\\1', $str);
     }
 
@@ -942,9 +947,11 @@ class GeneralUtility
      * @param bool $extended If set, also backslashes are escaped.
      * @param string $char The character to escape, default is ' (single-quote)
      * @return string Processed input string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function slashJS($string, $extended = false, $char = '\'')
     {
+        static::logDeprecatedFunction();
         if ($extended) {
             $string = str_replace('\\', '\\\\', $string);
         }
@@ -957,9 +964,11 @@ class GeneralUtility
      *
      * @param string $str String to raw-url-encode with spaces preserved
      * @return string Rawurlencoded result of input string, but with all %20 (space chars) converted to real spaces.
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, implement directly via PHP instead
      */
     public static function rawUrlEncodeJS($str)
     {
+        static::logDeprecatedFunction();
         return str_replace('%20', ' ', rawurlencode($str));
     }
 
@@ -969,9 +978,11 @@ class GeneralUtility
      *
      * @param string $str Input string
      * @return string Output string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the PHP methods directly instead
      */
     public static function rawUrlEncodeFP($str)
     {
+        static::logDeprecatedFunction();
         return str_replace('%2F', '/', rawurlencode($str));
     }
 
@@ -1094,8 +1105,7 @@ class GeneralUtility
      */
     public static function underscoredToUpperCamelCase($string)
     {
-        $upperCamelCase = str_replace(' ', '', ucwords(str_replace('_', ' ', self::strtolower($string))));
-        return $upperCamelCase;
+        return str_replace(' ', '', ucwords(str_replace('_', ' ', strtolower($string))));
     }
 
     /**
@@ -1107,9 +1117,7 @@ class GeneralUtility
      */
     public static function underscoredToLowerCamelCase($string)
     {
-        $upperCamelCase = str_replace(' ', '', ucwords(str_replace('_', ' ', self::strtolower($string))));
-        $lowerCamelCase = self::lcfirst($upperCamelCase);
-        return $lowerCamelCase;
+        return lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', strtolower($string)))));
     }
 
     /**
@@ -1130,10 +1138,12 @@ class GeneralUtility
      *
      * @param string $string The string to be used to lowercase the first character
      * @return string The string with the first character as lowercase
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function lcfirst($string)
     {
-        return self::strtolower($string[0]) . substr($string, 1);
+        static::logDeprecatedFunction();
+        return lcfirst($string);
     }
 
     /**
@@ -1514,28 +1524,30 @@ class GeneralUtility
      * This is nice for indenting JS code with PHP code on the same level.
      *
      * @param string $string JavaScript code
-     * @param bool $linebreak Wrap script element in line breaks? Default is TRUE.
+     * @param null $_ unused, will be removed in TYPO3 CMS 9
      * @return string The wrapped JS code, ready to put into a XHTML page
      */
-    public static function wrapJS($string, $linebreak = true)
+    public static function wrapJS($string, $_ = null)
     {
+        if ($_ !== null) {
+            self::deprecationLog('Parameter 2 of GeneralUtility::wrapJS is obsolete and can be omitted.');
+        }
+
         if (trim($string)) {
-            // <script wrapped in nl?
-            $cr = $linebreak ? LF : '';
             // remove nl from the beginning
-            $string = preg_replace('/^\\n+/', '', $string);
+            $string = ltrim($string, LF);
             // re-ident to one tab using the first line as reference
             $match = array();
             if (preg_match('/^(\\t+)/', $string, $match)) {
                 $string = str_replace($match[1], TAB, $string);
             }
-            $string = $cr . '<script type="text/javascript">
+            return '<script type="text/javascript">
 /*<![CDATA[*/
 ' . $string . '
 /*]]>*/
-</script>' . $cr;
+</script>';
         }
-        return trim($string);
+        return '';
     }
 
     /**
@@ -1942,7 +1954,7 @@ class GeneralUtility
      *
      * @param string $xmlData XML data
      * @return array Attributes of the xml prologue (header)
-     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9.
      */
     public static function xmlGetHeaderAttribs($xmlData)
     {
@@ -2611,9 +2623,11 @@ class GeneralUtility
      * Retrieves the maximum path length that is valid in the current environment.
      *
      * @return int The maximum available path length
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function getMaximumPathLength()
     {
+        static::logDeprecatedFunction();
         return PHP_MAXPATHLEN;
     }
 
@@ -3178,6 +3192,7 @@ class GeneralUtility
         return $bInfo;
     }
 
+
     /**
      * Get the fully-qualified domain name of the host.
      *
@@ -3188,7 +3203,6 @@ class GeneralUtility
     {
         $host = '';
         // If not called from the command-line, resolve on getIndpEnv()
-        // Note that TYPO3_REQUESTTYPE is not used here as it may not yet be defined
         if ($requestHost && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
             $host = self::getIndpEnv('HTTP_HOST');
         }
@@ -3402,18 +3416,19 @@ class GeneralUtility
      */
     public static function upload_copy_move($source, $destination)
     {
+        $result = false;
         if (is_uploaded_file($source)) {
-            $uploaded = true;
-            // Return the value of move_uploaded_file, and if FALSE the temporary $source is still around so the user can use unlink to delete it:
-            $uploadedResult = move_uploaded_file($source, $destination);
+            // Return the value of move_uploaded_file, and if FALSE the temporary $source is still
+            // around so the user can use unlink to delete it:
+            $result = move_uploaded_file($source, $destination);
         } else {
-            $uploaded = false;
             @copy($source, $destination);
         }
         // Change the permissions of the file
         self::fixPermissions($destination);
-        // If here the file is copied and the temporary $source is still around, so when returning FALSE the user can try unlink to delete the $source
-        return $uploaded ? $uploadedResult : false;
+        // If here the file is copied and the temporary $source is still around,
+        // so when returning FALSE the user can try unlink to delete the $source
+        return $result;
     }
 
     /**
@@ -4190,9 +4205,8 @@ class GeneralUtility
     public static function initSysLog()
     {
         // For CLI logging name is <fqdn-hostname>:<TYPO3-path>
-        // Note that TYPO3_REQUESTTYPE is not used here as it may not yet be defined
         if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = self::getHostname(($requestHost = false)) . ':' . PATH_site;
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = self::getHostname() . ':' . PATH_site;
         } else {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = self::getIndpEnv('TYPO3_SITE_URL');
         }

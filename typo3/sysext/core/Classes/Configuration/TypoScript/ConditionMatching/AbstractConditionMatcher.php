@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * Matching TypoScript conditions
@@ -286,7 +287,7 @@ abstract class AbstractConditionMatcher
                 return false;
                 break;
             case 'compatVersion':
-                return GeneralUtility::compat_version($value);
+                return VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) >= VersionNumberUtility::convertVersionNumberToInteger($value);
                 break;
             case 'loginUser':
                 if ($this->isUserLoggedIn()) {

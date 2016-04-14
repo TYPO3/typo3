@@ -1575,8 +1575,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 if ($this->isRecordCurrentBackendUser($table, $row)) {
                     $deleteAction = $this->spaceIcon;
                 } else {
-                    $titleOrig = BackendUtility::getRecordTitle($table, $row, false, true);
-                    $title = GeneralUtility::slashJS(GeneralUtility::fixed_lgd_cs($titleOrig, $this->fixedL), true);
+                    $title = BackendUtility::getRecordTitle($table, $row);
                     $warningText = $this->getLanguageService()->getLL($actionName . 'Warning') . ' "' . $title . '" ' . '[' . $table . ':' . $row['uid'] . ']' . $refCountMsg;
 
                     $params = 'cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
@@ -1584,7 +1583,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     $linkTitle = $this->getLanguageService()->getLL($actionName, true);
                     $deleteAction = '<a class="btn btn-default t3js-record-delete" href="#" '
                                     . ' data-l10parent="' . htmlspecialchars($row['l10n_parent']) . '"'
-                                    . ' data-params="' . htmlspecialchars($params) . '" data-title="' . htmlspecialchars($titleOrig) . '"'
+                                    . ' data-params="' . htmlspecialchars($params) . '" data-title="' . htmlspecialchars($title) . '"'
                                     . ' data-message="' . htmlspecialchars($warningText) . '" title="' . $linkTitle . '"'
                                     . '>' . $icon . '</a>';
                 }
