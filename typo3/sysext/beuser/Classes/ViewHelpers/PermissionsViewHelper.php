@@ -76,8 +76,11 @@ class PermissionsViewHelper extends AbstractViewHelper implements CompilableInte
                 $permissionClass = 'fa-times text-danger';
                 $mode = 'add';
             }
+
+            $label = htmlspecialchars(static::$permissionLabels[$mask]);
             $icon .= '<span style="cursor:pointer"'
-                . ' title="' . htmlspecialchars(static::$permissionLabels[$mask]) . '"'
+                . ' title="' . $label . '"'
+                . ' data-toggle="tooltip"'
                 . ' data-page="' . $arguments['pageId'] . '"'
                 . ' data-permissions="' . $arguments['permission'] . '"'
                 . ' data-who="' . $arguments['scope'] . '"'

@@ -128,6 +128,7 @@ class PermissionController extends ActionController
         // the view of the update action has a different view class
         if ($view instanceof BackendTemplateView) {
             $view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Beuser/Permissions');
+            $view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
             $view->getModuleTemplate()->addJavaScriptCode(
                 'jumpToUrl',
                 '
