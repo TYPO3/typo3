@@ -16,7 +16,7 @@
  * contains all logic for the date time picker used in FormEngine
  * and EXT:belog and EXT:scheduler
  */
-define(['jquery'], function ($) {
+define(['jquery'], function($) {
 
 	/**
 	 *
@@ -42,7 +42,12 @@ define(['jquery'], function ($) {
 		});
 
 		if ($dateTimeFields.length > 0) {
-			require(['moment', 'twbs/bootstrap-datetimepicker'], function(moment) {
+			require(['moment', 'TYPO3/CMS/Backend/Storage', 'twbs/bootstrap-datetimepicker'], function(moment, Storage) {
+				var userLocale = Storage.Persistent.get('lang');
+				var setLocale = false;
+				if (userLocale) {
+					setLocale = moment.locale(userLocale);
+				}
 
 				// initialize the datepicker on each selected element
 				$dateTimeFields.each(function() {
@@ -88,6 +93,10 @@ define(['jquery'], function ($) {
 					}
 					if ($element.data('dateMaxdate')) {
 						$element.data('dateMaxdate', moment.unix($element.data('dateMaxdate')).format(options.format));
+					}
+
+					if (setLocale) {
+						options.locale = setLocale;
 					}
 
 					// initialize the date time picker on this element

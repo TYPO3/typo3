@@ -147,7 +147,7 @@ module.exports = function(grunt) {
 					'nprogress.js': 'nprogress/nprogress.js',
 					'jquery.dataTables.js': 'datatables/media/js/jquery.dataTables.min.js',
 					'require.js': 'requirejs/require.js',
-					'moment.js': 'moment/moment.js',
+					'moment.js': 'moment/min/moment-with-locales.min.js',
 					'moment-timezone.js': 'moment-timezone/builds/moment-timezone-with-data.min.js',
 					'cropper.min.js': 'cropper/dist/cropper.min.js',
 					'imagesloaded.pkgd.min.js': 'imagesloaded/imagesloaded.pkgd.min.js',
@@ -185,7 +185,6 @@ module.exports = function(grunt) {
 			thirdparty: {
 				files: {
 					"<%= paths.core %>Public/JavaScript/Contrib/require.js": ["<%= paths.core %>Public/JavaScript/Contrib/require.js"],
-					"<%= paths.core %>Public/JavaScript/Contrib/moment.js": ["<%= paths.core %>Public/JavaScript/Contrib/moment.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/nprogress.js": ["<%= paths.core %>Public/JavaScript/Contrib/nprogress.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/draggable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/draggable.js"],
