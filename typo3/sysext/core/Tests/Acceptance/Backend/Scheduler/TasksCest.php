@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Scheduler;
  */
 
 use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Admin;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 
 /**
  * Scheduler task tests
@@ -78,14 +79,22 @@ class TasksCest
     /**
      * @depends createASchedulerTask
      * @param Admin $I
+     * @param ModalDialog $modalDialog
      */
-    public function canDeleteTask(Admin $I)
+    public function canDeleteTask(Admin $I, ModalDialog $modalDialog)
     {
-        // delete the task
+        $I->wantTo('See a delete button for a task');
+        $I->seeElement('//a[contains(@title, "Delete")]');
+
         $I->click('//a[contains(@title, "Delete")]');
-        $I->switchToIFrame();
-        $I->waitForElement('.t3-modal.modal');
-        $I->click('.t3-modal.modal .btn.btn-warning');
+        $I->wantTo('Cancel the delete dialog');
+        $modalDialog->clickButtonInDialog('Cancel');
+        $I->switchToIFrame('content');
+
+        $I->wantTo('Still see and can click the Delete button as the deletion has been canceled');
+        $I->click('//a[contains(@title, "Delete")]');
+        $modalDialog->clickButtonInDialog('OK');
+
         $I->switchToIFrame('content');
         $I->see('The task was successfully deleted.');
         $I->see('No tasks defined yet');
