@@ -163,9 +163,9 @@ class FormWizardElement extends AbstractFormElement
     protected function resultAddWizardCss()
     {
         $cssFiles = array(
-            'Wizard/Styles.css'
+            'form.css'
         );
-        $baseUrl = ExtensionManagementUtility::extRelPath('form') . 'Resources/Public/CSS/';
+        $baseUrl = ExtensionManagementUtility::extRelPath('form') . 'Resources/Public/Css/';
         // Load the wizards css
         foreach ($cssFiles as $cssFile) {
             $this->resultArray['stylesheetFiles'][] = $baseUrl . $cssFile;

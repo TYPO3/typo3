@@ -74,9 +74,6 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
         $this->pageRenderer->addInlineSetting('Workspaces', 'depth', $this->pageId === 0 ? 999 : 1);
         $this->pageRenderer->addInlineSetting('Workspaces', 'language', $this->getLanguageSelection());
-        $cssFile = 'EXT:workspaces/Resources/Public/Css/module.css';
-        $cssFile = GeneralUtility::getFileAbsFileName($cssFile);
-        $this->pageRenderer->addCssFile(PathUtility::getAbsoluteWebPath($cssFile));
         $this->pageRenderer->addInlineLanguageLabelArray(array(
             'title' => $GLOBALS['LANG']->getLL('title'),
             'path' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.path'),

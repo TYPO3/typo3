@@ -34,29 +34,48 @@ module.exports = function(grunt) {
 			root      : '../',
 			sysext    : '<%= paths.root %>typo3/sysext/',
 			t3skin    : '<%= paths.sysext %>t3skin/Resources/',
+			form      : '<%= paths.sysext %>form/Resources/',
+			frontend  : '<%= paths.sysext %>frontend/Resources/',
 			install   : '<%= paths.sysext %>install/Resources/',
+			linkvalidator : '<%= paths.sysext %>linkvalidator/Resources/',
 			backend   : '<%= paths.sysext %>backend/Resources/',
 			core      : '<%= paths.sysext %>core/Resources/',
 			flags     : 'bower_components/region-flags/svg/',
 			t3icons   : 'bower_components/wmdbsystems-typo3-icons/dist/'
 		},
 		less: {
+			options: {
+				banner: '<%= banner %>',
+				outputSourceFiles: true
+			},
 			t3skin: {
-				options: {
-					banner: '<%= banner %>',
-					outputSourceFiles: true
-				},
 				files: {
 					"<%= paths.t3skin %>Public/Css/backend.css": "<%= paths.less %>backend.less"
 				}
 			},
-			InstallTool: {
-				options: {
-					banner: '<%= banner %>',
-					outputSourceFiles: true
-				},
+			core: {
 				files: {
-					"<%= paths.install %>Public/Css/InstallTool.css": "<%= paths.less %>InstallTool.less"
+					"<%= paths.core %>Public/Css/errorpage.css": "<%= paths.less %>errorpage.less"
+				}
+			},
+			form: {
+				files: {
+					"<%= paths.form %>Public/Css/form.css": "<%= paths.less %>form.less"
+				}
+			},
+			frontend: {
+				files: {
+					"<%= paths.frontend %>Public/Css/adminpanel.css": "<%= paths.less %>adminpanel.less"
+				}
+			},
+			install: {
+				files: {
+					"<%= paths.install %>Public/Css/install.css": "<%= paths.less %>install.less"
+				}
+			},
+			linkvalidator: {
+				files: {
+					"<%= paths.linkvalidator %>Public/Css/linkvalidator.css": "<%= paths.less %>linkvalidator.less"
 				}
 			}
 		},
@@ -76,8 +95,20 @@ module.exports = function(grunt) {
 			t3skin: {
 				src: '<%= paths.t3skin %>Public/Css/*.css'
 			},
-			InstallTool: {
-				src: '<%= paths.install %>Public/Css/InstallTool.css'
+			core: {
+				src: '<%= paths.core %>Public/Css/*.css'
+			},
+			form: {
+				src: '<%= paths.form %>Public/Css/*.css'
+			},
+			frontend: {
+				src: '<%= paths.frontend %>Public/Css/*.css'
+			},
+			install: {
+				src: '<%= paths.install %>Public/Css/*.css'
+			},
+			linkvalidator: {
+				src: '<%= paths.linkvalidator %>Public/Css/*.css'
 			}
 		},
 		watch: {

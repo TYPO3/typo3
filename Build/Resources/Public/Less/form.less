@@ -1,220 +1,262 @@
 @charset "UTF-8";
+
 .std-em-selector {
   font-size: 90%;
   font-style: normal;
 }
+
 .std-strong-selector {
   display: block;
   font-size: 90%;
   font-weight: normal;
   color: #C00;
 }
-.std-li-selector {
+
+.std-li-selector{
   float: none;
   width: auto;
   margin-right: 0;
   margin-left: 1em;
 }
 #fake-form {
+
+  ol {
+    padding-left: 0 !important;
+    list-style: none !important;
+  }
+
   /* style for each form element */
+  li {
+    overflow: hidden;
+    padding: 0.5em;
+    margin-bottom: 0.5em;
+
+    &#element-placeholder{
+      padding: 0;
+      margin: 0;
+    }
+
+    input + label,
+    textarea + label,
+    select + label {
+      .std-li-selector;
+    }
+
+    textarea + label {
+      vertical-align: top;
+    }
+  }
+
+  textarea, input[type=text]{
+    border: 1px solid #c0c0c0;
+  }
+
+  input[type=text]{
+    // equal width like textareas
+    width:300px;
+    padding: 3px;
+  }
+
+  label {
+    display:block;
+    margin-right: 1em;
+    vertical-align: baseline;
+
+    em{
+      .std-em-selector;
+    }
+
+    strong{
+      .std-strong-selector;
+    }
+  }
+
+  .x-checkbox, .x-radio{
+    label{
+      display:inline-block;
+    }
+  }
+
+  legend {
+    border-bottom:0;
+    em{
+      .std-em-selector;
+    }
+
+    strong{
+      .std-strong-selector;
+    }
+  }
+
+  fieldset {
+    position: relative;
+    margin: 0;
+    padding: 0;
+
+    &.submit {
+      border-style: none;
+    }
+
+    &.fieldset-horizontal {
+      border-width: 0;
+
+      &.label-below label {
+        display: block;
+        margin-left: 0;
+        margin-top: 0.2em;
+        font-size: 90%;
+        text-align: left;
+        color: #999999;
+      }
+
+      label{
+        em {
+          display: inline;
+        }
+      }
+
+      ol {
+        padding: 0;
+      }
+
+      li {
+        float: left;
+        margin-right: 1em;
+        padding: 0;
+      }
+    }
+
+    &.fieldset-subgroup {
+      margin-bottom: -2em;
+      border-style: none;
+
+      ol {
+        position: relative;
+        top: -1.4em;
+        padding: 0;
+      }
+
+      li {
+        padding: 0;
+      }
+
+      legend {
+        margin-left: 0;
+        padding: 0;
+      }
+
+      input + label {
+        float: none;
+        width: auto;
+        display: inline;
+        margin: 0 0 0 1em;
+      }
+    }
+  }
+
+  legend {
+    font-size: 12px;
+    font-weight: bold;
+    color: #000000;
+
+    em {
+      position: absolute;
+    }
+
+    strong {
+      position: absolute;
+      top: 1.4em;
+    }
+  }
+
   /* labels as block, labels displayed above or below the input fields */
+  .labels-block{
+    label {
+      display: block;
+      float: none;
+      margin: 0 0 0.5em;
+      width: auto;
+    }
+
+    input + label,
+    textarea + label{
+      margin: 0.5em 0 0;
+    }
+
+  }
 }
-#fake-form ol {
-  padding-left: 0 !important;
-  list-style: none !important;
-}
-#fake-form li {
-  overflow: hidden;
-  padding: 0.5em;
-  margin-bottom: 0.5em;
-}
-#fake-form li#element-placeholder {
-  padding: 0;
-  margin: 0;
-}
-#fake-form li input + label,
-#fake-form li textarea + label,
-#fake-form li select + label {
-  float: none;
-  width: auto;
-  margin-right: 0;
-  margin-left: 1em;
-}
-#fake-form li textarea + label {
-  vertical-align: top;
-}
-#fake-form textarea,
-#fake-form input[type=text] {
-  border: 1px solid #c0c0c0;
-}
-#fake-form input[type=text] {
-  width: 300px;
-  padding: 3px;
-}
-#fake-form label {
-  display: block;
-  margin-right: 1em;
-  vertical-align: baseline;
-}
-#fake-form label em {
-  font-size: 90%;
-  font-style: normal;
-}
-#fake-form label strong {
-  display: block;
-  font-size: 90%;
-  font-weight: normal;
-  color: #C00;
-}
-#fake-form .x-checkbox label,
-#fake-form .x-radio label {
-  display: inline-block;
-}
-#fake-form legend {
-  border-bottom: 0;
-}
-#fake-form legend em {
-  font-size: 90%;
-  font-style: normal;
-}
-#fake-form legend strong {
-  display: block;
-  font-size: 90%;
-  font-weight: normal;
-  color: #C00;
-}
-#fake-form fieldset {
-  position: relative;
-  margin: 0;
-  padding: 0;
-}
-#fake-form fieldset.submit {
-  border-style: none;
-}
-#fake-form fieldset.fieldset-horizontal {
-  border-width: 0;
-}
-#fake-form fieldset.fieldset-horizontal.label-below label {
-  display: block;
-  margin-left: 0;
-  margin-top: 0.2em;
-  font-size: 90%;
-  text-align: left;
-  color: #999999;
-}
-#fake-form fieldset.fieldset-horizontal label em {
-  display: inline;
-}
-#fake-form fieldset.fieldset-horizontal ol {
-  padding: 0;
-}
-#fake-form fieldset.fieldset-horizontal li {
-  float: left;
-  margin-right: 1em;
-  padding: 0;
-}
-#fake-form fieldset.fieldset-subgroup {
-  margin-bottom: -2em;
-  border-style: none;
-}
-#fake-form fieldset.fieldset-subgroup ol {
-  position: relative;
-  top: -1.4em;
-  padding: 0;
-}
-#fake-form fieldset.fieldset-subgroup li {
-  padding: 0;
-}
-#fake-form fieldset.fieldset-subgroup legend {
-  margin-left: 0;
-  padding: 0;
-}
-#fake-form fieldset.fieldset-subgroup input + label {
-  float: none;
-  width: auto;
-  display: inline;
-  margin: 0 0 0 1em;
-}
-#fake-form legend {
-  font-size: 12px;
-  font-weight: bold;
-  color: #000000;
-}
-#fake-form legend em {
-  position: absolute;
-}
-#fake-form legend strong {
-  position: absolute;
-  top: 1.4em;
-}
-#fake-form .labels-block label {
-  display: block;
-  float: none;
-  margin: 0 0 0.5em;
-  width: auto;
-}
-#fake-form .labels-block input + label,
-#fake-form .labels-block textarea + label {
-  margin: 0.5em 0 0;
-}
+
 /* labels alignment right */
 #fake-form .labels-alignment-right label,
 #fake-form .labels-alignment-right .fieldset-subgroup legend,
 #fake-form .labels-alignment-right.fieldset-subgroup legend {
   text-align: right;
 }
+
 #fake-form .labels-block fieldset.fieldset-subgroup,
 #fake-form fieldset.labels-block.fieldset-subgroup {
   margin-bottom: 0;
 }
+
 #fake-form .labels-block .fieldset-subgroup legend,
 #fake-form .labels-block.fieldset-subgroup legend {
   width: auto;
 }
+
 #fake-form .labels-block .fieldset-subgroup legend em,
 #fake-form .labels-block.fieldset-subgroup legend em {
   position: relative;
 }
+
 #fake-form .labels-block .fieldset-subgroup legend strong,
 #fake-form .labels-block.fieldset-subgroup legend strong {
   position: relative;
   top: 0;
 }
+
 #fake-form .labels-block .fieldset-subgroup ol,
 #fake-form .labels-block.fieldset-subgroup ol {
   top: 0;
   margin: 0;
   padding: 0.5em 0 0;
 }
+
 /* element HIDDEN */
 #fake-form .formwizard-element.hidden-element {
   cursor: default;
 }
+
 #fake-form .formwizard-element .hidden-dummy-element {
   margin: 0;
   padding: 5px;
-  border: 1px dotted #A9A9A9;
+  border:1px dotted #A9A9A9;
 }
+
 /* styles for drag and drop content */
 .x-dd-drag-ghost .formwizard-element {
-  list-style: none;
+  list-style:none;
 }
+
 .x-dd-drop-icon {
   top: 7px;
 }
+
 .x-dd-drag-ghost ol {
   margin: 5px 0;
   padding: 0;
   list-style: none;
 }
+
 .x-dd-drag-ghost .buttongroup,
 .x-dd-drag-ghost label em,
 .x-dd-drag-ghost label strong {
   display: none;
 }
+
 .x-dd-drag-ghost label {
   margin: 0 10px 0 5px;
 }
+
 .x-dd-drag-ghost legend {
   margin: 0 5px;
   font-size: 14px;
@@ -222,98 +264,126 @@
   color: #000;
   border: none;
 }
+
 .x-grid-panel .remove {
   background-image: url("../../Images/remove.gif");
   width: 15px;
   height: 16px;
 }
+
 .x-dd-drag-proxy,
 .x-dd-drop-nodrop {
   background-color: #fff;
   border-color: #c0c0c0;
 }
-.tab-content fieldset #formwizard {
-  display: inherit;
+.tab-content{
+  fieldset{
+
+    #formwizard{
+      display:inherit;
+    }
+
+    &.form-section{
+      float: left;
+      min-width: 380px;
+      width: 100%;
+      padding-bottom: 15px;
+
+      &:last-child{
+        margin-bottom: 1em;
+      }
+
+      ol{
+        &#formwizard-right{
+          // overwrite inline-style "auto"
+          width:100vw !important;
+          overflow: visible !important;
+          position: relative;
+          float:none;
+          left:5px !important;
+          padding-top:0;
+          padding-left:0;
+          margin-right: 10px;
+          top:30px !important;
+          display: table-cell;
+          height:auto !important;
+          list-style: none;
+          border-top-style: none;
+
+          &.hover{
+            left:0;
+            width:auto;
+          }
+        }
+      }
+    }
+  }
 }
-.tab-content fieldset.form-section {
-  float: left;
-  min-width: 380px;
-  width: 100%;
-  padding-bottom: 15px;
-}
-.tab-content fieldset.form-section:last-child {
-  margin-bottom: 1em;
-}
-.tab-content fieldset.form-section ol#formwizard-right {
-  width: 100vw !important;
-  overflow: visible !important;
-  position: relative;
-  float: none;
-  left: 5px !important;
-  padding-top: 0;
-  padding-left: 0;
-  margin-right: 10px;
-  top: 30px !important;
-  display: table-cell;
-  height: auto !important;
-  list-style: none;
-  border-top-style: none;
-}
-.tab-content fieldset.form-section ol#formwizard-right.hover {
-  left: 0;
-  width: auto;
-}
+
 /* outer wrapper of whole wizard */
 #form-wizard-element {
   z-index: 1;
+
+  #formwizard-left{
+    display: table-cell;
+    float:left !important;
+    margin-right: -1px;
+
+    .x-tab-panel-body{
+      // overwrite inline-styles with important ;(
+      height:100% !important;
+      overflow:visible !important;
+    }
+  }
 }
-#form-wizard-element #formwizard-left {
-  display: table-cell;
-  float: left !important;
-  margin-right: -1px;
-}
-#form-wizard-element #formwizard-left .x-tab-panel-body {
-  height: 100% !important;
-  overflow: visible !important;
-}
+
 /* inner wrapper of whole wizard */
 #formwizard {
   background-color: #F8F8F8;
 }
+
 /* applied when a element is moved */
 #formwizard.hover-move {
   cursor: move;
 }
+
 /* left panel */
 #formwizard-left.x-border-panel {
   position: relative;
   left: auto;
   top: auto;
 }
+
 /* tabs */
 #formwizard-left .x-tab-panel-header {
   background-color: transparent;
 }
+
 /* tabs inner */
 #formwizard-left .x-tab-strip {
   margin-bottom: 0;
 }
+
 #formwizard-left .x-tab-strip-top .x-tab-left {
   padding-right: 20px;
 }
+
 #formwizard-left .x-tab-strip-top .x-tab-right {
   padding: 5px 10px 2px;
   background-color: #EDEDED;
   border-radius: 0;
 }
+
 #formwizard-left .x-tab-strip-top .x-tab-strip-active .x-tab-right,
-#formwizard-left .x-tab-strip-top .x-tab-strip-active.x-tab-strip-over .x-tab-right {
+#formwizard-left .x-tab-strip-top .x-tab-strip-active.x-tab-strip-over .x-tab-right{
   background-color: transparent;
   border-bottom-color: #F8F8F8;
 }
+
 #formwizard-left .x-tab-strip-top .x-tab-strip-over .x-tab-right {
   background-color: #E1E1E1;
 }
+
 #formwizard-left li.validation-error .x-tab-left,
 #formwizard-left div.validation-error .x-accordion-hd {
   margin-right: 14px;
@@ -321,6 +391,7 @@
   background-position: right 1px;
   background-repeat: no-repeat;
 }
+
 /* content below tabs */
 #formwizard-left .x-tab-panel-body-content {
   min-height: 330px;
@@ -329,6 +400,7 @@
   border: 1px solid #C0C0C0;
   border-top-width: 0;
 }
+
 /* info messages (also for drag and drop) */
 #formwizard-left .message-information,
 #fake-form .message-information,
@@ -339,33 +411,40 @@
   border-radius: 0;
   box-shadow: none;
 }
+
 #formwizard-left .message-information p,
 #fake-form .message-information p,
 .x-dd-drag-ghost .message-information {
   margin: 0;
 }
+
 /* intro info messages */
 #formwizard-left #formwizard-left-elements-intro,
 #formwizard-left #formwizard-left-options-dummy,
 #fake-form .message-information {
   margin: 0 0 10px;
 }
+
 #formwizard-left .x-tab-panel-body,
 #formwizard-left .x-accordion-hd {
   background: transparent none;
   border-width: 0;
 }
+
 /* accordion */
 #formwizard-left .x-panel-accordion {
   border-bottom: 1px solid #C7C7C7;
 }
+
 #formwizard-left .x-panel-accordion:last-child {
   border-bottom: medium none;
 }
+
 /* headline of accordion */
 #formwizard-left .x-accordion-hd {
   padding-left: 0;
 }
+
 /* toggle icon of accordion */
 #formwizard-left .x-accordion-hd .x-tool-toggle {
   margin: 0;
@@ -373,21 +452,26 @@
   background-image: url("../../Images/module-menu-down.png");
   background-position: 0 4px;
 }
+
 #formwizard-left .x-panel-collapsed .x-accordion-hd .x-tool-toggle {
   background-image: url("../../Images/module-menu-right.png");
   background-position: 1px 3px;
 }
+
 #formwizard-left .x-accordion-hd .x-panel-header-text {
   font-weight: bold;
 }
+
 #formwizard-left .x-accordion-hd .x-panel-body {
   padding-left: 15px;
 }
+
 /* element inside accordion */
 #formwizard-left .x-form {
   margin-left: 15px;
   margin-top: 10px;
 }
+
 #formwizard-left .x-form fieldset {
   padding: 0;
   border: none;
@@ -397,18 +481,22 @@
   font-size: 12px;
   color: #222222;
 }
+
 #formwizard-left .x-panel-tbar {
   margin-top: 10px;
   padding-left: 15px;
   padding-bottom: 0;
   border-width: 0;
 }
+
 #formwizard-left .x-panel-tbar .x-toolbar {
   padding: 0;
 }
+
 #formwizard-left .x-table-layout {
   margin-bottom: 10px;
 }
+
 /* generic element like textfield */
 #formwizard-left .formwizard-element {
   margin-left: 12px;
@@ -416,124 +504,158 @@
   background-image: none;
   border-color: transparent;
 }
+
 #formwizard-left .formwizard-element.x-btn-over {
   background-color: #D5D5D5;
-  background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
+  background-image: -moz-linear-gradient(center top , #F6F6F6 10%, #D5D5D5 90%);
   border-color: #C0C0C0;
   border-radius: 0;
 }
+
 #formwizard-left .formwizard-element .x-btn-mc {
   text-align: left;
 }
+
 /* form elements in left panel */
 .formwizard-left-elements-basic-button {
   background-image: url("../../Images/ui-button.png");
 }
+
 .formwizard-left-elements-basic-checkbox {
   background-image: url("../../Images/ui-check-box.png");
 }
+
 .formwizard-left-elements-basic-fieldset {
   background-image: url("../../Images/ui-group-box.png");
 }
+
 .formwizard-left-elements-basic-fileupload {
   background-image: url("../../Images/drive-upload.png");
 }
+
 .formwizard-left-elements-basic-hidden {
   background-image: url("../../Images/ui-text-field-hidden.png");
 }
+
 .formwizard-left-elements-basic-password {
   background-image: url("../../Images/ui-text-field-password.png");
 }
+
 .formwizard-left-elements-basic-radio {
   background-image: url("../../Images/ui-radio-button.png");
 }
+
 .formwizard-left-elements-basic-reset {
   background-image: url("../../Images/broom.png");
 }
+
 .formwizard-left-elements-basic-select {
   background-image: url("../../Images/ui-combo-box.png");
 }
+
 .formwizard-left-elements-basic-submit {
   background-image: url("../../Images/ui-button-default.png");
 }
+
 .formwizard-left-elements-basic-textarea {
   background-image: url("../../Images/ui-scroll-pane-text.png");
 }
+
 .formwizard-left-elements-basic-textline {
   background-image: url("../../Images/ui-text-field.png");
 }
+
 .formwizard-left-elements-predefined-checkboxgroup {
   background-image: url("../../Images/ui-check-boxes.png");
 }
+
 .formwizard-left-elements-predefined-email {
   background-image: url("../../Images/mail.png");
 }
+
 .formwizard-left-elements-predefined-name {
   background-image: url("../../Images/user-silhouette.png");
 }
+
 .formwizard-left-elements-predefined-radiogroup {
   background-image: url("../../Images/ui-radio-buttons.png");
 }
+
 .formwizard-left-elements-content-header {
   background-image: url("../../Images/edit-heading.png");
 }
+
 .formwizard-left-elements-content-textblock {
   background-image: url("../../Images/edit-textblock.png");
 }
+
 #formwizard-left .x-form-text {
   height: 17px;
 }
+
 #formwizard-left .x-btn-text-icon .x-btn-icon-small-left .x-btn-text {
   color: black;
 }
+
 #formwizard-left .x-small-editor .x-form-text {
   height: 13px !important;
 }
+
 /* icon in element field for applying entered text */
 #formwizard-left .x-form-field-wrap .x-form-submit-trigger {
   background-image: url("../../Images/submit-trigger.gif");
 }
+
 /* right panel */
 #formwizard-right {
   min-height: 350px;
   padding: 30px 0 10px 2px;
   overflow: visible;
 }
+
 #fake-form {
   padding: 10px;
   background-color: tansparent;
   border: 1px solid #C0C0C0;
 }
+
 #fake-form li {
   overflow: visible;
 }
+
 /* visible area of element on right panel */
 #fake-form div.overflow-hidden {
   overflow: hidden;
+
+  input{
+    margin-left: 1px;
+  }
 }
-#fake-form div.overflow-hidden input {
-  margin-left: 1px;
-}
+
 /* wrap around all elements on right panel */
 #fake-form .formwizard-element {
   border: 1px solid transparent;
   position: relative;
 }
+
 #fake-form .formwizard-element.hover,
 #fake-form .formwizard-element.hidden.hover {
   background-color: #F9FCFF;
   border: 1px solid #C5DBE6;
 }
+
 #fake-form .formwizard-element.active,
 #fake-form .formwizard-element.hidden.active {
   background-color: #EAF7FF;
   border: 1px solid #C5DBE6;
 }
+
 #fake-form .formwizard-element.hidden {
   min-height: 1em;
   background-color: transparent;
   border: 1px dotted #C5DBE6;
 }
+
 /* toolbar on each element */
 #fake-form .formwizard-element div.buttongroup {
   position: absolute;
@@ -544,31 +666,38 @@
   padding: 4px 3px 12px;
   background-image: url("../../Images/tooltip.png");
 }
+
 #fake-form .formwizard-element.hover > div.buttongroup,
 #fake-form .formwizard-element.active > div.buttongroup {
   display: block;
 }
+
 #fake-form .formwizard-element div.buttongroup button {
   width: 16px;
   height: 16px;
   background-color: transparent;
   border: 0 solid transparent;
 }
+
 #fake-form .formwizard-element div.buttongroup span {
   margin: 0 3px;
 }
+
 #fake-form .formwizard-element div.buttongroup span.x-btn-over {
   background-color: transparent;
   background-image: none;
 }
+
 #fake-form .formwizard-element button.t3-icon-edit-delete {
   background-image: url('../../../../../core/Resources/Public/Icons/T3Icons/actions/actions-delete.svg');
 }
+
 #fake-form .formwizard-element button.t3-icon-document-open {
   background-image: url('../../../../../core/Resources/Public/Icons/T3Icons/actions/actions-open.svg');
 }
-@media only screen and (max-width: 615px) {
-  .tab-content fieldset.form-section ol#formwizard-right {
-    left: 0 !important;
+
+@media only screen and (max-width:615px) {
+  .tab-content fieldset.form-section ol#formwizard-right{
+    left:0 !important;
   }
 }

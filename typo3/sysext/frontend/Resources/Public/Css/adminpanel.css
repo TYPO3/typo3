@@ -1,0 +1,485 @@
+/*!
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/*!
+ *  Font Awesome 4.3.0 by @davegandy - http://fontawesome.io - @fontawesome
+ *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+ */
+/* FONT PATH
+ * -------------------------- */
+@font-face {
+  font-family: 'TYPO3FontAwesome';
+  src: url('../../../../t3skin/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?v=4.3.0');
+  src: url('../../../../t3skin/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'), url('../../../../t3skin/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff2?v=4.3.0') format('woff2'), url('../../../../t3skin/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff?v=4.3.0') format('woff'), url('../../../../t3skin/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.ttf?v=4.3.0') format('truetype'), url('../../../../t3skin/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/*!
+ * Font Awesome icons are prefixed with #TSFE_ADMIN_PANEL_FORM to prevent issues with
+ * CSS from the website that uses Font Awesome too.
+ */
+#TSFE_ADMIN_PANEL_FORM .fa,
+#TSFE_ADMIN_PANEL_FORM .fa:before,
+.frontEndEditIconLinks .fa,
+.frontEndEditIconLinks .fa:before,
+.typo3-editPanel .fa,
+.typo3-editPanel .fa:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 TYPO3FontAwesome;
+  font-size: 15px;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-transform: translate(0, 0);
+          transform: translate(0, 0);
+}
+#TSFE_ADMIN_PANEL_FORM .fa-pencil:before,
+.typo3-feedit-element .fa-pencil:before {
+  content: "\f040";
+}
+#TSFE_ADMIN_PANEL_FORM .fa-angle-up:before,
+.typo3-editPanel .fa-angle-up:before {
+  content: "\f106";
+}
+#TSFE_ADMIN_PANEL_FORM .fa-angle-down:before,
+.typo3-editPanel .fa-angle-down:before {
+  content: "\f107";
+}
+#TSFE_ADMIN_PANEL_FORM .fa-toggle-off:before,
+.typo3-editPanel .fa-toggle-off:before {
+  content: "\f204";
+}
+#TSFE_ADMIN_PANEL_FORM .fa-toggle-on:before,
+.typo3-editPanel .fa-toggle-on:before {
+  content: "\f205";
+}
+#TSFE_ADMIN_PANEL_FORM .fa-google-plus-square:before,
+.typo3-editPanel .fa-google-plus-square:before {
+  content: "\f0d4";
+}
+#TSFE_ADMIN_PANEL_FORM .fa-trash:before,
+.typo3-editPanel .fa-trash:before {
+  content: "\f1f8";
+}
+#TSFE_ADMIN_PANEL_FORM .fa-history:before,
+.typo3-editPanel .fa-history:before {
+  content: "\f1da";
+}
+#TSFE_ADMIN_PANEL_FORM .fa-list-alt:before,
+.typo3-editPanel .fa-list-alt:before {
+  content: "\f022";
+}
+#TSFE_ADMIN_PANEL_FORM .fa-plus-square:before,
+.typo3-feedit-element .fa-plus-square:before {
+  content: "\f0fe";
+}
+#TSFE_ADMIN_PANEL_FORM .fa-arrows:before,
+.typo3-editPanel .fa-arrows:before {
+  content: "\f047";
+}
+#TSFE_ADMIN_PANEL_FORM .fa-exclamation-circle:before {
+  content: "\f06a";
+}
+#TSFE_ADMIN_PANEL_FORM .fa-exclamation-triangle:before {
+  content: "\f071";
+}
+#TSFE_ADMIN_PANEL_FORM .fa-info-circle:before {
+  content: "\f05a";
+}
+#TSFE_ADMIN_PANEL_FORM .fa-caret-down:before {
+  content: "\f0d7";
+}
+#TSFE_ADMIN_PANEL_FORM .fa-caret-up:before {
+  content: "\f0d8";
+}
+#TSFE_ADMIN_PANEL_FORM .fa-bolt:before {
+  content: "\f0e7";
+}
+/**
+ * General Styles
+ **/
+#TSFE_ADMIN_PANEL_FORM *:before,
+#TSFE_ADMIN_PANEL_FORM *:after {
+  box-sizing: border-box;
+}
+/**
+ * Frontend Editing Styles
+ **/
+.typo3-editPanel {
+  background: #ccc;
+  padding: 5px 10px;
+}
+.typo3-editPanel a {
+  text-decoration: none;
+}
+.typo3-editPanel-label {
+  display: inline;
+  margin: 0 10px;
+}
+.typo3-editPanel .t3-icon {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+.typo3-feedit-element .btn-default.content-link {
+  background-color: #eee;
+  margin: 3px;
+}
+.typo3-feedit-element-hidden {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
+  opacity: 0.2;
+}
+/**
+ * Admin Panel Styles
+ **/
+#TSFE_ADMIN_PANEL_FORM {
+  display: block;
+  max-width: 50%;
+}
+#TSFE_ADMIN_PANEL_FORM {
+  background-color: #fff;
+  box-shadow: 0 3px 15px #808080;
+  margin: 0;
+  padding: 0;
+  z-index: 10002;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel {
+  border: 1px solid #ccc;
+  border-spacing: 0;
+  border-collapse: separate;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  margin: 0;
+  min-width: 315px;
+  padding: 0;
+  line-height: 0.8;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel * {
+  line-height: 1;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel .typo3-adminPanel-table * {
+  line-height: 1.55;
+}
+#TSFE_ADMIN_PANEL_FORM,
+#TSFE_ADMIN_PANEL_FORM table,
+#TSFE_ADMIN_PANEL_FORM a {
+  color: black;
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 12px;
+  text-decoration: none;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-header {
+  line-height: 0.5;
+}
+#TSFE_ADMIN_PANEL_FORM #typo3-adminPanel-header {
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  cursor: move;
+}
+#TSFE_ADMIN_PANEL_FORM #typo3-adminPanel-header {
+  display: inline-block;
+  width: 100%;
+  background-color: #222;
+  color: white;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-header a {
+  color: #fff;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-header-title {
+  float: left;
+  padding-top: 11px;
+  padding-left: 15px;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-header-buttonWrapper {
+  display: inline-block;
+  float: right;
+  margin-left: 10px;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-panel-open .typo3-adminPanel-header-button:before,
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-panel-closed .typo3-adminPanel-header-button:before {
+  display: inline-block;
+  float: right;
+  padding: 10px 15px;
+  font-size: 16px;
+  content: "\f106";
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-panel-closed .typo3-adminPanel-header-button:before {
+  content: "\f107";
+}
+#TSFE_ADMIN_PANEL_FORM .updatebutton {
+  text-align: right;
+  background-color: #222;
+  width: 100%;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title .wrapper {
+  clear: left;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid #888;
+  border-bottom: 1px solid #888;
+  background-color: #ddd;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title a {
+  display: block;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  line-height: 25px;
+}
+#TSFE_ADMIN_PANEL_FORM label {
+  display: inline;
+  line-height: 16px;
+  font-weight: 500;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title a .typo3-adminPanel-label {
+  padding-top: 4px;
+  white-space: nowrap;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title .wrapper:hover {
+  color: #fff;
+  background-color: #7e7e7e;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title .wrapper:hover a {
+  color: #fff;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title .typo3-adminPanel-section-open,
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title .typo3-adminPanel-section-closed {
+  display: inline-block;
+  width: 100%;
+  padding-left: 26px;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title .typo3-adminPanel-section-open:before,
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title .typo3-adminPanel-section-closed:before {
+  margin-left: -13px;
+  padding-right: 13px;
+  font-size: 14px;
+  content: "\f0d8";
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title .typo3-adminPanel-section-closed:before {
+  content: "\f0d7";
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-itemRow .typo3-adminPanel-section-content {
+  padding: 7px 15px;
+  line-height: 16px;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-content {
+  padding-right: 11px;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-content .toolbar span {
+  padding: 1px;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-content label {
+  padding-right: 5px;
+}
+#TSFE_ADMIN_PANEL_FORM #typo3-adminPanel-tsLog {
+  border: 1px solid #7e7e7e;
+  border-spacing: 0;
+}
+#TSFE_ADMIN_PANEL_FORM .clear-cache-icon:before {
+  position: absolute;
+  left: 26px;
+  top: -11px;
+}
+#TSFE_ADMIN_PANEL_FORM .btn.clear-cache {
+  margin-left: 15px;
+  padding-left: 25px;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #ccc;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-table tr {
+  margin: 0;
+  padding: 0;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-table td {
+  margin: 0;
+  vertical-align: inherit;
+  border-color: inherit;
+  padding: 0 15px;
+  text-align: left;
+  white-space: nowrap;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-table th {
+  padding: 10px 10px 10px 15px;
+  border-bottom: 1px solid #aaa;
+  text-align: left;
+  background-color: #ededed;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-table th span[style] {
+  color: #fff !important;
+}
+#TSFE_ADMIN_PANEL_FORM #typo3-adminPanel-tsLog .typo3-adminPanel-logRow-highlight {
+  background-color: #fcd3cf;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-table-wrapper {
+  padding: 10px 0;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-table-wrapper.scroll-table {
+  overflow-x: scroll;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-table .line-odd,
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-table .line-even {
+  background-color: #f0f0f0;
+  text-align: left;
+  vertical-align: top;
+}
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-table .line-even {
+  background-color: #dedede;
+}
+#TSFE_ADMIN_PANEL_FORM #typo3-adminPanel-tsLog .stackPointer {
+  color: maroon;
+  vertical-align: top;
+}
+/**
+ * General Form and Button Styles
+ **/
+.t3-icon {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  text-align: center;
+}
+.btn .t3-icon {
+  margin: 0;
+}
+#TSFE_ADMIN_PANEL_FORM input,
+#TSFE_ADMIN_PANEL_FORM select {
+  position: static;
+  padding: 0;
+}
+#TSFE_ADMIN_PANEL_FORM input[type="checkbox"] {
+  display: block;
+  float: left;
+  margin-top: 1px;
+  margin-left: 0;
+  margin-right: 5px;
+}
+#TSFE_ADMIN_PANEL_FORM input[type="text"],
+#TSFE_ADMIN_PANEL_FORM select {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+  padding: 6px;
+  box-sizing: border-box;
+}
+#TSFE_ADMIN_PANEL_FORM input {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  margin: 0;
+}
+#TSFE_ADMIN_PANEL_FORM .btn {
+  display: inline-block;
+  margin-bottom: 0;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#TSFE_ADMIN_PANEL_FORM .btn:hover {
+  background-color: #c4c4c4;
+}
+#TSFE_ADMIN_PANEL_FORM .btn-default {
+  color: #333333;
+  background-color: #eeeeee;
+  border-color: #bbbbbb;
+  cursor: pointer;
+}
+#TSFE_ADMIN_PANEL_FORM .btn-group {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+#TSFE_ADMIN_PANEL_FORM .btn-group > .btn:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+  border-radius: 0;
+}
+#TSFE_ADMIN_PANEL_FORM .btn-group > .btn:first-child {
+  margin-left: 0;
+}
+#TSFE_ADMIN_PANEL_FORM input[type="text"] {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #333333;
+  background-color: #fefefe;
+  background-image: none;
+  border: 1px solid #bbbbbb;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon {
+  position: relative;
+  display: inline-block;
+  margin-right: 2px;
+  padding: 0;
+  height: 18px;
+  width: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon:after,
+#TSFE_ADMIN_PANEL_FORM .treeline-icon:before {
+  position: absolute;
+  content: '';
+  left: 50%;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon:before {
+  top: 0;
+  height: 100%;
+  width: 2px;
+  margin-left: -1px;
+  border-left: 1px dotted #666666;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon:after {
+  border-top: 1px dotted #666666;
+  height: 2px;
+  width: 100%;
+  top: 50%;
+  margin-top: -1px;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon-jointop:before {
+  top: 50%;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon-joinbottom:before {
+  top: -50%;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon-line:after {
+  display: none;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon-blank {
+  display: none;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon-clear:before,
+#TSFE_ADMIN_PANEL_FORM .treeline-icon-clear:after {
+  display: none;
+}

@@ -73,9 +73,6 @@ class BackendModuleController
             $view->assign('installToolEnableToken', $token);
             /** @var ModuleTemplate $moduleTemplate */
             $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-            $cssFile = 'EXT:install/Resources/Public/Css/BackendModule/ShowEnableInstallToolButton.css';
-            $cssFile = GeneralUtility::getFileAbsFileName($cssFile);
-            $moduleTemplate->getPageRenderer()->addCssFile(PathUtility::getAbsoluteWebPath($cssFile));
             $moduleTemplate->setContent($view->render());
             $response->getBody()->write($moduleTemplate->renderContent());
         }

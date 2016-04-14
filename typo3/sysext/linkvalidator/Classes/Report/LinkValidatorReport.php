@@ -253,7 +253,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
             $this->isAccessibleForCurrentUser = true;
         }
 
-        $this->doc->addStyleSheet('module', ExtensionManagementUtility::extRelPath('linkvalidator') . 'Resources/Public/Css/styles.css');
+        $this->doc->addStyleSheet('module', ExtensionManagementUtility::extRelPath('linkvalidator') . 'Resources/Public/Css/linkvalidator.css');
         $this->getPageRenderer()->loadJquery();
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Linkvalidator/Linkvalidator');
 
