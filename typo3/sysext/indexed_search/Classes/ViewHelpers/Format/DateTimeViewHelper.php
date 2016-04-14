@@ -15,8 +15,8 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers\Format;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * DateTime viewhelper

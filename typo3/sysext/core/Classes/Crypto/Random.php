@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare (strict_types=1);
 namespace TYPO3\CMS\Core\Crypto;
 
 /*
@@ -26,7 +26,8 @@ class Random
      * @param int $length
      * @return string
      */
-    public function generateRandomBytes(int $length): string {
+    public function generateRandomBytes(int $length): string
+    {
         return random_bytes($length);
     }
 
@@ -37,7 +38,8 @@ class Random
      * @param int $max
      * @return int
      */
-    public function generateRandomInteger(int $min, int $max): int {
+    public function generateRandomInteger(int $min, int $max): int
+    {
         return random_int($min, $max);
     }
 
@@ -47,8 +49,8 @@ class Random
      * @param int $length
      * @return string
      */
-    public function generateRandomHexString(int $length): string {
+    public function generateRandomHexString(int $length): string
+    {
         return substr(bin2hex($this->generateRandomBytes((int)(($length + 1) / 2))), 0, $length);
     }
-
 }

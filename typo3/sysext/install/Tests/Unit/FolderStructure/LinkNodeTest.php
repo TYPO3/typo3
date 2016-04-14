@@ -365,7 +365,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function isTargetCorrectReturnsFalseIfActualTargetIsNotIdenticalToSpecifiedTarget()
     {
         $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
-        $target = PATH_site . 'typo3temp/var/tests/' .$this->getUniqueId('linkTarget_');
+        $target = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('linkTarget_');
         touch($target);
         symlink($target, $path);
         $this->testFilesToDelete[] = $path;

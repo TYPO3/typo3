@@ -43,7 +43,7 @@ class SearchAdminCest
         $dropDownHeader = $I->grabTextFrom($searchResultHeader);
         $I->assertEquals('Backend user', $dropDownHeader);
         $I->click($liveSearchToolBarItem . ' > div > div > div:nth-child(2) > a');
-        $I->switchToIFrame("content");
+        $I->switchToIFrame('content');
         $I->waitForElement('#EditDocumentController');
         $I->see('Edit Backend user "admin" on root level');
         $I->switchToIFrame();

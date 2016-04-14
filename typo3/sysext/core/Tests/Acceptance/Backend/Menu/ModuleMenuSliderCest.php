@@ -38,9 +38,9 @@ class ModuleMenuSliderCest
         $sees = ['Page', 'Extensions'];
 
         $menuItems = [
-            ["mainId" => "#web", "menuItem" => "Page"],
-            ["mainId" => "#tools", "menuItem" => "Extensions"],
-            ["mainId" => "#system", "menuItem" => "Log"]
+            ['mainId' => '#web', 'menuItem' => 'Page'],
+            ['mainId' => '#tools', 'menuItem' => 'Extensions'],
+            ['mainId' => '#system', 'menuItem' => 'Log']
         ];
 
         $I->wantTo('check the slider in the module menu');

@@ -48,7 +48,6 @@ class InputTextElementTest extends UnitTestCase
         parent::tearDown();
     }
 
-
     /**
      * Data provider for renderAppliesCorrectTimestampConversion
      *

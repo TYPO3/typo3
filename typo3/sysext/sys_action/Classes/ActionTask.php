@@ -190,7 +190,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                 'uid' => 'actiontask' . $actionRow['uid'],
                 'title' => $actionRow['title'],
                 'description' => $actionRow['description'],
-                'descriptionHtml' => ($actionRow['description'] ? '<p>' . nl2br(htmlspecialchars($actionRow['description'])) . '</p>' : '' ) . $editActionLink,
+                'descriptionHtml' => ($actionRow['description'] ? '<p>' . nl2br(htmlspecialchars($actionRow['description'])) . '</p>' : '') . $editActionLink,
                 'link' => $this->moduleUrl . '&SET[function]=sys_action.TYPO3\\CMS\\SysAction\\ActionTask&show=' . $actionRow['uid']
             );
         }

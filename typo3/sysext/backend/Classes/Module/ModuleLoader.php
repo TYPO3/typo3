@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Module;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -398,7 +397,6 @@ class ModuleLoader
                     'title' => isset($labels[$language]['tabs']['tab']) ? $labels[$language]['tabs']['tab'] : $labels['default']['tabs']['tab'],
                 ];
             }
-
         }
     }
 

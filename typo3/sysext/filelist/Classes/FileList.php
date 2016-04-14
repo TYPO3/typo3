@@ -381,7 +381,7 @@ class FileList extends AbstractRecordList
                             $elToConfirm[$key] = $clipBoardElement->getName();
                         }
                         if ($addPasteButton) {
-                            $cells[] = '<a class="btn btn-default t3js-modal-trigger"'.
+                            $cells[] = '<a class="btn btn-default t3js-modal-trigger"' .
                                 ' href="' . htmlspecialchars($this->clipObj->pasteUrl(
                                     '_FILE',
                                     $this->folderObject->getCombinedIdentifier()
@@ -894,7 +894,7 @@ class FileList extends AbstractRecordList
                     . ' data-severity="warning"'
                     . ' data-title="' . $this->getLanguageService()->getLL('clip_pasteInto', true) . '"'
                     . ' title="' . $this->getLanguageService()->getLL('clip_pasteInto', true) . '"'
-                    .'>'
+                    . '>'
                     . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render()
                     . '</a>';
             }

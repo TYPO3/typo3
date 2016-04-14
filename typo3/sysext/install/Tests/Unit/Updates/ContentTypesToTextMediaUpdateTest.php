@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Install\Tests\Unit\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Prophet;
 use TYPO3\CMS\Core\Package\PackageManager;

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare (strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Crypto;
 
 /*
@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Crypto;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case

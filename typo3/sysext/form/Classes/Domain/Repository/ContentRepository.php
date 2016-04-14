@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Form\Domain\Repository;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Factory\JsonToTypoScript;
@@ -40,11 +39,11 @@ class ContentRepository
     {
         $record = false;
         $getPostVariables = GeneralUtility::_GP('P');
-        if(!$table) {
+        if (!$table) {
             $table = 'tt_content';
         }
 
-        if(!$recordId) {
+        if (!$recordId) {
             $recordId = (int)$getPostVariables['uid'];
         }
 

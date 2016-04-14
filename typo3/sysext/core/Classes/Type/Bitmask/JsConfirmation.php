@@ -110,5 +110,4 @@ class JsConfirmation extends Enumeration
         }
         return false;
     }
-
 }

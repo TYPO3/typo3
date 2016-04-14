@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Taskcenter\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -332,7 +331,7 @@ class TaskModuleController extends BaseScriptClass
                 }
                 $description = $item['descriptionHtml'] ?: '<p>' . nl2br(htmlspecialchars($item['description'])) . '</p>';
                 $id = $this->getUniqueKey($item['uid']);
-                $contentId = strtolower(str_replace('\\','-',$id));
+                $contentId = strtolower(str_replace('\\', '-', $id));
                 // Collapsed & expanded menu items
                 if (isset($this->getBackendUser()->uc['taskcenter']['states'][$id]) && $this->getBackendUser()->uc['taskcenter']['states'][$id]) {
                     $collapsed = true;
@@ -347,7 +346,7 @@ class TaskModuleController extends BaseScriptClass
                                 <div id="' . $contentId . '" data-taskcenter-id="' . $id . '" class="panel ' . $panelState . '">
                                     <div class="panel-heading">
                                         <div class="panel-heading-right">
-                                            <a href="#task_content_' . $contentId . '" class="panel-header-collapse t3js-taskcenter-header-collapse" role="button" data-toggle="collapse" data-uid="' . $contentId . '" aria-expanded="' . ($collapsed ? 'false' : 'true') .'">
+                                            <a href="#task_content_' . $contentId . '" class="panel-header-collapse t3js-taskcenter-header-collapse" role="button" data-toggle="collapse" data-uid="' . $contentId . '" aria-expanded="' . ($collapsed ? 'false' : 'true') . '">
                                                 ' . $collapseIcon . '
                                             </a>
                                         </div>

@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Form\View\Wizard\Element;
  */
 
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Form\Domain\Repository\ContentRepository;
@@ -221,7 +221,7 @@ class FormWizardElement extends AbstractFormElement
             $attributeString .= ' ' . $attributeName . '="' . htmlspecialchars($attributeValue) . '"';
         }
 
-        $input = '<input ' . $attributeString . ' type="hidden" />' . "\n" ;
+        $input = '<input ' . $attributeString . ' type="hidden" />' . "\n";
         $content = $input . '<div id="form-wizard-element"></div>';
         $this->resultArray['html'] = '<div id="form-wizard-element-container" rel="' . $attributes['id'] . '">'
             . "\n" . $content
@@ -236,5 +236,4 @@ class FormWizardElement extends AbstractFormElement
     {
         return GeneralUtility::makeInstance(TypoScriptService::class);
     }
-
 }

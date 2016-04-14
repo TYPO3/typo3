@@ -356,7 +356,7 @@ class ExtdirectTreeCommands
         if (empty($mountPoints)) {
             $mountPoints = array(0);
         }
-        if (!empty(static::getBackendUser()->uc['pageTree_temporaryMountPoint'])){
+        if (!empty(static::getBackendUser()->uc['pageTree_temporaryMountPoint'])) {
             $mountPoints[] = (int)static::getBackendUser()->uc['pageTree_temporaryMountPoint'];
         }
         $mountPoints = array_unique($mountPoints);

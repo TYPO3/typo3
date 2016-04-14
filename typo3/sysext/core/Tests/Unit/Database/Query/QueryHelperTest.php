@@ -190,5 +190,4 @@ class QueryHelperTest extends UnitTestCase
     {
         $this->assertSame($expectedResult, QueryHelper::parseGroupBy($input));
     }
-
 }

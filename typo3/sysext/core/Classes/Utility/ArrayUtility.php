@@ -696,7 +696,6 @@ class ArrayUtility
         return true;
     }
 
-
     /**
      * Takes a TypoScript array as input and returns an array which contains all integer properties found which had a value (not only properties). The output array will be sorted numerically.
      *

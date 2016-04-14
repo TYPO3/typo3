@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\FormProtection;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class provides protection against cross-site request forgery (XSRF/CSRF)

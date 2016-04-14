@@ -15,10 +15,10 @@ namespace TYPO3\CMS\Frontend\ContentObject\Exception;
  */
 
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
-use TYPO3\CMS\Core\Crypto\Random;
 
 /**
  * Exception handler class for content object rendering

@@ -419,7 +419,7 @@ class SingleFieldContainer extends AbstractContainer
 						<div class="t3-form-original-language-diff">
 							<div class="t3-form-original-language-diffheader">'
                                 . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.changeInOrig'))
-							. '</div>
+                            . '</div>
 							<div class="t3-form-original-language-diffcontent">
 								<div class="diff">
 									<div class="diff-item">

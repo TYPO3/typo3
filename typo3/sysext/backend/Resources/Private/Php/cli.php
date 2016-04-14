@@ -25,7 +25,7 @@ if (version_compare(PHP_VERSION, '7.0.0', '<')) {
  * Valid cliKeys must be registered in
  * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'].
  */
-call_user_func(function() {
+call_user_func(function () {
     $classLoader = require __DIR__ . '/../../../../../../vendor/autoload.php';
 
     (new \TYPO3\CMS\Backend\Console\Application($classLoader))->run();

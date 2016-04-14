@@ -89,7 +89,7 @@ class PageTree
         $I->see($nodeText, self::$treeItemSelector);
 
         /** @var RemoteWebElement $context */
-        $context = $I->executeInSelenium(function() use ($nodeText, $context
+        $context = $I->executeInSelenium(function () use ($nodeText, $context
         ) {
             return $context->findElement(\WebDriverBy::linkText($nodeText))->findElement(
                 WebDriverBy::xpath('ancestor::li[@class="x-tree-node"][1]')
@@ -98,7 +98,7 @@ class PageTree
 
         try {
             $context->findElement(\WebDriverBy::cssSelector('.x-tree-elbow-end-plus'))->click();
-        } catch(\Facebook\WebDriver\Exception\NoSuchElementException $e) {
+        } catch (\Facebook\WebDriver\Exception\NoSuchElementException $e) {
             // element not found so it may be already opened...
         }
 

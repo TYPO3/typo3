@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  */
 
 use TYPO3\CMS\Core\Resource\AbstractFile;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract base implementation of a task.

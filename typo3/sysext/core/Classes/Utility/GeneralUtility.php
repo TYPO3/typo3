@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * The legendary "t3lib_div" class - Miscellaneous functions for general purpose.

@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Beuser\ViewHelpers\Display;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Converts comma separated list of pages uids to html unordered list (<ul>) with speaking titles

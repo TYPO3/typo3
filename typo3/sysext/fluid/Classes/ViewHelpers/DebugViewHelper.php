@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  */
 
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * This ViewHelper generates a HTML dump of the tagged variable.

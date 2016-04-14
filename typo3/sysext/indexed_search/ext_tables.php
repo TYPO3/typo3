@@ -18,7 +18,6 @@ if (TYPO3_MODE === 'BE') {
             'labels' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_mod.xlf',
         )
     );
-
 }
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('index_config');

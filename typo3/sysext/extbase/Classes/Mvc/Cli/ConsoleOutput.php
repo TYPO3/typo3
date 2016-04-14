@@ -318,7 +318,8 @@ class ConsoleOutput
      * @return ArgvInput
      * @throws \RuntimeException
      */
-    protected function getInput() {
+    protected function getInput()
+    {
         if ($this->input === null) {
             if (!isset($_SERVER['argv'])) {
                 throw new \RuntimeException('Cannot initialize ArgvInput object without CLI context.', 1456914444);

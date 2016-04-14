@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * Child class for rendering of Web > List (not the final class)
@@ -557,7 +556,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         $searchLevelItems = array();
 
         // get translated labels for search levels from pagets
-        foreach ($searchLevelsFromTSconfig as $keySearchLevel => $labelConfigured ) {
+        foreach ($searchLevelsFromTSconfig as $keySearchLevel => $labelConfigured) {
             $label = $lang->sL('LLL:' . $labelConfigured, false);
             if ($label === '') {
                 $label = $labelConfigured;
