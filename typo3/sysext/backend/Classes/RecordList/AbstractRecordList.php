@@ -18,7 +18,10 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -425,7 +428,23 @@ abstract class AbstractRecordList
     public function initializeLanguages()
     {
         // Look up page overlays:
-        $this->pageOverlays = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'pages_language_overlay', 'pid=' . (int)$this->id . BackendUtility::deleteClause('pages_language_overlay') . BackendUtility::versioningPlaceholderClause('pages_language_overlay'), '', '', '', 'sys_language_uid');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages_language_overlay');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+        $result = $queryBuilder
+            ->select('*')
+            ->from('pages_language_overlay')
+            ->where($queryBuilder->expr()->eq('pid', (int)$this->id))
+            ->execute();
+
+        $this->pageOverlays = [];
+        while ($row = $result->fetch()) {
+            $this->pageOverlays[$row['sys_language_uid']] = $row;
+        };
+
         $this->languageIconTitles = $this->getTranslateTools()->getSystemLanguages($this->id);
     }
 
