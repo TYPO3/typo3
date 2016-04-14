@@ -20,6 +20,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 class ExpressionBuilderTest extends UnitTestCase
@@ -229,6 +230,45 @@ class ExpressionBuilderTest extends UnitTestCase
 
         $this->connectionProphet->quoteIdentifier('aField')->shouldHaveBeenCalled();
         $this->assertSame('aField NOT IN (1, 2, 3)', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function inSetForMySQL()
+    {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+        $databasePlatform->getName()->willReturn('mysql');
+
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            return '`' . $args[0] . '`';
+        });
+
+        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+
+        $result = $this->subject->inSet('aField', "'1'");
+
+        $this->assertSame('FIND_IN_SET(\'1\', `aField`)', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function inSetForPostgreSQL()
+    {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+        $databasePlatform->getName()->willReturn('postgresql');
+
+        $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            return '"' . $args[0] . '"';
+        });
+
+        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+
+        $result = $this->subject->inSet('aField', "'1'");
+
+        $this->assertSame('any(string_to_array("aField", \',\')) = \'1\'', $result);
     }
 
     /**

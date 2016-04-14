@@ -293,12 +293,13 @@ class ExpressionBuilder
         switch ($this->connection->getDatabasePlatform()->getName()) {
             case 'postgresql':
             case 'pdo_postgresql':
-                return $this->eq(
+                return $this->comparison(
                     sprintf(
                         'any(string_to_array(%s, %s))',
                         $this->connection->quoteIdentifier($fieldName),
                         $this->literal(',')
                     ),
+                    self::EQ,
                     $value
                 );
                 break;
