@@ -43,6 +43,7 @@ if ($groupFound && $groupPosition) {
             'exclude' => 1,
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array(
                         'LLL:EXT:form/Resources/Private/Language/Database.xlf:tx_form_predefinedform.selectPredefinedForm',
