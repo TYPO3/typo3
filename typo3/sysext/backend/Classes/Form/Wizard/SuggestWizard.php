@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -96,34 +97,6 @@ class SuggestWizard
 		</div>';
 
         return $selector;
-    }
-
-    /**
-     * Search a data structure array recursively -- including within nested
-     * (repeating) elements -- for a particular field config.
-     *
-     * @param array $dataStructure The data structure
-     * @param string $fieldName The field name
-     * @return array
-     */
-    protected function getNestedDsFieldConfig(array $dataStructure, $fieldName)
-    {
-        $fieldConfig = array();
-        $elements = $dataStructure['ROOT']['el'] ? $dataStructure['ROOT']['el'] : $dataStructure['el'];
-        if (is_array($elements)) {
-            foreach ($elements as $k => $ds) {
-                if ($k === $fieldName) {
-                    $fieldConfig = $ds['TCEforms']['config'];
-                    break;
-                } elseif (isset($ds['el'][$fieldName]['TCEforms']['config'])) {
-                    $fieldConfig = $ds['el'][$fieldName]['TCEforms']['config'];
-                    break;
-                } else {
-                    $fieldConfig = $this->getNestedDsFieldConfig($ds, $fieldName);
-                }
-            }
-        }
-        return $fieldConfig;
     }
 
     /**
@@ -277,7 +250,6 @@ class SuggestWizard
             $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
         } else {
             $parts = explode('|', $field);
-
             if ($GLOBALS['TCA'][$table]['columns'][$parts[0]]['config']['type'] !== 'flex') {
                 return;
             }
@@ -295,19 +267,113 @@ class SuggestWizard
             }
             $flexformDSArray = BackendUtility::getFlexFormDS($flexfieldTCAConfig, $row, $table, $parts[0]);
             $flexformDSArray = GeneralUtility::resolveAllSheetsInDS($flexformDSArray);
-            $flexformElement = $parts[count($parts) - 2];
-            foreach ($flexformDSArray as $sheet) {
-                foreach ($sheet as $_ => $dataStructure) {
-                    $fieldConfig = $this->getNestedDsFieldConfig($dataStructure, $flexformElement);
-                    if (!empty($fieldConfig)) {
-                        break(2);
-                    }
-                }
-            }
+
+            $fieldConfig = $this->getFieldConfiguration($parts, $flexformDSArray);
             // Flexform field name levels are separated with | instead of encapsulation in [];
             // reverse this here to be compatible with regular field names.
             $field = str_replace('|', '][', $field);
         }
+    }
+
+    /**
+     * Get configuration for given field by traversing the flexform path to field
+     * given in $parts
+     *
+     * @param array $parts
+     * @param array $flexformDSArray
+     * @return array
+     */
+    protected function getFieldConfiguration(array $parts, array $flexformDSArray)
+    {
+        $relevantParts = [];
+        foreach ($parts as $part) {
+            if ($this->isRelevantFlexField($part)) {
+                $relevantParts[] = $part;
+            }
+        }
+        // throw away db field name for flexform field
+        array_shift($relevantParts);
+
+        $flexformElement = array_pop($relevantParts);
+        $sheetName = array_shift($relevantParts);
+        $flexSubDataStructure = $flexformDSArray['sheets'][$sheetName];
+        foreach ($relevantParts as $relevantPart) {
+            $flexSubDataStructure = $this->getSubConfigurationForSections($flexSubDataStructure, $relevantPart);
+        }
+        $fieldConfig = $this->getNestedDsFieldConfig($flexSubDataStructure, $flexformElement);
+        return $fieldConfig;
+    }
+
+    /**
+     * Recursively get sub sections in data structure by name
+     *
+     * @param array $dataStructure
+     * @param string $fieldName
+     * @return array
+     */
+    protected function getSubConfigurationForSections(array $dataStructure, $fieldName)
+    {
+        $fieldConfig = array();
+        $elements = $dataStructure['ROOT']['el'] ? $dataStructure['ROOT']['el'] : $dataStructure['el'];
+        if (is_array($elements)) {
+            foreach ($elements as $k => $ds) {
+                if ($k === $fieldName) {
+                    $fieldConfig = $ds;
+                    break;
+                } elseif (isset($ds['el'][$fieldName])) {
+                    $fieldConfig = $ds['el'][$fieldName];
+                    break;
+                } else {
+                    $fieldConfig = $this->getSubConfigurationForSections($ds, $fieldName);
+                }
+            }
+        }
+        return $fieldConfig;
+    }
+
+    /**
+     * Search a data structure array recursively -- including within nested
+     * (repeating) elements -- for a particular field config.
+     *
+     * @param array $dataStructure The data structure
+     * @param string $fieldName The field name
+     * @return array
+     */
+    protected function getNestedDsFieldConfig(array $dataStructure, $fieldName)
+    {
+        $fieldConfig = array();
+        $elements = $dataStructure['ROOT']['el'] ? $dataStructure['ROOT']['el'] : $dataStructure['el'];
+        if (is_array($elements)) {
+            foreach ($elements as $k => $ds) {
+                if ($k === $fieldName) {
+                    $fieldConfig = $ds['TCEforms']['config'];
+                    break;
+                } elseif (isset($ds['el'][$fieldName]['TCEforms']['config'])) {
+                    $fieldConfig = $ds['el'][$fieldName]['TCEforms']['config'];
+                    break;
+                } else {
+                    $fieldConfig = $this->getNestedDsFieldConfig($ds, $fieldName);
+                }
+            }
+        }
+        return $fieldConfig;
+    }
+
+    /**
+     * Checks whether the field is an actual identifier or just "array filling"
+     *
+     * @param string $fieldName
+     * @return bool
+     */
+    protected function isRelevantFlexField($fieldName)
+    {
+        return !(
+            StringUtility::beginsWith($fieldName, 'ID-') ||
+            $fieldName === 'lDEF' ||
+            $fieldName === 'vDEF' ||
+            $fieldName === 'data' ||
+            $fieldName === 'el'
+        );
     }
 
     /**
@@ -359,7 +425,6 @@ class SuggestWizard
      *
      * @param array $resultRows
      * @param int $maxItems
-     * @param string $rowIdSuffix
      * @return array
      */
     protected function createListItemsFromResultRow(array $resultRows, $maxItems)
