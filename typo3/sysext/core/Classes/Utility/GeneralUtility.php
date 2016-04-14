@@ -1775,13 +1775,7 @@ class GeneralUtility
         if (!empty($firstLevelCache[$identifier])) {
             $array = $firstLevelCache[$identifier];
         } else {
-            // Look up in second level cache
-            // @todo: Is this cache really required? It basically substitutes a little cpu work with a db query?
-            $array = PageRepository::getHash($identifier, 0);
-            if (!is_array($array)) {
-                $array = self::xml2arrayProcess($string, $NSprefix, $reportDocTag);
-                PageRepository::storeHash($identifier, $array, 'ident_xml2array');
-            }
+            $array = self::xml2arrayProcess($string, $NSprefix, $reportDocTag);
             // Store content in first level cache
             $firstLevelCache[$identifier] = $array;
         }

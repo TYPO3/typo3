@@ -576,11 +576,6 @@ class TcaSelectItemsTest extends UnitTestCase
         $languageService->loadSingleTableDescription(Argument::cetera())->willReturn(null);
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
 
-        // Needed to suppress a cache in xml2array
-        /** @var DatabaseConnection|ObjectProphecy $database */
-        $database = $this->prophesize(DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB'] = $database->reveal();
-
         $expectedItems = [
             0 => [
                 0 => 'fooTableTitle aFlexFieldTitle dummy',
