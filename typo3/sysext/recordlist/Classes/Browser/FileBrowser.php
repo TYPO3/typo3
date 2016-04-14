@@ -250,7 +250,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $folderIcon = $this->iconFactory->getIconForResource($folder, Icon::SIZE_SMALL);
 
         $lines[] = '
-			<tr class="t3-row-header">
+			<tr>
 				<th class="col-title" nowrap="nowrap">' . $folderIcon . ' ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen)) . '</th>
 				<th class="col-control" nowrap="nowrap"></th>
 				<th class="col-clipboard" nowrap="nowrap">

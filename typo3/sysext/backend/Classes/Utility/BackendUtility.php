@@ -2477,7 +2477,7 @@ class BackendUtility
         $arrow = '';
         // Put header before the rest of the text
         if ($helpTextArray['title'] !== null) {
-            $output .= '<h2 class="t3-row-header">' . $helpTextArray['title'] . '</h2>';
+            $output .= '<h2>' . $helpTextArray['title'] . '</h2>';
         }
         // Add see also arrow if we have more info
         if ($helpTextArray['moreInfo']) {

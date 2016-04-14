@@ -971,7 +971,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         $theData = $this->headerFields($this->fieldArray, $table, $theData);
         // Title row
         $localizedTableTitle = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title'], true);
-        $out .= '<tr class="t3-row-header">' . '<th class="col-icon"></th>'
+        $out .= '<tr><th class="col-icon"></th>'
             . '<th colspan="' . (count($theData) - 2) . '"><span class="c-table">'
             . $localizedTableTitle . '</span> (' . $dbCount . ')</td>' . '<td class="col-icon"></td>'
             . '</tr>';
@@ -1034,7 +1034,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			<!--
 				Standard list of table "' . $table . '"
 			-->
-			<div class="table-fit"><table class="table table-striped">
+			<div class="table-fit"><table class="table table-hover table-striped">
 				' . $out . '
 			</table></div>';
         return $out;
