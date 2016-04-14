@@ -285,7 +285,57 @@ return [
                                         </el>
                                     </ROOT>
                                 </sFile>
-
+                                <sSuggestCheckCombination>
+                                    <ROOT>
+                                        <type>array</type>
+                                        <TCEforms>
+                                            <sheetTitle>internal_type=db+checkbox</sheetTitle>
+                                        </TCEforms>
+                                        <el>
+                                            <settings.subelements>
+                                                <TCEforms/>
+                                                <title>Subelements</title>
+                                                <section>1</section>
+                                                <type>array</type>
+                                                <el>
+                                                    <item>
+                                                        <type>array</type>
+                                                        <title>Subelement</title>
+                                                        <el>
+                                                            <content>
+                                                                <TCEforms>
+                                                                    <label>Content</label>
+                                                                    <config>
+                                                                        <type>group</type>
+                                                                        <internal_type>db</internal_type>
+                                                                        <allowed>pages</allowed>
+                                                                        <size>5</size>
+                                                                        <maxitems>10</maxitems>
+                                                                        <minitems>1</minitems>
+                                                                        <show_thumbs>1</show_thumbs>
+                                                                        <wizards>
+                                                                            <suggest>
+                                                                                <type>suggest</type>
+                                                                            </suggest>
+                                                                        </wizards>
+                                                                    </config>
+                                                                </TCEforms>
+                                                            </content>
+                                                        </el>
+                                                    </item>
+                                                </el>
+                                            </settings.subelements>
+                                            <settings.check>
+                                                <TCEforms>
+                                                    <label>Check it out</label>
+                                                    <config>
+                                                        <type>check</type>
+                                                    </config>
+                                                </TCEforms>
+                                            </settings.check>
+                                        </el>
+                                    </ROOT>
+                                </sSuggestCheckCombination>
                             </sheets>
                         </T3DataStructure>
                     ',
