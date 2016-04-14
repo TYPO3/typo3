@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Backend\History;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -136,13 +138,16 @@ class RecordHistory
             $this->showInsertDelete = 0;
             $this->showSubElements = 0;
             $element = explode(':', $this->element);
-            $record = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-                '*',
-                'sys_history',
-                'tablename=' . $this->getDatabaseConnection()->fullQuoteStr($element[0], 'sys_history') . ' AND recuid=' . (int)$element[1],
-                '',
-                'uid DESC'
-            );
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_history');
+            $record = $queryBuilder
+                ->select('*')
+                ->from('sys_history')
+                ->where($queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($element[0])))
+                ->andWhere($queryBuilder->expr()->eq('recuid', (int)$element[1]))
+                ->orderBy('uid', 'DESC')
+                ->execute()
+                ->fetch();
             $this->lastSyslogId = $record['sys_log_uid'];
             $this->createChangeLog();
             $completeDiff = $this->createMultipleDiff();
@@ -188,9 +193,22 @@ class RecordHistory
     public function toggleHighlight($uid)
     {
         $uid = (int)$uid;
-        $row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('snapshot', 'sys_history', 'uid=' . $uid);
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_history');
+        $row = $queryBuilder
+            ->select('snapshot')
+            ->from('sys_history')
+            ->where($queryBuilder->expr()->eq('uid', $uid))
+            ->execute()
+            ->fetch();
+
         if (!empty($row)) {
-            $this->getDatabaseConnection()->exec_UPDATEquery('sys_history', 'uid=' . $uid, array('snapshot' => !$row['snapshot']));
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_history');
+            $queryBuilder
+                ->update('sys_history')
+                ->set('snapshot', (int)!$row['snapshot'])
+                ->where($queryBuilder->expr()->eq('uid', $uid))
+                ->execute();
         }
     }
 
@@ -330,7 +348,7 @@ class RecordHistory
             100 => array(
                 'value' => 100
             ),
-            '' => array(
+            999 => array(
                 'value' => 'maxSteps_all'
             ),
             'marked' => array(
@@ -376,7 +394,7 @@ class RecordHistory
 
         // set values correctly
         if ($currentSelection['maxSteps'] !== 'marked') {
-            $this->maxSteps = $currentSelection['maxSteps'] ? (int)$currentSelection['maxSteps'] : '';
+            $this->maxSteps = $currentSelection['maxSteps'] ? (int)$currentSelection['maxSteps'] : $this->maxSteps;
         } else {
             $this->showMarked = true;
             $this->maxSteps = false;
@@ -665,7 +683,18 @@ class RecordHistory
         if ($elParts[0] == 'pages' && $this->showSubElements && $this->hasPageAccess('pages', $elParts[1])) {
             foreach ($GLOBALS['TCA'] as $tablename => $value) {
                 // check if there are records on the page
-                $rows = $this->getDatabaseConnection()->exec_SELECTgetRows('uid', $tablename, 'pid=' . (int)$elParts[1]);
+                /** @var QueryBuilder $queryBuilder */
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tablename);
+                $queryBuilder
+                    ->getQueryContext()
+                    ->setIgnoreEnableFields(true)
+                    ->setIncludeDeleted(true);
+                $rows = $queryBuilder
+                    ->select('uid')
+                    ->from($tablename)
+                    ->where($queryBuilder->expr()->eq('pid', (int)$elParts[1]))
+                    ->execute()
+                    ->fetchAll();
                 if (empty($rows)) {
                     continue;
                 }
@@ -702,12 +731,27 @@ class RecordHistory
             return 0;
         }
         // If table is found in $GLOBALS['TCA']:
-        $databaseConnection = $this->getDatabaseConnection();
         $uid = $this->resolveElement($table, $uid);
         // Selecting the $this->maxSteps most recent states:
-        $rows = $databaseConnection->exec_SELECTgetRows('sys_history.*, sys_log.userid, sys_log.log_data', 'sys_history, sys_log', 'sys_history.sys_log_uid = sys_log.uid
-						AND sys_history.tablename = ' . $databaseConnection->fullQuoteStr($table, 'sys_history') . '
-						AND sys_history.recuid = ' . (int)$uid, '', 'sys_log.uid DESC', $this->maxSteps);
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_history');
+        $rows = $queryBuilder
+            ->select('sys_history.*', 'sys_log.userid', 'sys_log.log_data')
+            ->from('sys_history')
+            ->from('sys_log')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'sys_history.sys_log_uid',
+                    $queryBuilder->quoteIdentifier('sys_log.uid')
+                )
+            )
+            ->andWhere($queryBuilder->expr()->eq('sys_history.tablename', $queryBuilder->createNamedParameter($table)))
+            ->andWhere($queryBuilder->expr()->eq('sys_history.recuid', (int)$uid))
+            ->orderBy('sys_log.uid', 'DESC')
+            ->setMaxResults((int)$this->maxSteps)
+            ->execute()
+            ->fetchAll();
+
         $changeLog = array();
         if (!empty($rows)) {
             // Traversing the result, building up changesArray / changeLog:
@@ -739,10 +783,23 @@ class RecordHistory
         // SELECT INSERTS/DELETES
         if ($this->showInsertDelete) {
             // Select most recent inserts and deletes // WITHOUT snapshots
-            $rows = $databaseConnection->exec_SELECTgetRows('uid, userid, action, tstamp, log_data', 'sys_log', 'type = 1
-						AND (action=1 OR action=3)
-						AND tablename = ' . $databaseConnection->fullQuoteStr($table, 'sys_log') . '
-						AND recuid = ' . (int)$uid, '', 'uid DESC', $this->maxSteps);
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
+            $rows = $queryBuilder
+                ->select('uid', 'userid', 'action', 'tstamp', 'log_data')
+                ->from('sys_log')
+                ->where($queryBuilder->expr()->eq('type', 1))
+                ->andWhere($queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->eq('action', 1),
+                    $queryBuilder->expr()->eq('action', 3)
+                ))
+                ->andWhere($queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)))
+                ->andWhere($queryBuilder->expr()->eq('recuid', (int)$uid))
+                ->orderBy('uid', 'DESC')
+                ->setMaxResults((int)$this->maxSteps)
+                ->execute()
+                ->fetchAll();
+
             // If none are found, nothing more to do
             if (empty($rows)) {
                 return $changeLog;
@@ -881,7 +938,17 @@ class RecordHistory
         if (empty($shUid)) {
             return;
         }
-        $record = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'sys_history', 'uid=' . (int)$shUid);
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_history');
+        $record = $queryBuilder
+            ->select('*')
+            ->from('sys_history')
+            ->where(
+                $queryBuilder->expr()->eq('uid', (int)$shUid)
+            )
+            ->execute()
+            ->fetch();
+
         if (empty($record)) {
             return;
         }
@@ -1002,14 +1069,6 @@ class RecordHistory
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
