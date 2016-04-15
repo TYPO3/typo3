@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Recycler\Utility;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryContextType;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -83,15 +85,23 @@ class RecyclerUtility
         if ($uid === 0) {
             return $output;
         }
-        $databaseConnection = static::getDatabaseConnection();
-        $clause = trim($clause) !== '' ? ' AND ' . $clause : '';
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getQueryContext()->setContext(QueryContextType::UNRESTRICTED);
+
+        $clause = trim($clause);
         $loopCheck = 100;
         while ($loopCheck > 0) {
             $loopCheck--;
-            $res = $databaseConnection->exec_SELECTquery('uid,pid,title,deleted,t3ver_oid,t3ver_wsid', 'pages', 'uid=' . $uid . $clause);
-            if ($res !== false) {
-                $row = $databaseConnection->sql_fetch_assoc($res);
-                $databaseConnection->sql_free_result($res);
+
+            $queryBuilder
+                ->select('uid', 'pid', 'title', 'deleted', 't3ver_oid', 't3ver_wsid')
+                ->from('pages')
+                ->where($queryBuilder->expr()->eq('uid', (int)$uid));
+            if (!empty($clause)) {
+                $queryBuilder->andWhere($clause);
+            }
+            $row = $queryBuilder->execute()->fetch();
+            if ($row !== false) {
                 BackendUtility::workspaceOL('pages', $row);
                 if (is_array($row)) {
                     BackendUtility::fixVersioningPid('pages', $row);
@@ -143,13 +153,17 @@ class RecyclerUtility
         if ((int)$pid === 0) {
             return false;
         }
-        $db = static::getDatabaseConnection();
-        $res = $db->exec_SELECTquery('deleted', 'pages', 'uid=' . (int)$pid);
-        if ($res !== false) {
-            $record = $db->sql_fetch_assoc($res);
-            return (bool)$record['deleted'];
-        }
-        return false;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getQueryContext()->setContext(QueryContextType::UNRESTRICTED);
+
+        $deleted = $queryBuilder
+            ->select('deleted')
+            ->from('pages')
+            ->where($queryBuilder->expr()->eq('uid', (int)$pid))
+            ->execute()
+            ->fetchColumn();
+
+        return (bool)$deleted;
     }
 
     /**
@@ -161,13 +175,17 @@ class RecyclerUtility
      */
     public static function getPidOfUid($uid, $table)
     {
-        $db = static::getDatabaseConnection();
-        $res = $db->exec_SELECTquery('pid', $table, 'uid=' . (int)$uid);
-        if ($res !== false) {
-            $record = $db->sql_fetch_assoc($res);
-            return $record['pid'];
-        }
-        return 0;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getQueryContext()->setContext(QueryContextType::UNRESTRICTED);
+
+        $pid = $queryBuilder
+            ->select('pid')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+            ->execute()
+            ->fetchColumn();
+
+        return (int)$pid;
     }
 
     /**
@@ -183,16 +201,6 @@ class RecyclerUtility
             $TCA = $GLOBALS['TCA'][$tableName];
         }
         return $TCA;
-    }
-
-    /**
-     * Returns an instance of DatabaseConnection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected static function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
