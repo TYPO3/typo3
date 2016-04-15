@@ -27,6 +27,13 @@ class Topbar
     public static $dropdownContainerSelector = '.dropdown-menu';
 
     /**
+     * Selector for the dropdown container
+     *
+     * @var string
+     */
+    public static $dropdownListSelector = '.dropdown-menu .dropdown-list';
+
+    /**
      * Selector for the dropdown toggle
      *
      * @var string
