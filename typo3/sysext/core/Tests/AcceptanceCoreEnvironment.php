@@ -208,6 +208,7 @@ class AcceptanceCoreEnvironment extends Extension
             'core',
             'extbase',
             'fluid',
+            'filelist',
             'extensionmanager',
             'lang',
             'setup',
