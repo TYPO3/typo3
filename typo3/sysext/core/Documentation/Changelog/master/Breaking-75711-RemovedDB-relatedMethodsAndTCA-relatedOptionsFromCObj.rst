@@ -1,0 +1,34 @@
+===============================================================================
+Breaking: #75711 - Removed DB-related methods and TCA-related options from cObj
+===============================================================================
+
+Description
+===========
+
+The following methods have been removed from ``ContentObjectRenderer`` without substitution:
+
+* DBgetDelete()
+* DBgetUpdate()
+* DBgetInsert()
+* DBmayFEUserEdit()
+* DBmayFEUserEditSelect()
+* exec_mm_query()
+* exec_mm_query_uidList()
+
+The following TCA options have no effect anymore throughout the TYPO3 Core:
+
+* $TCA[table][ctrl][fe_cruser_id]
+* $TCA[table][ctrl][fe_crgroup_id]
+* $TCA[table][ctrl][fe_admin_lock]
+
+
+Impact
+======
+
+Calling any of the methods above directly will trigger a PHP fatal error.
+
+
+Affected Installations
+======================
+
+Any TYPO3 installation using DB-related Frontend Administration with the obsolete functionality.

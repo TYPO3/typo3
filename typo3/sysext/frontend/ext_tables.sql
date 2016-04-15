@@ -107,7 +107,6 @@ CREATE TABLE fe_users (
 	company varchar(80) DEFAULT '' NOT NULL,
 	image tinytext,
 	TSconfig text,
-	fe_cruser_id int(10) unsigned DEFAULT '0' NOT NULL,
 	lastlogin int(10) unsigned DEFAULT '0' NOT NULL,
 	is_online int(10) unsigned DEFAULT '0' NOT NULL,
 

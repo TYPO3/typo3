@@ -6,7 +6,6 @@ return array(
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
-        'fe_cruser_id' => 'fe_cruser_id',
         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users',
         'delete' => 'deleted',
         'enablecolumns' => array(
