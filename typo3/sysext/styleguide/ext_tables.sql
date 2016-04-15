@@ -72,7 +72,6 @@ CREATE TABLE tx_styleguide_elements_basic (
 	input_32 text NOT NULL,
 	input_33 text NOT NULL,
 	input_34 text NOT NULL,
-	input_35 text NOT NULL,
 	input_36 date NOT NULL DEFAULT '0000-00-00',
 	input_37 datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 
