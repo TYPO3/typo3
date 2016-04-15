@@ -113,7 +113,6 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
                 . 'class="form-control t3js-formengine-select-itemstoselect" '
                 . ($size ? ' size="' . $size . '" ' : '')
                 . 'onchange="' . htmlspecialchars($sOnChange) . '" '
-                . $parameterArray['onFocus']
                 . $this->getValidationDataAsDataAttribute($config)
                 . $selector_itemListStyle
                 . '>';
@@ -171,7 +170,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             'rightbox' => implode(LF, $itemsToSelect),
             'readOnly' => $disabled
         );
-        $html .= $this->dbFileIcons($parameterArray['itemFormElName'], '', '', $itemsArray, '', $params, $parameterArray['onFocus']);
+        $html .= $this->dbFileIcons($parameterArray['itemFormElName'], '', '', $itemsArray, '', $params);
 
         // Wizards:
         if (!$disabled) {

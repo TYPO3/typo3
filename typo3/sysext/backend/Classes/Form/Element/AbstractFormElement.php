@@ -435,7 +435,7 @@ abstract class AbstractFormElement extends AbstractNode
      * @param array $itemArray The array of items. For "select" and "group"/"file" this is just a set of value. For "db" its an array of arrays with table/uid pairs.
      * @param string $selector Alternative selector box.
      * @param array $params An array of additional parameters, eg: "size", "info", "headers" (array with "selector" and "items"), "noBrowser", "thumbnails
-     * @param string $onFocus On focus attribute string
+     * @param null $_ unused (onFocus in the past), will be removed in TYPO3 CMS 9
      * @param string $table (optional) Table name processing for
      * @param string $field (optional) Field of table name processing for
      * @param string $uid (optional) uid of table record processing for
@@ -444,7 +444,7 @@ abstract class AbstractFormElement extends AbstractNode
      * @throws \UnexpectedValueException
      * @todo: Hack this mess into pieces and inline to group / select element depending on what they need
      */
-    protected function dbFileIcons($fName, $mode, $allowed, $itemArray, $selector = '', $params = array(), $onFocus = '', $table = '', $field = '', $uid = '', $config = array())
+    protected function dbFileIcons($fName, $mode, $allowed, $itemArray, $selector = '', $params = array(), $_ = null, $table = '', $field = '', $uid = '', $config = array())
     {
         $languageService = $this->getLanguageService();
         $disabled = '';
@@ -508,7 +508,7 @@ abstract class AbstractFormElement extends AbstractNode
             $selector = '<select id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '" '
                 . ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '" class="form-control tceforms-multiselect"')
                 . ($isMultiple ? ' multiple="multiple"' : '')
-                . ' data-formengine-input-name="' . htmlspecialchars($fName) . '" ' . $this->getValidationDataAsDataAttribute($config) . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt)
+                . ' data-formengine-input-name="' . htmlspecialchars($fName) . '" ' . $this->getValidationDataAsDataAttribute($config) . $params['style'] . $disabled . '>' . implode('', $opt)
                 . '</select>';
         }
         $icons = array(
@@ -714,7 +714,6 @@ abstract class AbstractFormElement extends AbstractNode
                     'mode' => $mode,
                     'allowed' => $allowed,
                     'itemArray' => $itemArray,
-                    'onFocus' => $onFocus,
                     'table' => $table,
                     'field' => $field,
                     'uid' => $uid,

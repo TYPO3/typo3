@@ -155,7 +155,7 @@ class SelectSingleBoxElement extends AbstractFormElement
         }
 
         $html = [
-            '<select ' . $this->implodeAttributes($attributes) . ' ' . $parameterArray['onFocus'] . ' ' . $this->getValidationDataAsDataAttribute($config) . '>',
+            '<select ' . $this->implodeAttributes($attributes) . ' ' . $this->getValidationDataAsDataAttribute($config) . '>',
                 implode(LF, $optionElements),
             '</select>',
         ];

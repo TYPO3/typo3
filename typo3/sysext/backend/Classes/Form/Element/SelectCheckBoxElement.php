@@ -139,8 +139,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                                             . 'value="' . htmlspecialchars($item['value']) . '" '
                                             . 'onclick="' . htmlspecialchars($sOnChange) . '" '
                                             . ($item['checked'] ? 'checked=checked ' : '')
-                                            . ($item['disabled'] ? 'disabled=disabled ' : '')
-                                            . $parameterArray['onFocus'] . '>';
+                                            . ($item['disabled'] ? 'disabled=disabled ' : '') . '>';
                         $tableRows[] =    '</td>';
                         $tableRows[] =    '<td class="col-icon">';
                         $tableRows[] =        '<label class="label-block" for="' . $item['id'] . '">' . $item['icon'] . '</label>';

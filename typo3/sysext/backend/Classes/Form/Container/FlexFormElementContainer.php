@@ -86,7 +86,6 @@ class FlexFormElementContainer extends AbstractContainer
                         'onChange' => $flexFormFieldArray['onChange'],
                     ],
                     'fieldChangeFunc' => $parameterArray['fieldChangeFunc'],
-                    'onFocus' => $parameterArray['onFocus'],
                     'label' => $parameterArray['label'],
                 ];
 

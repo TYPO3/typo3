@@ -44,7 +44,6 @@ class RadioElement extends AbstractFormElement
                                 . ' id="' . $radioId . '"'
                                 . ' value="' . htmlspecialchars($value) . '"'
                                 . $radioChecked
-                                . $this->data['parameterArray']['onFocus']
                                 . $disabled
                                 . ' onclick="' . htmlspecialchars(implode('', $this->data['parameterArray']['fieldChangeFunc'])) . '"'
                             . '/>'

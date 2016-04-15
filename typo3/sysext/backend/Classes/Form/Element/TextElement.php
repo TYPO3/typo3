@@ -171,7 +171,6 @@ class TextElement extends AbstractFormElement
             $html .= '<textarea'
                 . $attributeString
                 . $placeholderAttribute
-                . $parameterArray['onFocus']
                 . '>' . htmlspecialchars($parameterArray['itemFormElValue']) . '</textarea>';
 
             // Wrap a wizard around the item?

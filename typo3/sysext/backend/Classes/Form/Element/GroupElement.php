@@ -202,11 +202,12 @@ class GroupElement extends AbstractFormElement
                     $itemArray,
                     '',
                     $params,
-                    $parameterArray['onFocus'],
+                    null,
                     '',
                     '',
                     '',
-                    $config);
+                    $config
+                );
                 if (!$disabled && !(isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'upload'))) {
                     // Adding the upload field:
                     $isDirectFileUploadEnabled = (bool)$this->getBackendUserAuthentication()->uc['edit_docModuleUpload'];
@@ -240,8 +241,7 @@ class GroupElement extends AbstractFormElement
                     '',
                     $itemArray,
                     '',
-                    $params,
-                    $parameterArray['onFocus']
+                    $params
                 );
                 break;
             case 'db':
@@ -298,7 +298,7 @@ class GroupElement extends AbstractFormElement
                     $itemArray,
                     '',
                     $params,
-                    $parameterArray['onFocus'],
+                    null,
                     $table,
                     $fieldName,
                     $row['uid'],

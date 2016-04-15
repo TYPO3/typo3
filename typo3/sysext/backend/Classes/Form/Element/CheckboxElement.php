@@ -136,7 +136,6 @@ class CheckboxElement extends AbstractFormElement
 						value="1"
 						data-formengine-input-name="' . htmlspecialchars($additionalInformation['itemFormElName']) . '"
 						' . $checkboxParameters . '
-						' . $additionalInformation['onFocus'] . '
 						' . (!$disabled ?: ' disabled="disabled"') . '
 						id="' . $checkboxId . '" />
 					' . ($label ? htmlspecialchars($label) : '&nbsp;') . '

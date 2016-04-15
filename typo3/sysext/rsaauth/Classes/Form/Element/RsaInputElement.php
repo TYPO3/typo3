@@ -134,10 +134,7 @@ class RsaInputElement extends AbstractFormElement
             $attributeString .= ' ' . $attributeName . '="' . htmlspecialchars($attributeValue) . '"';
         }
 
-        $html = '
-			<input'
-            . $attributeString
-            . $parameterArray['onFocus'] . ' />';
+        $html = '<input' . $attributeString . ' />';
 
         // This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
         $html .= '<input type="hidden" data-rsa-encryption="" id="' . $parameterArray['itemFormElID'] . '_hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';

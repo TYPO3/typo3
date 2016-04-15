@@ -159,10 +159,7 @@ class InputTextElement extends AbstractFormElement
             $attributeString .= ' ' . $attributeName . '="' . htmlspecialchars($attributeValue) . '"';
         }
 
-        $html = '
-			<input type="text"'
-                . $attributeString
-                . $parameterArray['onFocus'] . ' />';
+        $html = '<input type="text"' . $attributeString . ' />';
 
         // This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
         $html .= '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
