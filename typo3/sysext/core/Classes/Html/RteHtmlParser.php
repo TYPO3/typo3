@@ -962,7 +962,7 @@ class RteHtmlParser extends HtmlParser
         if (count($divSplit) <= 1 || $count <= 0) {
             // Wrap hr tags with LF's
             $newValue = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', LF . '<$1$2/>' . LF, $value);
-            $newValue = preg_replace('/' . LF . LF . '/i', LF, $newValue);
+            $newValue = str_replace(LF . LF, LF, $newValue);
             $newValue = preg_replace('/(^' . LF . ')|(' . LF . '$)/i', '', $newValue);
             return $newValue;
         }
@@ -1021,11 +1021,8 @@ class RteHtmlParser extends HtmlParser
                             }
                         }
                         // Remove any line break char (10 or 13)
-                        $subLines[$sk] = preg_replace('/' . LF . '|' . CR . '/', '', $subLines[$sk]);
-                        // If there are any attributes, then do so:
-                        if (!empty($newAttribs)) {
-                            $subLines[$sk] = '<' . trim('p ' . $this->compileTagAttribs($newAttribs)) . '>' . $subLines[$sk] . '</p>';
-                        }
+                        $subLines[$sk] = str_replace([LF, CR], '', $subLines[$sk]);
+                        $subLines[$sk] = '<' . rtrim('p ' . $this->compileTagAttribs($newAttribs)) . '>' . $subLines[$sk] . '</p>';
                     }
                 }
                 // Add the processed line(s)
@@ -1042,10 +1039,13 @@ class RteHtmlParser extends HtmlParser
                 $divSplit[$k] = trim(strip_tags($divSplit[$k], '<' . implode('><', $allowTagsOutside) . '>'));
                 // Wrap hr tags with LF's
                 $divSplit[$k] = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', LF . '<$1$2/>' . LF, $divSplit[$k]);
-                $divSplit[$k] = preg_replace('/' . LF . LF . '/i', LF, $divSplit[$k]);
+                $divSplit[$k] = str_replace(LF . LF, LF, $divSplit[$k]);
                 $divSplit[$k] = preg_replace('/(^' . LF . ')|(' . LF . '$)/i', '', $divSplit[$k]);
                 if ((string)$divSplit[$k] === '') {
                     unset($divSplit[$k]);
+                } else {
+                    // add <p> tags around the content
+                    $divSplit[$k] = str_replace(strip_tags($divSplit[$k]), '<p>' . strip_tags($divSplit[$k]) . '</p>', $divSplit[$k]);
                 }
             }
         }

@@ -87,7 +87,11 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ),
             'Paragraph followed by linebreak and hr' => array(
                 '<p>Some text</p>' . CRLF . '<hr />',
-                'Some text' . CRLF . '<hr />',
+                '<p>Some text</p>' . CRLF . '<hr />',
+            ),
+            'Some text without HTML tags' => array(
+                'Some text',
+                'Some text',
             ),
             'Some text followed by hr' => array(
                 'Some text<hr />',
@@ -256,79 +260,79 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ),
             'Paragraph' => array(
                 '<p>paragraph</p>',
-                'paragraph',
+                '<p>paragraph</p>',
             ),
             'Paragraph followed by paragraph' => array(
                 '<p>paragraph1</p>' . '<p>paragraph2</p>',
-                'paragraph1' . CRLF . 'paragraph2',
+                '<p>paragraph1</p>' . CRLF . '<p>paragraph2</p>',
             ),
             'Paragraph followed by paragraph, linebreak-separated' => array(
                 '<p>paragraph1</p>' . CRLF . '<p>paragraph2</p>',
-                'paragraph1' . CRLF . 'paragraph2',
+                '<p>paragraph1</p>' . CRLF . '<p>paragraph2</p>',
             ),
             'Double spacing paragraph with text' => array(
                 '<p>&nbsp;</p><p>&nbsp;</p><p>paragraph1</p>',
-                CRLF . CRLF . 'paragraph1',
+                CRLF . CRLF . '<p>paragraph1</p>',
             ),
             'Paragraph followed by linebreak' => array(
                 '<p>paragraph</p>' . CRLF,
-                'paragraph',
+                '<p>paragraph</p>',
             ),
             'Paragraph followed by spacing paragraph' => array(
                 '<p>paragraph</p>' . '<p>&nbsp;</p>',
-                'paragraph' . CRLF . CRLF,
+                '<p>paragraph</p>' . CRLF . CRLF,
             ),
             'Paragraph followed by spacing paragraph, linebreak-separated' => array(
                 '<p>paragraph</p>' . CRLF . '<p>&nbsp;</p>',
-                'paragraph' . CRLF . CRLF,
+                '<p>paragraph</p>' . CRLF . CRLF,
             ),
             'Paragraph followed by double spacing paragraph' => array(
                 '<p>paragraph</p>' . '<p>&nbsp;</p>' . '<p>&nbsp;</p>',
-                'paragraph' . CRLF . CRLF . CRLF,
+                '<p>paragraph</p>' . CRLF . CRLF . CRLF,
             ),
             'Paragraph followed by double spacing paragraph, linebreak-separated' => array(
                 '<p>paragraph</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>&nbsp;</p>',
-                'paragraph' . CRLF . CRLF . CRLF,
+                '<p>paragraph</p>' . CRLF . CRLF . CRLF,
             ),
             'Paragraph followed by spacing paragraph and by paragraph' => array(
                 '<p>paragraph1</p>' . '<p>&nbsp;</p>' . '<p>paragraph2</p>',
-                'paragraph1' . CRLF . CRLF . 'paragraph2',
+                '<p>paragraph1</p>' . CRLF . CRLF . '<p>paragraph2</p>',
             ),
             'Paragraph followed by spacing paragraph and by paragraph, linebreak-separated' => array(
                 '<p>paragraph1</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>paragraph2</p>',
-                'paragraph1' . CRLF . CRLF . 'paragraph2',
+                '<p>paragraph1</p>' . CRLF . CRLF . '<p>paragraph2</p>',
             ),
             'Paragraph followed by double spacing paragraph and by paragraph' => array(
                 '<p>paragraph1</p>' . '<p>&nbsp;</p>' . '<p>&nbsp;</p>' . '<p>paragraph2</p>',
-                'paragraph1' . CRLF . CRLF . CRLF . 'paragraph2',
+                '<p>paragraph1</p>' . CRLF . CRLF . CRLF . '<p>paragraph2</p>',
             ),
             'Paragraph followed by double spacing paragraph and by paragraph, linebreak-separated' => array(
                 '<p>paragraph1</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>paragraph2</p>',
-                'paragraph1' . CRLF . CRLF . CRLF . 'paragraph2',
+                '<p>paragraph1</p>' . CRLF . CRLF . CRLF . '<p>paragraph2</p>',
             ),
             'Paragraph followed by block' => array(
                 '<p>paragraph</p>' . '<h1>block</h1>',
-                'paragraph' . CRLF . '<h1>block</h1>',
+                '<p>paragraph</p>' . CRLF . '<h1>block</h1>',
             ),
             'Paragraph followed by block, linebreak-separated' => array(
                 '<p>paragraph</p>' . CRLF . '<h1>block</h1>',
-                'paragraph' . CRLF . '<h1>block</h1>',
+                '<p>paragraph</p>' . CRLF . '<h1>block</h1>',
             ),
             'Paragraph followed by spacing paragraph and block' => array(
                 '<p>paragraph</p>' . '<p>&nbsp;</p>' . '<h1>block</h1>',
-                'paragraph' . CRLF . CRLF . '<h1>block</h1>',
+                '<p>paragraph</p>' . CRLF . CRLF . '<h1>block</h1>',
             ),
             'Paragraph followed by spacing paragraph and block, linebreak-separated' => array(
                 '<p>paragraph</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<h1>block</h1>',
-                'paragraph' . CRLF . CRLF . '<h1>block</h1>',
+                '<p>paragraph</p>' . CRLF . CRLF . '<h1>block</h1>',
             ),
             'Paragraph followed by double spacing paragraph and block' => array(
                 '<p>paragraph</p>' . '<p>&nbsp;</p>' . '<p>&nbsp;</p>' . '<h1>block</h1>',
-                'paragraph' . CRLF . CRLF . CRLF . '<h1>block</h1>',
+                '<p>paragraph</p>' . CRLF . CRLF . CRLF . '<h1>block</h1>',
             ),
             'Paragraph followed by double spacing paragraph and block, linebreak-separated' => array(
                 '<p>paragraph</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<h1>block</h1>',
-                'paragraph' . CRLF . CRLF . CRLF . '<h1>block</h1>',
+                '<p>paragraph</p>' . CRLF . CRLF . CRLF . '<h1>block</h1>',
             ),
             'Block followed by block' => array(
                 '<h1>block1</h1>' . '<h1>block2</h1>',
@@ -372,19 +376,19 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ),
             'Block followed by paragraph and block' => array(
                 '<h1>block1</h1>' . '<p>paragraph</p>' . '<h1>block2</h1>',
-                '<h1>block1</h1>' . CRLF . 'paragraph' . CRLF . '<h1>block2</h1>',
+                '<h1>block1</h1>' . CRLF . '<p>paragraph</p>' . CRLF . '<h1>block2</h1>',
             ),
             'Block followed by paragraph and block, linebreak-separated' => array(
                 '<h1>block1</h1>' . CRLF . '<p>paragraph</p>' . CRLF . '<h1>block2</h1>',
-                '<h1>block1</h1>' . CRLF . 'paragraph' . CRLF . '<h1>block2</h1>',
+                '<h1>block1</h1>' . CRLF . '<p>paragraph</p>' . CRLF . '<h1>block2</h1>',
             ),
             'Block followed by paragraph, spacing paragraph and block' => array(
                 '<h1>block1</h1>' . '<p>paragraph</p>' . '<p>&nbsp;</p>' . '<h1>block2</h1>',
-                '<h1>block1</h1>' . CRLF . 'paragraph' . CRLF . CRLF . '<h1>block2</h1>',
+                '<h1>block1</h1>' . CRLF . '<p>paragraph</p>' . CRLF . CRLF . '<h1>block2</h1>',
             ),
             'Block followed by paragraph, spacing paragraph and block, linebreak-separated' => array(
                 '<h1>block1</h1>' . CRLF . '<p>paragraph</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<h1>block2</h1>',
-                '<h1>block1</h1>' . CRLF . 'paragraph' . CRLF . CRLF . '<h1>block2</h1>',
+                '<h1>block1</h1>' . CRLF . '<p>paragraph</p>' . CRLF . CRLF . '<h1>block2</h1>',
             ),
         );
     }
