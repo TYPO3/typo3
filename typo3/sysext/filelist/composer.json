@@ -14,7 +14,9 @@
 	"extra": {
 		"typo3/cms": {
 			"Package": {
-				"partOfFactoryDefault": true
+				"protected": true,
+				"partOfFactoryDefault": true,
+				"partOfMinimalUsableSystem": true
 			}
 		}
 	},
