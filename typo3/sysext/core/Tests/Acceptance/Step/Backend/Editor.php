@@ -20,20 +20,10 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Step\Backend;
 class Editor extends \AcceptanceTester
 {
     /**
-     * @var string Assigned session cookie
+     * The session cookie that is used if the session is injected.
+     * This session must exist in the database fixture to get a logged in state.
+     *
+     * @var string
      */
     protected $sessionCookie = 'ff83dfd81e20b34c27d3e97771a4525a';
-
-    /**
-     * Use the existing database session from the fixture by setting the backend user cookie
-     */
-    public function useExistingSession()
-    {
-        $I = $this;
-        $I->amOnPage('/typo3/index.php');
-        $I->setCookie('be_typo_user', $this->sessionCookie, array('path' => '/typo3temp/var/tests/acceptance/'));
-        $I->setCookie('be_lastLoginProvider', '1433416747', array('path' => '/typo3temp/var/tests/acceptance/'));
-        // reload the page to have a logged in backend
-        $I->amOnPage('/typo3/index.php');
-    }
 }

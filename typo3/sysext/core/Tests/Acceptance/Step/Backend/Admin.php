@@ -20,34 +20,10 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Step\Backend;
 class Admin extends \AcceptanceTester
 {
     /**
-     * @var string Assigned session cookie
+     * The session cookie that is used if the session is injected.
+     * This session must exist in the database fixture to get a logged in state.
+     *
+     * @var string
      */
     protected $sessionCookie = '886526ce72b86870739cc41991144ec1';
-
-    /**
-     * Use the existing database session from the fixture by setting the backend user cookie
-     */
-    public function useExistingSession()
-    {
-        $I = $this;
-        $I->amOnPage('/typo3/index.php');
-
-        // @todo: There is a bug in PhantomJS where adding a cookie fails.
-        // This bug will be fixed in the next PhantomJS version but i also found
-        // this workaround. First reset / delete the cookie and than set it and catch
-        // the webdriver exception as the cookie has been set successful.
-        try {
-            $I->resetCookie('be_typo_user');
-            $I->setCookie('be_typo_user', $this->sessionCookie);
-        } catch (\Facebook\WebDriver\Exception\UnableToSetCookieException $e) {
-        }
-        try {
-            $I->resetCookie('be_lastLoginProvider');
-            $I->setCookie('be_lastLoginProvider', '1433416747');
-        } catch (\Facebook\WebDriver\Exception\UnableToSetCookieException $e) {
-        }
-
-        // reload the page to have a logged in backend
-        $I->amOnPage('/typo3/index.php');
-    }
 }
