@@ -19,7 +19,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\PreparedStatement;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -249,20 +250,28 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     protected function initShortcuts()
     {
-        $databaseConnection = $this->getDatabaseConnection();
-        $globalGroupIdList = implode(',', array_keys($this->getGlobalShortcutGroups()));
         $backendUser = $this->getBackendUser();
-        $res = $databaseConnection->exec_SELECTquery(
-            '*',
-            'sys_be_shortcuts',
-            '(userid = ' . (int)$backendUser->user['uid'] . ' AND sc_group>=0) OR sc_group IN (' . $globalGroupIdList . ')',
-            '',
-            'sc_group,sorting'
-        );
         // Traverse shortcuts
         $lastGroup = 0;
         $shortcuts = array();
-        while ($row = $databaseConnection->sql_fetch_assoc($res)) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_be_shortcuts');
+        $result = $queryBuilder->select('*')
+            ->from('sys_be_shortcuts')
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('userid', (int)$backendUser->user['uid']),
+                    $queryBuilder->expr()->gte('sc_group', 0)
+                )
+            )
+            ->orWhere(
+                $queryBuilder->expr()->in('sc_group', array_keys($this->getGlobalShortcutGroups()))
+            )
+            ->orderBy('sc_group')
+            ->addOrderBy('sorting')
+            ->execute();
+
+        while ($row = $result->fetch()) {
             $shortcut = array('raw' => $row);
 
             list($row['module_name'], $row['M_module_name']) = explode('|', $row['module_name']);
@@ -521,13 +530,16 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
-        $databaseConnection = $this->getDatabaseConnection();
         $shortcutId = (int)(isset($parsedBody['shortcutId']) ? $parsedBody['shortcutId'] : $queryParams['shortcutId']);
         $fullShortcut = $this->getShortcutById($shortcutId);
         $success = false;
         if ($fullShortcut['raw']['userid'] == $this->getBackendUser()->user['uid']) {
-            $databaseConnection->exec_DELETEquery('sys_be_shortcuts', 'uid = ' . $shortcutId);
-            if ($databaseConnection->sql_affected_rows() === 1) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('sys_be_shortcuts');
+            $affectedRows = $queryBuilder->delete('sys_be_shortcuts')
+                ->where($queryBuilder->expr()->eq('uid', $shortcutId))
+                ->execute();
+            if ($affectedRows === 1) {
                 $success = true;
             }
         }
@@ -671,9 +683,14 @@ class ShortcutToolbarItem implements ToolbarItemInterface
             'sorting' => $GLOBALS['EXEC_TIME']
         ];
 
-        $this->getDatabaseConnection()->exec_INSERTquery('sys_be_shortcuts', $fieldValues);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_be_shortcuts');
+        $affectedRows = $queryBuilder
+            ->insert('sys_be_shortcuts')
+            ->values($fieldValues)
+            ->execute();
 
-        if ($this->getDatabaseConnection()->sql_affected_rows() === 1) {
+        if ($affectedRows === 1) {
             return 'success';
         } else {
             return 'failed';
@@ -689,22 +706,21 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     protected function shortcutExists($url)
     {
-        $statement = $this->getDatabaseConnection()->prepare_SELECTquery(
-            'uid',
-            'sys_be_shortcuts',
-            'userid = :userid AND url = :url'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_be_shortcuts');
+        $uid = $queryBuilder->select('uid')
+            ->from('sys_be_shortcuts')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'userid',
+                    $queryBuilder->createNamedParameter($this->getBackendUser()->user['uid'])
+                ),
+                $queryBuilder->expr()->eq('url', $queryBuilder->createNamedParameter($url))
+            )
+            ->execute()
+            ->fetchColumn();
 
-        $statement->bindValues([
-            ':userid' => $this->getBackendUser()->user['uid'],
-            ':url' => $url
-        ]);
-
-        $statement->execute();
-        $rows = $statement->fetch(PreparedStatement::FETCH_ASSOC);
-        $statement->free();
-
-        return !empty($rows);
+        return (bool)$uid;
     }
 
     /**
@@ -720,23 +736,28 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
-        $databaseConnection = $this->getDatabaseConnection();
         $backendUser = $this->getBackendUser();
         $shortcutId = (int)(isset($parsedBody['shortcutId']) ? $parsedBody['shortcutId'] : $queryParams['shortcutId']);
         $shortcutName = strip_tags(isset($parsedBody['shortcutTitle']) ? $parsedBody['shortcutTitle'] : $queryParams['shortcutTitle']);
         $shortcutGroupId = (int)(isset($parsedBody['shortcutGroup']) ? $parsedBody['shortcutGroup'] : $queryParams['shortcutGroup']);
-        // Users can only modify their own shortcuts (except admins)
-        $addUserWhere = !$backendUser->isAdmin() ? ' AND userid=' . (int)$backendUser->user['uid'] : '';
-        $fieldValues = array(
-            'description' => $shortcutName,
-            'sc_group' => $shortcutGroupId
-        );
-        if ($fieldValues['sc_group'] < 0 && !$backendUser->isAdmin()) {
-            $fieldValues['sc_group'] = 0;
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_be_shortcuts');
+        $queryBuilder->update('sys_be_shortcuts')
+            ->where($queryBuilder->expr()->eq('uid', $shortcutId))
+            ->set('description', $shortcutName)
+            ->set('sc_group', $shortcutGroupId);
+
+        if (!$backendUser->isAdmin()) {
+            // Users can only modify their own shortcuts
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('userid', (int)$backendUser->user['uid']));
+
+            if ($shortcutGroupId < 0) {
+                $queryBuilder->set('sc_group', 0);
+            }
         }
-        $databaseConnection->exec_UPDATEquery('sys_be_shortcuts', 'uid=' . $shortcutId . $addUserWhere, $fieldValues);
-        $affectedRows = $databaseConnection->sql_affected_rows();
-        if ($affectedRows == 1) {
+
+        if ($queryBuilder->execute() === 1) {
             $response->getBody()->write($shortcutName);
         } else {
             $response->getBody()->write('failed');
@@ -794,7 +815,6 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     protected function getShortcutIcon($row, $shortcut)
     {
-        $databaseConnection = $this->getDatabaseConnection();
         $languageService = $this->getLanguageService();
         $titleAttribute = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.shortcut'));
         switch ($row['module_name']) {
@@ -824,16 +844,19 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                     if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
                         $selectFields[] = 't3ver_state';
                     }
-                    // Unique list!
-                    $selectFields = array_unique($selectFields);
-                    $permissionClause = $table === 'pages' && $this->perms_clause ? ' AND ' . $this->perms_clause : '';
-                    $sqlQueryParts = array(
-                        'SELECT' => implode(',', $selectFields),
-                        'FROM' => $table,
-                        'WHERE' => 'uid IN (' . $recordid . ') ' . $permissionClause . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table)
-                    );
-                    $result = $databaseConnection->exec_SELECT_queryArray($sqlQueryParts);
-                    $row = $databaseConnection->sql_fetch_assoc($result);
+
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getQueryBuilderForTable($table);
+                    $queryBuilder->select(...array_unique(array_values($selectFields)))
+                        ->from($table)
+                        ->where($queryBuilder->expr()->in('uid', $recordid));
+
+                    if ($table === 'pages' && $this->perms_clause) {
+                        $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($this->perms_clause));
+                    }
+
+                    $row = $queryBuilder->execute()->fetch();
+
                     $icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIconForRecord($table, (array)$row, Icon::SIZE_SMALL)->render() . '</span>';
                 } elseif ($shortcut['type'] == 'new') {
                     $icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render() . '</span>';
@@ -940,15 +963,5 @@ class ShortcutToolbarItem implements ToolbarItemInterface
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Return DatabaseConnection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
