@@ -404,33 +404,7 @@ return [
             'label' => 'input_34 wizard colorbox',
             'config' => [
                 'type' => 'input',
-                'wizards' => [
-                    'colorpicker' => [
-                        'type' => 'colorbox',
-                        'title' => 'Color picker',
-                        'module' => [
-                            'name' => 'wizard_colorpicker',
-                        ],
-                        'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-                    ],
-                ],
-            ],
-        ],
-        'input_35' => [
-            'label' => 'input_35 wizard colorbox with image',
-            'config' => [
-                'type' => 'input',
-                'wizards' => [
-                    'colorpicker' => [
-                        'type' => 'colorbox',
-                        'title' => 'Color picker',
-                        'module' => [
-                            'name' => 'wizard_colorpicker',
-                        ],
-                        'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-                        'exampleImg' => 'EXT:styleguide/Resources/Public/Images/colorpicker.jpg',
-                    ],
-                ],
+                'renderType' => 'colorpicker',
             ],
         ],
         'input_36' => [
@@ -1231,7 +1205,7 @@ return [
                     input_1, input_2, input_3, input_4, input_5, input_6, input_36, input_7, input_37, input_8, input_9, input_10,
                     input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18, input_19, input_20,
                     input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
-                    input_31, input_32, input_33, input_34, input_35,
+                    input_31, input_32, input_33, input_34,
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
                     text_11, text_12, text_13, text_14, text_15, text_16, text_17,
