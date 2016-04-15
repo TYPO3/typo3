@@ -66,6 +66,7 @@ class ModalDialog
         $I = $this->tester;
         $this->canSeeDialog();
         $I->click($buttonLinkLocator, self::$openedModalButtonContainerSelector);
+        $I->waitForElementNotVisible(self::$openedModalSelector);
     }
 
     /**
