@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Tree\View;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -83,7 +84,7 @@ class BrowseTreeView extends AbstractTreeView
         // This will hide records from display - it has nothing to do with user rights!!
         $clauseExcludePidList = '';
         if ($pidList = $this->getBackendUser()->getTSConfigVal('options.hideRecords.pages')) {
-            if ($pidList = $this->getDatabaseConnection()->cleanIntList($pidList)) {
+            if ($pidList = implode(',', GeneralUtility::intExplode(',', $pidList))) {
                 $clauseExcludePidList = ' AND pages.uid NOT IN (' . $pidList . ')';
             }
         }
@@ -148,18 +149,18 @@ class BrowseTreeView extends AbstractTreeView
             $title = parent::getTitleStr($row, $titleLen);
         }
         if (!empty($row['is_siteroot']) && $this->getBackendUser()->getTSConfigVal('options.pageTree.showDomainNameWithTitle')) {
-            $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                'domainName,sorting',
-                'sys_domain',
-                'pid=' . $this->getDatabaseConnection()->quoteStr(
-                    $row['uid'] . BackendUtility::deleteClause('sys_domain') . BackendUtility::BEenableFields('sys_domain'),
-                    'sys_domain'
-                ),
-                '',
-                'sorting',
-                1);
-            if (is_array($rows) && !empty($rows)) {
-                $title = sprintf('%s [%s]', $title, htmlspecialchars($rows[0]['domainName']));
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_domain');
+            $row = $queryBuilder
+                ->select('domainName', 'sorting')
+                ->from('sys_domain')
+                ->where($queryBuilder->expr()->eq('pid', (int)$row['uid']))
+                ->orderBy('sorting')
+                ->setMaxResults(1)
+                ->execute()
+                ->fetch();
+
+            if ($row !== false) {
+                $title = sprintf('%s [%s]', $title, htmlspecialchars($row['domainName']));
             }
         }
         return $title;

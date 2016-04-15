@@ -18,7 +18,8 @@ use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -832,9 +833,16 @@ abstract class AbstractTreeView
             $res = $this->getDataInit($uid);
             return $this->getDataCount($res);
         } else {
-            $db = $this->getDatabaseConnection();
-            $where = $this->parentField . '=' . $db->fullQuoteStr($uid, $this->table) . BackendUtility::deleteClause($this->table) . BackendUtility::versioningPlaceholderClause($this->table) . $this->clause;
-            return $db->exec_SELECTcountRows('uid', $this->table, $where);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+            $count = $queryBuilder
+                ->count('uid')
+                ->from($this->table)
+                ->where($queryBuilder->expr()->eq($this->parentField, $queryBuilder->createNamedParameter($uid)))
+                ->andWhere(QueryHelper::stripLogicalOperatorPrefix($this->clause))
+                ->execute()
+                ->fetchColumn();
+
+            return (int)$count;
         }
     }
 
@@ -885,9 +893,19 @@ abstract class AbstractTreeView
             }
             return $parentId;
         } else {
-            $db = $this->getDatabaseConnection();
-            $where = $this->parentField . '=' . $db->fullQuoteStr($parentId, $this->table) . BackendUtility::deleteClause($this->table) . BackendUtility::versioningPlaceholderClause($this->table) . $this->clause;
-            return $db->exec_SELECTquery(implode(',', $this->fieldArray), $this->table, $where, '', $this->orderByFields);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+            $queryBuilder
+                ->select(...$this->fieldArray)
+                ->from($this->table)
+                ->where($queryBuilder->expr()->eq($this->parentField, $queryBuilder->createNamedParameter($parentId)))
+                ->andWhere(QueryHelper::stripLogicalOperatorPrefix($this->clause));
+
+            foreach (QueryHelper::parseOrderBy($this->orderByFields) as $orderPair) {
+                list($fieldName, $order) = $orderPair;
+                $queryBuilder->addOrderBy($fieldName, $order);
+            }
+
+            return $queryBuilder->execute();
         }
     }
 
@@ -904,7 +922,7 @@ abstract class AbstractTreeView
         if (is_array($this->data)) {
             return count($this->dataLookup[$res][$this->subLevelID]);
         } else {
-            return $this->getDatabaseConnection()->sql_num_rows($res);
+            return count($res);
         }
     }
 
@@ -927,7 +945,7 @@ abstract class AbstractTreeView
             }
             return $row;
         } else {
-            while ($row = @$this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+            while ($row = $res->fetch()) {
                 BackendUtility::workspaceOL($this->table, $row, $this->BE_USER->workspace, true);
                 if (is_array($row)) {
                     break;
@@ -947,7 +965,7 @@ abstract class AbstractTreeView
     public function getDataFree(&$res)
     {
         if (!is_array($this->data)) {
-            $this->getDatabaseConnection()->sql_free_result($res);
+            $res->closeCursor();
         }
     }
 
@@ -1009,13 +1027,5 @@ abstract class AbstractTreeView
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

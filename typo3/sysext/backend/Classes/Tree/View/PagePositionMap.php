@@ -16,7 +16,8 @@ namespace TYPO3\CMS\Backend\Tree\View;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryContextType;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -339,17 +340,33 @@ class PagePositionMap
         $colPosArray = GeneralUtility::trimExplode(',', $colPosList, true);
         $lines = array();
         foreach ($colPosArray as $kk => $vv) {
-            $res = $this->getDatabase()->exec_SELECTquery('*', 'tt_content', 'pid=' . (int)$pid . ($showHidden ? '' : BackendUtility::BEenableFields('tt_content')) . ' AND colPos=' . (int)$vv . ((string)$this->cur_sys_language !== '' ? ' AND sys_language_uid=' . (int)$this->cur_sys_language : '') . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+            $queryBuilder->getQueryContext()
+                ->setContext(QueryContextType::BACKEND_NO_VERSIONING_PLACEHOLDERS)
+                ->setIgnoreEnableFields($showHidden);
+
+            $queryBuilder
+                ->select('*')
+                ->from('tt_content')
+                ->where($queryBuilder->expr()->eq('pid', (int)$pid))
+                ->andWhere($queryBuilder->expr()->eq('colPos', (int)$vv))
+                ->orderBy('sorting');
+
+            if ((string)$this->cur_sys_language !== '') {
+                $queryBuilder->andWhere($queryBuilder->expr()->eq('sys_language_uid', (int)$this->cur_sys_language));
+            }
+
+            $res = $queryBuilder->execute();
             $lines[$vv] = array();
             $lines[$vv][] = $this->insertPositionIcon('', $vv, $kk, $moveUid, $pid);
-            while ($row = $this->getDatabase()->sql_fetch_assoc($res)) {
+
+            while ($row = $res->fetch()) {
                 BackendUtility::workspaceOL('tt_content', $row);
                 if (is_array($row)) {
                     $lines[$vv][] = $this->wrapRecordHeader($this->getRecordHeader($row), $row);
                     $lines[$vv][] = $this->insertPositionIcon($row, $vv, $kk, $moveUid, $pid);
                 }
             }
-            $this->getDatabase()->sql_free_result($res);
         }
         return $this->printRecordMap($lines, $colPosArray, $pid);
     }
@@ -578,13 +595,5 @@ class PagePositionMap
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabase()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
