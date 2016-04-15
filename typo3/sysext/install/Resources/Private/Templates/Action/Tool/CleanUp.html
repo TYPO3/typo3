@@ -12,7 +12,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading" role="tab" id="headingOne">
 				<h4 class="panel-title">
-					<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="collapsed">
+					<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="{f:if(condition:'{postAction} == \'deleteTypo3TempFiles\'', then:'expanded', else:'collapsed')}">
 						<span class="caret"></span>
 						Clean typo3temp/ folder
 					</a>
@@ -27,7 +27,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading" role="tab" id="headingTwo">
 				<h4 class="panel-title">
-					<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+					<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="{f:if(condition:'{postAction} == \'clearProcessedFiles\'', then:'expanded', else:'collapsed')}">
 						<span class="caret"></span>
 						Clear processed files
 					</a>
@@ -42,7 +42,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading" role="tab" id="headingThree">
 				<h4 class="panel-title">
-					<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+					<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="{f:if(condition:'{postAction} == \'clearTables\'', then:'expanded', else:'collapsed')}">
 						<span class="caret"></span>
 						Clear tables
 					</a>
@@ -57,7 +57,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading" role="tab" id="headingFour">
 				<h4 class="panel-title">
-					<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+					<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour" class="{f:if(condition:'{postAction} == \'resetBackendUserUc\'', then:'expanded', else:'collapsed')}">
 						<span class="caret"></span>
 						Reset backend user preferences
 					</a>
