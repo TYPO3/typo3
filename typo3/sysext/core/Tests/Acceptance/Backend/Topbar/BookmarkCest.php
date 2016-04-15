@@ -20,9 +20,9 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\Topbar;
 
 /**
- * Test for the "Favorite" functionality
+ * Test for the "Bookmark" functionality
  */
-class FavoriteCest
+class BookmarkCest
 {
     /**
      * Selector for the module container in the topbar
@@ -32,11 +32,11 @@ class FavoriteCest
     public static $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-shortcuttoolbaritem';
 
     /**
-     * Selector for the "Add to favorite" button
+     * Selector for the "Add to bookmark" button
      *
      * @var string
      */
-    protected static $docHeaderFavoriteButtonSelector = '.module-docheader .btn[title="Create a bookmark to this page"]';
+    protected static $docHeaderBookmarkButtonSelector = '.module-docheader .btn[title="Create a bookmark to this page"]';
 
     /**
      * @param Admin $I
@@ -53,40 +53,40 @@ class FavoriteCest
      * @param Admin $I
      * @return Admin
      */
-    public function checkThatFavoriteListIsInitiallyEmpty(Admin $I)
+    public function checkThatBookmarkListIsInitiallyEmpty(Admin $I)
     {
-        $this->clickFavoriteDropdownToggleInTopbar($I);
+        $this->clickBookmarkDropdownToggleInTopbar($I);
         $I->cantSeeElement(self::$topBarModuleSelector . ' .shortcut');
         return $I;
     }
 
     /**
-     * @depends checkThatFavoriteListIsInitiallyEmpty
+     * @depends checkThatBookmarkListIsInitiallyEmpty
      * @param Admin $I
      * @param ModalDialog $dialog
      * @return Admin
      */
-    public function checkThatAddingAFavoriteAddAItemToTheFavoriteList(Admin $I, ModalDialog $dialog, Scenario $scenario)
+    public function checkThatAddingABookmarkAddAItemToTheBookmarkList(Admin $I, ModalDialog $dialog, Scenario $scenario)
     {
         $I->switchToIFrame();
-        // open the scheduler module as we would like to put it into the favorite liste
+        // open the scheduler module as we would like to put it into the bookmark liste
         $I->click('Scheduler', '#typo3-module-menu');
 
         $I->switchToIFrame('content');
 
-        $I->click(self::$docHeaderFavoriteButtonSelector);
+        $I->click(self::$docHeaderBookmarkButtonSelector);
         // cancel the action to test the functionality
         $dialog->clickButtonInDialog('Cancel');
 
         // check if the list is still empty
-        $this->checkThatFavoriteListIsInitiallyEmpty($I);
+        $this->checkThatBookmarkListIsInitiallyEmpty($I);
 
         $I->switchToIFrame('content');
-        $I->click(self::$docHeaderFavoriteButtonSelector);
+        $I->click(self::$docHeaderBookmarkButtonSelector);
 
         $dialog->clickButtonInDialog('OK');
 
-        $this->clickFavoriteDropdownToggleInTopbar($I);
+        $this->clickBookmarkDropdownToggleInTopbar($I);
         $I->canSee('Scheduled tasks', self::$topBarModuleSelector . ' ' . Topbar::$dropdownContainerSelector);
 
         // @test complese test when https://forge.typo3.org/issues/75689 is fixed
@@ -100,11 +100,11 @@ class FavoriteCest
 
     /**
      * @param Admin $I
-     * @depends checkThatAddingAFavoriteAddAItemToTheFavoriteList
+     * @depends checkThatAddingABookmarkAddAItemToTheBookmarkList
      */
-    public function checkIfFavoriteItemLinksToTarget(Admin $I)
+    public function checkIfBookmarkItemLinksToTarget(Admin $I)
     {
-        $this->clickFavoriteDropdownToggleInTopbar($I);
+        $this->clickBookmarkDropdownToggleInTopbar($I);
         $I->click('Scheduled tasks', self::$topBarModuleSelector);
         $I->switchToIFrame('content');
         $I->canSee('Scheduled tasks', 'h1');
@@ -112,11 +112,11 @@ class FavoriteCest
 
     /**
      * @param Admin $I
-     * @depends checkThatAddingAFavoriteAddAItemToTheFavoriteList
+     * @depends checkThatAddingABookmarkAddAItemToTheBookmarkList
      */
-    public function checkIfEditFavoriteItemWorks(Admin $I)
+    public function checkIfEditBookmarkItemWorks(Admin $I)
     {
-        $this->clickFavoriteDropdownToggleInTopbar($I);
+        $this->clickBookmarkDropdownToggleInTopbar($I);
         $firstShortcutSelector = self::$topBarModuleSelector . ' .shortcut';
         $I->click('.shortcut-edit', $firstShortcutSelector);
 
@@ -131,11 +131,11 @@ class FavoriteCest
 
     /**
      * @param Admin $I
-     * @depends checkThatAddingAFavoriteAddAItemToTheFavoriteList
+     * @depends checkThatAddingABookmarkAddAItemToTheBookmarkList
      */
-    public function checkIfDeleteFavoriteWorks(Admin $I, ModalDialog $dialog)
+    public function checkIfDeleteBookmarkWorks(Admin $I, ModalDialog $dialog)
     {
-        $this->clickFavoriteDropdownToggleInTopbar($I);
+        $this->clickBookmarkDropdownToggleInTopbar($I);
 
         $I->canSee('Scheduled tasks renamed', self::$topBarModuleSelector);
         $I->click('.shortcut-delete', self::$topBarModuleSelector . ' .shortcut');
@@ -147,7 +147,7 @@ class FavoriteCest
     /**
      * @param Admin $I
      */
-    protected function clickFavoriteDropdownToggleInTopbar(Admin $I)
+    protected function clickBookmarkDropdownToggleInTopbar(Admin $I)
     {
         $I->switchToIFrame();
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);

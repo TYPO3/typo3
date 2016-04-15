@@ -20,6 +20,13 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
 class Topbar
 {
     /**
+     * Selector for the topbar container
+     *
+     * @var string
+     */
+    public static $containerSelector = '#typo3-top-container';
+
+    /**
      * Selector for the dropdown container
      *
      * @var string

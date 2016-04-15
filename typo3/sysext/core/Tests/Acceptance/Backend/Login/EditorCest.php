@@ -15,25 +15,32 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Login;
  */
 
 use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Kasper;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\Topbar;
 
 /**
- * Acceptance test
+ * Editor login tests
  */
 class EditorCest
 {
-
     /**
-     * Login a non-admin user and logout again
+     * Login as a non-admin user, check visible modules and logout again
      *
      * @param Kasper $I
      */
-    public function tryToTest(Kasper $I)
+    public function loginAsEditor(Kasper $I)
     {
-        $I->wantTo('login with editor');
         $I->loginAsEditor();
 
         // user is redirected to 'about modules' after login, but must not see the 'admin tools' section
-        $I->cantSee('Admin tools');
+        $I->cantSee('Admin tools', '#typo3-menu');
+
+        $topBarItemSelector = Topbar::$containerSelector . ' ' . Topbar::$dropdownToggleSelector . ' *';
+
+        // can see bookmarks
+        $I->seeElement($topBarItemSelector, ['title' => 'Bookmarks']);
+
+        // cant see clear cache
+        $I->cantSeeElement($topBarItemSelector, ['title' => 'Clear cache']);
 
         $I->logout();
         $I->waitForElement('#t3-username');
