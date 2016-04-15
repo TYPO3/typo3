@@ -196,8 +196,8 @@ th {
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?v=4.6.1');
-  src: url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?#iefix&v=4.6.1') format('embedded-opentype'), url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff2?v=4.6.1') format('woff2'), url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff?v=4.6.1') format('woff'), url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.ttf?v=4.6.1') format('truetype'), url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.svg?v=4.6.1#fontawesomeregular') format('svg');
+  src: url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?v=4.6.1');
+  src: url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?#iefix&v=4.6.1') format('embedded-opentype'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff2?v=4.6.1') format('woff2'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff?v=4.6.1') format('woff'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.ttf?v=4.6.1') format('truetype'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.svg?v=4.6.1#fontawesomeregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -2375,29 +2375,29 @@ th {
 }
 @font-face {
   font-family: 'Share';
-  src: url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-bold-webfont.eot');
-  src: url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-bold-webfont.eot?#iefix') format('embedded-opentype'), url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-bold-webfont.woff') format('woff'), url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-bold-webfont.ttf') format('truetype'), url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-bold-webfont.svg#Share-BoldRegular') format('svg');
+  src: url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-bold-webfont.eot');
+  src: url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-bold-webfont.eot?#iefix') format('embedded-opentype'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-bold-webfont.woff') format('woff'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-bold-webfont.ttf') format('truetype'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-bold-webfont.svg#Share-BoldRegular') format('svg');
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
   font-family: 'Share';
-  src: url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-italic-webfont.eot');
-  src: url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-italic-webfont.eot?#iefix') format('embedded-opentype'), url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-italic-webfont.woff') format('woff'), url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-italic-webfont.ttf') format('truetype'), url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-italic-webfont.svg#Share-ItalicRegular') format('svg');
+  src: url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-italic-webfont.eot');
+  src: url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-italic-webfont.eot?#iefix') format('embedded-opentype'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-italic-webfont.woff') format('woff'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-italic-webfont.ttf') format('truetype'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-italic-webfont.svg#Share-ItalicRegular') format('svg');
   font-weight: normal;
   font-style: italic;
 }
 @font-face {
   font-family: 'Share';
-  src: url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-regular-webfont.eot');
-  src: url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-regular-webfont.woff') format('woff'), url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-regular-webfont.ttf') format('truetype'), url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-regular-webfont.svg#Share-Regular') format('svg');
+  src: url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-regular-webfont.eot');
+  src: url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-regular-webfont.woff') format('woff'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-regular-webfont.ttf') format('truetype'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-regular-webfont.svg#Share-Regular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'Share';
-  src: url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-bolditalic-webfont.eot');
-  src: url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-bolditalic-webfont.eot?#iefix') format('embedded-opentype'), url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-bolditalic-webfont.woff') format('woff'), url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-bolditalic-webfont.ttf') format('truetype'), url('../../../../../../typo3/sysext/t3skin/Resources/Public/Fonts/Share/share-bolditalic-webfont.svg#Share-BoldItalicRegular') format('svg');
+  src: url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-bolditalic-webfont.eot');
+  src: url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-bolditalic-webfont.eot?#iefix') format('embedded-opentype'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-bolditalic-webfont.woff') format('woff'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-bolditalic-webfont.ttf') format('truetype'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/Share/share-bolditalic-webfont.svg#Share-BoldItalicRegular') format('svg');
   font-weight: bold;
   font-style: italic;
 }
@@ -9548,31 +9548,31 @@ div#contentMenu1 {
   border: 1px solid #9eb2c5;
 }
 .x-dd-drop-nodrop .x-dd-drop-icon {
-  background-image: url(../../../../t3skin/Resources/Public/Images/pagetree-drag-place-denied.png);
+  background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-place-denied.png);
 }
 .x-tree-drop-ok-append.typo3-pagetree-copy .x-dd-drop-icon {
-  background-image: url(../../../../t3skin/Resources/Public/Images/pagetree-drag-new-inside.png);
+  background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-new-inside.png);
 }
 .x-tree-drop-ok-below.typo3-pagetree-copy .x-dd-drop-icon {
-  background-image: url(../../../../t3skin/Resources/Public/Images/pagetree-drag-copy-below.png);
+  background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-copy-below.png);
 }
 .x-tree-drop-ok-above.typo3-pagetree-copy .x-dd-drop-icon {
-  background-image: url(../../../../t3skin/Resources/Public/Images/pagetree-drag-copy-above.png);
+  background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-copy-above.png);
 }
 .x-tree-drop-ok-between.typo3-pagetree-copy .x-dd-drop-icon {
-  background-image: url(../../../../t3skin/Resources/Public/Images/pagetree-drag-new-between.png);
+  background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-new-between.png);
 }
 .x-tree-drop-ok-append .x-dd-drop-icon {
-  background-image: url(../../../../t3skin/Resources/Public/Images/pagetree-drag-move-into.png);
+  background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-move-into.png);
 }
 .x-tree-drop-ok-between .x-dd-drop-icon {
-  background-image: url(../../../../t3skin/Resources/Public/Images/pagetree-drag-move-between.png);
+  background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-move-between.png);
 }
 .x-tree-drop-ok-below .x-dd-drop-icon {
-  background-image: url(../../../../t3skin/Resources/Public/Images/pagetree-drag-move-below.png);
+  background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-move-below.png);
 }
 .x-tree-drop-ok-above .x-dd-drop-icon {
-  background-image: url(../../../../t3skin/Resources/Public/Images/pagetree-drag-move-above.png);
+  background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-move-above.png);
 }
 #typo3-pagetree .x-tree-node .x-tree-drag-insert-below,
 .x-tree-node div.x-tree-drag-insert-below,

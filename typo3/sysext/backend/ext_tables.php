@@ -1,6 +1,14 @@
 <?php
 defined('TYPO3_MODE') or die();
 
+// Register as a skin
+$GLOBALS['TBE_STYLES']['skins']['backend'] = array(
+    'name' => 'backend',
+    'stylesheetDirectories' => array(
+        'css' => 'EXT:backend/Resources/Public/Css/'
+    )
+);
+
 if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
         'web',

@@ -33,7 +33,6 @@ module.exports = function(grunt) {
 			less      : '<%= paths.resources %>Public/Less/',
 			root      : '../',
 			sysext    : '<%= paths.root %>typo3/sysext/',
-			t3skin    : '<%= paths.sysext %>t3skin/Resources/',
 			form      : '<%= paths.sysext %>form/Resources/',
 			frontend  : '<%= paths.sysext %>frontend/Resources/',
 			install   : '<%= paths.sysext %>install/Resources/',
@@ -49,9 +48,9 @@ module.exports = function(grunt) {
 				banner: '<%= banner %>',
 				outputSourceFiles: true
 			},
-			t3skin: {
+			backend: {
 				files: {
-					"<%= paths.t3skin %>Public/Css/backend.css": "<%= paths.less %>backend.less"
+					"<%= paths.backend %>Public/Css/backend.css": "<%= paths.less %>backend.less"
 				}
 			},
 			core: {
@@ -98,8 +97,8 @@ module.exports = function(grunt) {
 					})
 				]
 			},
-			t3skin: {
-				src: '<%= paths.t3skin %>Public/Css/*.css'
+			backend: {
+				src: '<%= paths.backend %>Public/Css/*.css'
 			},
 			core: {
 				src: '<%= paths.core %>Public/Css/*.css'
