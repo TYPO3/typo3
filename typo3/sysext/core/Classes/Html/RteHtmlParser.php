@@ -696,17 +696,14 @@ class RteHtmlParser extends HtmlParser
         }
         // Split the content from RTE by the occurrence of these blocks:
         $blockSplit = $this->splitIntoBlock($this->blockElementList, $value);
-        $cc = 0;
-        $aC = count($blockSplit);
+
         // Avoid superfluous linebreaks by transform_db after ending headListTag
-        while ($aC && trim($blockSplit[$aC - 1]) === '') {
-            unset($blockSplit[$aC - 1]);
-            $aC = count($blockSplit);
+        while (count($blockSplit) > 0 && trim(end($blockSplit)) === '') {
+            array_pop($blockSplit);
         }
+
         // Traverse the blocks
         foreach ($blockSplit as $k => $v) {
-            $cc++;
-            $lastBR = $cc == $aC ? '' : LF;
             if ($k % 2) {
                 // Inside block:
                 // Init:
@@ -723,12 +720,12 @@ class RteHtmlParser extends HtmlParser
                     case 'nav':
                     case 'article':
                     case 'aside':
-                        $blockSplit[$k] = $tag . $this->TS_transform_db($this->removeFirstAndLastTag($blockSplit[$k])) . '</' . $tagName . '>' . $lastBR;
+                        $blockSplit[$k] = $tag . $this->TS_transform_db($this->removeFirstAndLastTag($blockSplit[$k])) . '</' . $tagName . '>';
                         break;
                     default:
                         // usually <hx> tags and <table> tags where no other block elements are within the tags
                         // Eliminate true linebreaks inside block element tags
-                        $blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
+                        $blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k]));
                 }
             } else {
                 // NON-block:
@@ -740,7 +737,7 @@ class RteHtmlParser extends HtmlParser
                     $blockSplit[$k] = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>[' . LF . CR . ']+/', '<$1$2/>', $blockSplit[$k]);
                     // Replace other linebreaks with space
                     $blockSplit[$k] = preg_replace('/[' . LF . CR . ']+/', ' ', $blockSplit[$k]);
-                    $blockSplit[$k] = $this->divideIntoLines($blockSplit[$k]) . $lastBR;
+                    $blockSplit[$k] = $this->divideIntoLines($blockSplit[$k]);
                     $blockSplit[$k] = $this->transformStyledATags($blockSplit[$k]);
                 } else {
                     unset($blockSplit[$k]);
@@ -748,7 +745,7 @@ class RteHtmlParser extends HtmlParser
             }
         }
         $this->TS_transform_db_safecounter++;
-        return implode('', $blockSplit);
+        return implode(LF, $blockSplit);
     }
 
     /**
@@ -1070,7 +1067,6 @@ class RteHtmlParser extends HtmlParser
         $keepTags = $this->getKeepTags('rte');
         // Default: remove unknown tags.
         $kUknown = $this->procOptions['dontProtectUnknownTags_rte'] ? 0 : 'protect';
-        $convNBSP = !$this->procOptions['dontConvAmpInNBSP_rte'] ? 1 : 0;
         // Divide the content into lines, based on LF:
         $parts = explode(LF, $value);
         foreach ($parts as $k => $v) {
@@ -1081,7 +1077,7 @@ class RteHtmlParser extends HtmlParser
             } else {
                 // Clean the line content:
                 $parts[$k] = $this->HTMLcleaner($parts[$k], $keepTags, $kUknown);
-                if ($convNBSP) {
+                if (!$this->procOptions['dontConvAmpInNBSP_rte']) {
                     $parts[$k] = str_replace('&amp;nbsp;', '&nbsp;', $parts[$k]);
                 }
             }
@@ -1223,7 +1219,7 @@ class RteHtmlParser extends HtmlParser
                 if (!$dontSetRTEKEEP) {
                     $attribArray['rtekeep'] = 1;
                 }
-                $bTag = '<a ' . GeneralUtility::implodeAttributes($attribArray, 1) . '>';
+                $bTag = '<a ' . GeneralUtility::implodeAttributes($attribArray, true) . '>';
                 $eTag = '</a>';
                 $blockSplit[$k] = $bTag . $this->TS_AtagToAbs($this->removeFirstAndLastTag($blockSplit[$k])) . $eTag;
             }
