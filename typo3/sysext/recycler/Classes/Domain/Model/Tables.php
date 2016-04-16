@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Recycler\Domain\Model;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
 /**
@@ -34,11 +36,23 @@ class Tables
         $deletedRecordsTotal = 0;
         $lang = $this->getLanguageService();
         $tables = array();
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class);
         foreach (RecyclerUtility::getModifyableTables() as $tableName) {
             $deletedField = RecyclerUtility::getDeletedField($tableName);
             if ($deletedField) {
                 // Determine whether the table has deleted records:
-                $deletedCount = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', $tableName, $deletedField . '<>0');
+                $queryBuilder = $connection->getQueryBuilderForTable($tableName);
+                $queryBuilder
+                    ->getQueryContext()
+                    ->setIgnoreEnableFields(true)
+                    ->setIncludeDeleted(true);
+
+                $deletedCount = $queryBuilder->count('uid')
+                    ->from($tableName)
+                    ->where($queryBuilder->expr()->neq($deletedField, 0))
+                    ->execute()
+                    ->fetchColumn();
+
                 if ($deletedCount) {
                     /* @var $deletedDataObject DeletedRecords */
                     $deletedDataObject = GeneralUtility::makeInstance(DeletedRecords::class);
@@ -63,16 +77,6 @@ class Tables
             $lang->sL('LLL:EXT:recycler/mod1/locallang.xlf:label_allrecordtypes')
         ));
         return $jsonArray;
-    }
-
-    /**
-     * Returns an instance of DatabaseConnection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
