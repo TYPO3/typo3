@@ -68,7 +68,9 @@ class AddPageInPageModuleCest
         $I->wait(2);
         $editControllerDiv = '#EditDocumentController > div';
         $generalTab = $editControllerDiv . ' > div:nth-child(1) > ul > li';
-        $classString = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use ($generalTab) {
+        $classString = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use (
+            $generalTab
+        ) {
             return $webdriver->findElement(\WebDriverBy::cssSelector($generalTab))->getAttribute('class');
         });
         $I->assertContains('has-validation-error', $classString);

@@ -12,6 +12,14 @@ modules:
       window_size: 1440x570
       wait: 1
       restart: true
+      capabilities:
+        # Disable the "scroll to element before clicking" behavior as this breaks tests
+        # where for example a fixed docbar is used. Selenium scrolls to the element before
+        # clicking it and then complains that it can't click the element because another elemnt
+        # is overlaying it.
+        # You have to ensure that the element is in the viewport by your own before clicking it!
+        # You can simply do that by scrolling to it.
+        elementScrollBehavior: 1
 env:
   firefox:
     modules:
