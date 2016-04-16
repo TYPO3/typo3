@@ -37,10 +37,7 @@ RTE.default.proc {
 	denyTags >
 
 		## ALLOWED P ATTRIBUTES
-		## Attributes class and align are always preserved
-		## Align attribute will be unset on entry (see below)
-		## This is a list of additional attributes to keep
-	keepPDIVattribs = id, title, dir, lang, xml:lang, itemscope, itemtype, itemprop
+	keepPDIVattribs = class, align, id, title, dir, lang, xml:lang, itemscope, itemtype, itemprop
 
 		## REMAP BOLD AND ITALIC TO STRONG AND EMPHASIS AND VICE VERSA
 	transformBoldAndItalicTags = 1

@@ -951,13 +951,8 @@ class RteHtmlParser extends HtmlParser
     {
         // Setting configuration for processing:
         $allowTagsOutside = GeneralUtility::trimExplode(',', strtolower($this->procOptions['allowTagsOutside'] ? 'hr,' . $this->procOptions['allowTagsOutside'] : 'hr,img'), true);
+        // Setting the third param will eliminate false end-tags. Maybe this is a good thing to do...?
         $divSplit = $this->splitIntoBlock('p', $value, true);
-        // Setting the third param to 1 will eliminate false end-tags. Maybe this is a good thing to do...?
-        if ($this->procOptions['keepPDIVattribs']) {
-            $keepAttribListArr = GeneralUtility::trimExplode(',', strtolower($this->procOptions['keepPDIVattribs']), true);
-        } else {
-            $keepAttribListArr = array();
-        }
         // Returns plainly the value if there was no div/p sections in it
         if (count($divSplit) <= 1 || $count <= 0) {
             // Wrap hr tags with LF's
@@ -966,6 +961,14 @@ class RteHtmlParser extends HtmlParser
             $newValue = preg_replace('/(^' . LF . ')|(' . LF . '$)/i', '', $newValue);
             return $newValue;
         }
+
+        // define which attributes are allowed on <p> tags
+        if ($this->procOptions['keepPDIVattribs']) {
+            $allowedAttributesForParagraphTags = GeneralUtility::trimExplode(',', strtolower($this->procOptions['keepPDIVattribs']), true);
+        } else {
+            $allowedAttributesForParagraphTags = array();
+        }
+
         // Traverse the splitted sections:
         foreach ($divSplit as $k => $v) {
             if ($k % 2) {
@@ -990,25 +993,15 @@ class RteHtmlParser extends HtmlParser
                         list($tagAttributes) = $this->get_tag_attributes($fTag);
                         // Keep attributes (lowercase)
                         $newAttribs = array();
-                        if (!empty($keepAttribListArr)) {
-                            foreach ($keepAttribListArr as $keepA) {
+                        if (!empty($allowedAttributesForParagraphTags)) {
+                            foreach ($allowedAttributesForParagraphTags as $keepA) {
                                 if (isset($tagAttributes[$keepA])) {
                                     $newAttribs[$keepA] = $tagAttributes[$keepA];
                                 }
                             }
-                        }
-                        // ALIGN attribute:
-                        if (!$this->procOptions['skipAlign'] && trim($tagAttributes['align']) !== '' && strtolower($tagAttributes['align']) != 'left') {
-                            // Set to value, but not 'left'
-                            $newAttribs['align'] = strtolower($tagAttributes['align']);
-                        }
-                        // CLASS attribute:
-                        // Set to whatever value
-                        if (!$this->procOptions['skipClass'] && trim($tagAttributes['class']) !== '') {
-                            if (empty($this->allowedClasses) || in_array($tagAttributes['class'], $this->allowedClasses)) {
-                                $newAttribs['class'] = $tagAttributes['class'];
-                            } else {
-                                $classes = GeneralUtility::trimExplode(' ', $tagAttributes['class'], true);
+                            // CLASS attribute - sort out the allowed tags
+                            if (trim($newAttribs['class']) !== '' && !empty($this->allowedClasses) && !in_array($newAttribs['class'], $this->allowedClasses)) {
+                                $classes = GeneralUtility::trimExplode(' ', $newAttribs['class'], true);
                                 $newClasses = array();
                                 foreach ($classes as $class) {
                                     if (in_array($class, $this->allowedClasses)) {
@@ -1017,6 +1010,8 @@ class RteHtmlParser extends HtmlParser
                                 }
                                 if (!empty($newClasses)) {
                                     $newAttribs['class'] = implode(' ', $newClasses);
+                                } else {
+                                    unset($newAttribs['class']);
                                 }
                             }
                         }
