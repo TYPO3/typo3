@@ -13,13 +13,15 @@ namespace TYPO3\CMS\Recycler\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * A task that should be run regularly that deletes deleted
  * datasets from the DB.
  */
-class CleanerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+class CleanerTask extends AbstractTask
 {
     /**
      * @var int The time period, after which the rows are deleted
@@ -30,11 +32,6 @@ class CleanerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      * @var array The tables to clean
      */
     protected $tcaTables = array();
-
-    /**
-     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected $databaseConnection = null;
 
     /**
      * The main method of the task. Iterates through
@@ -63,21 +60,35 @@ class CleanerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     protected function cleanTable($tableName)
     {
-        $queryParts = array();
         if (isset($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
-            $queryParts[] = $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . ' = 1';
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+
+            $constraints = [
+                $queryBuilder->expr()->eq($GLOBALS['TCA'][$tableName]['ctrl']['delete'], 1),
+            ];
+
             if ($GLOBALS['TCA'][$tableName]['ctrl']['tstamp']) {
                 $dateBefore = $this->getPeriodAsTimestamp();
-                $queryParts[] = $GLOBALS['TCA'][$tableName]['ctrl']['tstamp'] . ' < ' . $dateBefore;
+                $constraints[] = $queryBuilder->expr()->lt($GLOBALS['TCA'][$tableName]['ctrl']['tstamp'], $dateBefore);
             }
-            $where = implode(' AND ', $queryParts);
 
-            $this->checkFileResourceFieldsBeforeDeletion($tableName, $where);
+            $this->checkFileResourceFieldsBeforeDeletion($tableName, $constraints);
 
-            $this->getDatabaseConnection()->exec_DELETEquery($tableName, $where);
+            $queryBuilder
+                ->getQueryContext()
+                ->setIgnoreEnableFields(true)
+                ->setIncludeDeleted(true);
+
+            try {
+                $queryBuilder->delete($tableName)
+                    ->where($queryBuilder->expr()->andX(...$constraints))
+                    ->execute();
+            } catch (\Doctrine\DBAL\DBALException $e) {
+                return false;
+            }
         }
 
-        return $this->getDatabaseConnection()->sql_error() === '';
+        return true;
     }
 
     /**
@@ -153,25 +164,17 @@ class CleanerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     }
 
     /**
-     * @param \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    public function setDatabaseConnection($databaseConnection)
-    {
-        $this->databaseConnection = $databaseConnection;
-    }
-
-    /**
      * Checks if the table has fields for uploaded files and removes those files.
      *
      * @param string $table
-     * @param string $where
+     * @param array $constraints
      * @return void
      */
-    protected function checkFileResourceFieldsBeforeDeletion($table, $where)
+    protected function checkFileResourceFieldsBeforeDeletion($table, array $constraints)
     {
         $fieldList = $this->getFileResourceFields($table);
         if (!empty($fieldList)) {
-            $this->deleteFilesForTable($table, $where, $fieldList);
+            $this->deleteFilesForTable($table, $constraints, $fieldList);
         }
     }
 
@@ -179,18 +182,25 @@ class CleanerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      * Removes all files from the given field list in the table.
      *
      * @param string $table
-     * @param string $where
+     * @param array $constraints
      * @param array $fieldList
      * @return void
      */
-    protected function deleteFilesForTable($table, $where, array $fieldList)
+    protected function deleteFilesForTable($table, array $constraints, array $fieldList)
     {
-        $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            implode(',', $fieldList),
-            $table,
-            $where
-        );
-        foreach ($rows as $row) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder
+            ->getQueryContext()
+            ->setIgnoreEnableFields(true)
+            ->setIncludeDeleted(true);
+
+        $result = $queryBuilder
+            ->select(...$fieldList)
+            ->from($table)
+            ->where(...$constraints)
+            ->execute();
+
+        while ($row = $result->fetch()) {
             foreach ($fieldList as $fieldName) {
                 $uploadDir = PATH_site . $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['uploadfolder'] . '/';
                 $fileList = GeneralUtility::trimExplode(',', $row[$fieldName]);
@@ -221,17 +231,6 @@ class CleanerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
             }
         }
         return $result;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        if ($this->databaseConnection === null) {
-            $this->databaseConnection = $GLOBALS['TYPO3_DB'];
-        }
-        return $this->databaseConnection;
     }
 
     /**

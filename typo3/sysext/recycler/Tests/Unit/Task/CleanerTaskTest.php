@@ -14,7 +14,14 @@ namespace TYPO3\CMS\Recycler\Tests\Unit\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recycler\Task\CleanerTask;
 
 /**
@@ -67,26 +74,29 @@ class CleanerTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|CleanerTask $subject */
         $subject = $this->getMock(CleanerTask::class, array('getPeriodAsTimestamp'), array(), '', false);
+        $subject->setTcaTables(['pages']);
+        $subject->expects($this->once())->method('getPeriodAsTimestamp')->willReturn(400);
 
-        $tables = array('pages');
-        $subject->setTcaTables($tables);
+        /** @var Connection|ObjectProphecy $connection */
+        $connection = $this->prophesize(Connection::class);
+        $connection->getDatabasePlatform()->willReturn(new MockPlatform());
+        $connection->getExpressionBuilder()->willReturn(new ExpressionBuilder($connection->reveal()));
+        $connection->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
 
-        $period = 14;
-        $subject->setPeriod($period);
-        $periodAsTimestamp = strtotime('-' . $period . ' days');
-        $subject->expects($this->once())->method('getPeriodAsTimestamp')->willReturn($periodAsTimestamp);
+        $queryBuilder = GeneralUtility::makeInstance(
+            QueryBuilder::class,
+            $connection->reveal(),
+            null,
+            new \Doctrine\DBAL\Query\QueryBuilder($connection->reveal())
+        );
 
-        $dbMock = $this->getMock(DatabaseConnection::class);
-        $dbMock->expects($this->once())
-            ->method('exec_DELETEquery')
-            ->with($this->equalTo('pages'), $this->equalTo('deleted = 1 AND tstamp < ' . $periodAsTimestamp));
+        $connectionPool = $this->prophesize(ConnectionPool::class);
+        $connectionPool->getQueryBuilderForTable('pages')->willReturn($queryBuilder);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
 
-        $dbMock->expects($this->once())
-            ->method('sql_error')
-            ->will($this->returnValue(''));
-
-        $subject->setDatabaseConnection($dbMock);
-
+        $connection->executeUpdate('DELETE FROM pages WHERE (deleted = 1) AND (tstamp < 400)', Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn(1);
         $this->assertTrue($subject->execute());
     }
 
@@ -98,18 +108,28 @@ class CleanerTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['TCA']['pages']['ctrl']['delete'] = 'deleted';
         $GLOBALS['TCA']['pages']['ctrl']['tstamp'] = 'tstamp';
 
-        $tables = array('pages');
-        $this->subject->setTcaTables($tables);
+        $this->subject->setTcaTables(['pages']);
 
-        $period = 14;
-        $this->subject->setPeriod($period);
+        /** @var Connection|ObjectProphecy $connection */
+        $connection = $this->prophesize(Connection::class);
+        $connection->getDatabasePlatform()->willReturn(new MockPlatform());
+        $connection->getExpressionBuilder()->willReturn(new ExpressionBuilder($connection->reveal()));
+        $connection->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
 
-        $dbMock = $this->getMock(DatabaseConnection::class);
-        $dbMock->expects($this->once())
-            ->method('sql_error')
-            ->willReturn(1049);
+        $queryBuilder = GeneralUtility::makeInstance(
+            QueryBuilder::class,
+            $connection->reveal(),
+            null,
+            new \Doctrine\DBAL\Query\QueryBuilder($connection->reveal())
+        );
 
-        $this->subject->setDatabaseConnection($dbMock);
+        $connectionPool = $this->prophesize(ConnectionPool::class);
+        $connectionPool->getQueryBuilderForTable('pages')->willReturn($queryBuilder);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
+
+        $connection->executeUpdate(Argument::cetera())
+            ->shouldBeCalled()
+            ->willThrow(new \Doctrine\DBAL\DBALException());
 
         $this->assertFalse($this->subject->execute());
     }
