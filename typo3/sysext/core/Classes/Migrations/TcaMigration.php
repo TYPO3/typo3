@@ -730,6 +730,9 @@ class TcaMigration
                         foreach ($fieldConfig['config']['wizards'] as $wizardName => $wizard) {
                             if (isset($wizard['type']) && ($wizard['type'] === 'colorbox')) {
                                 unset($fieldConfig['config']['wizards'][$wizardName]);
+                                if (empty($fieldConfig['config']['wizards'])) {
+                                    unset($fieldConfig['config']['wizards']);
+                                }
                                 $fieldConfig['config']['renderType'] = 'colorpicker';
 
                                 $this->messages[] = 'The color-picker wizard using \'colorbox\' is deprecated'

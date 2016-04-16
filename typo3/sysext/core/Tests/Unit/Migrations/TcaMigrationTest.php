@@ -1385,4 +1385,45 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
     }
+
+    /**
+     * @test
+     */
+    public function migrateRewritesColorpickerWizard()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aCol' => [
+                        'config' => [
+                            'wizards' => [
+                                'colorpicker' => [
+                                    'type' => 'colorbox',
+                                    'title' => 'Color picker',
+                                    'module' => [
+                                        'name' => 'wizard_colorpicker',
+                                    ],
+                                    'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aCol' => [
+                        'config' => [
+                            'renderType' => 'colorpicker',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
 }
