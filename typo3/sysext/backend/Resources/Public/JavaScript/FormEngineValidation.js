@@ -521,34 +521,10 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 					modified = true;
 				}
 				if (modified) {
-					$field.attr('value', newValue);
-					FormEngineValidation.setCaretPosition($field, 0);
+					$field.val(newValue);
 				}
 			}
 		});
-	};
-
-	/**
-	 * Set the caret position in a text field
-	 *
-	 * @param {Object} $element
-	 * @param {Number} caretPos
-	 */
-	FormEngineValidation.setCaretPosition = function($element, caretPos) {
-		var elem = $element.get(0);
-
-		if (elem.createTextRange) {
-			var range = elem.createTextRange();
-			range.move('character', caretPos);
-			range.select();
-		} else {
-			if (elem.selectionStart) {
-				elem.focus();
-				elem.setSelectionRange(caretPos, caretPos);
-			} else {
-				elem.focus();
-			}
-		}
 	};
 
 	/**
