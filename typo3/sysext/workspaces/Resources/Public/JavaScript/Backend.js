@@ -64,7 +64,8 @@ define([
 		allToggled: false,
 		elements: {}, // filled in Backend.getElements()
 		latestPath: '',
-		markedRecordsForMassAction: []
+		markedRecordsForMassAction: [],
+		indentationPadding: 26
 	};
 
 	Backend.initialize = function() {
@@ -541,7 +542,7 @@ define([
 
 			Backend.elements.$tableBody.append(
 				$('<tr />', rowConfiguration).append(
-					$('<td />', {class: 't3js-title-workspace'}).html(item.icon_Workspace + '&nbsp;' + '<a href="#" data-action="changes"><span class="item-state-' + item.state_Workspace + '">' + item.label_Workspace + '</span></a>'),
+					$('<td />', {class: 't3js-title-workspace', style: item.Workspaces_CollectionLevel > 0 ? 'padding-left: ' + Backend.indentationPadding * item.Workspaces_CollectionLevel + 'px' : ''}).html(item.icon_Workspace + '&nbsp;' + '<a href="#" data-action="changes"><span class="item-state-' + item.state_Workspace + '">' + item.label_Workspace + '</span></a>'),
 					$('<td />', {class: 't3js-title-live'}).html(item.icon_Live + '&nbsp;' + item.label_Live),
 					$('<td />').text(item.label_Stage),
 					$('<td />').html($integrityIcon),
