@@ -204,7 +204,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 
 		// fix rowspan in former last row
 		for (var colIndex = 0; colIndex < GridEditor.colCount; colIndex++) {
-			if (GridEditor.data[GridEditor.rowCount - 1][colIndex].spanned == true) {
+			if (GridEditor.data[GridEditor.rowCount - 1][colIndex].spanned === true) {
 				GridEditor.findUpperCellWidthRowspanAndDecreaseByOne(colIndex, GridEditor.rowCount - 1);
 			}
 		}
@@ -227,7 +227,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 			return false;
 		}
 
-		if (upperCell.spanned == true) {
+		if (upperCell.spanned === true) {
 			GridEditor.findUpperCellWidthRowspanAndDecreaseByOne(col, row - 1);
 		} else {
 			if (upperCell.rowspan > 1) {
@@ -250,7 +250,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 			for (var colIndex = 0; colIndex < GridEditor.colCount - 1; colIndex++) {
 				newRow.push(GridEditor.data[rowIndex][colIndex]);
 			}
-			if (GridEditor.data[rowIndex][GridEditor.colCount - 1].spanned == true) {
+			if (GridEditor.data[rowIndex][GridEditor.colCount - 1].spanned === true) {
 				GridEditor.findLeftCellWidthColspanAndDecreaseByOne(GridEditor.colCount - 1, rowIndex);
 			}
 			newData.push(newRow);
@@ -273,7 +273,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 			return false;
 		}
 
-		if (leftCell.spanned == true) {
+		if (leftCell.spanned === true) {
 			GridEditor.findLeftCellWidthColspanAndDecreaseByOne(col - 1, row);
 		} else {
 			if (leftCell.colspan > 1) {
@@ -314,7 +314,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 
 		for (var row = 0; row < GridEditor.rowCount; row++) {
 			var rowData = GridEditor.data[row];
-			if (rowData.length == 0) {
+			if (rowData.length === 0) {
 				continue;
 			}
 
@@ -322,7 +322,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 
 			for (col = 0; col < GridEditor.colCount; col++) {
 				var cell = GridEditor.data[row][col];
-				if (cell.spanned == true) {
+				if (cell.spanned === true) {
 					continue;
 				}
 				var $cell = $('<td>').css({
@@ -331,24 +331,56 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 				});
 				var $container = $('<div class="cell_container">');
 				$cell.append($container);
-				var dataString = ' data-col="' + col + '" data-row="' + row + '"';
-				$container.append($('<a class="t3js-grideditor-link-editor link link_editor" title="' + TYPO3.lang['grid_editCell'] + '" ' + dataString + '  href="#"><!-- --></a>'));
+				var $anchor = $('<a href="#" data-col="' + col + '" data-row="' + row + '">');
+
+				$container.append(
+					$anchor
+						.clone()
+						.attr('class', 't3js-grideditor-link-editor link link_editor')
+						.attr('title', TYPO3.lang['grid_editCell'])
+				);
 				if (GridEditor.cellCanSpanRight(col, row)) {
-					$container.append($('<a class="t3js-grideditor-link-expand-right link link_expand_right" href="#"  title="' + TYPO3.lang['grid_mergeCell'] + '" ' + dataString + '><!-- --></a>'));
+					$container.append(
+						$anchor
+							.clone()
+							.attr('class', 't3js-grideditor-link-expand-right link link_expand_right')
+							.attr('title', TYPO3.lang['grid_mergeCell'])
+					);
 				}
 				if (GridEditor.cellCanShrinkLeft(col, row)) {
-					$container.append('<a class="t3js-grideditor-link-shrink-left link link_shrink_left" href="#" title="' + TYPO3.lang['grid_splitCell'] + '" ' + dataString + '><!-- --></a>');
+					$container.append(
+						$anchor
+							.clone()
+							.attr('class', 't3js-grideditor-link-shrink-left link link_shrink_left')
+							.attr('title', TYPO3.lang['grid_splitCell'])
+					);
 				}
 				if (GridEditor.cellCanSpanDown(col, row)) {
-					$container.append('<a class="t3js-grideditor-link-expand-down link link_expand_down" href="#" title="' + TYPO3.lang['grid_mergeCell'] + '" ' + dataString + '><!-- --></a>');
+					$container.append(
+						$anchor
+							.clone()
+							.attr('class', 't3js-grideditor-link-expand-down link link_expand_down')
+							.attr('title', TYPO3.lang['grid_mergeCell'])
+					);
 				}
 				if (GridEditor.cellCanShrinkUp(col, row)) {
-					$container.append('<a class="t3js-grideditor-link-shrink-up link link_shrink_up" href="#" title="' + TYPO3.lang['grid_splitCell'] + '" ' + dataString + '><!-- --></a>');
+					$container.append(
+						$anchor
+							.clone()
+							.attr('class', 't3js-grideditor-link-shrink-up link link_shrink_up')
+							.attr('title', TYPO3.lang['grid_splitCell'])
+					);
 				}
-				$cell.append('<div class="cell_data">' + TYPO3.lang['grid_name'] + ': ' + (cell.name ? GridEditor.stripMarkup(cell.name) : TYPO3.lang['grid_notSet'])
-					+ '<br />' + TYPO3.lang['grid_column'] + ': '
-					+ (cell.column === undefined ? TYPO3.lang['grid_notSet'] : parseInt(cell.column, 10)) + '</div>');
-
+				$cell.append(
+					$('<div class="cell_data">')
+						.html(
+							TYPO3.lang['grid_name'] + ': '
+							+ (cell.name ? GridEditor.stripMarkup(cell.name) : TYPO3.lang['grid_notSet'])
+							+ '<br />'
+							+ TYPO3.lang['grid_column'] + ': '
+							+ (cell.column === undefined ? TYPO3.lang['grid_notSet'] : parseInt(cell.column, 10))
+						)
+				);
 				if (cell.colspan > 1) {
 					$cell.attr('colspan', cell.colspan);
 				}
@@ -395,7 +427,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 		if (!cell) {
 			return false;
 		}
-		cell.column = parseInt(GridEditor.stripMarkup(newColumn), 10);
+		cell.column = parseInt(newColumn, 10);
 		return true;
 	};
 
@@ -424,18 +456,41 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 		}
 
 		var $markup = $('<div>');
-		$markup.append(
-			'<div>' +
-				'<div class="form-group">' +
-					'<label>' + TYPO3.lang['grid_nameHelp'] + '</label>' +
-					'<input type="text" class="t3js-grideditor-field-name form-control" name="name" value="' + (GridEditor.stripMarkup(cell.name) || '') + '">' +
-				'</div>' +
-				'<div class="form-group">' +
-					'<label>' + TYPO3.lang['grid_columnHelp'] + '</label>' +
-					'<input type="text" class="t3js-grideditor-field-colpos form-control" name="name" value="' + colPos + '">' +
-				'</div>' +
-			'</div>'
-		);
+		var $formGroup = $('<div class="form-group">');
+		var $label = $('<label>');
+		var $input = $('<input>');
+
+		$markup.append([
+			$formGroup
+				.clone()
+				.append([
+					$label
+						.clone()
+						.text(TYPO3.lang['grid_nameHelp'])
+					,
+					$input
+						.clone()
+						.attr('type', 'text')
+						.attr('class', 't3js-grideditor-field-name form-control')
+						.attr('name', 'name')
+						.val(GridEditor.stripMarkup(cell.name) || '')
+				]),
+			$formGroup
+				.clone()
+				.append([
+					$label
+						.clone()
+						.text(TYPO3.lang['grid_columnHelp'])
+					,
+					$input
+						.clone()
+						.attr('type', 'text')
+						.attr('class', 't3js-grideditor-field-colpos form-control')
+						.attr('name', 'column')
+						.val(colPos)
+			])
+		]);
+
 		var $modal = Modal.show(TYPO3.lang['grid_windowTitle'], $markup, Severity.notice, [
 			{
 				text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
@@ -500,13 +555,13 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 		if (cell.rowspan > 1) {
 			for (var rowIndex = row; rowIndex < row + cell.rowspan; rowIndex++) {
 				checkCell = GridEditor.getCell(col + cell.colspan, rowIndex);
-				if (!checkCell || checkCell.spanned == true || checkCell.colspan > 1 || checkCell.rowspan > 1) {
+				if (!checkCell || checkCell.spanned === true || checkCell.colspan > 1 || checkCell.rowspan > 1) {
 					return false;
 				}
 			}
 		} else {
 			checkCell = GridEditor.getCell(col + cell.colspan, row);
-			if (!checkCell || cell.spanned == true || checkCell.spanned == true || checkCell.colspan > 1 || checkCell.rowspan > 1) {
+			if (!checkCell || cell.spanned === true || checkCell.spanned === true || checkCell.colspan > 1 || checkCell.rowspan > 1) {
 				return false;
 			}
 		}
@@ -686,11 +741,13 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 	};
 
 	/**
+	 * Remove all markup
 	 *
 	 * @param {String} input
 	 * @returns {*|jQuery}
 	 */
 	GridEditor.stripMarkup = function(input) {
+		input = input.replace( /<(.*)>/gi, '');
 		return $('<p>' + input + '</p>').text();
 	};
 
