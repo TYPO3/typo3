@@ -1214,7 +1214,6 @@ class PageLayoutController
                                     array(
                                         'element' => $this->eRParts[0] . ':' . $this->eRParts[1],
                                         'revert' => 'ALL_FIELDS',
-                                        'sumUp' => -1,
                                         'returnUrl' => $this->R_URI,
                                     )
                                 )

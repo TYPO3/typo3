@@ -132,28 +132,6 @@ class RecordHistory
      */
     public function main()
     {
-        // Single-click rollback
-        if ($this->getArgument('revert') && $this->getArgument('sumUp')) {
-            $this->rollbackFields = $this->getArgument('revert');
-            $this->showInsertDelete = 0;
-            $this->showSubElements = 0;
-            $element = explode(':', $this->element);
-            /** @var QueryBuilder $queryBuilder */
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_history');
-            $record = $queryBuilder
-                ->select('*')
-                ->from('sys_history')
-                ->where($queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($element[0])))
-                ->andWhere($queryBuilder->expr()->eq('recuid', (int)$element[1]))
-                ->orderBy('uid', 'DESC')
-                ->execute()
-                ->fetch();
-            $this->lastSyslogId = $record['sys_log_uid'];
-            $this->createChangeLog();
-            $completeDiff = $this->createMultipleDiff();
-            $this->performRollback($completeDiff);
-            HttpUtility::redirect($this->returnUrl);
-        }
         // Save snapshot
         if ($this->getArgument('highlight') && !$this->getArgument('settings')) {
             $this->toggleHighlight($this->getArgument('highlight'));

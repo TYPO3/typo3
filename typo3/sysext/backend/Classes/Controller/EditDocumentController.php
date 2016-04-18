@@ -1379,7 +1379,6 @@ class EditDocumentController extends AbstractModule
                                 array(
                                     'element' => $this->firstEl['table'] . ':' . $this->firstEl['uid'],
                                     'revert' => 'ALL_FIELDS',
-                                    'sumUp' => -1,
                                     'returnUrl' => $this->R_URI,
                                 )
                             )

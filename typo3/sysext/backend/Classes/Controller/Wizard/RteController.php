@@ -316,7 +316,6 @@ class RteController extends AbstractWizardController
                             array(
                                 'element' => $this->P['table'] . ':' . $this->P['uid'],
                                 'revert' => 'field:' . $this->P['field'],
-                                'sumUp' => -1,
                                 'returnUrl' => $this->R_URI,
                             )
                         )
