@@ -12403,7 +12403,7 @@ iframe {
   background-color: #efc7c7;
 }
 .t3-grid-cell-unassigned {
-  background: url('../../../../images/backgrounds/layout-not-assigned.png') repeat;
+  background: url('../../../../backend/Resources/Public/Images/Backgrounds/layout-not-assigned.png') repeat;
 }
 .t3-page-columns {
   width: 100%;
