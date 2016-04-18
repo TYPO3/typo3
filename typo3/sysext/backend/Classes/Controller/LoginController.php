@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Exception;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -362,8 +363,15 @@ class LoginController
     protected function getSystemNews()
     {
         $systemNewsTable = 'sys_news';
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($systemNewsTable);
         $systemNews = array();
-        $systemNewsRecords = $this->getDatabaseConnection()->exec_SELECTgetRows('title, content, crdate', $systemNewsTable, '1=1' . BackendUtility::BEenableFields($systemNewsTable) . BackendUtility::deleteClause($systemNewsTable), '', 'crdate DESC');
+        $systemNewsRecords = $queryBuilder
+            ->select('title', 'content', 'crdate')
+            ->from($systemNewsTable)
+            ->orderBy('crdate', 'DESC')
+            ->execute()
+            ->fetchAll();
         foreach ($systemNewsRecords as $systemNewsRecord) {
             $systemNews[] = array(
                 'date' => date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $systemNewsRecord['crdate']),
@@ -512,16 +520,6 @@ class LoginController
     protected function getBackendUserAuthentication()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Returns the database connection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
