@@ -486,11 +486,30 @@ class QueryBuilderTest extends UnitTestCase
         $this->connection->quoteIdentifier('aField')
             ->shouldBeCalled()
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->set('aField', 'aValue')
+        $this->concreteQueryBuilder->createNamedParameter('aValue', Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn(':dcValue1');
+        $this->concreteQueryBuilder->set('aField', ':dcValue1')
             ->shouldBeCalled()
             ->willReturn($this->subject);
 
         $this->subject->set('aField', 'aValue');
+    }
+
+    /**
+     * @test
+     */
+    public function setWithoutNamedParameterQuotesIdentifierAndDelegatesToConcreteQueryBuilder()
+    {
+        $this->connection->quoteIdentifier('aField')
+            ->shouldBeCalled()
+            ->willReturnArgument(0);
+        $this->concreteQueryBuilder->createNamedParameter(Argument::cetera())->shouldNotBeCalled();
+        $this->concreteQueryBuilder->set('aField', 'aValue')
+            ->shouldBeCalled()
+            ->willReturn($this->subject);
+
+        $this->subject->set('aField', 'aValue', false);
     }
 
     /**
@@ -567,7 +586,10 @@ class QueryBuilderTest extends UnitTestCase
         $this->connection->quoteIdentifier('aField')
             ->shouldBeCalled()
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->setValue('aField', 'aValue')
+        $this->concreteQueryBuilder->createNamedParameter('aValue', Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn(':dcValue1');
+        $this->concreteQueryBuilder->setValue('aField', ':dcValue1')
             ->shouldBeCalled()
             ->willReturn($this->subject);
 
@@ -577,7 +599,43 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
+    public function setValueWithoudNamedParameterQuotesIdentifierAndDelegatesToConcreteQueryBuilder()
+    {
+        $this->connection->quoteIdentifier('aField')
+            ->shouldBeCalled()
+            ->willReturnArgument(0);
+        $this->concreteQueryBuilder->setValue('aField', 'aValue')
+            ->shouldBeCalled()
+            ->willReturn($this->subject);
+
+        $this->subject->setValue('aField', 'aValue', false);
+    }
+
+    /**
+     * @test
+     */
     public function valuesQuotesIdentifiersAndDelegatesToConcreteQueryBuilder()
+    {
+        $this->connection->quoteColumnValuePairs(['aField' => ':dcValue1', 'aValue' => ':dcValue2'])
+            ->shouldBeCalled()
+            ->willReturnArgument(0);
+        $this->concreteQueryBuilder->createNamedParameter(1, Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn(':dcValue1');
+        $this->concreteQueryBuilder->createNamedParameter(2, Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn(':dcValue2');
+        $this->concreteQueryBuilder->values(['aField' => ':dcValue1', 'aValue' => ':dcValue2'])
+            ->shouldBeCalled()
+            ->willReturn($this->subject);
+
+        $this->subject->values(['aField' => 1, 'aValue' => 2]);
+    }
+
+    /**
+     * @test
+     */
+    public function valuesWithoutNamedParametersQuotesIdentifiersAndDelegatesToConcreteQueryBuilder()
     {
         $this->connection->quoteColumnValuePairs(['aField' => 1, 'aValue' => 2])
             ->shouldBeCalled()
@@ -586,7 +644,7 @@ class QueryBuilderTest extends UnitTestCase
             ->shouldBeCalled()
             ->willReturn($this->subject);
 
-        $this->subject->values(['aField' => 1, 'aValue' => 2]);
+        $this->subject->values(['aField' => 1, 'aValue' => 2], false);
     }
 
     /**

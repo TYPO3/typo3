@@ -562,14 +562,15 @@ class QueryBuilder
      *
      * @param string $key The column to set.
      * @param string $value The value, expression, placeholder, etc.
+     * @param bool $createNamedParameter Automatically create a named parameter for the value
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function set(string $key, $value): QueryBuilder
+    public function set(string $key, $value, bool $createNamedParameter = true): QueryBuilder
     {
         $this->concreteQueryBuilder->set(
             $this->quoteIdentifier($key),
-            $value
+            $createNamedParameter ? $this->createNamedParameter($value) : $value
         );
 
         return $this;
@@ -645,7 +646,7 @@ class QueryBuilder
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function addGroupBy(...$groupBy)
+    public function addGroupBy(...$groupBy): QueryBuilder
     {
         $this->concreteQueryBuilder->addGroupBy(...$this->quoteIdentifiers($groupBy));
 
@@ -657,14 +658,16 @@ class QueryBuilder
      *
      * @param string $column The column into which the value should be inserted.
      * @param string $value The value that should be inserted into the column.
+     * @param bool $createNamedParameter Automatically create a named parameter for the value
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function setValue(string $column, $value)
+    public function setValue(string $column, $value, bool $createNamedParameter = true): QueryBuilder
     {
+
         $this->concreteQueryBuilder->setValue(
             $this->quoteIdentifier($column),
-            $value
+            $createNamedParameter ? $this->createNamedParameter($value) : $value
         );
 
         return $this;
@@ -675,11 +678,18 @@ class QueryBuilder
      * Replaces any previous values, if any.
      *
      * @param array $values The values to specify for the insert query indexed by column names.
+     * @param bool $createNamedParameters Automatically create named parameters for all values
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function values(array $values)
+    public function values(array $values, bool $createNamedParameters = true): QueryBuilder
     {
+        if ($createNamedParameters === true) {
+            foreach ($values as &$value) {
+                $value = $this->createNamedParameter($value);
+            }
+        }
+
         $this->concreteQueryBuilder->values($this->quoteColumnValuePairs($values));
 
         return $this;
@@ -856,7 +866,7 @@ class QueryBuilder
      *
      * @return string
      */
-    public function createPositionalParameter($value, int $type = \PDO::PARAM_STR)
+    public function createPositionalParameter($value, int $type = \PDO::PARAM_STR): string
     {
         return $this->concreteQueryBuilder->createPositionalParameter($value, $type);
     }
