@@ -118,7 +118,7 @@ class ImageViewHelper extends AbstractViewHelper
         $absolute = $arguments['absolute'];
 
         if (is_null($src) && is_null($image) || !is_null($src) && !is_null($image)) {
-            throw new Exception('You must either specify a string src or a File object.', 1382284105);
+            throw new Exception('You must either specify a string src or a File object.', 1460976233);
         }
 
         try {

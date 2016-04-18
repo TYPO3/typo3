@@ -85,7 +85,7 @@ class LoginControllerTest extends UnitTestCase
     /**
      * @test
      * @expectedException \RuntimeException
-     * @expectedExceptionCode 1433416043
+     * @expectedExceptionCode 1460977275
      */
     public function validateAndSortLoginProvidersDetectsWrongProvider()
     {

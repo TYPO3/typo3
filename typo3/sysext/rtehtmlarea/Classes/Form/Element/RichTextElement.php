@@ -959,7 +959,7 @@ class RichTextElement extends AbstractFormElement
             }
             $failure = GeneralUtility::writeFileToTypo3tempDir($destination, $minifiedJavaScript ? $minifiedJavaScript : $contents);
             if ($failure) {
-                throw new \RuntimeException($failure, 1294585668);
+                throw new \RuntimeException($failure, 1460975840);
             }
         }
         if (isset($GLOBALS['TSFE'])) {

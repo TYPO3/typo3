@@ -48,7 +48,7 @@ class BackendUserGroupController extends BackendUserActionController
         // circumvented until there is a better solution in extbase.
         // For now we throw an exception if no settings are detected.
         if (empty($this->settings)) {
-            throw new \RuntimeException('No settings detected. This module can not work then. This usually happens if there is no frontend TypoScript template with root flag set. ' . 'Please create a frontend page with a TypoScript root template.', 1344375003);
+            throw new \RuntimeException('No settings detected. This module can not work then. This usually happens if there is no frontend TypoScript template with root flag set. ' . 'Please create a frontend page with a TypoScript root template.', 1460976089);
         }
     }
 

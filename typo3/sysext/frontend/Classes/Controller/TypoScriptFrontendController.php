@@ -4653,7 +4653,7 @@ class TypoScriptFrontendController
             if ($locked) {
                 break;
             } else {
-                throw new \RuntimeException('Could not acquire page lock for ' . $key . '.', 1294586098);
+                throw new \RuntimeException('Could not acquire page lock for ' . $key . '.', 1460975877);
             }
         } while (true);
     }
@@ -4670,7 +4670,7 @@ class TypoScriptFrontendController
     {
         if ($this->locks[$type]['accessLock']) {
             if (!$this->locks[$type]['accessLock']->acquire()) {
-                throw new \RuntimeException('Could not acquire access lock for "' . $type . '"".', 1294586098);
+                throw new \RuntimeException('Could not acquire access lock for "' . $type . '"".', 1460975902);
             }
 
             $this->locks[$type]['pageLock']->release();

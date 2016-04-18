@@ -457,7 +457,7 @@ class LoginController
                 throw new \RuntimeException('Missing configuration for login provider "' . $identifier . '".', 1433416043);
             }
             if (!is_string($configuration['provider']) || empty($configuration['provider']) || !class_exists($configuration['provider']) || !is_subclass_of($configuration['provider'], LoginProviderInterface::class)) {
-                throw new \RuntimeException('The login provider "' . $identifier . '" defines an invalid provider. Ensure the class exists and implements the "' . LoginProviderInterface::class . '".', 1433416043);
+                throw new \RuntimeException('The login provider "' . $identifier . '" defines an invalid provider. Ensure the class exists and implements the "' . LoginProviderInterface::class . '".', 1460977275);
             }
             if (empty($configuration['label'])) {
                 throw new \RuntimeException('Missing label definition for login provider "' . $identifier . '".', 1433416044);

@@ -57,11 +57,11 @@ class SemaphoreLockStrategy implements LockingStrategyInterface
             // does not exist, this issue should be solved on a different
             // level of the application.
             if (!GeneralUtility::mkdir($path)) {
-                throw new LockCreateException('Cannot create directory ' . $path, 1395140007);
+                throw new LockCreateException('Cannot create directory ' . $path, 1460976250);
             }
         }
         if (!is_writable($path)) {
-            throw new LockCreateException('Cannot write to directory ' . $path, 1396278700);
+            throw new LockCreateException('Cannot write to directory ' . $path, 1460976320);
         }
         $this->filePath = $path  . 'sem_' . md5((string)$subject);
         touch($this->filePath);

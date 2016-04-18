@@ -50,7 +50,7 @@ class EditImageHandler implements LinkHandlerInterface, LinkParameterProviderInt
     public function initialize(AbstractLinkBrowserController $linkBrowser, $identifier, array $configuration)
     {
         if (!$linkBrowser instanceof SelectImageController) {
-            throw new \InvalidArgumentException('The given $linkBrowser must be of type SelectImageController."', 1455499721);
+            throw new \InvalidArgumentException('The given $linkBrowser must be of type SelectImageController."', 1460976644);
         }
         $this->selectImageController = $linkBrowser;
     }

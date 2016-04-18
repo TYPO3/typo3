@@ -89,7 +89,7 @@ class FrontendFormProtection extends AbstractFormProtection
         $this->frontendUser = $frontendUser;
         $this->validationFailedCallback = $validationFailedCallback;
         if (!$this->isAuthorizedFrontendSession()) {
-            throw new \TYPO3\CMS\Core\Error\Exception('A front-end form protection may only be instantiated if there is an active front-end session.', 1285067843);
+            throw new \TYPO3\CMS\Core\Error\Exception('A front-end form protection may only be instantiated if there is an active front-end session.', 1460975777);
         }
     }
 

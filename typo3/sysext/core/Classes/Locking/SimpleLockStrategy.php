@@ -60,11 +60,11 @@ class SimpleLockStrategy implements LockingStrategyInterface
             // does not exist, this issue should be solved on a different
             // level of the application.
             if (!GeneralUtility::mkdir($path)) {
-                throw new LockCreateException('Cannot create directory ' . $path, 1395140007);
+                throw new LockCreateException('Cannot create directory ' . $path, 1460976286);
             }
         }
         if (!is_writable($path)) {
-            throw new LockCreateException('Cannot write to directory ' . $path, 1396278700);
+            throw new LockCreateException('Cannot write to directory ' . $path, 1460976340);
         }
         $this->filePath = $path . 'simple_' . md5((string)$subject);
     }
@@ -172,7 +172,7 @@ class SimpleLockStrategy implements LockingStrategyInterface
         }
 
         if ($mode & self::LOCK_CAPABILITY_NOBLOCK && !$this->isAcquired && $wouldBlock) {
-            throw new LockAcquireWouldBlockException('Failed to acquire lock because the request would block.', 1428700748);
+            throw new LockAcquireWouldBlockException('Failed to acquire lock because the request would block.', 1460976403);
         }
 
         return $this->isAcquired;

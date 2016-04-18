@@ -2791,7 +2791,7 @@ class IconRegistry implements SingletonInterface
     {
         GeneralUtility::logDeprecatedFunction();
         if (!$this->isDeprecated($identifier)) {
-            throw new Exception('Icon with identifier "' . $identifier . '" is not deprecated"', 1437425804);
+            throw new Exception('Icon with identifier "' . $identifier . '" is not deprecated"', 1460976527);
         }
         return $this->deprecatedIcons[$identifier];
     }

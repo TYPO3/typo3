@@ -150,7 +150,7 @@ class AdodbPreparedStatement extends \TYPO3\CMS\Dbal\Database\DatabaseConnection
                     break;
                 default:
                     // Same error as in \TYPO3\CMS\Core\Database\PreparedStatement::execute()
-                    throw new \InvalidArgumentException(sprintf('Unknown type %s used for parameter %s.', $this->parameters[$i]['type'], $i + 1), 1281859196);
+                    throw new \InvalidArgumentException(sprintf('Unknown type %s used for parameter %s.', $this->parameters[$i]['type'], $i + 1), 1460975728);
             }
 
             $queryParts[$i * 2 + 1] = $value;
