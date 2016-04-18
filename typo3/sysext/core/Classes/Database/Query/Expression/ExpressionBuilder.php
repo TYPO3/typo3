@@ -327,6 +327,32 @@ class ExpressionBuilder
     }
 
     /**
+     * Creates a bitwise AND expression with the given arguments.
+     *
+     * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
+     * @param int $value Argument to be used in the bitwise AND operation
+     * @return string
+     */
+    public function bitAnd(string $fieldName, int $value): string
+    {
+        switch ($this->connection->getDatabasePlatform()->getName()) {
+            case 'oci8':
+            case 'pdo_oracle':
+                return sprintf(
+                    'BITAND(%s, %s)',
+                    $this->connection->quoteIdentifier($fieldName),
+                    $value
+                );
+            default:
+                return $this->comparison(
+                    $this->connection->quoteIdentifier($fieldName),
+                    '&',
+                    $value
+                );
+        }
+    }
+
+    /**
      * Quotes a given input parameter.
      *
      * @param mixed $input The parameter to be quoted.

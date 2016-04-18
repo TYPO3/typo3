@@ -274,6 +274,39 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
+    public function defaultBitwiseAnd()
+    {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            return '"' . $args[0] . '"';
+        });
+
+        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+
+        $this->assertSame('"aField" & 1', $this->subject->bitAnd('aField', 1));
+    }
+
+    /**
+     * @test
+     */
+    public function bitwiseAndForOracle()
+    {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+        $databasePlatform->getName()->willReturn('pdo_oracle');
+
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            return '"' . $args[0] . '"';
+        });
+
+        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+
+        $this->assertSame('BITAND("aField", 1)', $this->subject->bitAnd('aField', 1));
+    }
+
+    /**
+     * @test
+     */
     public function literalQuotesValue()
     {
         $this->connectionProphet->quote('aField', 'Doctrine\DBAL\Types\StringType')
