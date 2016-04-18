@@ -68,7 +68,7 @@ class FolderUtilityRenderer
         $markup[] = '<div class="element-browser-section element-browser-createfolder">';
         $markup[] = '<form action="' . htmlspecialchars($formAction)
             . '" method="post" name="editform" enctype="multipart/form-data">';
-        $markup[] = '<h3>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.pagetitle', true) . ':</h3>';
+        $markup[] = '<h3>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:create_folder.title', true) . ':</h3>';
         $markup[] = '<p><strong>' . $lang->getLL('path', true) . ':</strong>'
             . htmlspecialchars($folderObject->getIdentifier()) . '</p>';
 
@@ -86,7 +86,7 @@ class FolderUtilityRenderer
         );
         $markup[] = '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
         $markup[] = '<input class="btn btn-default" type="submit" name="submit" value="'
-            . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.submit', true) . '" />';
+            . $lang->sL('LLL:EXT:lang/locallang_core.xlf:create_folder.submit', true) . '" />';
 
         $markup[] = '   </form>';
         $markup[] = '</div>';
