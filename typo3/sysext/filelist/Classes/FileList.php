@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Filelist\Controller\FileListController;
 
 /**
@@ -194,6 +195,11 @@ class FileList extends AbstractRecordList
         parent::__construct();
         $this->fileListController = $fileListController;
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
+        $modTSconfig = BackendUtility::getModTSconfig(0, 'mod.file_list');
+        if (!empty($modTSconfig['properties']['filesPerPage'])) {
+            $this->iLimit = MathUtility::forceIntegerInRange($modTSconfig['properties']['filesPerPage'], 1);
+        }
     }
 
     /**
