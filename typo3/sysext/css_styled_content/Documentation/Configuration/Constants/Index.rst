@@ -875,44 +875,6 @@ target
          {$PAGE\_TARGET}
 
 
-
-.. _constants-styles-content-mailform-goodmess:
-
-goodMess
-~~~~~~~~
-
-.. container:: table-row
-
-   Property
-         goodMess
-
-   Data type
-         string
-
-   Description
-         This is the message (if any) that is popped-up (JavaScript) when a
-         user clicks "send" in an email-form
-
-
-
-.. _constants-styles-content-mailform-badmess:
-
-badMess
-~~~~~~~
-
-.. container:: table-row
-
-   Property
-         badMess
-
-   Data type
-         string
-
-   Description
-         This is the message that is popped-up (JavaScript) when a user has NOT
-         filled required fields in an email-form
-
-
 .. _constants-styles-content-loginform:
 
 styles.content.loginform
@@ -939,25 +901,6 @@ target
          \_top
 
 
-
-.. _constants-styles-content-loginform-goodmess:
-
-goodMess
-~~~~~~~~
-
-.. container:: table-row
-
-   Property
-         goodMess
-
-   Data type
-         string
-
-   Description
-         This is the message (if any) that is popped-up (JavaScript) when a
-         user logs in as a front-end user
-
-
 .. _constants-styles-content-loginform-pid:
 
 pid
@@ -981,24 +924,6 @@ pid
 
 styles.content.searchform
 """""""""""""""""""""""""
-
-
-.. _constants-styles-content-searchform-goodmess:
-
-goodMess
-~~~~~~~~
-
-.. container:: table-row
-
-   Property
-         goodMess
-
-   Data type
-         string
-
-   Description
-         This is the message (if any) that is popped-up (JavaScript) when a
-         user performs a search
 
 
 .. _constants-styles-content-searchresult:
