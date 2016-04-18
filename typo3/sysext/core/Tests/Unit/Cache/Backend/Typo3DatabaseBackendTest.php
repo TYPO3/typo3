@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case
@@ -130,27 +133,28 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
         $this->setUpMockFrontendOfBackend($backend);
         $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
-        $GLOBALS['TYPO3_DB']
-            ->expects($this->once())
-            ->method('exec_INSERTmultipleRows')
-            ->with(
-                'cf_Testing_tags',
-                $this->callback(function (array $data) {
-                    if ($data[0] === 'identifier' && $data[1] === 'tag') {
-                        return true;
-                    }
+        $connectionPool = $this->getMock(ConnectionPool::class);
+        $connection = $this->getMock(Connection::class, array(), array(), '', false);
+        $connectionPool->expects($this->once())->method('getConnectionForTable')->willReturn($connection);
+        $connection->expects($this->once())->method('bulkInsert')->with(
+            'cf_Testing_tags',
+            $this->callback(function (array $data) {
+                if ($data[0][0] !== 'anIdentifier' || $data[0][1] !== 'UnitTestTag%tag1') {
                     return false;
-                }),
-                $this->callback(function (array $data) {
-                    if ($data[0][0] !== 'anIdentifier' || $data[0][1] !== 'UnitTestTag%tag1') {
-                        return false;
-                    }
-                    if ($data[1][0] !== 'anIdentifier' || $data[1][1] !== 'UnitTestTag%tag2') {
-                        return false;
-                    }
+                }
+                if ($data[1][0] !== 'anIdentifier' || $data[1][1] !== 'UnitTestTag%tag2') {
+                    return false;
+                }
+                return true;
+            }),
+            $this->callback(function (array $data) {
+                if ($data[0] === 'identifier' && $data[1] === 'tag') {
                     return true;
-                })
-            );
+                }
+                return false;
+            })
+        );
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPool);
         $backend->set('anIdentifier', 'someData', array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
     }
 
@@ -182,7 +186,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     }
                     return false;
                 }
-            ));
+                ));
 
         $backend->set('anIdentifier', 'someData');
     }
@@ -209,7 +213,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     }
                     return false;
                 }
-            ));
+                ));
 
         $backend->set('aIdentifier', 'someData', array(), 0);
     }

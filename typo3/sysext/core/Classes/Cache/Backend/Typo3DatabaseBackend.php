@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A caching backend which stores cache entries in database tables
@@ -157,7 +159,9 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
                 $tagRow[] = $tag;
                 $tagRows[] = $tagRow;
             }
-            $GLOBALS['TYPO3_DB']->exec_INSERTmultipleRows($this->tagsTable, $fields, $tagRows);
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($this->tagsTable)
+                ->bulkInsert($this->tagsTable, $tagRows, $fields);
         }
     }
 

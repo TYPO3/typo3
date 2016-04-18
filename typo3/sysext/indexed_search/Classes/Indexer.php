@@ -14,6 +14,7 @@ namespace TYPO3\CMS\IndexedSearch;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -2016,7 +2017,9 @@ class Indexer
                     $val['cmp'] & $this->flagBitMask
                 );
             }
-            $GLOBALS['TYPO3_DB']->exec_INSERTmultipleRows('index_rel', $fields, $rows);
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('index_rel')
+                ->bulkInsert('index_rel', $rows, $fields);
         }
     }
 

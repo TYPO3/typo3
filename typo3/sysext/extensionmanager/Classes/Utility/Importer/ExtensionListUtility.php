@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Importer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Importer object for extension list
@@ -139,7 +141,13 @@ class ExtensionListUtility implements \SplObserver
         $this->parser->parseXml($zlibStream . $localExtensionListFile);
         // flush last rows to database if existing
         if (!empty($this->arrRows)) {
-            $GLOBALS['TYPO3_DB']->exec_INSERTmultipleRows('tx_extensionmanager_domain_model_extension', self::$fieldNames, $this->arrRows, self::$fieldIndicesNoQuote);
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('tx_extensionmanager_domain_model_extension')
+                ->bulkInsert(
+                    'tx_extensionmanager_domain_model_extension',
+                    $this->arrRows,
+                    self::$fieldNames
+                );
         }
         $extensions = $this->extensionRepository->insertLastVersion($this->repositoryUid);
         $this->repositoryRepository->updateRepositoryCount($extensions, $this->repositoryUid);
@@ -156,7 +164,13 @@ class ExtensionListUtility implements \SplObserver
     {
         // flush every 50 rows to database
         if ($this->sumRecords !== 0 && $this->sumRecords % 50 === 0) {
-            $GLOBALS['TYPO3_DB']->exec_INSERTmultipleRows('tx_extensionmanager_domain_model_extension', self::$fieldNames, $this->arrRows, self::$fieldIndicesNoQuote);
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('tx_extensionmanager_domain_model_extension')
+                ->bulkInsert(
+                    'tx_extensionmanager_domain_model_extension',
+                    $this->arrRows,
+                    self::$fieldNames
+                );
             $this->arrRows = array();
         }
         $versionRepresentations = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionStringToArray($subject->getVersion());
