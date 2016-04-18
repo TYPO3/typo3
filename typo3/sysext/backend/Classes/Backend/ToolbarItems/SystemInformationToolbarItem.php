@@ -375,7 +375,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $request = $this->standaloneView->getRequest();
         $request->setControllerExtensionName('backend');
         $this->standaloneView->assignMultiple(array(
-            'installToolUrl' => BackendUtility::getModuleUrl('system_InstallInstall'),
+            'installToolUrl' => BackendUtility::getModuleUrl('system_extinstall'),
             'messages' => $this->systemMessages,
             'count' => $this->totalCount > $this->maximumCountInBadge ? $this->maximumCountInBadge . '+' : $this->totalCount,
             'severityBadgeClass' => $this->severityBadgeClass,
