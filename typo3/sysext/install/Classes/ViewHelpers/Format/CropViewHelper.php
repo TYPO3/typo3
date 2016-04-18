@@ -61,7 +61,7 @@ class CropViewHelper extends AbstractViewHelper
 
     /**
      * @param array $arguments
-     * @param callable $renderChildrenClosure
+     * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      * @throws \TYPO3\CMS\Install\ViewHelpers\Exception
      * @return string

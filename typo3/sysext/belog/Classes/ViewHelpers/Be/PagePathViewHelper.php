@@ -44,7 +44,7 @@ class PagePathViewHelper extends AbstractBackendViewHelper
 
     /**
      * @param array $arguments
-     * @param callable $renderChildrenClosure
+     * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      *
      * @return string
