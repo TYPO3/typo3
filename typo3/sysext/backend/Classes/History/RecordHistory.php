@@ -17,12 +17,12 @@ namespace TYPO3\CMS\Backend\History;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryContextType;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -663,10 +663,8 @@ class RecordHistory
                 // check if there are records on the page
                 /** @var QueryBuilder $queryBuilder */
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tablename);
-                $queryBuilder
-                    ->getQueryContext()
-                    ->setIgnoreEnableFields(true)
-                    ->setIncludeDeleted(true);
+                $queryBuilder->getQueryContext()->setContext(QueryContextType::UNRESTRICTED);
+
                 $rows = $queryBuilder
                     ->select('uid')
                     ->from($tablename)

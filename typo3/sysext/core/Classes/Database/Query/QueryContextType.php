@@ -27,7 +27,7 @@ class QueryContextType extends \TYPO3\CMS\Core\Type\Enumeration
      * Constants reflecting the query context type
      */
     const AUTO = 'AUTO';
-    const NONE = 'NONE';
+    const UNRESTRICTED = 'UNRESTRICTED';
     const FRONTEND = 'FRONTEND';
     const BACKEND = 'BACKEND';
 

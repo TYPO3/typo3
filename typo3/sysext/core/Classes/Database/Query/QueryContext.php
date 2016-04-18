@@ -147,7 +147,7 @@ class QueryContext
             } elseif (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) {
                 return QueryContextType::BACKEND;
             } else {
-                return QueryContextType::NONE;
+                return QueryContextType::UNRESTRICTED;
             }
         }
 

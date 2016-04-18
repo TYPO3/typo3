@@ -19,6 +19,7 @@ use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryContext;
+use TYPO3\CMS\Core\Database\Query\QueryContextType;
 use TYPO3\CMS\Core\Database\Query\QueryRestrictionBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
@@ -85,9 +86,9 @@ class QueryRestrictionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getVisibilityConstraintsReturnsEmptyConstraintForNoneContext()
+    public function getVisibilityConstraintsReturnsEmptyConstraintForUnrestrictedContext()
     {
-        $this->queryContext->setContext('none');
+        $this->queryContext->setContext(QueryContextType::UNRESTRICTED);
 
         $subject = GeneralUtility::makeInstance(
             QueryRestrictionBuilder::class,

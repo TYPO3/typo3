@@ -92,7 +92,7 @@ class QueryRestrictionBuilder
                 return $this->getFrontendVisibilityRestrictions();
             case QueryContextType::BACKEND:
                 return $this->getBackendVisibilityConstraints();
-            case QueryContextType::NONE:
+            case QueryContextType::UNRESTRICTED:
                 return $this->expressionBuilder->andX();
             default:
                 throw new \RuntimeException(
