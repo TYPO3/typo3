@@ -5,7 +5,7 @@ matrix:
 
   include:
     - php: 7
-      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes ACCEPTANCE_TESTS=yes PHP_LINT=yes XLF_CHECK=yes SUBMODULE_TEST=yes
+      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes ACCEPTANCE_TESTS=yes PHP_LINT=yes XLF_CHECK=yes SUBMODULE_TEST=yes  EXCEPTIONCODE_TEST=yes
 
 sudo: false
 
@@ -13,6 +13,7 @@ addons:
   apt:
     packages:
       - parallel
+      - ack-grep
 
 cache:
   directories:
@@ -101,3 +102,10 @@ script:
               fi
           "
       fi
+
+  - >
+    if [[ "$EXCEPTIONCODE_TEST" == "yes" ]]; then
+        echo;
+        echo "Running duplicate exception code checker";
+        ./typo3/sysext/core/Build/Scripts/duplicateExceptionCodeCheck.sh
+    fi
