@@ -122,6 +122,10 @@ class CommandUtility
                 $parameters = str_replace('###SkipStripProfile###', '', $parameters);
             }
         }
+        // set interlace parameter for convert command
+        if ($command !== 'identify' && $gfxConf['processor_interlace']) {
+            $parameters = '-interlace ' . $gfxConf['processor_interlace'] . ' ' . $parameters;
+        }
         $cmdLine = $path . ' ' . $parameters;
         // It is needed to change the parameters order when a mask image has been specified
         if ($command === 'composite') {

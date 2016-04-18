@@ -55,6 +55,9 @@ GFX:
         processor_colorspace:
             type: text
             description: 'String: Specify the colorspace to use. Some ImageMagick versions (like 6.7.0 and above) use the sRGB colorspace, so all images are darker then the original. <br />Possible Values: CMY, CMYK, Gray, HCL, HSB, HSL, HWB, Lab, LCH, LMS, Log, Luv, OHTA, Rec601Luma, Rec601YCbCr, Rec709Luma, Rec709YCbCr, RGB, sRGB, Transparent, XYZ, YCbCr, YCC, YIQ, YCbCr, YUV'
+        processor_interlace:
+            type: text
+            description: 'String: Specify the interlace option to use. The result differs in different GM / IM versions. See manual of GraphicsMagick or ImageMagick for right option. <br />Possible values: None, Line, Plane, Partition'
         jpg_quality:
             type: int
             description: 'Integer: Default JPEG generation quality'

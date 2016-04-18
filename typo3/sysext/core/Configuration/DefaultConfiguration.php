@@ -37,6 +37,7 @@ return [
         'processor_stripColorProfileByDefault' => true,
         'processor_stripColorProfileCommand' => '+profile \'*\'',
         'processor_colorspace' => 'RGB',
+        'processor_interlace' => 'None',
         'jpg_quality' => 85,
     ],
     'SYS' => [
