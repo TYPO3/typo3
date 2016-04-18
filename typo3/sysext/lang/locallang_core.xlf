@@ -640,6 +640,12 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_newfolder.php.submit">
 				<source>Create folders</source>
 			</trans-unit>
+			<trans-unit id="create_folder.title">
+				<source>Create new folder</source>
+			</trans-unit>
+			<trans-unit id="create_folder.submit">
+				<source>Create folder</source>
+			</trans-unit>
 			<trans-unit id="file_newfolder.php.folders">
 				<source>folders</source>
 			</trans-unit>
