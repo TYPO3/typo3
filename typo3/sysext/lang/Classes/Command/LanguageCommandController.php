@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Lang\Command;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 
@@ -62,7 +64,7 @@ class LanguageCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
         $languageRepository = $this->objectManager->get(\TYPO3\CMS\Lang\Domain\Repository\LanguageRepository::class);
         $locales = array();
         if (!empty($localesToUpdate)) {
-            $locales = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $localesToUpdate, true);
+            $locales = GeneralUtility::trimExplode(',', $localesToUpdate, true);
         } else {
             $languages = $languageRepository->findSelected();
             foreach ($languages as $language) {
@@ -87,6 +89,8 @@ class LanguageCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
                 $this->output->progressAdvance();
             }
         }
+        // Flush language cache
+        GeneralUtility::makeInstance(CacheManager::class)->getCache('l10n')->flush();
         $this->output->progressFinish();
     }
 
