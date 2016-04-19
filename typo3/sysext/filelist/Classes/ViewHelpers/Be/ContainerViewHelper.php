@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Filelist\ViewHelpers\Be;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -11,7 +13,8 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-namespace TYPO3\CMS\Filelist\ViewHelpers\Be;
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * View helper which allows you to create extbase based modules in the style of TYPO3 default modules.
@@ -68,7 +71,7 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\ContainerViewH
         $content = parent::render($pageTitle, $enableClickMenu, $loadExtJs, $loadExtJsTheme, $enableExtJsDebug, $loadJQuery, $includeCssFiles, $includeJsFiles, $addJsInlineLabels, $includeRequireJsModules);
 
         $doc = $this->getDocInstance();
-        $doc->JScode .= $doc->wrapScriptTags($addJsInline);
+        $doc->JScode .= GeneralUtility::wrapJS($addJsInline);
         return $doc->insertStylesAndJS($content);
     }
 }

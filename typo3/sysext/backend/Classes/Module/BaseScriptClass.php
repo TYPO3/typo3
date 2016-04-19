@@ -319,8 +319,6 @@ class BaseScriptClass
     /**
      * Calls the 'header' function inside the "Function menu module" if present.
      * A header function might be needed to add JavaScript or other stuff in the head. This can't be done in the main function because the head is already written.
-     * example call in the header function:
-     * $this->pObj->doc->JScode = $this->pObj->doc->wrapScriptTags(' ...
      *
      * @return void
      */

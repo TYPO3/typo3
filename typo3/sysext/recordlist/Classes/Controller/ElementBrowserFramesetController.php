@@ -76,7 +76,7 @@ class ElementBrowserFramesetController
         $bparams = GeneralUtility::_GP('bparams');
         $moduleUrl = BackendUtility::getModuleUrl('wizard_element_browser') . '&mode=';
         $documentTemplate = $this->getDocumentTemplate();
-        $documentTemplate->JScode = $documentTemplate->wrapScriptTags('
+        $documentTemplate->JScode = GeneralUtility::wrapJS('
 				function closing() {	//
 					close();
 				}

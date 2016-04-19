@@ -196,7 +196,7 @@ function jumpToUrl(URL) {
      * Indicates if a <div>-output section is open
      *
      * @var int
-     * @internal
+     * @internal will be removed in TYPO3 v9
      */
     public $sectionFlag = 0;
 
@@ -363,9 +363,11 @@ function jumpToUrl(URL) {
      *
      * @param int $id The page id
      * @return string HTML string with linked icon(s)
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function viewPageIcon($id)
     {
+        GeneralUtility::logDeprecatedFunction();
         // If access to Web>List for user, then link to that module.
         $str = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_list', [
             'id' => $id,
@@ -390,9 +392,11 @@ function jumpToUrl(URL) {
      * @param array $tWrap is an array with indexes 0 and 1 each representing HTML-tags (start/end) which will wrap the title
      * @param bool $enableClickMenu If TRUE, render click menu code around icon image
      * @return string HTML content
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function getHeader($table, $row, $path, $noViewPageIcon = false, $tWrap = array('', ''), $enableClickMenu = true)
     {
+        GeneralUtility::logDeprecatedFunction();
         $viewPage = '';
         if (is_array($row) && $row['uid']) {
             $iconImgTag = '<span title="' . htmlspecialchars($path) . '">' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
@@ -418,9 +422,11 @@ function jumpToUrl(URL) {
      * @param array $tWrap is an array with indexes 0 and 1 each representing HTML-tags (start/end) which will wrap the title
      * @param bool $enableClickMenu If TRUE, render click menu code around icon image
      * @return string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function getResourceHeader(\TYPO3\CMS\Core\Resource\ResourceInterface $resource, $tWrap = array('', ''), $enableClickMenu = true)
     {
+        GeneralUtility::logDeprecatedFunction();
         try {
             $path = $resource->getStorage()->getName() . $resource->getParentFolder()->getIdentifier();
             $iconImgTag = '<span title="' . htmlspecialchars($path) . '">' . $this->iconFactory->getIconForResource($resource, Icon::SIZE_SMALL)->render() . '</span>';
@@ -660,7 +666,7 @@ function jumpToUrl(URL) {
      */
     public function endPage()
     {
-        $str = $this->sectionEnd() . $this->postCode . $this->wrapScriptTags(BackendUtility::getUpdateSignalCode()) . ($this->form ? '
+        $str = $this->postCode . GeneralUtility::wrapJS(BackendUtility::getUpdateSignalCode()) . ($this->form ? '
 </form>' : '');
         // If something is in buffer like debug, put it to end of page
         if (ob_get_contents()) {
@@ -702,9 +708,11 @@ function jumpToUrl(URL) {
      *
      * @param string $text The text string for the header
      * @return string HTML content
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 9
      */
     public function header($text)
     {
+        GeneralUtility::logDeprecatedFunction();
         $str = '
 
 	<!-- MAIN Header in page top -->
@@ -923,7 +931,7 @@ function jumpToUrl(URL) {
         $content = str_replace('/*###POSTCSSMARKER###*/', $styles, $content);
 
         // Insert accumulated JS
-        $jscode = $this->JScode . LF . $this->wrapScriptTags(implode(LF, $this->JScodeArray));
+        $jscode = $this->JScode . LF . GeneralUtility::wrapJS(implode(LF, $this->JScodeArray));
         $content = str_replace('<!--###POSTJSMARKER###-->', $jscode, $content);
         return $content;
     }
@@ -1005,9 +1013,11 @@ function jumpToUrl(URL) {
      * @param int $type See description
      * @param string $styleAttribValue Value for style attribute
      * @return string HTML image tag (if applicable)
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function icons($type, $styleAttribValue = '')
     {
+        GeneralUtility::logDeprecatedFunction();
         switch ($type) {
             case self::STATUS_ICON_ERROR:
                 $icon = 'status-dialog-error';
@@ -1035,9 +1045,11 @@ function jumpToUrl(URL) {
      * @param string $onClick The value of the onclick attribute of the input tag (submit type)
      * @param string $label The label for the button (which will be htmlspecialchar'ed)
      * @return string A <input> tag of the type "submit
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function t3Button($onClick, $label)
     {
+        GeneralUtility::logDeprecatedFunction();
         $button = '<input class="btn btn-default" type="submit" onclick="' . htmlspecialchars($onClick) . '; return false;" value="' . htmlspecialchars($label) . '" />';
         return $button;
     }
@@ -1064,9 +1076,11 @@ function jumpToUrl(URL) {
      * @param string $string Input string
      * @param bool $linebreak Wrap script element in linebreaks? Default is TRUE.
      * @return string Output string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use GeneralUtility::wrapJS()
      */
     public function wrapScriptTags($string, $linebreak = true)
     {
+        GeneralUtility::logDeprecatedFunction();
         if (trim($string)) {
             // <script wrapped in nl?
             $cr = $linebreak ? LF : '';
@@ -1111,10 +1125,11 @@ function jumpToUrl(URL) {
      *
      * @param string $lib: Library name. Call it with the full path like "sysext/core/Resources/Public/JavaScript/QueryGenerator.js" to load it
      * @return void
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function loadJavascriptLib($lib)
     {
-        // @todo: maybe we can remove this one as well
+        GeneralUtility::logDeprecatedFunction();
         $this->pageRenderer->addJsFile($lib);
     }
 
@@ -1122,9 +1137,11 @@ function jumpToUrl(URL) {
      * Includes the necessary Javascript function for the clickmenu (context sensitive menus) in the document
      *
      * @return void
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function getContextMenuCode()
     {
+        GeneralUtility::logDeprecatedFunction();
         $this->pageRenderer->loadJquery();
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
     }

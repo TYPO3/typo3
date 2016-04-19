@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  */
 
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -69,11 +70,12 @@ class ContainerViewHelper extends AbstractBackendViewHelper
     {
         $pageRenderer = $this->getPageRenderer();
         $doc = $this->getDocInstance();
-        $doc->JScode .= $doc->wrapScriptTags($doc->redirectUrls());
+        $doc->JScode .= GeneralUtility::wrapJS($doc->redirectUrls());
 
         // Load various standard libraries
         if ($enableClickMenu) {
-            $doc->getContextMenuCode();
+            $pageRenderer->loadJquery();
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
         }
         if ($loadExtJs) {
             $pageRenderer->loadExtJS(true, $loadExtJsTheme);

@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  */
 
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -61,11 +63,15 @@ class ErrorIconViewHelper extends AbstractBackendViewHelper
     {
         $errorSymbols = array(
             '0' => '',
-            '1' => DocumentTemplate::STATUS_ICON_WARNING,
-            '2' => DocumentTemplate::STATUS_ICON_ERROR,
-            '3' => DocumentTemplate::STATUS_ICON_ERROR
+            '1' => 'status-dialog-warning',
+            '2' => 'status-dialog-error',
+            '3' => 'status-dialog-error'
         );
-        $doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        return $doc->icons($errorSymbols[$arguments['errorNumber']]);
+        if ($errorSymbols[$arguments['errorNumber']]) {
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+            return $iconFactory->getIcon($errorSymbols[$arguments['errorNumber']], Icon::SIZE_SMALL)->render();
+        } else {
+            return '';
+        }
     }
 }

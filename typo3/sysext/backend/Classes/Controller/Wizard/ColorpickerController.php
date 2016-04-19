@@ -256,7 +256,7 @@ class ColorpickerController extends AbstractWizardController
      */
     public function frameSet()
     {
-        $this->getDocumentTemplate()->JScode = $this->getDocumentTemplate()->wrapScriptTags('
+        $this->getDocumentTemplate()->JScode = GeneralUtility::wrapJS('
 				if (!window.opener) {
 					alert("ERROR: Sorry, no link to main window... Closing");
 					close();

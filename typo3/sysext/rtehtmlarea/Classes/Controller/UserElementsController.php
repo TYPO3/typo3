@@ -112,7 +112,7 @@ class UserElementsController
         // unset the default jumpToUrl() function
         unset($this->doc->JScodeArray['jumpToUrl']);
 
-        $this->doc->JScode = $this->doc->wrapScriptTags($JScode);
+        $this->doc->JScode = GeneralUtility::wrapJS($JScode);
         $this->modData = $GLOBALS['BE_USER']->getModuleData('user.php', 'ses');
         if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('OC_key')) {
             $parts = explode('|', \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('OC_key'));

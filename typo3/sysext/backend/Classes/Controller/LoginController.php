@@ -307,7 +307,7 @@ class LoginController
         if ($this->loginRefresh) {
             $formProtection->setSessionTokenFromRegistry();
             $formProtection->persistSessionToken();
-            $this->getDocumentTemplate()->JScode .= $this->getDocumentTemplate()->wrapScriptTags('
+            $this->getDocumentTemplate()->JScode .= GeneralUtility::wrapJS('
 				if (parent.opener && parent.opener.TYPO3 && parent.opener.TYPO3.LoginRefresh) {
 					parent.opener.TYPO3.LoginRefresh.startTask();
 					parent.close();
