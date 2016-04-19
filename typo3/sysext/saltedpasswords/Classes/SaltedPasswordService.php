@@ -30,13 +30,6 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService
     public $prefixId = 'tx_saltedpasswords_sv1';
 
     /**
-     * Keeps path to this script relative to the extension directory.
-     *
-     * @var string
-     */
-    public $scriptRelPath = 'sv1/class.tx_saltedpasswords_sv1.php';
-
-    /**
      * Keeps extension key.
      *
      * @var string

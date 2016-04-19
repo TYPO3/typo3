@@ -47,14 +47,6 @@ class RsaAuthService extends \TYPO3\CMS\Sv\AuthenticationService
     public $prefixId = 'tx_rsaauth_sv1';
 
     /**
-     * Standard relative path for the service
-     * Path to this script relative to the extension dir.
-     *
-     * @var string
-     */
-    public $scriptRelPath = 'Classes/RsaAuthService.php';
-
-    /**
      * Process the submitted credentials.
      * In this case decrypt the password if it is RSA encrypted.
      *
