@@ -15,7 +15,8 @@ namespace TYPO3\CMS\SysNote\Core;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -37,19 +38,6 @@ class Bootstrap
      * @var array
      */
     protected $currentGetArguments;
-
-    /**
-     * @var DatabaseConnection
-     */
-    protected $databaseConnection;
-
-    /**
-     * @param DatabaseConnection $databaseConnection
-     */
-    public function __construct(DatabaseConnection $databaseConnection = null)
-    {
-        $this->databaseConnection = $databaseConnection ?: $GLOBALS['TYPO3_DB'];
-    }
 
     /**
      * Bootstrap extbase and execute controller
@@ -88,12 +76,19 @@ class Bootstrap
         if (!isset($arguments['pids']) || empty($arguments['pids']) || empty($GLOBALS['BE_USER']->user['uid'])) {
             return false;
         }
-        $pidList = $this->databaseConnection->cleanIntList($arguments['pids']);
+        $pidList = GeneralUtility::intExplode(',', $arguments['pids'], true);
         if (empty($pidList)) {
             return false;
         }
-        // check if there are records
-        return ($this->databaseConnection->exec_SELECTcountRows('*', 'sys_note', 'pid IN (' . $pidList . ')' . BackendUtility::deleteClause('sys_note')) > 0);
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_note');
+        $count = $queryBuilder
+            ->count('uid')
+            ->from('sys_note')
+            ->where($queryBuilder->expr()->in('pid', $pidList))
+            ->execute()
+            ->fetchColumn();
+        return (bool)$count;
     }
 
     /**
