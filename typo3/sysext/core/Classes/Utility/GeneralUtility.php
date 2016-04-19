@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use GuzzleHttp\Exception\RequestException;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
@@ -2025,7 +2026,19 @@ class GeneralUtility
                 $configuration = [];
             }
 
-            $response = $requestFactory->request($url, 'GET', $configuration);
+            try {
+                if (isset($report)) {
+                    $report['lib'] = 'GuzzleHttp';
+                }
+                $response = $requestFactory->request($url, 'GET', $configuration);
+            } catch (RequestException $exception) {
+                if (isset($report)) {
+                    $report['error'] = $exception->getHandlerContext()['errno'];
+                    $report['message'] = $exception->getMessage();
+                }
+                return false;
+            }
+
             $content = '';
 
             // Add the headers to the output
