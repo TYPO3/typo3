@@ -105,7 +105,16 @@ class Folder implements FolderInterface
     public function getReadablePath($rootId = null)
     {
         if ($rootId === null) {
-            $rootId = $this->storage->getRootLevelFolder()->getIdentifier();
+            // Find first matching filemount and use that as root
+            foreach ($this->storage->getFileMounts() as $fileMount) {
+                if ($this->storage->isWithinFolder($fileMount['folder'], $this)) {
+                    $rootId = $fileMount['folder']->getIdentifier();
+                    break;
+                }
+            }
+            if ($rootId === null) {
+                $rootId = $this->storage->getRootLevelFolder()->getIdentifier();
+            }
         }
         $readablePath = '/';
         if ($this->identifier !== $rootId) {
