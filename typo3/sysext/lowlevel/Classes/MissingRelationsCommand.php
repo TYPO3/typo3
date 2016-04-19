@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Lowlevel;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Looking for missing relations.
  */
@@ -85,16 +90,17 @@ Reports missing relations';
             'nonExistingRecords_s' => array()
         );
         // Select DB relations from reference table
-        $recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table<>' . $GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE', 'sys_refindex') . ' AND ref_uid>0' . $filterClause, '', 'sorting DESC');
-        // Traverse the records
-        $tempExists = array();
-        if (is_array($recs)) {
-            foreach ($recs as $rec) {
+        /** @var DatabaseConnection $db */
+        $db = $GLOBALS['TYPO3_DB'];
+        $result = $db->exec_SELECTquery('ref_uid,ref_table,softref_key,hash,tablename,recuid,field,flexpointer,deleted', 'sys_refindex', 'ref_table <> ' . $db->fullQuoteStr('_FILE', 'sys_refindex') . ' AND ref_uid > 0', '', 'sorting DESC');
+        if ($result) {
+            $tempExists = array();
+            while ($rec = $db->sql_fetch_assoc($result)) {
                 $suffix = $rec['softref_key'] != '' ? '_s' : '_m';
                 $idx = $rec['ref_table'] . ':' . $rec['ref_uid'];
                 // Get referenced record:
                 if (!isset($tempExists[$idx])) {
-                    $tempExists[$idx] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($rec['ref_table'], 'uid=' . (int)$rec['ref_uid'], 'uid,pid' . ($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] : ''));
+                    $tempExists[$idx] = BackendUtility::getRecordRaw($rec['ref_table'], 'uid=' . (int)$rec['ref_uid'], 'uid,pid' . ($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] : ''));
                 }
                 // Compile info string for location of reference:
                 $infoString = $this->infoStr($rec);
@@ -112,6 +118,7 @@ Reports missing relations';
                     ksort($resultArray['nonExistingRecords' . $suffix][$idx]);
                 }
             }
+            $db->sql_free_result($result);
         }
         ksort($resultArray['offlineVersionRecords_m']);
         ksort($resultArray['deletedRecords_m']);
@@ -140,7 +147,7 @@ Reports missing relations';
                     if ($bypass = $this->cli_noExecutionCheck($recReference)) {
                         echo $bypass;
                     } else {
-                        $sysRefObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
+                        $sysRefObj = GeneralUtility::makeInstance(ReferenceIndex::class);
                         $error = $sysRefObj->setReferenceValue($hash, null);
                         if ($error) {
                             echo '		TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error . LF;
