@@ -1584,10 +1584,9 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
             $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_filemounts');
             $queryBuilder->select('*')
                 ->from('sys_filemounts')
-                ->where($queryBuilder->expr()->eq('deleted', 0))
-                ->andWhere($queryBuilder->expr()->eq('hidden', 0))
+                ->where($queryBuilder->expr()->eq('hidden', 0))
                 ->andWhere($queryBuilder->expr()->eq('pid', 0))
-                ->andWhere($queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($fileMounts)));
+                ->andWhere($queryBuilder->expr()->in('uid', $fileMounts));
 
             foreach (QueryHelper::parseOrderBy($orderBy) as $fieldAndDirection) {
                 $queryBuilder->addOrderBy(...$fieldAndDirection);
