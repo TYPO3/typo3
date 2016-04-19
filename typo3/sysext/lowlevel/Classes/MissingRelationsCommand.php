@@ -14,6 +14,12 @@ namespace TYPO3\CMS\Lowlevel;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Looking for missing relations.
  */
@@ -84,35 +90,47 @@ Reports missing relations';
             'deletedRecords_s' => array(),
             'nonExistingRecords_s' => array()
         );
+
         // Select DB relations from reference table
-        $recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table<>' . $GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE', 'sys_refindex') . ' AND ref_uid>0' . $filterClause, '', 'sorting DESC');
-        // Traverse the records
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $rowIterator = $queryBuilder
+            ->select('ref_uid', 'ref_table', 'softref_key', 'hash', 'tablename', 'recuid', 'field', 'flexpointer', 'deleted')
+            ->from('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->neq('ref_table', $queryBuilder->quote('_FILE'))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->gt('ref_uid', 0)
+            )
+            ->orderBy('sorting', 'DESC')
+            ->execute();
+
         $tempExists = array();
-        if (is_array($recs)) {
-            foreach ($recs as $rec) {
-                $suffix = $rec['softref_key'] != '' ? '_s' : '_m';
-                $idx = $rec['ref_table'] . ':' . $rec['ref_uid'];
-                // Get referenced record:
-                if (!isset($tempExists[$idx])) {
-                    $tempExists[$idx] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($rec['ref_table'], 'uid=' . (int)$rec['ref_uid'], 'uid,pid' . ($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] : ''));
+        while ($rec = $rowIterator->fetch()) {
+            $suffix = $rec['softref_key'] != '' ? '_s' : '_m';
+            $idx = $rec['ref_table'] . ':' . $rec['ref_uid'];
+            // Get referenced record:
+            if (!isset($tempExists[$idx])) {
+                $tempExists[$idx] = BackendUtility::getRecordRaw($rec['ref_table'], 'uid=' . (int)$rec['ref_uid'], 'uid,pid' . ($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] : ''));
+            }
+            // Compile info string for location of reference:
+            $infoString = $this->infoStr($rec);
+            // Handle missing file:
+            if ($tempExists[$idx]['uid']) {
+                if ($tempExists[$idx]['pid'] == -1) {
+                    $resultArray['offlineVersionRecords' . $suffix][$idx][$rec['hash']] = $infoString;
+                    ksort($resultArray['offlineVersionRecords' . $suffix][$idx]);
+                } elseif ($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] && $tempExists[$idx][$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete']]) {
+                    $resultArray['deletedRecords' . $suffix][$idx][$rec['hash']] = $infoString;
+                    ksort($resultArray['deletedRecords' . $suffix][$idx]);
                 }
-                // Compile info string for location of reference:
-                $infoString = $this->infoStr($rec);
-                // Handle missing file:
-                if ($tempExists[$idx]['uid']) {
-                    if ($tempExists[$idx]['pid'] == -1) {
-                        $resultArray['offlineVersionRecords' . $suffix][$idx][$rec['hash']] = $infoString;
-                        ksort($resultArray['offlineVersionRecords' . $suffix][$idx]);
-                    } elseif ($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] && $tempExists[$idx][$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete']]) {
-                        $resultArray['deletedRecords' . $suffix][$idx][$rec['hash']] = $infoString;
-                        ksort($resultArray['deletedRecords' . $suffix][$idx]);
-                    }
-                } else {
-                    $resultArray['nonExistingRecords' . $suffix][$idx][$rec['hash']] = $infoString;
-                    ksort($resultArray['nonExistingRecords' . $suffix][$idx]);
-                }
+            } else {
+                $resultArray['nonExistingRecords' . $suffix][$idx][$rec['hash']] = $infoString;
+                ksort($resultArray['nonExistingRecords' . $suffix][$idx]);
             }
         }
+
         ksort($resultArray['offlineVersionRecords_m']);
         ksort($resultArray['deletedRecords_m']);
         ksort($resultArray['nonExistingRecords_m']);
@@ -140,7 +158,7 @@ Reports missing relations';
                     if ($bypass = $this->cli_noExecutionCheck($recReference)) {
                         echo $bypass;
                     } else {
-                        $sysRefObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
+                        $sysRefObj = GeneralUtility::makeInstance(ReferenceIndex::class);
                         $error = $sysRefObj->setReferenceValue($hash, null);
                         if ($error) {
                             echo '		TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error . LF;
