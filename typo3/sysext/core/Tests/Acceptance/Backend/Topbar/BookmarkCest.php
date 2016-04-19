@@ -66,7 +66,7 @@ class BookmarkCest
      * @param ModalDialog $dialog
      * @return Admin
      */
-    public function checkThatAddingABookmarkAddAItemToTheBookmarkList(Admin $I, ModalDialog $dialog, Scenario $scenario)
+    public function checkThatAddingABookmarkAddsItemToTheBookmarkList(Admin $I, ModalDialog $dialog, Scenario $scenario)
     {
         $I->switchToIFrame();
         // open the scheduler module as we would like to put it into the bookmark liste
@@ -87,11 +87,11 @@ class BookmarkCest
         $dialog->clickButtonInDialog('OK');
 
         $this->clickBookmarkDropdownToggleInTopbar($I);
-        $I->canSee('Scheduled tasks', self::$topBarModuleSelector . ' ' . Topbar::$dropdownContainerSelector);
+        $I->waitForText('Scheduled tasks', 15, self::$topBarModuleSelector . ' ' . Topbar::$dropdownContainerSelector);
 
-        // @test complese test when https://forge.typo3.org/issues/75689 is fixed
+        // @test complete test when https://forge.typo3.org/issues/75689 is fixed
         $scenario->comment(
-            'Test for deleting the item in the list and readd it are missing ' .
+            'Tests for deleting the item in the list and readding it are missing ' .
             'as this is currently broken in the core. See https://forge.typo3.org/issues/75689'
         );
 
@@ -100,7 +100,7 @@ class BookmarkCest
 
     /**
      * @param Admin $I
-     * @depends checkThatAddingABookmarkAddAItemToTheBookmarkList
+     * @depends checkThatAddingABookmarkAddsItemToTheBookmarkList
      */
     public function checkIfBookmarkItemLinksToTarget(Admin $I)
     {
@@ -112,7 +112,7 @@ class BookmarkCest
 
     /**
      * @param Admin $I
-     * @depends checkThatAddingABookmarkAddAItemToTheBookmarkList
+     * @depends checkThatAddingABookmarkAddsItemToTheBookmarkList
      */
     public function checkIfEditBookmarkItemWorks(Admin $I)
     {
@@ -131,7 +131,7 @@ class BookmarkCest
 
     /**
      * @param Admin $I
-     * @depends checkThatAddingABookmarkAddAItemToTheBookmarkList
+     * @depends checkThatAddingABookmarkAddsItemToTheBookmarkList
      */
     public function checkIfDeleteBookmarkWorks(Admin $I, ModalDialog $dialog)
     {
