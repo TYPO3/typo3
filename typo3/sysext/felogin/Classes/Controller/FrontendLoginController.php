@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Felogin\Controller;
  */
 
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -225,17 +227,30 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $postedHash = $postData['forgot_hash'];
             $hashData = $this->frontendController->fe_user->getKey('ses', 'forgot_hash');
             if ($postedHash === $hashData['forgot_hash']) {
-                $row = false;
-                // Look for user record
-                $data = $this->databaseConnection->fullQuoteStr($this->piVars['forgot_email'], 'fe_users');
-                $res = $this->databaseConnection->exec_SELECTquery(
-                    'uid, username, password, email',
-                    'fe_users',
-                    '(email=' . $data . ' OR username=' . $data . ') AND pid IN (' . $this->databaseConnection->cleanIntList($this->spid) . ') ' . $this->cObj->enableFields('fe_users')
-                );
-                if ($this->databaseConnection->sql_num_rows($res)) {
-                    $row = $this->databaseConnection->sql_fetch_assoc($res);
-                }
+
+                /** @var QueryBuilder $queryBuilder */
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_users');
+                $row = $queryBuilder
+                    ->select('uid', 'username', 'password', 'email')
+                    ->from('fe_users')
+                    ->where(
+                        $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->orX(
+                                $queryBuilder->expr()->eq(
+                                    'email',
+                                    $queryBuilder->createNamedParameter($this->piVars['forgot_email'])
+                                ),
+                                $queryBuilder->expr()->eq(
+                                    'username',
+                                    $queryBuilder->createNamedParameter($this->piVars['forgot_email'])
+                                )
+                            ),
+                            $queryBuilder->expr()->in('pid', GeneralUtility::intExplode(',', $this->spid))
+                        )
+                    )
+                    ->execute()
+                    ->fetch();
+
                 $error = null;
                 if ($row) {
                     // Generate an email with the hashed link
@@ -349,12 +364,17 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                             }
                             $newPass = $_params['newPassword'];
                         }
+
                         // Save new password and clear DB-hash
-                        $res = $this->databaseConnection->exec_UPDATEquery(
-                            'fe_users',
-                            'uid=' . $user['uid'],
-                            array('password' => $newPass, 'felogin_forgotHash' => '', 'tstamp' => $GLOBALS['EXEC_TIME'])
-                        );
+                        /** @var QueryBuilder $queryBuilder */
+                        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_users');
+                        $queryBuilder->update('fe_users')
+                            ->set('password', $newPass)
+                            ->set('felogin_forgotHash', '')
+                            ->set('tstamp', $GLOBALS['EXEC_TIME'])
+                            ->where($queryBuilder->expr()->eq('uid', (int)$user['uid']))
+                            ->execute();
+
                         $markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText(
                             'change_password_done_message',
                             $this->conf['changePasswordDoneMessage_stdWrap.']
@@ -401,8 +421,15 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $hash = md5(GeneralUtility::makeInstance(Random::class)->generateRandomBytes(64));
         $randHash = $validEnd . '|' . $hash;
         $randHashDB = $validEnd . '|' . md5($hash);
+
         // Write hash to DB
-        $res = $this->databaseConnection->exec_UPDATEquery('fe_users', 'uid=' . $user['uid'], array('felogin_forgotHash' => $randHashDB));
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_users');
+        $queryBuilder->update('fe_users')
+            ->set('felogin_forgotHash', (string)$randHashDB)
+            ->where($queryBuilder->expr()->eq('uid', (int)$user['uid']))
+            ->execute();
+
         // Send hashlink to user
         $this->conf['linkPrefix'] = -1;
         $isAbsRefPrefix = !empty($this->frontendController->absRefPrefix);
@@ -641,26 +668,52 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                             // taken from dkd_redirect_at_login written by Ingmar Schlecht; database-field changed
                             $groupData = $this->frontendController->fe_user->groupData;
                             if (!empty($groupData['uid'])) {
+
                                 // take the first group with a redirect page
-                                $row = $this->databaseConnection->exec_SELECTgetSingleRow(
-                                    'felogin_redirectPid',
-                                    $this->frontendController->fe_user->usergroup_table,
-                                    'felogin_redirectPid<>\'\' AND uid IN (' . implode(',', $groupData['uid']) . ')'
-                                );
+                                $userGroupTable = $this->frontendController->fe_user->usergroup_table;
+                                /** @var QueryBuilder $queryBuilder */
+                                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($userGroupTable);
+                                $row = $queryBuilder
+                                    ->select('felogin_redirectPid')
+                                    ->from($userGroupTable)
+                                    ->where(
+                                        $queryBuilder->expr()->andX(
+                                            $queryBuilder->expr()->neq('felogin_redirectPid', $queryBuilder->quote('')),
+                                            $queryBuilder->expr()->in('uid', implode(',', $groupData['uid']))
+                                        )
+                                    )
+                                    ->execute()
+                                    ->fetch();
+
                                 if ($row) {
                                     $redirect_url[] = $this->pi_getPageLink($row['felogin_redirectPid']);
                                 }
                             }
                             break;
                         case 'userLogin':
-                            $row = $this->databaseConnection->exec_SELECTgetSingleRow(
-                                'felogin_redirectPid',
-                                $this->frontendController->fe_user->user_table,
-                                $this->frontendController->fe_user->userid_column . '=' . $this->frontendController->fe_user->user['uid'] . ' AND felogin_redirectPid<>\'\''
-                            );
+
+                            $userTable = $this->frontendController->fe_user->user_table;
+                            /** @var QueryBuilder $queryBuilder */
+                            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($userTable);
+                            $row = $queryBuilder
+                                ->select('felogin_redirectPid')
+                                ->from($userTable)
+                                ->where(
+                                    $queryBuilder->expr()->andX(
+                                        $queryBuilder->expr()->neq('felogin_redirectPid', $queryBuilder->quote('')),
+                                        $queryBuilder->expr()->eq(
+                                            $this->frontendController->fe_user->userid_column,
+                                            (int)$this->frontendController->fe_user->user['uid']
+                                        )
+                                    )
+                                )
+                                ->execute()
+                                ->fetch();
+
                             if ($row) {
                                 $redirect_url[] = $this->pi_getPageLink($row['felogin_redirectPid']);
                             }
+
                             break;
                         case 'login':
                             if ($this->conf['redirectPageLogin']) {
@@ -998,7 +1051,14 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $host = $parsedUrl['host'];
                 // Removes the last path segment and slash sequences like /// (if given):
                 $path = preg_replace('#/+[^/]*$#', '', $parsedUrl['path']);
-                $localDomains = $this->databaseConnection->exec_SELECTgetRows('domainName', 'sys_domain', '1=1' . $this->cObj->enableFields('sys_domain'));
+
+                /** @var QueryBuilder $queryBuilder */
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_domain');
+                $localDomains = $queryBuilder->select('domainName')
+                    ->from('sys_domain')
+                    ->execute()
+                    ->fetchAll();
+
                 if (is_array($localDomains)) {
                     foreach ($localDomains as $localDomain) {
                         // strip trailing slashes (if given)

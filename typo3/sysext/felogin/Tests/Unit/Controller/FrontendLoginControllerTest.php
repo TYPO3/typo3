@@ -14,6 +14,13 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -71,34 +78,34 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUpDatabaseMock()
     {
-        $db = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('exec_SELECTgetRows'));
-        $db
-            ->expects($this->any())
-            ->method('exec_SELECTgetRows')
-            ->will($this->returnCallback(array($this, 'getDomainRecordsCallback')));
-        $this->accessibleFixture->_set('databaseConnection', $db);
-    }
+        /** @var Connection|ObjectProphecy $connection */
+        $connection = $this->prophesize(Connection::class);
+        $connection->getDatabasePlatform()->willReturn(new MockPlatform());
+        $connection->getExpressionBuilder()->willReturn(new ExpressionBuilder($connection->reveal()));
+        $connection->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
 
-    /**
-     * Callback method for pageIdCanBeDetermined test cases.
-     * Simulates TYPO3_DB->exec_SELECTgetRows().
-     *
-     * @param string $fields
-     * @param string $table
-     * @param string $where
-     * @return mixed
-     * @see setUpDatabaseMock
-     */
-    public function getDomainRecordsCallback($fields, $table, $where)
-    {
-        if ($table !== $this->testTableName) {
-            return false;
-        }
-        return array(
-            array('domainName' => 'domainhostname.tld'),
-            array('domainName' => 'otherhostname.tld/path'),
-            array('domainName' => 'sub.domainhostname.tld/path/')
+        $queryBuilder = GeneralUtility::makeInstance(
+            QueryBuilder::class,
+            $connection->reveal(),
+            null,
+            new \Doctrine\DBAL\Query\QueryBuilder($connection->reveal())
         );
+
+        /** @var \Doctrine\DBAL\Driver\Statement|ObjectProphecy $resultSet */
+        $resultSet = $this->prophesize(\Doctrine\DBAL\Driver\Statement::class);
+        $resultSet->fetchAll()->willReturn([
+            ['domainName' => 'domainhostname.tld'],
+            ['domainName' => 'otherhostname.tld/path'],
+            ['domainName' => 'sub.domainhostname.tld/path/']
+        ]);
+
+        /** @var ConnectionPool|ObjectProphecy $connectionPool */
+        $connectionPool = $this->prophesize(ConnectionPool::class);
+        $connectionPool->getQueryBuilderForTable('sys_domain')->willReturn($queryBuilder);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
+
+        $connection->executeQuery('SELECT domainName FROM sys_domain', Argument::cetera())
+            ->willReturn($resultSet->reveal());
     }
 
     /**
