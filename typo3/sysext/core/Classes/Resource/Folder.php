@@ -81,7 +81,7 @@ class Folder implements FolderInterface
     public function __construct(ResourceStorage $storage, $identifier, $name)
     {
         $this->storage = $storage;
-        $this->identifier = $identifier;
+        $this->identifier = rtrim($identifier, '/') . '/';
         $this->name = $name;
     }
 
