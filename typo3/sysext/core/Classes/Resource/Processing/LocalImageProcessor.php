@@ -113,15 +113,14 @@ class LocalImageProcessor implements ProcessorInterface
         // explicitly check for the raw filename here, as we check for files that existed before we even started
         // processing, i.e. that were processed earlier
         if ($processingFolder->hasFile($task->getTargetFileName())) {
-            // If the processed file already exists, fetch it and update its properties to reflect the actual file.
-            $processedFile = $storage->getFileInFolder($task->getTargetFileName(), $processingFolder);
+            // When the processed file already exists set it as processed file
+            $task->getTargetFile()->setName($task->getTargetFileName());
+
             // If the processed file is stored on a remote server, we must fetch a local copy of the file, as we
             // have no API for fetching file metadata from a remote file.
-            $localProcessedFile = $storage->getFileForLocalProcessing($processedFile, false);
-
+            $localProcessedFile = $storage->getFileForLocalProcessing($task->getTargetFile(), false);
             $task->setExecuted(true);
             $imageDimensions = $this->getGraphicalFunctionsObject()->getImageDimensions($localProcessedFile);
-            $task->getTargetFile()->setName($task->getTargetFileName());
             $properties = array(
                 'width' => $imageDimensions[0],
                 'height' => $imageDimensions[1],
