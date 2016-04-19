@@ -21,7 +21,8 @@ use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -746,11 +747,16 @@ class SetupModuleController extends AbstractModule
         unset($this->OLD_BE_USER);
         if ($this->getBackendUser()->isAdmin()) {
             $this->simUser = (int)GeneralUtility::_GP('simUser');
-            // Make user-selector:
-            $db = $this->getDatabaseConnection();
-            $where = 'AND username NOT LIKE ' . $db->fullQuoteStr($db->escapeStrForLike('_cli_', 'be_users') . '%', 'be_users');
-            $where .= ' AND uid <> ' . (int)$this->getBackendUser()->user['uid'] . BackendUtility::BEenableFields('be_users');
-            $users = BackendUtility::getUserNames('username,usergroup,usergroup_cached_list,uid,realName', $where);
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+            $users = $queryBuilder
+                ->select('*')
+                ->from('be_users')
+                ->where($queryBuilder->expr()->neq('uid', (int)$this->getBackendUser()->user['uid']))
+                ->andWhere($queryBuilder->expr()->notLike('username', $queryBuilder->createNamedParameter('_cli_%')))
+                ->orderBy('username')
+                ->execute()
+                ->fetchAll();
             $opt = array();
             foreach ($users as $rr) {
                 $label = $rr['username'] . ($rr['realName'] ? ' (' . $rr['realName'] . ')' : '');
@@ -885,14 +891,18 @@ class SetupModuleController extends AbstractModule
      */
     protected function getAvatarFileUid($beUserId)
     {
-        $file = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-            'uid_local',
-            'sys_file_reference',
-            'tablenames = \'be_users\' AND fieldname = \'avatar\' AND ' .
-            'table_local = \'sys_file\' AND uid_foreign = ' . (int)$beUserId .
-            BackendUtility::BEenableFields('sys_file_reference') . BackendUtility::deleteClause('sys_file_reference')
-        );
-        return $file ? $file['uid_local'] : 0;
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
+        $file = $queryBuilder
+            ->select('uid_local')
+            ->from('sys_file_reference')
+            ->where($queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('be_users')))
+            ->andWhere($queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter('avatar')))
+            ->andWhere($queryBuilder->expr()->eq('table_local', $queryBuilder->createNamedParameter('sys_file')))
+            ->andWhere($queryBuilder->expr()->eq('uid_foreign', (int)$beUserId))
+            ->execute()
+            ->fetchColumn();
+        return (int)$file;
     }
 
     /**
@@ -910,12 +920,15 @@ class SetupModuleController extends AbstractModule
             return;
         }
 
-        // Delete old file reference
-        $this->getDatabaseConnection()->exec_DELETEquery(
-            'sys_file_reference',
-            'tablenames = \'be_users\' AND fieldname = \'avatar\' AND ' .
-            'table_local = \'sys_file\' AND uid_foreign = ' . (int)$beUserId
-        );
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
+        $queryBuilder
+            ->delete('sys_file_reference')
+            ->where($queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('be_users')))
+            ->andWhere($queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter('avatar')))
+            ->andWhere($queryBuilder->expr()->eq('table_local', $queryBuilder->createNamedParameter('sys_file')))
+            ->andWhere($queryBuilder->expr()->eq('uid_foreign', (int)$beUserId))
+            ->execute();
 
         // Create new reference
         if ($fileUid) {
@@ -999,14 +1012,6 @@ class SetupModuleController extends AbstractModule
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
