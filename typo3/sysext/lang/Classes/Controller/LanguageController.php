@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Menu\Menu;
 use TYPO3\CMS\Backend\Template\Components\Menu\MenuItem;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -180,6 +181,8 @@ class LanguageController extends ActionController
             $response['progress'] = $progress > 100 ? 100 : $progress;
         }
         $this->view->assign('response', $response);
+        // Flush language cache
+        GeneralUtility::makeInstance(CacheManager::class)->getCache('l10n')->flush();
     }
 
     /**
@@ -201,6 +204,8 @@ class LanguageController extends ActionController
             }
         }
         $this->view->assign('response', $response);
+        // Flush language cache
+        GeneralUtility::makeInstance(CacheManager::class)->getCache('l10n')->flush();
     }
 
     /**

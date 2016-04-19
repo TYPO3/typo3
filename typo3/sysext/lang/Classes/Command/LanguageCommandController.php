@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Lang\Command;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -93,6 +94,8 @@ class LanguageCommandController extends CommandController
                 $this->output->progressAdvance();
             }
         }
+        // Flush language cache
+        GeneralUtility::makeInstance(CacheManager::class)->getCache('l10n')->flush();
         $this->output->progressFinish();
     }
 
