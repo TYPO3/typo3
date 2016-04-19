@@ -9,6 +9,7 @@ return array(
         'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_filemounts',
         'adminOnly' => 1,
         'rootLevel' => 1,
+        'requestUpdate' => 'base',
         'delete' => 'deleted',
         'enablecolumns' => array(
             'disabled' => 'hidden'
@@ -54,12 +55,21 @@ return array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_file_storage',
+                'allowNonIdValues' => true,
+                'items' => array(
+                    array('', 0)
+                ),
                 'size' => 1,
-                'maxitems' => 1
+                'maxitems' => 1,
+                'eval' => 'required',
+                'range' => array(
+                    'lower' => 1,
+                )
             )
         ),
         'path' => array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.folder',
+            'displayCond' => 'FIELD:base:>:0',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
