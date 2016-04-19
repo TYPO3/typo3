@@ -361,7 +361,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $hookMock = $this->getMock(\TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface::class, array('checkModifyAccessList'), array(), $hookClass);
         $hookMock->expects($this->once())->method('checkModifyAccessList');
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
-        $GLOBALS['T3_VAR']['getUserObj'][$hookClass] = $hookMock;
+        GeneralUtility::addInstance($hookClass, $hookMock);
         $this->subject->checkModifyAccessList('tt_content');
     }
 
@@ -460,7 +460,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $hookMock = $this->getMock($hookClass, array('checkFlexFormValue_beforeMerge'));
         $hookMock->expects($this->once())->method('checkFlexFormValue_beforeMerge');
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = $hookClass;
-        $GLOBALS['T3_VAR']['getUserObj'][$hookClass] = $hookMock;
+        GeneralUtility::addInstance($hookClass, $hookMock);
         $this->subject->_call('checkValueForFlex', [], [], [], '', 0, '', '', 0, 0, 0, [], '');
     }
 

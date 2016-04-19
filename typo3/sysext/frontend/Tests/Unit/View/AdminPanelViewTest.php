@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case
@@ -72,7 +73,7 @@ class AdminPanelViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $hookClass = $this->getUniqueId('tx_coretest');
         $hookMock = $this->getMock(\TYPO3\CMS\Frontend\View\AdminPanelViewHookInterface::class, array(), array(), $hookClass);
-        $GLOBALS['T3_VAR']['getUserObj'][$hookClass] = $hookMock;
+        GeneralUtility::addInstance($hookClass, $hookMock);
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'][] = $hookClass;
         /** @var $adminPanelMock \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\View\AdminPanelView */
         $adminPanelMock = $this->getMock(\TYPO3\CMS\Frontend\View\AdminPanelView::class, array('extGetLL'), array(), '', false);

@@ -3754,43 +3754,32 @@ class GeneralUtility
     }
 
     /**
+     * This method should be avoided, as it will be deprecated soon. Instead use makeInstance() directly.
+     *
      * Creates and returns reference to a user defined object.
      * This function can return an object reference if you like.
-     * Just prefix the function call with "&": "$objRef = &\TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj('EXT:myext/class.tx_myext_myclass.php:&tx_myext_myclass');".
-     * This will work ONLY if you prefix the class name with "&" as well. See description of function arguments.
      *
-     * @todo Deprecate the whole method in several steps:
-     *      1. Deprecated singleton pattern (was removed in TYPO3 CMS 8)
-     *      2. Deprecate file prefix/ require file,
-     *      3. Deprecate usage without valid class name.
-     *      4. The last step should be to deprecate the method itself.
-     *
-     * @param string $classRef Class reference, '[file-reference":"]["&"]class-name'. You can prefix the class name with "[file-reference]:" and \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl". Finally; for the class name you can prefix it with "&" and you will reuse the previous instance of the object identified by the full reference string (meaning; if you ask for the same $classRef later in another place in the code you will get a reference to the first created one!).
+     * @param string $classRef Class reference, '[file-reference":"]class-name'. You can prefix the class name with "[file-reference]:" and \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:tx_realurl".
      * @return object The instance of the class asked for. Instance is created with \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance
      * @see callUserFunction()
      */
     public static function getUserObj($classRef)
     {
-        // Check persistent object and if found, call directly and exit.
-        if (is_object($GLOBALS['T3_VAR']['getUserObj'][$classRef])) {
-            return $GLOBALS['T3_VAR']['getUserObj'][$classRef];
+        // Check file-reference prefix; if found, require_once() the file (should be library of code)
+        if (strpos($classRef, ':') !== false) {
+            list($file, $class) = self::revExplode(':', $classRef, 2);
+            $requireFile = self::getFileAbsFileName($file);
+            if ($requireFile) {
+                require_once $requireFile;
+            }
         } else {
-            // Check file-reference prefix; if found, require_once() the file (should be library of code)
-            if (strpos($classRef, ':') !== false) {
-                list($file, $class) = self::revExplode(':', $classRef, 2);
-                $requireFile = self::getFileAbsFileName($file);
-                if ($requireFile) {
-                    require_once $requireFile;
-                }
-            } else {
-                $class = $classRef;
-            }
+            $class = $classRef;
+        }
 
-            // Check if class exists:
-            if (class_exists($class)) {
-                $classObj = self::makeInstance($class);
-                return $classObj;
-            }
+        // Check if class exists:
+        if (class_exists($class)) {
+            $classObj = self::makeInstance($class);
+            return $classObj;
         }
     }
 

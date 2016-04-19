@@ -3518,7 +3518,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $className = $this->getUniqueId('tx_coretest_getImageSourceCollectionHookCalled');
         $getImageSourceCollectionHookMock = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectOneSourceCollectionHookInterface::class, array('getOneSourceCollection'), array(), $className);
-        $GLOBALS['T3_VAR']['getUserObj'][$className] = $getImageSourceCollectionHookMock;
+        GeneralUtility::addInstance($className, $getImageSourceCollectionHookMock);
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection'][] = $className;
 
         $getImageSourceCollectionHookMock

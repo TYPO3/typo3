@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case
@@ -64,7 +65,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $className = $this->getUniqueId('tx_coretest');
         $getPageHookMock = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepositoryGetPageHookInterface::class, array('getPage_preProcess'), array(), $className);
         // Register hook mock object
-        $GLOBALS['T3_VAR']['getUserObj'][$className] = $getPageHookMock;
+        GeneralUtility::addInstance($className, $getPageHookMock);
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'][] = $className;
         // Test if hook is called and register a callback method to check given arguments
         $getPageHookMock->expects($this->once())->method('getPage_preProcess')->will($this->returnCallback(array($this, 'isGetPagePreProcessCalledCallback')));
