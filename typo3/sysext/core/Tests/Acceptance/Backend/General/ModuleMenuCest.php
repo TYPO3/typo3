@@ -27,6 +27,10 @@ class ModuleMenuCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
+        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
+        $I->switchToIFrame('content');
+        $I->waitForText('Web>Page module');
+        $I->switchToIFrame();
     }
 
     /**
@@ -34,19 +38,22 @@ class ModuleMenuCest
      */
     public function checkIfModuleMenuIsCollapsible(Admin $I)
     {
-        foreach (['#web', '#system'] as $moduleGroupId) {
-            $I->seeElement($moduleGroupId . ' .typo3-module-menu-group-container .typo3-module-menu-item');
+        // A sub-element of web module is show
+        $I->waitForElementVisible('#web .typo3-module-menu-group-container .typo3-module-menu-item');
+        $I->seeElement('#web .typo3-module-menu-group-container .typo3-module-menu-item');
 
-            $I->wantTo('collapse the menu element');
-            $I->click($moduleGroupId . ' .typo3-module-menu-group-header');
+        // Collapse web module and verify sub elements are hidden
+        $I->wantTo('collapse the menu element');
+        $I->waitForElementVisible('#web .typo3-module-menu-group-header');
+        $I->click('#web .typo3-module-menu-group-header');
+        $I->waitForElementNotVisible('#web .typo3-module-menu-group-container .typo3-module-menu-item');
+        $I->dontSeeElement('#web .typo3-module-menu-group-container .typo3-module-menu-item');
 
-            $I->waitForElementNotVisible($moduleGroupId . ' .typo3-module-menu-group-container .typo3-module-menu-item');
-
-            $I->wantTo('expand the menu element again');
-            $I->click($moduleGroupId . ' .typo3-module-menu-group-header');
-
-            $I->seeElement($moduleGroupId . ' .typo3-module-menu-group-container .typo3-module-menu-item');
-        }
+        // Expand again and verify sub elements are shown
+        $I->wantTo('expand the menu element again');
+        $I->click('#web .typo3-module-menu-group-header');
+        $I->waitForElementVisible('#web .typo3-module-menu-group-container .typo3-module-menu-item');
+        $I->seeElement('#web .typo3-module-menu-group-container .typo3-module-menu-item');
     }
 
     /**
