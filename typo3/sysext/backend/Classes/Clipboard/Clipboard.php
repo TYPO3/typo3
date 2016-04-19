@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Backend\Clipboard;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryContextType;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
@@ -495,16 +497,22 @@ class Clipboard
         $lines = array();
         $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
         if ($table != 'pages' && BackendUtility::isTableLocalizable($table) && !$tcaCtrl['transOrigPointerTable']) {
-            $where = array();
-            $where[] = $tcaCtrl['transOrigPointerField'] . '=' . (int)$parentRec['uid'];
-            $where[] = $tcaCtrl['languageField'] . '<>0';
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $queryBuilder->getQueryContext()->setContext(QueryContextType::UNRESTRICTED);
+            $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->where($queryBuilder->expr()->eq($tcaCtrl['transOrigPointerField'], (int)$parentRec['uid']))
+                ->andWhere($queryBuilder->expr()->neq($tcaCtrl['languageField'], 0));
             if (isset($tcaCtrl['delete']) && $tcaCtrl['delete']) {
-                $where[] = $tcaCtrl['delete'] . '=0';
+                $queryBuilder->andWhere($queryBuilder->expr()->eq($tcaCtrl['delete'], 0));
             }
             if (isset($tcaCtrl['versioningWS']) && $tcaCtrl['versioningWS']) {
-                $where[] = 't3ver_wsid=' . $parentRec['t3ver_wsid'];
+                $queryBuilder->andWhere($queryBuilder->expr()->eq('t3ver_wsid', $parentRec['t3ver_wsid']));
             }
-            $rows = $this->getDatabaseConnection()->exec_SELECTgetRows('*', $table, implode(' AND ', $where));
+            $rows = $queryBuilder
+                ->execute()
+                ->fetchAll();
             if (is_array($rows)) {
                 $modeData = '';
                 if ($pad == 'normal') {
@@ -1113,13 +1121,4 @@ class Clipboard
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Return DatabaseConnection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
 }
