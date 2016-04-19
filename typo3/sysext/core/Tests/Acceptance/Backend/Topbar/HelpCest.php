@@ -23,10 +23,10 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\Topbar;
 class HelpCest
 {
     /**
-    * Selector for the module container in the topbar
-    *
-    * @var string
-    */
+     * Selector for the module container in the topbar
+     *
+     * @var string
+     */
     public static $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-helptoolbaritem';
 
     /**
@@ -35,8 +35,8 @@ class HelpCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
-        $I->switchToIFrame('content');
         // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
+        $I->switchToIFrame('content');
         $I->waitForText('Web>Page module');
         $I->switchToIFrame();
     }

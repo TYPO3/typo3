@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Profile;
+namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,27 +14,26 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Profile;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Kasper;
+use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Admin;
 
 /**
- * This testcase is used to check if username is visible in the toolbar.
+ * This test case is used to check if username is visible in the toolbar.
  */
 class UsernameOnAvatarCest
 {
-    public function _before(Kasper $I)
+    public function _before(Admin $I)
     {
-        $I->loginAsAdmin();
-    }
-
-    public function _after(Kasper $I)
-    {
-        $I->logout();
+        $I->useExistingSession();
+        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
+        $I->switchToIFrame('content');
+        $I->waitForText('Web>Page module');
+        $I->switchToIFrame();
     }
 
     /**
-     * @param Kasper $I
+     * @param Admin $I
      */
-    public function tryToTest(Kasper $I)
+    public function tryToTest(Admin $I)
     {
         $I->see('admin', '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem');
     }

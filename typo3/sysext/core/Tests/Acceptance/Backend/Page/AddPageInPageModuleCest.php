@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Kasper;
+use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Admin;
 
 /**
  * This testcase is used to check if a page can be added with the page module.
@@ -22,20 +22,19 @@ use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Kasper;
  */
 class AddPageInPageModuleCest
 {
-    public function _before(Kasper $I)
+    public function _before(Admin $I)
     {
-        $I->loginAsAdmin();
-    }
-
-    public function _after(Kasper $I)
-    {
-        $I->logout();
+        $I->useExistingSession();
+        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
+        $I->switchToIFrame('content');
+        $I->waitForText('Web>Page module');
+        $I->switchToIFrame();
     }
 
     /**
-     * @param Kasper $I
+     * @param Admin $I
      */
-    public function tryToTest(Kasper $I)
+    public function tryToTest(Admin $I)
     {
         // Select page module
         $I->wantToTest('Add a page with page module');

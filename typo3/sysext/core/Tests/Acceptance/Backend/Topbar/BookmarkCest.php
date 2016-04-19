@@ -44,8 +44,8 @@ class BookmarkCest
     public function _before(Admin $I)
     {
         $I->useExistingSession();
-        $I->switchToIFrame('content');
         // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
+        $I->switchToIFrame('content');
         $I->waitForText('Web>Page module');
     }
 
