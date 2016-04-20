@@ -73,6 +73,25 @@ class FloatConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
+    public function convertFromShouldRespectConfiguration()
+    {
+        $mockMappingConfiguration = $this->getMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface::class);
+        $mockMappingConfiguration
+            ->expects($this->at(0))
+            ->method('getConfigurationValue')
+            ->with(\TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter::CONFIGURATION_THOUSANDS_SEPARATOR)
+            ->willReturn('.');
+        $mockMappingConfiguration
+            ->expects($this->at(1))
+            ->method('getConfigurationValue')
+            ->with(\TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter::CONFIGURATION_DECIMAL_POINT)
+            ->willReturn(',');
+        $this->assertSame(1024.42, $this->converter->convertFrom('1.024,42', 'float', array(), $mockMappingConfiguration));
+    }
+
+    /**
+     * @test
+     */
     public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric()
     {
         $this->assertInstanceOf(\TYPO3\CMS\Extbase\Error\Error::class, $this->converter->convertFrom('not numeric', 'float'));

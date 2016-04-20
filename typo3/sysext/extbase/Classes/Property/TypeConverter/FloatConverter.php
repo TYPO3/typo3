@@ -30,6 +30,16 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter
 {
     /**
+     * @var string
+     */
+    const CONFIGURATION_THOUSANDS_SEPARATOR = 'thousandsSeparator';
+
+    /**
+     * @var string
+     */
+    const CONFIGURATION_DECIMAL_POINT = 'decimalPoint';
+
+    /**
      * @var array<string>
      */
     protected $sourceTypes = array('float', 'integer', 'string');
@@ -59,11 +69,19 @@ class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
         if ($source === null || (string)$source === '') {
             return null;
         }
+
         // We won't backport the full flavored locale parsing of floats from Flow here
+
+        if (is_string($source) && $configuration !== null) {
+            $thousandsSeparator = $configuration->getConfigurationValue(FloatConverter::class, self::CONFIGURATION_THOUSANDS_SEPARATOR);
+            $decimalPoint = $configuration->getConfigurationValue(FloatConverter::class, self::CONFIGURATION_DECIMAL_POINT);
+            $source = str_replace($thousandsSeparator, '', $source);
+            $source = str_replace($decimalPoint, '.', $source);
+        }
 
         if (!is_numeric($source)) {
             return new \TYPO3\CMS\Extbase\Error\Error('"%s" cannot be converted to a float value.', 1332934124, array($source));
         }
-        return (float) $source;
+        return (float)$source;
     }
 }
