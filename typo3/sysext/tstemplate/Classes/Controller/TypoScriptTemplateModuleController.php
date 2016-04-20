@@ -20,6 +20,9 @@ use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
@@ -209,20 +212,28 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             $this->generateMenu();
             $this->content .= '</form>';
         } else {
-            // Template pages:
-            $records = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                'pages.uid, count(*) AS count, max(sys_template.root) AS root_max_val, min(sys_template.root) AS root_min_val',
-                'pages,sys_template',
-                'pages.uid=sys_template.pid'
-                    . BackendUtility::deleteClause('pages')
-                    . BackendUtility::versioningPlaceholderClause('pages')
-                    . BackendUtility::deleteClause('sys_template')
-                    . BackendUtility::versioningPlaceholderClause('sys_template'),
-                'pages.uid',
-                'pages.pid, pages.sorting'
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+            $result = $queryBuilder->select('pages.uid')
+                ->addSelectLiteral(
+                    $queryBuilder->expr()->count('*', 'count'),
+                    $queryBuilder->expr()->max('sys_template.root', 'root_max_val'),
+                    $queryBuilder->expr()->min('sys_template.root', 'root_min_val')
+                )
+                ->from('pages')
+                ->from('sys_template')
+                ->where($queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('sys_template.pid')))
+                ->groupBy('pages.uid')
+                ->orderBy('pages.pid')
+                ->addOrderBy('pages.sorting')
+                ->execute();
+
             $pArray = array();
-            foreach ($records as $record) {
+            while ($record = $result->fetch()) {
                 $this->setInPageArray($pArray, BackendUtility::BEgetRootLine($record['uid'], 'AND 1=1'), $record);
             }
 
