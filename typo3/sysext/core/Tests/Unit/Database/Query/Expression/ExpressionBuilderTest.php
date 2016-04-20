@@ -307,6 +307,91 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
+    public function maxQuotesIdentifier()
+    {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            $platform = new MockPlatform();
+            return $platform->quoteIdentifier($args[0]);
+        });
+
+        $this->assertSame('MAX("tableName"."fieldName")', $this->subject->max('tableName.fieldName'));
+        $this->assertSame(
+            'MAX("tableName"."fieldName") AS "anAlias"',
+            $this->subject->max('tableName.fieldName', 'anAlias')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function minQuotesIdentifier()
+    {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            $platform = new MockPlatform();
+            return $platform->quoteIdentifier($args[0]);
+        });
+
+        $this->assertSame('MIN("tableName"."fieldName")', $this->subject->min('tableName.fieldName'));
+        $this->assertSame(
+            'MIN("tableName"."fieldName") AS "anAlias"',
+            $this->subject->min('tableName.fieldName', 'anAlias')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function sumQuotesIdentifier()
+    {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            $platform = new MockPlatform();
+            return $platform->quoteIdentifier($args[0]);
+        });
+
+        $this->assertSame('SUM("tableName"."fieldName")', $this->subject->sum('tableName.fieldName'));
+        $this->assertSame(
+            'SUM("tableName"."fieldName") AS "anAlias"',
+            $this->subject->sum('tableName.fieldName', 'anAlias')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function avgQuotesIdentifier()
+    {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            $platform = new MockPlatform();
+            return $platform->quoteIdentifier($args[0]);
+        });
+
+        $this->assertSame('AVG("tableName"."fieldName")', $this->subject->avg('tableName.fieldName'));
+        $this->assertSame(
+            'AVG("tableName"."fieldName") AS "anAlias"',
+            $this->subject->avg('tableName.fieldName', 'anAlias')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function countQuotesIdentifier()
+    {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            $platform = new MockPlatform();
+            return $platform->quoteIdentifier($args[0]);
+        });
+
+        $this->assertSame('COUNT("tableName"."fieldName")', $this->subject->count('tableName.fieldName'));
+        $this->assertSame(
+            'COUNT("tableName"."fieldName") AS "anAlias"',
+            $this->subject->count('tableName.fieldName', 'anAlias')
+        );
+    }
+
+    /**
+     * @test
+     */
     public function literalQuotesValue()
     {
         $this->connectionProphet->quote('aField', 'Doctrine\DBAL\Types\StringType')

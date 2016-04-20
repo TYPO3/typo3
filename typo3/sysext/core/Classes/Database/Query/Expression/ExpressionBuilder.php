@@ -353,6 +353,89 @@ class ExpressionBuilder
     }
 
     /**
+     * Creates a MIN expression for the given field/alias.
+     *
+     * @param string $fieldName
+     * @param string|null $alias
+     * @return string
+     */
+    public function min(string $fieldName, string $alias = null): string
+    {
+        return $this->calculation('MIN', $fieldName, $alias);
+    }
+
+    /**
+     * Creates a MAX expression for the given field/alias.
+     *
+     * @param string $fieldName
+     * @param string|null $alias
+     * @return string
+     */
+    public function max(string $fieldName, string $alias = null): string
+    {
+        return $this->calculation('MAX', $fieldName, $alias);
+    }
+
+    /**
+     * Creates a AVG expression for the given field/alias.
+     *
+     * @param string $fieldName
+     * @param string|null $alias
+     * @return string
+     */
+    public function avg(string $fieldName, string $alias = null): string
+    {
+        return $this->calculation('AVG', $fieldName, $alias);
+    }
+
+    /**
+     * Creates a SUM expression for the given field/alias.
+     *
+     * @param string $fieldName
+     * @param string|null $alias
+     * @return string
+     */
+    public function sum(string $fieldName, string $alias = null): string
+    {
+        return $this->calculation('SUM', $fieldName, $alias);
+    }
+
+    /**
+     * Creates a COUNT expression for the given field/alias.
+     *
+     * @param string $fieldName
+     * @param string|null $alias
+     * @return string
+     */
+    public function count(string $fieldName, string $alias = null): string
+    {
+        return $this->calculation('COUNT', $fieldName, $alias);
+    }
+
+    /**
+     * Create a SQL aggregrate function.
+     *
+     * @param string $aggregateName
+     * @param string $fieldName
+     * @param string|null $alias
+     * @return string
+     */
+    protected function calculation(string $aggregateName, string $fieldName, string $alias = null): string
+    {
+        $aggregateSQL = sprintf(
+            '%s(%s)',
+            $aggregateName,
+            $this->connection->quoteIdentifier($fieldName)
+        );
+
+        if (!empty($alias)) {
+            $aggregateSQL .= ' AS ' . $this->connection->quoteIdentifier($alias);
+        }
+
+        return $aggregateSQL;
+    }
+
+    /**
      * Quotes a given input parameter.
      *
      * @param mixed $input The parameter to be quoted.

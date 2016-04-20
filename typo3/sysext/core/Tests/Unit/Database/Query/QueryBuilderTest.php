@@ -402,6 +402,34 @@ class QueryBuilderTest extends UnitTestCase
 
     /**
      * @test
+     */
+    public function selectLiteralDirectlyDelegatesToConcreteQueryBuilder()
+    {
+        $this->connection->quoteIdentifier(Argument::cetera())
+            ->shouldNotBeCalled();
+        $this->concreteQueryBuilder->select(Argument::exact('MAX(aField) AS anAlias'))
+            ->shouldBeCalled()
+            ->willReturn($this->subject);
+
+        $this->subject->selectLiteral('MAX(aField) AS anAlias');
+    }
+
+    /**
+     * @test
+     */
+    public function addSelectLiteralDirectlyDelegatesToConcreteQueryBuilder()
+    {
+        $this->connection->quoteIdentifier(Argument::cetera())
+            ->shouldNotBeCalled();
+        $this->concreteQueryBuilder->addSelect(Argument::exact('MAX(aField) AS anAlias'))
+            ->shouldBeCalled()
+            ->willReturn($this->subject);
+
+        $this->subject->addSelectLiteral('MAX(aField) AS anAlias');
+    }
+
+    /**
+     * @test
      * @todo: Test with alias
      */
     public function deleteQuotesIdentifierAndDelegatesToConcreteQueryBuilder()

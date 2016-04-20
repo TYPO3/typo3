@@ -370,7 +370,6 @@ class QueryBuilder
      * Specifies items that are to be returned in the query result.
      * Replaces any previously specified selections, if any.
      *
-     *
      * @param string[] $selects
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -391,6 +390,37 @@ class QueryBuilder
     public function addSelect(string ...$selects): QueryBuilder
     {
         $this->concreteQueryBuilder->addSelect(...$this->quoteIdentifiersForSelect($selects));
+
+        return $this;
+    }
+
+    /**
+     * Specifies items that are to be returned in the query result.
+     * Replaces any previously specified selections, if any.
+     * This should only be used for literal SQL expressions as no
+     * quoting/escaping of any kind will be performed on the items.
+     *
+     * @param string[] $selects Literal SQL expressions to be selected. Warning: No quoting will be done!
+     * @return QueryBuilder This QueryBuilder instance.
+     */
+    public function selectLiteral(string ...$selects): QueryBuilder
+    {
+        $this->concreteQueryBuilder->select(...$selects);
+
+        return $this;
+    }
+
+    /**
+     * Adds an item that is to be returned in the query result. This should
+     * only be used for literal SQL expressions as no quoting/escaping of
+     * any kind will be performed on the items.
+     *
+     * @param string[] $selects Literal SQL expressions to be selected.
+     * @return QueryBuilder This QueryBuilder instance.
+     */
+    public function addSelectLiteral(string ...$selects): QueryBuilder
+    {
+        $this->concreteQueryBuilder->addSelect(...$selects);
 
         return $this;
     }
@@ -664,7 +694,6 @@ class QueryBuilder
      */
     public function setValue(string $column, $value, bool $createNamedParameter = true): QueryBuilder
     {
-
         $this->concreteQueryBuilder->setValue(
             $this->quoteIdentifier($column),
             $createNamedParameter ? $this->createNamedParameter($value) : $value
