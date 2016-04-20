@@ -2734,8 +2734,15 @@ class TypoScriptFrontendController
         // Setting locale
         if ($this->config['config']['locale_all']) {
             $availableLocales = GeneralUtility::trimExplode(',', $this->config['config']['locale_all'], true);
-            $locale = setlocale(LC_ALL, ...$availableLocales);
-            if (!$locale) {
+            // If LC_NUMERIC is set e.g. to 'de_DE' PHP parses float values locale-aware resulting in strings with comma
+            // as decimal point which causes problems with value conversions - so we set all locale types except LC_NUMERIC
+            // @see https://bugs.php.net/bug.php?id=53711
+            $locale = setlocale(LC_COLLATE, ...$availableLocales);
+            if ($locale) {
+                setlocale(LC_CTYPE, ...$availableLocales);
+                setlocale(LC_MONETARY, ...$availableLocales);
+                setlocale(LC_TIME, ...$availableLocales);
+            } else {
                 $this->getTimeTracker()->setTSlogMessage('Locale "' . htmlspecialchars($this->config['config']['locale_all']) . '" not found.', 3);
             }
         }
