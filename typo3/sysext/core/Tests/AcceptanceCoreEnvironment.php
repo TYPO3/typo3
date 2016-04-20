@@ -19,6 +19,8 @@ use Codeception\Events;
 use Codeception\Extension;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 
 /**
@@ -140,6 +142,7 @@ class AcceptanceCoreEnvironment extends Extension
      */
     public static $events = [
         Events::SUITE_BEFORE => 'bootstrapTypo3Environment',
+        Events::TEST_AFTER => 'cleanupTypo3Environment'
     ];
 
     /**
@@ -250,5 +253,19 @@ class AcceptanceCoreEnvironment extends Extension
 
         $styleguideGenerator = new Generator();
         $styleguideGenerator->create();
+    }
+
+    /**
+     * Method executed after each test
+     *
+     * @return void
+     */
+    public function cleanupTypo3Environment()
+    {
+        // Reset uc db field of be_user "admin" to null to reduce
+        // possible side effects between single tests.
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('be_users')
+            ->update('be_users', ['uc' => null], ['uid' => 1]);
     }
 }
