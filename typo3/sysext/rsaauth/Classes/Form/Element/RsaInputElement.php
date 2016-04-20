@@ -71,7 +71,7 @@ class RsaInputElement extends AbstractFormElement
                 case 'password':
                     $attributes['type'] = 'password';
                     $attributes['value'] = '********';
-                    $attributes['autocomplete'] = 'off';
+                    $attributes['autocomplete'] = 'new-' . $fieldName;
                     break;
                 default:
                     // @todo: This is ugly: The code should find out on it's own whether a eval definition is a
@@ -125,7 +125,7 @@ class RsaInputElement extends AbstractFormElement
         }
 
         if (isset($config['autocomplete'])) {
-            $attributes['autocomplete'] = empty($config['autocomplete']) ? 'off' : 'on';
+            $attributes['autocomplete'] = empty($config['autocomplete']) ? 'new-' . $fieldName : 'on';
         }
 
         // Build the attribute string

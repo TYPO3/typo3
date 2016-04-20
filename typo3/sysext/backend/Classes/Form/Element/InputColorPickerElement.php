@@ -120,7 +120,7 @@ class InputColorPickerElement extends AbstractFormElement
         }
 
         if (isset($config['autocomplete'])) {
-            $attributes['autocomplete'] = empty($config['autocomplete']) ? 'off' : 'on';
+            $attributes['autocomplete'] = empty($config['autocomplete']) ? 'new-' . $fieldName : 'on';
         }
 
         // Build the attribute string
