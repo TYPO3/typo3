@@ -60,6 +60,14 @@ TYPO3.Components.Tree.StandardTree = function(config) {
 Ext.extend(TYPO3.Components.Tree.StandardTree, Ext.tree.TreePanel, {
 
 	initComponent: function() {
+		// prepare hidden input field (make sure only comma separated uids are present)
+		var selected = Ext.fly('treeinput' + this.id).dom.value.split(',');
+		for (var i = 0; i < selected.length; i++) {
+			var value = selected[i].split('|');
+			selected[i] = value[0];
+		}
+		Ext.fly('treeinput' + this.id).dom.value = selected.join(',');
+
 		Ext.apply(this, {
 			tbar: this.initialConfig.showHeader ? TYPO3.Components.Tree.Toolbar([], this) : null
 		});
@@ -182,7 +190,8 @@ TYPO3.Components.Tree.EmptySelectionModel = new Ext.tree.DefaultSelectionModel({
 
 TYPO3.Components.Tree.TcaCheckChangeHandler = function(checkedNode, checked) {
 	var exclusiveKeys = this.tcaExclusiveKeys.split(','),
-		uid = '' + checkedNode.attributes.uid;
+		uid = '' + checkedNode.attributes.uid,
+		selected = Ext.fly('treeinput' + this.id).dom.value.split(',');
 
 	this.suspendEvents();
 
@@ -226,12 +235,20 @@ TYPO3.Components.Tree.TcaCheckChangeHandler = function(checkedNode, checked) {
 			node.ui.toggleCheck(checkedNode.attributes.checked);
 		})
 	}
-	var selected = [];
+
 	this.root.cascade(function(node) {
 		if (node.ui.isChecked()) {
-			selected.push(node.attributes.uid);
+			if (selected.indexOf(node.attributes.uid) < 0) {
+				selected.push(node.attributes.uid)
+			}
+		} else {
+			var index = selected.indexOf(node.attributes.uid);
+			if (index >= 0) {
+				selected.splice(index, 1);
+			}
 		}
 	});
+
 	this.countSelectedNodes = selected.length;
 	Ext.fly('treeinput' + this.id).dom.value = selected.join(',');
 	eval(this.onChange);
