@@ -5,7 +5,7 @@ matrix:
 
   include:
     - php: 7
-      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes ACCEPTANCE_TESTS=no PHP_LINT=yes XLF_CHECK=yes SUBMODULE_TEST=yes  EXCEPTIONCODE_TEST=yes
+      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes ACCEPTANCE_TESTS=yes PHP_LINT=yes XLF_CHECK=yes SUBMODULE_TEST=yes  EXCEPTIONCODE_TEST=yes
 
 sudo: false
 
@@ -14,6 +14,8 @@ addons:
     packages:
       - parallel
       - ack-grep
+      - nginx
+      - realpath
 
 cache:
   directories:
@@ -50,51 +52,41 @@ before_script:
   - phpenv config-rm xdebug.ini
   - if [ "$GITHUB_COMPOSER_AUTH" ]; then composer config -g github-oauth.github.com $GITHUB_COMPOSER_AUTH; fi
   - composer install
+  - typo3/sysext/core/Build/Configuration/TravisNginxFpm/ConfigureStartNginxFpm.sh
+  - mkdir -p typo3temp/var/tests
+  - export typo3DatabaseName="typo3"
+  - export typo3DatabaseHost="localhost"
+  - export typo3DatabaseUsername="root"
+  - export typo3DatabasePassword=""
 
 script:
   - >
     if [[ "$UNIT_TESTS" == "yes" ]]; then
-      echo;
-      echo "Running unit tests";
       ./bin/phpunit -c typo3/sysext/core/Build/UnitTests.xml
     fi
+
   - >
     if [[ "$FUNCTIONAL_TESTS" == "yes" ]]; then
-        echo;
-        export typo3DatabaseName="typo3";
-        export typo3DatabaseHost="localhost";
-        export typo3DatabaseUsername="root";
-        export typo3DatabasePassword="";
         find . -wholename '*typo3/sysext/*/Tests/Functional/*Test.php' | parallel --jobs 6 --gnu 'echo; echo "Running functional test suite {}"; ./bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml {}'
     fi
+
   - >
     if [[ "$ACCEPTANCE_TESTS" == "yes" ]]; then
-        export _JAVA_OPTIONS="-Xms1024m -Xmx1024m";
-        ./bin/selenium-server-standalone >/dev/null 2>&1 &
-        php -S 0.0.0.0:8000 >/dev/null 2>&1 &
-        sleep 5;
-        export typo3DatabaseName="typo3";
-        export typo3DatabaseHost="localhost";
-        export typo3DatabaseUsername="root";
-        export typo3DatabasePassword="";
-        ./bin/codecept run Acceptance -c typo3/sysext/core/Build/AcceptanceTests.yml --debug
+        ./bin/codecept run Acceptance -c typo3/sysext/core/Build/AcceptanceTests.yml
     fi
+
   - >
     if [[ "$PHP_LINT" == "yes" ]]; then
-        echo;
-        echo "Running php lint";
         find typo3/ -name \*.php -not -path "vendor/*" | parallel --jobs 6 --gnu php -d display_errors=stderr -l {} > /dev/null \;
     fi
+
   - >
     if [[ "$XLF_CHECK" == "yes" ]]; then
-        echo;
-        echo "Running XLF checker";
         ./typo3/sysext/core/Build/Scripts/xlfcheck.sh
     fi
+
   - >
       if [[ "$SUBMODULE_TEST" == "yes" ]]; then
-          echo;
-          echo "Running git submodule check";
           /bin/bash -c "
               if [[ `git submodule status 2>&1 | wc -l` -ne 0 ]]; then
                   echo \"Found a submodule definition in repository\";
@@ -105,7 +97,5 @@ script:
 
   - >
     if [[ "$EXCEPTIONCODE_TEST" == "yes" ]]; then
-        echo;
-        echo "Running duplicate exception code checker";
         ./typo3/sysext/core/Build/Scripts/duplicateExceptionCodeCheck.sh
     fi
