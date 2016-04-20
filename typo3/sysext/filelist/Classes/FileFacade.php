@@ -15,9 +15,11 @@ namespace TYPO3\CMS\Filelist;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Resource\FileInterface;
 
 /**
  * Class FileFacade
@@ -45,7 +47,7 @@ class FileFacade
      * @param \TYPO3\CMS\Core\Resource\FileInterface $resource
      * @internal Do not use outside of EXT:filelist!
      */
-    public function __construct(\TYPO3\CMS\Core\Resource\FileInterface $resource)
+    public function __construct(FileInterface $resource)
     {
         $this->resource = $resource;
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -251,18 +253,14 @@ class FileFacade
         }
 
         if (!isset(static::$referenceCounts[$uid])) {
-            $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
-                '*',
-                'sys_refindex',
-                'ref_table=\'sys_file\''
-                . ' AND ref_uid=' . (int)$this->resource->getProperty('uid')
-                . ' AND deleted=0'
-                . ' AND tablename != \'sys_file_metadata\''
-            );
-
-            if (!is_int($count)) {
-                $count = 0;
-            }
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+            $count = $queryBuilder->count('*')
+                ->from('sys_refindex')
+                ->where($queryBuilder->expr()->eq('ref_table', $queryBuilder->quote('sys_file')))
+                ->andWhere($queryBuilder->expr()->eq('ref_uid', (int)$this->resource->getProperty('uid')))
+                ->andWhere($queryBuilder->expr()->neq('tablename', $queryBuilder->quote('sys_file_metadata')))
+                ->execute()
+                ->fetchColumn();
 
             static::$referenceCounts[$uid] = $count;
         }
@@ -283,14 +281,6 @@ class FileFacade
         }
 
         return null;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
