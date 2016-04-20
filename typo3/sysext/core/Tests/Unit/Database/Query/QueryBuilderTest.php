@@ -279,6 +279,75 @@ class QueryBuilderTest extends UnitTestCase
         $this->subject->select('aField', 'anotherField');
     }
 
+    public function quoteIdentifiersForSelectDataProvider()
+    {
+        return [
+            'fieldName' => [
+                'fieldName',
+                '"fieldName"',
+            ],
+            'tableName.fieldName' => [
+                'tableName.fieldName',
+                '"tableName"."fieldName"',
+            ],
+            'tableName.*' => [
+                'tableName.*',
+                '"tableName".*',
+            ],
+            '*' => [
+                '*',
+                '*',
+            ],
+            'fieldName AS anotherFieldName' => [
+                'fieldName AS anotherFieldName',
+                '"fieldName" AS "anotherFieldName"',
+            ],
+            'tableName.fieldName AS anotherFieldName' => [
+                'tableName.fieldName AS anotherFieldName',
+                '"tableName"."fieldName" AS "anotherFieldName"',
+            ],
+            'tableName.fieldName AS anotherTable.anotherFieldName' => [
+                'tableName.fieldName AS anotherTable.anotherFieldName',
+                '"tableName"."fieldName" AS "anotherTable"."anotherFieldName"',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider quoteIdentifiersForSelectDataProvider
+     * @param string $identifier
+     * @param string $expectedResult
+     */
+    public function quoteIdentifiersForSelect($identifier, $expectedResult)
+    {
+        $this->connection->quoteIdentifier(Argument::cetera())->will(
+            function ($args) {
+                $platform = new MockPlatform();
+
+                return $platform->quoteIdentifier($args[0]);
+            }
+        );
+
+        $this->assertSame([$expectedResult], $this->subject->quoteIdentifiersForSelect([$identifier]));
+    }
+
+    /**
+     * @test
+     * @expectedException \InvalidArgumentException
+     */
+    public function quoteIdentifiersForSelectWithInvalidAlias()
+    {
+        $this->connection->quoteIdentifier(Argument::cetera())->will(
+            function ($args) {
+                $platform = new MockPlatform();
+
+                return $platform->quoteIdentifier($args[0]);
+            }
+        );
+        $this->subject->quoteIdentifiersForSelect(['aField AS anotherField,someField AS someThing']);
+    }
+
     /**
      * @test
      */

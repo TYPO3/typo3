@@ -923,18 +923,32 @@ class QueryBuilder
      * @param array $input
      *
      * @return array
+     * @throws \InvalidArgumentException
      */
     public function quoteIdentifiersForSelect(array $input): array
     {
-        // The SQL * operator must not be quoted. As it can only occur either by itself
-        // or preceded by a tablename (tablename.*) check if the last character of a select
-        // expression is the * and quote only prepended table name. In all other cases the
-        // full expression is being quoted.
         foreach ($input as &$select) {
-            if (substr($select, -2) === '.*') {
-                $select = $this->quoteIdentifier(substr($select, 0, -2)) . '.*';
-            } elseif ($select !== '*') {
-                $select = $this->quoteIdentifier($select);
+            list($fieldName, $alias, $suffix) = GeneralUtility::trimExplode(' AS ', $select, 3);
+            if (!empty($suffix)) {
+                throw new \InvalidArgumentException(
+                    'QueryBuilder::quoteIdentifiersForSelect() could not parse the input "' . $input . '"',
+                    1461170686
+                );
+            }
+
+            // The SQL * operator must not be quoted. As it can only occur either by itself
+            // or preceded by a tablename (tablename.*) check if the last character of a select
+            // expression is the * and quote only prepended table name. In all other cases the
+            // full expression is being quoted.
+            if (substr($fieldName, -2) === '.*') {
+                $select = $this->quoteIdentifier(substr($fieldName, 0, -2)) . '.*';
+            } elseif ($fieldName !== '*') {
+                $select = $this->quoteIdentifier($fieldName);
+            }
+
+            // Quote the alias for the current fieldName, if given
+            if (!empty($alias)) {
+                $select .= ' AS ' . $this->quoteIdentifier($alias);
             }
         }
         return $input;
