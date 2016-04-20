@@ -327,6 +327,7 @@ class FileList extends AbstractRecordList
                     }
                 }
             }
+
             $folders = $storage->getFoldersInFolder($this->folderObject, $foldersFrom, $foldersNum, true, false, trim($this->sort), (bool)$this->sortRev);
             $files = $this->folderObject->getFiles($filesFrom, $filesNum, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, false, trim($this->sort), (bool)$this->sortRev);
             $this->totalItems = $foldersCount + $filesCount;
@@ -364,9 +365,9 @@ class FileList extends AbstractRecordList
             // Files are added
             $iOut .= $this->formatFileList($files);
 
-            $this->eCounter = $this->firstElementNumber + $this->iLimit <= $this->totalItems
+            $this->eCounter = $this->firstElementNumber + $this->iLimit < $this->totalItems
                 ? $this->firstElementNumber + $this->iLimit
-                : $this->totalItems;
+                : -1;
             list(, $code) = $this->fwd_rwd_nav();
             $iOut .= $code;
 
