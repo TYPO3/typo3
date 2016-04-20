@@ -25,6 +25,10 @@ use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -1334,18 +1338,24 @@ class EditDocumentController extends AbstractModule
                     $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
                 }
                 // Undo:
-                $undoRes = $this->getDatabaseConnection()->exec_SELECTquery(
-                    'tstamp',
-                    'sys_history',
-                    'tablename='
-                    . $this->getDatabaseConnection()->fullQuoteStr($this->firstEl['table'], 'sys_history')
-                    . ' AND recuid='
-                    . (int)$this->firstEl['uid'],
-                    '',
-                    'tstamp DESC',
-                    '1'
-                );
-                if ($undoButtonR = $this->getDatabaseConnection()->sql_fetch_assoc($undoRes)) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('sys_history');
+
+                $undoButtonR = $queryBuilder->select('tstamp')
+                    ->from('sys_history')
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'tablename',
+                            $queryBuilder->createNamedParameter($this->firstEl['table'])
+                        ),
+                        $queryBuilder->expr()->eq('recuid', (int)$this->firstEl['uid'])
+                    )
+                    ->orderBy('tstamp', 'DESC')
+                    ->setMaxResults(1)
+                    ->execute()
+                    ->fetch();
+
+                if ($undoButtonR !== false) {
                     $aOnClick = 'window.location.href=' .
                         GeneralUtility::quoteJSvalue(
                             BackendUtility::getModuleUrl(
@@ -1559,12 +1569,25 @@ class EditDocumentController extends AbstractModule
                     }
                     if ($rowCurrent[$transOrigPointerField] || $currentLanguage === 0) {
                         // Get record in other languages to see what's already available
-                        $translations = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                            $fetchFields,
-                            $table,
-                            'pid=' . (int)$pid . ' AND ' . $languageField . '>0' . ' AND ' . $transOrigPointerField . '=' . (int)$rowsByLang[0]['uid'] . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table)
-                        );
-                        foreach ($translations as $row) {
+
+                        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                            ->getQueryBuilderForTable($table);
+
+                        $queryBuilder->getRestrictions()
+                            ->removeAll()
+                            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+                        $result = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fetchFields, true))
+                            ->from($table)
+                            ->where(
+                                $queryBuilder->expr()->eq('pid', (int)$pid),
+                                $queryBuilder->expr()->gt($languageField, 0),
+                                $queryBuilder->expr()->eq($transOrigPointerField, (int)$rowsByLang[0]['uid'])
+                            )
+                            ->execute();
+
+                        while ($row = $result->fetch()) {
                             $rowsByLang[$row[$languageField]] = $row;
                         }
                     }
@@ -1616,18 +1639,27 @@ class EditDocumentController extends AbstractModule
      */
     public function localizationRedirect($justLocalized)
     {
-        list($table, $orig_uid, $language) = explode(':', $justLocalized);
+        list($table, $origUid, $language) = explode(':', $justLocalized);
         if ($GLOBALS['TCA'][$table]
             && $GLOBALS['TCA'][$table]['ctrl']['languageField']
             && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
         ) {
-            $localizedRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-                'uid',
-                $table,
-                $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . (int)$language . ' AND '
-                . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . (int)$orig_uid
-                . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table)
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+            $localizedRecord = $queryBuilder->select('uid')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq($GLOBALS['TCA'][$table]['ctrl']['languageField'], (int)$language),
+                    $queryBuilder->expr()->eq($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], (int)$origUid)
+                )
+                ->execute()
+                ->fetch();
+
             if (is_array($localizedRecord)) {
                 // Create parameters and finally run the classic page module for creating a new page translation
                 $location = BackendUtility::getModuleUrl('record_edit', array(
@@ -1669,39 +1701,41 @@ class EditDocumentController extends AbstractModule
                 'flag' => $modSharedTSconfig['properties']['defaultLanguageFlag']
             )
         );
-        $exQ = $this->getBackendUser()->isAdmin() ? '' : ' AND sys_language.hidden=0';
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_language');
+
+        $queryBuilder->select('s.uid', 's.pid', 's.hidden', 's.title', 's.flag')
+            ->from('sys_language', 's')
+            ->groupBy('s.uid', 's.pid', 's.hidden', 's.title', 's.flag')
+            ->orderBy('s.title');
+
         if ($id) {
-            $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                'sys_language.*',
-                'pages_language_overlay,sys_language',
-                'pages_language_overlay.sys_language_uid=sys_language.uid
-                    AND pages_language_overlay.pid=' . (int)$id . BackendUtility::deleteClause('pages_language_overlay')
-                . $exQ,
-                'pages_language_overlay.sys_language_uid,
-                sys_language.uid,
-                sys_language.pid,
-                sys_language.tstamp,
-                sys_language.hidden,
-                sys_language.title,
-                sys_language.language_isocode,
-                sys_language.static_lang_isocode,
-                sys_language.flag',
-                'sys_language.title'
-            );
-        } else {
-            $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                'sys_language.*',
-                'sys_language',
-                'sys_language.hidden=0',
-                '',
-                'sys_language.title'
-            );
-        }
-        if ($rows) {
-            foreach ($rows as $row) {
-                $languages[$row['uid']] = $row;
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+            if (!$this->getBackendUser()->isAdmin()) {
+                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
             }
+
+            // Add join with pages_languages_overlay table to only show active languages
+            $queryBuilder->from('pages_language_overlay', 'o')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'o.sys_language_uid',
+                        $queryBuilder->quoteIdentifier('s.uid')
+                    ),
+                    $queryBuilder->expr()->eq('o.pid', (int)$id)
+                );
         }
+
+        $result = $queryBuilder->execute();
+        while ($row = $result->fetch()) {
+            $languages[$row['uid']] = $row;
+        }
+
         return $languages;
     }
 
@@ -1953,15 +1987,5 @@ class EditDocumentController extends AbstractModule
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Returns the database connection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
