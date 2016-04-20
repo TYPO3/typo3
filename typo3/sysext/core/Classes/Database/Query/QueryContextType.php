@@ -30,6 +30,7 @@ class QueryContextType extends \TYPO3\CMS\Core\Type\Enumeration
     const UNRESTRICTED = 'UNRESTRICTED';
     const FRONTEND = 'FRONTEND';
     const BACKEND = 'BACKEND';
+    const BACKEND_NO_VERSIONING_PLACEHOLDERS = 'BACKEND_NO_VERSIONING_PLACEHOLDERS';
 
     /**
      * @param mixed $type

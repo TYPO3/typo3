@@ -105,7 +105,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsSkipsUnconfiguredTables()
     {
-        $this->queryContext->setContext('frontend');
+        $this->queryContext->setContext(QueryContextType::FRONTEND);
 
         $subject = GeneralUtility::makeInstance(
             QueryRestrictionBuilder::class,
@@ -122,7 +122,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsWithDefaultSettings()
     {
-        $this->queryContext->setContext('frontend')
+        $this->queryContext->setContext(QueryContextType::FRONTEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs(['pages' => $this->defaultTableConfig]);
 
@@ -151,7 +151,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsWithUserGroups()
     {
-        $this->queryContext->setContext('frontend')
+        $this->queryContext->setContext(QueryContextType::FRONTEND)
             ->setAccessTime(1459706700)
             ->setMemberGroups([1, 2])
             ->setTableConfigs(['pages' => $this->defaultTableConfig]);
@@ -181,7 +181,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsWithVersioningPreview()
     {
-        $this->queryContext->setContext('frontend')
+        $this->queryContext->setContext(QueryContextType::FRONTEND)
             ->setAccessTime(1459706700)
             ->setIncludePlaceholders(true)
             ->setTableConfigs(['pages' => $this->defaultTableConfig]);
@@ -203,7 +203,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsWithVersioningPreviewAndNoPreviewSet()
     {
-        $this->queryContext->setContext('frontend')
+        $this->queryContext->setContext(QueryContextType::FRONTEND)
             ->setAccessTime(1459706700)
             ->setIncludePlaceholders(true)
             ->setIncludeVersionedRecords(true)
@@ -232,7 +232,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsWithoutDisabledColumn()
     {
-        $this->queryContext->setContext('frontend')
+        $this->queryContext->setContext(QueryContextType::FRONTEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs(['pages' => [
                 'versioningWS' => true,
@@ -268,7 +268,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsWithoutStarttimeColumn()
     {
-        $this->queryContext->setContext('frontend')
+        $this->queryContext->setContext(QueryContextType::FRONTEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs([
                 'pages' => [
@@ -306,7 +306,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsWithoutEndtimeColumn()
     {
-        $this->queryContext->setContext('frontend')
+        $this->queryContext->setContext(QueryContextType::FRONTEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs([
                 'pages' => [
@@ -344,7 +344,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsWithoutUsergroupsColumn()
     {
-        $this->queryContext->setContext('frontend')
+        $this->queryContext->setContext(QueryContextType::FRONTEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs([
                 'pages' => [
@@ -382,7 +382,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsWithIgnoreEnableFieldsSet()
     {
-        $this->queryContext->setContext('frontend')
+        $this->queryContext->setContext(QueryContextType::FRONTEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs(['pages' => $this->defaultTableConfig])
             ->setIgnoreEnableFields(true);
@@ -438,7 +438,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsWithSelectiveIgnoreEnableFieldsSet(array $ignoreFields)
     {
-        $this->queryContext->setContext('frontend')
+        $this->queryContext->setContext(QueryContextType::FRONTEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs(['pages' => $this->defaultTableConfig])
             ->setIgnoreEnableFields(true)
@@ -472,7 +472,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsForMultipleTablesWithDefaultSettings()
     {
-        $this->queryContext->setContext('frontend')
+        $this->queryContext->setContext(QueryContextType::FRONTEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs([
                 'pages' => $this->defaultTableConfig,
@@ -517,7 +517,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsForMultipleTablesWithIgnoreEnableFields()
     {
-        $this->queryContext->setContext('frontend')
+        $this->queryContext->setContext(QueryContextType::FRONTEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs([
                 'pages' => $this->defaultTableConfig,
@@ -545,7 +545,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsForMultipleTablesWithDifferentEnableColumns()
     {
-        $this->queryContext->setContext('frontend')
+        $this->queryContext->setContext(QueryContextType::FRONTEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs([
                 'pages' => $this->defaultTableConfig,
@@ -586,7 +586,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsForJoinedTablesWithDefaultSettings()
     {
-        $this->queryContext->setContext('frontend')
+        $this->queryContext->setContext(QueryContextType::FRONTEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs([
                 'pages' => $this->defaultTableConfig,
@@ -631,7 +631,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsForJoinedTablesWithIgnoreEnableFields()
     {
-        $this->queryContext->setContext('frontend')
+        $this->queryContext->setContext(QueryContextType::FRONTEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs([
                 'pages' => $this->defaultTableConfig,
@@ -659,7 +659,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getFrontendVisibilityRestrictionsForJoinedTablesWithDifferentEnableColumns()
     {
-        $this->queryContext->setContext('frontend')
+        $this->queryContext->setContext(QueryContextType::FRONTEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs([
                 'pages' => $this->defaultTableConfig,
@@ -700,7 +700,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getBackendVisibilityRestrictionsSkipsUnconfiguredTables()
     {
-        $this->queryContext->setContext('backend');
+        $this->queryContext->setContext(QueryContextType::BACKEND);
 
         $subject = GeneralUtility::makeInstance(
             QueryRestrictionBuilder::class,
@@ -717,7 +717,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getBackendVisibilityRestrictionsWithDefaultSettings()
     {
-        $this->queryContext->setContext('backend')
+        $this->queryContext->setContext(QueryContextType::BACKEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs(['pages' => $this->defaultTableConfig]);
 
@@ -743,7 +743,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getBackendVisibilityRestrictionsWithoutDisabledColumn()
     {
-        $this->queryContext->setContext('backend')
+        $this->queryContext->setContext(QueryContextType::BACKEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs(['pages' => [
                 'versioningWS' => true,
@@ -776,7 +776,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getBackendVisibilityRestrictionsWithoutStarttimeColumn()
     {
-        $this->queryContext->setContext('backend')
+        $this->queryContext->setContext(QueryContextType::BACKEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs([
                 'pages' => [
@@ -811,7 +811,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getBackendVisibilityRestrictionsWithoutEndtimeColumn()
     {
-        $this->queryContext->setContext('backend')
+        $this->queryContext->setContext(QueryContextType::BACKEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs([
                 'pages' => [
@@ -846,7 +846,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getBackendVisibilityRestrictionsWithIgnoreEnableFieldsSet()
     {
-        $this->queryContext->setContext('backend')
+        $this->queryContext->setContext(QueryContextType::BACKEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs(['pages' => $this->defaultTableConfig])
             ->setIgnoreEnableFields(true);
@@ -868,7 +868,7 @@ class QueryRestrictionBuilderTest extends UnitTestCase
      */
     public function getBackendVisibilityRestrictionsWithIncludeDeletedSet()
     {
-        $this->queryContext->setContext('backend')
+        $this->queryContext->setContext(QueryContextType::BACKEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs(['pages' => $this->defaultTableConfig])
             ->setIncludeDeleted(true);
@@ -892,9 +892,37 @@ class QueryRestrictionBuilderTest extends UnitTestCase
     /**
      * @test
      */
+    public function getBackendVisibilityRestrictionsWithNoVersionPlaceholdersContext()
+    {
+        $this->queryContext->setContext(QueryContextType::BACKEND_NO_VERSIONING_PLACEHOLDERS)
+            ->setCurrentWorkspace(4)
+            ->setAccessTime(1459706700)
+            ->setTableConfigs(['pages' => $this->defaultTableConfig]);
+
+        $subject = GeneralUtility::makeInstance(
+            QueryRestrictionBuilder::class,
+            ['pages' => ''],
+            $this->expressionBuilder,
+            $this->queryContext
+        );
+
+        $expectedSql = join(' AND ', [
+            'disabled' => '("pages"."hidden" = 0)',
+            'starttime' => '("pages"."starttime" <= 1459706700)',
+            'endtime' => '(("pages"."endtime" = 0) OR ("pages"."endtime" > 1459706700))',
+            'deleted' => '("pages"."deleted" = 0)',
+            'placeholders' => '(("pages"."t3ver_state" <= 0) OR ("pages"."t3ver_wsid" = 4))',
+        ]);
+
+        $this->assertSame($expectedSql, (string)$subject->getVisibilityConstraints());
+    }
+
+    /**
+     * @test
+     */
     public function getBackendVisibilityRestrictionsWithoutRestrictions()
     {
-        $this->queryContext->setContext('backend')
+        $this->queryContext->setContext(QueryContextType::BACKEND)
             ->setAccessTime(1459706700)
             ->setTableConfigs(['pages' => $this->defaultTableConfig])
             ->setIncludeDeleted(true)

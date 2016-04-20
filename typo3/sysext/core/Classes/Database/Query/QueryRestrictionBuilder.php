@@ -91,6 +91,7 @@ class QueryRestrictionBuilder
             case QueryContextType::FRONTEND:
                 return $this->getFrontendVisibilityRestrictions();
             case QueryContextType::BACKEND:
+            case QueryContextType::BACKEND_NO_VERSIONING_PLACEHOLDERS:
                 return $this->getBackendVisibilityConstraints();
             case QueryContextType::UNRESTRICTED:
                 return $this->expressionBuilder->andX();
@@ -212,10 +213,21 @@ class QueryRestrictionBuilder
             }
 
             if (!$includeDeleted && !empty($tableConfig['delete'])) {
-                $tablePrefix = empty($tableAlias) ? $tableName : $tableAlias;
                 $constraints[] = $this->expressionBuilder->eq(
                     $tablePrefix . '.' . $tableConfig['delete'],
                     0
+                );
+            }
+
+            if ($queryContext->getContext() === QueryContextType::BACKEND_NO_VERSIONING_PLACEHOLDERS
+                && !empty($tableConfig['versioningWS'])
+            ) {
+                $constraints[] = $this->expressionBuilder->orX(
+                    $expressionBuilder->lte(
+                        $tablePrefix . '.t3ver_state',
+                        new VersionState(VersionState::DEFAULT_STATE)
+                    ),
+                    $expressionBuilder->eq($tablePrefix . '.t3ver_wsid', $queryContext->getCurrentWorkspace())
                 );
             }
         }
