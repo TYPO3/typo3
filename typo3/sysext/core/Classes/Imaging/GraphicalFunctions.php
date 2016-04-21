@@ -219,7 +219,7 @@ class GraphicalFunctions
      *
      * @var string
      */
-    public $tempPath = 'typo3temp/assets/';
+    public $tempPath = 'typo3temp/';
 
     /**
      * Prefix for relative paths. Used in "show_item.php" script. Is prefixed the output file name IN imageMagickConvert()
