@@ -166,7 +166,7 @@ class LanguageController extends ActionController
                 $result = $this->translationService->updateTranslation($extensionKey, $data['locale']);
                 $progress = round((($offset + 1) * 100) / $allCount, 2);
                 $response['result'][$data['locale']][$extensionKey] = $result[$data['locale']];
-                if (empty($result[$extensionKey][$data['locale']]['error'])) {
+                if (empty($result[$data['locale']]['error'])) {
                     $response['success'] = true;
                 } else {
                     // Could not update an extension, stop here!

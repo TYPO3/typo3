@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Lang\Service;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;
 
 /**
@@ -70,7 +71,11 @@ class TranslationService implements SingletonInterface
      */
     public function injectRepositoryHelper(Helper $helper)
     {
-        $this->mirrorUrl = $helper->getMirrors(false)->getMirrorUrl();
+        try {
+            $this->mirrorUrl = $helper->getMirrors(false)->getMirrorUrl();
+        } catch (ExtensionManagerException $e) {
+            $this->mirrorUrl = '';
+        }
     }
 
     /**
@@ -108,15 +113,22 @@ class TranslationService implements SingletonInterface
      * @param string $extensionKey The extension key
      * @param string $locale Locale to update
      * @return int Translation state
+     * @throws \Exception
      */
     protected function updateTranslationForExtension($extensionKey, $locale)
     {
         if (empty($extensionKey) || empty($locale)) {
             return static::TRANSLATION_INVALID;
         }
+
+        $mirrorUrl = $this->getMirrorUrl($extensionKey);
+        if (empty($mirrorUrl)) {
+            throw new \Exception('Not able to fetch languages files due to missing mirror url.', 1461248062);
+        }
+
         $state = static::TRANSLATION_FAILED;
 
-        $updateResult = $this->terService->updateTranslation($extensionKey, $locale, $this->getMirrorUrl($extensionKey));
+        $updateResult = $this->terService->updateTranslation($extensionKey, $locale, $mirrorUrl);
         if ($updateResult === true) {
             $state = static::TRANSLATION_UPDATED;
         }
