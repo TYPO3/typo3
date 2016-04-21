@@ -647,7 +647,7 @@ class ExtensionManagementUtility
     {
         $list = $newList = trim($list, ", \t\n\r\0\x0B");
 
-        list($location, $positionName) = GeneralUtility::trimExplode(':', $insertionPosition);
+        list($location, $positionName) = GeneralUtility::trimExplode(':', $insertionPosition, false, 2);
 
         if ($location !== 'replace') {
             $insertionList = self::removeDuplicatesForInsertion($insertionList, $list);
@@ -670,7 +670,7 @@ class ExtensionManagementUtility
             $positionName = str_replace(';;', ';[^;]*;', $positionName);
         }
 
-        $pattern = ('/(^|,\\s*)(' . $positionName . ')(;[^,$]+)?(,|$)/');
+        $pattern = ('/(^|,\\s*)(' . preg_quote($positionName, '/') . ')(;[^,$]+)?(,|$)/');
         switch ($location) {
             case 'after':
                 $newList = preg_replace($pattern, '$1$2$3, ' . $insertionList . '$4', $list);
