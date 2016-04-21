@@ -7881,6 +7881,12 @@ button.close {
 .userTS .minicolors {
   position: absolute;
 }
+.userTS .minicolors-panel {
+  margin-top: 31px;
+}
+.userTS .minicolors-swatch {
+  z-index: 100000;
+}
 .minicolors-sprite {
   background-image: url("../../../../../../typo3/sysext/core/Resources/Public/Images/colorpicker/jquery.minicolors.png");
 }
