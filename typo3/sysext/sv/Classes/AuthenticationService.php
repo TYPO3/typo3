@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Sv;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -148,18 +150,32 @@ class AuthenticationService extends AbstractAuthenticationService
             }
             $groups = array_unique($groups);
             if (!empty($groups)) {
-                $list = implode(',', $groups);
                 if ($this->writeDevLog) {
-                    GeneralUtility::devLog('Get usergroups with id: ' . $list, __CLASS__);
+                    GeneralUtility::devLog('Get usergroups with id: ' . implode(',', $groups), __CLASS__);
                 }
-                $lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST'] . '\')';
-                $hiddenP = !$this->authInfo['showHiddenRecords'] ? 'AND hidden=0 ' : '';
-                $res = $this->getDatabaseConnection()->exec_SELECTquery('*', $this->db_groups['table'], 'deleted=0 ' . $hiddenP . ' AND uid IN (' . $list . ')' . $lockToDomain_SQL);
-                while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($this->db_groups['table']);
+                if (!empty($this->authInfo['showHiddenRecords'])) {
+                    $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+                }
+
+                $res = $queryBuilder->select('*')
+                    ->from($this->db_groups['table'])
+                    ->where(
+                        $queryBuilder->expr()->in('uid', array_map('intval', $groups)),
+                        $queryBuilder->expr()->orX(
+                            $queryBuilder->expr()->eq('lockToDomain', $queryBuilder->quote('')),
+                            $queryBuilder->expr()->isNull('lockToDomain'),
+                            $queryBuilder->expr()->eq(
+                                'lockToDomain',
+                                $queryBuilder->createNamedParameter($this->authInfo['HTTP_HOST'])
+                            )
+                        )
+                    )
+                    ->execute();
+
+                while ($row = $res->fetch()) {
                     $groupDataArr[$row['uid']] = $row;
-                }
-                if ($res) {
-                    $this->getDatabaseConnection()->sql_free_result($res);
                 }
             } else {
                 if ($this->writeDevLog) {
@@ -184,13 +200,31 @@ class AuthenticationService extends AbstractAuthenticationService
     public function getSubGroups($grList, $idList = '', &$groups)
     {
         // Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
-        $lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST'] . '\')';
-        $hiddenP = !$this->authInfo['showHiddenRecords'] ? 'AND hidden=0 ' : '';
-        $res = $this->getDatabaseConnection()->exec_SELECTquery('uid,subgroup', 'fe_groups', 'deleted=0 ' . $hiddenP . ' AND uid IN (' . $grList . ')' . $lockToDomain_SQL);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_groups');
+        if (!empty($this->authInfo['showHiddenRecords'])) {
+            $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+        }
+
+        $res = $queryBuilder
+            ->select('uid', 'subgroup')
+            ->from($this->db_groups['table'])
+            ->where(
+                $queryBuilder->expr()->in('uid', GeneralUtility::intExplode(',', $grList, true)),
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->eq('lockToDomain', $queryBuilder->quote('')),
+                    $queryBuilder->expr()->isNull('lockToDomain'),
+                    $queryBuilder->expr()->eq(
+                        'lockToDomain',
+                        $queryBuilder->createNamedParameter($this->authInfo['HTTP_HOST'])
+                    )
+                )
+            )
+            ->execute();
+
         // Internal group record storage
         $groupRows = array();
         // The groups array is filled
-        while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+        while ($row = $res->fetch()) {
             if (!in_array($row['uid'], $groups)) {
                 $groups[] = $row['uid'];
             }
@@ -213,15 +247,5 @@ class AuthenticationService extends AbstractAuthenticationService
                 }
             }
         }
-    }
-
-    /**
-     * Returns the database connection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
