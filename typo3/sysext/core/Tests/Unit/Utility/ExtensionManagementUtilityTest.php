@@ -338,6 +338,22 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     }
 
     /**
+     * Tests whether fields can be add to all TCA types and duplicate fields are considered.
+     *
+     * @test
+     * @see ExtensionManagementUtility::addToAllTCAtypes()
+     */
+    public function canAddFieldsToAllTCATypesRespectsPalettes()
+    {
+        $table = $this->getUniqueId('tx_coretest_table');
+        $GLOBALS['TCA'] = $this->generateTCAForTable($table);
+        $GLOBALS['TCA'][$table]['types']['typeD'] = ['showitem' => 'fieldY, --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.standard;standard, fieldZ'];
+        ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', '', 'after:--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.standard;standard');
+        // Checking typeD:
+        $this->assertEquals('fieldY, --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.standard;standard, newA, newB, fieldA, fieldZ', $GLOBALS['TCA'][$table]['types']['typeD']['showitem']);
+    }
+
+    /**
      * Tests whether fields can be add to a TCA type before existing ones
      *
      * @test
