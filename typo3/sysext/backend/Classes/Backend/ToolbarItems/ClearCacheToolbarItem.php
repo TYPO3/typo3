@@ -67,16 +67,12 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
             $this->optionValues[] = 'pages';
         }
 
-        // Clearing of system cache (core cache, class cache etc)
-        // is only shown explicitly if activated for a BE-user (not activated for admins by default)
-        // or if the system runs in development mode (only for admins)
-        // or if $GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] is set (only for admins)
-        if ($backendUser->getTSConfigVal('options.clearCache.all')
-            || (GeneralUtility::getApplicationContext()->isDevelopment() && $backendUser->isAdmin())
-            || ((bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === true && $backendUser->isAdmin())
-        ) {
+        // Clearing of all caches is only shown if explicitly enabled via TSConfig
+        // or if BE-User is admin and the TSconfig explicitly disables the possibility for admins.
+        // This is useful for big production systems where admins accidentally could slow down the system.
+        if ($backendUser->getTSConfigVal('options.clearCache.all') || ($backendUser->isAdmin() && $backendUser->getTSConfigVal('options.clearCache.all') !== '0')) {
             $this->cacheActions[] = array(
-                'id' => 'system',
+                'id' => 'all',
                 'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushAllCachesTitle2')),
                 'description' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushAllCachesDescription2')),
                 'href' => BackendUtility::getModuleUrl('tce_db', ['vC' => $backendUser->veriCode(), 'cacheCmd' => 'all']),

@@ -9,7 +9,7 @@ The following commands have been deprecated and should not be used anymore:
 
 * Method :php:`DataHandler->clear_cacheCmd()` with arguments `system` and `temp_cached`
 * ``userTSconfig`` setting ``options.clearCache.system``
-* Option ``$TYPO3_CONF_VARS['SYS']['clearCacheSystem']``
+* Option ``$TYPO3_CONF_VARS['SYS']['clearCacheSystem']`` has been removed
 
 
 Impact

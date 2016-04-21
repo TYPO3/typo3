@@ -104,7 +104,7 @@ return array(
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
                     'options' => array(),
-                    'groups' => array('pages', 'all')
+                    'groups' => array('pages')
                 ),
                 'cache_pages' => array(
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
@@ -112,7 +112,7 @@ return array(
                     'options' => array(
                         'compression' => true
                     ),
-                    'groups' => array('pages', 'all')
+                    'groups' => array('pages')
                 ),
                 'cache_pagesection' => array(
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
@@ -121,7 +121,7 @@ return array(
                         'compression' => true,
                         'defaultLifetime' => 2592000, // 30 days; set this to a lower value in case your cache gets too big
                     ),
-                    'groups' => array('pages', 'all')
+                    'groups' => array('pages')
                 ),
                 'cache_phpcode' => array(
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class,
@@ -143,7 +143,7 @@ return array(
                     'options' => array(
                         'defaultLifetime' => 2592000, // 30 days; set this to a lower value in case your cache gets too big
                     ),
-                    'groups' => array('pages', 'all')
+                    'groups' => array('pages')
                 ),
                 'cache_imagesizes' => array(
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
