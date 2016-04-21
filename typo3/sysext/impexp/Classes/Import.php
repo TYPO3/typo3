@@ -15,10 +15,8 @@ namespace TYPO3\CMS\Impexp;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Exception;
-use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -29,7 +27,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * T3D file Import library (TYPO3 Record Document)
@@ -80,58 +77,6 @@ class Import extends ImportExport
      * @var ResourceStorage[]
      */
     protected $storageObjects = array();
-
-    /**
-     * Is set, if the import file has a TYPO3 version below 6.0
-     *
-     * @var bool
-     */
-    protected $legacyImport = false;
-
-    /**
-     * @var \TYPO3\CMS\Core\Resource\Folder
-     */
-    protected $legacyImportFolder = null;
-
-    /**
-     * Related to the default storage root
-     *
-     * @var string
-     */
-    protected $legacyImportTargetPath = '_imported/';
-
-    /**
-     * Table fields to migrate
-     *
-     * @var array
-     */
-    protected $legacyImportMigrationTables = array(
-        'tt_content' => array(
-            'image' => array(
-                'titleTexts' => 'titleText',
-                'description' => 'imagecaption',
-                'links' => 'image_link',
-                'alternativeTexts' => 'altText'
-            ),
-            'media' => array(
-                'description' => 'imagecaption',
-            )
-        ),
-        'pages' => array(
-            'media' => array()
-        ),
-        'pages_language_overlay' => array(
-            'media' => array()
-        )
-    );
-
-    /**
-     * Records to be migrated after all
-     * Multidimensional array [table][uid][field] = array([related sys_file_reference uids])
-     *
-     * @var array
-     */
-    protected $legacyImportMigrationRecords = array();
 
     /**
      * @var NULL|string
@@ -238,10 +183,6 @@ class Import extends ImportExport
         $this->unlinkTempFiles();
         // Finally, traverse all records and process softreferences with substitution attributes.
         $this->processSoftReferences();
-        // After all migrate records using sys_file_reference now
-        if ($this->legacyImport) {
-            $this->migrateLegacyImportRecords();
-        }
     }
 
     /**
@@ -585,29 +526,6 @@ class Import extends ImportExport
                 $fileReferenceRecord['uid_local'] = $newFileUid;
                 $this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]['data'] = $fileReferenceRecord;
             }
-        }
-    }
-
-    /**
-     * Initializes the folder for legacy imports as subfolder of backend users default upload folder
-     *
-     * @return void
-     */
-    protected function initializeLegacyImportFolder()
-    {
-        /** @var \TYPO3\CMS\Core\Resource\Folder $folder */
-        $folder = $this->getBackendUser()->getDefaultUploadFolder();
-        if ($folder === false) {
-            $this->error('Error: the backend users default upload folder is missing! No files will be imported!');
-        }
-        if (!$folder->hasFolder($this->legacyImportTargetPath)) {
-            try {
-                $this->legacyImportFolder = $folder->createFolder($this->legacyImportTargetPath);
-            } catch (Exception $e) {
-                $this->error('Error: the import folder in the default upload folder could not be created! No files will be imported!');
-            }
-        } else {
-            $this->legacyImportFolder = $folder->getSubfolder($this->legacyImportTargetPath);
         }
     }
 
@@ -1082,15 +1000,6 @@ class Import extends ImportExport
             if (is_array($this->import_mapId[$table]) && isset($this->import_mapId[$table][$uid])) {
                 $thisNewUid = BackendUtility::wsMapId($table, $this->import_mapId[$table][$uid]);
                 if (is_array($this->dat['records'][$table . ':' . $uid]['rels'])) {
-                    $thisNewPageUid = 0;
-                    if ($this->legacyImport) {
-                        if ($table != 'pages') {
-                            $oldPid = $this->dat['records'][$table . ':' . $uid]['data']['pid'];
-                            $thisNewPageUid = BackendUtility::wsMapId($table, $this->import_mapId['pages'][$oldPid]);
-                        } else {
-                            $thisNewPageUid = $thisNewUid;
-                        }
-                    }
                     // Traverse relation fields of each record
                     foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
                         // uid_local of sys_file_reference needs no update because the correct reference uid was already written
@@ -1112,53 +1021,7 @@ class Import extends ImportExport
                                     foreach ($config['newValueFiles'] as $fI) {
                                         $valArr[] = $this->import_addFileNameToBeCopied($fI);
                                     }
-                                    if ($this->legacyImport && $this->legacyImportFolder === null && isset($this->legacyImportMigrationTables[$table][$field])) {
-                                        // Do nothing - the legacy import folder is missing
-                                    } elseif ($this->legacyImport && $this->legacyImportFolder !== null && isset($this->legacyImportMigrationTables[$table][$field])) {
-                                        $refIds = array();
-                                        foreach ($valArr as $tempFile) {
-                                            $fileName = $this->alternativeFileName[$tempFile];
-                                            $fileObject = null;
-
-                                            try {
-                                                // check, if there is alreay the same file in the folder
-                                                if ($this->legacyImportFolder->hasFile($fileName)) {
-                                                    $fileStorage = $this->legacyImportFolder->getStorage();
-                                                    $file = $fileStorage->getFile($this->legacyImportFolder->getIdentifier() . $fileName);
-                                                    if ($file->getSha1() === sha1_file($tempFile)) {
-                                                        $fileObject = $file;
-                                                    }
-                                                }
-                                            } catch (Exception $e) {
-                                            }
-
-                                            if ($fileObject === null) {
-                                                try {
-                                                    $fileObject = $this->legacyImportFolder->addFile($tempFile, $fileName, DuplicationBehavior::RENAME);
-                                                } catch (Exception $e) {
-                                                    $this->error('Error: no file could be added to the storage for file name' . $this->alternativeFileName[$tempFile]);
-                                                }
-                                            }
-                                            if ($fileObject !== null) {
-                                                $refId = StringUtility::getUniqueId('NEW');
-                                                $refIds[] = $refId;
-                                                $updateData['sys_file_reference'][$refId] = array(
-                                                    'uid_local' => $fileObject->getUid(),
-                                                    'uid_foreign' => $thisNewUid, // uid of your content record
-                                                    'tablenames' => $table,
-                                                    'fieldname' => $field,
-                                                    'pid' => $thisNewPageUid, // parent id of the parent page
-                                                    'table_local' => 'sys_file',
-                                                );
-                                            }
-                                        }
-                                        $updateData[$table][$thisNewUid][$field] = implode(',', $refIds);
-                                        if (!empty($this->legacyImportMigrationTables[$table][$field])) {
-                                            $this->legacyImportMigrationRecords[$table][$thisNewUid][$field] = $refIds;
-                                        }
-                                    } else {
-                                        $updateData[$table][$thisNewUid][$field] = implode(',', $valArr);
-                                    }
+                                    $updateData[$table][$thisNewUid][$field] = implode(',', $valArr);
                                 }
                                 break;
                         }
@@ -1179,16 +1042,6 @@ class Import extends ImportExport
             ));
             $tce->start($updateData, array());
             $tce->process_datamap();
-            // Replace the temporary "NEW" ids with the final ones.
-            foreach ($this->legacyImportMigrationRecords as $table => $records) {
-                foreach ($records as $uid => $fields) {
-                    foreach ($fields as $field => $referenceIds) {
-                        foreach ($referenceIds as $key => $referenceId) {
-                            $this->legacyImportMigrationRecords[$table][$uid][$field][$key] = $tce->substNEWwithIDs[$referenceId];
-                        }
-                    }
-                }
-            }
             $this->callHook('after_setRelations', array(
                 'tce' => &$tce
             ));
@@ -1598,20 +1451,11 @@ class Import extends ImportExport
                         && $copyDestName === GeneralUtility::getFileAbsFileName($copyDestName)
                     ) {
                         if ($this->dat['header']['files'][$fileHeaderInfo['RTE_ORIG_ID']]) {
-                            if ($this->legacyImport) {
-                                $fileName = PathUtility::basename($copyDestName);
-                                $this->writeSysFileResourceForLegacyImport($fileName, $cfg['file_ID']);
-                                $relFileName = $this->filePathMap[$cfg['file_ID']] . '" data-htmlarea-file-uid="' . $fileName . '" data-htmlarea-file-table="sys_file';
-                                // Also save the original file
-                                $originalFileName = PathUtility::basename($origDestName);
-                                $this->writeSysFileResourceForLegacyImport($originalFileName, $fileHeaderInfo['RTE_ORIG_ID']);
-                            } else {
-                                // Write the copy and original RTE file to the respective filenames:
-                                $this->writeFileVerify($copyDestName, $cfg['file_ID'], true);
-                                $this->writeFileVerify($origDestName, $fileHeaderInfo['RTE_ORIG_ID'], true);
-                                // Return the relative path of the copy file name:
-                                return PathUtility::stripPathSitePrefix($copyDestName);
-                            }
+                            // Write the copy and original RTE file to the respective filenames:
+                            $this->writeFileVerify($copyDestName, $cfg['file_ID'], true);
+                            $this->writeFileVerify($origDestName, $fileHeaderInfo['RTE_ORIG_ID'], true);
+                            // Return the relative path of the copy file name:
+                            return PathUtility::stripPathSitePrefix($copyDestName);
                         } else {
                             $this->error('ERROR: Could not find original file ID');
                         }
@@ -1657,13 +1501,8 @@ class Import extends ImportExport
         if (isset($this->fileIDMap[$fileID])) {
             return PathUtility::stripPathSitePrefix($this->fileIDMap[$fileID]);
         }
-        if ($this->legacyImport) {
-            // set dirPrefix to fileadmin because the right target folder is set and checked for permissions later
-            $dirPrefix = $this->fileadminFolderName . '/';
-        } else {
-            // Verify FileMount access to dir-prefix. Returns the best alternative relative path if any
-            $dirPrefix = $this->verifyFolderAccess($origDirPrefix);
-        }
+        // Verify FileMount access to dir-prefix. Returns the best alternative relative path if any
+        $dirPrefix = $this->verifyFolderAccess($origDirPrefix);
         if ($dirPrefix && (!$this->update || $origDirPrefix === $dirPrefix) && $this->checkOrCreateDir($dirPrefix)) {
             $fileHeaderInfo = $this->dat['header']['files'][$fileID];
             $updMode = $this->update && $this->import_mapId[$table][$uid] === $uid && $this->import_mode[$table . ':' . $uid] !== 'as_new';
@@ -1671,70 +1510,61 @@ class Import extends ImportExport
             // Must have same ID in map array (just for security, is not really needed) and NOT be set "as_new".
 
             // Write main file:
-            if ($this->legacyImport) {
-                $fileWritten = $this->writeSysFileResourceForLegacyImport($fileName, $fileID);
-                if ($fileWritten) {
-                    $newName = 'file:' . $fileName;
-                    return $newName;
-                    // no support for HTML/CSS file resources attached ATM - see below
-                }
+            if ($updMode) {
+                $newName = PATH_site . $dirPrefix . $fileName;
             } else {
-                if ($updMode) {
-                    $newName = PATH_site . $dirPrefix . $fileName;
-                } else {
-                    // Create unique filename:
+                // Create unique filename:
+                $fileProcObj = $this->getFileProcObj();
+                $newName = $fileProcObj->getUniqueName($fileName, PATH_site . $dirPrefix);
+            }
+            if ($this->writeFileVerify($newName, $fileID)) {
+                // If the resource was an HTML/CSS file with resources attached, we will write those as well!
+                if (is_array($fileHeaderInfo['EXT_RES_ID'])) {
+                    $tokenizedContent = $this->dat['files'][$fileID]['tokenizedContent'];
+                    $tokenSubstituted = false;
                     $fileProcObj = $this->getFileProcObj();
-                    $newName = $fileProcObj->getUniqueName($fileName, PATH_site . $dirPrefix);
-                }
-                if ($this->writeFileVerify($newName, $fileID)) {
-                    // If the resource was an HTML/CSS file with resources attached, we will write those as well!
-                    if (is_array($fileHeaderInfo['EXT_RES_ID'])) {
-                        $tokenizedContent = $this->dat['files'][$fileID]['tokenizedContent'];
-                        $tokenSubstituted = false;
-                        $fileProcObj = $this->getFileProcObj();
-                        if ($updMode) {
+                    if ($updMode) {
+                        foreach ($fileHeaderInfo['EXT_RES_ID'] as $res_fileID) {
+                            if ($this->dat['files'][$res_fileID]['filename']) {
+                                // Resolve original filename:
+                                $relResourceFileName = $this->dat['files'][$res_fileID]['parentRelFileName'];
+                                $absResourceFileName = GeneralUtility::resolveBackPath(PATH_site . $origDirPrefix . $relResourceFileName);
+                                $absResourceFileName = GeneralUtility::getFileAbsFileName($absResourceFileName);
+                                if ($absResourceFileName && GeneralUtility::isFirstPartOfStr($absResourceFileName, PATH_site . $this->fileadminFolderName . '/')) {
+                                    $destDir = PathUtility::stripPathSitePrefix(PathUtility::dirname($absResourceFileName) . '/');
+                                    if ($this->verifyFolderAccess($destDir, true) && $this->checkOrCreateDir($destDir)) {
+                                        $this->writeFileVerify($absResourceFileName, $res_fileID);
+                                    } else {
+                                        $this->error('ERROR: Could not create file in directory "' . $destDir . '"');
+                                    }
+                                } else {
+                                    $this->error('ERROR: Could not resolve path for "' . $relResourceFileName . '"');
+                                }
+                                $tokenizedContent = str_replace('{EXT_RES_ID:' . $res_fileID . '}', $relResourceFileName, $tokenizedContent);
+                                $tokenSubstituted = true;
+                            }
+                        }
+                    } else {
+                        // Create the resouces directory name (filename without extension, suffixed "_FILES")
+                        $resourceDir = PathUtility::dirname($newName) . '/' . preg_replace('/\\.[^.]*$/', '', PathUtility::basename($newName)) . '_FILES';
+                        if (GeneralUtility::mkdir($resourceDir)) {
                             foreach ($fileHeaderInfo['EXT_RES_ID'] as $res_fileID) {
                                 if ($this->dat['files'][$res_fileID]['filename']) {
-                                    // Resolve original filename:
-                                    $relResourceFileName = $this->dat['files'][$res_fileID]['parentRelFileName'];
-                                    $absResourceFileName = GeneralUtility::resolveBackPath(PATH_site . $origDirPrefix . $relResourceFileName);
-                                    $absResourceFileName = GeneralUtility::getFileAbsFileName($absResourceFileName);
-                                    if ($absResourceFileName && GeneralUtility::isFirstPartOfStr($absResourceFileName, PATH_site . $this->fileadminFolderName . '/')) {
-                                        $destDir = PathUtility::stripPathSitePrefix(PathUtility::dirname($absResourceFileName) . '/');
-                                        if ($this->verifyFolderAccess($destDir, true) && $this->checkOrCreateDir($destDir)) {
-                                            $this->writeFileVerify($absResourceFileName, $res_fileID);
-                                        } else {
-                                            $this->error('ERROR: Could not create file in directory "' . $destDir . '"');
-                                        }
-                                    } else {
-                                        $this->error('ERROR: Could not resolve path for "' . $relResourceFileName . '"');
-                                    }
+                                    $absResourceFileName = $fileProcObj->getUniqueName($this->dat['files'][$res_fileID]['filename'], $resourceDir);
+                                    $relResourceFileName = substr($absResourceFileName, strlen(PathUtility::dirname($resourceDir)) + 1);
+                                    $this->writeFileVerify($absResourceFileName, $res_fileID);
                                     $tokenizedContent = str_replace('{EXT_RES_ID:' . $res_fileID . '}', $relResourceFileName, $tokenizedContent);
                                     $tokenSubstituted = true;
                                 }
                             }
-                        } else {
-                            // Create the resouces directory name (filename without extension, suffixed "_FILES")
-                            $resourceDir = PathUtility::dirname($newName) . '/' . preg_replace('/\\.[^.]*$/', '', PathUtility::basename($newName)) . '_FILES';
-                            if (GeneralUtility::mkdir($resourceDir)) {
-                                foreach ($fileHeaderInfo['EXT_RES_ID'] as $res_fileID) {
-                                    if ($this->dat['files'][$res_fileID]['filename']) {
-                                        $absResourceFileName = $fileProcObj->getUniqueName($this->dat['files'][$res_fileID]['filename'], $resourceDir);
-                                        $relResourceFileName = substr($absResourceFileName, strlen(PathUtility::dirname($resourceDir)) + 1);
-                                        $this->writeFileVerify($absResourceFileName, $res_fileID);
-                                        $tokenizedContent = str_replace('{EXT_RES_ID:' . $res_fileID . '}', $relResourceFileName, $tokenizedContent);
-                                        $tokenSubstituted = true;
-                                    }
-                                }
-                            }
-                        }
-                        // If substitutions has been made, write the content to the file again:
-                        if ($tokenSubstituted) {
-                            GeneralUtility::writeFile($newName, $tokenizedContent);
                         }
                     }
-                    return PathUtility::stripPathSitePrefix($newName);
+                    // If substitutions has been made, write the content to the file again:
+                    if ($tokenSubstituted) {
+                        GeneralUtility::writeFile($newName, $tokenizedContent);
+                    }
                 }
+                return PathUtility::stripPathSitePrefix($newName);
             }
         }
         return null;
@@ -1781,151 +1611,6 @@ class Import extends ImportExport
             $this->error('ERROR: File content "' . $fileName . '" was corrupted');
             return false;
         }
-    }
-
-    /**
-     * Writes the file with the is $fileId to the legacy import folder. The file name will used from
-     * argument $fileName and the file was successfully created or an identical file was already found,
-     * $fileName will held the uid of the new created file record.
-     *
-     * @param string $fileName The file name for the new file. Value would be changed to the uid of the new created file record.
-     * @param int $fileId The id of the file in data array
-     * @return bool
-     */
-    protected function writeSysFileResourceForLegacyImport(&$fileName, $fileId)
-    {
-        if ($this->legacyImportFolder === null) {
-            return false;
-        }
-
-        if (!isset($this->dat['files'][$fileId])) {
-            $this->error('ERROR: File ID "' . $fileId . '" could not be found');
-            return false;
-        }
-
-        $temporaryFile = $this->writeTemporaryFileFromData($fileId, 'files');
-        if ($temporaryFile === null) {
-            // error on writing the file. Error message was already added
-            return false;
-        }
-
-        $importFolder = $this->legacyImportFolder;
-
-        if (isset($this->dat['files'][$fileId]['relFileName'])) {
-            $relativeFilePath = PathUtility::dirname($this->dat['files'][$fileId]['relFileName']);
-
-            if (!$this->legacyImportFolder->hasFolder($relativeFilePath)) {
-                $this->legacyImportFolder->createFolder($relativeFilePath);
-            }
-            $importFolder = $this->legacyImportFolder->getSubfolder($relativeFilePath);
-        }
-
-        $fileObject = null;
-
-        try {
-            // check, if there is alreay the same file in the folder
-            if ($importFolder->hasFile($fileName)) {
-                $fileStorage = $importFolder->getStorage();
-                $file = $fileStorage->getFile($importFolder->getIdentifier() . $fileName);
-                if ($file->getSha1() === sha1_file($temporaryFile)) {
-                    $fileObject = $file;
-                }
-            }
-        } catch (Exception $e) {
-        }
-
-        if ($fileObject === null) {
-            try {
-                $fileObject = $importFolder->addFile($temporaryFile, $fileName, DuplicationBehavior::RENAME);
-            } catch (Exception $e) {
-                $this->error('Error: no file could be added to the storage for file name ' . $this->alternativeFileName[$temporaryFile]);
-            }
-        }
-
-        if (md5_file(PATH_site . $fileObject->getPublicUrl()) == $this->dat['files'][$fileId]['content_md5']) {
-            $fileName = $fileObject->getUid();
-            $this->fileIDMap[$fileId] = $fileName;
-            $this->filePathMap[$fileId] = $fileObject->getPublicUrl();
-            return true;
-        } else {
-            $this->error('ERROR: File content "' . $this->dat['files'][$fileId]['relFileName'] . '" was corrupted');
-        }
-
-        return false;
-    }
-
-    /**
-     * Migrate legacy import records
-     *
-     * @return void
-     */
-    protected function migrateLegacyImportRecords()
-    {
-        $updateData= array();
-
-        foreach ($this->legacyImportMigrationRecords as $table => $records) {
-            foreach ($records as $uid => $fields) {
-                $row = BackendUtility::getRecord($table, $uid);
-                if (empty($row)) {
-                    continue;
-                }
-
-                foreach ($fields as $field => $referenceIds) {
-                    $fieldConfiguration = $this->legacyImportMigrationTables[$table][$field];
-
-                    if (isset($fieldConfiguration['titleTexts'])) {
-                        $titleTextField = $fieldConfiguration['titleTexts'];
-                        if (isset($row[$titleTextField]) && $row[$titleTextField] !== '') {
-                            $titleTextContents = explode(LF, $row[$titleTextField]);
-                            $updateData[$table][$uid][$titleTextField] = '';
-                        }
-                    }
-
-                    if (isset($fieldConfiguration['alternativeTexts'])) {
-                        $alternativeTextField = $fieldConfiguration['alternativeTexts'];
-                        if (isset($row[$alternativeTextField]) && $row[$alternativeTextField] !== '') {
-                            $alternativeTextContents = explode(LF, $row[$alternativeTextField]);
-                            $updateData[$table][$uid][$alternativeTextField] = '';
-                        }
-                    }
-                    if (isset($fieldConfiguration['description'])) {
-                        $descriptionField = $fieldConfiguration['description'];
-                        if ($row[$descriptionField] !== '') {
-                            $descriptionContents = explode(LF, $row[$descriptionField]);
-                            $updateData[$table][$uid][$descriptionField] = '';
-                        }
-                    }
-                    if (isset($fieldConfiguration['links'])) {
-                        $linkField = $fieldConfiguration['links'];
-                        if ($row[$linkField] !== '') {
-                            $linkContents = explode(LF, $row[$linkField]);
-                            $updateData[$table][$uid][$linkField] = '';
-                        }
-                    }
-
-                    foreach ($referenceIds as $key => $referenceId) {
-                        if (isset($titleTextContents[$key])) {
-                            $updateData['sys_file_reference'][$referenceId]['title'] = trim($titleTextContents[$key]);
-                        }
-                        if (isset($alternativeTextContents[$key])) {
-                            $updateData['sys_file_reference'][$referenceId]['alternative'] = trim($alternativeTextContents[$key]);
-                        }
-                        if (isset($descriptionContents[$key])) {
-                            $updateData['sys_file_reference'][$referenceId]['description'] = trim($descriptionContents[$key]);
-                        }
-                        if (isset($linkContents[$key])) {
-                            $updateData['sys_file_reference'][$referenceId]['link'] = trim($linkContents[$key]);
-                        }
-                    }
-                }
-            }
-        }
-
-        // update
-        $tce = $this->getNewTCE();
-        $tce->isImporting = true;
-        $tce->start($updateData, array());
-        $tce->process_datamap();
     }
 
     /**
@@ -2134,45 +1819,5 @@ class Import extends ImportExport
         $this->relStaticTables = (array)$this->dat['header']['relStaticTables'];
         $this->excludeMap = (array)$this->dat['header']['excludeMap'];
         $this->softrefCfg = (array)$this->dat['header']['softrefCfg'];
-        $this->fixCharsets();
-        if (
-            isset($this->dat['header']['meta']['TYPO3_version'])
-            && VersionNumberUtility::convertVersionNumberToInteger($this->dat['header']['meta']['TYPO3_version']) < 6000000
-        ) {
-            $this->legacyImport = true;
-            $this->initializeLegacyImportFolder();
-        }
-    }
-
-    /**
-     * Fix charset of import memory if different from system charset
-     *
-     * @return void
-     * @see loadInit()
-     */
-    public function fixCharsets()
-    {
-        $importCharset = $this->dat['header']['charset'];
-        if ($importCharset) {
-            if ($importCharset !== 'utf-8') {
-                /** @var CharsetConverter $charsetConverter */
-                $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-                $this->error('CHARSET: Converting charset of input file (' . $importCharset . ') to the system charset (utf-8)');
-                // Convert meta data:
-                if (is_array($this->dat['header']['meta'])) {
-                    $charsetConverter->convArray($this->dat['header']['meta'], $importCharset, 'utf-8');
-                }
-                // Convert record headers:
-                if (is_array($this->dat['header']['records'])) {
-                    $charsetConverter->convArray($this->dat['header']['records'], $importCharset, 'utf-8');
-                }
-                // Convert records themselves:
-                if (is_array($this->dat['records'])) {
-                    $charsetConverter->convArray($this->dat['records'], $importCharset, 'utf-8');
-                }
-            }
-        } else {
-            $this->error('CHARSET: No charset found in import file!');
-        }
     }
 }
