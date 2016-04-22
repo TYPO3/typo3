@@ -425,7 +425,7 @@ abstract class AbstractItemProvider
         // Early return on error with flash message
         $databaseError = $database->sql_error();
         if (!empty($databaseError)) {
-            $msg = htmlspecialchars($databaseError) . '<br />' . LF;
+            $msg = $databaseError . '. ';
             $msg .= $languageService->sL('LLL:EXT:lang/locallang_core.xlf:error.database_schema_mismatch');
             $msgTitle = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:error.database_schema_mismatch_title');
             /** @var $flashMessage FlashMessage */
