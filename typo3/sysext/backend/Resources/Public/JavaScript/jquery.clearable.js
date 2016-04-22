@@ -47,7 +47,8 @@
 			var $input = $(this);
 
 			// make sure the input field is not used twice for a clearable
-			if (!$input.data('clearable')) {
+			// or the input field is a colorpicker, because it breaks the colorpicker.
+			if (!$input.data('clearable') && !$input.hasClass('t3js-color-picker')) {
 				$input.data('clearable', 'loaded');
 
 				// Wrap it with a div and add a span that is the trigger for

@@ -103,16 +103,10 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 
         $output = '
             <div class="form-wizards-element">
-                <input class="form-control t3js-color-input formengine-colorpickerelement" type="text"
+                <input class="form-control t3js-color-input formengine-colorpickerelement t3js-color-picker" type="text"
                   name="' . htmlspecialchars($elementName) . '" value="' . $this->tag->getAttribute('value') . '"/>
                 <script type="text/javascript">
-                    require([\'TYPO3/CMS/Core/Contrib/jquery.minicolors\'], function () {
-                        $(\'.formengine-colorpickerelement\').minicolors({
-                            theme: \'bootstrap\',
-                            format: \'hex\',
-                            position: \'bottom left\'
-                        });
-                    });
+                    require([\'TYPO3/CMS/Backend/ColorPicker\'], function(ColorPicker){ColorPicker.initialize()});
                 </script>
             </div>';
 

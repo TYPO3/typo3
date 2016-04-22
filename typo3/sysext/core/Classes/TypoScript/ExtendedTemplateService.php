@@ -1210,18 +1210,11 @@ class ExtendedTemplateService extends TemplateService
                             break;
                         case 'color':
                             $p_field = '
-                                <input class="form-control formengine-colorpickerelement" type="text" id="input-' . $idName . '" rel="' . $idName .
+                                <input class="form-control formengine-colorpickerelement t3js-color-picker" type="text" id="input-' . $idName . '" rel="' . $idName .
                                 '" name="' . $fN . '" value="' . $fV . '"' . $this->getDocumentTemplate()->formWidth(7) . ' onChange="uFormUrl(' . $aname . ')" />';
 
                             if (empty($this->inlineJavaScript[$typeDat['type']])) {
-                                $this->inlineJavaScript[$typeDat['type']] = '
-                                    require([\'TYPO3/CMS/Core/Contrib/jquery.minicolors\'], function() {
-                                        TYPO3.jQuery(\'.formengine-colorpickerelement\').minicolors({
-                                            theme: \'bootstrap\',
-                                            format: \'hex\',
-                                            align: \'bottom left\'
-                                        });
-                                    });';
+                                $this->inlineJavaScript[$typeDat['type']] = 'require([\'TYPO3/CMS/Backend/ColorPicker\'], function(ColorPicker){ColorPicker.initialize()});';
                             }
                             break;
                         case 'wrap':

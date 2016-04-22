@@ -894,16 +894,6 @@ define(['jquery',
 			DateTimePicker.initialize();
 		});
 
-		if ($('.formengine-colorpickerelement').length) {
-			require(['TYPO3/CMS/Core/Contrib/jquery.minicolors'], function(minicolor) {
-				$('.formengine-colorpickerelement').minicolors({
-						theme: 'bootstrap',
-						format: 'hex',
-						position: 'bottom left'
-				});
-			});
-		}
-
 		FormEngine.convertTextareasResizable();
 		FormEngine.convertTextareasEnableTab();
 	};
