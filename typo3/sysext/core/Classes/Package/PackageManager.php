@@ -688,13 +688,10 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         $sortedPackageKeys = $this->dependencyResolver->sortPackageStatesConfigurationByDependency($packagesWithDependencies);
 
         // Reorder the packages according to the loading order
-        $newPackages = array();
         $this->packageStatesConfiguration['packages'] = [];
         foreach ($sortedPackageKeys as $packageKey) {
-            $newPackages[$packageKey] = $this->packages[$packageKey];
             $this->registerActivePackage($this->packages[$packageKey]);
         }
-        $this->packages = $newPackages;
         return $packagesWithDependencies;
     }
 
