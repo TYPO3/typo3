@@ -3101,12 +3101,13 @@ class GeneralUtility
                 new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS),
                 \RecursiveIteratorIterator::SELF_FIRST
             );
+            /** @var \SplFileInfo $item */
             foreach ($iterator as $item) {
-                $target = $destination . '/' . $iterator->getSubPathName();
+                $target = $destination . '/' . static::fixWindowsFilePath($iterator->getSubPathName());
                 if ($item->isDir()) {
                     static::mkdir($target);
                 } else {
-                    static::upload_copy_move($item, $target);
+                    static::upload_copy_move(static::fixWindowsFilePath($item->getPathname()), $target);
                 }
             }
         }
