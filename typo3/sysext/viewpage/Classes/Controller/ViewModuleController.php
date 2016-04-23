@@ -17,6 +17,9 @@ namespace TYPO3\CMS\Viewpage\Controller;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -265,19 +268,31 @@ class ViewModuleController extends ActionController
                     ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage') . ')'
                     : $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage')
         );
-        $excludeHidden = $this->getBackendUser()->isAdmin() ? '' : ' AND sys_language.hidden=0';
-        $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'sys_language.*',
-            'pages_language_overlay JOIN sys_language ON pages_language_overlay.sys_language_uid = sys_language.uid',
-            'pages_language_overlay.pid = ' . (int)$pageIdToShow . BackendUtility::deleteClause('pages_language_overlay') . $excludeHidden,
-            'pages_language_overlay.sys_language_uid, sys_language.uid, sys_language.pid, sys_language.tstamp, sys_language.hidden, sys_language.title, sys_language.static_lang_isocode, sys_language.flag',
-            'sys_language.title'
-        );
-        if (!empty($rows)) {
-            foreach ($rows as $row) {
-                if ($this->getBackendUser()->checkLanguageAccess($row['uid'])) {
-                    $languages[$row['uid']] = $row['title'];
-                }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        if (!$this->getBackendUser()->isAdmin()) {
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
+        }
+
+        $result = $queryBuilder->select('sys_language.uid', 'sys_language.title')
+            ->from('sys_language')
+            ->join(
+                'sys_language',
+                'pages_language_overlay',
+                'o',
+                $queryBuilder->expr()->eq('o.sys_language_uid', $queryBuilder->quoteIdentifier('sys_language.uid'))
+            )
+            ->where($queryBuilder->expr()->eq('o.pid', (int)$pageIdToShow))
+            ->groupBy('sys_language.uid', 'sys_language.title')
+            ->orderBy('sys_language.title')
+            ->execute();
+
+        while ($row = $result->fetch()) {
+            if ($this->getBackendUser()->checkLanguageAccess($row['uid'])) {
+                $languages[$row['uid']] = $row['title'];
             }
         }
         return $languages;
@@ -297,14 +312,6 @@ class ViewModuleController extends ActionController
             $languageParameter = '&L=' . (int)$states['languageSelectorValue'];
         }
         return $languageParameter;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
