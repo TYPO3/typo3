@@ -89,7 +89,8 @@ class FieldGeneratorResolver
         FieldGenerator\TypeGroupFolder::class,
 
         // type=select
-        FieldGenerator\TypeSelectForeignTableStaticData::class,
+        FieldGenerator\TypeSelectRenderTypeSingleForeignTable::class,
+        FieldGenerator\TypeSelectRenderTypeMultipleForeignTableStaticData::class,
         FieldGenerator\TypeSelectRenderTypeSelectTree::class,
         FieldGenerator\TypeSelect::class,
 

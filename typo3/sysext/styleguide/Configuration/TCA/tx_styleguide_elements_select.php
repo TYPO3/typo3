@@ -243,6 +243,16 @@ return [
                 'size' => 2,
             ],
         ],
+        'select_single_12' => [
+            'exclude' => 1,
+            'label' => 'select_single_12 foreign_table selicon_field',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'showIconTable' => true,
+                'foreign_table' => 'tx_styleguide_elements_select_single_12_foreign',
+            ],
+        ],
 
 
         'select_singlebox_1' => [
@@ -725,7 +735,7 @@ return [
             'showitem' => '
                 --div--;renderType=selectSingle,
                     select_single_1, select_single_2, select_single_3, select_single_4, select_single_5,
-                    select_single_6, select_single_7, select_single_8, select_single_9, select_single_10,
+                    select_single_6, select_single_7, select_single_12, select_single_8, select_single_9, select_single_10,
                     select_single_11,
                 --div--;renderType=selectSingleBox,
                     select_singlebox_1,
