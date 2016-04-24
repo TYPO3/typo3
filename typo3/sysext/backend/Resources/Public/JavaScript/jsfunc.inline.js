@@ -883,8 +883,8 @@ var inline = {
 		}
 	},
 
-	enableDisableRecord: function (objectIdentifier) {
-		var elName = this.parseObjectId('full', objectIdentifier, 2, 0, true) + '[hidden]';
+	enableDisableRecord: function (objectIdentifier, fieldName) {
+		var elName = this.parseObjectId('full', objectIdentifier, 2, 0, true) + '[' + fieldName + ']';
 		var formObj = document.querySelector('[data-formengine-input-name="' + elName + '"]');
 		var valueObj = document.getElementsByName(elName);
 		var escapedObjectIdentifier = this.escapeObjectId(objectIdentifier);
