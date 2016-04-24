@@ -919,8 +919,8 @@ return [
                 'type' => 'radio',
                 'readOnly' => 1,
                 'items' => [
-                    ['foo', 'foo'],
-                    ['bar', 'bar'],
+                    ['foo', 1],
+                    ['bar', 2],
                 ],
             ],
         ],
