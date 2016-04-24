@@ -2,7 +2,7 @@
 return [
     'ctrl' => [
         'title' => 'Form engine - flex child flex_3 inline_1',
-        'label' => 'text_1',
+        'label' => 'input_1',
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',

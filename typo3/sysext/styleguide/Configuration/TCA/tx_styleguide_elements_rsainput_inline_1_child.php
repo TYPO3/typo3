@@ -2,7 +2,7 @@
 return [
     'ctrl' => [
         'title' => 'Form engine elements - rsainput child inline_1',
-        'label' => 'text_1',
+        'label' => 'uid',
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
