@@ -8,6 +8,9 @@ return [
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
+        'enablecolumns' => [
+            'disabled' => 'disable',
+        ],
         'sortby' => 'sorting',
         'default_sortby' => 'ORDER BY crdate',
     ],
@@ -47,11 +50,10 @@ return [
                 'type' => 'passthrough'
             ]
         ],
-        'hidden' => [
-            'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
+        'disable' => [
+            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
             'config' => [
-                'type' => 'check',
-                'default' => '0'
+                'type' => 'check'
             ]
         ],
 
@@ -83,7 +85,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;General, input_1,
-                --div--;Visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden, parentid, parenttable
+                --div--;Visibility, sys_language_uid, l18n_parent, l18n_diffsource, disable, parentid, parenttable
             ',
         ],
     ],

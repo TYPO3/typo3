@@ -8,6 +8,9 @@ return [
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
+        'enablecolumns' => [
+            'disabled' => 'hidden',
+        ],
         'sortby' => 'sorting',
         'default_sortby' => 'ORDER BY crdate',
     ],
