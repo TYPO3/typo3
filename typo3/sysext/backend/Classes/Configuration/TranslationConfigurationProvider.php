@@ -15,8 +15,10 @@ namespace TYPO3\CMS\Backend\Configuration;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryContextType;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -24,14 +26,6 @@ use TYPO3\CMS\Lang\LanguageService;
  */
 class TranslationConfigurationProvider
 {
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
     /**
      * @return LanguageService
      */
@@ -70,7 +64,12 @@ class TranslationConfigurationProvider
         );
 
         // add the additional languages from database records
-        $languageRecords = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'sys_language', '');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+        $languageRecords = $queryBuilder
+            ->select('*')
+            ->from('sys_language')
+            ->execute()
+            ->fetchAll();
         foreach ($languageRecords as $languageRecord) {
             $languages[$languageRecord['uid']] = $languageRecord;
             // @todo: this should probably resolve language_isocode too and throw a deprecation if not filled
@@ -123,12 +122,24 @@ class TranslationConfigurationProvider
         if (!$selFieldList) {
             $selFieldList = 'uid,' . $GLOBALS['TCA'][$translationTable]['ctrl']['languageField'];
         }
-        $where = $GLOBALS['TCA'][$translationTable]['ctrl']['transOrigPointerField'] . '=' . (int)$uid .
-            ' AND pid=' . (int)($table === 'pages' ? $row['uid'] : $row['pid']) .
-            ' AND ' . $GLOBALS['TCA'][$translationTable]['ctrl']['languageField'] . (! $languageUid ? '>0' : '=' . (int)$languageUid) .
-            BackendUtility::deleteClause($translationTable) .
-            BackendUtility::versioningPlaceholderClause($translationTable);
-        $translationRecords = $this->getDatabaseConnection()->exec_SELECTgetRows($selFieldList, $translationTable, $where);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($translationTable);
+        $queryBuilder->getQueryContext()->setContext(QueryContextType::BACKEND_NO_VERSIONING_PLACEHOLDERS);
+        $queryBuilder
+            ->select(...GeneralUtility::trimExplode(',', $selFieldList))
+            ->from($translationTable)
+            ->where($queryBuilder->expr()->eq($GLOBALS['TCA'][$translationTable]['ctrl']['transOrigPointerField'], (int)$uid))
+            ->andWhere($queryBuilder->expr()->eq('pid', (int)($table === 'pages' ? $row['uid'] : $row['pid'])));
+        if (!$languageUid) {
+            $queryBuilder
+                ->andWhere($queryBuilder->expr()->gt($GLOBALS['TCA'][$translationTable]['ctrl']['languageField'], 0));
+        } else {
+            $queryBuilder
+                ->andWhere($queryBuilder->expr()->eq($GLOBALS['TCA'][$translationTable]['ctrl']['languageField'], (int)$languageUid));
+        }
+        $translationRecords = $queryBuilder
+            ->execute()
+            ->fetchAll();
+
         $translations = array();
         $translationsErrors = array();
         foreach ($translationRecords as $translationRecord) {
