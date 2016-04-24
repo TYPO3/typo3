@@ -127,7 +127,10 @@ class InlineRecordContainer extends AbstractContainer
         $html = '';
         $combinationHtml = '';
         $isNewRecord = $data['command'] === 'new';
-        $hiddenField = $GLOBALS['TCA'][$foreignTable]['ctrl']['enablecolumns']['disabled'];
+        $hiddenField = '';
+        if (isset($data['processedTca']['ctrl']['enablecolumns']['disabled'])) {
+            $hiddenField = $data['processedTca']['ctrl']['enablecolumns']['disabled'];
+        }
         if (!$data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
             if ($isNewRecord || $data['isInlineChildExpanded']) {
                 // Render full content ONLY IF this is an AJAX request, a new record, or the record is not collapsed
@@ -181,7 +184,7 @@ class InlineRecordContainer extends AbstractContainer
             if ($data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
                 $class .= ' t3-form-field-container-inline-placeHolder';
             }
-            if (isset($record[$hiddenField]) && (int)$record[$hiddenField]) {
+            if (!empty($hiddenField) && isset($record[$hiddenField]) && (int)$record[$hiddenField]) {
                 $class .= ' t3-form-field-container-inline-hidden';
             }
             $class .= ($isNewRecord ? ' inlineIsNewRecord' : '');
