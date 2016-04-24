@@ -72,7 +72,7 @@ script:
 
   - >
     if [[ "$ACCEPTANCE_TESTS" == "yes" ]]; then
-        ./bin/codecept run Acceptance -c typo3/sysext/core/Build/AcceptanceTests.yml
+        ./bin/codecept run Acceptance -c typo3/sysext/core/Build/AcceptanceTests.yml --debug
     fi
 
   - >
