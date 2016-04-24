@@ -38,40 +38,40 @@ CREATE TABLE tx_styleguide_elements_basic (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	input_1 text NOT NULL,
-	input_2 text NOT NULL,
-	input_3 text NOT NULL,
-	input_4 text NOT NULL,
-	input_5 text NOT NULL,
-	input_6 text NOT NULL,
-	input_7 text NOT NULL,
-	input_8 text NOT NULL,
-	input_9 text NOT NULL,
-	input_10 text NOT NULL,
-	input_11 text NOT NULL,
-	input_12 text NOT NULL,
-	input_13 text NOT NULL,
+	input_1 text,
+	input_2 text,
+	input_3 text,
+	input_4 text,
+	input_5 text,
+	input_6 text,
+	input_7 text,
+	input_8 text,
+	input_9 text,
+	input_10 text,
+	input_11 text,
+	input_12 text,
+	input_13 text,
 	input_14 text,
-	input_15 text NOT NULL,
-	input_16 text NOT NULL,
-	input_17 text NOT NULL,
-	input_18 text NOT NULL,
-	input_19 text NOT NULL,
-	input_20 text NOT NULL,
-	input_21 text NOT NULL,
-	input_22 text NOT NULL,
-	input_23 text NOT NULL,
-	input_24 text NOT NULL,
-	input_25 text NOT NULL,
-	input_26 text NOT NULL,
-	input_27 text NOT NULL,
+	input_15 text,
+	input_16 text,
+	input_17 text,
+	input_18 text,
+	input_19 text,
+	input_20 text,
+	input_21 text,
+	input_22 text,
+	input_23 text,
+	input_24 text,
+	input_25 text,
+	input_26 text,
+	input_27 text,
 	input_28 text,
-	input_29 text NOT NULL,
-	input_30 text NOT NULL,
-	input_31 text NOT NULL,
-	input_32 text NOT NULL,
-	input_33 text NOT NULL,
-	input_34 text NOT NULL,
+	input_29 text,
+	input_30 text,
+	input_31 text,
+	input_32 text,
+	input_33 text,
+	input_34 text,
 	input_36 date NOT NULL DEFAULT '0000-00-00',
 	input_37 datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 
@@ -113,18 +113,18 @@ CREATE TABLE tx_styleguide_elements_basic (
 	radio_1 int(11) DEFAULT '0' NOT NULL,
 	radio_2 int(11) DEFAULT '0' NOT NULL,
 	radio_3 int(11) DEFAULT '0' NOT NULL,
-	radio_4 text NOT NULL,
+	radio_4 text,
 	radio_5 int(11) DEFAULT '0' NOT NULL,
 	radio_6 int(11) DEFAULT '0' NOT NULL,
 
-	none_1 text NOT NULL,
-	none_2 text NOT NULL,
-	none_3 text NOT NULL,
-	none_4 text NOT NULL,
-	none_5 text NOT NULL,
-	none_6 text NOT NULL,
+	none_1 text,
+	none_2 text,
+	none_3 text,
+	none_4 text,
+	none_5 text,
+	none_6 text,
 
-	passthrough_1 text NOT NULL,
+	passthrough_1 text,
 
 	user_1 text,
 	user_2 text,
@@ -197,17 +197,17 @@ CREATE TABLE tx_styleguide_elements_group (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	group_db_1 text NOT NULL,
-	group_db_2 text NOT NULL,
-	group_db_3 text NOT NULL,
-	group_db_4 text NOT NULL,
-	group_db_5 text NOT NULL,
-	group_db_6 text NOT NULL,
-	group_file_1 text NOT NULL,
-	group_file_2 text NOT NULL,
-	group_file_3 text NOT NULL,
-	group_file_4 text NOT NULL,
-	group_folder_1 text NOT NULL,
+	group_db_1 text,
+	group_db_2 text,
+	group_db_3 text,
+	group_db_4 text,
+	group_db_5 text,
+	group_db_6 text,
+	group_file_1 text,
+	group_file_2 text,
+	group_file_3 text,
+	group_file_4 text,
+	group_folder_1 text,
 
 	flex_1 text,
 
@@ -262,7 +262,7 @@ CREATE TABLE tx_styleguide_elements_rsainput_flex_1_inline_1_child (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
+	l18n_diffsource mediumblob,
 	sorting int(10) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
@@ -279,7 +279,7 @@ CREATE TABLE tx_styleguide_elements_rsainput_flex_1_inline_1_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
 	rsainput_1 text,
 
@@ -297,7 +297,7 @@ CREATE TABLE tx_styleguide_elements_rsainput_inline_1_child (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
+	l18n_diffsource mediumblob,
 	sorting int(10) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
@@ -314,7 +314,7 @@ CREATE TABLE tx_styleguide_elements_rsainput_inline_1_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
 	rsainput_1 text,
 
@@ -369,7 +369,7 @@ CREATE TABLE tx_styleguide_elements_rte_flex_1_inline_1_child (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
+	l18n_diffsource mediumblob,
 	sorting int(10) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
@@ -386,7 +386,7 @@ CREATE TABLE tx_styleguide_elements_rte_flex_1_inline_1_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
 	rte_1 text,
 
@@ -404,7 +404,7 @@ CREATE TABLE tx_styleguide_elements_rte_inline_1_child (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
+	l18n_diffsource mediumblob,
 	sorting int(10) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
@@ -421,7 +421,7 @@ CREATE TABLE tx_styleguide_elements_rte_inline_1_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
 	rte_1 text,
 
@@ -458,35 +458,35 @@ CREATE TABLE tx_styleguide_elements_select (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	select_single_1 text NOT NULL,
-	select_single_2 text NOT NULL,
-	select_single_3 text NOT NULL,
-	select_single_4 text NOT NULL,
-	select_single_5 text NOT NULL,
-	select_single_6 text NOT NULL,
-	select_single_7 text NOT NULL,
-	select_single_8 text NOT NULL,
-	select_single_9 text NOT NULL,
-	select_single_10 text NOT NULL,
-	select_single_11 text NOT NULL,
-	select_single_12 text NOT NULL,
+	select_single_1 text,
+	select_single_2 text,
+	select_single_3 text,
+	select_single_4 text,
+	select_single_5 text,
+	select_single_6 text,
+	select_single_7 text,
+	select_single_8 text,
+	select_single_9 text,
+	select_single_10 text,
+	select_single_11 text,
+	select_single_12 text,
 
-	select_singlebox_1 text NOT NULL,
+	select_singlebox_1 text,
 
-	select_checkbox_1 text NOT NULL,
-	select_checkbox_2 text NOT NULL,
+	select_checkbox_1 text,
+	select_checkbox_2 text,
 
-	select_multiplesidebyside_1 text NOT NULL,
-	select_multiplesidebyside_2 text NOT NULL,
-	select_multiplesidebyside_3 text NOT NULL,
-	select_multiplesidebyside_4 text NOT NULL,
-	select_multiplesidebyside_5 text NOT NULL,
-	select_multiplesidebyside_6 text NOT NULL,
+	select_multiplesidebyside_1 text,
+	select_multiplesidebyside_2 text,
+	select_multiplesidebyside_3 text,
+	select_multiplesidebyside_4 text,
+	select_multiplesidebyside_5 text,
+	select_multiplesidebyside_6 text,
 
-	select_tree_1 text NOT NULL,
-	select_tree_2 text NOT NULL,
-	select_tree_3 text NOT NULL,
-	select_tree_4 text NOT NULL,
+	select_tree_1 text,
+	select_tree_2 text,
+	select_tree_3 text,
+	select_tree_4 text,
 
 	flex_1 text,
 
@@ -504,7 +504,7 @@ CREATE TABLE tx_styleguide_elements_select_single_12_foreign (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
+	l18n_diffsource mediumblob,
 	sorting int(10) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
@@ -555,16 +555,16 @@ CREATE TABLE tx_styleguide_elements_special (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	special_custom_1 text NOT NULL,
-	special_exclude_1 text NOT NULL,
-	special_explicitvalues_1 text NOT NULL,
-	special_languages_1 text NOT NULL,
-	special_modlistgroup_1 text NOT NULL,
-	special_pagetypes_1 text NOT NULL,
-	special_tables_1 text NOT NULL,
-	special_tables_2 text NOT NULL,
-	special_tables_3 text NOT NULL,
-	special_usermods_1 text NOT NULL,
+	special_custom_1 text,
+	special_exclude_1 text,
+	special_explicitvalues_1 text,
+	special_languages_1 text,
+	special_modlistgroup_1 text,
+	special_pagetypes_1 text,
+	special_tables_1 text,
+	special_tables_2 text,
+	special_tables_3 text,
+	special_usermods_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -618,7 +618,7 @@ CREATE TABLE tx_styleguide_elements_t3editor_flex_1_inline_1_child (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
+	l18n_diffsource mediumblob,
 	sorting int(10) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
@@ -635,7 +635,7 @@ CREATE TABLE tx_styleguide_elements_t3editor_flex_1_inline_1_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
 	t3editor_1 text,
 
@@ -653,7 +653,7 @@ CREATE TABLE tx_styleguide_elements_t3editor_inline_1_child (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
+	l18n_diffsource mediumblob,
 	sorting int(10) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
@@ -670,7 +670,7 @@ CREATE TABLE tx_styleguide_elements_t3editor_inline_1_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
 	t3editor_1 text,
 
@@ -726,7 +726,7 @@ CREATE TABLE tx_styleguide_flex_flex_3_inline_1_child (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
+	l18n_diffsource mediumblob,
 	sorting int(10) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
@@ -743,7 +743,7 @@ CREATE TABLE tx_styleguide_flex_flex_3_inline_1_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
 	input_1 text,
 
@@ -816,9 +816,9 @@ CREATE TABLE tx_styleguide_inline_1n_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
-	input_1 text NOT NULL,
+	input_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -889,7 +889,7 @@ CREATE TABLE tx_styleguide_inline_1n1n_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
 	inline_1 int(11) DEFAULT '0' NOT NULL,
 
@@ -927,9 +927,9 @@ CREATE TABLE tx_styleguide_inline_1n1n_childchild (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
-	input_1 text NOT NULL,
+	input_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -1000,12 +1000,12 @@ CREATE TABLE tx_styleguide_inline_expand_inline_1_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
-	dummy_1 text NOT NULL,
+	dummy_1 text,
 	inline_fal_1 int(11) DEFAULT '0' NOT NULL,
-	rte_1 text NOT NULL,
-	select_tree_1 text NOT NULL,
+	rte_1 text,
+	select_tree_1 text,
 	t3editor_1 text,
 
 	PRIMARY KEY (uid),
@@ -1077,9 +1077,9 @@ CREATE TABLE tx_styleguide_inline_expandsingle_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
-	input_1 text NOT NULL,
+	input_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -1187,9 +1187,9 @@ CREATE TABLE tx_styleguide_inline_foreignrecorddefaults_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
-	input_1 text NOT NULL,
+	input_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -1224,7 +1224,7 @@ CREATE TABLE tx_styleguide_inline_mm (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	title tinytext NOT NULL,
+	title tinytext,
 	inline_1 int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
@@ -1275,7 +1275,7 @@ CREATE TABLE tx_styleguide_inline_mm_child (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	title tinytext NOT NULL,
+	title tinytext,
 	parents int(11) DEFAULT '0' NOT NULL,
 	inline_2 int(11) DEFAULT '0' NOT NULL,
 
@@ -1327,7 +1327,7 @@ CREATE TABLE tx_styleguide_inline_mm_childchild (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	title tinytext NOT NULL,
+	title tinytext,
 	parents int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
@@ -1363,7 +1363,7 @@ CREATE TABLE tx_styleguide_inline_mn (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	input_1 tinytext NOT NULL,
+	input_1 tinytext,
 	inline_1 int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
@@ -1439,7 +1439,7 @@ CREATE TABLE tx_styleguide_inline_mn_child (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	input_1 tinytext NOT NULL,
+	input_1 tinytext,
 	parents int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
@@ -1475,7 +1475,7 @@ CREATE TABLE tx_styleguide_inline_mnsymmetric (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	input_1 tinytext NOT NULL,
+	input_1 tinytext,
 	branches int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
@@ -1700,15 +1700,15 @@ CREATE TABLE tx_styleguide_palette (
 	palette_1_1 int(11) DEFAULT '0' NOT NULL,
 	palette_1_2 text,
 	palette_1_3 int(11) DEFAULT '0' NOT NULL,
-	palette_2_1 text NOT NULL,
-	palette_3_1 text NOT NULL,
-	palette_3_2 text NOT NULL,
-	palette_4_1 text NOT NULL,
-	palette_4_2 text NOT NULL,
-	palette_4_3 text NOT NULL,
-	palette_4_4 text NOT NULL,
-	palette_5_1 text NOT NULL,
-	palette_5_2 text NOT NULL,
+	palette_2_1 text,
+	palette_3_1 text,
+	palette_3_2 text,
+	palette_4_1 text,
+	palette_4_2 text,
+	palette_4_3 text,
+	palette_4_4 text,
+	palette_5_1 text,
+	palette_5_2 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -1745,9 +1745,9 @@ CREATE TABLE tx_styleguide_required (
 
 	notrequired_1 text,
 
-	input_1 text NOT NULL,
-	input_2 text NOT NULL,
-	input_3 text NOT NULL,
+	input_1 text,
+	input_2 text,
+	input_3 text,
 
 	text_1 text,
 
@@ -1770,8 +1770,8 @@ CREATE TABLE tx_styleguide_required (
 	flex_1 text,
 	flex_2 text,
 
-	palette_input_1 text NOT NULL,
-	palette_input_2 text NOT NULL,
+	palette_input_1 text,
+	palette_input_2 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -1786,7 +1786,7 @@ CREATE TABLE tx_styleguide_required_flex_2_inline_1_child (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
+	l18n_diffsource mediumblob,
 	sorting int(10) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
@@ -1803,9 +1803,9 @@ CREATE TABLE tx_styleguide_required_flex_2_inline_1_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
-	input_1 text NOT NULL,
+	input_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -1820,7 +1820,7 @@ CREATE TABLE tx_styleguide_required_inline_1_child (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
+	l18n_diffsource mediumblob,
 	sorting int(10) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
@@ -1837,9 +1837,9 @@ CREATE TABLE tx_styleguide_required_inline_1_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
-	input_1 text NOT NULL,
+	input_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -1854,7 +1854,7 @@ CREATE TABLE tx_styleguide_required_inline_2_child (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
+	l18n_diffsource mediumblob,
 	sorting int(10) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
@@ -1871,9 +1871,9 @@ CREATE TABLE tx_styleguide_required_inline_2_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
-	input_1 text NOT NULL,
+	input_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -1888,7 +1888,7 @@ CREATE TABLE tx_styleguide_required_inline_3_child (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
+	l18n_diffsource mediumblob,
 	sorting int(10) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
@@ -1905,9 +1905,9 @@ CREATE TABLE tx_styleguide_required_inline_3_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
-	input_1 text NOT NULL,
+	input_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -1922,7 +1922,7 @@ CREATE TABLE tx_styleguide_required_rte_2_child (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
+	l18n_diffsource mediumblob,
 	sorting int(10) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
@@ -1939,9 +1939,9 @@ CREATE TABLE tx_styleguide_required_rte_2_child (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
+	parenttable text,
 
-	rte_1 text NOT NULL,
+	rte_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -1952,7 +1952,7 @@ CREATE TABLE tx_styleguide_staticdata (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 
-	value_1 tinytext NOT NULL,
+	value_1 tinytext,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -1987,7 +1987,7 @@ CREATE TABLE tx_styleguide_type (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	type text NOT NULL,
+	type text,
 
 	text_1 text,
 
@@ -2024,9 +2024,9 @@ CREATE TABLE tx_styleguide_valuesdefault (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	input_1 text NOT NULL,
-	input_2 text NOT NULL,
-	input_3 text NOT NULL,
+	input_1 text,
+	input_2 text,
+	input_3 text,
 
 	text_1 text,
 
@@ -2036,7 +2036,7 @@ CREATE TABLE tx_styleguide_valuesdefault (
 
 	radio_1 int(11) DEFAULT '0' NOT NULL,
 
-	select_1 text NOT NULL,
+	select_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
