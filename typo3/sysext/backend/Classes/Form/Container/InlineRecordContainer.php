@@ -127,6 +127,7 @@ class InlineRecordContainer extends AbstractContainer
         $html = '';
         $combinationHtml = '';
         $isNewRecord = $data['command'] === 'new';
+        $hiddenField = $GLOBALS['TCA'][$foreignTable]['ctrl']['enablecolumns']['disabled'];
         if (!$data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
             if ($isNewRecord || $data['isInlineChildExpanded']) {
                 // Render full content ONLY IF this is an AJAX request, a new record, or the record is not collapsed
@@ -160,15 +161,13 @@ class InlineRecordContainer extends AbstractContainer
                 // Set additional field for processing for saving
                 $html .= '<input type="hidden" name="cmd' . htmlspecialchars($appendFormFieldNames)
                     . '[delete]" value="1" disabled="disabled" />';
-                if (!$data['isInlineChildExpanded']
-                    && !empty($GLOBALS['TCA'][$foreignTable]['ctrl']['enablecolumns']['disabled'])
-                ) {
-                    $checked = !empty($record['hidden']) ? ' checked="checked"' : '';
+                if (!$data['isInlineChildExpanded'] && !empty($hiddenField)) {
+                    $checked = !empty($record[$hiddenField]) ? ' checked="checked"' : '';
                     $html .= '<input type="checkbox" data-formengine-input-name="data'
                         . htmlspecialchars($appendFormFieldNames)
-                        . '[hidden]" value="1"' . $checked . ' />';
+                        . '[' . htmlspecialchars($hiddenField) . ']" value="1"' . $checked . ' />';
                     $html .= '<input type="input" name="data' . htmlspecialchars($appendFormFieldNames)
-                        . '[hidden]" value="' . htmlspecialchars($record['hidden']) . '" />';
+                        . '[' . htmlspecialchars($hiddenField) . ']" value="' . htmlspecialchars($record[$hiddenField]) . '" />';
                 }
             }
             // If this record should be shown collapsed
@@ -182,7 +181,7 @@ class InlineRecordContainer extends AbstractContainer
             if ($data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
                 $class .= ' t3-form-field-container-inline-placeHolder';
             }
-            if (isset($record['hidden']) && (int)$record['hidden']) {
+            if (isset($record[$hiddenField]) && (int)$record[$hiddenField]) {
                 $class .= ' t3-form-field-container-inline-hidden';
             }
             $class .= ($isNewRecord ? ' inlineIsNewRecord' : '');
@@ -382,8 +381,8 @@ class InlineRecordContainer extends AbstractContainer
         $additionalCells = array();
         $isNewItem = substr($rec['uid'], 0, 3) == 'NEW';
         $isParentExisting = MathUtility::canBeInterpretedAsInteger($data['inlineParentUid']);
-        $tcaTableCtrl = &$GLOBALS['TCA'][$foreignTable]['ctrl'];
-        $tcaTableCols = &$GLOBALS['TCA'][$foreignTable]['columns'];
+        $tcaTableCtrl = $GLOBALS['TCA'][$foreignTable]['ctrl'];
+        $tcaTableCols = $GLOBALS['TCA'][$foreignTable]['columns'];
         $isPagesTable = $foreignTable === 'pages';
         $isSysFileReferenceTable = $foreignTable === 'sys_file_reference';
         $enableManualSorting = $tcaTableCtrl['sortby'] || $inlineConfig['MM'] || !$data['isOnSymmetricSide']
@@ -499,7 +498,8 @@ class InlineRecordContainer extends AbstractContainer
             // "Hide/Unhide" links:
             $hiddenField = $tcaTableCtrl['enablecolumns']['disabled'];
             if ($enabledControls['hide'] && $permsEdit && $hiddenField && $tcaTableCols[$hiddenField] && (!$tcaTableCols[$hiddenField]['exclude'] || $backendUser->check('non_exclude_fields', $foreignTable . ':' . $hiddenField))) {
-                $onClick = 'return inline.enableDisableRecord(' . GeneralUtility::quoteJSvalue($nameObjectFtId) . ')';
+                $onClick = 'return inline.enableDisableRecord(' . GeneralUtility::quoteJSvalue($nameObjectFtId) . ',' .
+                    GeneralUtility::quoteJSvalue($hiddenField) .')';
                 $className = 't3js-' . $nameObjectFtId . '_disabled';
                 if ($rec[$hiddenField]) {
                     $title = $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:unHide' . ($isPagesTable ? 'Page' : '')), true);
