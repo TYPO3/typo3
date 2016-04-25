@@ -64,7 +64,8 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             'command' => 'new',
             'databaseRow' => 'not-an-array',
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1444431128);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1444431128);
         $this->subject->addData($input);
     }
 
@@ -89,7 +90,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataFormUserTsIfColumnIsDenfinedInTca()
+    public function addDataSetsDefaultDataFormUserTsIfColumnIsDefinedInTca()
     {
         $input = [
             'command' => 'new',
@@ -148,7 +149,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataFormPageTsIfColumnIsDenfinedInTca()
+    public function addDataSetsDefaultDataFormPageTsIfColumnIsDefinedInTca()
     {
         $input = [
             'command' => 'new',
@@ -350,7 +351,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataFormPostIfColumnIsDenfinedInTca()
+    public function addDataSetsDefaultDataFromPostIfColumnIsDenfinedInTca()
     {
         $input = [
             'command' => 'new',
@@ -519,7 +520,8 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             'databaseRow' => [],
             'inlineChildChildUid' => 42,
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1444434102);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1444434102);
         $this->subject->addData($input);
     }
 
@@ -533,7 +535,8 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             'databaseRow' => [],
             'inlineChildChildUid' => '42',
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1444434103);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1444434103);
         $this->subject->addData($input);
     }
 
@@ -589,7 +592,8 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1444434104);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1444434104);
         $this->subject->addData($input);
     }
 
@@ -607,5 +611,77 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
         $expected['pid'] = 23;
         $result = $this->subject->addData($input);
         $this->assertSame($expected, $result['databaseRow']);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataDoesNotUsePageTsValueForPidIfRecordIsNotInlineChild()
+    {
+        $input = [
+            'command' => 'new',
+            'tableName' => 'aTable',
+            'vanillaUid' => 23,
+            'databaseRow' => [],
+            'pageTsConfig' => [
+                'TCAdefaults.' => [
+                    'aTable.' => [
+                        'pid' => '42',
+                    ],
+                ],
+            ],
+            'isInlineChild' => false,
+        ];
+        $expected = $input;
+        $expected['databaseRow']['pid'] = 23;
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfPageTsConfigPidValueCanNotBeInterpretedAsInteger()
+    {
+        $input = [
+            'command' => 'new',
+            'tableName' => 'aTable',
+            'vanillaUid' => 23,
+            'databaseRow' => [],
+            'pageTsConfig' => [
+                'TCAdefaults.' => [
+                    'aTable.' => [
+                        'pid' => 'notAnInteger',
+                    ],
+                ],
+            ],
+            'isInlineChild' => true,
+        ];
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1461598332);
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataDoesUsePageTsValueForPidIfRecordIsInlineChild()
+    {
+        $input = [
+            'command' => 'new',
+            'tableName' => 'aTable',
+            'vanillaUid' => 23,
+            'databaseRow' => [],
+            'pageTsConfig' => [
+                'TCAdefaults.' => [
+                    'aTable.' => [
+                        'pid' => '42',
+                    ],
+                ],
+            ],
+            'isInlineChild' => true,
+        ];
+        $expected = $input;
+        $expected['databaseRow']['pid'] = 42;
+        $this->assertSame($expected, $this->subject->addData($input));
     }
 }

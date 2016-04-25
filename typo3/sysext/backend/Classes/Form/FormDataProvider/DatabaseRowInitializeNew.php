@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * On "new" command, initialize new database row with default data
@@ -47,11 +48,7 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
         $result = $this->setDefaultsFromNeighborRow($result);
         $result = $this->setDefaultsFromDevVals($result);
         $result = $this->setDefaultsFromInlineRelations($result);
-
-        // Set pid to vanillaUid. This means, it *can* be negative, if the record is added relative to another record
-        // @todo: For inline records it should be possible to set the pid here via TCAdefaults, but
-        // @todo: those values would be overwritten by this 'pid' setter
-        $result['databaseRow']['pid'] = $result['vanillaUid'];
+        $result = $this->setPid($result);
 
         return $result;
     }
@@ -190,6 +187,38 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
 
         if ($result['inlineChildChildUid']) {
             $result['databaseRow'][$selectorFieldName] = $result['inlineChildChildUid'];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Set the pid. This is either the vanillaUid (see description in FormDataCompiler),
+     * or a pid given by pageTsConfig for inline children.
+     *
+     * @param array $result Result array
+     * @return array Modified result array
+     * @throws \UnexpectedValueException
+     */
+    protected function setPid(array $result)
+    {
+        // Set pid to vanillaUid. This can be a negative value
+        // if the record is added relative to another record.
+        $result['databaseRow']['pid'] = $result['vanillaUid'];
+
+        // In case a new inline record is created, the pid can be set to a different value
+        // by pageTsConfig, but not by userTsConfig. This overrides the above pid selection
+        // and forces the pid of new inline children.
+        $tableNameWithDot = $result['tableName'] . '.';
+        if ($result['isInlineChild'] && isset($result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot]['pid'])) {
+            if (!MathUtility::canBeInterpretedAsInteger($result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot]['pid'])) {
+                throw new \UnexpectedValueException(
+                    'page TSConfig setting TCAdefaults.' . $tableNameWithDot . 'pid must be a number, but given string '
+                    . $result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot]['pid'] . ' can not be interpreted as integer',
+                    1461598332
+                );
+            }
+            $result['databaseRow']['pid'] = (int)$result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot]['pid'];
         }
 
         return $result;
