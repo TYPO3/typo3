@@ -119,7 +119,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
     protected function init()
     {
         if (empty($this->data['databaseRow']['config'])) {
-            $rows = [[['colspan' => 1, 'rowspan' => 1, 'spanned' => false, 'name' => '']]];
+            $rows = [[['colspan' => 1, 'rowspan' => 1, 'spanned' => 0, 'name' => '0x0']]];
             $colCount = 1;
             $rowCount = 1;
         } else {

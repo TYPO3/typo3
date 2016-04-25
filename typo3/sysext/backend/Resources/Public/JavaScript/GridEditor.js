@@ -44,7 +44,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 		data: [],
 		nameLabel: 'name',
 		columnLabel: 'columen label',
-		targetElement: null
+		targetElement: null,
+		defaultCell: {spanned: 0, rowspan: 1, colspan: 1, name: '', colpos: ''}
 	};
 
 	/**
@@ -151,6 +152,14 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 	};
 
 	/**
+	 * Create a new cell from defaultCell
+	 * @returns {Object}
+	 */
+	GridEditor.getNewCell = function() {
+		return $.extend({}, GridEditor.defaultCell);
+	};
+
+	/**
 	 * write data back to hidden field
 	 *
 	 * @param data
@@ -183,7 +192,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 	GridEditor.addRow = function() {
 		var newRow = [];
 		for (var i = 0; i < GridEditor.colCount; i++) {
-			newRow[i] = {spanned: false, rowspan: 1, colspan: 1};
+			var newCell = GridEditor.getNewCell();
+			newCell.name = i + 'x' + GridEditor.data.length;
+			newRow[i] = newCell;
 		}
 		GridEditor.data.push(newRow);
 		GridEditor.rowCount++;
@@ -204,7 +215,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 
 		// fix rowspan in former last row
 		for (var colIndex = 0; colIndex < GridEditor.colCount; colIndex++) {
-			if (GridEditor.data[GridEditor.rowCount - 1][colIndex].spanned === true) {
+			if (GridEditor.data[GridEditor.rowCount - 1][colIndex].spanned === 1) {
 				GridEditor.findUpperCellWidthRowspanAndDecreaseByOne(colIndex, GridEditor.rowCount - 1);
 			}
 		}
@@ -227,7 +238,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 			return false;
 		}
 
-		if (upperCell.spanned === true) {
+		if (upperCell.spanned === 1) {
 			GridEditor.findUpperCellWidthRowspanAndDecreaseByOne(col, row - 1);
 		} else {
 			if (upperCell.rowspan > 1) {
@@ -250,7 +261,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 			for (var colIndex = 0; colIndex < GridEditor.colCount - 1; colIndex++) {
 				newRow.push(GridEditor.data[rowIndex][colIndex]);
 			}
-			if (GridEditor.data[rowIndex][GridEditor.colCount - 1].spanned === true) {
+			if (GridEditor.data[rowIndex][GridEditor.colCount - 1].spanned === 1) {
 				GridEditor.findLeftCellWidthColspanAndDecreaseByOne(GridEditor.colCount - 1, rowIndex);
 			}
 			newData.push(newRow);
@@ -273,7 +284,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 			return false;
 		}
 
-		if (leftCell.spanned === true) {
+		if (leftCell.spanned === 1) {
 			GridEditor.findLeftCellWidthColspanAndDecreaseByOne(col - 1, row);
 		} else {
 			if (leftCell.colspan > 1) {
@@ -287,12 +298,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 	 */
 	GridEditor.addColumn = function() {
 		for (var rowIndex = 0; rowIndex < GridEditor.rowCount; rowIndex++) {
-			GridEditor.data[rowIndex].push({
-				spanned: false,
-				rowspan: 1,
-				colspan: 1,
-				name: GridEditor.colCount + 'x' + rowIndex
-			});
+			var newCell = GridEditor.getNewCell();
+			newCell.name = GridEditor.colCount + 'x' + rowIndex;
+			GridEditor.data[rowIndex].push(newCell);
 		}
 		GridEditor.colCount++;
 	};
@@ -322,7 +330,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 
 			for (col = 0; col < GridEditor.colCount; col++) {
 				var cell = GridEditor.data[row][col];
-				if (cell.spanned === true) {
+				if (cell.spanned === 1) {
 					continue;
 				}
 				var $cell = $('<td>').css({
@@ -533,7 +541,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 		if (row > GridEditor.rowCount - 1) {
 			return false;
 		}
-		return GridEditor.data[row][col];
+		if (GridEditor.data.length > row-1 && GridEditor.data[row].length > col-1) {
+			return GridEditor.data[row][col];
+		}
+		return false;
 	};
 
 	/**
@@ -555,13 +566,13 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 		if (cell.rowspan > 1) {
 			for (var rowIndex = row; rowIndex < row + cell.rowspan; rowIndex++) {
 				checkCell = GridEditor.getCell(col + cell.colspan, rowIndex);
-				if (!checkCell || checkCell.spanned === true || checkCell.colspan > 1 || checkCell.rowspan > 1) {
+				if (!checkCell || checkCell.spanned === 1 || checkCell.colspan > 1 || checkCell.rowspan > 1) {
 					return false;
 				}
 			}
 		} else {
 			checkCell = GridEditor.getCell(col + cell.colspan, row);
-			if (!checkCell || cell.spanned === true || checkCell.spanned === true || checkCell.colspan > 1 || checkCell.rowspan > 1) {
+			if (!checkCell || cell.spanned === 1 || checkCell.spanned === 1 || checkCell.colspan > 1 || checkCell.rowspan > 1) {
 				return false;
 			}
 		}
@@ -587,13 +598,13 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 			// we have to check all cells on the right side for the complete colspan
 			for (var colIndex = col; colIndex < col + cell.colspan; colIndex++) {
 				checkCell = GridEditor.getCell(colIndex, row + cell.rowspan);
-				if (!checkCell || checkCell.spanned == true || checkCell.colspan > 1 || checkCell.rowspan > 1) {
+				if (!checkCell || checkCell.spanned === 1 || checkCell.colspan > 1 || checkCell.rowspan > 1) {
 					return false;
 				}
 			}
 		} else {
 			checkCell = GridEditor.getCell(col, row + cell.rowspan);
-			if (!checkCell || cell.spanned == true || checkCell.spanned == true || checkCell.colspan > 1 || checkCell.rowspan > 1) {
+			if (!checkCell || cell.spanned === 1 || checkCell.spanned === 1 || checkCell.colspan > 1 || checkCell.rowspan > 1) {
 				return false;
 			}
 		}
@@ -639,7 +650,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 		}
 
 		for (var rowIndex = row; rowIndex < row + cell.rowspan; rowIndex++) {
-			GridEditor.data[rowIndex][col + cell.colspan].spanned = true;
+			GridEditor.data[rowIndex][col + cell.colspan].spanned = 1;
 		}
 		cell.colspan += 1;
 	};
@@ -658,7 +669,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 		}
 
 		for (var colIndex = col; colIndex < col + cell.colspan; colIndex++) {
-			GridEditor.data[row + cell.rowspan][colIndex].spanned = true;
+			GridEditor.data[row + cell.rowspan][colIndex].spanned = 1;
 		}
 		cell.rowspan += 1;
 	};
@@ -677,8 +688,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 		}
 
 		cell.colspan -= 1;
+
 		for (var rowIndex = row; rowIndex < row + cell.rowspan; rowIndex++) {
-			GridEditor.data[rowIndex][col + cell.colspan].spanned = false;
+			GridEditor.data[rowIndex][col + cell.colspan].spanned = 0;
 		}
 	};
 
@@ -697,7 +709,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 
 		cell.rowspan -= 1;
 		for (var colIndex = col; colIndex < col + cell.colspan; colIndex++) {
-			GridEditor.data[row + cell.rowspan][colIndex].spanned = false;
+			GridEditor.data[row + cell.rowspan][colIndex].spanned = 0;
 		}
 	};
 

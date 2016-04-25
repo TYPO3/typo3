@@ -8,13 +8,15 @@
 	}
 
 	table.editor {
-		border-right: 1px gray dashed;
-		border-bottom: 1px gray dashed;
+		border: 0;
+		border-left: 1px @gray-light solid;
+		border-top: 1px @gray-light solid;
 
 		td {
 			vertical-align: middle;
-			border-top: 1px gray dashed;
-			border-left: 1px gray dashed;
+			border: 0;
+			border-bottom: 1px @gray-light solid;
+			border-right: 1px @gray-light solid;
 			text-align: center;
 			background-color: white;
 			min-height: 100px;
@@ -30,6 +32,7 @@
 		height: 80px;
 		position: relative;
 		left: 50%;
+		margin-top: 30px;
 		margin-left: -30px;
 		opacity: 0.3;
 	}
