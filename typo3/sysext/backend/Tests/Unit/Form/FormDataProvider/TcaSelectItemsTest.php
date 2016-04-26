@@ -1357,7 +1357,17 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace PAGE_TSCONFIG_ID' => [
                 'AND fTable.uid=###PAGE_TSCONFIG_ID###',
                 'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.uid=45',
-                [],
+                [
+                    'pageTsConfig' => [
+                        'TCEFORM.' => [
+                            'aTable.' => [
+                                'aField.' => [
+                                    'PAGE_TSCONFIG_ID' => '45',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'replace PAGE_TSCONFIG_ID integer cast' => [
                 'AND fTable.uid=###PAGE_TSCONFIG_ID###',
@@ -1377,12 +1387,32 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace PAGE_TSCONFIG_STR' => [
                 'AND fTable.uid=\'###PAGE_TSCONFIG_STR###\'',
                 'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.uid=\'46\'',
-                [],
+                [
+                    'pageTsConfig' => [
+                        'TCEFORM.' => [
+                            'aTable.' => [
+                                'aField.' => [
+                                    'PAGE_TSCONFIG_STR' => '46',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'replace PAGE_TSCONFIG_IDLIST' => [
                 'AND fTable.uid IN (###PAGE_TSCONFIG_IDLIST###)',
                 'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.uid IN (47,48)',
-                [],
+                [
+                    'pageTsConfig' => [
+                        'TCEFORM.' => [
+                            'aTable.' => [
+                                'aField.' => [
+                                    'PAGE_TSCONFIG_IDLIST' => '47,48',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'replace PAGE_TSCONFIG_IDLIST cleans list' => [
                 'AND fTable.uid IN (###PAGE_TSCONFIG_IDLIST###)',
@@ -1395,6 +1425,39 @@ class TcaSelectItemsTest extends UnitTestCase
                                     'PAGE_TSCONFIG_IDLIST' => 'a, 471, b, 481, c',
                                 ],
                             ],
+                        ],
+                    ],
+                ],
+            ],
+            'deprecated flexHack PAGE_TSCONFIG_ID is substituted' => [
+                'AND fTable.uid=###PAGE_TSCONFIG_ID###',
+                'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.uid=123',
+                [
+                    'pageTsConfig' => [
+                        'flexHack.' => [
+                            'PAGE_TSCONFIG_ID' => '123',
+                        ],
+                    ],
+                ],
+            ],
+            'deprecated flexHack PAGE_TSCONFIG_IDLIST is substituted' => [
+                'AND fTable.uid IN (###PAGE_TSCONFIG_IDLIST###)',
+                'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.uid IN (123,124)',
+                [
+                    'pageTsConfig' => [
+                        'flexHack.' => [
+                            'PAGE_TSCONFIG_IDLIST' => '123,124',
+                        ],
+                    ],
+                ],
+            ],
+            'deprecated flexHack PAGE_TSCONFIG_STR is substituted' => [
+                'AND fTable.uid=\'###PAGE_TSCONFIG_STR###\'',
+                'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.uid=\'aString\'',
+                [
+                    'pageTsConfig' => [
+                        'flexHack.' => [
+                            'PAGE_TSCONFIG_STR' => 'aString',
                         ],
                     ],
                 ],
@@ -1442,17 +1505,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'is_siteroot' => null,
                 ],
             ],
-            'pageTsConfig' => [
-                'TCEFORM.' => [
-                    'aTable.' => [
-                        'aField.' => [
-                            'PAGE_TSCONFIG_ID' => 45,
-                            'PAGE_TSCONFIG_STR' => '46',
-                            'PAGE_TSCONFIG_IDLIST' => '47, 48',
-                        ],
-                    ],
-                ],
-            ],
+            'pageTsConfig' => [],
         ];
         ArrayUtility::mergeRecursiveWithOverrule($input, $inputOverride);
 
