@@ -7111,6 +7111,7 @@ button.close {
   display: block;
   text-decoration: none;
 }
+.autocomplete-selected .autocomplete-suggestion-link,
 .autocomplete-suggestion-link:hover {
   background-color: #fafafa;
   text-decoration: none;

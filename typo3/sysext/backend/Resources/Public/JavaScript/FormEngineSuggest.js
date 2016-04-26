@@ -31,6 +31,21 @@ define(['jquery', 'jquery/autocomplete'], function ($) {
 				'uid': uid,
 				'pid': pid,
 				'newRecordRow': newRecordRow
+			},
+			insertValue = function(element) {
+				var insertData = '';
+				if ($searchField.data('fieldtype') === 'select') {
+					insertData = $(element).data('uid');
+				} else {
+					insertData = $(element).data('table') + '_' + $(element).data('uid');
+				}
+
+				var formEl = $searchField.data('fieldname');
+				var labelEl = $('<div>').text($(element).data('label'));
+				var label = labelEl.text();
+				var title = labelEl.find('span').attr('title') || label;
+				setFormValueFromBrowseWin(formEl, insertData, label, title);
+				TBE_EDITOR.fieldChanged(table, uid, field, formEl);
 			};
 
 		$searchField.autocomplete({
@@ -78,25 +93,16 @@ define(['jquery', 'jquery/autocomplete'], function ($) {
 			},
 			onHide: function() {
 				$containerElement.removeClass('open');
+			},
+			onSelect: function() {
+				insertValue($containerElement.find('.autocomplete-selected a')[0]);
 			}
 		});
 
 		// set up the events
 		$containerElement.on('click', '.autocomplete-suggestion-link', function(evt) {
 			evt.preventDefault();
-			var insertData = '';
-			if ($searchField.data('fieldtype') == 'select') {
-				insertData = $(this).data('uid');
-			} else {
-				insertData = $(this).data('table') + '_' + $(this).data('uid');
-			}
-
-			var formEl = $searchField.data('fieldname');
-			var labelEl = $('<div>').html($(this).data('label'));
-			var label = labelEl.text();
-			var title = labelEl.find('span').attr('title') || label;
-			setFormValueFromBrowseWin(formEl, insertData, label, title);
-			TBE_EDITOR.fieldChanged(table, uid, field, formEl);
+			insertValue(this);
 		});
 	};
 
