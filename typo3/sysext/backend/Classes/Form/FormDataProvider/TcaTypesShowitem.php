@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Create final showitem configuration in processedTca for types and palette
  * fields
- * Handles all the nasty defails like subtypes_addlist and friends.
+ * Handles all the nasty details like subtypes_addlist and friends.
  */
 class TcaTypesShowitem implements FormDataProviderInterface
 {
