@@ -1,3 +1,12 @@
+2016-04-26  412080d                  [RELEASE] Release of TYPO3 6.2.22 (TYPO3 Release Team)
+2016-04-26  1adf60b  #75860          [BUGFIX] Double encoding in image title-tag (Frank Naegler)
+2016-04-25  ec7b229  #75519          [BUGFIX] Remember not rendered checkboxes in TCA treeSelect (Frans Saris)
+2016-04-20  576677d  #73735          [BUGFIX] Check if folder is within the filemount (Frans Saris)
+2016-04-18  8513140  #75548          [BUGFIX] RTE: Show content of link style dropdown again (Markus Klein)
+2016-04-18  aed3061  #73567          [BUGFIX] Ignore cURL proxy header block (Albrecht Köhnlein)
+2016-04-12  0dd0ce1                  [TASK] Set TYPO3 version to 6.2.22-dev (TYPO3 Release Team)
+
+
 2016-04-12  cd53673                  [RELEASE] Release of TYPO3 6.2.21 (TYPO3 Release Team)
 2016-04-12  5645614  #75541          [BUGFIX] Add missing bracket in EXT:rtehtmlarea to fix syntax error (Andreas Fernandez)
 2016-04-12  c236b4d                  [TASK] Set TYPO3 version to 6.2.21-dev (TYPO3 Release Team)
