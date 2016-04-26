@@ -40,7 +40,7 @@ class ProcessedFileChecksumUpdate extends AbstractUpdate
             return false;
         }
 
-        $join = 'sys_file_processedfile LEFT JOIN sys_registry ON entry_key = CAST(sys_file_processedfile.uid AS CHAR) AND entry_namespace = \'ProcessedFileChecksumUpdate\'';
+        $join = 'sys_file_processedfile LEFT JOIN sys_registry ON CAST(entry_key AS CHAR) = CAST(sys_file_processedfile.uid AS CHAR) AND entry_namespace = \'ProcessedFileChecksumUpdate\'';
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows('*', $join, '(entry_key IS NULL AND sys_file_processedfile.identifier <> \'\') OR sys_file_processedfile.width IS NULL');
         if (!$count) {
             return false;
