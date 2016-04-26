@@ -1362,4 +1362,75 @@ class TcaFlexProcessTest extends UnitTestCase
 
         $this->subject->addData($input);
     }
+
+    /**
+     * Test for the deprecated "flexHack" pageTsConfig transition, verifies that
+     * all three PAGE_TSCONFIG_ID, PAGE_TSCONFIG_IDLIST and PAGE_TSCONFIG_STR
+     * are hand over to the flex field compiler.
+     *
+     * @test
+     */
+    public function addDataHandsPageTsConfigIdOverToFlexFormSegmentGroupAsFlexHack()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => [
+                    'data' => [],
+                ],
+                'pointerField' => 'aFlex',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds_pointerField' => 'pointerField',
+                            'ds' => [
+                                'sheets' => [
+                                    'sDEF' => [
+                                        'ROOT' => [
+                                            'type' => 'array',
+                                            'el' => [
+                                                'aFlexField' => [
+                                                    'label' => 'aFlexFieldLabel',
+                                                    'config' => [
+                                                        'type' => 'input',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'PAGE_TSCONFIG_ID' => '42',
+                            'PAGE_TSCONFIG_IDLIST' => '2,3,5',
+                            'PAGE_TSCONFIG_STR' => 'configString',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        /** @var FlexFormSegment|ObjectProphecy $dummyGroupExisting */
+        $dummyGroupExisting = $this->prophesize(FlexFormSegment::class);
+        GeneralUtility::addInstance(FlexFormSegment::class, $dummyGroupExisting->reveal());
+        // Check array given to flex group contains pageTsConfig with flexHack field
+        $dummyGroupExisting->compile(Argument::that(function ($result) use ($input) {
+            if ($result['pageTsConfig']['flexHack.'] === $input['pageTsConfig']['TCEFORM.']['aTable.']['aField.']) {
+                return true;
+            }
+            return false;
+        }))->shouldBeCalled()->willReturnArgument(0);
+
+        $this->subject->addData($input);
+    }
 }

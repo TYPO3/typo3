@@ -998,23 +998,35 @@ abstract class AbstractItemProvider
                     break;
                 }
             }
+
             $pageTsConfigId = 0;
+            if ($result['pageTsConfig']['flexHack.']['PAGE_TSCONFIG_ID']) {
+                $pageTsConfigId = (int)$result['pageTsConfig']['flexHack.']['PAGE_TSCONFIG_ID'];
+            }
             if ($result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_ID']) {
                 $pageTsConfigId = (int)$result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_ID'];
             }
+
             $pageTsConfigIdList = 0;
+            if ($result['pageTsConfig']['flexHack.']['PAGE_TSCONFIG_IDLIST']) {
+                $pageTsConfigIdList = $result['pageTsConfig']['flexHack.']['PAGE_TSCONFIG_IDLIST'];
+            }
             if ($result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_IDLIST']) {
                 $pageTsConfigIdList = $result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_IDLIST'];
-                $pageTsConfigIdListArray = GeneralUtility::trimExplode(',', $pageTsConfigIdList, true);
-                $pageTsConfigIdList = [];
-                foreach ($pageTsConfigIdListArray as $pageTsConfigIdListElement) {
-                    if (MathUtility::canBeInterpretedAsInteger($pageTsConfigIdListElement)) {
-                        $pageTsConfigIdList[] = (int)$pageTsConfigIdListElement;
-                    }
-                }
-                $pageTsConfigIdList = implode(',', $pageTsConfigIdList);
             }
+            $pageTsConfigIdListArray = GeneralUtility::trimExplode(',', $pageTsConfigIdList, true);
+            $pageTsConfigIdList = [];
+            foreach ($pageTsConfigIdListArray as $pageTsConfigIdListElement) {
+                if (MathUtility::canBeInterpretedAsInteger($pageTsConfigIdListElement)) {
+                    $pageTsConfigIdList[] = (int)$pageTsConfigIdListElement;
+                }
+            }
+            $pageTsConfigIdList = implode(',', $pageTsConfigIdList);
+
             $pageTsConfigString = '';
+            if ($result['pageTsConfig']['flexHack.']['PAGE_TSCONFIG_STR']) {
+                $pageTsConfigString = $result['pageTsConfig']['flexHack.']['PAGE_TSCONFIG_STR'];
+            }
             if ($result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_STR']) {
                 $pageTsConfigString = $result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_STR'];
                 $pageTsConfigString = $database->quoteStr($pageTsConfigString, $foreignTableName);

@@ -264,6 +264,23 @@ class TcaFlexProcess implements FormDataProviderInterface
                 $pageTsConfig['TCEFORM.'][$tableName . '.'] = $pageTsConfig[$dataStructureSheetName . '.'];
             }
 
+            // It is possible to have a flex field field with of foreign_table (eg. type=select) that has markers in
+            // a foreign_table_where like ###PAGE_TSCONFIG_ID###. It was possible to set this in page TSConfig for flex fields like this:
+            // TCEFORM.theTable.theFlexfield.PAGE_TSCONFIG_ID = 42
+            // This hands over this PAGE_TSCONFIG_ID to all flex fields that have this foreign_table_where marker.
+            // This is a contradiction to the "usual" page TSConfig flex configuration that should be done for single flex fields:
+            // TCEFORM.theTable.theFlexfield.theDataStructure.theSheet.theField.PAGE_TSCONFIG_ID = 42
+            // The below code is a hack to still simulate the old behavior.
+            if (isset($result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_ID'])) {
+                $pageTsConfig['flexHack.']['PAGE_TSCONFIG_ID'] = $result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_ID'];
+            }
+            if (isset($result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_IDLIST'])) {
+                $pageTsConfig['flexHack.']['PAGE_TSCONFIG_IDLIST'] = $result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_IDLIST'];
+            }
+            if (isset($result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_STR'])) {
+                $pageTsConfig['flexHack.']['PAGE_TSCONFIG_STR'] = $result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_STR'];
+            }
+
             // List of "new" tca fields that have no value within the flexform, yet. Those will be compiled in one go later.
             $tcaNewColumns = [];
             // List of "edit" tca fields that have a value in flexform, already. Those will be compiled in one go later.
