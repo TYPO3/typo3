@@ -90,7 +90,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataFormUserTsIfColumnIsDefinedInTca()
+    public function addDataSetsDefaultDataFromUserTsIfColumnIsDefinedInTca()
     {
         $input = [
             'command' => 'new',
@@ -121,7 +121,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataDoesNotSetDefaultDataFormUserTsIfColumnIsMissingInTca()
+    public function addDataDoesNotSetDefaultDataFromUserTsIfColumnIsMissingInTca()
     {
         $input = [
             'command' => 'new',
@@ -149,7 +149,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataFormPageTsIfColumnIsDefinedInTca()
+    public function addDataSetsDefaultDataFromPageTsIfColumnIsDefinedInTca()
     {
         $input = [
             'command' => 'new',
@@ -180,7 +180,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataDoesNotSetDefaultDataFormPageTsIfColumnIsMissingInTca()
+    public function addDataDoesNotSetDefaultDataFromPageTsIfColumnIsMissingInTca()
     {
         $input = [
             'command' => 'new',
@@ -208,7 +208,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataOverrulingFormPageTs()
+    public function addDataSetsDefaultDataOverrulingFromPageTs()
     {
         $input = [
             'command' => 'new',
@@ -320,7 +320,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataFormGetIfColumnIsDenfinedInTca()
+    public function addDataSetsDefaultDataFromGetIfColumnIsDefinedInTca()
     {
         $input = [
             'command' => 'new',
@@ -351,7 +351,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataFromPostIfColumnIsDenfinedInTca()
+    public function addDataSetsDefaultDataFromPostIfColumnIsDefinedInTca()
     {
         $input = [
             'command' => 'new',
@@ -420,7 +420,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataDoesNotSetDefaultDataFormGetPostIfColumnIsMissingInTca()
+    public function addDataDoesNotSetDefaultDataFromGetPostIfColumnIsMissingInTca()
     {
         $input = [
             'command' => 'new',

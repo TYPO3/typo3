@@ -447,7 +447,12 @@ return array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
+                        ),
+                    ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldLabels::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class,
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class => array(
@@ -456,6 +461,7 @@ return array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldLabels::class,
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class => array(
@@ -531,9 +537,14 @@ return array(
                 ),
                 'flexFormSegment' => array(
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => array(),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => array(
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldLabels::class => array(
                         'depends' => array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
+                        ),
+                    ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldLabels::class,
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => array(

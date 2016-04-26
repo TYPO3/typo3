@@ -137,10 +137,14 @@ class PaletteAndSingleContainer extends AbstractContainer
 
                 if (!empty($childResultArray['html'])) {
                     $mainStructureCounter ++;
+                    $fieldLabel = '';
+                    if (!empty($this->data['processedTca']['columns'][$fieldName]['label'])) {
+                        $fieldLabel = $this->data['processedTca']['columns'][$fieldName]['label'];
+                    }
                     $targetStructure[$mainStructureCounter] = array(
                         'type' => 'single',
                         'fieldName' => $fieldConfiguration['fieldName'],
-                        'fieldLabel' => $this->getSingleFieldLabel($fieldName, $fieldConfiguration['fieldLabel']),
+                        'fieldLabel' => $fieldLabel,
                         'fieldHtml' => $childResultArray['html'],
                     );
                 }
@@ -212,10 +216,14 @@ class PaletteAndSingleContainer extends AbstractContainer
 
                 if (!empty($singleFieldContentArray['html'])) {
                     $foundRealElement = true;
+                    $fieldLabel = '';
+                    if (!empty($this->data['processedTca']['columns'][$fieldName]['label'])) {
+                        $fieldLabel = $this->data['processedTca']['columns'][$fieldName]['label'];
+                    }
                     $resultStructure[] = array(
                         'type' => 'single',
                         'fieldName' => $fieldName,
-                        'fieldLabel' => $this->getSingleFieldLabel($fieldName, $fieldArray['fieldLabel']),
+                        'fieldLabel' => $fieldLabel,
                         'fieldHtml' => $singleFieldContentArray['html'],
                     );
                     $singleFieldContentArray['html'] = '';
@@ -373,41 +381,6 @@ class PaletteAndSingleContainer extends AbstractContainer
         $content[] = '</div>';
 
         return implode(LF, $content);
-    }
-
-    /**
-     * Determine label of a single field (not a palette label)
-     *
-     * @param string $fieldName The field name to calculate the label for
-     * @param string $labelFromShowItem Given label, typically from show item configuration
-     * @return string Field label
-     */
-    protected function getSingleFieldLabel($fieldName, $labelFromShowItem)
-    {
-        $languageService = $this->getLanguageService();
-        $table = $this->data['tableName'];
-        $label = $labelFromShowItem;
-        if (!empty($this->data['processedTca']['columns'][$fieldName]['label'])) {
-            $label = $this->data['processedTca']['columns'][$fieldName]['label'];
-        }
-        if (!empty($labelFromShowItem)) {
-            $label = $labelFromShowItem;
-        }
-
-        $fieldTSConfig = [];
-        if (isset($this->data['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'])
-            && is_array($this->data['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'])
-        ) {
-            $fieldTSConfig = $this->data['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'];
-        }
-
-        if (!empty($fieldTSConfig['label'])) {
-            $label = $fieldTSConfig['label'];
-        }
-        if (!empty($fieldTSConfig['label.'][$languageService->lang])) {
-            $label = $fieldTSConfig['label.'][$languageService->lang];
-        }
-        return $languageService->sL($label);
     }
 
     /**
