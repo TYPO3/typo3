@@ -747,7 +747,7 @@ tt_content.image.20 {
 		altText = TEXT
 		altText {
 			data = file:current:alternative
-			htmlSpecialChars = 1
+			stripHtml = 1
 		}
 
 		titleText < .altText

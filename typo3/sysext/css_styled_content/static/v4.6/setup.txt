@@ -517,7 +517,7 @@ tt_content.image.20 {
 		altText = TEXT
 		altText {
 			field = altText
-			htmlSpecialChars = 1
+			stripHtml = 1
 			split.token.char = 10
 			split.token.if.isTrue = {$styles.content.imgtext.imageTextSplit}
 			split.returnKey.data = register : IMAGE_NUM_CURRENT
