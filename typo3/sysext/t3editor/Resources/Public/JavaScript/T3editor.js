@@ -73,7 +73,12 @@ define(['jquery',
 
 		$editor.find('.t3e_modalOverlay').fadeOut({
 			complete: function() {
-				T3editor.resize(codemirror, $textarea.width(), $textarea.height());
+				var height = $textarea.height();
+				// only resize when height is higher than zero, height can be lower than zero with hidden elements.
+				if (height > 0) {
+					T3editor.resize(codemirror, $textarea.width(), $textarea.height());
+				}
+
 				$(document).trigger('t3editor:init', [codemirror, $editor.find('.t3e_wrap')]);
 				T3editor.instances[index] = codemirror;
 				$textarea.hide();
