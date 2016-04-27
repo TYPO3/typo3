@@ -20,4 +20,4 @@ Configuration
 
    General/Index
    TypoScript/Index
-
+   FluidTemplating/Index
