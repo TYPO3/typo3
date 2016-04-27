@@ -16,7 +16,8 @@ namespace TYPO3\CMS\Beuser\Domain\Repository;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
@@ -31,11 +32,12 @@ class BackendUserSessionRepository extends Repository
      */
     public function findAllActive()
     {
-        return $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'ses_id AS id, ses_userid, ses_iplock AS ip, ses_tstamp AS timestamp',
-            'be_sessions',
-            '1=1'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_sessions');
+        return $queryBuilder
+            ->select('ses_id AS id', 'ses_userid', 'ses_iplock AS ip', 'ses_tstamp AS timestamp')
+            ->from('be_sessions')
+            ->execute()
+            ->fetchAll();
     }
 
     /**
@@ -47,24 +49,14 @@ class BackendUserSessionRepository extends Repository
      */
     public function findByBackendUser(BackendUser $backendUser)
     {
-        $sessions = array();
-        $db = $this->getDatabaseConnection();
-        $res = $db->exec_SELECTquery(
-            'ses_id AS id, ses_iplock AS ip, ses_tstamp AS timestamp',
-            'be_sessions',
-            'ses_userid = ' . (int)$backendUser->getUid(),
-            '',
-            'ses_tstamp ASC'
-        );
-        while ($row = $db->sql_fetch_assoc($res)) {
-            $sessions[] = array(
-                'id' => $row['id'],
-                'ip' => $row['ip'],
-                'timestamp' => $row['timestamp']
-            );
-        }
-        $db->sql_free_result($res);
-        return $sessions;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_sessions');
+        return $queryBuilder
+            ->select('ses_id AS id', 'ses_iplock AS ip', 'ses_tstamp AS timestamp')
+            ->from('be_sessions')
+            ->where($queryBuilder->expr()->eq('ses_userid', (int)$backendUser->getUid()))
+            ->orderBy('ses_tstamp', 'ASC')
+            ->execute()
+            ->fetchAll();
     }
 
     /**
@@ -75,24 +67,14 @@ class BackendUserSessionRepository extends Repository
      */
     public function switchBackToOriginalUser(AbstractUserAuthentication $authentication)
     {
-        $updateData = array(
-            'ses_userid' => $authentication->user['ses_backuserid'],
-            'ses_backuserid' => 0,
-        );
-        $db = $this->getDatabaseConnection();
-        $db->exec_UPDATEquery(
-            'be_sessions',
-            'ses_id = ' . $db->fullQuoteStr($GLOBALS['BE_USER']->id, 'be_sessions') .
-                ' AND ses_name = ' . $db->fullQuoteStr(BackendUserAuthentication::getCookieName(), 'be_sessions') .
-                ' AND ses_userid=' . (int)$GLOBALS['BE_USER']->user['uid'], $updateData
-        );
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_sessions');
+        $queryBuilder
+            ->update('be_sessions')
+            ->set('ses_userid', $authentication->user['ses_backuserid'])
+            ->set('ses_backuserid', 0)
+            ->where($queryBuilder->expr()->eq('ses_id', $queryBuilder->createNamedParameter($GLOBALS['BE_USER']->id)))
+            ->andWhere($queryBuilder->expr()->eq('ses_name', $queryBuilder->createNamedParameter(BackendUserAuthentication::getCookieName())))
+            ->andWhere($queryBuilder->expr()->eq('ses_userid', (int)$GLOBALS['BE_USER']->user['uid']))
+            ->execute();
     }
 }
