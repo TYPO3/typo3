@@ -197,7 +197,7 @@ TYPO3.Components.Tree.EmptySelectionModel = new Ext.tree.DefaultSelectionModel({
 TYPO3.Components.Tree.TcaCheckChangeHandler = function(checkedNode, checked) {
 	var exclusiveKeys = this.tcaExclusiveKeys.split(','),
 		uid = '' + checkedNode.attributes.uid,
-		selected = Ext.fly('treeinput' + this.id).dom.value.split(',');
+		selected = Ext.fly('treeinput' + this.id).dom.value.length ? Ext.fly('treeinput' + this.id).dom.value.split(',') : [];
 
 	this.suspendEvents();
 
