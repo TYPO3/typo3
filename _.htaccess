@@ -288,7 +288,7 @@ AddDefaultCharset utf-8
 	RewriteRule fileadmin/templates/.*\.(?:txt|ts)$ - [F]
 	RewriteRule typo3temp/var/ - [F]
 	RewriteRule ^(vendor|typo3_src) - [F]
-	RewriteRule (?:typo3conf/ext|typo3/sysext|typo3/ext)/[^/]+/(?:Configuration|Resources/Private|Tests?)/ - [F]
+	RewriteRule (?:typo3conf/ext|typo3/sysext|typo3/ext)/[^/]+/(?:Configuration|Resources/Private|Tests?|Documentation|docs?)/ - [F]
 
 	# Block access to all hidden files and directories with the exception of
 	# the visible content from within the `/.well-known/` hidden directory (RFC 5785).
