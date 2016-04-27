@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Updates;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
@@ -52,8 +53,11 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
     protected function installExtension($extensionKey, &$customMessages)
     {
         $updateSuccessful = true;
+        /** @var $objectManager ObjectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+
         /** @var $extensionListUtility ListUtility */
-        $extensionListUtility = GeneralUtility::makeInstance(ListUtility::class);
+        $extensionListUtility = $objectManager->get(ListUtility::class);
 
         $availableExtensions = $extensionListUtility->getAvailableExtensions();
         $availableAndInstalledExtensions = $extensionListUtility->getAvailableAndInstalledExtensions($availableExtensions);
@@ -61,7 +65,7 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
         // Extension is not downloaded yet.
         if (!is_array($availableAndInstalledExtensions[$extensionKey])) {
             /** @var $extensionTerUtility TerUtility */
-            $extensionTerUtility = GeneralUtility::makeInstance(TerUtility::class);
+            $extensionTerUtility = $objectManager->get(TerUtility::class);
             $extensionDetails = $this->getExtensionDetails($extensionKey);
             if (empty($extensionDetails)) {
                 $updateSuccessful = false;
@@ -79,7 +83,7 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
             }
 
             /** @var $extensionFileHandlingUtility FileHandlingUtility */
-            $extensionFileHandlingUtility = GeneralUtility::makeInstance(FileHandlingUtility::class);
+            $extensionFileHandlingUtility = $objectManager->get(FileHandlingUtility::class);
             $extensionFileHandlingUtility->unpackExtensionFromExtensionDataArray($t3xExtracted);
 
             // The listUtility now needs to have the regenerated list of packages
@@ -88,7 +92,7 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
 
         if ($updateSuccessful !== false) {
             /** @var $extensionInstallUtility InstallUtility */
-            $extensionInstallUtility = GeneralUtility::makeInstance(InstallUtility::class);
+            $extensionInstallUtility = $objectManager->get(InstallUtility::class);
             $extensionInstallUtility->install($extensionKey);
         }
         return $updateSuccessful;
