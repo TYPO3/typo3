@@ -354,6 +354,21 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     }
 
     /**
+     * Tests whether fields can be add to all TCA types and fields in pallets are respected.
+     *
+     * @test
+     * @see ExtensionManagementUtility::addToAllTCAtypes()
+     */
+    public function canAddFieldsToAllTCATypesRespectsPositionFieldInPalette()
+    {
+        $table = $this->getUniqueId('tx_coretest_table');
+        $GLOBALS['TCA'] = $this->generateTCAForTable($table);
+        ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', '', 'after:fieldX1');
+        // Checking typeA:
+        $this->assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, newA, newB, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
+    }
+
+    /**
      * Tests whether fields can be add to a TCA type before existing ones
      *
      * @test
