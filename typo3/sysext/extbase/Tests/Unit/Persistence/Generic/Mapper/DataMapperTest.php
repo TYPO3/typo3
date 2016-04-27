@@ -275,7 +275,7 @@ class DataMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $columnMap = new ColumnMap('column_name', 'propertyName');
         $columnMap->setDateTimeStorageFormat('datetime');
         $datetimeAsString = '2013-04-15 09:30:00';
-        $input = new \DateTime($datetimeAsString);
+        $input = new \DateTime($datetimeAsString, new \DateTimeZone('UTC'));
         $this->assertEquals('2013-04-15 09:30:00', $subject->getPlainValue($input, $columnMap));
         $columnMap->setDateTimeStorageFormat('date');
         $this->assertEquals('2013-04-15', $subject->getPlainValue($input, $columnMap));
