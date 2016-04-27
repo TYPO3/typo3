@@ -666,11 +666,12 @@ class ExtensionManagementUtility
         // The $insertPosition may be a palette: after:--palette--;;title
         // In the $list the palette may contain a LLL string in between the ;;
         // Adjust the regex to match that
+        $positionName = preg_quote($positionName, '/');
         if (strpos($positionName, ';;') !== false) {
             $positionName = str_replace(';;', ';[^;]*;', $positionName);
         }
 
-        $pattern = ('/(^|,\\s*)(' . preg_quote($positionName, '/') . ')(;[^,$]+)?(,|$)/');
+        $pattern = ('/(^|,\\s*)(' . $positionName . ')(;[^,$]+)?(,|$)/');
         switch ($location) {
             case 'after':
                 $newList = preg_replace($pattern, '$1$2$3, ' . $insertionList . '$4', $list);
