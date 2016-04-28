@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
@@ -22,8 +23,11 @@ use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Resolve and prepare inline data.
@@ -313,11 +317,26 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         ];
 
         // For foreign_selector with useCombination $mainChild is the mm record
-        // and $combinationChild is the child-child. For "normal" relations, $mainChild
-        // is just the normal child record and $combinationChild is empty.
+        // and $combinationChild is the child-child. For 1:n "normal" relations,
+        // $mainChild is just the normal child record and $combinationChild is empty.
         $mainChild = $formDataCompiler->compile($formDataCompilerInput);
         if ($parentConfig['foreign_selector'] && $parentConfig['appearance']['useCombination']) {
-            $mainChild['combinationChild'] = $this->compileChildChild($mainChild, $parentConfig);
+            try {
+                $mainChild['combinationChild'] = $this->compileChildChild($mainChild, $parentConfig);
+            } catch (DatabaseRecordException $e) {
+                // The child could not be compiled, probably it was deleted and a dangling mm record
+                // exists. This is a data inconsistency, we catch this exception and create a flash message
+                $message = vsprintf(
+                    $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:formEngine.databaseRecordErrorInlineChildChild'),
+                    [ $e->getTableName(), $e->getUid(), $childTableName, (int)$childUid ]
+                );
+                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class,
+                    $message,
+                    '',
+                    FlashMessage::ERROR
+                );
+                GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->enqueue($flashMessage);
+            }
         }
         return $mainChild;
     }
@@ -448,5 +467,13 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

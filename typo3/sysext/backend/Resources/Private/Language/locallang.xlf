@@ -91,6 +91,12 @@ Have a nice day.</source>
 			<trans-unit id="button.hidePageTsConfig">
 				<source>Hide PageTS-Config</source>
 			</trans-unit>
+			<trans-unit id="formEngine.databaseRecordErrorInlineChildChild">
+				<source>The record with uid %2$s from table %1$s could not be retrieved from the database. This data incosistency can occur if
+				a base record has been deleted but the intermediate record from table %3$s with uid %4$s still points to it. To fix
+				this situation, either delete the intermediate record, or recover the deleted record using the recycler module.
+				</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

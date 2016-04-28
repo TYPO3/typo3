@@ -57,7 +57,10 @@ abstract class AbstractDatabaseRecordProvider
             // and transformed to a message to the user or something
             throw new DatabaseRecordException(
                 'Record with uid ' . $uid . ' from table ' . $tableName . ' not found',
-                1437656081
+                1437656081,
+                null,
+                $tableName,
+                (int)$uid
             );
         }
         if (!is_array($row)) {
