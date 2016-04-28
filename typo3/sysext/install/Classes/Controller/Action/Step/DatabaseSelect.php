@@ -74,10 +74,29 @@ class DatabaseSelect extends AbstractStepAction
         } elseif ($postValues['type'] === 'existing' && !empty($postValues['existing'])) {
             // Only store database information when it's empty
             $this->databaseConnection->setDatabaseName($postValues['existing']);
-            $this->databaseConnection->sql_select_db();
-            $existingTables = $this->databaseConnection->admin_get_tables();
+            try {
+                $this->databaseConnection->sql_select_db();
+                $existingTables = $this->databaseConnection->admin_get_tables();
+                if (!empty($existingTables)) {
+                    $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                    $errorStatus->setTitle('Selected database is not empty!');
+                    $errorStatus->setMessage(
+                        sprintf('Cannot use database "%s"', $postValues['existing'])
+                        . ', because it has tables already. Please select a different database or choose to create one!'
+                    );
+                    $result[] = $errorStatus;
+                }
+            } catch (\RuntimeException $e) {
+                $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                $errorStatus->setTitle('Could not connect to selected database!');
+                $errorStatus->setMessage(
+                    sprintf('Could not connect to database "%s"', $postValues['existing'])
+                    . '! Make sure it really exists and your database user has the permissions to select it!'
+                );
+                $result[] = $errorStatus;
+            }
             $isInitialInstallation = $configurationManager->getConfigurationValueByPath('SYS/isInitialInstallationInProgress');
-            if (!$isInitialInstallation || empty($existingTables)) {
+            if (!$isInitialInstallation || empty($result)) {
                 $localConfigurationPathValuePairs['DB/Connections/Default/dbname'] = $postValues['existing'];
             }
             // check if database charset is utf-8
