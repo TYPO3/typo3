@@ -25,6 +25,14 @@ Currently there are two postProcessors:
     Mail/Index.rst
     Redirect/Index.rst
 
+The processing will be done in the order of the postProcessors.
+
+Custom postProcessors
+=====================
+
+It is also possible to configure a custom class as a postProcessor. Just use the class name as the postProcessor name.
+The postProcessor class should implement `TYPO3\CMS\Form\PostProcess\PostProcessorInterface`
+
 **Example:**
 
 .. code-block:: typoscript
@@ -40,7 +48,7 @@ Currently there are two postProcessors:
     2 {
       destination = 5
     }
+    3 = Vendor\ExtensionName\Folder\ClassName
+    3 {
+    }
   }
-
-The processing will be done in order of the postProcessors.
-
