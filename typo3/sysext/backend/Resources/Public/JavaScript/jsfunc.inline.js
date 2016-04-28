@@ -305,7 +305,7 @@ var inline = {
 
 	showAjaxFailure: function (method, xhr) {
 		inline.unlockAjaxMethod(method);
-		alert('Error: ' + xhr.status + "\n" + xhr.statusText);
+		top.TYPO3.Notification.error('Error ' + xhr.status, xhr.statusText, 0);
 	},
 
 	// foreign_selector: used by selector box (type='select')

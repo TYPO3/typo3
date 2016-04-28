@@ -141,6 +141,27 @@ class DatabaseEditRowTest extends UnitTestCase
     /**
      * @test
      */
+    public function addDataThrowsExceptionDatabaseRecordExceptionWithAdditionalInformationSet()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'edit',
+            'vanillaUid' => 10,
+        ];
+        $this->dbProphecy->quoteStr(Argument::cetera())->willReturn($input['tableName']);
+        $this->dbProphecy->exec_SELECTgetSingleRow(Argument::cetera())->willReturn(false);
+
+        try {
+            $this->subject->addData($input);
+        } catch (DatabaseRecordException $e) {
+            $this->assertSame('tt_content', $e->getTableName());
+            $this->assertSame(10, $e->getUid());
+        }
+    }
+
+    /**
+     * @test
+     */
     public function addDataThrowsExceptionIfDatabaseFetchingReturnsInvalidRowResultData()
     {
         $input = [
