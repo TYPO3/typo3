@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Database\RelationHandler;
@@ -7813,7 +7814,10 @@ class DataHandler
             case 'all':
                 if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.all')) {
                     $this->getCacheManager()->flushCaches();
-                    $this->databaseConnection->exec_TRUNCATEquery('cache_treelist');
+                    GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getConnectionForTable('cache_treelist')
+                        ->truncate('cache_treelist');
+
                     // Delete Opcode Cache
                     GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
                 }

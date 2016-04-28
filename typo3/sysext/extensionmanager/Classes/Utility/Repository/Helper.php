@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility;
 
@@ -307,7 +309,9 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
                 // Use straight query as extbase "remove" is too slow here
                 // This truncates the whole table. It would be more correct to remove only rows of a specific
                 // repository, but multiple repository handling is not implemented, and truncate is quicker.
-                $this->getDatabaseConnection()->exec_TRUNCATEquery('tx_extensionmanager_domain_model_extension');
+                GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable('tx_extensionmanager_domain_model_extension')
+                    ->truncate('tx_extensionmanager_domain_model_extension');
             }
             // no further problems - start of import process
             if ($updateNecessity === 0) {
@@ -319,15 +323,5 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
         return $updated;
-    }
-
-    /**
-     * Get database connection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

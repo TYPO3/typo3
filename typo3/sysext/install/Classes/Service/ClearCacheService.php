@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -53,11 +54,15 @@ class ClearCacheService
         foreach ($tables as $table) {
             $tableName = $table['Name'];
             if (substr($tableName, 0, 3) === 'cf_') {
-                $database->exec_TRUNCATEquery($tableName);
+                GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable($tableName)
+                    ->truncate($tableName);
             } elseif ($tableName === 'cache_treelist') {
                 // cache_treelist is not implemented in the caching framework.
                 // clear this table manually
-                $database->exec_TRUNCATEquery('cache_treelist');
+                GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable('cache_treelist')
+                    ->truncate('cache_treelist');
             }
         }
 

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -135,11 +136,12 @@ class CleanUp extends Action\AbstractAction
     protected function clearSelectedTables()
     {
         $clearedTables = array();
-        $database = $this->getDatabaseConnection();
         if (isset($this->postValues['values']) && is_array($this->postValues['values'])) {
             foreach ($this->postValues['values'] as $tableName => $selected) {
                 if ($selected == 1) {
-                    $database->exec_TRUNCATEquery($tableName);
+                    GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getConnectionForTable($tableName)
+                        ->truncate($tableName);
                     $clearedTables[] = $tableName;
                 }
             }

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -228,7 +229,9 @@ class ProcessedFileRepository extends AbstractRepository
             }
         }
 
-        $this->databaseConnection->exec_TRUNCATEquery($this->table);
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($this->table)
+            ->truncate($this->table);
 
         return $errorCount;
     }
