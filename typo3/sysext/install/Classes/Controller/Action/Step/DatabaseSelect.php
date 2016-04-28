@@ -78,7 +78,7 @@ class DatabaseSelect extends AbstractStepAction
             $existingTables = $this->databaseConnection->admin_get_tables();
             $isInitialInstallation = $configurationManager->getConfigurationValueByPath('SYS/isInitialInstallationInProgress');
             if (!$isInitialInstallation || empty($existingTables)) {
-                $localConfigurationPathValuePairs['DB/database'] = $postValues['existing'];
+                $localConfigurationPathValuePairs['DB/Connections/Default/dbname'] = $postValues['existing'];
             }
             // check if database charset is utf-8
             $defaultDatabaseCharset = $this->getDefaultDatabaseCharset();
