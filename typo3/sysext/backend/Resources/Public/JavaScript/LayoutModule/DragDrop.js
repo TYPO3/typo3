@@ -21,7 +21,7 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 
 	/**
 	 *
-	 * @type {{contentIdentifier: string, dragIdentifier: string, dragHeaderIdentifier: string, dropZoneIdentifier: string, columnIdentifier: string, validDropZoneClass: string, dropPossibleHoverClass: string, addContentIdentifier: string}}
+	 * @type {{contentIdentifier: string, dragIdentifier: string, dragHeaderIdentifier: string, dropZoneIdentifier: string, columnIdentifier: string, validDropZoneClass: string, dropPossibleHoverClass: string, addContentIdentifier: string, originalStyles: string}}
 	 * @exports TYPO3/CMS/Backend/LayoutModule/DragDrop
 	 */
 	var DragDrop = {
@@ -33,7 +33,8 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 		validDropZoneClass: 'active',
 		dropPossibleHoverClass: 't3-page-ce-dropzone-possible',
 		addContentIdentifier: '.t3js-page-new-ce',
-		clone: true
+		clone: true,
+		originalStyles: ''
 	};
 
 	/**
@@ -79,6 +80,7 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 	 */
 	DragDrop.onDragStart = function ($element) {
 		// Add css class for the drag shadow
+		DragDrop.originalStyles = $element.get(0).style.cssText;
 		$element.children(DragDrop.dragIdentifier).addClass('dragitem-shadow');
 		$element.append('<div class="ui-draggable-copy-message">' + TYPO3.lang['dragdrop.copy.message'] + '</div>');
 		// Hide create new element button
@@ -114,6 +116,10 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 		$element.parents(DragDrop.columnHolderIdentifier).find(DragDrop.addContentIdentifier).show();
 		$element.find(DragDrop.dropZoneIdentifier).show();
 		$element.find('.ui-draggable-copy-message').remove();
+
+		// Reset inline style
+		$element.get(0).style.cssText = DragDrop.originalStyles;
+
 		$(DragDrop.dropZoneIdentifier + '.' + DragDrop.validDropZoneClass).removeClass(DragDrop.validDropZoneClass);
 	};
 
@@ -145,6 +151,7 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 	 *
 	 * @param $draggableElement
 	 * @param $droppableElement
+	 * @param {Event} evt the event
 	 * @private
 	 */
 	DragDrop.onDrop = function ($draggableElement, $droppableElement, evt) {
@@ -227,7 +234,7 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 				}
 			});
 		});
-	}
+	};
 
 	/**
 	 * returns the next "upper" container colPos parameter inside the code
