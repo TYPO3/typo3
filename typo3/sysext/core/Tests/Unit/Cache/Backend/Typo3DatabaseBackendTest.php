@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -485,15 +486,16 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
         $this->setUpMockFrontendOfBackend($backend);
 
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
-        $GLOBALS['TYPO3_DB']
-            ->expects($this->at(0))
-            ->method('exec_TRUNCATEquery')
-            ->with('cf_Testing');
-        $GLOBALS['TYPO3_DB']
-            ->expects($this->at(1))
-            ->method('exec_TRUNCATEquery')
-            ->with('cf_Testing_tags');
+        $connectionProphet = $this->prophesize(Connection::class);
+        $connectionProphet->truncate('cf_Testing')->shouldBeCalled()->willReturn(0);
+        $connectionProphet->truncate('cf_Testing_tags')->shouldBeCalled()->willReturn(0);
+
+        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
+        $connectionPoolProphet->getConnectionForTable(Argument::cetera())->willReturn($connectionProphet->reveal());
+
+        // Two instances are required as there are different tables being cleared
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         $backend->flush();
     }
