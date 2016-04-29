@@ -13,16 +13,16 @@ Also the backend route ``wizard_backend_layout`` has been removed.
 Impact
 ======
 
-Extending or using the ``BackendLayoutWizardController`` will break your installation.
+Extending or using the ``BackendLayoutWizardController`` will break installations.
 
 
 Affected Installations
 ======================
 
-An installation which uses an extension which make use of ``BackendLayoutWizardController``
+Any installation which uses an extension which makes use of ``BackendLayoutWizardController``
 
 
 Migration
 =========
 
-Use the renderType "belayoutwizard", which renders the backend layout wizard inline in FormEngine.
+Use the renderType ``belayoutwizard``, which renders the backend layout wizard inline in FormEngine.

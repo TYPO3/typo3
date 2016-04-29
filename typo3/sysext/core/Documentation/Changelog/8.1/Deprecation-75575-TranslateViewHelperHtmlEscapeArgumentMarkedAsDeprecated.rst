@@ -7,7 +7,7 @@ Description
 
 The htmlEscape argument of the TranslateViewHelper has been marked as deprecated.
 
-This ViewHelper now HTML escapes the translation by default. The argument value has no effect any more.
+This ViewHelper now HTML escapes the translation by default. The argument value has no effect anymore.
 
 
 Impact

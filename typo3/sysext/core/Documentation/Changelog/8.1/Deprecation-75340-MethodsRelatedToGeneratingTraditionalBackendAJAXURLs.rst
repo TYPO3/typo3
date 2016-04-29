@@ -29,6 +29,10 @@ Migration
 Migrate to UriBuilder routes, which can be registered via Configuration/Backend/AjaxRoutes.php,
 and can be linked to like this:
 
+.. code-block:: php
+
 	/** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
 	$uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 	$path = $uriBuilder->buildUriFromRoute('ajax_myroute');
+
+Keep in mind that the newly created Ajax routes need to implement PSR-7 as well.

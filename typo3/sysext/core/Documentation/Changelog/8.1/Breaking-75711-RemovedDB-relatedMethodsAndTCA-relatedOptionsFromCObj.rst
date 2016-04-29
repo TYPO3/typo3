@@ -17,9 +17,9 @@ The following methods have been removed from ``ContentObjectRenderer`` without s
 
 The following TCA options have no effect anymore throughout the TYPO3 Core:
 
-* $TCA[table][ctrl][fe_cruser_id]
-* $TCA[table][ctrl][fe_crgroup_id]
-* $TCA[table][ctrl][fe_admin_lock]
+* $GLOBALS['TCA'][table]['ctrl']['fe_cruser_id']
+* $GLOBALS['TCA'][table]['ctrl']['fe_crgroup_id']
+* $GLOBALS['TCA'][table]['ctrl']['fe_admin_lock']
 
 
 Impact

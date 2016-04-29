@@ -7,8 +7,10 @@ Description
 
 The Reference Index Updater Command Line command has been changed to use a Symfony Command.
 
-To update the reference index on non-composer-mode installations is now called on the command line via
-``typo3/sysext/core/bin/typo3 referenceindex:update``. To just check the reference index, the option ``-c``(alternatively the property "check" can be used) is used like this ``typo3/sysext/core/bin/typo3 referenceindex:update -c``
+The command to update the reference index on non-composer-mode installations is now called on the command line via
+``typo3/sysext/core/bin/typo3 referenceindex:update``.
+
+To just check the reference index, the option ``-c`` (alternatively the property "check" can be used) is used like this ``typo3/sysext/core/bin/typo3 referenceindex:update -c``
 
 For installations set up via composer, the typo3 CLI binary is available in the "bin/" directory directly inside the
 project root.

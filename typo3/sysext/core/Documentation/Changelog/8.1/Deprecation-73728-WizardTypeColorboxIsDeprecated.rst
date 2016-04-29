@@ -7,15 +7,15 @@ Description
 
 The color-picker is now available as dedicated render-type which will integrate
 an inline color-picker widget based on bootstrap. Thus, the old wizard type
-``colorbox`` is deprecated.
+``colorbox`` has been marked as deprecated.
 
 
 Impact
 ======
 
-Using the TCA wizard type ``colorbox`` will trigger an internal deprecation
-message. The possibility to pick the color from a custom image has been removed
-without any substitution as well as the possibility to use color names like
+Using the TCA wizard type ``colorbox`` will trigger a deprecation log entry.
+The possibility to pick the color from a custom image has been removed
+without substitution together with the possibility to use color names like
 "red" or "white".
 
 

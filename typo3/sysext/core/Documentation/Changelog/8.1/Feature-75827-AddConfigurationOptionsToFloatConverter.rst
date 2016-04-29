@@ -5,7 +5,7 @@ Feature: #75827 - Add configuration options to \TYPO3\CMS\Extbase\Property\TypeC
 Description
 ===========
 
-It is now possible to define thousand separator and decimal point for FloatConverter.
+It is now possible to define the thousands separator and decimal point for ``FloatConverter``.
 This can be used to ensure proper sanitation before converting a string to a float.
 
 You can define the configuration for every property like this:

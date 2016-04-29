@@ -15,4 +15,4 @@ The cache clear menu in the backend contains now only two options:
 * Flush all caches
   Clear all system-related caches, including the class loader, localization, extension configuration file caches and opcode caches. Rebuilding this cache may take some time.
 
-Within the install tool the "Clear all cache" button will clear now also the opcode caches if possible.
+Within the install tool the "Clear all cache" button will now also clear the opcode caches if possible.

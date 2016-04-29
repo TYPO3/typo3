@@ -5,7 +5,7 @@ Deprecation: #75621 - GeneralUtility methods
 Description
 ===========
 
-The following methods within GeneralUtility have been marked as deprecated:
+The following methods within ``GeneralUtility`` have been marked as deprecated:
 
 * compat_version()
 * convertMicrotime()
@@ -36,7 +36,7 @@ Any installation with a third-party extension calling one of the methods in its 
 Migration
 =========
 
-For the following methods, use the used PHP methods and constants directly that are used within these methods:
+For the following methods, use the native PHP methods and constants directly that are used within these methods:
 
 * compat_version()
 * convertMicrotime()

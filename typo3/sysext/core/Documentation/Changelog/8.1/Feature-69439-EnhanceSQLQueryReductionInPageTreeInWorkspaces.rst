@@ -7,7 +7,7 @@ Description
 
 The process of determining whether a page has workspace versions can be
 extended by custom application code utilizing hooks. This way, the meaning
-of having versions can be modified by hooks further. For instance the
+of having versions can be further modified by hooks. For instance the
 default behavior of the TYPO3 core is to create a workspace version
 record on persisting the same record in the backend - without any
 actual changes to the data model.

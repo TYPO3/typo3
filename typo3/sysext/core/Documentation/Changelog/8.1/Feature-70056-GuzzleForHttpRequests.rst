@@ -5,20 +5,20 @@ Feature: #70056 - Added PHP library "Guzzle" for HTTP Requests within TYPO3
 Description
 ===========
 
-The PHP library ``Guzzle`` is added as a composer dependency as a feature rich solution for creating HTTP requests
+The PHP library ``Guzzle`` has been added via composer dependency to work as a feature rich solution for creating HTTP requests
 based on the PSR-7 interfaces already used within TYPO3.
 
 Guzzle auto-detects available underlying adapters available on the system, like cURL or stream wrappers and chooses
 the best solution for the system.
 
-A TYPO3-specific PHP class called ``TYPO3\CMS\Core\Http\RequestFactory`` is added as a simplified wrapper to access
+A TYPO3-specific PHP class called ``TYPO3\CMS\Core\Http\RequestFactory`` has been added as a simplified wrapper to access
 Guzzle clients.
 
 All options available under ``$TYPO3_CONF_VARS[HTTP]`` are automatically applied to the Guzzle clients when using the
-RequestFactory class. The options are a subset to the available options on Guzzle (http://docs.guzzlephp.org/en/latest/request-options.html)
+``RequestFactory`` class. The options are a subset to the available options on Guzzle (http://docs.guzzlephp.org/en/latest/request-options.html)
 but can further be extended.
 
-Existing ``$TYPO3_CONF_VARS[HTTP]`` options are removed and/or migrated to the new Guzzle-compliant options.
+Existing ``$TYPO3_CONF_VARS[HTTP]`` options have been removed and/or migrated to the new Guzzle-compliant options.
 
 A full documentation for Guzzle can be found at http://docs.guzzlephp.org/en/latest/.
 
@@ -57,5 +57,5 @@ The ``RequestFactory`` class can be used like this:
       }
    }
 
-Extension authors are advised to use the Request Factory instead of using the Guzzle API directly in order to ensure
+Extension authors are advised to use the ``RequestFactory`` class instead of using the Guzzle API directly in order to ensure
 a clear upgrade path when updates to the underlying API need to be done.

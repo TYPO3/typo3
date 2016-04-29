@@ -5,8 +5,8 @@ Breaking: #75454 - TYPO3_db Constants removed
 Description
 ===========
 
-The PHP constants ``TYPO3_db``, ``TYPO3_db_username``, ``TYPO3_db_password`` and ``TYPO3_db_host`` have been
-removed which were used when a TYPO3 initialized the database connection have been removed.
+The PHP constants ``TYPO3_db``, ``TYPO3_db_username``, ``TYPO3_db_password`` and ``TYPO3_db_host``
+which were used when TYPO3 initialized the database connection have been removed.
 
 
 Impact

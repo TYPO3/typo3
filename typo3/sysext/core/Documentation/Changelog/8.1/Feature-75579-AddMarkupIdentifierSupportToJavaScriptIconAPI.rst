@@ -8,9 +8,9 @@ Description
 It is now possible to request alternative rendering methods also through the
 JavaScript IconAPI for the backend. A new parameter has been added to the ``getIcon``
 function that now accepts the ``markupIdentifier`` for alternative rendering output,
-as its also possible within PHP.
+as it's also possible within PHP.
 
-Currently this is only used from the ``SvgIconProvider`` to deliver inlined SVG`s
+Currently this is only used by the ``SvgIconProvider`` to deliver inline-SVGs
 instead of linking them in an ``img`` tag.
 
 Example 1: default, without alternativeMarkup

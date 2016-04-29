@@ -11,7 +11,7 @@ If neither bodytext nor header were entered in the TextMedia element, the div el
 Impact
 ======
 
-The missing div could cause layout problems, if the layout and CSS depends on it.
+The missing div could cause layout problems, if the layout and CSS depend on it.
 
 
 Affected Installations

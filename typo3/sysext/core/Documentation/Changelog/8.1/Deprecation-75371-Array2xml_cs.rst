@@ -28,8 +28,8 @@ Use :php:`GeneralUtility::array2xml()` instead. The XML declaration must be writ
 Example code:
 .. code-block:: php
 
-	// Deprecated
-	$bodyText = GeneralUtility::array2xml_cs($array, 'phparray');
+   // Deprecated
+   $bodyText = GeneralUtility::array2xml_cs($array, 'phparray');
 
-	// Migrated
-	$bodyText = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF . GeneralUtility::array2xml($array, '', 0, 'phparray');
+   // Migrated
+   $bodyText = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF . GeneralUtility::array2xml($array, '', 0, 'phparray');

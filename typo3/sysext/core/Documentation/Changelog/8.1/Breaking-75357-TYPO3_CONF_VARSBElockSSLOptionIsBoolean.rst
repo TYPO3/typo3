@@ -22,7 +22,7 @@ Impact
 ======
 
 If the option was set previously to "1", the exception is not thrown but a redirect will now happen.
-The same behaviour as the existing option "2".
+The same behavior as the existing option "2".
 
 
 Affected Installations

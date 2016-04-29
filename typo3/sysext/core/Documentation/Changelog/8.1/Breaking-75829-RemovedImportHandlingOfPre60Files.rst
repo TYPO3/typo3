@@ -13,7 +13,7 @@ The following public method has been removed: :php`\TYPO3\CMS\Impexp\Import::fix
 Impact
 ======
 
-Importing files into TYPO3 v8 that were created from a TYPO3 4.x installations will result in unexpected behaviour,
+Importing files into TYPO3 v8 that were created from a TYPO3 4.x installations will result in unexpected behavior,
 especially when dealing with files and relations.
 
 Calling the PHP method above will result in a fatal PHP error.
@@ -22,7 +22,7 @@ Calling the PHP method above will result in a fatal PHP error.
 Affected Installations
 ======================
 
-Any installation using the t3d import functionality for importing files that are created from a TYPO3 instance older 
+Any installation using the t3d import functionality for importing files that were created from a TYPO3 instance older
 than TYPO3 6.0.0.
 
 

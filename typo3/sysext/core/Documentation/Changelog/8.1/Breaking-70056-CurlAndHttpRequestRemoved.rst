@@ -54,9 +54,9 @@ Impact
 
 Calling the mentioned classes above will result in a fatal PHP error.
 
-Using the options in custom PHP code will result in unexpected behaviour as the options are non-existent and empty.
+Using the options in custom PHP code will result in unexpected behavior as the options are non-existent and empty.
 
-PHP code depending on the removed PEAR library "Http_Request2" will result in unexpected behaviour and possibly in a
+Using PHP code that depends on the removed PEAR library "Http_Request2" will result in unexpected behaviour and possibly a
 fatal PHP error.
 
 
@@ -64,18 +64,18 @@ Affected Installations
 ======================
 
 All 3rd party extensions calling the mentioned classes directly or using the configuration options directly, as well
-as installations depending on the PEAR libary "Http_Request2".
+as installations depending on the PEAR library "Http_Request2".
 
 
 Migration
 =========
 
-For PHP code previously using the HttpRequest and Download classes a new object-oriented PSR-7-based approach is
+For PHP code previously using the ``HttpRequest`` and ``Download`` classes a new object-oriented PSR-7-based approach is
 introduced, see the Guzzle Feature integration documentation for more details. A new PHP class
-``TYPO3\CMS\Core\Http\RequestFactory`` which generates PSR-7 compliant request objects, helps in simplifying the
+``TYPO3\CMS\Core\Http\RequestFactory`` which generates PSR-7 compliant request objects helps in simplifying the
 migration process.
 
-All still necessary options are migrated to new options within ``$TYPO3_CONF_VARS[HTTP]`` when the install tool is run.
+All still necessary options will be migrated to new options within ``$TYPO3_CONF_VARS[HTTP]`` when the install tool is run.
 
 In special cases, the options ``$TYPO3_CONF_VARS[HTTP][ssl_verify_host]``, ``$TYPO3_CONF_VARS[HTTP][proxy_auth_scheme]``
 and ``$TYPO3_CONF_VARS[HTTP][proxy_host]`` need to migrated manually to the newly available options.

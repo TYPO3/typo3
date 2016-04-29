@@ -5,7 +5,7 @@ Feature: #75386 - Get identifier in slide callback
 Description
 ===========
 
-The callback of :js:`Wizard.addSlide()` has now a new parameter ``identifier``.
+The callback of :js:`Wizard.addSlide()` now has a new parameter ``identifier``.
 
 
 Impact
