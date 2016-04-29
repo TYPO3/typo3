@@ -9,7 +9,7 @@ It is now possible to configure the maximum number of files shown per page in th
 
 .. code-block:: typoscript
 
-   mod.file_list {
+   options.file_list {
       filesPerPage = 40
    }
 

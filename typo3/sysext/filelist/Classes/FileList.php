@@ -197,7 +197,7 @@ class FileList extends AbstractRecordList
         $this->fileListController = $fileListController;
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
-        $modTSconfig = BackendUtility::getModTSconfig(0, 'mod.file_list');
+        $modTSconfig = BackendUtility::getModTSconfig(0, 'options.file_list');
         if (!empty($modTSconfig['properties']['filesPerPage'])) {
             $this->iLimit = MathUtility::forceIntegerInRange($modTSconfig['properties']['filesPerPage'], 1);
         }
