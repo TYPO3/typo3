@@ -4021,13 +4021,13 @@ class TypoScriptFrontendController
                 case 'mouseOver':
                     $this->additionalJavaScript[$key] = '		// JS function for mouse-over
 		function over(name, imgObj) {	//
-			if (version == "n3" && document[name]) {document[name].src = eval(name+"_h.src");}
+			if (document[name]) {document[name].src = eval(name+"_h.src");}
 			else if (document.getElementById && document.getElementById(name)) {document.getElementById(name).src = eval(name+"_h.src");}
 			else if (imgObj)	{imgObj.src = eval(name+"_h.src");}
 		}
 			// JS function for mouse-out
 		function out(name, imgObj) {	//
-			if (version == "n3" && document[name]) {document[name].src = eval(name+"_n.src");}
+			if (document[name]) {document[name].src = eval(name+"_n.src");}
 			else if (document.getElementById && document.getElementById(name)) {document.getElementById(name).src = eval(name+"_n.src");}
 			else if (imgObj)	{imgObj.src = eval(name+"_n.src");}
 		}';
