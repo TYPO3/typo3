@@ -61,6 +61,9 @@ class BackendUserActionController extends ActionController
             $this->registerDocheaderButtons();
             $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
         }
+        if ($view instanceof BackendTemplateView) {
+            $view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        }
     }
 
     /**
