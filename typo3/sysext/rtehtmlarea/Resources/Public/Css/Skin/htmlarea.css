@@ -356,10 +356,11 @@
 }
 /* Selectors for the ContextMenu plugin */
 .htmlarea-context-menu {
-	background-color:#EFEFF4;
 	color:#212424;
 	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
 	font-size:10px;
+	background-color: #FFFFFF;
+	border-color: #D7D7D7;
 }
 .htmlarea-context-menu ul {
 	list-style: none;
@@ -367,7 +368,7 @@
 }
 .htmlarea-context-menu li {
 	margin: 0;
-	padding: 0;
+	padding: 2px 0;
 	border-width: 0;
 }
 .htmlarea-context-menu a {
@@ -375,19 +376,45 @@
 }
 .htmlarea-context-menu .button {
 	background-color: transparent;
-	margin: 0 2px 0 0;
 	padding-top: 1px;
 }
 .htmlarea-context-menu .separator {
-	border-top: 1px solid #A2AAB8;
+	border-top: 1px solid #D7D7D7
 }
 .htmlarea-context-menu .hover {
-	background-image: url("../../Images/alt_menu_mainitem_bg.gif");
-	background-repeat: repeat-x;
-	color: white;
-	margin: 0 2px 0 0;
 	padding-top: 1px;
 	border-color: #A2AAB8;
+}
+.htmlarea-context-menu .x-menu-scroller {
+	background: #F5F5F5;
+	height: 20px;
+	line-height: 20px;
+	position: relative;
+}
+.htmlarea-context-menu .x-menu-scroller.x-menu-scroller-top {
+	border-bottom: 1px solid #D7D7D7;
+}
+.htmlarea-context-menu .x-menu-scroller.x-menu-scroller-bottom {
+	border-top: 1px solid #D7D7D7;
+}
+.htmlarea-context-menu .x-menu-scroller.x-menu-scroller-top:after,
+.htmlarea-context-menu .x-menu-scroller.x-menu-scroller-bottom:after {
+	font-family: 'FontAwesome';
+	font-size: 12px;
+	display: block;
+	position: absolute;
+	margin-left: 50%;
+	top: 0;
+}
+.htmlarea-context-menu .x-menu-scroller.x-menu-scroller-top:after {
+	content: "\f0d8";
+}
+.htmlarea-context-menu .x-menu-scroller.x-menu-scroller-bottom:after {
+	content: "\f0d7";
+}
+.htmlarea-context-menu .x-menu-item-active,
+.htmlarea-context-menu .x-menu-item.hover {
+	background-color: #D7D7D7;
 }
 .htmlarea-context-menu .x-menu-item-icon {
 	background-image: url("../../Images/Sprites/actions.png");
