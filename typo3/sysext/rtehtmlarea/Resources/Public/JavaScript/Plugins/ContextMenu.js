@@ -66,6 +66,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			this.menu = new Ext.menu.Menu(Util.applyIf({
 				cls: 'htmlarea-context-menu',
 				defaultType: 'menuitem',
+				maxHeight: this.editor.iframe.height - this.editor.document.documentElement.clientHeight,
 				listeners: {
 					itemClick: {
 						fn: this.onItemClick,
@@ -86,6 +87,56 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			Event.on(this.editor.document.documentElement, 'contextmenu', function (event) { return self.show(event, event.target); });
 			// Monitor editor being unloaded
 			Event.one(this.editor.iframe.getIframeWindow(), 'unload', function (event) { self.onBeforeDestroy(event); return  true; });
+
+			this.mousePosition = {
+				x: 0,
+				y: 0
+			};
+			var onMouseUpdate = function(e) {
+				self.mousePosition.x = e.pageX;
+				self.mousePosition.y = e.pageY;
+			};
+			Event.on(this.editor.document.documentElement, 'mousemove', onMouseUpdate);
+			Event.on(this.editor.document.documentElement, 'mouseenter', onMouseUpdate);
+
+			this.menu.constrainScroll = this.constrainScroll;
+		},
+
+		/**
+		 * This overrides the constrainScroll method of Ext.menu.Menu. The only difference here is that the Y position
+		 * and the height is NOT recalculated even if maxHeight is set.
+		 *
+		 * @param {Number} y
+		 * @returns {Number}
+		 */
+		constrainScroll: function(y) {
+			var max, full = this.ul.setHeight('auto').getHeight(),
+				returnY = y, normalY, parentEl, scrollTop, viewHeight;
+			if (this.floating){
+				parentEl = Ext.fly(this.el.dom.parentNode);
+				scrollTop = parentEl.getScroll().top;
+				viewHeight = parentEl.getViewSize().height;
+
+				normalY = y - scrollTop;
+				max = this.maxHeight ? this.maxHeight : viewHeight - normalY;
+			} else {
+				max = this.getHeight();
+			}
+
+			if (this.maxHeight){
+				max = Math.min(this.maxHeight, max);
+			}
+			if (full > max && max > 0){
+				this.activeMax = max - this.scrollerHeight * 2 - this.el.getFrameWidth('tb') - Ext.num(this.el.shadowOffset, 0);
+				this.ul.setHeight(this.activeMax);
+				this.createScrollers();
+				this.el.select('.x-menu-scroller').setDisplayed('');
+			} else {
+				this.ul.setHeight(full);
+				this.el.select('.x-menu-scroller').setDisplayed('none');
+			}
+			this.ul.dom.scrollTop = 0;
+			return returnY;
 		},
 
 		/**
@@ -119,7 +170,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 							var button = this.getButton(itemId);
 							// xtype is set through applied button configuration
 							if (button && button.xtype === 'htmlareabutton' && !button.hideInContextMenu) {
-								var itemId = button.getItemId();
+								itemId = button.getItemId();
 								itemsConfig.push({
 									itemId: itemId,
 									cls: 'button',
@@ -190,9 +241,11 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			this.showContextItems(target);
 			this.ranges = this.editor.getSelection().getRanges();
 			// Show the context menu
-			var targetPosition = Dom.getPosition(target);
 			var iframePosition = Dom.getPosition(this.editor.iframe.getEl());
-			this.menu.showAt([targetPosition.x + iframePosition.x, targetPosition.y + iframePosition.y]);
+			this.menu.showAt([
+				iframePosition.x + this.mousePosition.x,
+				document.body.scrollTop + iframePosition.y + this.mousePosition.y
+			]);
 		},
 
 		/**
