@@ -66,6 +66,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			this.menu = new Ext.menu.Menu(Util.applyIf({
 				cls: 'htmlarea-context-menu',
 				defaultType: 'menuitem',
+				shadow: false,
 				maxHeight: this.editor.iframe.height - this.editor.document.documentElement.clientHeight,
 				listeners: {
 					itemClick: {
