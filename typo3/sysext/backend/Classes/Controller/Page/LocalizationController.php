@@ -128,16 +128,21 @@ class LocalizationController
         }
 
         $records = [];
-        $databaseConnection = $this->getDatabaseConnection();
-        $res = $this->localizationRepository->getRecordsToCopyDatabaseResult($params['pageId'], $params['colPos'], $params['destLanguageId'], $params['languageId'], '*');
-        while ($row = $databaseConnection->sql_fetch_assoc($res)) {
+        $result = $this->localizationRepository->getRecordsToCopyDatabaseResult(
+            $params['pageId'],
+            $params['colPos'],
+            $params['destLanguageId'],
+            $params['languageId'],
+            '*'
+        );
+
+        while ($row = $result->fetch()) {
             $records[] = [
                 'icon' => $this->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render(),
                 'title' => $row[$GLOBALS['TCA']['tt_content']['ctrl']['label']],
                 'uid' => $row['uid']
             ];
         }
-        $databaseConnection->sql_free_result($res);
 
         $response->getBody()->write(json_encode($records));
         return $response;
@@ -159,14 +164,12 @@ class LocalizationController
         $pageId = (int)$params['pageId'];
         $colPos = (int)$params['colPos'];
         $languageId = (int)$params['languageId'];
-        $databaseConnection = $this->getDatabaseConnection();
 
-        $res = $this->localizationRepository->getRecordsToCopyDatabaseResult($pageId, $colPos, $languageId, 'uid');
+        $result = $this->localizationRepository->getRecordsToCopyDatabaseResult($pageId, $colPos, $languageId, 'uid');
         $uids = [];
-        while ($row = $databaseConnection->sql_fetch_assoc($res)) {
+        while ($row = $result->fetch()) {
             $uids[] = (int)$row['uid'];
         }
-        $databaseConnection->sql_free_result($res);
 
         $response->getBody()->write(json_encode($uids));
         return $response;
@@ -264,15 +267,5 @@ class LocalizationController
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], $cmd);
         $dataHandler->process_cmdmap();
-    }
-
-    /**
-     * Returns the database connection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
