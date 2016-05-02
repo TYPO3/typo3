@@ -63,7 +63,17 @@ class ConfigurationView extends BaseScriptClass
                 'password' => '******',
                 'port' => '******',
                 'socket' => '******',
-                'username' => '******'
+                'username' => '******',
+                'Connections' => [
+                    'Default' => [
+                        'dbname' => '******',
+                        'host' => '******',
+                        'password' => '******',
+                        'port' => '******',
+                        'user' => '******',
+                        'unix_socket' => '******',
+                    ],
+                ],
             ],
             'SYS' => [
                 'encryptionKey' => '******'
@@ -78,6 +88,13 @@ class ConfigurationView extends BaseScriptClass
     {
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->getRequest()->setControllerExtensionName('lowlevel');
+        // Prepare blinding for all database connection types
+        foreach (array_keys($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']) as $connectionName) {
+            if ($connectionName !== 'Default') {
+                $this->blindedConfigurationOptions['TYPO3_CONF_VARS']['DB']['Connections'][$connectionName] =
+                    $this->blindedConfigurationOptions['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
+            }
+        }
     }
 
     /**
@@ -234,7 +251,7 @@ class ConfigurationView extends BaseScriptClass
         // mask sensitive information
         $varName = trim($arrayBrowser->varName, '$');
         if (isset($this->blindedConfigurationOptions[$varName])) {
-            ArrayUtility::mergeRecursiveWithOverrule($theVar, $this->blindedConfigurationOptions[$varName]);
+            ArrayUtility::mergeRecursiveWithOverrule($theVar, ArrayUtility::intersectRecursive($this->blindedConfigurationOptions[$varName], $theVar));
         }
         $tree = $arrayBrowser->tree($theVar, '', '');
         $this->view->assign('tree', $tree);
