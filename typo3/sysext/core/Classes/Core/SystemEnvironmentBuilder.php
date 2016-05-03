@@ -85,8 +85,8 @@ class SystemEnvironmentBuilder
     protected static function defineBaseConstants()
     {
         // This version, branch and copyright
-        define('TYPO3_version', '8.1.1-dev');
-        define('TYPO3_branch', '8.1');
+        define('TYPO3_version', '8.2.0-dev');
+        define('TYPO3_branch', '8.2');
         define('TYPO3_copyright_year', '1998-2016');
 
         // TYPO3 external links
