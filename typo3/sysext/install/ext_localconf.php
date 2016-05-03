@@ -31,6 +31,7 @@ $signalSlotDispatcher->connect(
     \TYPO3\CMS\Core\Category\CategoryRegistry::class,
     'addCategoryDatabaseSchemaToTablesDefinition'
 );
+unset($signalSlotDispatcher);
 
 // Do not delete this wizard. This makes sure new installations get the TER repository set in the database.
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Install\Updates\ExtensionManagerTables::class]

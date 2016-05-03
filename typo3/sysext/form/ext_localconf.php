@@ -35,13 +35,13 @@ if (TYPO3_MODE === 'BE') {
     array('Frontend' => 'show, confirmation, dispatchConfirmationButtonClick, process, afterProcess')
 );
 
-$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-$signalSlotDispatcher->connect(
-    \TYPO3\CMS\Form\Domain\Builder\FormBuilder::class,
-    'txFormHandleIncomingValues',
-    \TYPO3\CMS\Form\Hooks\HandleIncomingFormValues::class,
-    'handleIncomingFormValues'
-);
+\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)
+    ->connect(
+        \TYPO3\CMS\Form\Domain\Builder\FormBuilder::class,
+        'txFormHandleIncomingValues',
+        \TYPO3\CMS\Form\Hooks\HandleIncomingFormValues::class,
+        'handleIncomingFormValues'
+    );
 
 // Register the extbase plugin as shorthand for typoscript 10 = FORM
 $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['FORM'] = \TYPO3\CMS\Form\ContentObject\FormContentObject::class;

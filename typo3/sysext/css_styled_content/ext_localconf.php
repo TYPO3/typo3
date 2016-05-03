@@ -32,12 +32,12 @@ if (TYPO3_MODE === 'BE') {
             \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/PageTSconfig/NewContentElementWizard.ts">');
         }
 
-        $dispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-        $dispatcher->connect(
-            \TYPO3\CMS\Extensionmanager\Controller\ConfigurationController::class,
-            'afterExtensionConfigurationWrite',
-            \TYPO3\CMS\CssStyledContent\Hooks\TcaCacheClearing::class,
-            'clearTcaCache'
-        );
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)
+            ->connect(
+                \TYPO3\CMS\Extensionmanager\Controller\ConfigurationController::class,
+                'afterExtensionConfigurationWrite',
+                \TYPO3\CMS\CssStyledContent\Hooks\TcaCacheClearing::class,
+                'clearTcaCache'
+            );
     });
 }

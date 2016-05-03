@@ -44,9 +44,11 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] = a
     'tif'  => \TYPO3\CMS\IndexedSearch\FileContentParser::class
 );
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['use_tables'] = 'index_phash,index_fulltext,index_rel,index_words,index_section,index_grlist,index_stat_search,index_stat_word,index_debug,index_config';
+
 // unserializing the configuration so we can use it here:
-$_EXTCONF = unserialize($_EXTCONF, ['allowed_classes' => false]);
+$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'], ['allowed_classes' => false]);
 // Use the advanced doubleMetaphone parser instead of the internal one (usage of metaphone parsers is generally disabled by default)
-if (isset($_EXTCONF['enableMetaphoneSearch']) && (int)$_EXTCONF['enableMetaphoneSearch'] == 2) {
+if (isset($extConf['enableMetaphoneSearch']) && (int)$extConf['enableMetaphoneSearch'] == 2) {
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone'] = \TYPO3\CMS\IndexedSearch\Utility\DoubleMetaPhoneUtility::class;
 }
+unset($extConf);

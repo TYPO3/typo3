@@ -33,12 +33,14 @@ $GLOBALS['PAGES_TYPES'] = array(
     ),
     'default' => array(
         'type' => 'web',
-        'allowedTables' => 'pages',
+        'allowedTables' => 'pages,sys_category,sys_file_reference,sys_file_collection',
         'onlyAllowedTables' => '0'
     ),
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('sys_category,sys_file_reference,sys_file_collection');
+/** @var \TYPO3\CMS\Core\Resource\Driver\DriverRegistry $registry */
+\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class)
+    ->addDriversToTCA();
 
 /**
  * $TBE_MODULES contains the structure of the backend modules as they are

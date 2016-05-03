@@ -1,8 +1,6 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Indexed Search (Extbase & Fluid based)');
-
 if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'TYPO3.CMS.IndexedSearch',

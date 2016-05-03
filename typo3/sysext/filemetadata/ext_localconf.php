@@ -18,3 +18,4 @@ $iconRegistry->registerIcon(
     \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
     ['name' => 'eye']
 );
+unset($iconRegistry);
