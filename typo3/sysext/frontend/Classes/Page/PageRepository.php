@@ -360,7 +360,7 @@ class PageRepository
         }
         $row = null;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'])) {
-            foreach ($pagesInput as $origPage) {
+            foreach ($pagesInput as &$origPage) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'] as $classRef) {
                     $hookObject = GeneralUtility::getUserObj($classRef);
                     if (!$hookObject instanceof PageRepositoryGetPageOverlayHookInterface) {
@@ -369,6 +369,7 @@ class PageRepository
                     $hookObject->getPageOverlay_preProcess($origPage, $lUid, $this);
                 }
             }
+            unset($origPage);
         }
         // If language UID is different from zero, do overlay:
         if ($lUid) {
