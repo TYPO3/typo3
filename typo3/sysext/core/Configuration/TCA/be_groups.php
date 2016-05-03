@@ -129,7 +129,7 @@ return array(
                 ),
                 'size' => 17,
                 'maxitems' => 17,
-                'default' => 'readFolder,writeFolder,addFolder,renameFolder,moveFolder,deleteFolder,readFile,writeFile,addFile,renameFile,replaceFile,moveFile,files_copy,deleteFile'
+                'default' => 'readFolder,writeFolder,addFolder,renameFolder,moveFolder,deleteFolder,readFile,writeFile,addFile,renameFile,replaceFile,moveFile,copyFile,deleteFile'
             )
         ),
         'workspace_perms' => array(
