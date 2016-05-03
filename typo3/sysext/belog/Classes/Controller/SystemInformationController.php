@@ -66,10 +66,11 @@ class SystemInformationController extends AbstractController
 
         if ($count > 0) {
             $systemInformationToolbarItem->addSystemMessage(
-                sprintf(LocalizationUtility::translate('systemmessage.errorsInPeriod', 'belog'), $count, BackendUtility::getModuleUrl('system_BelogLog')),
+                sprintf(LocalizationUtility::translate('systemmessage.errorsInPeriod', 'belog'), $count, BackendUtility::getModuleUrl('system_BelogLog', ['tx_belog_system_beloglog' => ['constraint' => ['action' => -1]]])),
                 InformationStatus::STATUS_ERROR,
                 $count,
-                'system_BelogLog'
+                'system_BelogLog',
+                http_build_query(['tx_belog_system_beloglog' => ['constraint' => ['action' => -1]]])
             );
         }
     }

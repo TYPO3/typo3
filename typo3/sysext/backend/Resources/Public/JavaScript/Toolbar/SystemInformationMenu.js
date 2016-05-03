@@ -122,6 +122,7 @@ define([
 		var storedSystemInformationSettings = {},
 			moduleStorageObject = {},
 			requestedModule = $(e.currentTarget).data('modulename'),
+			moduleParams = $(e.currentTarget).data('moduleparams'),
 			timestamp = Math.floor((new Date()).getTime() / 1000);
 
 		if (PersistentStorage.isset('systeminformation')) {
@@ -133,7 +134,7 @@ define([
 		var $ajax = PersistentStorage.set('systeminformation', JSON.stringify(storedSystemInformationSettings));
 		$ajax.done(function() {
 			// finally, open the module now
-			TYPO3.ModuleMenu.App.showModule(requestedModule);
+			TYPO3.ModuleMenu.App.showModule(requestedModule, moduleParams);
 			Viewport.Topbar.refresh();
 		});
 	};

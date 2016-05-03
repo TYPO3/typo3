@@ -274,8 +274,9 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      * @param string $status The status of this system message
      * @param int $count Will be added to the total count
      * @param string $module The associated module
+     * @param string $params Query string with additional parameters
      */
-    public function addSystemMessage($text, $status = InformationStatus::STATUS_OK, $count = 0, $module = '')
+    public function addSystemMessage($text, $status = InformationStatus::STATUS_OK, $count = 0, $module = '', $params = '')
     {
         $this->totalCount += (int)$count;
 
@@ -288,6 +289,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
 
         $this->systemMessages[] = [
             'module' => $module,
+            'params' => $params,
             'count' => (int)$count,
             'status' => $messageSeverity,
             'text' => $text

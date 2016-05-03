@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Belog\Controller;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 
 /**
  * Abstract class to show log entries from sys_log
@@ -137,6 +138,8 @@ abstract class AbstractController extends ActionController
         if (!isset($this->settings['timeFormat'])) {
             $this->settings['timeFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
         }
+        $constraintConfiguration = $this->arguments->getArgument('constraint')->getPropertyMappingConfiguration();
+        $constraintConfiguration->allowProperties('action')->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, true);
     }
 
     /**
