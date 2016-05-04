@@ -93,7 +93,10 @@ class NodeFactory
     public function create(array $data)
     {
         if (empty($data['renderType'])) {
-            throw new Exception('No renderType definition found', 1431452406);
+            throw new Exception(
+                'Missing "renderType" in TCA of field "[' . $data['tableName'] . '][' . $data['fieldName'] . ']".',
+                1431452406
+            );
         }
         $type = $data['renderType'];
 
