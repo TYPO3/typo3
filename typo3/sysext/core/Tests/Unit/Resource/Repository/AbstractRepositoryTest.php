@@ -13,6 +13,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case
@@ -28,6 +34,18 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function createDatabaseMock()
     {
+        $connectionProphet = $this->prophesize(Connection::class);
+        $connectionProphet->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
+
+        $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
+        $queryBuilderProphet->expr()->willReturn(
+            GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
+        );
+
+        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
+        $connectionPoolProphet->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+
         $this->mockedDb = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $GLOBALS['TYPO3_DB'] = $this->mockedDb;
     }
@@ -65,6 +83,8 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getWhereClauseForEnabledFieldsIncludesDeletedCheckInBackend()
     {
+        $this->createDatabaseMock();
+
         $GLOBALS['TCA'] = array(
             'sys_file_storage' => array(
                 'ctrl' => array(
@@ -81,7 +101,7 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             false
         );
         $result = $storageRepositoryMock->_call('getWhereClauseForEnabledFields');
-        $this->assertContains('sys_file_storage.deleted=0', $result);
+        $this->assertContains('sys_file_storage.deleted = 0', $result);
     }
 
     /**

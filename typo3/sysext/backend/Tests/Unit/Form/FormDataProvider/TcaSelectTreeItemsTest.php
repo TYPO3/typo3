@@ -14,11 +14,16 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Driver\Statement;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TableConfigurationTree;
@@ -60,19 +65,81 @@ class TcaSelectTreeItemsTest extends UnitTestCase
     }
 
     /**
+     * Setup a mock database connection with expectations for
+     * the testsuite.
+     */
+    protected function mockDatabaseConnection()
+    {
+        $connectionProphet = $this->prophesize(Connection::class);
+        $connectionProphet->quote(Argument::cetera())->will(function ($arguments) {
+            return "'" . $arguments[0] . "'";
+        });
+        $connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($arguments) {
+            return '`' . $arguments[0] . '`';
+        });
+
+        /** @var Statement|ObjectProphecy $statementProphet */
+        $statementProphet = $this->prophesize(Statement::class);
+        $statementProphet->errorInfo()->shouldBeCalled();
+        $statementProphet->fetch()->shouldBeCalled();
+
+        $restrictionProphet = $this->prophesize(DefaultRestrictionContainer::class);
+        $restrictionProphet->removeAll()->willReturn($restrictionProphet->reveal());
+        $restrictionProphet->add(Argument::cetera())->willReturn($restrictionProphet->reveal());
+
+        $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
+        $queryBuilderProphet->expr()->willReturn(
+            GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
+        );
+        $queryBuilderProphet->getRestrictions()->willReturn($restrictionProphet->reveal());
+        $queryBuilderProphet->quoteIdentifier(Argument::cetera())->will(function ($arguments) {
+            return '`' . $arguments[0] . '`';
+        });
+
+        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
+        $connectionPoolProphet->getConnectionForTable('foreignTable')
+            ->willReturn($connectionProphet->reveal());
+        $connectionPoolProphet->getQueryBuilderForTable('foreignTable')
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphet->reveal());
+
+        $queryBuilderProphet->select('foreignTable.uid')
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->from('foreignTable')
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->from('pages')
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->where(' 1=1', '')
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->andWhere('`pages.uid` = `foreignTable.pid`')
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->execute()
+            ->shouldBeCalled()
+            ->willReturn($statementProphet->reveal());
+
+        # Two instances are needed due to the push/pop behavior of addInstance()
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+    }
+
+    /**
      * @test
      */
     public function addDataAddsTreeConfigurationForExtJs()
     {
         $GLOBALS['TCA']['foreignTable'] = [];
 
-        /** @var DatabaseConnection|ObjectProphecy $database */
-        $database = $this->prophesize(DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB'] = $database->reveal();
-
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+        $backendUserProphecy->getPagePermsClause(Argument::cetera())->willReturn(' 1=1');
+
+        $this->mockDatabaseConnection();
 
         /** @var  DatabaseTreeDataProvider|ObjectProphecy $treeDataProviderProphecy */
         $treeDataProviderProphecy = $this->prophesize(DatabaseTreeDataProvider::class);
@@ -124,13 +191,12 @@ class TcaSelectTreeItemsTest extends UnitTestCase
     {
         $GLOBALS['TCA']['foreignTable'] = [];
 
-        /** @var DatabaseConnection|ObjectProphecy $database */
-        $database = $this->prophesize(DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB'] = $database->reveal();
-
         /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+        $backendUserProphecy->getPagePermsClause(Argument::cetera())->willReturn(' 1=1');
+
+        $this->mockDatabaseConnection();
 
         /** @var DatabaseTreeDataProvider|ObjectProphecy $treeDataProviderProphecy */
         $treeDataProviderProphecy = $this->prophesize(DatabaseTreeDataProvider::class);

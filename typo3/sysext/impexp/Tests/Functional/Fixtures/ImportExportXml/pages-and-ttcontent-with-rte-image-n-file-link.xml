@@ -7,7 +7,7 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>Root</title>
-					<size>162</size>
+					<size>138</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
 				</rec>
@@ -15,7 +15,7 @@
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Dummy 1-2</title>
-					<size>167</size>
+					<size>143</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
 				</rec>
@@ -25,7 +25,7 @@
 					<uid>1</uid>
 					<pid>2</pid>
 					<title>Text element with image in RTE</title>
-					<size>464</size>
+					<size>444</size>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array">
 						<softref_element index="bodytext:rtehtmlarea_images:1" type="array">
@@ -58,7 +58,7 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>typo3_image2.jpg</title>
-					<size>558</size>
+					<size>528</size>
 					<relationLevel>1</relationLevel>
 					<relations index="rels" type="array">
 						<element index="sys_file_storage:1" type="array">
@@ -72,7 +72,7 @@
 					<uid>2</uid>
 					<pid>0</pid>
 					<title>typo3_image3.jpg</title>
-					<size>558</size>
+					<size>528</size>
 					<relationLevel>1</relationLevel>
 					<relations index="rels" type="array">
 						<element index="sys_file_storage:1" type="array">
@@ -88,7 +88,7 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>fileadmin/ (auto-created)</title>
-					<size>722</size>
+					<size>694</size>
 					<relationLevel>2</relationLevel>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
@@ -145,38 +145,38 @@
 	<records type="array">
 		<tablerow index="pages:1" type="array">
 			<fieldlist index="data" type="array">
-				<field index="uid">1</field>
-				<field index="pid">0</field>
-				<field index="deleted">0</field>
-				<field index="perms_everybody">15</field>
-				<field index="hidden">0</field>
+				<field index="uid" type="integer">1</field>
+				<field index="pid" type="integer">0</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="perms_everybody" type="integer">15</field>
+				<field index="hidden" type="integer">0</field>
 				<field index="title">Root</field>
-				<field index="doktype">1</field>
+				<field index="doktype" type="integer">1</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="pages:2" type="array">
 			<fieldlist index="data" type="array">
-				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="deleted">0</field>
-				<field index="perms_everybody">15</field>
-				<field index="hidden">0</field>
+				<field index="uid" type="integer">2</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="perms_everybody" type="integer">15</field>
+				<field index="hidden" type="integer">0</field>
 				<field index="title">Dummy 1-2</field>
-				<field index="doktype">1</field>
+				<field index="doktype" type="integer">1</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tt_content:1" type="array">
 			<fieldlist index="data" type="array">
-				<field index="uid">1</field>
-				<field index="pid">2</field>
-				<field index="t3ver_oid">0</field>
-				<field index="hidden">0</field>
+				<field index="uid" type="integer">1</field>
+				<field index="pid" type="integer">2</field>
+				<field index="t3ver_oid" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
 				<field index="CType">text</field>
 				<field index="header">Text element with image in RTE</field>
 				<field index="bodytext">&lt;img src=&quot;fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg&quot; title=&quot;typo3_image2.jpg&quot; data-htmlarea-file-uid=&quot;1&quot; height=&quot;225&quot; width=&quot;300&quot; alt=&quot;&quot; style=&quot;&quot; /&gt;&amp;nbsp;&amp;nbsp;And here a &lt;link file:2 - download &quot;Initiates file download&quot;&gt;link to an image&lt;/link&gt;.</field>
-				<field index="deleted">0</field>
+				<field index="deleted" type="integer">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="bodytext" type="array">
@@ -212,11 +212,11 @@
 		</tablerow>
 		<tablerow index="sys_file:1" type="array">
 			<fieldlist index="data" type="array">
-				<field index="uid">1</field>
-				<field index="pid">0</field>
-				<field index="storage">1</field>
+				<field index="uid" type="integer">1</field>
+				<field index="pid" type="integer">0</field>
+				<field index="storage" type="integer">1</field>
 				<field index="type">2</field>
-				<field index="metadata">0</field>
+				<field index="metadata" type="integer">0</field>
 				<field index="identifier">/user_upload/typo3_image2.jpg</field>
 				<field index="identifier_hash">f90bb9a35622f35b5279195e324eddbaec8164b2</field>
 				<field index="folder_hash">19669f1e02c2f16705ec7587044c66443be70725</field>
@@ -224,9 +224,9 @@
 				<field index="mime_type">image/jpeg</field>
 				<field index="name">typo3_image2.jpg</field>
 				<field index="sha1">da9acdf1e105784a57bbffec9520969578287797</field>
-				<field index="size">7958</field>
-				<field index="creation_date">1389878273</field>
-				<field index="modification_date">1389878273</field>
+				<field index="size" type="integer">7958</field>
+				<field index="creation_date" type="integer">1389878273</field>
+				<field index="modification_date" type="integer">1389878273</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="storage" type="array">
@@ -242,11 +242,11 @@
 		</tablerow>
 		<tablerow index="sys_file:2" type="array">
 			<fieldlist index="data" type="array">
-				<field index="uid">2</field>
-				<field index="pid">0</field>
-				<field index="storage">1</field>
+				<field index="uid" type="integer">2</field>
+				<field index="pid" type="integer">0</field>
+				<field index="storage" type="integer">1</field>
 				<field index="type">2</field>
-				<field index="metadata">0</field>
+				<field index="metadata" type="integer">0</field>
 				<field index="identifier">/user_upload/typo3_image3.jpg</field>
 				<field index="identifier_hash">25777b72e5e1cbed2d1b33e4fe5b737304b5bd28</field>
 				<field index="folder_hash">19669f1e02c2f16705ec7587044c66443be70725</field>
@@ -254,9 +254,9 @@
 				<field index="mime_type">image/jpeg</field>
 				<field index="name">typo3_image3.jpg</field>
 				<field index="sha1">e873c1e2ffd0f191e183a1057de3eef4d62e782d</field>
-				<field index="size">5565</field>
-				<field index="creation_date">1393346082</field>
-				<field index="modification_date">1392907534</field>
+				<field index="size" type="integer">5565</field>
+				<field index="creation_date" type="integer">1393346082</field>
+				<field index="modification_date" type="integer">1392907534</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="storage" type="array">
@@ -272,8 +272,8 @@
 		</tablerow>
 		<tablerow index="sys_file_storage:1" type="array">
 			<fieldlist index="data" type="array">
-				<field index="uid">1</field>
-				<field index="pid">0</field>
+				<field index="uid" type="integer">1</field>
+				<field index="pid" type="integer">0</field>
 				<field index="name">fileadmin/ (auto-created)</field>
 				<field index="description" type="NULL"></field>
 				<field index="driver">Local</field>
@@ -295,11 +295,11 @@
 		&lt;/sheet&gt;
 	&lt;/data&gt;
 &lt;/T3FlexForms&gt;</field>
-				<field index="is_default">0</field>
-				<field index="is_browsable">1</field>
-				<field index="is_public">1</field>
-				<field index="is_writable">1</field>
-				<field index="is_online">1</field>
+				<field index="is_default" type="integer">0</field>
+				<field index="is_browsable" type="integer">1</field>
+				<field index="is_public" type="integer">1</field>
+				<field index="is_writable" type="integer">1</field>
+				<field index="is_online" type="integer">1</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="configuration" type="array">

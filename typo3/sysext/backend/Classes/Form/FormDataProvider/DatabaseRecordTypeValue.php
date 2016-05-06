@@ -100,7 +100,7 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
                         $foreignUid = str_replace($foreignTable . '_', '', $foreignUid);
                     }
                     // Fetch field of this foreign row from db
-                    $foreignRow = BackendUtility::getRecord($foreignTable, $foreignUid, $foreignTableTypeField);
+                    $foreignRow = $this->getDatabaseRow($foreignTable, $foreignUid, $foreignTableTypeField);
                     if ($foreignRow[$foreignTableTypeField]) {
                         // @todo: It might be necessary to fetch the value from default language record as well here,
                         // @todo: this was buggy in the "old" implementation and never worked. It was therefor left out here for now.
@@ -133,6 +133,20 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
         return $result;
     }
 
+    /**
+     * Retrieve the requested row from the database
+     *
+     * @param string $tableName
+     * @param int $uid
+     * @param string $fieldName
+     * @return array
+     */
+    protected function getDatabaseRow(string $tableName, int $uid, string $fieldName): array
+    {
+        $row = BackendUtility::getRecord($tableName, $uid, $fieldName);
+
+        return $row ?: [];
+    }
     /**
      * If a localized row is handled, the field value of the default language record
      * is used instead if tca is configured as "exclude" or "mergeIfNotBlank" with

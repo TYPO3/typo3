@@ -17,7 +17,11 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -417,7 +421,6 @@ abstract class AbstractItemProvider
         }
 
         $languageService = $this->getLanguageService();
-        $database = $this->getDatabaseConnection();
 
         $foreignTable = $result['processedTca']['columns'][$fieldName]['config']['foreign_table'];
 
@@ -429,11 +432,11 @@ abstract class AbstractItemProvider
             );
         }
 
-        $foreignTableQueryArray = $this->buildForeignTableQuery($result, $fieldName);
-        $queryResource = $database->exec_SELECT_queryArray($foreignTableQueryArray);
+        $queryBuilder = $this->buildForeignTableQueryBuilder($result, $fieldName);
+        $queryResult = $queryBuilder->execute();
 
         // Early return on error with flash message
-        $databaseError = $database->sql_error();
+        $databaseError = $queryResult->errorInfo();
         if (!empty($databaseError)) {
             $msg = $databaseError . '. ';
             $msg .= $languageService->sL('LLL:EXT:lang/locallang_core.xlf:error.database_schema_mismatch');
@@ -445,7 +448,7 @@ abstract class AbstractItemProvider
             /** @var $defaultFlashMessageQueue FlashMessageQueue */
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
-            $database->sql_free_result($queryResource);
+            $queryResult->closeCursor();
             return $items;
         }
 
@@ -457,7 +460,7 @@ abstract class AbstractItemProvider
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
-        while ($foreignRow = $database->sql_fetch_assoc($queryResource)) {
+        while ($foreignRow = $queryResult->fetch()) {
             BackendUtility::workspaceOL($foreignTable, $foreignRow);
             if (is_array($foreignRow)) {
                 // If the foreign table sets selicon_field, this field can contain an image
@@ -486,8 +489,6 @@ abstract class AbstractItemProvider
                 ];
             }
         }
-
-        $database->sql_free_result($queryResource);
 
         return $items;
     }
@@ -899,47 +900,77 @@ abstract class AbstractItemProvider
      *
      * @param array $result Result array
      * @param string $localFieldName Current handle field name
-     * @return array Query array ready to be executed via Database->exec_SELECT_queryArray()
+     * @return QueryBuilder
      */
-    protected function buildForeignTableQuery(array $result, $localFieldName)
+    protected function buildForeignTableQueryBuilder(array $result, string $localFieldName):  QueryBuilder
     {
         $backendUser = $this->getBackendUser();
 
         $foreignTableName = $result['processedTca']['columns'][$localFieldName]['config']['foreign_table'];
         $foreignTableClauseArray = $this->processForeignTableClause($result, $foreignTableName, $localFieldName);
 
-        $queryArray = [];
-        $queryArray['SELECT'] = BackendUtility::getCommonSelectFields($foreignTableName, $foreignTableName . '.');
+        $fieldList = BackendUtility::getCommonSelectFields($foreignTableName, $foreignTableName . '.');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($foreignTableName);
+
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $queryBuilder
+            ->select(...GeneralUtility::trimExplode(',', $fieldList, true))
+            ->from($foreignTableName);
+
+        if (!empty($foreignTableClauseArray['GROUPBY'])) {
+            $queryBuilder->groupBy($foreignTableClauseArray['GROUPBY']);
+        }
+
+        if (!empty($foreignTableClauseArray['ORDERBY'])) {
+            foreach ($foreignTableClauseArray['ORDERBY'] as $orderPair) {
+                list($fieldName, $order) = $orderPair;
+                $queryBuilder->addOrderBy($fieldName, $order);
+            }
+        }
+
+        if (!empty($foreignTableClauseArray['LIMIT'])) {
+            if (!empty($foreignTableClauseArray['LIMIT'][1])) {
+                $queryBuilder->setMaxResults($foreignTableClauseArray['LIMIT'][1]);
+                $queryBuilder->setFirstResult($foreignTableClauseArray['LIMIT'][0]);
+            } elseif (!empty($foreignTableClauseArray['LIMIT'][0])) {
+                $queryBuilder->setMaxResults($foreignTableClauseArray['LIMIT'][0]);
+            }
+        }
 
         // rootLevel = -1 means that elements can be on the rootlevel OR on any page (pid!=-1)
         // rootLevel = 0 means that elements are not allowed on root level
         // rootLevel = 1 means that elements are only on the root level (pid=0)
         $rootLevel = 0;
         if (isset($GLOBALS['TCA'][$foreignTableName]['ctrl']['rootLevel'])) {
-            $rootLevel = $GLOBALS['TCA'][$foreignTableName]['ctrl']['rootLevel'];
+            $rootLevel = (int)$GLOBALS['TCA'][$foreignTableName]['ctrl']['rootLevel'];
         }
-        $deleteClause = BackendUtility::deleteClause($foreignTableName);
-        if ($rootLevel == 1 || $rootLevel == -1) {
-            $pidWhere = $foreignTableName . '.pid' . (($rootLevel == -1) ? '<>-1' : '=0');
-            $queryArray['FROM'] = $foreignTableName;
-            $queryArray['WHERE'] = $pidWhere . $deleteClause . $foreignTableClauseArray['WHERE'];
+
+        if ($rootLevel === -1) {
+            $queryBuilder->where($queryBuilder->expr()->neq($foreignTableName . '.pid', -1));
+        } elseif ($rootLevel === 1) {
+            $queryBuilder->where($queryBuilder->expr()->neq($foreignTableName . '.pid', 0));
         } else {
-            $pageClause = $backendUser->getPagePermsClause(1);
-            if ($foreignTableName === 'pages') {
-                $queryArray['FROM'] = 'pages';
-                $queryArray['WHERE'] = '1=1' . $deleteClause . ' AND' . $pageClause . $foreignTableClauseArray['WHERE'];
-            } else {
-                $queryArray['FROM'] = $foreignTableName . ', pages';
-                $queryArray['WHERE'] = 'pages.uid=' . $foreignTableName . '.pid AND pages.deleted=0'
-                    . $deleteClause . ' AND' . $pageClause . $foreignTableClauseArray['WHERE'];
+            $queryBuilder->where(
+                $backendUser->getPagePermsClause(1),
+                $foreignTableClauseArray['WHERE']
+            );
+            if ($foreignTableName !== 'pages') {
+                $queryBuilder
+                    ->from('pages')
+                    ->andWhere(
+                        $queryBuilder->expr()->eq(
+                            'pages.uid',
+                            $queryBuilder->quoteIdentifier($foreignTableName . '.pid')
+                        )
+                    );
             }
         }
 
-        $queryArray['GROUPBY'] = $foreignTableClauseArray['GROUPBY'];
-        $queryArray['ORDERBY'] = $foreignTableClauseArray['ORDERBY'];
-        $queryArray['LIMIT'] = $foreignTableClauseArray['LIMIT'];
-
-        return $queryArray;
+        return $queryBuilder;
     }
 
     /**
@@ -960,7 +991,7 @@ abstract class AbstractItemProvider
      */
     protected function processForeignTableClause(array $result, $foreignTableName, $localFieldName)
     {
-        $database = $this->getDatabaseConnection();
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($foreignTableName);
         $localTable = $result['tableName'];
         $effectivePid = $result['effectivePid'];
 
@@ -986,10 +1017,10 @@ abstract class AbstractItemProvider
                             $rowFieldValue = $rowFieldValue[0];
                         }
                         if (substr($whereClauseParts[0], -1) === '\'' && $whereClauseSubParts[1][0] === '\'') {
-                            $whereClauseParts[$key] = $database->quoteStr($rowFieldValue, $foreignTableName) . $whereClauseSubParts[1];
-                        } else {
-                            $whereClauseParts[$key] = $database->fullQuoteStr($rowFieldValue, $foreignTableName) . $whereClauseSubParts[1];
+                            $whereClauseParts[0] = substr($whereClauseParts[0], 0, -1);
+                            $whereClauseSubParts[1] = substr($whereClauseSubParts[1], 1);
                         }
+                        $whereClauseParts[$key] = $connection->quote($rowFieldValue) . $whereClauseSubParts[1];
                     }
                 }
                 $foreignTableClause = implode('', $whereClauseParts);
@@ -1038,11 +1069,11 @@ abstract class AbstractItemProvider
             $pageTsConfigString = '';
             if ($result['pageTsConfig']['flexHack.']['PAGE_TSCONFIG_STR']) {
                 // @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - see also the flexHack part in TcaFlexProcess
-                $pageTsConfigString = $result['pageTsConfig']['flexHack.']['PAGE_TSCONFIG_STR'];
+                $pageTsConfigString = $connection->quote($result['pageTsConfig']['flexHack.']['PAGE_TSCONFIG_STR']);
             }
             if ($result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_STR']) {
                 $pageTsConfigString = $result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_STR'];
-                $pageTsConfigString = $database->quoteStr($pageTsConfigString, $foreignTableName);
+                $pageTsConfigString = $connection->quote($pageTsConfigString);
             }
 
             $foreignTableClause = str_replace(
@@ -1052,6 +1083,7 @@ abstract class AbstractItemProvider
                     '###SITEROOT###',
                     '###PAGE_TSCONFIG_ID###',
                     '###PAGE_TSCONFIG_IDLIST###',
+                    '\'###PAGE_TSCONFIG_STR###\'',
                     '###PAGE_TSCONFIG_STR###'
                 ],
                 [
@@ -1060,6 +1092,7 @@ abstract class AbstractItemProvider
                     $siteRootUid,
                     $pageTsConfigId,
                     $pageTsConfigIdList,
+                    $pageTsConfigString,
                     $pageTsConfigString
                 ],
                 $foreignTableClause
@@ -1078,23 +1111,23 @@ abstract class AbstractItemProvider
         // Find LIMIT
         $reg = [];
         if (preg_match('/^(.*)[[:space:]]+LIMIT[[:space:]]+([[:alnum:][:space:],._]+)$/i', $foreignTableClause, $reg)) {
-            $foreignTableClauseArray['LIMIT'] = trim($reg[2]);
+            $foreignTableClauseArray['LIMIT'] = GeneralUtility::intExplode(',', trim($reg[2]), true);
             $foreignTableClause = $reg[1];
         }
         // Find ORDER BY
         $reg = [];
         if (preg_match('/^(.*)[[:space:]]+ORDER[[:space:]]+BY[[:space:]]+([[:alnum:][:space:],._]+)$/i', $foreignTableClause, $reg)) {
-            $foreignTableClauseArray['ORDERBY'] = trim($reg[2]);
+            $foreignTableClauseArray['ORDERBY'] = QueryHelper::parseOrderBy(trim($reg[2]));
             $foreignTableClause = $reg[1];
         }
         // Find GROUP BY
         $reg = [];
         if (preg_match('/^(.*)[[:space:]]+GROUP[[:space:]]+BY[[:space:]]+([[:alnum:][:space:],._]+)$/i', $foreignTableClause, $reg)) {
-            $foreignTableClauseArray['GROUPBY'] = trim($reg[2]);
+            $foreignTableClauseArray['GROUPBY'] = QueryHelper::parseGroupBy(trim($reg[2]));
             $foreignTableClause = $reg[1];
         }
         // Rest is assumed to be "WHERE" clause
-        $foreignTableClauseArray['WHERE'] = $foreignTableClause;
+        $foreignTableClauseArray['WHERE'] = QueryHelper::stripLogicalOperatorPrefix($foreignTableClause);
 
         return $foreignTableClauseArray;
     }

@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow;
@@ -27,7 +26,7 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 class DatabaseEditRowTest extends UnitTestCase
 {
     /**
-     * @var DatabaseEditRow
+     * @var DatabaseEditRow|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $subject;
 
@@ -41,7 +40,9 @@ class DatabaseEditRowTest extends UnitTestCase
         $this->dbProphecy = $this->prophesize(DatabaseConnection::class);
         $GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
 
-        $this->subject = new DatabaseEditRow();
+        $this->subject = $this->getMockBuilder(DatabaseEditRow::class)
+            ->setMethods(['getDatabaseRow'])
+            ->getMock();
     }
 
     /**
@@ -58,9 +59,7 @@ class DatabaseEditRowTest extends UnitTestCase
             'uid' => 10,
             'pid' => 123
         ];
-        $this->dbProphecy->quoteStr($input['tableName'], $input['tableName'])->willReturn($input['tableName']);
-        $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=' . $input['vanillaUid'])->willReturn($resultRow);
-        $this->dbProphecy->exec_SELECTgetSingleRow(Argument::cetera())->willReturn([]);
+        $this->subject->expects($this->once())->method('getDatabaseRow')->willReturn($resultRow);
 
         $result = $this->subject->addData($input);
 
@@ -80,8 +79,7 @@ class DatabaseEditRowTest extends UnitTestCase
         $resultRow = [
             'uid' => 10,
         ];
-        $this->dbProphecy->quoteStr($input['tableName'], $input['tableName'])->willReturn($input['tableName']);
-        $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=' . $input['vanillaUid'])->willReturn($resultRow);
+        $this->subject->expects($this->once())->method('getDatabaseRow')->willReturn($resultRow);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1437663061);
@@ -109,32 +107,14 @@ class DatabaseEditRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfNoRecordForEditingCouldBeRetrievedFromDatabase()
+    public function addDataThrowsExceptionIfDatabaseFetchingReturnsNoRow()
     {
         $input = [
             'tableName' => 'tt_content',
             'command' => 'edit',
             'vanillaUid' => 10,
         ];
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1437655862);
-
-        $this->subject->addData($input);
-    }
-
-    /**
-     * @test
-     */
-    public function addDataThrowsExceptionIfDatabaseFetchingReturnsFalse()
-    {
-        $input = [
-            'tableName' => 'tt_content',
-            'command' => 'edit',
-            'vanillaUid' => 10,
-        ];
-        $this->dbProphecy->quoteStr(Argument::cetera())->willReturn($input['tableName']);
-        $this->dbProphecy->exec_SELECTgetSingleRow(Argument::cetera())->willReturn(false);
+        $this->subject->expects($this->once())->method('getDatabaseRow')->willReturn([]);
 
         $this->expectException(DatabaseRecordException::class);
         $this->expectExceptionCode(1437656081);
@@ -152,8 +132,7 @@ class DatabaseEditRowTest extends UnitTestCase
             'command' => 'edit',
             'vanillaUid' => 10,
         ];
-        $this->dbProphecy->quoteStr(Argument::cetera())->willReturn($input['tableName']);
-        $this->dbProphecy->exec_SELECTgetSingleRow(Argument::cetera())->willReturn(false);
+        $this->subject->expects($this->once())->method('getDatabaseRow')->willReturn([]);
 
         try {
             $this->subject->addData($input);
@@ -161,24 +140,5 @@ class DatabaseEditRowTest extends UnitTestCase
             $this->assertSame('tt_content', $e->getTableName());
             $this->assertSame(10, $e->getUid());
         }
-    }
-
-    /**
-     * @test
-     */
-    public function addDataThrowsExceptionIfDatabaseFetchingReturnsInvalidRowResultData()
-    {
-        $input = [
-            'tableName' => 'tt_content',
-            'command' => 'edit',
-            'vanillaUid' => 10,
-        ];
-        $this->dbProphecy->quoteStr(Argument::cetera())->willReturn($input['tableName']);
-        $this->dbProphecy->exec_SELECTgetSingleRow(Argument::cetera())->willReturn('invalid result data');
-
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1437656323);
-
-        $this->subject->addData($input);
     }
 }

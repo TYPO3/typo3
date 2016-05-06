@@ -13,6 +13,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case for \TYPO3\CMS\Core\Collection\RecordCollectionRepository
@@ -45,18 +51,47 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected $testTableName;
 
     /**
+     * @var array
+     */
+    protected $singletonInstances;
+
+    /**
      * Sets up this test case.
      */
     protected function setUp()
     {
+        $this->singletonInstances = GeneralUtility::getSingletonInstances();
+
+        // Setup mocking for BackendUtility::deleteClause()
+        $connectionProphet = $this->prophesize(Connection::class);
+        $connectionProphet->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
+
+        $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
+        $queryBuilderProphet->expr()->willReturn(
+            GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
+        );
+
+        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
+        $connectionPoolProphet->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+
         $this->databaseMock = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)
             ->setMethods(array('exec_UPDATEquery', 'exec_SELECTgetSingleRow', 'exec_SELECTgetRows', 'fullQuoteStr'))
             ->getMock();
         $this->subject = $this->getMockBuilder(\TYPO3\CMS\Core\Collection\RecordCollectionRepository::class)
             ->setMethods(array('getDatabaseConnection'))
             ->getMock();
-        $this->subject->expects($this->any())->method('getDatabaseConnection')->will($this->returnValue($this->databaseMock));
+        $this->subject->expects($this->any())
+            ->method('getDatabaseConnection')
+            ->will($this->returnValue($this->databaseMock));
         $this->testTableName = $this->getUniqueId('tx_testtable');
+    }
+
+    protected function tearDown()
+    {
+        GeneralUtility::purgeInstances();
+        GeneralUtility::resetSingletonInstances($this->singletonInstances);
+        parent::tearDown();
     }
 
     /**

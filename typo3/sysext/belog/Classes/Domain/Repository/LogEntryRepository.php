@@ -33,7 +33,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function initializeObject()
     {
-        $this->beUserList = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames();
+        $this->beUserList = $this->getBackendUsers();
         /** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface */
         $defaultQuerySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
         $defaultQuerySettings->setRespectStoragePage(false);
@@ -152,5 +152,15 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         } elseif ($userOrGroup === '-1') {
             $queryConstraints[] = $query->equals('userid', (int)$GLOBALS['BE_USER']->user['uid']);
         }
+    }
+
+    /**
+     * Get a list of all backend users that are not deleted
+     *
+     * @return array
+     */
+    protected function getBackendUsers()
+    {
+        return \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames();
     }
 }

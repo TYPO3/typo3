@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
@@ -944,7 +946,14 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
     protected function replaceTableNameWithAlias($statement, $tableName, $tableAlias)
     {
         if ($tableAlias !== $tableName) {
-            $statement = str_replace($tableName . '.', $tableAlias . '.', $statement);
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
+            $quotedTableName = $connection->quoteIdentifier($tableName);
+            $quotedTableAliase = $connection->quoteIdentifier($tableAlias);
+            $statement = str_replace(
+                [$tableName . '.', $quotedTableName . '.'],
+                [$tableAlias . '.', $quotedTableAliase . '.'],
+                $statement
+            );
         }
 
         return $statement;

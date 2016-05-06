@@ -14,7 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\File;
@@ -266,6 +271,18 @@ class ResourceStorageTest extends BaseTestCase
      */
     public function isWithinFileMountBoundariesRespectsReadOnlyFileMounts($fileIdentifier, $fileMountFolderIdentifier, $isFileMountReadOnly, $checkWriteAccess, $expectedResult)
     {
+        $connectionProphet = $this->prophesize(Connection::class);
+        $connectionProphet->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
+
+        $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
+        $queryBuilderProphet->expr()->willReturn(
+            GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
+        );
+
+        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
+        $connectionPoolProphet->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+
         /** @var AbstractDriver|\PHPUnit_Framework_MockObject_MockObject $driverMock */
         $driverMock = $this->getMockForAbstractClass(AbstractDriver::class, array(), '', false);
         $driverMock->expects($this->any())

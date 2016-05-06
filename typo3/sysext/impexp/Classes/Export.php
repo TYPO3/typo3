@@ -690,9 +690,8 @@ class Export extends ImportExport
         }
         $fileUid = $file->getUid();
         $fileInfo = $file->getStorage()->getFileInfo($file);
-        // we sadly have to cast it to string here, because the size property is also returning a string
-        $fileSize = (string)$fileInfo['size'];
-        if ($fileSize !== $file->getProperty('size')) {
+        $fileSize = (int)$fileInfo['size'];
+        if ($fileSize !== (int)$file->getProperty('size')) {
             $this->error('File size of ' . $file->getCombinedIdentifier() . ' is not up-to-date in index! File added with current size.');
             $this->dat['records']['sys_file:' . $fileUid]['data']['size'] = $fileSize;
         }

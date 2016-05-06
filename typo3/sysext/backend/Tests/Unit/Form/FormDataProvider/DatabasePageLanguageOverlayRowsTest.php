@@ -14,10 +14,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Prophecy\Argument;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageLanguageOverlayRows;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
@@ -26,34 +23,15 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 class DatabasePageLanguageOverlayRowsTest extends UnitTestCase
 {
     /**
-     * @var DatabasePageLanguageOverlayRows
+     * @var DatabasePageLanguageOverlayRows|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $subject;
 
-    /**
-     * @var DatabaseConnection | ObjectProphecy
-     */
-    protected $dbProphecy;
-
     protected function setUp()
     {
-        $this->dbProphecy = $this->prophesize(DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
-        $GLOBALS['TCA']['pages_language_overlay'] = array();
-
-        $this->subject = new DatabasePageLanguageOverlayRows();
-    }
-
-    /**
-     * @test
-     */
-    public function addDataThrowsExceptionOnDatabaseError()
-    {
-        $this->dbProphecy->exec_SELECTgetRows(Argument::cetera())->willReturn(null);
-        $this->dbProphecy->sql_error(Argument::cetera())->willReturn(null);
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1440777705);
-        $this->subject->addData(['effectivePid' => 1]);
+        $this->subject = $this->getMockBuilder(DatabasePageLanguageOverlayRows::class)
+            ->setMethods(['getDatabaseRows'])
+            ->getMock();
     }
 
     /**
@@ -72,9 +50,10 @@ class DatabasePageLanguageOverlayRowsTest extends UnitTestCase
                 'sys_language_uid' => '2',
             ],
         ];
-        $this->dbProphecy->exec_SELECTgetRows('*', 'pages_language_overlay', 'pid=23')
-            ->shouldBeCalled()
+        $this->subject->expects($this->once())
+            ->method('getDatabaseRows')
             ->willReturn($expected['pageLanguageOverlayRows']);
+
         $this->assertSame($expected, $this->subject->addData($input));
     }
 }

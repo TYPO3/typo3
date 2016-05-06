@@ -23,7 +23,12 @@ use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForGroupWithOneA
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForSelectWithMMRelationFixture;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
+use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
@@ -219,57 +224,79 @@ class BackendUtilityTest extends UnitTestCase
     }
 
     /**
+     * Prepare a mock database setup for a Doctrine connection
+     * and return an array of all prophets to set expectations upon.
+     *
+     * @param string $tableName
+     * @return array
+     */
+    protected function mockDatabaseConnection($tableName = 'sys_category')
+    {
+        $connectionProphet = $this->prophesize(Connection::class);
+        $connectionProphet->quote(Argument::cetera())->will(function ($arguments) {
+            return "'" . $arguments[0] . "'";
+        });
+        $connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($arguments) {
+            return '`' . $arguments[0] . '`';
+        });
+
+        $restrictionProphet = $this->prophesize(DefaultRestrictionContainer::class);
+        $restrictionProphet->removeAll()->willReturn($restrictionProphet->reveal());
+        $restrictionProphet->add(Argument::cetera())->willReturn($restrictionProphet->reveal());
+
+        $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
+        $queryBuilderProphet->expr()->willReturn(
+            GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
+        );
+        $queryBuilderProphet->getRestrictions()->willReturn($restrictionProphet->reveal());
+        $queryBuilderProphet->quoteIdentifier(Argument::cetera())->will(function ($arguments) {
+            return '`' . $arguments[0] . '`';
+        });
+
+        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
+        $connectionPoolProphet->getConnectionForTable($tableName)
+            ->willReturn($connectionProphet->reveal());
+        $connectionPoolProphet->getQueryBuilderForTable($tableName)
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphet->reveal());
+
+        return [$queryBuilderProphet, $connectionPoolProphet, $connectionProphet, $restrictionProphet];
+    }
+
+    /**
      * @test
      */
     public function getProcessedValueForSelectWithMMRelation()
     {
-        $GLOBALS['TYPO3_DB'] = $this->createMock(DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB']->expects($this->any())->method('fullQuoteStr')
-            ->will($this->returnCallback(
-                function ($quoteStr) {
-                    return "'" . $quoteStr . "'";
-                }
-            )
-            );
-        $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->will($this->returnValue(0));
-        $GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_free_result');
-        $GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')
-            ->will($this->returnCallback(
-                function () {
-                    static $called = 0;
-                    ++$called;
-                    switch ($called) {
-                        // SELECT * FROM sys_category_record_mm
-                        case 1:
-                            return array(
-                                'uid_local' => 1,    // uid of a sys_category record
-                                'uid_foreign' => 1,    // uid of a pages record
-                            );
-                        case 2:
-                            return array(
-                                'uid_local' => 2,    // uid of a sys_category record
-                                'uid_foreign' => 1,    // uid of a pages record
-                            );
-                        case 3:
-                            return null;
-                        // SELECT * FROM sys_catgory
-                        case 4:
-                            return array(
-                                'uid' => 1,
-                                'title' => 'Category 1',
-                            );
-                        case 5:
-                            return array(
-                                'uid' => 2,
-                                'title' => 'Category 2',
-                            );
-                        case 6:
-                            return null;
-                    }
-                    return null;
-                }
-            )
-            );
+        /** @var RelationHandler|ObjectProphecy $relationHandlerProphet */
+        $relationHandlerProphet = $this->prophesize(RelationHandler::class);
+        $relationHandlerProphet->start(Argument::cetera())->shouldBeCalled();
+
+        $relationHandlerInstance = $relationHandlerProphet->reveal();
+        $relationHandlerInstance->tableArray['sys_category'] = [1, 2];
+
+        list($queryBuilderProphet, $connectionPoolProphet) = $this->mockDatabaseConnection('sys_category');
+        $statementProphet = $this->prophesize(\Doctrine\DBAL\Driver\Statement::class);
+        $statementProphet->fetch()->shouldBeCalled()->willReturn(
+            [
+                'uid' => 1,
+                'title' => 'Category 1',
+            ],
+            [
+                'uid' => 2,
+                'title' => 'Category 2',
+            ],
+            false
+        );
+
+        /** @var QueryBuilder|ObjectProphecy $queryBuilderProphet */
+        $queryBuilderProphet->select('uid', 'sys_category.title')->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->from('sys_category')->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->where('`uid` IN (1, 2)')->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->execute()->willReturn($statementProphet->reveal());
+
+        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerInstance);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         $GLOBALS['TCA'] = array(
             'pages' => array(
@@ -289,6 +316,7 @@ class BackendUtilityTest extends UnitTestCase
                 ),
             ),
             'sys_category' => array(
+                'ctrl' => array('label' => 'title'),
                 'columns' => array(
                     'items' => array(
                         'config' => array(
@@ -303,7 +331,18 @@ class BackendUtilityTest extends UnitTestCase
             ),
         );
 
-        $this->assertSame('Category 1; Category 2', ProcessedValueForSelectWithMMRelationFixture::getProcessedValue('pages', 'categories', '2', 0, false, false, 1));
+        $this->assertSame(
+            'Category 1; Category 2',
+            ProcessedValueForSelectWithMMRelationFixture::getProcessedValue(
+                'pages',
+                'categories',
+                '2',
+                0,
+                false,
+                false,
+                1
+            )
+        );
     }
 
     /**
@@ -1016,9 +1055,33 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function replaceL10nModeFieldsReplacesFields($table, array $row, array $tca, array $originalRow, $expected)
     {
+        if (!empty($tca[$table]['ctrl']['transOrigPointerTable'])) {
+            $tableName = $tca[$table]['ctrl']['transOrigPointerTable'];
+        } else {
+            $tableName = $table;
+        }
+
+        list($queryBuilderProphet, $connectionPoolProphet) = $this->mockDatabaseConnection($tableName);
+
+        $statementProphet = $this->prophesize(\Doctrine\DBAL\Driver\Statement::class);
+        $statementProphet->fetch()->willReturn($originalRow, false);
+
+        $queryBuilderProphet->select('*')
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->from($tableName)
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->where('`uid` = ' . $row['origUid'])
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->execute()
+            ->shouldBeCalled()
+            ->willReturn($statementProphet->reveal());
+
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+
         $GLOBALS['TCA'] = $tca;
-        $GLOBALS['TYPO3_DB'] = $this->createMock(DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->will($this->returnValue($originalRow));
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|BackendUtility $subject */
         $subject = $this->getAccessibleMock(BackendUtility::class, array('dummy'));

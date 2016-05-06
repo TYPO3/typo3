@@ -16,7 +16,10 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler\General;
 
 /**
  * Extended by other provider that fetch records from database
@@ -41,18 +44,8 @@ abstract class AbstractDatabaseRecordProvider
                 1437656456
             );
         }
-        $database = $this->getDatabase();
-        $tableName = $database->quoteStr($tableName, $tableName);
-        $where = 'uid=' . (int)$uid . BackendUtility::deleteClause($tableName);
-        $row = $database->exec_SELECTgetSingleRow('*', $tableName, $where);
-        if ($row === null) {
-            // Indicates a program / usage error
-            throw new \RuntimeException(
-                'Database error fetching record from tablename ' . $tableName . ' with uid ' . $uid,
-                1437655862
-            );
-        }
-        if ($row === false) {
+        $row = $this->getDatabaseRow($tableName, $uid);
+        if (empty($row)) {
             // Indicates a runtime error (eg. record was killed by other editor meanwhile) can be caught elsewhere
             // and transformed to a message to the user or something
             throw new DatabaseRecordException(
@@ -63,21 +56,29 @@ abstract class AbstractDatabaseRecordProvider
                 (int)$uid
             );
         }
-        if (!is_array($row)) {
-            // Database connection behaves weird ...
-            throw new \UnexpectedValueException(
-                'Database exec_SELECTgetSingleRow() did not return error type or result',
-                1437656323
-            );
-        }
         return $row;
     }
 
     /**
-     * @return DatabaseConnection
+     * Retrieve the requested row from the database
+     *
+     * @param string $tableName
+     * @param int $uid
+     * @return array
      */
-    protected function getDatabase()
+    protected function getDatabaseRow(string $tableName, int $uid): array
     {
-        return $GLOBALS['TYPO3_DB'];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $row = $queryBuilder->select('*')
+            ->from($tableName)
+            ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+            ->execute()
+            ->fetch();
+
+        return $row ?: [];
     }
 }

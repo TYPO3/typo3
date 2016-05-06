@@ -15,8 +15,10 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Fill the "pageLanguageOverlayRows" part of the result array
@@ -36,33 +38,32 @@ class DatabasePageLanguageOverlayRows implements FormDataProviderInterface
             return $result;
         }
 
-        $database = $this->getDatabase();
-
-        $dbRows = $database->exec_SELECTgetRows(
-            '*',
-            'pages_language_overlay',
-            'pid=' . (int)$result['effectivePid']
-                . BackendUtility::deleteClause('pages_language_overlay')
-                . BackendUtility::versioningPlaceholderClause('pages_language_overlay')
-        );
-
-        if ($dbRows === null) {
-            throw new \UnexpectedValueException(
-                'Database query error ' . $database->sql_error(),
-                1440777705
-            );
-        }
-
-        $result['pageLanguageOverlayRows'] = $dbRows;
+        $result['pageLanguageOverlayRows'] = $this->getDatabaseRows((int)$result['effectivePid']);
 
         return $result;
     }
 
     /**
-     * @return DatabaseConnection
+     * Retrieve the requested overlay row from the database
+     *
+     * @param int $pid
+     * @return array
      */
-    protected function getDatabase()
+    protected function getDatabaseRows(int $pid): array
     {
-        return $GLOBALS['TYPO3_DB'];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages_language_overlay');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+        $rows = $queryBuilder->select('*')
+            ->from('pages_language_overlay')
+            ->where($queryBuilder->expr()->eq('pid', $pid))
+            ->execute()
+            ->fetchAll();
+
+        return $rows;
     }
 }

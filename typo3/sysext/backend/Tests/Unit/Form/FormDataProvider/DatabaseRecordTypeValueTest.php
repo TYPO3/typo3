@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 class DatabaseRecordTypeValueTest extends UnitTestCase
 {
     /**
-     * @var DatabaseRecordTypeValue
+     * @var DatabaseRecordTypeValue|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $subject;
 
@@ -36,10 +36,9 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
 
     protected function setUp()
     {
-        $this->dbProphecy = $this->prophesize(DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
-
-        $this->subject = new DatabaseRecordTypeValue();
+        $this->subject = $this->getMockBuilder(DatabaseRecordTypeValue::class)
+            ->setMethods(['getDatabaseRow'])
+            ->getMock();
     }
 
     /**
@@ -417,10 +416,11 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
         $foreignRecordResult = [
             'foreignField' => 3,
         ];
-        // Required for BackendUtility::getRecord
-        $GLOBALS['TCA']['foreignTable'] = array('foo');
 
-        $this->dbProphecy->exec_SELECTgetSingleRow('foreignField', 'foreignTable', 'uid=42')->shouldBeCalled()->willReturn($foreignRecordResult);
+        $this->subject->expects($this->once())
+            ->method('getDatabaseRow')
+            ->with('foreignTable', 42, 'foreignField')
+            ->willReturn($foreignRecordResult);
 
         $expected = $input;
         $expected['recordTypeValue'] = '3';
@@ -463,10 +463,11 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
         $foreignRecordResult = [
             'type' => 2,
         ];
-        // Required for BackendUtility::getRecord
-        $GLOBALS['TCA']['sys_file'] = array('foo');
 
-        $this->dbProphecy->exec_SELECTgetSingleRow('type', 'sys_file', 'uid=222')->shouldBeCalled()->willReturn($foreignRecordResult);
+        $this->subject->expects($this->once())
+            ->method('getDatabaseRow')
+            ->with('sys_file', 222, 'type')
+            ->willReturn($foreignRecordResult);
 
         $expected = $input;
         $expected['recordTypeValue'] = '2';

@@ -81,11 +81,13 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     private function setUpDatabaseMockForDeterminePageId()
     {
-        $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)
-            ->setMethods(array('exec_SELECTquery', 'sql_fetch_assoc', 'sql_free_result'))
+        $this->matchCondition = $this->getMockBuilder(\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class)
+            ->setMethods(['determineRootline', 'determinePageId'])
+            ->disableOriginalConstructor()
             ->getMock();
-        $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->will($this->returnCallback(array($this, 'determinePageIdByRecordDatabaseExecuteCallback')));
-        $GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->will($this->returnCallback(array($this, 'determinePageIdByRecordDatabaseFetchCallback')));
+
+        $this->matchCondition->expects($this->once())->method('determineRootline');
+        $this->matchCondition->expects($this->once())->method('determinePageId')->willReturn(999);
     }
 
     /**
@@ -908,46 +910,6 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $_GET['cmd']['pages'][121]['move'] = 999;
         $this->matchCondition->match('[globalVar = LIT:10 = 10]');
         $this->assertEquals(999, $this->matchCondition->getPageId());
-    }
-
-    /**
-     * Callback method for pageIdCanBeDetermined test cases.
-     * Simulates TYPO3_DB->exec_SELECTquery().
-     *
-     * @param string $fields
-     * @param string $table
-     * @param string $where
-     * @return mixed
-     */
-    public function determinePageIdByRecordDatabaseExecuteCallback($fields, $table, $where)
-    {
-        if ($table === $this->testTableName) {
-            return array(
-                'scope' => $this->testTableName,
-                'data' => array(
-                    'pid' => 999,
-                    'uid' => 998
-                )
-            );
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Callback method for pageIdCanBeDetermined test cases.
-     * Simulates TYPO3_DB->sql_fetch_assoc().
-     *
-     * @param mixed $resource
-     * @return mixed
-     */
-    public function determinePageIdByRecordDatabaseFetchCallback($resource)
-    {
-        if (is_array($resource) && $resource['scope'] === $this->testTableName) {
-            return $resource['data'];
-        } else {
-            return false;
-        }
     }
 
     /**

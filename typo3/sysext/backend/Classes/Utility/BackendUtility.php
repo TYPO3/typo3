@@ -18,8 +18,13 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Core\Database\PreparedStatement;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -79,8 +84,15 @@ class BackendUtility
      */
     public static function deleteClause($table, $tableAlias = '')
     {
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($table)
+            ->expr();
+
         if (!empty($GLOBALS['TCA'][$table]['ctrl']['delete'])) {
-            return ' AND ' . ($tableAlias ?: $table) . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0';
+            return ' AND ' . $expressionBuilder->eq(
+                ($tableAlias ?: $table) . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'],
+                0
+            );
         } else {
             return '';
         }
@@ -104,8 +116,28 @@ class BackendUtility
     {
         // Ensure we have a valid uid (not 0 and not NEWxxxx) and a valid TCA
         if ((int)$uid && !empty($GLOBALS['TCA'][$table])) {
-            $where = 'uid=' . (int)$uid . ($useDeleteClause ? self::deleteClause($table) : '') . $where;
-            $row = static::getDatabaseConnection()->exec_SELECTgetSingleRow($fields, $table, $where);
+            $queryBuilder = static::getQueryBuilderForTable($table);
+
+            // do not use enabled fields here
+            $queryBuilder->getRestrictions()->removeAll();
+
+            // should the delete clause be used
+            if ($useDeleteClause) {
+                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            }
+
+            // set table and where clause
+            $queryBuilder
+                ->select(...GeneralUtility::trimExplode(',', $fields, true))
+                ->from($table)
+                ->where($queryBuilder->expr()->eq('uid', (int)$uid));
+
+            // add custom where clause
+            if ($where) {
+                $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($where));
+            }
+
+            $row = $queryBuilder->execute()->fetch();
             if ($row) {
                 return $row;
             }
@@ -158,13 +190,17 @@ class BackendUtility
      */
     public static function getRecordRaw($table, $where = '', $fields = '*')
     {
-        $row = false;
-        $db = static::getDatabaseConnection();
-        if (false !== ($res = $db->exec_SELECTquery($fields, $table, $where, '', '', '1'))) {
-            $row = $db->sql_fetch_assoc($res);
-            $db->sql_free_result($res);
-        }
-        return $row;
+        $queryBuilder = static::getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $row = $queryBuilder
+            ->select(...GeneralUtility::trimExplode(',', $fields, true))
+            ->from($table)
+            ->where(QueryHelper::stripLogicalOperatorPrefix($where))
+            ->execute()
+            ->fetch();
+
+        return $row ?: false;
     }
 
     /**
@@ -182,29 +218,65 @@ class BackendUtility
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @return mixed Multidimensional array with selected records (if any is selected)
      */
-    public static function getRecordsByField($theTable, $theField, $theValue, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '', $useDeleteClause = true)
-    {
+    public static function getRecordsByField(
+        $theTable,
+        $theField,
+        $theValue,
+        $whereClause = '',
+        $groupBy = '',
+        $orderBy = '',
+        $limit = '',
+        $useDeleteClause = true
+    ) {
         if (is_array($GLOBALS['TCA'][$theTable])) {
-            $db = static::getDatabaseConnection();
-            $res = $db->exec_SELECTquery(
-                '*',
-                $theTable,
-                $theField . '=' . $db->fullQuoteStr($theValue, $theTable) .
-                    ($useDeleteClause ? self::deleteClause($theTable) . ' ' : '') .
-                    self::versioningPlaceholderClause($theTable) . ' ' .
-                    $whereClause,
-                $groupBy,
-                $orderBy,
-                $limit
-            );
-            $rows = array();
-            while ($row = $db->sql_fetch_assoc($res)) {
-                $rows[] = $row;
+            $queryBuilder = static::getQueryBuilderForTable($theTable);
+            // Show all records except versioning placeholders
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+            // Remove deleted records from the query result
+            if ($useDeleteClause) {
+                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             }
-            $db->sql_free_result($res);
-            if (!empty($rows)) {
-                return $rows;
+
+            // build fields to select
+            $queryBuilder
+                ->select('*')
+                ->from($theTable)
+                ->where($queryBuilder->expr()->eq($theField, $queryBuilder->createNamedParameter($theValue)));
+
+            // additional where
+            if ($whereClause) {
+                $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($whereClause));
             }
+
+            // group by
+            if ($groupBy !== '') {
+                $queryBuilder->groupBy(QueryHelper::parseGroupBy($groupBy));
+            }
+
+            // order by
+            if ($orderBy !== '') {
+                foreach (QueryHelper::parseOrderBy($orderBy) as $orderPair) {
+                    list($fieldName, $order) = $orderPair;
+                    $queryBuilder->addOrderBy($fieldName, $order);
+                }
+            }
+
+            // limit
+            if ($limit !== '') {
+                if (strpos($limit, ',')) {
+                    $limitOffsetAndMax = GeneralUtility::intExplode(',', $limit);
+                    $queryBuilder->setFirstResult((int)$limitOffsetAndMax[0]);
+                    $queryBuilder->setMaxResults((int)$limitOffsetAndMax[1]);
+                } else {
+                    $queryBuilder->setMaxResults((int)$limit);
+                }
+            }
+
+            $rows = $queryBuilder->execute()->fetchAll();
+            return $rows;
         }
         return null;
     }
@@ -311,7 +383,25 @@ class BackendUtility
 
         if (self::isTableLocalizable($table)) {
             $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
-            $recordLocalization = self::getRecordsByField($table, $tcaCtrl['transOrigPointerField'], $uid, 'AND ' . $tcaCtrl['languageField'] . '=' . (int)$language . ($andWhereClause ? ' ' . $andWhereClause : ''), '', '', '1');
+
+            $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($table)
+                ->expr();
+
+            $constraint = $expressionBuilder->andX(
+                $expressionBuilder->eq($tcaCtrl['languageField'], (int)$language),
+                QueryHelper::stripLogicalOperatorPrefix($andWhereClause)
+            );
+
+            $recordLocalization = self::getRecordsByField(
+                $table,
+                $tcaCtrl['transOrigPointerField'],
+                $uid,
+                (string)$constraint,
+                '',
+                '',
+                1
+            );
         }
         return $recordLocalization;
     }
@@ -397,9 +487,34 @@ class BackendUtility
         if (is_array($getPageForRootline_cache[$ident])) {
             $row = $getPageForRootline_cache[$ident];
         } else {
-            $db = static::getDatabaseConnection();
-            $res = $db->exec_SELECTquery('pid,uid,title,doktype,tsconfig_includes,TSconfig,is_siteroot,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,backend_layout_next_level', 'pages', 'uid=' . (int)$uid . ' ' . self::deleteClause('pages') . ' ' . $clause);
-            $row = $db->sql_fetch_assoc($res);
+            $queryBuilder = static::getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+            $row = $queryBuilder
+                ->select(
+                    'pid',
+                    'uid',
+                    'title',
+                    'doktype',
+                    'tsconfig_includes',
+                    'TSconfig',
+                    'is_siteroot',
+                    't3ver_oid',
+                    't3ver_wsid',
+                    't3ver_state',
+                    't3ver_stage',
+                    'backend_layout_next_level'
+                )
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('uid', (int)$uid),
+                    QueryHelper::stripLogicalOperatorPrefix($clause)
+                )
+                ->execute()
+                ->fetch();
+
             if ($row) {
                 $newLocation = false;
                 if ($workspaceOL) {
@@ -415,7 +530,6 @@ class BackendUtility
                     $getPageForRootline_cache[$ident] = $row;
                 }
             }
-            $db->sql_free_result($res);
         }
         return $row;
     }
@@ -576,7 +690,7 @@ class BackendUtility
                     return $pageinfo;
                 }
             } else {
-                $pageinfo = self::getRecord('pages', $id, '*', $perms_clause ? ' AND ' . $perms_clause : '');
+                $pageinfo = self::getRecord('pages', $id, '*', $perms_clause);
                 if ($pageinfo['uid'] && static::getBackendUserAuthentication()->isInWebMount($id, $perms_clause)) {
                     self::workspaceOL('pages', $pageinfo);
                     if (is_array($pageinfo)) {
@@ -867,15 +981,30 @@ class BackendUtility
                     self::workspaceOL($table, $rr);
                     self::fixVersioningPid($table, $rr, true);
                 }
-                $db = static::getDatabaseConnection();
-                $uidAcc = array();
+
+                $queryBuilder = static::getQueryBuilderForTable($table);
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+                $uidAcc = [];
                 // Used to avoid looping, if any should happen.
                 $subFieldPointer = $conf['ds_pointerField_searchParent_subField'];
                 while (!$srcPointer) {
-                    $res = $db->exec_SELECTquery('uid,' . $ds_pointerField . ',' . $ds_searchParentField . ($subFieldPointer ? ',' . $subFieldPointer : ''), $table, 'uid=' . (int)($newRecordPidValue ?: $rr[$ds_searchParentField]) . self::deleteClause($table));
+                    // select fields
+                    $queryBuilder
+                        ->select('uid', $ds_pointerField, $ds_searchParentField)
+                        ->from($table)
+                        ->where(
+                            $queryBuilder->expr()->eq('uid', (int)($newRecordPidValue ?: $rr[$ds_searchParentField]))
+                        );
+                    if ($subFieldPointer) {
+                        $queryBuilder->addSelect($subFieldPointer);
+                    }
+
+                    $rr = $queryBuilder->execute()->fetch();
+
                     $newRecordPidValue = 0;
-                    $rr = $db->sql_fetch_assoc($res);
-                    $db->sql_free_result($res);
                     // Break if no result from SQL db or if looping...
                     if (!is_array($rr) || isset($uidAcc[$rr['uid']])) {
                         break;
@@ -1139,10 +1268,20 @@ class BackendUtility
         // Make sure the titleField is amongst the fields when getting sorted
         $fieldsIndex[$titleField] = 1;
 
-        $result = array();
-        $db = static::getDatabaseConnection();
-        $res = $db->exec_SELECTquery('*', $table, '1=1 ' . $where . self::deleteClause($table));
-        while ($record = $db->sql_fetch_assoc($res)) {
+        $result = [];
+
+        $queryBuilder = static::getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $res = $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(QueryHelper::stripLogicalOperatorPrefix($where))
+            ->execute();
+
+        while ($record = $res->fetch()) {
             // store the uid, because it might be unset if it's not among the requested $fields
             $recordId = $record['uid'];
             $record[$titleField] = self::getRecordTitle($table, $record);
@@ -1150,7 +1289,6 @@ class BackendUtility
             // include only the requested fields in the result
             $result[$recordId] = array_intersect_key($record, $fieldsIndex);
         }
-        $db->sql_free_result($res);
 
         // sort records by $sortField. This is not done in the query because the title might have been overwritten by
         // self::getRecordTitle();
@@ -2029,15 +2167,32 @@ class BackendUtility
                         $dbGroup->start($value, $theColConf['foreign_table'], $theColConf['MM'], $uid, $table, $theColConf);
                         $selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
                         if (is_array($selectUids) && !empty($selectUids)) {
-                            $MMres = $db->exec_SELECTquery('uid, ' . $MMfield, $theColConf['foreign_table'], 'uid IN (' . implode(',', $selectUids) . ')' . self::deleteClause($theColConf['foreign_table']));
-                            $mmlA = array();
-                            while ($MMrow = $db->sql_fetch_assoc($MMres)) {
+                            $queryBuilder = static::getQueryBuilderForTable($theColConf['foreign_table']);
+                            $queryBuilder->getRestrictions()
+                                ->removeAll()
+                                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+                            $result = $queryBuilder
+                                ->select('uid', $MMfield)
+                                ->from($theColConf['foreign_table'])
+                                ->where($queryBuilder->expr()->in('uid', $selectUids))
+                                ->execute();
+
+                            $mmlA = [];
+                            while ($MMrow = $result->fetch()) {
                                 // Keep sorting of $selectUids
-                                $mmlA[array_search($MMrow['uid'], $selectUids)] = $noRecordLookup ?
-                                    $MMrow['uid'] :
-                                    static::getRecordTitle($theColConf['foreign_table'], $MMrow, false, $forceResult);
+                                $selectedUid = array_search($MMrow['uid'], $selectUids);
+                                $mmlA[$selectedUid] =  $MMrow['uid'];
+                                if (!$noRecordLookup) {
+                                    $mmlA[$selectedUid] =  static::getRecordTitle(
+                                        $theColConf['foreign_table'],
+                                        $MMrow,
+                                        false,
+                                        $forceResult
+                                    );
+                                }
                             }
-                            $db->sql_free_result($MMres);
+
                             if (!empty($mmlA)) {
                                 ksort($mmlA);
                                 $l = implode('; ', $mmlA);
@@ -2065,20 +2220,38 @@ class BackendUtility
                         } else {
                             $rParts = array();
                             if ($uid && isset($theColConf['foreign_field']) && $theColConf['foreign_field'] !== '') {
-                                $whereClause = '';
+                                $queryBuilder = static::getQueryBuilderForTable($theColConf['foreign_table']);
+                                $queryBuilder->getRestrictions()
+                                    ->removeAll()
+                                    ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+                                $constraints = [
+                                    $queryBuilder->expr()->eq($theColConf['foreign_field'], (int)$uid)
+                                ];
+
                                 if (!empty($theColConf['foreign_table_field'])) {
-                                    $whereClause .= ' AND ' . $theColConf['foreign_table_field'] . ' = ' . static::getDatabaseConnection()->fullQuoteStr($table, $theColConf['foreign_table']);
+                                    $constraints[] = $queryBuilder->expr()->eq(
+                                        $theColConf['foreign_table_field'],
+                                        $queryBuilder->createNamedParameter($table)
+                                    );
                                 }
+
                                 // Add additional where clause if foreign_match_fields are defined
                                 $foreignMatchFields = is_array($theColConf['foreign_match_fields']) ? $theColConf['foreign_match_fields'] : array();
                                 foreach ($foreignMatchFields as $matchField => $matchValue) {
-                                    $whereClause .= ' AND ' . $matchField . '=' . static::getDatabaseConnection()->fullQuoteStr($matchValue, $theColConf['foreign_table']);
+                                    $constraints[] = $queryBuilder->expr()->eq(
+                                        $matchField,
+                                        $queryBuilder->createNamedParameter($matchValue)
+                                    );
                                 }
-                                $records = self::getRecordsByField($theColConf['foreign_table'], $theColConf['foreign_field'], $uid, $whereClause);
-                                if (!empty($records)) {
-                                    foreach ($records as $record) {
-                                        $rParts[] = $record['uid'];
-                                    }
+
+                                $result = $queryBuilder
+                                    ->select('*')
+                                    ->from($theColConf['foreign_table'])
+                                    ->where(...$constraints)
+                                    ->execute();
+
+                                while ($record = $result->fetch()) {
+                                    $rParts[] = $record['uid'];
                                 }
                             }
                             if (empty($rParts)) {
@@ -2127,19 +2300,32 @@ class BackendUtility
                             $dbGroup->start($value, $theColConf['foreign_table'], $theColConf['MM'], $uid, $table, $theColConf);
                             $selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
                             if (!empty($selectUids) && is_array($selectUids)) {
-                                $MMres = $db->exec_SELECTquery(
-                                    'uid, ' . $MMfield,
-                                    $theColConf['foreign_table'],
-                                    'uid IN (' . implode(',', $selectUids) . ')' . static::deleteClause($theColConf['foreign_table'])
-                                );
-                                $mmlA = array();
-                                while ($MMrow = $db->sql_fetch_assoc($MMres)) {
+                                $queryBuilder = static::getQueryBuilderForTable($theColConf['foreign_table']);
+                                $queryBuilder->getRestrictions()
+                                    ->removeAll()
+                                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+                                $result = $queryBuilder
+                                    ->select('uid', $MMfield)
+                                    ->from($theColConf['foreign_table'])
+                                    ->where($queryBuilder->expr()->in('uid', $selectUids))
+                                    ->execute();
+
+                                $mmlA = [];
+                                while ($MMrow = $result->fetch()) {
                                     // Keep sorting of $selectUids
-                                    $mmlA[array_search($MMrow['uid'], $selectUids)] = $noRecordLookup
-                                        ? $MMrow['uid']
-                                        : static::getRecordTitle($theColConf['foreign_table'], $MMrow, false, $forceResult);
+                                    $selectedUid = array_search($MMrow['uid'], $selectUids);
+                                    $mmlA[$selectedUid] =  $MMrow['uid'];
+                                    if (!$noRecordLookup) {
+                                        $mmlA[$selectedUid] =  static::getRecordTitle(
+                                            $theColConf['foreign_table'],
+                                            $MMrow,
+                                            false,
+                                            $forceResult
+                                        );
+                                    }
                                 }
-                                $db->sql_free_result($MMres);
+
                                 if (!empty($mmlA)) {
                                     ksort($mmlA);
                                     $l = implode('; ', $mmlA);
@@ -3301,15 +3487,25 @@ class BackendUtility
     public static function isRecordLocked($table, $uid)
     {
         if (!is_array($GLOBALS['LOCKED_RECORDS'])) {
-            $GLOBALS['LOCKED_RECORDS'] = array();
-            $db = static::getDatabaseConnection();
-            $res = $db->exec_SELECTquery(
-                '*',
-                'sys_lockedrecords',
-                'sys_lockedrecords.userid<>' . (int)static::getBackendUserAuthentication()->user['uid']
-                    . ' AND sys_lockedrecords.tstamp > ' . ($GLOBALS['EXEC_TIME'] - 2 * 3600)
-            );
-            while ($row = $db->sql_fetch_assoc($res)) {
+            $GLOBALS['LOCKED_RECORDS'] = [];
+
+            $queryBuilder = static::getQueryBuilderForTable('sys_lockedrecords');
+            $result = $queryBuilder
+                ->select('*')
+                ->from('sys_lockedrecords')
+                ->where(
+                    $queryBuilder->expr()->neq(
+                        'sys_lockedrecords' . '.userid',
+                        (int)static::getBackendUserAuthentication()->user['uid']
+                    ),
+                    $queryBuilder->expr()->gt(
+                        'sys_lockedrecords' . '.tstamp',
+                        ($GLOBALS['EXEC_TIME'] - 2 * 3600)
+                    )
+                )
+                ->execute();
+
+            while ($row = $result->fetch()) {
                 // Get the type of the user that locked this record:
                 if ($row['userid']) {
                     $userTypeLabel = 'beUser';
@@ -3331,18 +3527,23 @@ class BackendUtility
                     $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.lockedRecordUser'),
                     $userType,
                     $userName,
-                    self::calcAge($GLOBALS['EXEC_TIME'] - $row['tstamp'], $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears'))
+                    self::calcAge(
+                        $GLOBALS['EXEC_TIME'] - $row['tstamp'],
+                        $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')
+                    )
                 );
                 if ($row['record_pid'] && !isset($GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_pid']])) {
                     $GLOBALS['LOCKED_RECORDS']['pages:' . $row['record_pid']]['msg'] = sprintf(
                         $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.lockedRecordUser_content'),
                         $userType,
                         $userName,
-                        self::calcAge($GLOBALS['EXEC_TIME'] - $row['tstamp'], $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears'))
+                        self::calcAge(
+                            $GLOBALS['EXEC_TIME'] - $row['tstamp'],
+                            $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')
+                        )
                     );
                 }
             }
-            $db->sql_free_result($res);
         }
         return $GLOBALS['LOCKED_RECORDS'][$table . ':' . $uid];
     }
@@ -3501,8 +3702,13 @@ class BackendUtility
      */
     public static function firstDomainRecord($rootLine)
     {
+        $expressionBuilder = $queryBuilder = static::getQueryBuilderForTable('sys_domain')->expr();
+        $constraint = $expressionBuilder->andX(
+            $expressionBuilder->eq('redirectTo', $expressionBuilder->literal('')),
+            $expressionBuilder->eq('hidden', 0)
+        );
         foreach ($rootLine as $row) {
-            $dRec = self::getRecordsByField('sys_domain', 'pid', $row['uid'], ' AND redirectTo=\'\' AND hidden=0', '', 'sorting');
+            $dRec = self::getRecordsByField('sys_domain', 'pid', $row['uid'], (string)$constraint, '', 'sorting');
             if (is_array($dRec)) {
                 $dRecord = reset($dRec);
                 return rtrim($dRecord['domainName'], '/');
@@ -3516,7 +3722,7 @@ class BackendUtility
      *
      * @param string $domain Domain name
      * @param string $path Appended path
-     * @return array Domain record, if found
+     * @return array|bool Domain record, if found, false otherwise
      */
     public static function getDomainStartPage($domain, $path = '')
     {
@@ -3526,14 +3732,36 @@ class BackendUtility
         $path = trim(preg_replace('/\\/[^\\/]*$/', '', $path));
         // Stuff
         $domain .= $path;
-        $db = static::getDatabaseConnection();
-        $res = $db->exec_SELECTquery('sys_domain.*', 'pages,sys_domain', '
-			pages.uid=sys_domain.pid
-			AND sys_domain.hidden=0
-			AND (sys_domain.domainName=' . $db->fullQuoteStr($domain, 'sys_domain') . ' OR sys_domain.domainName='
-            . $db->fullQuoteStr(($domain . '/'), 'sys_domain') . ')' . self::deleteClause('pages'), '', '', '1');
-        $result = $db->sql_fetch_assoc($res);
-        $db->sql_free_result($res);
+
+        $queryBuilder = static::getQueryBuilderForTable('sys_domain');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $result = $queryBuilder
+            ->select('sys_domain.*')
+            ->from('sys_domain')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'sys_domain.pid',
+                    $queryBuilder->quoteIdentifier('pages.uid')
+                ),
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->eq(
+                        'sys_domain.domainName',
+                        $queryBuilder->createNamedParameter($domain)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'sys_domain.domainName',
+                        $queryBuilder->createNamedParameter($domain . '/')
+                    )
+                )
+
+            )
+            ->execute()
+            ->fetch();
+
         return $result;
     }
 
@@ -3669,21 +3897,39 @@ class BackendUtility
     public static function referenceCount($table, $ref, $msg = '', $count = null)
     {
         if ($count === null) {
-            $db = static::getDatabaseConnection();
+
+            // Build base query
+            $queryBuilder = static::getQueryBuilderForTable('sys_refindex');
+            $queryBuilder
+                ->count('*')
+                ->from('sys_refindex')
+                ->where(
+                    $queryBuilder->expr()->eq('ref_table', $queryBuilder->quote($table)),
+                    $queryBuilder->expr()->eq('deleted', 0)
+                );
+
             // Look up the path:
             if ($table == '_FILE') {
-                if (GeneralUtility::isFirstPartOfStr($ref, PATH_site)) {
-                    $ref = PathUtility::stripPathSitePrefix($ref);
-                    $condition = 'ref_string=' . $db->fullQuoteStr($ref, 'sys_refindex');
-                } else {
+                if (!GeneralUtility::isFirstPartOfStr($ref, PATH_site)) {
                     return '';
                 }
+
+                $ref = PathUtility::stripPathSitePrefix($ref);
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq('ref_string', $queryBuilder->createNamedParameter($ref))
+                );
             } else {
-                $condition = 'ref_uid=' . (int)$ref;
+                $queryBuilder->andWhere($queryBuilder->expr()->eq('ref_uid', (int)$ref));
             }
-            $count = $db->exec_SELECTcountRows('*', 'sys_refindex', 'ref_table=' . $db->fullQuoteStr($table, 'sys_refindex') . ' AND ' . $condition . ' AND deleted=0');
+
+            $count = $queryBuilder->execute()->fetchColumn(0);
         }
-        return $count ? ($msg ? sprintf($msg, $count) : $count) : '';
+
+        if ($count && $msg) {
+            return sprintf($msg, $count);
+        }
+
+        return $count ?? '';
     }
 
     /**
@@ -3697,14 +3943,32 @@ class BackendUtility
     public static function translationCount($table, $ref, $msg = '')
     {
         $count = null;
-        if (empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']) {
-            $where = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . (int)$ref . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '<>0';
-            if (!empty($GLOBALS['TCA'][$table]['ctrl']['delete'])) {
-                $where .= ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0';
-            }
-            $count = static::getDatabaseConnection()->exec_SELECTcountRows('*', $table, $where);
+        if (empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])
+            && $GLOBALS['TCA'][$table]['ctrl']['languageField']
+            && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
+            && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']
+        ) {
+            $queryBuilder = static::getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+            $count = (int)$queryBuilder
+                ->count('*')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], (int)$ref),
+                    $queryBuilder->expr()->neq($GLOBALS['TCA'][$table]['ctrl']['languageField'], 0)
+                )
+                ->execute()
+                ->fetchColumn(0);
         }
-        return $count ? ($msg ? sprintf($msg, $count) : $count) : '';
+
+        if ($count && $msg) {
+            return sprintf($msg, $count);
+        }
+
+        return $count ?? '';
     }
 
     /*******************************************
@@ -3742,24 +4006,36 @@ class BackendUtility
                     $outputRows[] = $row;
                 }
             }
-            $workspaceSqlPart = '';
+
+            $queryBuilder = static::getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()->removeAll();
+
+            // build fields to select
+            $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields));
+
+            $queryBuilder
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq('pid', -1),
+                    $queryBuilder->expr()->neq('uid', (int)$uid),
+                    $queryBuilder->expr()->eq('t3ver_oid', (int)$uid)
+                )
+                ->orderBy('t3ver_id', 'DESC');
+
+            if ($includeDeletedRecords === false) {
+                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            }
+
             if ($workspace === 0) {
                 // Only in Live WS
-                $workspaceSqlPart = ' AND t3ver_wsid=0';
+                $queryBuilder->andWhere($queryBuilder->expr()->eq('t3ver_wsid', 0));
             } elseif ($workspace !== null) {
                 // In Live WS and Workspace with given ID
-                $workspaceSqlPart = ' AND t3ver_wsid IN (0,' . (int)$workspace . ')';
+                $queryBuilder->andWhere($queryBuilder->expr()->in('t3ver_wsid', [0, (int)$workspace]));
             }
-            // Select all offline versions of record:
-            $rows = static::getDatabaseConnection()->exec_SELECTgetRows(
-                $fields,
-                $table,
-                'pid=-1 AND uid<>' . (int)$uid . ' AND t3ver_oid=' . (int)$uid
-                    . $workspaceSqlPart
-                    . ($includeDeletedRecords ? '' : self::deleteClause($table)),
-                '',
-                't3ver_id DESC'
-            );
+
+            $rows = $queryBuilder->execute()->fetchAll();
+
             // Add rows to output array:
             if (is_array($rows)) {
                 $outputRows = array_merge($outputRows, $rows);
@@ -3965,11 +4241,27 @@ class BackendUtility
     {
         if (ExtensionManagementUtility::isLoaded('version')) {
             if ($workspace !== 0 && $GLOBALS['TCA'][$table] && self::isTableWorkspaceEnabled($table)) {
+
                 // Select workspace version of record:
-                $row = static::getDatabaseConnection()->exec_SELECTgetSingleRow($fields, $table, 'pid=-1 AND ' . 't3ver_oid=' . (int)$uid . ' AND ' . 't3ver_wsid=' . (int)$workspace . self::deleteClause($table));
-                if (is_array($row)) {
-                    return $row;
-                }
+                $queryBuilder = static::getQueryBuilderForTable($table);
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+                // build fields to select
+                $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields));
+
+                $row = $queryBuilder
+                    ->from($table)
+                    ->where(
+                        $queryBuilder->expr()->eq('pid', -1),
+                        $queryBuilder->expr()->eq('t3ver_oid', (int)$uid),
+                        $queryBuilder->expr()->eq('t3ver_wsid', (int)$workspace)
+                    )
+                    ->execute()
+                    ->fetch();
+
+                return $row;
             }
         }
         return false;
@@ -4077,15 +4369,24 @@ class BackendUtility
         }
         if ((int)$workspace !== 0 && $GLOBALS['TCA'][$table] && static::isTableWorkspaceEnabled($table)) {
             // Select workspace version of record:
-            $row = static::getDatabaseConnection()->exec_SELECTgetSingleRow(
-                $fields,
-                $table,
-                'pid<>-1 AND t3ver_state=' . new VersionState(VersionState::MOVE_PLACEHOLDER) . ' AND t3ver_move_id='
-                    . (int)$uid . ' AND t3ver_wsid=' . (int)$workspace . self::deleteClause($table)
-            );
-            if (is_array($row)) {
-                return $row;
-            }
+            $queryBuilder = static::getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+            $row = $queryBuilder
+                ->select(...GeneralUtility::trimExplode(',', $fields, true))
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->neq('pid', -1),
+                    $queryBuilder->expr()->eq('t3ver_state', new VersionState(VersionState::MOVE_PLACEHOLDER)),
+                    $queryBuilder->expr()->eq('t3ver_move_id', (int)$uid),
+                    $queryBuilder->expr()->eq('t3ver_wsid', (int)$workspace)
+                )
+                ->execute()
+                ->fetch();
+
+            return $row ?: false;
         }
         return false;
     }
@@ -4268,23 +4569,20 @@ class BackendUtility
      */
     public static function shortcutExists($url)
     {
-        $statement = self::getDatabaseConnection()->prepare_SELECTquery(
-            'uid',
-            'sys_be_shortcuts',
-            'userid = :userid AND url = :url'
-        );
+        $queryBuilder = static::getQueryBuilderForTable('sys_be_shortcuts');
+        $queryBuilder->getRestrictions()->removeAll();
 
-        $statement->bindValues([
-            ':userid' => self::getBackendUserAuthentication()->user['uid'],
-            ':url' => $url
-        ]
-        );
+        $count = $queryBuilder
+            ->count('uid')
+            ->from('sys_be_shortcuts')
+            ->where(
+                $queryBuilder->expr()->eq('userid', (int)self::getBackendUserAuthentication()->user['uid']),
+                $queryBuilder->expr()->eq('url', $queryBuilder->createNamedParameter($url))
+            )
+            ->execute()
+            ->fetchColumn(0);
 
-        $statement->execute();
-        $rows = $statement->fetch(PreparedStatement::FETCH_ASSOC);
-        $statement->free();
-
-        return !empty($rows);
+        return (bool)$count;
     }
 
     /**
@@ -4318,6 +4616,24 @@ class BackendUtility
     protected static function getDatabaseConnection()
     {
         return $GLOBALS['TYPO3_DB'];
+    }
+
+    /**
+     * @param string $table
+     * @return Connection
+     */
+    protected static function getConnectionForTable($table)
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+    }
+
+    /**
+     * @param string $table
+     * @return QueryBuilder
+     */
+    protected static function getQueryBuilderForTable($table)
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
     }
 
     /**
