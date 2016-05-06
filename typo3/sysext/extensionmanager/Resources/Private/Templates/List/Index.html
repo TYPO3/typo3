@@ -64,7 +64,7 @@
 						</div>
 					</f:if>
 				</td>
-				<td>
+				<td data-order="{f:if(condition: extension.installed, then: 'active', else: 'inactive')}">
 					<em:toggleExtensionInstallationState extension="{extension}" />
 				</td>
 				<td>
