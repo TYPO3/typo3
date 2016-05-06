@@ -2874,11 +2874,25 @@ class ResourceStorage implements ResourceStorageInterface
                     if ($storage->hasFolder($processingFolderIdentifier)) {
                         $this->processingFolder = $storage->getFolder($processingFolderIdentifier);
                     } else {
-                        $this->processingFolder = $storage->createFolder(ltrim($processingFolderIdentifier, '/'));
+                        $rootFolder = $storage->getRootLevelFolder(false);
+                        $currentEvaluatePermissions = $storage->getEvaluatePermissions();
+                        $storage->setEvaluatePermissions(false);
+                        $this->processingFolder = $storage->createFolder(
+                            ltrim($processingFolderIdentifier, '/'),
+                            $rootFolder
+                        );
+                        $storage->setEvaluatePermissions($currentEvaluatePermissions);
                     }
                 } else {
                     if ($this->driver->folderExists($processingFolder) === false) {
-                        $this->processingFolder = $this->createFolder($processingFolder);
+                        $rootFolder = $this->getRootLevelFolder(false);
+                        $currentEvaluatePermissions = $this->evaluatePermissions;
+                        $this->evaluatePermissions = false;
+                        $this->processingFolder = $this->createFolder(
+                            $processingFolder,
+                            $rootFolder
+                        );
+                        $this->evaluatePermissions = $currentEvaluatePermissions;
                     } else {
                         $data = $this->driver->getFolderInfoByIdentifier($processingFolder);
                         $this->processingFolder = ResourceFactory::getInstance()->createFolderObject($this, $data['identifier'], $data['name']);
@@ -2924,7 +2938,10 @@ class ResourceStorage implements ResourceStorageInterface
                 if ($processingFolder->hasFolder($folderName)) {
                     $processingFolder = $processingFolder->getSubfolder($folderName);
                 } else {
+                    $currentEvaluatePermissions = $processingFolder->getStorage()->getEvaluatePermissions();
+                    $processingFolder->getStorage()->setEvaluatePermissions(false);
                     $processingFolder = $processingFolder->createFolder($folderName);
+                    $processingFolder->getStorage()->setEvaluatePermissions($currentEvaluatePermissions);
                 }
             }
         } catch (Exception\FolderDoesNotExistException $e) {
@@ -2938,7 +2955,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param string $fileIdentifier
      * @param int $levels
-     * @return []
+     * @return string[]
      */
     protected function getNamesForNestedProcessingFolder($fileIdentifier, $levels)
     {
