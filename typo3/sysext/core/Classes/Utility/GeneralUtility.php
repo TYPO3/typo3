@@ -2035,6 +2035,7 @@ class GeneralUtility
                 if (isset($report)) {
                     $report['error'] = $exception->getHandlerContext()['errno'];
                     $report['message'] = $exception->getMessage();
+                    $report['exception'] = $exception;
                 }
                 return false;
             }
