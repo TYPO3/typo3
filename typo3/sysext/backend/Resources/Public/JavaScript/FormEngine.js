@@ -80,21 +80,22 @@ define(['jquery',
 	 * or from a multi-select (two selects side-by-side)
 	 * previously known as "setFormValueFromBrowseWin"
 	 *
-	 * @param {String} fieldName formerly known as "fName" name of the field, like [tt_content][2387][header]
-	 * @param {(String|Number)} value the value to fill in (could be an integer)
-	 * @param {String} label the visible name in the selector
-	 * @param {String} title the title when hovering over it
-	 * @param {String} exclusiveValues if the select field has exclusive options that are not combine-able
+	 * @param {String} fieldName Formerly known as "fName" name of the field, like [tt_content][2387][header]
+	 * @param {(String|Number)} value The value to fill in (could be an integer)
+	 * @param {String} label The visible name in the selector
+	 * @param {String} title The title when hovering over it
+	 * @param {String} exclusiveValues If the select field has exclusive options that are not combine-able
+	 * @param {$} $optionEl The jQuery object of the selected <option> tag
 	 */
-	FormEngine.setSelectOptionFromExternalSource = setFormValueFromBrowseWin = function(fieldName, value, label, title, exclusiveValues) {
+	FormEngine.setSelectOptionFromExternalSource = setFormValueFromBrowseWin = function(fieldName, value, label, title, exclusiveValues, $optionEl) {
 		exclusiveValues = String(exclusiveValues);
 
-		var $fieldEl;
-		var $originalFieldEl = $fieldEl = FormEngine.getFieldElement(fieldName)
-				,isMultiple = false
-				,isList = false;
+		var $fieldEl,
+			$originalFieldEl = $fieldEl = FormEngine.getFieldElement(fieldName),
+			isMultiple = false,
+			isList = false;
 
-		if ($originalFieldEl.length == 0 || value === '--div--') {
+		if ($originalFieldEl.length === 0 || value === '--div--') {
 			return;
 		}
 
@@ -122,7 +123,6 @@ define(['jquery',
 		}
 
 		if (isMultiple || isList) {
-
 			// If multiple values are not allowed, clear anything that is in the control already
 			if (!isMultiple) {
 				$fieldEl.empty();
@@ -130,16 +130,18 @@ define(['jquery',
 
 			// Clear elements if exclusive values are found
 			if (exclusiveValues) {
+				var $optionSelect = $optionEl.closest('select');
 				var m = new RegExp('(^|,)' + value + '($|,)');
 				// the new value is exclusive => remove all existing values
 				if (exclusiveValues.match(m)) {
 					$fieldEl.empty();
-
-				// there is an old value and it was exclusive => it has to be removed
+					$optionSelect.find('[disabled]').removeClass('hidden').prop('disabled', false);
 				} else if ($fieldEl.children('option').length == 1) {
+					// there is an old value and it was exclusive => it has to be removed
 					m = new RegExp("(^|,)" + $fieldEl.children('option').prop('value') + "($|,)");
 					if (exclusiveValues.match(m)) {
 						$fieldEl.empty();
+						$optionSelect.find('[disabled]').removeClass('hidden').prop('disabled', false);
 					}
 				}
 			}
@@ -156,6 +158,10 @@ define(['jquery',
 						return false;
 					}
 				});
+
+				if (addNewValue) {
+					$optionEl.addClass('hidden').prop('disabled', true);
+				}
 			}
 
 			// element can be added
@@ -452,6 +458,9 @@ define(['jquery',
 				case '_list':
 					$fieldEl = $(':input.tceforms-multiselect[data-formengine-input-name="' + fieldName + '"]', $formEl);
 					break;
+				case '_avail':
+					$fieldEl = $(':input[data-relatedfieldname="' + fieldName + '"]', $formEl);
+					break;
 				case '_mul':
 				case '_hr':
 					$fieldEl = $(':input[type=hidden][data-formengine-input-name="' + fieldName + '"]', $formEl);
@@ -549,10 +558,18 @@ define(['jquery',
 	 * removes currently selected options from a select field
 	 *
 	 * @param {Object} $fieldEl a jQuery object, containing the select field
+	 * @param {Object} $availableFieldEl a jQuery object, containing all available value
 	 */
-	FormEngine.removeOption = function($fieldEl) {
+	FormEngine.removeOption = function($fieldEl, $availableFieldEl) {
+		var $selected = $fieldEl.find(':selected');
+
+		$availableFieldEl
+			.find('option[value="' + $selected.attr('value') + '"]')
+			.removeClass('hidden')
+			.prop('disabled', false);
+
 		// remove the selected options
-		$fieldEl.find(':selected').remove();
+		$selected.remove();
 	};
 
 
@@ -588,7 +605,8 @@ define(['jquery',
 				} else if ($el.hasClass('t3js-btn-moveoption-bottom')) {
 					FormEngine.moveOptionToBottom($listFieldEl);
 				} else if ($el.hasClass('t3js-btn-removeoption')) {
-					FormEngine.removeOption($listFieldEl);
+					var $availableFieldEl = FormEngine.getFieldElement(fieldName, '_avail');
+					FormEngine.removeOption($listFieldEl, $availableFieldEl);
 				}
 
 				// make sure to update the hidden field value when modifying the select value
@@ -608,7 +626,7 @@ define(['jquery',
 				// try to add each selected field to the "left" select field
 				$el.find(':selected').each(function() {
 					var $optionEl = $(this);
-					FormEngine.setSelectOptionFromExternalSource(fieldName, $optionEl.prop('value'), $optionEl.text(), $optionEl.prop('title'), exclusiveValues);
+					FormEngine.setSelectOptionFromExternalSource(fieldName, $optionEl.prop('value'), $optionEl.text(), $optionEl.prop('title'), exclusiveValues, $optionEl);
 				});
 			}
 		}).on('click', '.t3js-editform-close', function(e) {
