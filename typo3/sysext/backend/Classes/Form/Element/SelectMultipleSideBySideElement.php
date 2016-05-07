@@ -89,6 +89,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             $size = 2;
         }
         $size = $config['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($itemsArray) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax']) : $size;
+        $allowMultiple = !empty($config['multiple']);
 
         $itemsToSelect = [];
         $filterTextfield = [];
@@ -97,7 +98,13 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             // Create option tags:
             $opt = array();
             foreach ($selItems as $p) {
-                $opt[] = '<option value="' . htmlspecialchars($p[1]) . '" title="' . $p[0] . '">' . $p[0] . '</option>';
+                $disabledAttr = '';
+                $classAttr = '';
+                if (!$allowMultiple && in_array((string)$p[1], $parameterArray['itemFormElValue'], true)) {
+                    $disabledAttr = ' disabled="disabled"';
+                    $classAttr = ' class="hidden"';
+                }
+                $opt[] = '<option value="' . htmlspecialchars($p[1]) . '" title="' . $p[0] . '"' . $classAttr . $disabledAttr . '>' . $p[0] . '</option>';
             }
             // Put together the selector box:
             $selector_itemListStyle = isset($config['itemListStyle'])
