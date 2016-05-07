@@ -851,11 +851,9 @@ class EditDocumentController extends AbstractModule
             $rootPageData = null;
             $rootLine = BackendUtility::BEgetRootLine($currentPageId);
             $currentPage = reset($rootLine);
-            if ((int)$currentPage['doktype'] === PageRepository::DOKTYPE_DEFAULT
-                || (int)$currentPage['doktype'] === PageRepository::DOKTYPE_LINK
-                || (int)$currentPage['doktype'] === PageRepository::DOKTYPE_SHORTCUT
-                || (int)$currentPage['doktype'] === PageRepository::DOKTYPE_MOUNTPOINT
-            ) {
+            // Allow all doktypes below 200
+            // This makes custom doktype work as well with opening a frontend page.
+            if ((int)$currentPage['doktype'] <= PageRepository::DOKTYPE_SPACER) {
                 // try the current page
                 $previewPageId = $currentPageId;
             } else {
