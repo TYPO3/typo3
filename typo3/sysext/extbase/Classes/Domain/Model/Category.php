@@ -93,10 +93,11 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Returns the icon
      *
      * @return string $icon
-     * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function getIcon()
     {
+        \TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
         return $this->icon;
     }
 
@@ -105,10 +106,11 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @param string $icon
      * @return void
-     * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function setIcon($icon)
     {
+        \TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
         $this->icon = $icon;
     }
 
