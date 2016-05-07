@@ -74,7 +74,7 @@ return array(
                 'type' => 'input',
                 'size' => '40',
                 'eval' => 'trim',
-                'max' => '80'
+                'max' => '160'
             )
         ),
         'first_name' => array(
@@ -123,7 +123,7 @@ return array(
                 'type' => 'input',
                 'eval' => 'trim',
                 'size' => '20',
-                'max' => '20'
+                'max' => '30'
             )
         ),
         'fax' => array(
@@ -133,7 +133,7 @@ return array(
                 'type' => 'input',
                 'size' => '20',
                 'eval' => 'trim',
-                'max' => '20'
+                'max' => '30'
             )
         ),
         'email' => array(
