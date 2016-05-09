@@ -263,6 +263,62 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * @test
+     */
+    public function invalidCharactersInObjectNamesAreReported()
+    {
+        $typoScript = '$.10 = invalid';
+        $this->typoScriptParser->parse($typoScript);
+        $expected = 'Line 0: Object Name String, "$.10" contains invalid character "$". Must be alphanumeric or one of: "_:-\."';
+        $this->assertEquals($expected, $this->typoScriptParser->errors[0][0]);
+    }
+
+    /**
+     * @return array
+     */
+    public function doubleSlashCommentsDataProvider()
+    {
+        return [
+            'valid, without spaces' => ['// valid, without spaces'],
+            'valid, with one space' => [' // valid, with one space'],
+            'valid, with multiple spaces' => ['  // valid, with multiple spaces'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider doubleSlashCommentsDataProvider
+     */
+    public function doubleSlashCommentsAreValid($typoScript)
+    {
+        $this->typoScriptParser->parse($typoScript);
+        $this->assertEmpty($this->typoScriptParser->errors);
+    }
+
+    /**
+     * @return array
+     */
+    public function singleSlashCommentsDataProvider()
+    {
+        return [
+            'deprecated, without spaces' => ['/ deprecated, without spaces'],
+            'deprecated, with one space' => [' / deprecated, with one space'],
+            'deprecated, with multiple spaces' => ['  / deprecated, with multiple spaces'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider singleSlashCommentsDataProvider
+     */
+    public function singleSlashHeadedCommentsAreDeprecated($typoScript)
+    {
+        $this->typoScriptParser->parse($typoScript);
+        $expected = 'Line 0: Single slash headed one-line comments are deprecated.';
+        $this->assertEquals($expected, $this->typoScriptParser->errors[0][0]);
+    }
+
+    /**
      * @param string $typoScript
      * @param array $expected
      * @dataProvider typoScriptIsParsedToArrayDataProvider

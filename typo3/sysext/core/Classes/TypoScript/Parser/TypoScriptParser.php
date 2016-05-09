@@ -483,6 +483,9 @@ class TypoScriptParser
                             break;
                         }
                     } else {
+                        if (preg_match('|^\s*/[^/]|', $line)) {
+                            $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) .  ': Single slash headed one-line comments are deprecated.', 2);
+                        }
                         if ($this->syntaxHighLight) {
                             $this->regHighLight('comment', $lineP);
                         }
