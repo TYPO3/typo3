@@ -137,9 +137,9 @@ define(['jquery',
 				if (exclusiveValues.match(m)) {
 					$fieldEl.empty();
 					reenableOptions = true;
-				} else if ($fieldEl.children('option').length == 1) {
+				} else if ($fieldEl.find('option').length == 1) {
 					// there is an old value and it was exclusive => it has to be removed
-					m = new RegExp("(^|,)" + $fieldEl.children('option').prop('value') + "($|,)");
+					m = new RegExp("(^|,)" + $fieldEl.find('option').prop('value') + "($|,)");
 					if (exclusiveValues.match(m)) {
 						$fieldEl.empty();
 						reenableOptions = true;
@@ -157,7 +157,7 @@ define(['jquery',
 			// check if there is a "_mul" field (a field on the right) and if the field was already added
 			var $multipleFieldEl = FormEngine.getFieldElement(fieldName, '_mul', true);
 			if ($multipleFieldEl.length == 0 || $multipleFieldEl.val() == 0) {
-				$fieldEl.children('option').each(function(k, optionEl) {
+				$fieldEl.find('option').each(function(k, optionEl) {
 					if ($(optionEl).prop('value') == value) {
 						addNewValue = false;
 						return false;
@@ -212,7 +212,7 @@ define(['jquery',
 	 */
 	FormEngine.updateHiddenFieldValueFromSelect = setHiddenFromList = function(selectFieldEl, originalFieldEl) {
 		var selectedValues = [];
-		$(selectFieldEl).children('option').each(function() {
+		$(selectFieldEl).find('option').each(function() {
 			selectedValues.push($(this).prop('value'));
 		});
 
