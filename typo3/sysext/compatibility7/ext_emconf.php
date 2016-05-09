@@ -15,7 +15,9 @@ $EM_CONF[$_EXTKEY] = array(
         'depends' => array(
             'typo3' => '8.2.0-8.2.99',
         ),
-        'conflicts' => array(),
+        'conflicts' => array(
+            'compatibility6' => '0.0.0',
+        ),
         'suggests' => array(
             'indexed_search'
         ),

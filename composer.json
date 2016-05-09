@@ -143,7 +143,6 @@
 			"TYPO3\\CMS\\Beuser\\": "typo3/sysext/beuser/Classes/",
 			"TYPO3\\CMS\\ContextHelp\\": "typo3/sysext/context_help/Classes/",
 			"TYPO3\\CMS\\Core\\": "typo3/sysext/core/Classes/",
-			"TYPO3\\CMS\\Compatibility7\\": "typo3/sysext/compatibility7/Classes/",
 			"TYPO3\\CMS\\Cshmanual\\": "typo3/sysext/cshmanual/Classes/",
 			"TYPO3\\CMS\\CssStyledContent\\": "typo3/sysext/css_styled_content/Classes/",
 			"TYPO3\\CMS\\Dbal\\": "typo3/sysext/dbal/Classes/",
