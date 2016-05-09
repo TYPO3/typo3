@@ -23,7 +23,7 @@
 				</source>
 			</trans-unit>
 			<trans-unit id="confirmUnlockInstallToolButton">
-				<source>Unlock the Install&#160;Tool</source>
+				<source>Unlock the Install&amp;#160;Tool</source>
 			</trans-unit>
 		</body>
 	</file>
