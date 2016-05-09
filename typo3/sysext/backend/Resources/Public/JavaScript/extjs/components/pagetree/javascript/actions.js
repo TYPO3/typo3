@@ -155,6 +155,7 @@ TYPO3.Components.PageTree.Actions = {
 						this.updateNode(node, node.isExpanded(), response);
 					} else {
 						node.remove();
+						TYPO3.Backend.NavigationContainer.PageTree.mainTree.refreshTree();
 					}
 				}
 			},
