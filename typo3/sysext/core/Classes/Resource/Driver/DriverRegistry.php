@@ -87,10 +87,6 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function addDriversToTCA()
     {
-        // Add driver to TCA of sys_file_storage
-        if (TYPO3_MODE !== 'BE') {
-            return;
-        }
         $driverFieldConfig = &$GLOBALS['TCA']['sys_file_storage']['columns']['driver']['config'];
         $configurationFieldConfig = &$GLOBALS['TCA']['sys_file_storage']['columns']['configuration']['config'];
         foreach ($this->driverConfigurations as $driver) {
