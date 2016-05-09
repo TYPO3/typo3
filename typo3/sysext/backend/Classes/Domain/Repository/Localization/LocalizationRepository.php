@@ -33,11 +33,12 @@ class LocalizationRepository
     {
         $record = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
             'tt_content_orig.sys_language_uid',
-            'tt_content,tt_content AS tt_content_orig',
+            'tt_content,tt_content AS tt_content_orig,sys_language',
             'tt_content.colPos = ' . (int)$colPos
             . ' AND tt_content.pid = ' . (int)$pageId
             . ' AND tt_content.sys_language_uid = ' . (int)$localizedLanguage
             . ' AND tt_content.t3_origuid = tt_content_orig.uid'
+            . ' AND tt_content_orig.sys_language_uid=sys_language.uid'
             . $this->getExcludeQueryPart()
             . $this->getAllowedLanguagesForBackendUser(),
             'tt_content_orig.sys_language_uid'
