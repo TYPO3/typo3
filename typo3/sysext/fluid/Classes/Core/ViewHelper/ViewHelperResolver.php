@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
@@ -53,6 +54,23 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
     ];
 
     /**
+     * ViewHelperResolver constructor
+     *
+     * Responsible for adding a third namespace in case this is requested from
+     * the admin panel - causes overlaying of `f:` with `f:debug`.
+     */
+    public function __construct()
+    {
+        $configuration = $this->getBackendUser()->uc['TSFE_adminConfig'];
+        if (TYPO3_MODE === 'FE'
+            && isset($configuration['preview_showFluidDebug'])
+            && $configuration['preview_showFluidDebug']
+        ) {
+            $this->namespaces['f'][] = 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Debug';
+        }
+    }
+
+    /**
      * @param string $viewHelperClassName
      * @return \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface
      */
@@ -67,5 +85,13 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
     protected function getObjectManager()
     {
         return GeneralUtility::makeInstance(ObjectManager::class);
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

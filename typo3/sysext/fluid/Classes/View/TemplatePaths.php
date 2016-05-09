@@ -208,4 +208,16 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
             ArrayUtility::sortArrayWithIntegerKeys($partialRootPaths)
         );
     }
+
+    /**
+     * Public API for currently protected method. Can be dropped when switching to
+     * Fluid 1.1.0 or above.
+     *
+     * @param string $partialName
+     * @return string
+     */
+    public function getPartialPathAndFilename($partialName)
+    {
+        return parent::getPartialPathAndFilename($partialName);
+    }
 }
