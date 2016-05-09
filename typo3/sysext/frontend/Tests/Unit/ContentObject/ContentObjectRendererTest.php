@@ -1981,6 +1981,36 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * @return array
+     */
+    public function stdWrapReturnsExpectationDataProvider()
+    {
+        return [
+            'Prevent silent bool conversion' => [
+                '1+1',
+                [
+                    'prioriCalc.' => [
+                        'wrap' => '|',
+                    ],
+                ],
+                '1+1',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $content
+     * @param array $configuration
+     * @param string $expectation
+     * @dataProvider stdWrapReturnsExpectationDataProvider
+     * @test
+     */
+    public function stdWrapReturnsExpectation($content, array $configuration, $expectation)
+    {
+        $this->assertSame($expectation, $this->subject->stdWrap($content, $configuration));
+    }
+
+    /**
      * Data provider for stdWrap_case test
      *
      * @return array

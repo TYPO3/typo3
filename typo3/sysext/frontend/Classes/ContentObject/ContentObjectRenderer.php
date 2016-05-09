@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -2004,7 +2003,7 @@ class ContentObjectRenderer
             $conf['cacheStore'] = 1;
         }
         // The configuration is sorted and filtered by intersection with the defined stdWrapOrder.
-        $sortedConf = array_intersect_key($this->stdWrapOrder, $conf);
+        $sortedConf = array_keys(array_intersect_key($this->stdWrapOrder, $conf));
         // Functions types that should not make use of nested stdWrap function calls to avoid conflicts with internal TypoScript used by these functions
         $stdWrapDisabledFunctionTypes = 'cObject,functionName,stdWrap';
         // Additional Array to check whether a function has already been executed
@@ -2014,16 +2013,16 @@ class ContentObjectRenderer
         $this->stdWrapRecursionLevel++;
         $this->stopRendering[$this->stdWrapRecursionLevel] = false;
         // execute each function in the predefined order
-        foreach ($sortedConf as $stdWrapName => $functionType) {
+        foreach ($sortedConf as $stdWrapName) {
             // eliminate the second key of a pair 'key'|'key.' to make sure functions get called only once and check if rendering has been stopped
             if (!$isExecuted[$stdWrapName] && !$this->stopRendering[$this->stdWrapRecursionLevel]) {
                 $functionName = rtrim($stdWrapName, '.');
                 $functionProperties = $functionName . '.';
+                $functionType = $this->stdWrapOrder[$functionName];
                 // If there is any code on the next level, check if it contains "official" stdWrap functions
                 // if yes, execute them first - will make each function stdWrap aware
                 // so additional stdWrap calls within the functions can be removed, since the result will be the same
-                // exception: the recursive stdWrap function and cObject will still be using their own stdWrap call, since it modifies the content and not a property
-                if ($functionName !== 'stdWrap' && !empty($conf[$functionProperties]) && !GeneralUtility::inList($stdWrapDisabledFunctionTypes, $functionType)) {
+                if (!empty($conf[$functionProperties]) && !GeneralUtility::inList($stdWrapDisabledFunctionTypes, $functionType)) {
                     if (array_intersect_key($this->stdWrapOrder, $conf[$functionProperties])) {
                         $conf[$functionName] = $this->stdWrap($conf[$functionName], $conf[$functionProperties]);
                     }
