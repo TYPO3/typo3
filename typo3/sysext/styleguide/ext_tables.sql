@@ -208,6 +208,7 @@ CREATE TABLE tx_styleguide_elements_group (
 	group_file_3 text,
 	group_file_4 text,
 	group_folder_1 text,
+	group_requestUpdate_1 text,
 
 	flex_1 text,
 
@@ -489,6 +490,8 @@ CREATE TABLE tx_styleguide_elements_select (
 	select_tree_4 text,
 
 	flex_1 text,
+
+	select_requestUpdate_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
