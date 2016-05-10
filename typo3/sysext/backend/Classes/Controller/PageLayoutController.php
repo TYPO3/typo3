@@ -1373,7 +1373,7 @@ class PageLayoutController
      *
      * @return bool
      */
-    protected function contentIsNotLockedForEditors()
+    public function contentIsNotLockedForEditors()
     {
         return $this->getBackendUser()->isAdmin() || ($this->CALC_PERMS & Permission::CONTENT_EDIT) === Permission::CONTENT_EDIT && !$this->pageinfo['editlock'];
     }

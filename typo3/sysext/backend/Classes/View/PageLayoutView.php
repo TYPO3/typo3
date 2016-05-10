@@ -524,8 +524,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 $content[$key] .= '">';
                 // Add new content at the top most position
                 $link = '';
-                if ($this->getPageLayoutController()->pageIsNotLockedForEditors()
-                    && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
+                if ($this->getPageLayoutController()->contentIsNotLockedForEditors()
                     && (!$this->checkIfTranslationsExistInLanguage($contentRecordsPerColumn, $lP))
                 ) {
                     if ($this->option_newWizard) {
@@ -638,8 +637,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                                 '-' . StringUtility::getUniqueId() . '">';
                             // Add icon "new content element below"
                             if (!$disableMoveAndNewButtons
-                                && $this->getPageLayoutController()->pageIsNotLockedForEditors()
-                                && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
+                                && $this->getPageLayoutController()->contentIsNotLockedForEditors()
                                 && (!$this->checkIfTranslationsExistInLanguage($contentRecordsPerColumn, $lP))
                             ) {
                                 // New content element:
