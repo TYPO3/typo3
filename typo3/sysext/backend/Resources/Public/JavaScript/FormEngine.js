@@ -130,19 +130,24 @@ define(['jquery',
 
 			// Clear elements if exclusive values are found
 			if (exclusiveValues) {
-				var $optionSelect = $optionEl.closest('select');
+				var reenableOptions = false;
+
 				var m = new RegExp('(^|,)' + value + '($|,)');
 				// the new value is exclusive => remove all existing values
 				if (exclusiveValues.match(m)) {
 					$fieldEl.empty();
-					$optionSelect.find('[disabled]').removeClass('hidden').prop('disabled', false);
+					reenableOptions = true;
 				} else if ($fieldEl.children('option').length == 1) {
 					// there is an old value and it was exclusive => it has to be removed
 					m = new RegExp("(^|,)" + $fieldEl.children('option').prop('value') + "($|,)");
 					if (exclusiveValues.match(m)) {
 						$fieldEl.empty();
-						$optionSelect.find('[disabled]').removeClass('hidden').prop('disabled', false);
+						reenableOptions = true;
 					}
+				}
+
+				if (reenableOptions && typeof $optionEl !== 'undefined') {
+					$optionEl.closest('select').find('[disabled]').removeClass('hidden').prop('disabled', false)
 				}
 			}
 
@@ -159,7 +164,7 @@ define(['jquery',
 					}
 				});
 
-				if (addNewValue) {
+				if (addNewValue && typeof $optionEl !== 'undefined') {
 					$optionEl.addClass('hidden').prop('disabled', true);
 				}
 			}
@@ -563,10 +568,12 @@ define(['jquery',
 	FormEngine.removeOption = function($fieldEl, $availableFieldEl) {
 		var $selected = $fieldEl.find(':selected');
 
-		$availableFieldEl
-			.find('option[value="' + $selected.attr('value') + '"]')
-			.removeClass('hidden')
-			.prop('disabled', false);
+		$selected.each(function() {
+			$availableFieldEl
+				.find('option[value="' + $(this).attr('value') + '"]')
+				.removeClass('hidden')
+				.prop('disabled', false);
+		});
 
 		// remove the selected options
 		$selected.remove();
