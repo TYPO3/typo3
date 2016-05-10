@@ -26,6 +26,13 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
     /**
+     * As this ViewHelper might render HTML, the output must not be escaped
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @param array $arguments
      * @return string
      */
