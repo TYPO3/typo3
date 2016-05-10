@@ -69,13 +69,13 @@ class ElementsBasicCest
             'input_4 eval=alpha' => [
                 [
                     'Kasper = TYPO3',
-                    'Kasper  TYPO',
+                    'KasperTYPO',
                 ],
             ],
             'input_5 eval=alphanum' => [
                 [
                     'Kasper = TYPO3',
-                    'Kasper  TYPO3',
+                    'KasperTYPO3',
                 ],
             ],
             'input_6 eval=date' => [

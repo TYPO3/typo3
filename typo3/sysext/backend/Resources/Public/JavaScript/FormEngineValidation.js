@@ -402,7 +402,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 							special = 0;
 							break;
 					}
-					if (alpha || num || theChar == ' ' || special) {
+					if (alpha || num || special) {
 						newString += theChar;
 					}
 				}

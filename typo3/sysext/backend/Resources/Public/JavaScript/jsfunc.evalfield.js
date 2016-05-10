@@ -97,7 +97,7 @@ function evalFunc_caseSwitch(type,inVal) {
 					case "alpha":	num=0; special=0;		break;
 					case "num":	alpha=0; special=0;		break;
 				}
-				if (alpha || num || theChar==' ' || special) {
+				if (alpha || num || special) {
 					newString+=theChar;
 				}
 			}
