@@ -238,17 +238,20 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	 */
 	FormEngineValidation.validateField = function($field, value) {
 		value = value || $field.val();
-		if (!$.isArray(value)) {
-			value = FormEngineValidation.ltrim(value);
-		}
 
 		var rules = $field.data('formengine-validation-rules');
 		var markParent = false;
 		var selected = 0;
+		// keep the original value, validateField should not alter it
 		var returnValue = value;
 		var $relatedField;
 		var minItems;
 		var maxItems;
+
+		if (!$.isArray(value)) {
+			value = FormEngineValidation.ltrim(value);
+		}
+
 		$.each(rules, function(k, rule) {
 			switch (rule.type) {
 				case 'required':
