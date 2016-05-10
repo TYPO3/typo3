@@ -18,12 +18,14 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache;
+use TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface;
 use TYPO3\CMS\Fluid\Core\Parser\PreProcessor\XmlnsNamespaceTemplatePreProcessor;
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\Expression\LegacyNamespaceExpressionNode;
 use TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
+use TYPO3Fluid\Fluid\Core\Parser\Configuration;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\CastingExpressionNode;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\MathExpressionNode;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\TernaryExpressionNode;
@@ -137,6 +139,28 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
         if (is_a($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template']['frontend'], FluidTemplateCache::class, true)) {
             $this->setCache($cache);
         }
+    }
+
+    /**
+     * Build parser configuration
+     *
+     * @return Configuration
+     * @throws \InvalidArgumentException if a class not implementing InterceptorInterface was registered
+     */
+    public function buildParserConfiguration()
+    {
+        $parserConfiguration = parent::buildParserConfiguration();
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['interceptors'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['interceptors'] as $className) {
+                $interceptor = GeneralUtility::makeInstance($className);
+                if (!$interceptor instanceof InterceptorInterface) {
+                    throw new \InvalidArgumentException('Interceptor "' . $className . '" needs to implement ' . InterceptorInterface::class . '.', 1462869795);
+                }
+                $parserConfiguration->addInterceptor($interceptor);
+            }
+        }
+
+        return $parserConfiguration;
     }
 
     /**
