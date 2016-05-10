@@ -338,11 +338,14 @@ class AdminPanelView
         }
         $cssPath = htmlspecialchars($this->getTypoScriptFrontendController()->absRefPrefix . ExtensionManagementUtility::siteRelPath('frontend')) . 'Resources/Public/Css/adminpanel.css';
         $out .= '<script src="' . GeneralUtility::locationHeaderUrl(ExtensionManagementUtility::siteRelPath('frontend') . 'Resources/Public/JavaScript/AdminPanel.js') . '" type="text/javascript"></script><script type="text/javascript">/*<![CDATA[*/' . 'typo3AdminPanel = new TYPO3AdminPanel();typo3AdminPanel.init("typo3-adminPanel-header", "TSFE_ADMIN_PANEL_FORM");' . '/*]]>*/</script>
-<link type="text/css" rel="stylesheet" href="' . $cssPath . '" media="all" />
+<link type="text/css" rel="stylesheet" href="' . $cssPath . '" media="all" />';
+        $out .= $this->getAdminPanelHeaderData();
+        $out .='
 <!--
 	TYPO3 admin panel end
 -->
 ';
+
         return $out;
     }
 

@@ -265,10 +265,6 @@ class RequestHandler implements RequestHandlerInterface
 
         // Admin panel
         if ($this->controller->isBackendUserLoggedIn() && $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {
-            if ($GLOBALS['BE_USER']->extAdmEnabled) {
-                // Style sheet is also used for frontend editing.
-                $this->controller->content = str_ireplace('</head>', $GLOBALS['BE_USER']->adminPanel->getAdminPanelHeaderData() . '</head>', $this->controller->content);
-            }
             if ($GLOBALS['BE_USER']->isAdminPanelVisible()) {
                 $this->controller->content = str_ireplace('</body>', $GLOBALS['BE_USER']->displayAdminPanel() . '</body>', $this->controller->content);
             }
