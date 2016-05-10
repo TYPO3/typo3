@@ -226,7 +226,24 @@ var TBE_EDITOR = {
 		if (OK || sendAlert==-1) {
 			return true;
 		} else {
-			if (sendAlert) alert(TBE_EDITOR.labels.fieldsMissing);
+			if (sendAlert) {
+				var t = (opener != null && typeof opener.top.TYPO3 !== 'undefined' ? opener.top : top);
+				t.TYPO3.Modal.confirm(
+					t.TYPO3.lang['alert'] || 'Alert',
+					TBE_EDITOR.labels.fieldsMissing,
+					t.TYPO3.Severity.error,
+					[
+						{
+							text: t.TYPO3.lang['button.ok'] || 'OK',
+							active: true,
+							btnClass: 'btn-default',
+							name: 'ok'
+						}
+					]
+				).on('button.clicked', function(e) {
+					t.TYPO3.Modal.dismiss();
+				});
+			}
 			return false;
 		}
 	},

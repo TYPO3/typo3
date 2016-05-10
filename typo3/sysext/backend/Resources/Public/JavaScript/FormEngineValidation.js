@@ -131,13 +131,15 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 				$humanReadableField.val(value);
 			}
 		}
-
 		$humanReadableField.data('main-field', fieldName);
 		$humanReadableField.data('config', config);
 		$humanReadableField.on('change', function() {
 			FormEngineValidation.updateInputField($(this).attr('data-formengine-input-name'));
 		});
 		$humanReadableField.on('keyup', FormEngineValidation.validate);
+
+		// add the attribute so that acceptance tests can know when the field initialization has completed
+		$humanReadableField.attr('data-formengine-input-initialized', 'true');
 	};
 
 	/**

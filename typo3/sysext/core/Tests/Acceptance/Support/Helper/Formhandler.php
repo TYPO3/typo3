@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
  */
 
 use Facebook\WebDriver\Remote\RemoteWebElement;
+use Facebook\WebDriver\WebDriverKeys;
 
 /**
  * Helper to interact with formhandler fields
@@ -44,22 +45,21 @@ class Formhandler
      * @param string $fieldName
      * @return RemoteWebElement
      */
-    public function getContextForFormhandlerField(string $fieldName)
+    protected function getContextForFormhandlerField(string $fieldName)
     {
         $I = $this->tester;
         $I->comment('Get context for field "' . $fieldName . '"');
 
         return $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use ($fieldName) {
-            // TODO FIX THAT! MUST JUST BE ONE XPATH (and maybe it should work)
-            return $webdriver->findElement(\WebDriverBy::xpath('//label[contains(text(),"' . $fieldName . '")]'))->findElement(
-                \WebDriverBy::xpath('ancestor::fieldset[@class="form-section"][1]')
+            return $webdriver->findElement(
+                \WebDriverBy::xpath('(//label[contains(text(),"' . $fieldName . '")])[1]/ancestor::fieldset[@class="form-section"][1]')
             );
         });
     }
 
     /**
-     * @param RemoteWebElement $fieldContext
-     * @param array $testValues An array of arrays that contains the values to validate.
+     * @param string $fieldLabel
+     * @param array $testData An array of arrays that contains the data to validate.
      *  * First value is the input value
      *  * second value is the value that is expected after the validation
      *  * optional third value is the "internal" value like required for date fields (value is internally
@@ -67,33 +67,97 @@ class Formhandler
      *  Example for field with alpha validation: [['foo', 'foo'], ['bar1'], ['bar']]
      *  Example for field with date validation: [['29-01-2016', '29-01-2016', '1454025600']]
      */
-    public function fillSeeDeleteInputField(RemoteWebElement $fieldContext, array $testValues)
+    public function fillSeeSaveAndClearInputField($fieldLabel, array $testData)
     {
+        $fieldContext = $this->getContextForFormhandlerField($fieldLabel);
         $I = $this->tester;
         $I->wantTo('Fill field, check the fieldvalue after evaluation and delete the value.');
 
-        $inputField = $fieldContext->findElement(\WebDriverBy::xpath('.//*/input[@data-formengine-input-name]'));
-        $internalInputField = $fieldContext->findElement(\WebDriverBy::xpath('.//*/input[@name="' . $inputField->getAttribute('data-formengine-input-name') . '"]'));
+        $visibleFieldXpath = './/*/input[@data-formengine-input-name]';
+        $clearButtonXpath = '(//label[contains(text(),"' . $fieldLabel . '")])[1]/parent::*//*/button[@class="close"]';
+        $initializedInputFieldXpath = '(//label[contains(text(),"' . $fieldLabel . '")])[1]/parent::*//*/input[@data-formengine-input-name][@data-formengine-input-initialized]';
+        $I->waitForElement($initializedInputFieldXpath, 30);
+        $inputField = $fieldContext->findElement(\WebDriverBy::xpath($visibleFieldXpath));
+        $internalInputFieldXpath = '(//label[contains(text(),"' . $fieldLabel . '")])[1]/parent::*//*/input[@name="' . $inputField->getAttribute('data-formengine-input-name') . '"]';
 
-        foreach ($testValues as $comment => $testValue) {
-            if (!empty($comment)) {
-                $I->comment($comment);
+        $I->waitForElement($internalInputFieldXpath, 30);
+        $I->waitForElement($clearButtonXpath, 30);
+
+        // the internal field name will not change during this function execution
+        $internalFieldXpath = './/*/input[@name="' . $inputField->getAttribute('data-formengine-input-name') . '"]';
+        $internalInputField = $fieldContext->findElement(\WebDriverBy::xpath($internalFieldXpath));
+
+        foreach ($testData['tests'] as $testValue) {
+            if (isset($testValue[4])) {
+                $I->comment($testValue[4]);
             }
             $I->comment('Fill the field and switch focus to trigger validation.');
             $I->fillField($inputField, $testValue[0]);
             // change the focus to trigger validation
-            $fieldContext->sendKeys("\n");
+            $inputField->sendKeys(WebDriverKeys::TAB);
+            // click on the div so that any opened popup (potentially from the field below) is closed
+            $fieldContext->click();
 
             $I->comment('Test value of "visible" field');
             $I->canSeeInField($inputField, $testValue[1]);
             $I->comment('Test value of the internal field');
             $I->canSeeInField($internalInputField, (isset($testValue[2]) ? $testValue[2] : $testValue[1]));
+
+            // save the change
+            $saveButtonLink = '//*/button[@name="_savedok"][1]';
+            $I->waitForElement($saveButtonLink, 30);
+            if (isset($testValue[3]) && $testValue[3]) {
+                $I->click($saveButtonLink);
+                $I->switchToWindow();
+                $notificationCloseXpath = '//*[@class="modal-title"][contains(text(),"Alert")]/parent::*/button[@class="close"]';
+                $I->waitForElement($notificationCloseXpath, 30);
+                $I->click($notificationCloseXpath);
+                return;
+            } else {
+                $I->click($saveButtonLink);
+            }
+
+            // wait for the save to be completed
+            $I->waitForElement('//*/button[@name="_savedok"][not(@disabled)][1]', 30);
+            $I->waitForElement($initializedInputFieldXpath, 30);
+            $I->waitForElement($internalInputFieldXpath, 30);
+            $I->waitForElement($clearButtonXpath, 30);
+
+            // find the input fields again
+            $fieldContext = $this->getContextForFormhandlerField($fieldLabel);
+            $inputField = $fieldContext->findElement(\WebDriverBy::xpath($visibleFieldXpath));
+            $internalInputField = $fieldContext->findElement(\WebDriverBy::xpath($internalFieldXpath));
+
+            // validate that the save was successfull
+            $I->comment('Test value of "visible" field after the save');
+            $I->canSeeInField($inputField, $testValue[1]);
+            $I->comment('Test value of the internal field after the save');
+            $I->canSeeInField($internalInputField, isset($testValue[2]) ? $testValue[2] : $testValue[1]);
         }
 
-        $inputField->findElement(\WebDriverBy::xpath('parent::*/button[@class="close"]'))->click();
-        // change the context from the field
-        $fieldContext->sendKeys("\n");
+        // clear the field
+        $I->waitForElement($clearButtonXpath, 30);
+        $I->click($clearButtonXpath);
         $I->canSeeInField($inputField, '');
-        $I->canSeeInField($internalInputField, '');
+
+        // save the change again
+        $saveButtonLink = '//*/button[@name="_savedok"][1]';
+        $I->waitForElement($saveButtonLink, 30);
+        $I->click($saveButtonLink);
+
+        // wait for the save to be completed
+        $I->waitForElement('//*/button[@name="_savedok"][not(@disabled)][1]', 30);
+        $I->waitForElement($initializedInputFieldXpath, 30);
+        $I->waitForElement($internalInputFieldXpath, 30);
+        $I->waitForElement($clearButtonXpath, 30);
+
+        // find the input fields again
+        $fieldContext = $this->getContextForFormhandlerField($fieldLabel);
+        $inputField = $fieldContext->findElement(\WebDriverBy::xpath($visibleFieldXpath));
+        $internalInputField = $fieldContext->findElement(\WebDriverBy::xpath($internalFieldXpath));
+
+        // validate that the save was successfull
+        $I->canSeeInField($inputField, isset($testData['cleared'][1]) ? $testData['cleared'][1] : '');
+        $I->canSeeInField($internalInputField, isset($testData['cleared'][0]) ? $testData['cleared'][0] : '');
     }
 }
