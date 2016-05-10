@@ -20,6 +20,7 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
+        'requestUdate' => 'group_requestUpdate_1'
     ],
 
 
@@ -226,6 +227,17 @@ return [
             ],
         ],
 
+        'group_requestUpdate_1' => [
+            'exclude' => 1,
+            'label' => 'group_requestUpdate_1',
+            'config' => [
+                'type' => 'group',
+                'internal_type' => 'db',
+                'allowed' => 'be_users,be_groups',
+                'maxitems' => 999,
+            ],
+        ],
+
 
         'flex_1' => [
             'exclude' => 1,
@@ -358,6 +370,8 @@ return [
                     group_folder_1,
                 --div--;in flex,
                     flex_1,
+                --div--;requestUpdate,
+                    group_requestUpdate_1,
             ',
         ],
     ],

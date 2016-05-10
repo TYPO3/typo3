@@ -20,6 +20,7 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
+        'requestUpdate' => 'select_requestUpdate_1',
     ],
 
 
@@ -537,6 +538,22 @@ return [
                 ],
             ],
         ],
+        'select_requestUpdate_1' => [
+            'exclude' => 1,
+            'label' => 'select_requestUpdate_1',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        'Just an item',
+                        1
+                    ],
+                    ['bar', 'bar'],
+                    ['and yet another one', -1],
+                ],
+            ],
+        ],
 
 
         'flex_1' => [
@@ -748,6 +765,8 @@ return [
                     select_tree_1, select_tree_2, select_tree_3, select_tree_4,
                 --div--;in flex,
                     flex_1,
+                --div--;requestUpdate,
+                    select_requestUpdate_1,
             ',
         ],
     ],
