@@ -24,6 +24,13 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class AvatarViewHelper extends AbstractViewHelper
 {
     /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Resolve user avatar from backend user id.
      *
      * @param int $backendUser Uid of the user
