@@ -32,9 +32,11 @@ class SoloFieldContainer extends AbstractContainer
      * Entry method
      *
      * @return array As defined in initializeResultArray() of AbstractNode
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function render()
     {
+        GeneralUtility::logDeprecatedFunction();
         $table = $this->data['tableName'];
         $fieldToRender = $this->data['singleFieldToRender'];
         $recordTypeValue = $this->data['recordTypeValue'];
