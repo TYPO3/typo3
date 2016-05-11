@@ -3450,6 +3450,19 @@ class DatabaseRecordList
                 }
             }
         }
+        // Call hook to add or change the list
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][DatabaseRecordList::class]['makeSearchStringConstraints'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObject, 'makeSearchStringConstraints')) {
+                $constraints = $hookObject->makeSearchStringConstraints(
+                    $queryBuilder,
+                    $constraints,
+                    $this->searchString,
+                    $table,
+                    $currentPid
+                );
+            }
+        }
         // If no search field conditions have been built ensure no results are returned
         if (empty($constraints)) {
             return '0=1';
