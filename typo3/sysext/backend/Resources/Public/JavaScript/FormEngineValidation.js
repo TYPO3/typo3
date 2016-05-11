@@ -237,7 +237,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	 * @returns {String}
 	 */
 	FormEngineValidation.validateField = function($field, value) {
-		value = value || $field.val();
+		value = value || $field.val() || '';
 
 		var rules = $field.data('formengine-validation-rules');
 		var markParent = false;
