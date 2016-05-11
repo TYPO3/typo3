@@ -18,10 +18,11 @@ return [
             'endtime' => 'endtime',
         ],
     ],
-    'types' => [
-        '1' => ['showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, fal_relation'],
-    ],
+
+
     'columns' => [
+
+
         'sys_language_uid' => [
             'exclude' => 1,
             'label' => 'sys_language_uid',
@@ -103,9 +104,19 @@ return [
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly'
         ],
-        'fal_relation' => [
+
+        'text_1' => [
+            'label' => 'text_1',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'max' => 255,
+            ],
+        ],
+
+        'inline_1' => [
             'exclude' => 1,
-            'label' => 'fal_relation',
+            'label' => 'inline_1',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'sys_file_reference',
@@ -113,7 +124,7 @@ return [
                 'foreign_sortby' => 'sorting_foreign',
                 'foreign_table_field' => 'tablenames',
                 'foreign_match_fields' => [
-                    'fieldname' => 'fal_relation',
+                    'fieldname' => 'inline_1',
                 ],
                 'foreign_label' => 'uid_local',
                 'foreign_selector' => 'uid_local',
@@ -132,5 +143,9 @@ return [
             ],
         ],
 
+    ],
+
+    'types' => [
+        '1' => ['showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, text_1, inline_1'],
     ],
 ];
