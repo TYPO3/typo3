@@ -1,0 +1,151 @@
+<?php
+return [
+    'ctrl' => [
+        'title' => 'Form engine - inline parent no soft delete',
+        'label' => 'fal_relation',
+        'tstamp' => 'tstamp',
+        'crdate' => 'crdate',
+        'cruser_id' => 'cruser_id',
+        'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
+        'versioningWS' => 2,
+        'languageField' => 'sys_language_uid',
+        'transOrigPointerField' => 'l10n_parent',
+        'transOrigDiffSourceField' => 'l10n_diffsource',
+        //'delete' => 'deleted',
+        'enablecolumns' => [
+            'disabled' => 'hidden',
+            'starttime' => 'starttime',
+            'endtime' => 'endtime',
+        ],
+    ],
+
+
+    'columns' => [
+
+
+        'sys_language_uid' => [
+            'exclude' => 1,
+            'label' => 'sys_language_uid',
+            'config' => [
+                'type' => 'select',
+                'foreign_table' => 'sys_language',
+                'foreign_table_where' => 'ORDER BY sys_language.title',
+                'items' => [
+                    ['all Languages', -1],
+                    ['default', 0],
+                ],
+            ],
+        ],
+        'l10n_parent' => [
+            'displayCond' => 'FIELD:sys_language_uid:>:0',
+            'exclude' => 1,
+            'label' => 'l18n_parent',
+            'config' => [
+                'type' => 'select',
+                'items' => [
+                    ['', 0],
+                ],
+                'foreign_table' => 'tx_styleguide_inline_parentnosoftdelete',
+                'foreign_table_where' => 'AND tx_styleguide_inline_parentnosoftdelete.pid=###CURRENT_PID### AND tx_styleguide_inline_parentnosoftdelete.sys_language_uid IN (-1,0)',
+            ],
+        ],
+        'l10n_diffsource' => [
+            'config' => [
+                'type' => 'passthrough',
+            ],
+        ],
+
+        't3ver_label' => [
+            'label' => 'version',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'max' => 255,
+            ],
+        ],
+
+        'hidden' => [
+            'exclude' => 1,
+            'config' => [
+                'type' => 'check',
+                'items' => [
+                    '1' => [
+                        '0' => 'Disable',
+                    ],
+                ],
+            ],
+        ],
+        'starttime' => [
+            'exclude' => 1,
+            'label' => 'Publish Date',
+            'config' => [
+                'type' => 'input',
+                'size' => '13',
+                'max' => '20',
+                'eval' => 'datetime',
+                'default' => '0'
+            ],
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly'
+        ],
+        'endtime' => [
+            'exclude' => 1,
+            'label' => 'Expiration Date',
+            'config' => [
+                'type' => 'input',
+                'size' => '13',
+                'max' => '20',
+                'eval' => 'datetime',
+                'default' => '0',
+                'range' => [
+                    'upper' => mktime(0, 0, 0, 12, 31, 2020)
+                ]
+            ],
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly'
+        ],
+
+        'text_1' => [
+            'label' => 'text_1',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'max' => 255,
+            ],
+        ],
+
+        'inline_1' => [
+            'exclude' => 1,
+            'label' => 'inline_1',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'sys_file_reference',
+                'foreign_field' => 'uid_foreign',
+                'foreign_sortby' => 'sorting_foreign',
+                'foreign_table_field' => 'tablenames',
+                'foreign_match_fields' => [
+                    'fieldname' => 'inline_1',
+                ],
+                'foreign_label' => 'uid_local',
+                'foreign_selector' => 'uid_local',
+                'foreign_selector_fieldTcaOverride' => [
+                    'config' => [
+                        'appearance' => [
+                            'elementBrowserType' => 'file',
+                            'elementBrowserAllowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
+                        ],
+                    ],
+                ],
+                'behaviour' => [
+                    'localizationMode' => 'select',
+                    'localizeChildrenAtParentLocalization' => 1,
+                ],
+            ],
+        ],
+
+    ],
+
+    'types' => [
+        '1' => ['showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, text_1, inline_1'],
+    ],
+];
