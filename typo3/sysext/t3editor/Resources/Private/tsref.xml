@@ -5154,7 +5154,7 @@ txt, html, htm:Inserted directly
 class:Java-applet
 swf:Flash animation
 swa, dcr:ShockWave Animation
-wav,au:Sound
+wav,au,ogg,opus,flac:Sound
 avi,mov,asf,mpg,wmv:Movies (AVI, QuickTime, MPEG4)]]></description>
 			<default><![CDATA[
 ]]></default>
