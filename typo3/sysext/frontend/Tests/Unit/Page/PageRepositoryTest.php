@@ -261,6 +261,46 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->pageSelectObject->getPage(1);
     }
 
+    /**
+     * @test
+     */
+    public function getWorkspaceVersionReturnsTheCorrectMethod()
+    {
+        // initialization
+        $wsid = 987654321;
+        $GLOBALS['TCA'] = array(
+            'pages' => $this->defaultTcaForPages
+        );
+        $GLOBALS['SIM_ACCESS_TIME'] = 123;
+
+        // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fetch_the_id()
+        $this->pageSelectObject->versioningPreview = true;
+        $this->pageSelectObject->versioningWorkspaceId = $wsid;
+        $this->pageSelectObject->init(false);
+
+        $GLOBALS['TYPO3_DB']->expects($this->at(0))
+            ->method('exec_SELECTgetSingleRow')
+            ->with(
+            '*',
+            'pages',
+            $this->logicalAnd(
+                $this->stringContains('pid=-1 AND'),
+                $this->stringContains('t3ver_oid=1 AND'),
+                $this->stringContains('t3ver_wsid=' . $wsid . ' AND pages.deleted=0')
+            )
+        )->willReturn(array('uid' => 1));
+        $GLOBALS['TYPO3_DB']->expects($this->at(1))
+            ->method('exec_SELECTgetSingleRow')
+            ->with(
+            'uid',
+            'pages',
+            $this->logicalAnd(
+                $this->stringContains('t3ver_wsid=' . $wsid . ' AND pages.deleted=0 AND pages.hidden=0 AND pages.starttime<=123 AND (pages.endtime=0 OR pages.endtime>123) AND 1=1')
+            )
+        );
+        $this->pageSelectObject->getWorkspaceVersionOfRecord($wsid, 'pages', 1);
+    }
+
     ////////////////////////////////
     // Tests concerning versioning
     ////////////////////////////////
@@ -335,6 +375,39 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $conditions = $this->pageSelectObject->enableFields($table);
 
         $this->assertThat($conditions, $this->stringContains(' AND (' . $table . '.t3ver_wsid=0 OR ' . $table . '.t3ver_wsid=2)'), 'No versioning placeholders');
+    }
+
+    /**
+     * @test
+     */
+    public function initSetsPublicPropertyCorrectlyForWorkspacePreview()
+    {
+        $GLOBALS['TCA'] = array(
+            'pages' => $this->defaultTcaForPages,
+        );
+
+        $this->pageSelectObject->versioningPreview = true;
+        $this->pageSelectObject->versioningWorkspaceId = 2;
+        $this->pageSelectObject->init(false);
+
+        $this->assertSame(' AND pages.deleted=0 AND (pages.t3ver_wsid=0 OR pages.t3ver_wsid=2)', $this->pageSelectObject->where_hid_del);
+    }
+
+
+    /**
+     * @test
+     */
+    public function initSetsPublicPropertyCorrectlyForLive()
+    {
+        $GLOBALS['TCA'] = array(
+            'pages' => $this->defaultTcaForPages,
+        );
+        $GLOBALS['SIM_ACCESS_TIME'] = 123;
+        $this->pageSelectObject->versioningPreview = false;
+        $this->pageSelectObject->versioningWorkspaceId = 0;
+        $this->pageSelectObject->init(false);
+
+        $this->assertSame(' AND pages.deleted=0 AND pages.t3ver_state<=0 AND pages.hidden=0 AND pages.starttime<=123 AND (pages.endtime=0 OR pages.endtime>123)', $this->pageSelectObject->where_hid_del);
     }
 
     /**
