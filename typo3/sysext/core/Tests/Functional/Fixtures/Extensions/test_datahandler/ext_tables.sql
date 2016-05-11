@@ -4,7 +4,8 @@
 CREATE TABLE tt_content (
     tx_testdatahandler_select text,
     tx_testdatahandler_group text,
-    tx_testdatahandler_radio text
+    tx_testdatahandler_radio text,
+    tx_testdatahandler_checkbox text
 );
 
 #

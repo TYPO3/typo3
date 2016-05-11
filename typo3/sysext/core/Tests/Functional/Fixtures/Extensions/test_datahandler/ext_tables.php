@@ -44,6 +44,18 @@ defined('TYPO3_MODE') or die();
                 'default' => '',
             ),
         ),
+         'tx_testdatahandler_checkbox' => array(
+             'exclude' => 1,
+             'label' => 'DataHandler Test Checkbox',
+             'config' => array(
+                 'type' => 'check',
+                 'items' => array(
+                     array('predefined label', 'predefined value')
+                 ),
+                 'itemsProcFunc' => 'TYPO3\TestDatahandler\Classes\Tca\CheckboxElementItems->getItems',
+                 'default' => '',
+             ),
+         ),
     )
 );
 
