@@ -343,6 +343,8 @@ class DebuggerUtility
                         $dump .= '<span class="extbase-debug-dirty">modified</span>';
                     }
                 }
+                $visibility = ($property->isProtected() ? 'protected' : ($property->isPrivate() ? 'private' : 'public'));
+                $dump .= '<span class="extbase-debug-visibility">' . $visibility . '</span>';
             }
         }
         return $dump;
@@ -435,9 +437,10 @@ class DebuggerUtility
 					.extbase-debugger-center .extbase-debug-string{color:#ce9178;white-space:normal}
 					.extbase-debugger-center .extbase-debug-type{color:#569CD6;padding-right:4px}
 					.extbase-debugger-center .extbase-debug-unregistered{background-color:#dce1e8}
-					.extbase-debugger-center .extbase-debug-filtered,.extbase-debugger-center .extbase-debug-proxy,.extbase-debugger-center .extbase-debug-ptype,.extbase-debugger-center .extbase-debug-scope{color:#fff;font-size:10px;line-height:12px;padding:2px 4px;margin-right:2px;position:relative;top:-1px}
+					.extbase-debugger-center .extbase-debug-filtered,.extbase-debugger-center .extbase-debug-proxy,.extbase-debugger-center .extbase-debug-ptype,.extbase-debugger-center .extbase-debug-visibility,.extbase-debugger-center .extbase-debug-scope{color:#fff;font-size:10px;line-height:12px;padding:2px 4px;margin-right:2px;position:relative;top:-1px}
 					.extbase-debugger-center .extbase-debug-scope{background-color:#497AA2}
 					.extbase-debugger-center .extbase-debug-ptype{background-color:#698747}
+					.extbase-debugger-center .extbase-debug-visibility{background-color:#698747}
 					.extbase-debugger-center .extbase-debug-dirty{background-color:#FFFFB6}
 					.extbase-debugger-center .extbase-debug-filtered{background-color:#4F4F4F}
 					.extbase-debugger-center .extbase-debug-seeabove{text-decoration:none;font-style:italic}
