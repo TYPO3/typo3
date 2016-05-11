@@ -125,6 +125,10 @@ class CommandUtility
                 $parameters = str_replace('###SkipStripProfile###', '', $parameters);
             }
         }
+        // Add -auto-orient on convert so IM/GM respects the image orient
+        if ($parameters && $command === 'convert') {
+            $parameters = '-auto-orient ' . $parameters;
+        }
         // set interlace parameter for convert command
         if ($command !== 'identify' && $gfxConf['processor_interlace']) {
             $parameters = '-interlace ' . $gfxConf['processor_interlace'] . ' ' . $parameters;

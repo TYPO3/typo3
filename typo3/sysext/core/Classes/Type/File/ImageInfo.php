@@ -53,15 +53,41 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
     }
 
     /**
+     * Gets the image size, considering the exif-rotation present in the file
+     *
+     * @param string $imageFile The image filepath
+     * @return array|false Returns an array where [0]/[1] is w/h.
+     */
+    protected function getExifAwareImageSize(string $imageFile)
+    {
+        $size = false;
+        if (function_exists('getimagesize')) {
+            $size = @getimagesize($imageFile);
+        }
+        if ($size === false) {
+            return false;
+        }
+        [$width, $height] = $size;
+
+        if (function_exists('exif_read_data')) {
+            $exif = @exif_read_data($imageFile);
+            // see: http://sylvana.net/jpegcrop/exif_orientation.html
+            if (isset($exif['Orientation']) && $exif['Orientation'] >= 5 && $exif['Orientation'] <= 8) {
+                return [$height, $width];
+            }
+        }
+
+        return [$width, $height];
+    }
+
+    /**
      * @return array
      */
     protected function getImageSizes()
     {
         if ($this->imageSizes === null) {
-            $this->imageSizes = false;
-            if (function_exists('getimagesize')) {
-                $this->imageSizes = @getimagesize($this->getPathname());
-            }
+            $this->imageSizes = $this->getExifAwareImageSize($this->getPathname());
+
             // Try SVG first as SVG size detection with IM/GM leads to an error output
             if ($this->imageSizes === false && $this->getMimeType() === 'image/svg+xml') {
                 $this->imageSizes = $this->extractSvgImageSizes();

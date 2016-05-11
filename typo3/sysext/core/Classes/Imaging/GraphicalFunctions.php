@@ -201,11 +201,11 @@ class GraphicalFunctions
     protected $saveAlphaLayer = false;
 
     /**
-     * ImageMagick scaling command; "-geometry" or "-sample". Used in makeText() and imageMagickConvert()
+     * ImageMagick scaling command; "-auto-orient -geometry" or "-auto-orient -sample". Used in makeText() and imageMagickConvert()
      *
      * @var string
      */
-    public $scalecmd = '-geometry';
+    public $scalecmd = '-auto-orient -geometry';
 
     /**
      * Used by v5_blur() to simulate 10 continuous steps of blurring
