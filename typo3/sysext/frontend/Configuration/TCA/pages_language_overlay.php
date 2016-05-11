@@ -8,6 +8,8 @@ return array(
         'versioning_followPages' => true,
         'origUid' => 't3_origuid',
         'crdate' => 'crdate',
+        'hideAtCopy' => 1,
+        'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'enablecolumns' => array(
@@ -188,7 +190,8 @@ return array(
                     'suggest' => array(
                         'type' => 'suggest'
                     )
-                )
+                ),
+                'default' => '0'
             )
         ),
         'shortcut_mode' => array(
