@@ -2175,20 +2175,22 @@ class GeneralUtility
             // Call recursive if recursive flag if set and $path is directory
             if ($recursive && @is_dir($path)) {
                 $handle = opendir($path);
-                while (($file = readdir($handle)) !== false) {
-                    $recursionResult = null;
-                    if ($file !== '.' && $file !== '..') {
-                        if (@is_file(($path . '/' . $file))) {
-                            $recursionResult = static::fixPermissions($path . '/' . $file);
-                        } elseif (@is_dir(($path . '/' . $file))) {
-                            $recursionResult = static::fixPermissions($path . '/' . $file, true);
-                        }
-                        if (isset($recursionResult) && !$recursionResult) {
-                            $result = false;
+                if (is_resource($handle)) {
+                    while (($file = readdir($handle)) !== false) {
+                        $recursionResult = null;
+                        if ($file !== '.' && $file !== '..') {
+                            if (@is_file(($path . '/' . $file))) {
+                                $recursionResult = static::fixPermissions($path . '/' . $file);
+                            } elseif (@is_dir(($path . '/' . $file))) {
+                                $recursionResult = static::fixPermissions($path . '/' . $file, true);
+                            }
+                            if (isset($recursionResult) && !$recursionResult) {
+                                $result = false;
+                            }
                         }
                     }
+                    closedir($handle);
                 }
-                closedir($handle);
             }
         }
         return $result;
