@@ -115,13 +115,13 @@ class DatabaseConnect extends AbstractStepAction
 
             if (isset($postValues['host'])) {
                 $value = $postValues['host'];
-                if (preg_match('/^[a-zA-Z0-9_\\.-]+(:.+)?$/', $value) && strlen($value) <= 50) {
+                if (preg_match('/^[a-zA-Z0-9_\\.-]+(:.+)?$/', $value) && strlen($value) <= 255) {
                     $localConfigurationPathValuePairs['DB/Connections/Default/host'] = $value;
                 } else {
                     /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
                     $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
                     $errorStatus->setTitle('Database host not valid');
-                    $errorStatus->setMessage('Given host is not alphanumeric (a-z, A-Z, 0-9 or _-.:) or longer than fifty characters.');
+                    $errorStatus->setMessage('Given host is not alphanumeric (a-z, A-Z, 0-9 or _-.:) or longer than 255 characters.');
                     $result[] = $errorStatus;
                 }
             }
