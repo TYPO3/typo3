@@ -843,9 +843,13 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 3,
                 3
             ),
-            'Value is higher than allowed' => array(
+            'Value is higher than allowed (all checkboxes checked)' => array(
                 15,
                 7
+            ),
+            'Value is higher than allowed (some checkboxes checked)' => array(
+                11,
+                3
             ),
             'Negative value' => array(
                 -5,

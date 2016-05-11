@@ -1833,16 +1833,31 @@ class DataHandler
      */
     protected function checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field)
     {
-        $itemC = count($tcaFieldConf['items']);
+        $items = $tcaFieldConf['items'];
+        if ($tcaFieldConf['itemsProcFunc']) {
+            /** @var ItemProcessingService $processingService */
+            $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
+            $items = $processingService->getProcessingItems($table, $realPid, $field,
+                $this->checkValue_currentRecord,
+                $tcaFieldConf, $tcaFieldConf['items']);
+        }
+
+        $itemC = count($items);
         if (!$itemC) {
             $itemC = 1;
         }
         $maxV = pow(2, $itemC) - 1;
         if ($value < 0) {
+            // @todo: throw LogicException here? Negative values for checkbox items do not make sense and indicate a coding error.
             $value = 0;
         }
         if ($value > $maxV) {
-            $value = $maxV;
+            // @todo: This case is pretty ugly: If there is an itemsProcFunc registered, and if it returns a dynamic,
+            // @todo: changing list of items, then it may happen that a value is transformed and vanished checkboxes
+            // @todo: are permanently removed from the value.
+            // @todo: Suggestion: Throw an exception instead? Maybe a specific, catchable exception that generates a
+            // @todo: error message to the user - dynamic item sets via itemProcFunc on check would be a bad idea anyway.
+            $value = $value & $maxV;
         }
         if ($field && $realPid >= 0 && $value > 0 && !empty($tcaFieldConf['eval'])) {
             $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
