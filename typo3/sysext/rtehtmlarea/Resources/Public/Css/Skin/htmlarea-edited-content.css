@@ -20,7 +20,7 @@
 /* Make borders visible */
 /* Make sure we can click in empty cells without too much difficulty */
 body.htmlarea-showtableborders table, body.htmlarea-showtableborders td, body.htmlarea-showtableborders th {
-	padding: 3px; border:1px dashed #316ac5 ! important;
+	padding: 3px; border:1px dashed #316ac5 !important;
 }
 /* Make language marks visible */
 body.htmlarea-show-language-marks *[lang] {
