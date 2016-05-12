@@ -41,27 +41,24 @@
 				</f:if>
 				<td>
 					<f:if condition="{extension.updateAvailable}">
-						<div class="btn-group">
-							<f:if condition="{extension.state} == 'excludeFromUpdates'">
-								<f:then>
-									<span class="btn btn-default disabled" title="{f:translate(key:'extensionList.updateDisabled')}">
+						<f:if condition="{extension.state} == 'excludeFromUpdates'">
+							<f:then>
+								<span class="btn btn-default disabled" title="{f:translate(key:'extensionList.updateDisabled')}">
+									<core:icon identifier="actions-system-extension-update" />
+								</span>
+							</f:then>
+							<f:else>
+									<f:link.action action="updateCommentForUpdatableVersions"
+                                                                                class="btn btn-default"
+										additionalAttributes="{data-action:'update-extension'}"
+										format="json" controller="Download"
+										arguments="{extension:extension.key, integerVersionStart: extension.terObject.integerVersion, integerVersionStop: extension.updateToVersion.integerVersion}"
+										title="{f:translate(key:'extensionList.updateToVersion', arguments:{0:extension.updateToVersion.version})}"
+									>
 										<core:icon identifier="actions-system-extension-update" />
-									</span>
-								</f:then>
-								<f:else>
-									<span class="btn btn-default">
-										<f:link.action action="updateCommentForUpdatableVersions"
-											additionalAttributes="{data-action:'update-extension'}"
-											format="json" controller="Download"
-											arguments="{extension:extension.key, integerVersionStart: extension.terObject.integerVersion, integerVersionStop: extension.updateToVersion.integerVersion}"
-											title="{f:translate(key:'extensionList.updateToVersion', arguments:{0:extension.updateToVersion.version})}"
-										>
-											<core:icon identifier="actions-system-extension-update" />
-										</f:link.action>
-									</span>
-								</f:else>
-							</f:if>
-						</div>
+									</f:link.action>
+							</f:else>
+						</f:if>
 					</f:if>
 				</td>
 				<td data-order="{f:if(condition: extension.installed, then: 'active', else: 'inactive')}">
