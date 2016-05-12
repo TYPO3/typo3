@@ -42,7 +42,8 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function findByUidFailsIfUidIsString()
     {
-        $this->setExpectedException('InvalidArgumentException', '', 1316779798);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1316779798);
         $this->subject->findByUid('asdf');
     }
 

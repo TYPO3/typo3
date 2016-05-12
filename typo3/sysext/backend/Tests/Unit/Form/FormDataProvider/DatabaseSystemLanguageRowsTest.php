@@ -70,7 +70,8 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
     {
         $this->dbProphecy->exec_SELECTgetRows(Argument::cetera())->willReturn(null);
         $this->dbProphecy->sql_error(Argument::cetera())->willReturn(null);
-        $this->setExpectedException(\UnexpectedValueException::class,  '', 1438170741);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1438170741);
         $this->subject->addData([]);
     }
 

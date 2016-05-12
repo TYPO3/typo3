@@ -74,7 +74,7 @@ class ResponseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function testCannotSetInvalidStatusCode($code)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         $response = $this->response->withStatus($code);
     }
 
@@ -101,7 +101,7 @@ class ResponseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function testConstructorRaisesExceptionForInvalidStream()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         new Response(['TOTALLY INVALID']);
     }
 
@@ -145,7 +145,8 @@ class ResponseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function testConstructorRaisesExceptionForInvalidStatus($code)
     {
-        $this->setExpectedException('InvalidArgumentException', 'The given status code is not a valid HTTP status code.');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717278);
         new Response('php://memory', $code);
     }
 
@@ -170,7 +171,8 @@ class ResponseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function testConstructorRaisesExceptionForInvalidBody($body)
     {
-        $this->setExpectedException('InvalidArgumentException', 'stream');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717277);
         new Response($body);
     }
 
@@ -224,7 +226,7 @@ class ResponseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function cnstructorRaisesExceptionForHeadersWithCRLFVectors($name, $value)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         $request = new Response('php://memory', 200, [$name => $value]);
     }
 }

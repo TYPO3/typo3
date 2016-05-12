@@ -119,7 +119,8 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1439288036);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1439288036);
 
         $this->subject->addData($input);
     }
@@ -230,7 +231,8 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1439298496);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1439298496);
 
         $this->subject->addData($input);
     }
@@ -1561,7 +1563,8 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1439569743);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1439569743);
 
         $this->subject->addData($input);
     }

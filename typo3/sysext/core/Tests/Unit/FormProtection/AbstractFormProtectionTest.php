@@ -83,7 +83,8 @@ class AbstractFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function generateTokenFormForEmptyFormNameThrowsException()
     {
-        $this->setExpectedException('InvalidArgumentException', '$formName must not be empty.');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1294586643);
         $this->subject->generateToken('', 'edit', 'bar');
     }
 

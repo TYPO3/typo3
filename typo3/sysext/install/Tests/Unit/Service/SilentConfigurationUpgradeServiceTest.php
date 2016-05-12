@@ -106,7 +106,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
             ->method('setLocalConfigurationValueByPath')
             ->with($this->equalTo('BE/loginSecurityLevel'), $this->equalTo($setting));
 
-        $this->setExpectedException(RedirectException::class);
+        $this->expectException(RedirectException::class);
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 
@@ -143,7 +143,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
             ->method('removeLocalConfigurationKeysByPath')
             ->will($this->returnValueMap($currentLocalConfiguration));
 
-        $this->setExpectedException(RedirectException::class);
+        $this->expectException(RedirectException::class);
 
         $silentConfigurationUpgradeServiceInstance->_set('obsoleteLocalConfigurationSettings', $obsoleteLocalConfigurationSettings);
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
@@ -225,7 +225,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
             ->method('setLocalConfigurationValueByPath')
             ->with($this->equalTo('EXT/extConf/saltedpasswords'), $this->equalTo($config));
 
-        $this->setExpectedException(RedirectException::class);
+        $this->expectException(RedirectException::class);
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 
@@ -270,7 +270,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
             ->method('setLocalConfigurationValueByPath')
             ->with($this->equalTo('EXT/extConf/saltedpasswords'), $this->equalTo($newConfig));
 
-        $this->setExpectedException(RedirectException::class);
+        $this->expectException(RedirectException::class);
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 
@@ -315,7 +315,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
             ->method('setLocalConfigurationValueByPath')
             ->with($this->equalTo('EXT/extConf/saltedpasswords'), $this->equalTo($newConfig));
 
-        $this->setExpectedException(RedirectException::class);
+        $this->expectException(RedirectException::class);
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 
@@ -388,7 +388,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
             ->method('setLocalConfigurationValueByPath')
             ->with($this->equalTo('SYS/encryptionKey'), $this->isType('string'));
 
-        $this->setExpectedException(RedirectException::class);
+        $this->expectException(RedirectException::class);
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 
@@ -533,7 +533,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         }
 
         if ($localConfigurationNeedsUpdate) {
-            $this->setExpectedException(RedirectException::class);
+            $this->expectException(RedirectException::class);
         }
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
@@ -580,7 +580,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
                 array(array('GFX/imagefile_ext' => 'gif,jpg,jpeg,png'))
             );
 
-        $this->setExpectedException(RedirectException::class);
+        $this->expectException(RedirectException::class);
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 
@@ -666,7 +666,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
                             'GFX/processor_effects' => -1))
             );
 
-        $this->setExpectedException(RedirectException::class);
+        $this->expectException(RedirectException::class);
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 

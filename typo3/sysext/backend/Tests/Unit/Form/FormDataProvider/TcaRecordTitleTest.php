@@ -59,7 +59,8 @@ class TcaRecordTitleTest extends UnitTestCase
                 'ctrl' => [],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1443706103);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1443706103);
         $this->subject->addData($input);
     }
 

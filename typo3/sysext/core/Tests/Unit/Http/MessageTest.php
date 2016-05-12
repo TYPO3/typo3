@@ -203,7 +203,8 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function testWithHeaderRaisesExceptionForInvalidNestedHeaderValue($value)
     {
-        $this->setExpectedException('InvalidArgumentException', 'Invalid header value');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717266);
         $message = $this->message->withHeader('X-Foo', [$value]);
     }
 
@@ -227,7 +228,8 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function withHeaderRaisesExceptionForInvalidValueType($value)
     {
-        $this->setExpectedException('InvalidArgumentException', 'Invalid header value');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717266);
         $message = $this->message->withHeader('X-Foo', $value);
     }
 
@@ -236,7 +238,8 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function withAddedHeaderRaisesExceptionForNonStringNonArrayValue($value)
     {
-        $this->setExpectedException('InvalidArgumentException', 'must be a string');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717267);
         $message = $this->message->withAddedHeader('X-Foo', $value);
     }
 
@@ -296,7 +299,7 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function doesNotAllowCRLFInjectionWhenCallingWithHeader($name, $value)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         $this->message->withHeader($name, $value);
     }
 
@@ -306,7 +309,7 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function doesNotAllowCRLFInjectionWhenCallingWithAddedHeader($name, $value)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         $this->message->withAddedHeader($name, $value);
     }
 }

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
+
 /**
  * Test case
  */
@@ -60,7 +62,8 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $className = $this->getUniqueId('Foo');
         $validatorName = 'tx_foo:' . $className;
-        $this->setExpectedException(\TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException::class, '', 1365799920);
+        $this->expectException(NoSuchValidatorException::class);
+        $this->expectExceptionCode(1365799920);
         $this->validatorResolver->_call('resolveValidatorObjectName', $validatorName);
     }
 
@@ -74,7 +77,8 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $realClassName = 'Tx_' . $extensionName . '_Validation_Validator_' . $className . 'Validator';
         $validatorName = $extensionName . ':' . $className;
         eval('class ' . $realClassName . '{}');
-        $this->setExpectedException(\TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException::class, '', 1365776838);
+        $this->expectException(NoSuchValidatorException::class);
+        $this->expectExceptionCode(1365776838);
         $this->validatorResolver->_call('resolveValidatorObjectName', $validatorName);
     }
 
@@ -102,7 +106,8 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function resolveValidatorObjectNameThrowsNoSuchValidatorExceptionIfClassNotExists()
     {
         $className = $this->getUniqueId('Foo');
-        $this->setExpectedException(\TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException::class, '', 1365799920);
+        $this->expectException(NoSuchValidatorException::class);
+        $this->expectExceptionCode(1365799920);
         $this->validatorResolver->_call('resolveValidatorObjectName', $className);
     }
 
@@ -114,7 +119,8 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $className = $this->getUniqueId('Foo_');
         $expectedValidatorName = $className . 'Validator';
         eval('class ' . $expectedValidatorName . '{}');
-        $this->setExpectedException(\TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException::class, '', 1365776838);
+        $this->expectException(NoSuchValidatorException::class);
+        $this->expectExceptionCode(1365776838);
         $this->validatorResolver->_call('resolveValidatorObjectName', $className);
     }
 
@@ -181,7 +187,8 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->markTestSkipped('');
         $className = $this->getUniqueId('Test');
-        $this->setExpectedException(\TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException::class, '', 1365799920);
+        $this->expectException(NoSuchValidatorException::class);
+        $this->expectExceptionCode(1365799920);
         $this->validatorResolver->createValidator($className);
     }
 

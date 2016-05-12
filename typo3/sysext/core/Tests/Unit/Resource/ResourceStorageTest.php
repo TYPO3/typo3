@@ -327,7 +327,8 @@ class ResourceStorageTest extends BaseTestCase
     {
         /** @var Folder|\PHPUnit_Framework_MockObject_MockObject $mockedFolder */
         $mockedFolder = $this->getMock(Folder::class, array(), array(), '', false);
-        $this->setExpectedException('InvalidArgumentException', '', 1319552745);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1319552745);
         $this->prepareSubject(array());
         $this->subject->addFile('/some/random/file', $mockedFolder);
     }
@@ -716,7 +717,8 @@ class ResourceStorageTest extends BaseTestCase
      */
     public function createFolderThrowsExceptionIfParentFolderDoesNotExist()
     {
-        $this->setExpectedException('InvalidArgumentException', '', 1325689164);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1325689164);
         $mockedParentFolder = $this->getSimpleFolderMock('/someFolder/');
         $this->prepareSubject(array(), true);
         $mockedDriver = $this->createDriverMock(array(), $this->subject);
@@ -729,7 +731,8 @@ class ResourceStorageTest extends BaseTestCase
      */
     public function replaceFileFailsIfLocalFileDoesNotExist()
     {
-        $this->setExpectedException('InvalidArgumentException', '', 1325842622);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1325842622);
         $this->prepareSubject(array(), true);
         $mockedFile = $this->getSimpleFileMock('/someFile');
         $this->subject->replaceFile($mockedFile, PATH_site . $this->getUniqueId());

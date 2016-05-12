@@ -66,7 +66,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorRaisesExceptionForInvalidStream()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         new Request(['TOTALLY INVALID']);
     }
 
@@ -131,7 +131,8 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorRaisesExceptionForInvalidUri($uri)
     {
-        $this->setExpectedException('InvalidArgumentException', 'Invalid URI');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717272);
         new Request($uri);
     }
 
@@ -145,7 +146,6 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'false'      => [false],
             'int'        => [1],
             'float'      => [1.1],
-            'bad-string' => ['BOGUS-METHOD'],
             'array'      => [['POST']],
             'stdClass'   => [(object) ['method' => 'POST']],
         ];
@@ -155,10 +155,21 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @dataProvider invalidRequestMethodDataProvider
      * @test
      */
-    public function constructorRaisesExceptionForInvalidMethod($method)
+    public function constructorRaisesExceptionForInvalidMethodByType($method)
     {
-        $this->setExpectedException('InvalidArgumentException', 'Unsupported HTTP method');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717274);
         new Request(null, $method);
+    }
+
+    /**
+     * @test
+     */
+    public function constructorRaisesExceptionForInvalidMethodByString()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717275);
+        new Request(null, 'BOGUS-METHOD');
     }
 
     /**
@@ -182,7 +193,8 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorRaisesExceptionForInvalidBody($body)
     {
-        $this->setExpectedException('InvalidArgumentException', 'stream');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717271);
         new Request(null, null, $body);
     }
 
@@ -301,7 +313,8 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function withRequestTargetCannotContainWhitespace()
     {
         $request = new Request();
-        $this->setExpectedException('InvalidArgumentException', 'Invalid request target');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717273);
         $request->withRequestTarget('foo bar baz');
     }
 
@@ -509,7 +522,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorRaisesExceptionForHeadersWithCRLFVectors($name, $value)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         $request = new Request(null, null, 'php://memory', [$name => $value]);
     }
 }

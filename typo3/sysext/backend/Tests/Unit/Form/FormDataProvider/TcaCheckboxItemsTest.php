@@ -101,7 +101,8 @@ class TcaCheckboxItemsTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1440499337);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1440499337);
         $this->subject->addData($input);
     }
 
@@ -126,7 +127,8 @@ class TcaCheckboxItemsTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1440499338);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1440499338);
         $this->subject->addData($input);
     }
 

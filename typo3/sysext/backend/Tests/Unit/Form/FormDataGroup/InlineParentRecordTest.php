@@ -93,7 +93,8 @@ class InlineParentRecordTest extends UnitTestCase
         );
         GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
 
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1444398947);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1444398947);
 
         $this->subject->compile([]);
     }

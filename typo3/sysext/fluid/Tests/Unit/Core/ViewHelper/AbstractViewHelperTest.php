@@ -93,7 +93,7 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $reflectionService->expects($this->once())->method('getMethodTagsValues')->willReturn(array());
         $fixture = $this->getAccessibleMock(TestViewHelper::class, array('render'));
         $fixture->injectReflectionService($reflectionService);
-        $this->setExpectedException(Exception::class);
+        $this->expectException(Exception::class);
         $this->callInaccessibleMethod($fixture, 'registerRenderMethodArguments');
     }
 
@@ -144,7 +144,7 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $fixture->setArguments($namedArguments);
         if ($expectsException) {
             $exception = new \TYPO3Fluid\Fluid\Core\ViewHelper\Exception('test');
-            $this->setExpectedException(get_class($exception));
+            $this->expectException(get_class($exception));
             $fixture->expects($this->once())->method('render')->willThrowException($exception);
             $this->assertEquals('test', $this->callInaccessibleMethod($fixture, 'callRenderMethod'));
         } else {

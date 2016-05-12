@@ -127,15 +127,35 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @return array
      */
-    public function invalidPortsDataProvider()
+    public function invalidPortsDataProviderType()
     {
         return [
             'null'      => [null],
-            'true'      => [true],
             'false'     => [false],
             'string'    => ['string'],
             'array'     => [[3000]],
             'object'    => [(object) [3000]],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidPortsDataProviderType
+     * @test
+     */
+    public function withPortRaisesExceptionForInvalidPortsByType($port)
+    {
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717324);
+        $uri->withPort($port);
+    }
+
+    /**
+     * @return array
+     */
+    public function invalidPortsDataProviderRange()
+    {
+        return [
             'zero'      => [0],
             'too-small' => [-1],
             'too-big'   => [65536],
@@ -143,12 +163,29 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * @dataProvider invalidPortsDataProvider
+     * @test
+     * @todo: Currently, boolean true is interpreted as 1 by canBeInterpretedAsInteger().
+     * @todo: This test shows that, but there is an inconsistency and maybe it would be better
+     * @todo: if the code would not accept 'true' as valid port but throw an exception instead.
+     * @todo: If that is changed, 'true' should be added to the 'invalid type' data provider above.
      */
-    public function withPortRaisesExceptionForInvalidPorts($port)
+    public function withPortAcceptsBooleanTrueAsPortOne()
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
-        $this->setExpectedException('InvalidArgumentException', 'Invalid port');
+        $new = $uri->withPort(true);
+        $this->assertNotSame($uri, $new);
+        $this->assertEquals(1, $new->getPort());
+    }
+
+    /**
+     * @dataProvider invalidPortsDataProviderRange
+     * @test
+     */
+    public function withPortRaisesExceptionForInvalidPortsByRange($port)
+    {
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717326);
         $new = $uri->withPort($port);
     }
 
@@ -175,8 +212,6 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'false'    => [false],
             'array'    => [['/bar/baz']],
             'object'   => [(object) ['/bar/baz']],
-            'query'    => ['/bar/baz?bat=quz'],
-            'fragment' => ['/bar/baz#bat'],
         ];
     }
 
@@ -187,8 +222,31 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function withPathRaisesExceptionForInvalidPaths($path)
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
-        $this->setExpectedException('InvalidArgumentException', 'Invalid path');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717328);
         $new = $uri->withPath($path);
+    }
+
+    /**
+     * @test
+     */
+    public function withPathRaisesExceptionForInvalidPathsWithQuery()
+    {
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717330);
+        $new = $uri->withPath('/bar/baz?bat=quz');
+    }
+
+    /**
+     * @test
+     */
+    public function withPathRaisesExceptionForInvalidPathsWithFragment()
+    {
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717332);
+        $new = $uri->withPath('/bar/baz#bat');
     }
 
     /**
@@ -214,7 +272,6 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'false'    => [false],
             'array'    => [['baz=bat']],
             'object'   => [(object) ['baz=bat']],
-            'fragment' => ['baz=bat#quz'],
         ];
     }
 
@@ -222,11 +279,23 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @dataProvider invalidQueryStringsDataProvider
      * @test
      */
-    public function withQueryRaisesExceptionForInvalidQueryStrings($query)
+    public function withQueryRaisesExceptionForInvalidQueryStringsByType($query)
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
-        $this->setExpectedException('InvalidArgumentException', 'Query string');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717334);
         $new = $uri->withQuery($query);
+    }
+
+    /**
+     * @test
+     */
+    public function withQueryRaisesExceptionForInvalidQueryStringsByFragment()
+    {
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717336);
+        $new = $uri->withQuery('baz=bat#quz');
     }
 
     /**
@@ -332,7 +401,7 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorRaisesExceptionForNonStringURI($uri)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         new Uri($uri);
     }
 
@@ -341,7 +410,7 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorRaisesExceptionForSeriouslyMalformedURI()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         new Uri('http:///www.php-fig.org/');
     }
 
@@ -375,7 +444,8 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructWithUnsupportedSchemeRaisesAnException($scheme)
     {
-        $this->setExpectedException('InvalidArgumentException', 'Unsupported scheme');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717338);
         $uri = new Uri($scheme . '://example.com');
     }
 
@@ -386,7 +456,8 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function withSchemeUsingUnsupportedSchemeRaisesAnException($scheme)
     {
         $uri = new Uri('http://example.com');
-        $this->setExpectedException('InvalidArgumentException', 'Unsupported scheme');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717338);
         $uri->withScheme($scheme);
     }
 

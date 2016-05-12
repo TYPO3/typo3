@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+
 /**
  * Test for DependencyUtility
  *
@@ -45,7 +47,8 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $dependencyMock->setIdentifier('typo3');
         $dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class, array('dummy'));
 
-        $this->setExpectedException(\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException::class, '', 1399144499);
+        $this->expectException(ExtensionManagerException::class);
+        $this->expectExceptionCode(1399144499);
         $dependencyUtility->_call('checkTypo3Dependency', $dependencyMock);
     }
 
@@ -62,7 +65,8 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $dependencyMock->setIdentifier('typo3');
         $dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class, array('dummy'));
 
-        $this->setExpectedException(\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException::class, '', 1399144521);
+        $this->expectException(ExtensionManagerException::class);
+        $this->expectExceptionCode(1399144521);
         $dependencyUtility->_call('checkTypo3Dependency', $dependencyMock);
     }
 
@@ -77,7 +81,8 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $dependencyMock->setIdentifier('123');
         $dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class, array('dummy'));
 
-        $this->setExpectedException(\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException::class, '', 1399144551);
+        $this->expectException(ExtensionManagerException::class);
+        $this->expectExceptionCode(1399144551);
         $dependencyUtility->_call('checkTypo3Dependency', $dependencyMock);
     }
 
@@ -141,7 +146,8 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $dependencyMock->setIdentifier('php');
         $dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class, array('dummy'));
 
-        $this->setExpectedException(\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException::class, '', 1377977857);
+        $this->expectException(ExtensionManagerException::class);
+        $this->expectExceptionCode(1377977857);
         $dependencyUtility->_call('checkPhpDependency', $dependencyMock);
     }
 
@@ -158,7 +164,8 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $dependencyMock->setIdentifier('php');
         $dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class, array('dummy'));
 
-        $this->setExpectedException(\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException::class, '', 1377977856);
+        $this->expectException(ExtensionManagerException::class);
+        $this->expectExceptionCode(1377977856);
         $dependencyUtility->_call('checkPhpDependency', $dependencyMock);
     }
 
@@ -173,7 +180,8 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $dependencyMock->setIdentifier('123');
         $dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class, array('dummy'));
 
-        $this->setExpectedException(\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException::class, '', 1377977858);
+        $this->expectException(ExtensionManagerException::class);
+        $this->expectExceptionCode(1377977858);
         $dependencyUtility->_call('checkPhpDependency', $dependencyMock);
     }
 

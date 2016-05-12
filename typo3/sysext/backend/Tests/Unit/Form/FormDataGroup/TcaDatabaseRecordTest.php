@@ -93,7 +93,8 @@ class TcaDatabaseRecordTest extends UnitTestCase
         );
         GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
 
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1437906440);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1437906440);
 
         $this->subject->compile([]);
     }

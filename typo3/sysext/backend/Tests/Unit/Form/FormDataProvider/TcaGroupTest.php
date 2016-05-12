@@ -89,7 +89,8 @@ class TcaGroupTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1438780511);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1438780511);
         $this->subject->addData($input);
     }
 

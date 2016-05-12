@@ -45,7 +45,8 @@ class InitializeProcessedTcaTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1438594044);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1438594044);
         $this->subject->addData($input);
     }
 
@@ -74,7 +75,8 @@ class InitializeProcessedTcaTest extends UnitTestCase
             'tableName' => 'aTable',
         ];
 
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1437914223);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1437914223);
 
         $this->subject->addData($input);
     }
@@ -88,7 +90,8 @@ class InitializeProcessedTcaTest extends UnitTestCase
             'tableName' => 'aTable',
         ];
         $GLOBALS['TCA'][$input['tableName']] = 'foo';
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1437914223);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1437914223);
 
         $this->subject->addData($input);
     }

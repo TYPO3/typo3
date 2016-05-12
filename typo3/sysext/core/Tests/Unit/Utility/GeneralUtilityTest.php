@@ -2692,7 +2692,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'][] = $functionName;
         $minifyHookMock->expects($this->any())->method('minify')->will($this->returnCallback(array($this, 'minifyJavaScriptErroneousCallback')));
-        $this->setExpectedException('\\RuntimeException');
+        $this->expectException(\RuntimeException::class);
         GeneralUtilityMinifyJavaScriptFixture::minifyJavaScript('string to compress');
     }
 

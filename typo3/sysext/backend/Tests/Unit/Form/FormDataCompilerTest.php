@@ -49,7 +49,8 @@ class FormDataCompilerTest extends UnitTestCase
         $input = [
             'foo' => 'bar',
         ];
-        $this->setExpectedException(\InvalidArgumentException::class, '', 1440601540);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1440601540);
         $this->subject->compile($input);
     }
 
@@ -61,7 +62,8 @@ class FormDataCompilerTest extends UnitTestCase
         $input = [
             'command' => 'unknownCommand',
         ];
-        $this->setExpectedException(\InvalidArgumentException::class, '', 1437653136);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1437653136);
         $this->subject->compile($input);
     }
 
@@ -73,7 +75,8 @@ class FormDataCompilerTest extends UnitTestCase
         $input = [
             'tableName' => '',
         ];
-        $this->setExpectedException(\InvalidArgumentException::class, '', 1437654409);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1437654409);
         $this->subject->compile($input);
     }
 
@@ -85,7 +88,8 @@ class FormDataCompilerTest extends UnitTestCase
         $input = [
             'vanillaUid' => 'foo123',
         ];
-        $this->setExpectedException(\InvalidArgumentException::class, '', 1437654247);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1437654247);
         $this->subject->compile($input);
     }
 
@@ -98,7 +102,8 @@ class FormDataCompilerTest extends UnitTestCase
             'command' => 'edit',
             'vanillaUid' => -100,
         ];
-        $this->setExpectedException(\InvalidArgumentException::class, '', 1437654332);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1437654332);
         $this->subject->compile($input);
     }
 
@@ -139,7 +144,8 @@ class FormDataCompilerTest extends UnitTestCase
     public function compileThrowsExceptionIfFormDataGroupDoesNotReturnArray()
     {
         $this->formDataGroupProphecy->compile(Argument::cetera())->willReturn(null);
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1446664764);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1446664764);
         $this->subject->compile([]);
     }
 
@@ -153,7 +159,8 @@ class FormDataCompilerTest extends UnitTestCase
             unset($result['tableName']);
             return $result;
         });
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1438079402);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1438079402);
         $this->subject->compile([]);
     }
 
@@ -167,7 +174,8 @@ class FormDataCompilerTest extends UnitTestCase
             $result['newKey'] = 'newData';
             return $result;
         });
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1438079402);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1438079402);
         $this->subject->compile([]);
     }
 }

@@ -966,7 +966,8 @@ class TcaFlexProcessTest extends UnitTestCase
         $this->backendUserProphecy->isAdmin()->willReturn(true);
         $this->backendUserProphecy->checkLanguageAccess(Argument::cetera())->willReturn(true);
 
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1440685208);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1440685208);
 
         $this->subject->addData($input);
     }
@@ -1013,7 +1014,8 @@ class TcaFlexProcessTest extends UnitTestCase
         $this->backendUserProphecy->isAdmin()->willReturn(true);
         $this->backendUserProphecy->checkLanguageAccess(Argument::cetera())->willReturn(true);
 
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1440685208);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1440685208);
 
         $this->subject->addData($input);
     }
@@ -1185,7 +1187,8 @@ class TcaFlexProcessTest extends UnitTestCase
             'pageTsConfig' => [],
         ];
 
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1458745468);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1458745468);
 
         $this->subject->addData($input);
     }
@@ -1243,7 +1246,8 @@ class TcaFlexProcessTest extends UnitTestCase
             'pageTsConfig' => [],
         ];
 
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1458745712);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1458745712);
 
         $this->subject->addData($input);
     }

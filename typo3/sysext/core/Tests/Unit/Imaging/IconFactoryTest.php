@@ -224,7 +224,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getIconThrowsExceptionIfInvalidSizeIsGiven()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         $this->subject->getIcon($this->registeredIconIdentifier, 'foo')->render();
     }
 

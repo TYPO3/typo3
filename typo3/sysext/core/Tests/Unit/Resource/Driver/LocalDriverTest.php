@@ -430,7 +430,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      */
     public function addFileFailsIfFileIsInDriverStorage()
     {
-        $this->setExpectedException('InvalidArgumentException', '', 1314778269);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1314778269);
         $this->addToMount(array(
             'targetFolder' => array(
                 'file' => 'asdf'
@@ -655,7 +656,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      */
     public function getFileThrowsExceptionIfFileDoesNotExist()
     {
-        $this->setExpectedException('InvalidArgumentException', '', 1314516809);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1314516809);
         $subject = $this->createDriver();
         $subject->getFileInfoByIdentifier('/some/file/at/a/random/path');
     }
@@ -720,7 +722,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      */
     public function getFileListFailsIfDirectoryDoesNotExist()
     {
-        $this->setExpectedException('InvalidArgumentException', '', 1314349666);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1314349666);
         $this->addToMount(array('somefile' => ''));
         $subject = $this->createDriver();
         $subject->getFilesInFolder('somedir/');
@@ -744,7 +747,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
         $this->addToMount($dirStructure);
         $subject = $this->createDriver();
         // the callback function will throw an exception used to check if it was called with correct $itemName
-        $this->setExpectedException('InvalidArgumentException', '$itemName', 1336159604);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1336159604);
         $subject->getFilesInFolder('/', 0, 0, false, $callback);
     }
 
@@ -867,7 +871,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      */
     public function getFolderListFailsIfDirectoryDoesNotExist()
     {
-        $this->setExpectedException('InvalidArgumentException', '', 1314349666);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1314349666);
         $subject = $this->createDriver();
         vfsStream::create(array($this->basedir => array('somefile' => '')));
         $subject->getFoldersInFolder('somedir/');
@@ -892,7 +897,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      */
     public function hashingWithUnsupportedAlgorithmFails()
     {
-        $this->setExpectedException('InvalidArgumentException', '', 1304964032);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1304964032);
         $subject = $this->createDriver();
         $subject->hash('/hashFile', $this->getUniqueId());
     }
@@ -1204,7 +1210,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      */
     public function renamingFilesFailsIfTargetFileExists()
     {
-        $this->setExpectedException(\TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException::class, '', 1320291063);
+        $this->expectException(\TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException::class);
+        $this->expectExceptionCode(1320291063);
         $this->addToMount(array(
             'targetFolder' => array('file' => '', 'newFile' => '')
         ));
@@ -1281,7 +1288,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      */
     public function renameFolderRevertsRenamingIfFilenameMapCannotBeCreated()
     {
-        $this->setExpectedException('\\RuntimeException', '', 1334160746);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1334160746);
         $this->addToMount(array(
             'sourceFolder' => array(
                 'file' => 'asdfg'
@@ -1633,9 +1641,10 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      */
     public function applyFilterMethodsToDirectoryItemCallsFilterMethodIfClosure()
     {
-        $this->setExpectedException('Exception', 'I was called!');
+        $this->expectException(\Exception::class);
+        $this->expectExceptionCode(1463073434);
         $closure = function () {
-            throw new \Exception('I was called!');
+            throw new \Exception('I was called!', 1463073434);
         };
 
         $filterMethods = array(

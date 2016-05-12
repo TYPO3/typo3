@@ -93,7 +93,8 @@ class TcaInputPlaceholderRecordTest extends UnitTestCase
         );
         GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
 
-        $this->setExpectedException(\UnexpectedValueException::class, '', 1443986127);
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1443986127);
 
         $this->subject->compile([]);
     }

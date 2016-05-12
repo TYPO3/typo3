@@ -97,7 +97,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorRaisesExceptionWhenPassingInvalidStreamResource()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         $stream = new Stream(['  THIS WILL NOT WORK  ']);
     }
 
@@ -199,7 +199,8 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         fseek($resource, 2);
         $stream->detach();
-        $this->setExpectedException('RuntimeException', 'No resource');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1436717285);
         $stream->tell();
     }
 
@@ -318,7 +319,8 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
         $stream->detach();
-        $this->setExpectedException('RuntimeException', 'No resource');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1436717287);
         $stream->seek(2);
     }
 
@@ -347,7 +349,8 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
         $stream->detach();
-        $this->setExpectedException('RuntimeException', 'No resource');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1436717290);
         $stream->write('bar');
     }
 
@@ -376,7 +379,8 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $resource = fopen($fileName, 'r');
         $stream = new Stream($resource);
         $stream->detach();
-        $this->setExpectedException('RuntimeException', 'No resource');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1436717292);
         $stream->read(4096);
     }
 
@@ -423,7 +427,6 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'true'                => [true],
             'int'                 => [1],
             'float'               => [1.1],
-            'string-non-resource' => ['foo-bar-baz'],
             'array'               => [[fopen($fileName, 'r+')]],
             'object'              => [(object) ['resource' => fopen($fileName, 'r+')]],
         ];
@@ -433,10 +436,21 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @dataProvider invalidResourcesDataProvider
      * @test
      */
-    public function attachWithNonStringNonResourceRaisesException($resource)
+    public function attachWithNonStringNonResourceRaisesExceptionByType($resource)
     {
-        $this->setExpectedException('InvalidArgumentException', 'Invalid stream');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717297);
         $this->stream->attach($resource);
+    }
+
+    /**
+     * @test
+     */
+    public function attachWithNonStringNonResourceRaisesExceptionByString()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717296);
+        $this->stream->attach('foo-bar-baz');
     }
 
     /**

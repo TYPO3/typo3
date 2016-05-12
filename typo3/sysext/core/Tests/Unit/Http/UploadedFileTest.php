@@ -65,7 +65,7 @@ class UploadedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorRaisesExceptionOnInvalidStreamOrFile($streamOrFile)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         new UploadedFile($streamOrFile, 0, UPLOAD_ERR_OK);
     }
 
@@ -91,7 +91,8 @@ class UploadedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorRaisesExceptionOnInvalidSize($size)
     {
-        $this->setExpectedException('InvalidArgumentException', 'size');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717302);
         new UploadedFile(fopen('php://temp', 'wb+'), $size, UPLOAD_ERR_OK);
     }
 
@@ -119,7 +120,8 @@ class UploadedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorRaisesExceptionOnInvalidErrorStatus($status)
     {
-        $this->setExpectedException('InvalidArgumentException', 'status');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717303);
         new UploadedFile(fopen('php://temp', 'wb+'), 0, $status);
     }
 
@@ -144,7 +146,8 @@ class UploadedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorRaisesExceptionOnInvalidClientFilename($filename)
     {
-        $this->setExpectedException('InvalidArgumentException', 'filename');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717304);
         new UploadedFile(fopen('php://temp', 'wb+'), 0, UPLOAD_ERR_OK, $filename);
     }
 
@@ -154,7 +157,8 @@ class UploadedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorRaisesExceptionOnInvalidClientMediaType($mediaType)
     {
-        $this->setExpectedException('InvalidArgumentException', 'media type');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717305);
         new UploadedFile(fopen('php://temp', 'wb+'), 0, UPLOAD_ERR_OK, 'foobar.baz', $mediaType);
     }
 
@@ -236,7 +240,8 @@ class UploadedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
 
         $this->tmpFile = $path;
-        $this->setExpectedException('InvalidArgumentException', 'path');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1436717307);
         $upload->moveTo($path);
     }
 
@@ -253,7 +258,8 @@ class UploadedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $upload->moveTo($to);
         $this->assertTrue(file_exists($to));
 
-        $this->setExpectedException('RuntimeException', 'moved');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1436717308);
         $upload->moveTo($to);
     }
 
@@ -270,7 +276,8 @@ class UploadedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $upload->moveTo($to);
         $this->assertTrue(file_exists($to));
 
-        $this->setExpectedException('RuntimeException', 'moved');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1436717306);
         $upload->getStream();
     }
 }

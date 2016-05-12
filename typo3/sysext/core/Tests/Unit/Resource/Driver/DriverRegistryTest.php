@@ -50,7 +50,8 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function registerDriverClassThrowsExceptionIfClassDoesNotExist()
     {
-        $this->setExpectedException('InvalidArgumentException', '', 1314979197);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1314979197);
         $this->subject->registerDriverClass($this->getUniqueId());
     }
 
@@ -59,7 +60,8 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function registerDriverClassThrowsExceptionIfShortnameIsAlreadyTakenByAnotherDriverClass()
     {
-        $this->setExpectedException('InvalidArgumentException', '', 1314979451);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1314979451);
         $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class));
         $className2 = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\DriverInterface::class));
         $this->subject->registerDriverClass($className, 'foobar');
@@ -71,7 +73,8 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDriverClassThrowsExceptionIfClassIsNotRegistered()
     {
-        $this->setExpectedException('InvalidArgumentException', '', 1314085990);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1314085990);
         $this->subject->getDriverClass($this->getUniqueId());
     }
 

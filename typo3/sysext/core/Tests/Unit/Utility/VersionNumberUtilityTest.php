@@ -86,7 +86,8 @@ class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertIntegerToVersionNumberConvertsOtherTypesAsIntegerToVersionNumber($version)
     {
-        $this->setExpectedException('\\InvalidArgumentException', '', 1334072223);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1334072223);
         VersionNumberUtility::convertIntegerToVersionNumber($version);
     }
 

@@ -257,7 +257,8 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function executeValueModifierThrowsException($modifierName, $currentValue, $modifierArgument)
     {
-        $this->setExpectedException('InvalidArgumentException', 'The list "' . $currentValue . '" should be sorted numerically but contains a non-numeric value');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1438191758);
         $this->typoScriptParser->_call('executeValueModifier', $modifierName, $modifierArgument, $currentValue);
     }
 
