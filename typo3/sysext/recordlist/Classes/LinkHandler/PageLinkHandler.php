@@ -191,6 +191,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
                 $selected = ' class="active"';
             }
             // Putting list element HTML together:
+            // Output of BackendUtility::getRecordTitle() is already hsc'ed
             $out .= '
 				<li' . $selected . '>
 					<span class="list-tree-group">
@@ -199,7 +200,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 						</span>
 						<span class="list-tree-title">
 							<a href="#" class="t3js-pageLink" data-id="' . (int)$expPageId . '" data-anchor="#' . (int)$row['uid'] . '">
-								' . htmlspecialchars(BackendUtility::getRecordTitle('tt_content', $row, true)) . '
+								' . BackendUtility::getRecordTitle('tt_content', $row, true) . '
 							</a>
 						</span>
 					</span>
