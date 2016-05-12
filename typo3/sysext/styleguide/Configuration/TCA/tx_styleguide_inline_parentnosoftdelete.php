@@ -2,7 +2,7 @@
 return [
     'ctrl' => [
         'title' => 'Form engine - inline parent no soft delete',
-        'label' => 'fal_relation',
+        'label' => 'inline_1',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
