@@ -16,11 +16,6 @@ assigned filters in the given order. The filtered data will be shown to the
 visitor when there are errors in the form or on a confirmation page.
 Otherwise the filtered data will be send by mail to the receiver.
 
-.. attention::
-
-   By default, all submitted data will be filtered by a Cross Site Scripting
-   (XSS) filter to prevent security issues.
-
 .. toctree::
     :maxdepth: 5
     :titlesonly:
@@ -33,7 +28,6 @@ Otherwise the filtered data will be send by mail to the receiver.
     Integer/Index.rst
     Lowercase/Index.rst
     Regexp/Index.rst
-    Removexss/Index.rst
     Stripnewlines/Index.rst
     Titlecase/Index.rst
     Trim/Index.rst

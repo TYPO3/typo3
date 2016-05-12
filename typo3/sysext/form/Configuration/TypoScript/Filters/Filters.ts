@@ -42,11 +42,6 @@ plugin.tx_form {
 				className = TYPO3\CMS\Form\Domain\Filter\RegExpFilter
 			}
 
-			removexss {
-				displayName = Remove XSS
-				className = TYPO3\CMS\Form\Domain\Filter\RemoveXssFilter
-			}
-
 			stripnewlines {
 				displayName = Strip New Lines
 				className = TYPO3\CMS\Form\Domain\Filter\StripNewLinesFilter

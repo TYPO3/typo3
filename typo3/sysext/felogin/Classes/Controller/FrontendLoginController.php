@@ -1005,12 +1005,6 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if ($url === '') {
             return '';
         }
-        $decodedUrl = rawurldecode($url);
-        $sanitizedUrl = GeneralUtility::removeXSS($decodedUrl);
-        if ($decodedUrl !== $sanitizedUrl || preg_match('#["<>\\\\]+#', $url)) {
-            GeneralUtility::sysLog(sprintf($this->pi_getLL('xssAttackDetected'), $url), 'felogin', GeneralUtility::SYSLOG_SEVERITY_WARNING);
-            return '';
-        }
         // Validate the URL:
         if ($this->isRelativeUrl($url) || $this->isInCurrentDomain($url) || $this->isInLocalDomain($url)) {
             return $url;
@@ -1083,10 +1077,13 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     protected function isRelativeUrl($url)
     {
-        $parsedUrl = @parse_url($url);
-        if ($parsedUrl !== false && !isset($parsedUrl['scheme']) && !isset($parsedUrl['host'])) {
-            // If the relative URL starts with a slash, we need to check if it's within the current site path
-            return $parsedUrl['path'][0] !== '/' || GeneralUtility::isFirstPartOfStr($parsedUrl['path'], GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
+        $url = GeneralUtility::sanitizeLocalUrl($url);
+        if (!empty($url)) {
+            $parsedUrl = @parse_url($url);
+            if ($parsedUrl !== false && !isset($parsedUrl['scheme']) && !isset($parsedUrl['host'])) {
+                // If the relative URL starts with a slash, we need to check if it's within the current site path
+                return $parsedUrl['path'][0] !== '/' || GeneralUtility::isFirstPartOfStr($parsedUrl['path'], GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
+            }
         }
         return false;
     }

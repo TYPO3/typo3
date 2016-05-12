@@ -236,7 +236,7 @@ showFilters
 
 :aspect:`Default:`
     alphabetic, alphanumeric, currency, digit, integer, lowercase,
-    regexp, removexss, titlecase, trim, uppercase
+    regexp, titlecase, trim, uppercase
 
 
 .. _wizard-settings-defaults-options-filtering-filters:
@@ -358,7 +358,7 @@ The default configuration of the options tab looks like this:
             }
          }
          filtering {
-            showFilters = alphabetic, alphanumeric, currency, digit, integer, lowercase, regexp, removexss, titlecase, trim, uppercase
+            showFilters = alphabetic, alphanumeric, currency, digit, integer, lowercase, regexp, titlecase, trim, uppercase
             filters {
                alphabetic {
                   showProperties = allowWhiteSpace
@@ -380,9 +380,6 @@ The default configuration of the options tab looks like this:
                }
                regexp {
                   showProperties = expression
-               }
-               removexss {
-                  showProperties =
                }
                titlecase {
                   showProperties =

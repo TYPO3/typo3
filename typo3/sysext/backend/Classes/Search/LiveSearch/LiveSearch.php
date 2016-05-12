@@ -426,11 +426,10 @@ class LiveSearch
      *
      * @param string $queryString
      * @return void
-     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::removeXSS()
      */
     public function setQueryString($queryString)
     {
-        $this->queryString = GeneralUtility::removeXSS($queryString);
+        $this->queryString = $queryString;
     }
 
     /**

@@ -16,6 +16,13 @@
  * This code is public domain, you are free to do whatever you want with it,
  * including adding it to your own project which can be under any license.
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+/**
+ * Class RemoveXSS
+ *
+ * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
+ */
 class RemoveXSS
 {
     /**
@@ -26,9 +33,11 @@ class RemoveXSS
      * @param string $value Input string
      * @param string $replaceString replaceString for inserting in keywords (which destroys the tags)
      * @return string Input string with potential XSS code removed
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function process($value, $replaceString = '<x>')
     {
+        GeneralUtility::logDeprecatedFunction();
         // Don't use empty $replaceString because then no XSS-remove will be done
         if ($replaceString == '') {
             $replaceString = '<x>';

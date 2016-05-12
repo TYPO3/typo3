@@ -141,9 +141,6 @@ For security reasons, this link is only active until %s. If you do not visit the
 			<trans-unit id="noValidRedirectUrl">
 				<source>Url "%s" for redirect was not accepted!</source>
 			</trans-unit>
-			<trans-unit id="xssAttackDetected">
-				<source>Url "%s" contained an XSS attack and was cleaned!</source>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>

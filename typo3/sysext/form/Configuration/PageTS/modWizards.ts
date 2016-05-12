@@ -134,7 +134,7 @@ prefix = tx_form
 							}
 						}
 						filtering {
-							showFilters = alphabetic, alphanumeric, currency, digit, integer, lowercase, regexp, removexss, stripnewlines, titlecase, trim, uppercase
+							showFilters = alphabetic, alphanumeric, currency, digit, integer, lowercase, regexp, stripnewlines, titlecase, trim, uppercase
 
 							filters {
 								alphabetic {
@@ -163,10 +163,6 @@ prefix = tx_form
 
 								regexp {
 									showProperties = expression
-								}
-
-								removexss {
-									showProperties =
 								}
 
 								stripnewlines {

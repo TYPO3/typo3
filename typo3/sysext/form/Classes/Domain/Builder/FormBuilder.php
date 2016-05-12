@@ -443,8 +443,6 @@ class FormBuilder
 
         if ($this->getIncomingData()->getIncomingField($elementName) !== null) {
             /* filter values and set it back to incoming fields */
-                /* remove xss every time */
-            $userConfiguredElementTypoScript['filters.'][-1] = 'removexss';
             $keys = ArrayUtility::filterAndSortByNumericKeys($userConfiguredElementTypoScript['filters.']);
             foreach ($keys as $key) {
                 $class = $userConfiguredElementTypoScript['filters.'][$key];

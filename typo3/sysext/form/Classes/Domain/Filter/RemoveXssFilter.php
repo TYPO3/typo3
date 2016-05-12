@@ -18,6 +18,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Remove Cross Site Scripting filter
+ *
+ * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
  */
 class RemoveXssFilter extends AbstractFilter implements FilterInterface
 {
@@ -29,6 +31,7 @@ class RemoveXssFilter extends AbstractFilter implements FilterInterface
      *
      * @param string $value Unfiltered value
      * @return string The filtered value
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function filter($value)
     {

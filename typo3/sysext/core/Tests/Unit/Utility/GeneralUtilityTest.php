@@ -2188,7 +2188,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'empty string' => array(''),
             'http domain' => array('http://www.google.de/'),
             'https domain' => array('https://www.google.de/'),
-            'relative path with XSS' => array('../typo3/whatever.php?argument=javascript:alert(0)'),
+            'XSS attempt' => array('" onmouseover="alert(123)"'),
+            'invalid URL, UNC path' => array('\\\\foo\\bar\\'),
+            'invalid URL, HTML break out attempt' => array('" >blabuubb'),
             'base64 encoded string' => array('data:%20text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4='),
         );
     }

@@ -558,9 +558,6 @@
 			<trans-unit id="filters_regexp">
 				<source>Regular Expression</source>
 			</trans-unit>
-			<trans-unit id="filters_removexss">
-				<source>Remove XSS</source>
-			</trans-unit>
 			<trans-unit id="filters_stripnewlines">
 				<source>Strip New Lines</source>
 			</trans-unit>

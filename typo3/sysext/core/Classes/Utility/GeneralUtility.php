@@ -249,6 +249,7 @@ class GeneralUtility
      *
      * @param string $string Input string
      * @return string Input string with potential XSS code removed
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function removeXSS($string)
     {
@@ -3390,14 +3391,17 @@ class GeneralUtility
      * Checks if a given string is a valid frame URL to be loaded in the
      * backend.
      *
+     * If the given url is empty or considered to be harmless, it is returned
+     * as is, else the event is logged and an empty string is returned.
+     *
      * @param string $url potential URL to check
-     * @return string either $url if $url is considered to be harmless, or an
+     * @return string $url or empty string
      */
     public static function sanitizeLocalUrl($url = '')
     {
         $sanitizedUrl = '';
-        $decodedUrl = rawurldecode($url);
-        if (!empty($url) && self::removeXSS($decodedUrl) === $decodedUrl) {
+        if (!empty($url)) {
+            $decodedUrl = rawurldecode($url);
             $parsedUrl = parse_url($decodedUrl);
             $testAbsoluteUrl = self::resolveBackPath($decodedUrl);
             $testRelativeUrl = self::resolveBackPath(self::dirname(self::getIndpEnv('SCRIPT_NAME')) . '/' . $decodedUrl);
@@ -3410,7 +3414,9 @@ class GeneralUtility
                 $sanitizedUrl = $url;
             } elseif (strpos($testAbsoluteUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0 && $decodedUrl[0] === '/') {
                 $sanitizedUrl = $url;
-            } elseif (empty($parsedUrl['scheme']) && strpos($testRelativeUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0 && $decodedUrl[0] !== '/') {
+            } elseif (empty($parsedUrl['scheme']) && strpos($testRelativeUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0
+                && $decodedUrl[0] !== '/' && strpbrk($decodedUrl, "*:|\"<>") === FALSE && strpos($decodedUrl, '\\\\') === false
+            ) {
                 $sanitizedUrl = $url;
             }
         }
