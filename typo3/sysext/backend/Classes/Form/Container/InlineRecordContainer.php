@@ -585,7 +585,7 @@ class InlineRecordContainer extends AbstractContainer
                 foreach ($tceformsInlineHook as $classData) {
                     $processObject = GeneralUtility::getUserObj($classData);
                     if (!$processObject instanceof InlineElementHookInterface) {
-                        throw new \UnexpectedValueException('$processObject must implement interface ' . InlineElementHookInterface::class, 1202072000);
+                        throw new \UnexpectedValueException($classData . ' must implement interface ' . InlineElementHookInterface::class, 1202072000);
                     }
                     $this->hookObjects[] = $processObject;
                 }

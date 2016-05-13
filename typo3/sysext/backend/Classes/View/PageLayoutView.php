@@ -1353,7 +1353,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             foreach ($drawFooterHooks as $hookClass) {
                 $hookObject = GeneralUtility::getUserObj($hookClass);
                 if (!$hookObject instanceof PageLayoutViewDrawFooterHookInterface) {
-                    throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Backend\\View\\PageLayoutViewDrawFooterHookInterface', 1404378171);
+                    throw new \UnexpectedValueException($hookClass . ' must implement interface ' . PageLayoutViewDrawFooterHookInterface::class, 1404378171);
                 }
                 $hookObject->preProcess($this, $info, $row);
             }
@@ -1560,7 +1560,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             foreach ($drawItemHooks as $hookClass) {
                 $hookObject = GeneralUtility::getUserObj($hookClass);
                 if (!$hookObject instanceof PageLayoutViewDrawItemHookInterface) {
-                    throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface::class, 1218547409);
+                    throw new \UnexpectedValueException($hookClass . ' must implement interface ' . PageLayoutViewDrawItemHookInterface::class, 1218547409);
                 }
                 $hookObject->preProcess($this, $drawItem, $outHeader, $out, $row);
             }
