@@ -708,7 +708,7 @@ abstract class AbstractFormElement extends AbstractNode
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['dbFileIcons'] as $classRef) {
                 $hookObject = GeneralUtility::getUserObj($classRef);
                 if (!$hookObject instanceof DatabaseFileIconsHookInterface) {
-                    throw new \UnexpectedValueException('$hookObject must implement interface ' . DatabaseFileIconsHookInterface::class, 1290167704);
+                    throw new \UnexpectedValueException($classRef . ' must implement interface ' . DatabaseFileIconsHookInterface::class, 1290167704);
                 }
                 $additionalParams = array(
                     'mode' => $mode,

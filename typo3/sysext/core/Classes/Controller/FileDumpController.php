@@ -77,7 +77,7 @@ class FileDumpController
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess'] as $classRef) {
                     $hookObject = GeneralUtility::getUserObj($classRef);
                     if (!$hookObject instanceof FileDumpEIDHookInterface) {
-                        throw new \UnexpectedValueException('FileDump hook object must implement interface ' . FileDumpEIDHookInterface::class, 1394442417);
+                        throw new \UnexpectedValueException($classRef . ' must implement interface ' . FileDumpEIDHookInterface::class, 1394442417);
                     }
                     $hookObject->checkFileAccess($file);
                 }

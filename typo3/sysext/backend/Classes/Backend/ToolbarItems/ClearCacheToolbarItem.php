@@ -86,7 +86,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'] as $cacheAction) {
                 $hookObject = GeneralUtility::getUserObj($cacheAction);
                 if (!$hookObject instanceof ClearCacheActionsHookInterface) {
-                    throw new \UnexpectedValueException('$hookObject must implement interface ' . ClearCacheActionsHookInterface::class, 1228262000);
+                    throw new \UnexpectedValueException($cacheAction . ' must implement interface ' . ClearCacheActionsHookInterface::class, 1228262000);
                 }
                 $hookObject->manipulateCacheActions($this->cacheActions, $this->optionValues);
             }

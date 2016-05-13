@@ -1017,7 +1017,7 @@ class FileList extends AbstractRecordList
                 $hookObject = GeneralUtility::getUserObj($classData);
                 if (!$hookObject instanceof FileListEditIconHookInterface) {
                     throw new \UnexpectedValueException(
-                        '$hookObject must implement interface \\TYPO3\\CMS\\Filelist\\FileListEditIconHookInterface',
+                        $classData . ' must implement interface ' . FileListEditIconHookInterface::class,
                         1235225797
                     );
                 }

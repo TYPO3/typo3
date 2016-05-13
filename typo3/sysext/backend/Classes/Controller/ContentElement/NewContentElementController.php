@@ -227,7 +227,7 @@ class NewContentElementController extends AbstractModule
                     $hookObject = GeneralUtility::getUserObj($classData);
                     if (!$hookObject instanceof NewContentElementWizardHookInterface) {
                         throw new \UnexpectedValueException(
-                            '$hookObject must implement interface ' . NewContentElementWizardHookInterface::class,
+                            $classData . ' must implement interface ' . NewContentElementWizardHookInterface::class,
                             1227834741
                         );
                     }

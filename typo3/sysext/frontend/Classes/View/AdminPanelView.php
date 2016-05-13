@@ -272,7 +272,7 @@ class AdminPanelView
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'] as $classRef) {
                 $hookObject = GeneralUtility::getUserObj($classRef);
                 if (!$hookObject instanceof AdminPanelViewHookInterface) {
-                    throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\View\\AdminPanelViewHookInterface', 1311942539);
+                    throw new \UnexpectedValueException($classRef . ' must implement interface ' . AdminPanelViewHookInterface::class, 1311942539);
                 }
                 $moduleContent .= $hookObject->extendAdminPanel($moduleContent, $this);
             }

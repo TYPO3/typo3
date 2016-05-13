@@ -295,7 +295,7 @@ class ExtendedFileUtility extends BasicFileUtility
                             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_extfilefunc.php']['processData'] as $classRef) {
                                 $hookObject = GeneralUtility::getUserObj($classRef);
                                 if (!$hookObject instanceof ExtendedFileUtilityProcessDataHookInterface) {
-                                    throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtilityProcessDataHookInterface', 1279719168);
+                                    throw new \UnexpectedValueException($classRef . ' must implement interface ' . ExtendedFileUtilityProcessDataHookInterface::class, 1279719168);
                                 }
                                 $hookObject->processData_postProcessAction($action, $cmdArr, $result[$action], $this);
                             }

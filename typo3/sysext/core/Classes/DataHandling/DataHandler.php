@@ -909,7 +909,7 @@ class DataHandler
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'] as $classData) {
                     $hookObject = GeneralUtility::getUserObj($classData);
                     if (!$hookObject instanceof DataHandlerCheckModifyAccessListHookInterface) {
-                        throw new \UnexpectedValueException('$hookObject must implement interface \\TYPO3\\CMS\\Core\\DataHandling\\DataHandlerCheckModifyAccessListHookInterface', 1251892472);
+                        throw new \UnexpectedValueException($classData . ' must implement interface ' . DataHandlerCheckModifyAccessListHookInterface::class, 1251892472);
                     }
                     $this->checkModifyAccessListHookObjects[] = $hookObject;
                 }
@@ -2181,7 +2181,7 @@ class DataHandler
                                             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processUpload'] as $classRef) {
                                                 $hookObject = GeneralUtility::getUserObj($classRef);
                                                 if (!$hookObject instanceof DataHandlerProcessUploadHookInterface) {
-                                                    throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Core\\DataHandling\\DataHandlerProcessUploadHookInterface', 1279962349);
+                                                    throw new \UnexpectedValueException($classRef . ' must implement interface ' . DataHandlerProcessUploadHookInterface::class, 1279962349);
                                                 }
                                                 $hookObject->processUpload_postProcessAction($theDestFile, $this);
                                             }
