@@ -10615,24 +10615,18 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
   right: 3px;
   top: 4px;
 }
-.t3-form-field-item {
-  position: relative;
-  border: 1px solid transparent;
-  padding: 0;
-}
 .t3-tceforms-widget-null-wrapper + .t3-form-field-item {
   display: inline-block;
 }
-.t3-form-field-item.disabled {
-  border: 1px dotted #696362;
-}
-.t3-form-field-disable,
-.t3-form-field-item.disabled .t3-form-field-item.disabled .t3-form-field-disable {
+.t3-form-field-disable {
   display: none;
 }
-.t3-form-field-item.disabled .t3-form-field-disable {
+.t3js-formengine-field-item.disabled {
+  position: relative;
+}
+.t3js-formengine-field-item.disabled .t3-form-field-disable {
   z-index: 8000;
-  background: #f4f4f4;
+  background: #fafafa;
   display: block;
   position: absolute;
   width: 100%;
