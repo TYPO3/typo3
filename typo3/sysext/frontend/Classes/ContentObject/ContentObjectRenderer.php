@@ -2003,8 +2003,7 @@ class ContentObjectRenderer
             $conf['cacheRead'] = 1;
             $conf['cacheStore'] = 1;
         }
-        // Check, which of the available stdWrap functions is needed for the current conf Array
-        // and keep only those but still in the same order
+        // The configuration is sorted and filtered by intersection with the defined stdWrapOrder.
         $sortedConf = array_intersect_key($this->stdWrapOrder, $conf);
         // Functions types that should not make use of nested stdWrap function calls to avoid conflicts with internal TypoScript used by these functions
         $stdWrapDisabledFunctionTypes = 'cObject,functionName,stdWrap';
