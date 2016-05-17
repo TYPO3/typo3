@@ -1,3 +1,12 @@
+2016-05-17  80a1f39                  [RELEASE] Release of TYPO3 6.2.23 (TYPO3 Release Team)
+2016-05-17  1b58942  #75721          [BUGFIX] Use push parser instead of pull parser on fetching extension list (Oliver Hader)
+2016-05-17  6a038ac                  Revert "[BUGFIX] Load XML files of Extension Manager properly" (Oliver Hader)
+2016-05-06  8713065  #76066,#76064   [TASK] Make .htaccess Apache 2.4 suitable (Marc von Schalscha-Ehrenfeld)
+2016-05-05  31bb6be  #75934          [TASK] Disallow access to documentation folders (Markus Klein)
+2016-05-01  9100aae  #75947          [BUGFIX] Allow maxitem=1 in TCA treeSelect again (Alexander Bigga)
+2016-04-26  034e97b                  [TASK] Set TYPO3 version to 6.2.23-dev (TYPO3 Release Team)
+
+
 2016-04-26  412080d                  [RELEASE] Release of TYPO3 6.2.22 (TYPO3 Release Team)
 2016-04-26  1adf60b  #75860          [BUGFIX] Double encoding in image title-tag (Frank Naegler)
 2016-04-25  ec7b229  #75519          [BUGFIX] Remember not rendered checkboxes in TCA treeSelect (Frans Saris)
