@@ -183,14 +183,19 @@ abstract class AbstractFile implements FileInterface
      * Returns the size of this file
      *
      * @throws \RuntimeException
-     * @return int
+     * @return int|null Returns null if size is not available for the file
      */
     public function getSize()
     {
         if ($this->deleted) {
             throw new \RuntimeException('File has been deleted.', 1329821480);
         }
-        return $this->properties['size'] ?: array_pop($this->getStorage()->getFileInfoByIdentifier($this->getIdentifier(), array('size')));
+        if (empty($this->properties['size'])) {
+            $size = array_pop($this->getStorage()->getFileInfoByIdentifier($this->getIdentifier(), array('size')));
+        } else {
+            $size = $this->properties['size'];
+        }
+        return $size ? (int)$size : null;
     }
 
     /**
@@ -200,7 +205,7 @@ abstract class AbstractFile implements FileInterface
      */
     public function getUid()
     {
-        return $this->getProperty('uid');
+        return (int)$this->getProperty('uid');
     }
 
     /**
@@ -228,7 +233,7 @@ abstract class AbstractFile implements FileInterface
         if ($this->deleted) {
             throw new \RuntimeException('File has been deleted.', 1329821487);
         }
-        return $this->getProperty('creation_date');
+        return (int)$this->getProperty('creation_date');
     }
 
     /**
@@ -242,7 +247,7 @@ abstract class AbstractFile implements FileInterface
         if ($this->deleted) {
             throw new \RuntimeException('File has been deleted.', 1329821488);
         }
-        return $this->getProperty('modification_date');
+        return (int)$this->getProperty('modification_date');
     }
 
     /**
