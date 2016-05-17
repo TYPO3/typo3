@@ -500,7 +500,7 @@ class AbstractPlugin
      * If $wrapArr['showResultsNumbersWrap'] is set, the formatting string is expected to hold template markers (###FROM###, ###TO###, ###OUT_OF###, ###FROM_TO###, ###CURRENT_PAGE###, ###TOTAL_PAGES###)
      * otherwise the formatting string is expected to hold sprintf-markers (%s) for from, to, outof (in that sequence)
      *
-     * @param int $showResultCount Determines how the results of the pagerowser will be shown. See description below
+     * @param int $showResultCount Determines how the results of the page browser will be shown. See description below
      * @param string $tableParams Attributes for the table tag which is wrapped around the table cells containing the browse links
      * @param array $wrapArr Array with elements to overwrite the default $wrapper-array.
      * @param string $pointerName varname for the pointer.
@@ -510,6 +510,19 @@ class AbstractPlugin
      */
     public function pi_list_browseresults($showResultCount = 1, $tableParams = '', $wrapArr = array(), $pointerName = 'pointer', $hscText = true, $forceOutput = false)
     {
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][AbstractPlugin::class]['pi_list_browseresults'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][AbstractPlugin::class]['pi_list_browseresults'])
+        ) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][AbstractPlugin::class]['pi_list_browseresults'] as $classRef) {
+                $hookObj = GeneralUtility::makeInstance($classRef);
+                if (method_exists($hookObj, 'pi_list_browseresults')) {
+                    $pageBrowser = $hookObj->pi_list_browseresults($showResultCount, $tableParams, $wrapArr, $pointerName, $hscText, $forceOutput, $this);
+                    if (is_string($pageBrowser) && trim($pageBrowser) !== '') {
+                        return $pageBrowser;
+                    }
+                }
+            }
+        }
         // example $wrapArr-array how it could be traversed from an extension
         /* $wrapArr = array(
         'browseBoxWrap' => '<div class="browseBoxWrap">|</div>',
