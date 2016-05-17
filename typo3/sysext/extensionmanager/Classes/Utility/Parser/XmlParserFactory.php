@@ -42,12 +42,12 @@ class XmlParserFactory {
 	 */
 	static protected $parsers = array(
 		'extension' => array(
+			'TYPO3\\CMS\\Extensionmanager\\Utility\\Parser\\ExtensionXmlPushParser' => 'ExtensionXmlPushParser.php',
 			'TYPO3\\CMS\\Extensionmanager\\Utility\\Parser\\ExtensionXmlPullParser' => 'ExtensionXmlPullParser.php',
-			'TYPO3\\CMS\\Extensionmanager\\Utility\\Parser\\ExtensionXmlPushParser' => 'ExtensionXmlPushParser.php'
 		),
 		'mirror' => array(
+			'TYPO3\\CMS\\Extensionmanager\\Utility\\Parser\\MirrorXmlPushParser' => 'MirrorXmlPushParser.php',
 			'TYPO3\\CMS\\Extensionmanager\\Utility\\Parser\\MirrorXmlPullParser' => 'MirrorXmlPullParser.php',
-			'TYPO3\\CMS\\Extensionmanager\\Utility\\Parser\\MirrorXmlPushParser' => 'MirrorXmlPushParser.php'
 		)
 	);
 
