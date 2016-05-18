@@ -315,7 +315,8 @@ class ReferenceIndex
         $deleteField = $GLOBALS['TCA'][$tableName]['ctrl']['delete'];
 
         if ($tableRelationFields === '*') {
-            // If one field of a record is of type flex, all fields have to be fetched to be passed to BackendUtility::getFlexFormDS
+            // If one field of a record is of type flex, all fields have to be fetched
+            // to be passed to FlexFormTools->getDataStructureIdentifier()
             $selectFields = '*';
         } else {
             // otherwise only fields that might contain relations are fetched
@@ -570,7 +571,8 @@ class ReferenceIndex
                 // For "flex" fieldtypes we need to traverse the structure looking for file and db references of course!
                 if ($conf['type'] === 'flex') {
                     // Get current value array:
-                    // NOTICE: failure to resolve Data Structures can lead to integrity problems with the reference index. Please look up the note in the JavaDoc documentation for the function \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS()
+                    // NOTICE: failure to resolve Data Structures can lead to integrity problems with the reference index. Please look up
+                    // the note in the JavaDoc documentation for the function FlexFormTools->getDataStructureIdentifier()
                     $currentValueArray = GeneralUtility::xml2array($value);
                     // Traversing the XML structure, processing files:
                     if (is_array($currentValueArray)) {
@@ -1122,7 +1124,7 @@ class ReferenceIndex
                 // Check for flex field
                 if (isset($fieldDefinition['config']['type']) && $fieldDefinition['config']['type'] === 'flex') {
                     // Fetch all fields if the is a field of type flex in the table definition because the complete row is passed to
-                    // BackendUtility::getFlexFormDS in the end and might be needed in ds_pointerField or $hookObj->getFlexFormDS_postProcessDS
+                    // FlexFormTools->getDataStructureIdentifier() in the end and might be needed in ds_pointerField or a hook
                     return '*';
                 }
                 // Only fetch this field if it can contain a reference

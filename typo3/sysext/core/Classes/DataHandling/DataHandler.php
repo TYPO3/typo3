@@ -2346,19 +2346,29 @@ class DataHandler
     {
         if (is_array($value)) {
             // This value is necessary for flex form processing to happen on flexform fields in page records when they are copied.
-            // Problem: when copying a page, flexform XML comes along in the array for the new record - but since $this->checkValue_currentRecord does not have a uid or pid for that
-            // sake, the BackendUtility::getFlexFormDS() function returns no good DS. For new records we do know the expected PID so therefore we send that with this special parameter.
-            // Only active when larger than zero.
-            $newRecordPidValue = $status == 'new' ? $realPid : 0;
+            // Problem: when copying a page, flexform XML comes along in the array for the new record - but since $this->checkValue_currentRecord
+            // does not have a uid or pid for that sake, the FlexFormTools->getDataStructureIdentifier() function returns no good DS. For new
+            // records we do know the expected PID so therefore we send that with this special parameter. Only active when larger than zero.
+            $row = $this->checkValue_currentRecord;
+            if ($status === 'new') {
+                $row['pid'] = $realPid;
+            }
             // Get current value array:
-            $dataStructArray = BackendUtility::getFlexFormDS($tcaFieldConf, $this->checkValue_currentRecord, $table, $field, true, $newRecordPidValue);
+            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+            $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                [ 'config' => $tcaFieldConf ],
+                $table,
+                $field,
+                $row
+            );
+            $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
             $currentValueArray = (string)$curValue !== '' ? GeneralUtility::xml2array($curValue) : [];
             if (!is_array($currentValueArray)) {
                 $currentValueArray = [];
             }
             // Remove all old meta for languages...
             // Evaluation of input values:
-            $value['data'] = $this->checkValue_flex_procInData($value['data'], $currentValueArray['data'], $uploadedFiles['data'], $dataStructArray, [$table, $id, $curValue, $status, $realPid, $recFID, $tscPID]);
+            $value['data'] = $this->checkValue_flex_procInData($value['data'], $currentValueArray['data'], $uploadedFiles['data'], $dataStructureArray, [$table, $id, $curValue, $status, $realPid, $recFID, $tscPID]);
             // Create XML from input value:
             $xmlValue = $this->checkValue_flexArray2Xml($value, true);
 
@@ -2911,21 +2921,28 @@ class DataHandler
      * @param array $dataPart The 'data' part of the INPUT flexform data
      * @param array $dataPart_current The 'data' part of the CURRENT flexform data
      * @param array $uploadedFiles The uploaded files for the 'data' part of the INPUT flexform data
-     * @param array $dataStructArray Data structure for the form (might be sheets or not). Only values in the data array which has a configuration in the data structure will be processed.
+     * @param array $dataStructure Data structure for the form (might be sheets or not). Only values in the data array which has a configuration in the data structure will be processed.
      * @param array $pParams A set of parameters to pass through for the calling of the evaluation functions
      * @param string $callBackFunc Optional call back function, see checkValue_flex_procInData_travDS()  DEPRECATED, use \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools instead for traversal!
      * @param array $workspaceOptions
      * @return array The modified 'data' part.
      * @see checkValue_flex_procInData_travDS()
      */
-    public function checkValue_flex_procInData($dataPart, $dataPart_current, $uploadedFiles, $dataStructArray, $pParams, $callBackFunc = '', array $workspaceOptions = [])
+    public function checkValue_flex_procInData($dataPart, $dataPart_current, $uploadedFiles, $dataStructure, $pParams, $callBackFunc = '', array $workspaceOptions = [])
     {
         if (is_array($dataPart)) {
             foreach ($dataPart as $sKey => $sheetDef) {
-                list($dataStruct, $actualSheet) = GeneralUtility::resolveSheetDefInDS($dataStructArray, $sKey);
-                if (is_array($dataStruct) && $actualSheet == $sKey && is_array($sheetDef)) {
+                if (isset($dataStructure['sheets'][$sKey]) && is_array($dataStructure['sheets'][$sKey]) && is_array($sheetDef)) {
                     foreach ($sheetDef as $lKey => $lData) {
-                        $this->checkValue_flex_procInData_travDS($dataPart[$sKey][$lKey], $dataPart_current[$sKey][$lKey], $uploadedFiles[$sKey][$lKey], $dataStruct['ROOT']['el'], $pParams, $callBackFunc, $sKey . '/' . $lKey . '/', $workspaceOptions);
+                        $this->checkValue_flex_procInData_travDS(
+                            $dataPart[$sKey][$lKey],
+                            $dataPart_current[$sKey][$lKey],
+                            $uploadedFiles[$sKey][$lKey],
+                            $dataStructure['sheets'][$sKey]['ROOT']['el'],
+                            $pParams,
+                            $callBackFunc,
+                            $sKey . '/' . $lKey . '/', $workspaceOptions
+                        );
                     }
                 }
             }
@@ -3736,11 +3753,18 @@ class DataHandler
         // For "flex" fieldtypes we need to traverse the structure for two reasons: If there are file references they have to be prepended with absolute paths and if there are database reference they MIGHT need to be remapped (still done in remapListedDBRecords())
         if ($conf['type'] == 'flex') {
             // Get current value array:
-            $dataStructArray = BackendUtility::getFlexFormDS($conf, $row, $table, $field);
+            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+            $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                [ 'config' => $conf ],
+                $table,
+                $field,
+                $row
+            );
+            $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
             $currentValueArray = GeneralUtility::xml2array($value);
             // Traversing the XML structure, processing files:
             if (is_array($currentValueArray)) {
-                $currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructArray, [$table, $uid, $field, $realDestPid], 'copyRecord_flexFormCallBack', $workspaceOptions);
+                $currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructureArray, [$table, $uid, $field, $realDestPid], 'copyRecord_flexFormCallBack', $workspaceOptions);
                 // Setting value as an array! -> which means the input will be processed according to the 'flex' type when the new copy is created.
                 $value = $currentValueArray;
             }
@@ -5538,6 +5562,7 @@ class DataHandler
         $currentRec = BackendUtility::getRecord($table, $id);
         $swapRec = BackendUtility::getRecord($table, $swapWith);
         $this->version_remapMMForVersionSwap_reg = [];
+        $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
         foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $fConf) {
             $conf = $fConf['config'];
             if ($this->isReferenceField($conf)) {
@@ -5559,16 +5584,28 @@ class DataHandler
                 }
             } elseif ($conf['type'] == 'flex') {
                 // Current record
-                $dataStructArray = BackendUtility::getFlexFormDS($conf, $currentRec, $table, $field);
+                $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                    $fConf,
+                    $table,
+                    $field,
+                    $currentRec
+                );
+                $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
                 $currentValueArray = GeneralUtility::xml2array($currentRec[$field]);
                 if (is_array($currentValueArray)) {
-                    $this->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructArray, [$table, $id, $field], 'version_remapMMForVersionSwap_flexFormCallBack');
+                    $this->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructureArray, [$table, $id, $field], 'version_remapMMForVersionSwap_flexFormCallBack');
                 }
                 // Swap record
-                $dataStructArray = BackendUtility::getFlexFormDS($conf, $swapRec, $table, $field);
+                $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                    $fConf,
+                    $table,
+                    $field,
+                    $swapRec
+                );
+                $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
                 $currentValueArray = GeneralUtility::xml2array($swapRec[$field]);
                 if (is_array($currentValueArray)) {
-                    $this->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructArray, [$table, $swapWith, $field], 'version_remapMMForVersionSwap_flexFormCallBack');
+                    $this->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructureArray, [$table, $swapWith, $field], 'version_remapMMForVersionSwap_flexFormCallBack');
                 }
             }
         }
@@ -5667,6 +5704,7 @@ class DataHandler
     public function remapListedDBRecords()
     {
         if (!empty($this->registerDBList)) {
+            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
             foreach ($this->registerDBList as $table => $records) {
                 foreach ($records as $uid => $fields) {
                     $newData = [];
@@ -5690,10 +5728,16 @@ class DataHandler
                                     if (is_array($origRecordRow)) {
                                         BackendUtility::workspaceOL($table, $origRecordRow);
                                         // Get current data structure and value array:
-                                        $dataStructArray = BackendUtility::getFlexFormDS($conf, $origRecordRow, $table, $fieldName);
+                                        $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                                            [ 'config' => $conf ],
+                                            $table,
+                                            $fieldName,
+                                            $origRecordRow
+                                        );
+                                        $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
                                         $currentValueArray = GeneralUtility::xml2array($origRecordRow[$fieldName]);
                                         // Do recursive processing of the XML data:
-                                        $currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructArray, [$table, $theUidToUpdate, $fieldName], 'remapListedDBRecords_flexFormCallBack');
+                                        $currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructureArray, [$table, $theUidToUpdate, $fieldName], 'remapListedDBRecords_flexFormCallBack');
                                         // The return value should be compiled back into XML, ready to insert directly in the field (as we call updateDB() directly later):
                                         if (is_array($currentValueArray['data'])) {
                                             $newData[$fieldName] = $this->checkValue_flexArray2Xml($currentValueArray, true);

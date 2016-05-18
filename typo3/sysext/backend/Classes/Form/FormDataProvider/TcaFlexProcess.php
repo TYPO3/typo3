@@ -71,6 +71,7 @@ class TcaFlexProcess implements FormDataProviderInterface
      *
      * @todo: This method is only implemented half. It basically should do all the
      * @todo: pointer handling that is done within BackendUtility::getFlexFormDS() to $srcPointer.
+     * @todo: This can be solved now by adding 'identifier' from TcaFlexPrepare to 'config' array
      *
      * @param array $result Result array
      * @param string $fieldName Current handle field name

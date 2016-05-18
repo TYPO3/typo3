@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Wizard;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -263,8 +264,7 @@ class SuggestWizard
                 return;
             }
 
-            $flexfieldTCAConfig = $GLOBALS['TCA'][$table]['columns'][$parts[0]]['config'];
-            // @todo: should be done via data preparation, resolveAllSheetsInDS() can be deprecated then
+            $flexfieldTCAConfig = $GLOBALS['TCA'][$table]['columns'][$parts[0]];
             if (substr($row['uid'], 0, 3) === 'NEW') {
                 // We have to cleanup record information as they are coming from FormEngines DataProvider
                 $pointerFields = GeneralUtility::trimExplode(',', $flexfieldTCAConfig['ds_pointerField']);
@@ -274,10 +274,17 @@ class SuggestWizard
                     }
                 }
             }
-            $flexformDSArray = BackendUtility::getFlexFormDS($flexfieldTCAConfig, $row, $table, $parts[0]);
-            $flexformDSArray = GeneralUtility::resolveAllSheetsInDS($flexformDSArray);
-
-            $fieldConfig = $this->getFieldConfiguration($parts, $flexformDSArray);
+            // @todo: Better hand around the data structure identifier. This would free us from $row usage
+            // @todo: and getDataStructureIdentifier() would not have to be called anymore at all.
+            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+            $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                $flexfieldTCAConfig,
+                $table,
+                $parts[0],
+                $row
+            );
+            $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+            $fieldConfig = $this->getFieldConfiguration($parts, $dataStructureArray);
             // Flexform field name levels are separated with | instead of encapsulation in [];
             // reverse this here to be compatible with regular field names.
             $field = str_replace('|', '][', $field);

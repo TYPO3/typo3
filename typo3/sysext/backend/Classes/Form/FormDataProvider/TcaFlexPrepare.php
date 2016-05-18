@@ -15,13 +15,14 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Prepare flex data structure and data values.
+ * Resolve flex data structure and data values, prepare and normalize.
  *
- * This data provider is typically executed directly after TcaFlexFetch
+ * This is the first data provider in the chain of flex form related providers.
  */
 class TcaFlexPrepare implements FormDataProviderInterface
 {
@@ -40,7 +41,8 @@ class TcaFlexPrepare implements FormDataProviderInterface
             if (empty($fieldConfig['config']['type']) || $fieldConfig['config']['type'] !== 'flex') {
                 continue;
             }
-            $result = $this->createDefaultSheetInDataStructureIfNotGiven($result, $fieldName);
+            $result = $this->initializeDataStructure($result, $fieldName);
+            $result = $this->initializeDataValues($result, $fieldName);
             $result = $this->removeTceFormsArrayKeyFromDataStructureElements($result, $fieldName);
             $result = $this->migrateFlexformTcaDataStructureElements($result, $fieldName);
         }
@@ -49,31 +51,65 @@ class TcaFlexPrepare implements FormDataProviderInterface
     }
 
     /**
-     * Add a sheet structure if data structure has none yet to simplify further handling.
+     * Fetch / initialize data structure.
      *
-     * Example TCA field config:
-     * ['config']['ds']['ROOT'] becomes
-     * ['config']['ds']['sheets']['sDEF']['ROOT']
+     * The sub array with different possible data structures in ['config']['ds'] is
+     * resolved here, ds array contains only the one resolved data structure after this method.
      *
      * @param array $result Result array
      * @param string $fieldName Currently handled field name
      * @return array Modified result
      * @throws \UnexpectedValueException
      */
-    protected function createDefaultSheetInDataStructureIfNotGiven(array $result, $fieldName)
+    protected function initializeDataStructure(array $result, $fieldName)
     {
-        $modifiedDataStructure = $result['processedTca']['columns'][$fieldName]['config']['ds'];
-        if (isset($modifiedDataStructure['ROOT']) && isset($modifiedDataStructure['sheets'])) {
-            throw new \UnexpectedValueException(
-                'Parsed data structure has both ROOT and sheets on top level',
-                1440676540
-            );
+        $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+        $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+            $result['processedTca']['columns'][$fieldName],
+            $result['tableName'],
+            $fieldName,
+            $result['databaseRow']
+        );
+        $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+        if (!isset($dataStructureArray['meta']) || !is_array($dataStructureArray['meta'])) {
+            $dataStructureArray['meta'] = [];
         }
-        if (isset($modifiedDataStructure['ROOT']) && is_array($modifiedDataStructure['ROOT'])) {
-            $modifiedDataStructure['sheets']['sDEF']['ROOT'] = $modifiedDataStructure['ROOT'];
-            unset($modifiedDataStructure['ROOT']);
+        // This kicks one array depth:  config['ds']['listOfDataStructures'] becomes config['ds']
+        // This also ensures the final ds can be found in 'ds', even if the DS was fetch from
+        // a record, see FlexFormTools->getDataStructureIdentifier() for details.
+        $result['processedTca']['columns'][$fieldName]['config']['ds'] = $dataStructureArray;
+        return $result;
+    }
+
+    /**
+     * Parse / initialize value from xml string to array
+     *
+     * @param array $result Result array
+     * @param string $fieldName Currently handled field name
+     * @return array Modified result
+     */
+    protected function initializeDataValues(array $result, $fieldName)
+    {
+        if (!array_key_exists($fieldName, $result['databaseRow'])) {
+            $result['databaseRow'][$fieldName] = '';
         }
-        $result['processedTca']['columns'][$fieldName]['config']['ds'] = $modifiedDataStructure;
+        $valueArray = [];
+        if (isset($result['databaseRow'][$fieldName])) {
+            $valueArray = $result['databaseRow'][$fieldName];
+        }
+        if (!is_array($result['databaseRow'][$fieldName])) {
+            $valueArray = GeneralUtility::xml2array($result['databaseRow'][$fieldName]);
+        }
+        if (!is_array($valueArray)) {
+            $valueArray = [];
+        }
+        if (!isset($valueArray['data'])) {
+            $valueArray['data'] = [];
+        }
+        if (!isset($valueArray['meta'])) {
+            $valueArray['meta'] = [];
+        }
+        $result['databaseRow'][$fieldName] = $valueArray;
         return $result;
     }
 

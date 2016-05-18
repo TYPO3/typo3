@@ -1,0 +1,22 @@
+<T3DataStructure>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>aTitle</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                    <aFlexField>
+                        <TCEforms>
+                            <label>aFlexFieldLabel</label>
+                            <config>
+                                <type>input</type>
+                            </config>
+                        </TCEforms>
+                    </aFlexField>
+                </el>
+            </ROOT>
+        </sDEF>
+    </sheets>
+</T3DataStructure>

@@ -18,6 +18,7 @@ use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -715,10 +716,10 @@ abstract class AbstractItemProvider
                 if (!empty($GLOBALS['TCA'][$table]['columns'][$tableField]['label'])) {
                     $labelPrefix = $languageService->sL($GLOBALS['TCA'][$table]['columns'][$tableField]['label']);
                 }
-                // Get all sheets and title
+                // Get all sheets
                 foreach ($flexForms as $extIdent => $extConf) {
                     // Get all fields in sheet
-                    foreach ($extConf['ds']['sheets'] as $sheetName => $sheet) {
+                    foreach ($extConf['sheets'] as $sheetName => $sheet) {
                         if (empty($sheet['ROOT']['el']) || !is_array($sheet['ROOT']['el'])) {
                             continue;
                         }
@@ -763,76 +764,40 @@ abstract class AbstractItemProvider
     }
 
     /**
-     * Returns all registered FlexForm definitions with title and fields
+     * Returns all registered FlexForm definitions
+     *
+     * Note: This only finds flex forms registered in 'ds' config sections.
+     * This does not resolve other sophisticated flex form data structure references.
      *
      * @param string $table Table to handle
-     * @return array Data structures with speaking extension title
+     * @return array Data structures
      */
     protected function getRegisteredFlexForms($table)
     {
         if (empty($table) || empty($GLOBALS['TCA'][$table]['columns'])) {
             return [];
         }
+        $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
         $flexForms = [];
         foreach ($GLOBALS['TCA'][$table]['columns'] as $tableField => $fieldConf) {
             if (!empty($fieldConf['config']['type']) && !empty($fieldConf['config']['ds']) && $fieldConf['config']['type'] == 'flex') {
                 $flexForms[$tableField] = [];
-                // Get pointer fields
-                $pointerFields = !empty($fieldConf['config']['ds_pointerField']) ? $fieldConf['config']['ds_pointerField'] : 'list_type,CType,default';
-                $pointerFields = GeneralUtility::trimExplode(',', $pointerFields);
-                // Get FlexForms
-                foreach ($fieldConf['config']['ds'] as $flexFormKey => $dataStructure) {
+                foreach (array_keys($fieldConf['config']['ds']) as $flexFormKey) {
                     // Get extension identifier (uses second value if it's not empty, "list" or "*", else first one)
                     $identFields = GeneralUtility::trimExplode(',', $flexFormKey);
                     $extIdent = $identFields[0];
+                    // @todo: This approach is limited and doesn't find everything. It works for tt_content plugins, though.
                     if (!empty($identFields[1]) && $identFields[1] !== 'list' && $identFields[1] !== '*') {
                         $extIdent = $identFields[1];
                     }
-                    // Load external file references
-                    if (!is_array($dataStructure)) {
-                        $file = GeneralUtility::getFileAbsFileName(str_ireplace('FILE:', '', $dataStructure));
-                        if ($file && @is_file($file)) {
-                            $dataStructure = file_get_contents($file);
-                        }
-                        $dataStructure = GeneralUtility::xml2array($dataStructure);
-                        if (!is_array($dataStructure)) {
-                            continue;
-                        }
-                    }
-                    // Get flexform content
-                    $dataStructure = GeneralUtility::resolveAllSheetsInDS($dataStructure);
-                    if (empty($dataStructure['sheets']) || !is_array($dataStructure['sheets'])) {
-                        continue;
-                    }
-                    // Use DS pointer to get extension title from TCA
-                    // @todo: I don't understand this code ... does it make sense at all?
-                    $title = $extIdent;
-                    $keyFields = GeneralUtility::trimExplode(',', $flexFormKey);
-                    foreach ($pointerFields as $pointerKey => $pointerName) {
-                        if (empty($keyFields[$pointerKey])
-                            || $keyFields[$pointerKey] === '*'
-                            || $keyFields[$pointerKey] === 'list'
-                            || $keyFields[$pointerKey] === 'default'
-                        ) {
-                            continue;
-                        }
-                        if (!empty($GLOBALS['TCA'][$table]['columns'][$pointerName]['config']['items'])) {
-                            $items = $GLOBALS['TCA'][$table]['columns'][$pointerName]['config']['items'];
-                            if (!is_array($items)) {
-                                continue;
-                            }
-                            foreach ($items as $itemConf) {
-                                if (!empty($itemConf[0]) && !empty($itemConf[1]) && $itemConf[1] == $keyFields[$pointerKey]) {
-                                    $title = $itemConf[0];
-                                    break 2;
-                                }
-                            }
-                        }
-                    }
-                    $flexForms[$tableField][$extIdent] = [
-                        'title' => $title,
-                        'ds' => $dataStructure
-                    ];
+                    $flexFormDataStructureIdentifier = json_encode([
+                        'type' => 'tca',
+                        'tableName' => $table,
+                        'fieldName' => $tableField,
+                        'dataStructureKey' => $flexFormKey,
+                    ]);
+                    $dataStructure = $flexFormTools->parseDataStructureByIdentifier($flexFormDataStructureIdentifier);
+                    $flexForms[$tableField][$extIdent] = $dataStructure;
                 }
             }
         }

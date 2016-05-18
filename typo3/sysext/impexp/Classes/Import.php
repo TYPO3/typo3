@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Impexp;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Exception;
@@ -1186,10 +1187,17 @@ class Import extends ImportExport
                         if (!empty($config['flexFormRels']['db']) || !empty($config['flexFormRels']['file'])) {
                             $origRecordRow = BackendUtility::getRecord($table, $thisNewUid, '*');
                             // This will fetch the new row for the element (which should be updated with any references to data structures etc.)
-                            $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-                            if (is_array($origRecordRow) && is_array($conf) && $conf['type'] === 'flex') {
+                            $fieldTca = $GLOBALS['TCA'][$table]['columns'][$field];
+                            if (is_array($origRecordRow) && is_array($fieldTca['config']) && $fieldTca['config']['type'] === 'flex') {
                                 // Get current data structure and value array:
-                                $dataStructArray = BackendUtility::getFlexFormDS($conf, $origRecordRow, $table, $field);
+                                $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+                                $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                                    $fieldTca,
+                                    $table,
+                                    $field,
+                                    $origRecordRow
+                                );
+                                $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
                                 $currentValueArray = GeneralUtility::xml2array($updateData[$table][$thisNewUid][$field]);
                                 // Do recursive processing of the XML data:
                                 $iteratorObj = GeneralUtility::makeInstance(DataHandler::class);
@@ -1198,7 +1206,7 @@ class Import extends ImportExport
                                     $currentValueArray['data'],
                                     [],
                                     [],
-                                    $dataStructArray,
+                                    $dataStructureArray,
                                     [$table, $thisNewUid, $field, $config],
                                     'remapListedDBRecords_flexFormCallBack'
                                 );
@@ -1294,19 +1302,25 @@ class Import extends ImportExport
                         // Now, if there are any fields that require substitution to be done, lets go for that:
                         foreach ($fieldsIndex as $field => $softRefCfgs) {
                             if (is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
-                                $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-                                if ($conf['type'] === 'flex') {
+                                if ($GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'flex') {
                                     // This will fetch the new row for the element (which should be updated with any references to data structures etc.)
                                     $origRecordRow = BackendUtility::getRecord($table, $thisNewUid, '*');
                                     if (is_array($origRecordRow)) {
                                         // Get current data structure and value array:
-                                        $dataStructArray = BackendUtility::getFlexFormDS($conf, $origRecordRow, $table, $field);
+                                        $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+                                        $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                                            $GLOBALS['TCA'][$table]['columns'][$field],
+                                            $table,
+                                            $field,
+                                            $origRecordRow
+                                        );
+                                        $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
                                         $currentValueArray = GeneralUtility::xml2array($origRecordRow[$field]);
                                         // Do recursive processing of the XML data:
                                         /** @var $iteratorObj DataHandler */
                                         $iteratorObj = GeneralUtility::makeInstance(DataHandler::class);
                                         $iteratorObj->callBackObj = $this;
-                                        $currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructArray, [$table, $uid, $field, $softRefCfgs], 'processSoftReferences_flexFormCallBack');
+                                        $currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructureArray, [$table, $uid, $field, $softRefCfgs], 'processSoftReferences_flexFormCallBack');
                                         // The return value is set as an array which means it will be processed by DataHandler for file and DB references!
                                         if (is_array($currentValueArray['data'])) {
                                             $inData[$table][$thisNewUid][$field] = $currentValueArray;

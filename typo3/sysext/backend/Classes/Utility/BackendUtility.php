@@ -954,10 +954,11 @@ class BackendUtility
      * @param bool $WSOL If set, workspace overlay is applied to records. This is correct behaviour for all presentation and export, but NOT if you want a TRUE reflection of how things are in the live workspace.
      * @param int $newRecordPidValue SPECIAL CASES: Use this, if the DataStructure may come from a parent record and the INPUT row doesn't have a uid yet (hence, the pid cannot be looked up). Then it is necessary to supply a PID value to search recursively in for the DS (used from DataHandler)
      * @return mixed If array, the data structure was found and returned as an array. Otherwise (string) it is an error message.
-     * @todo: All those nasty details should be covered with tests, also it is very unfortunate the final $srcPointer is not exposed
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9. This is now integrated as FlexFormTools->getDataStructureIdentifier()
      */
     public static function getFlexFormDS($conf, $row, $table, $fieldName = '', $WSOL = true, $newRecordPidValue = 0)
     {
+        GeneralUtility::logDeprecatedFunction();
         // Get pointer field etc from TCA-config:
         $ds_pointerField = $conf['ds_pointerField'];
         $ds_array = $conf['ds'];
@@ -1102,6 +1103,8 @@ class BackendUtility
             $dataStructArray = 'No proper configuration!';
         }
         // Hook for post-processing the Flexform DS. Introduces the possibility to configure Flexforms via TSConfig
+        // This hook isn't called anymore from within the core, the whole method is deprecated.
+        // There are alternative hooks, see FlexFormTools->getDataStructureIdentifier() and ->parseDataStructureByIdentifier()
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass'] as $classRef) {
                 $hookObj = GeneralUtility::getUserObj($classRef);

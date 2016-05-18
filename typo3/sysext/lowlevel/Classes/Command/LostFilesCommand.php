@@ -47,7 +47,7 @@ Assumptions:
 The assumptions are not requirements by the TYPO3 API but reflects the de facto implementation of most TYPO3 installations and therefore a practical approach to cleaning up the uploads/ folder.
 Therefore, if all "group" type fields in TCA and flexforms are positioned inside the uploads/ folder and if no files inside are managed manually it should be safe to clean out files with no relations found in the system.
 Under such circumstances there should theoretically be no lost files in the uploads/ folder since DataHandler should have managed relations automatically including adding and deleting files.
-However, there is at least one reason known to why files might be found lost and that is when FlexForms are used. In such a case a change of/in the Data Structure XML (or the ability of the system to find the Data Structure definition!) used for the flexform could leave lost files behind. This is not unlikely to happen when records are deleted. More details can be found in a note to the function TYPO3\\CMS\\Backend\\Utility\\BackendUtility::getFlexFormDS()
+However, there is at least one reason known to why files might be found lost and that is when FlexForms are used. In such a case a change of/in the Data Structure XML (or the ability of the system to find the Data Structure definition!) used for the flexform could leave lost files behind. This is not unlikely to happen when records are deleted. More details can be found in a note to the function FlexFormTools->getDataStructureIdentifier()
 Another scenario could of course be de-installation of extensions which managed files in the uploads/ folders.
 
 If the option "--dry-run" is not set, the files are then deleted automatically.

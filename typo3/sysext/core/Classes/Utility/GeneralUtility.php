@@ -3638,9 +3638,11 @@ class GeneralUtility
      * @param array $dataStructArray Input data structure, possibly with a sheet-definition and references to external data source files.
      * @param string $sheet The sheet to return, preferably.
      * @return array An array with two num. keys: key0: The data structure is returned in this key (array) UNLESS an error occurred in which case an error string is returned (string). key1: The used sheet key value!
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9. This is now integrated in FlexFormTools->parseDataStructureByIdentifier()
      */
     public static function resolveSheetDefInDS($dataStructArray, $sheet = 'sDEF')
     {
+        self::logDeprecatedFunction();
         if (!is_array($dataStructArray)) {
             return 'Data structure must be an array';
         }
@@ -3676,9 +3678,11 @@ class GeneralUtility
      *
      * @param array $dataStructArray Input data structure, possibly with a sheet-definition and references to external data source files.
      * @return array Output data structure with all sheets resolved as arrays.
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9. This is now integrated in FlexFormTools->parseDataStructureByIdentifier()
      */
     public static function resolveAllSheetsInDS(array $dataStructArray)
     {
+        self::logDeprecatedFunction();
         if (is_array($dataStructArray['sheets'])) {
             $out = ['sheets' => []];
             foreach ($dataStructArray['sheets'] as $sheetId => $sDat) {

@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
@@ -400,6 +402,10 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $hookMock->expects($this->once())->method('checkFlexFormValue_beforeMerge');
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = $hookClass;
         GeneralUtility::addInstance($hookClass, $hookMock);
+        $flexFormToolsProphecy = $this->prophesize(FlexFormTools::class);
+        $flexFormToolsProphecy->getDataStructureIdentifier(Argument::cetera())->willReturn('anIdentifier');
+        $flexFormToolsProphecy->parseDataStructureByIdentifier('anIdentifier')->willReturn([]);
+        GeneralUtility::addInstance(FlexFormTools::class, $flexFormToolsProphecy->reveal());
         $this->subject->_call('checkValueForFlex', [], [], [], '', 0, '', '', 0, 0, 0, [], '');
     }
 
