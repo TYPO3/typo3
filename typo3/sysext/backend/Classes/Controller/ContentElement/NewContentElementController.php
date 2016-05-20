@@ -519,7 +519,7 @@ class NewContentElementController extends AbstractModule
                             );
                         }
                         $isNotInKeepItems = !empty($keepItems[$fN]) && !in_array($fV, $keepItems[$fN]);
-                        if ($authModeDeny || $fN === 'CType' && in_array($fV, $removeItems[$fN]) || $isNotInKeepItems) {
+                        if ($authModeDeny || $fN === 'CType' && (in_array($fV, $removeItems[$fN]) || $isNotInKeepItems)) {
                             // Remove element all together:
                             unset($wizardItems[$key]);
                             break;
