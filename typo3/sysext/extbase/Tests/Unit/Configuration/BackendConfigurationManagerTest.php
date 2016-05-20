@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Test case
@@ -337,6 +338,12 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $storagePid = '1,2,3';
         $recursive = 99;
+
+        /** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|ObjectProphecy $beUserAuthentication */
+        $beUserAuthentication = $this->prophesize(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
+        $beUserAuthentication->getPagePermsClause(1)->willReturn('1=1');
+        $GLOBALS['BE_USER'] = $beUserAuthentication->reveal();
+
         /** @var $abstractConfigurationManager \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class, array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
         $queryGenerator = $this->getMock(\TYPO3\CMS\Core\Database\QueryGenerator::class);
@@ -357,6 +364,12 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $storagePid = '1,2,-3';
         $recursive = 99;
+
+        /** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|ObjectProphecy $beUserAuthentication */
+        $beUserAuthentication = $this->prophesize(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
+        $beUserAuthentication->getPagePermsClause(1)->willReturn('1=1');
+        $GLOBALS['BE_USER'] = $beUserAuthentication->reveal();
+
         /** @var $abstractConfigurationManager \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class, array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
         $queryGenerator = $this->getMock(\TYPO3\CMS\Core\Database\QueryGenerator::class);
