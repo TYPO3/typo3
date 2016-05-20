@@ -53,7 +53,7 @@ class PageTreeView extends BrowseTreeView
      * @param array $row Data row for element.
      * @return string Page icon
      */
-    public function wrapIcon($thePageIcon, &$row)
+    public function wrapIcon($thePageIcon, $row)
     {
         /** @var $iconFactory IconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
