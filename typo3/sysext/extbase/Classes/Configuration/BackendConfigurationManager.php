@@ -230,13 +230,22 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 
         $recursiveStoragePids = '';
         $storagePids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $storagePid);
+        $permsClause = $this->getBackendUser()->getPagePermsClause(1);
         foreach ($storagePids as $startPid) {
-            $pids = $this->queryGenerator->getTreeList($startPid, $recursionDepth, 0, 1);
+            $pids = $this->queryGenerator->getTreeList($startPid, $recursionDepth, 0, $permsClause);
             if ((string)$pids !== '') {
                 $recursiveStoragePids .= $pids . ',';
             }
         }
 
         return rtrim($recursiveStoragePids, ',');
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
