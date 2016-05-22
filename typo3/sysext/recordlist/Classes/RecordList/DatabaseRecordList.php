@@ -20,7 +20,8 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -507,9 +508,9 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         }
         $backendUser = $this->getBackendUserAuthentication();
         $lang = $this->getLanguageService();
-        $db = $this->getDatabaseConnection();
         // Init
         $addWhere = '';
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $titleCol = $GLOBALS['TCA'][$table]['ctrl']['label'];
         $thumbsCol = $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
         $l10nEnabled = $GLOBALS['TCA'][$table]['ctrl']['languageField']
@@ -543,11 +544,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         if ($this->localizationView && $l10nEnabled) {
             $this->fieldArray[] = '_LOCALIZATION_';
             $this->fieldArray[] = '_LOCALIZATION_b';
-            $addWhere .= ' AND (
-				' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '<=0
-				OR
-				' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . ' = 0
-			)';
+            $addWhere = (string)$queryBuilder->expr()->orX(
+                $queryBuilder->expr()->lte($GLOBALS['TCA'][$table]['ctrl']['languageField'], 0),
+                $queryBuilder->expr()->eq($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], 0)
+            );
         }
         // Cleaning up:
         $this->fieldArray = array_unique(array_merge($this->fieldArray, $rowListArray));
@@ -631,6 +631,9 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 $hookObject->getDBlistQuery($table, $id, $addWhere, $selFieldList, $this);
             }
         }
+        $additionalConstraints = empty($addWhere) ? [] : [QueryHelper::stripLogicalOperatorPrefix($addWhere)];
+        $selFieldList = GeneralUtility::trimExplode(',', $selFieldList, true);
+
         // Create the SQL query for selecting the elements in the listing:
         // do not do paging when outputting as CSV
         if ($this->csvOutput) {
@@ -641,23 +644,23 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             $this->firstElementNumber = $this->firstElementNumber - 2;
             $this->iLimit = $this->iLimit + 2;
             // (API function from TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList)
-            $queryParts = $this->makeQueryArray($table, $id, $addWhere, $selFieldList);
+            $queryBuilder = $this->getQueryBuilder($table, $id, $additionalConstraints, $selFieldList);
             $this->firstElementNumber = $this->firstElementNumber + 2;
             $this->iLimit = $this->iLimit - 2;
         } else {
             // (API function from TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList)
-            $queryParts = $this->makeQueryArray($table, $id, $addWhere, $selFieldList);
+            $queryBuilder = $this->getQueryBuilder($table, $id, $additionalConstraints, $selFieldList);
         }
 
         // Finding the total amount of records on the page
         // (API function from TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList)
-        $this->setTotalItems($queryParts);
+        $this->setTotalItems($table, $id, $additionalConstraints);
 
         // Init:
+        $queryResult = $queryBuilder->execute();
         $dbCount = 0;
         $out = '';
         $tableHeader = '';
-        $result = null;
         $listOnlyInSingleTableMode = $this->listOnlyInSingleTableMode && !$this->table;
         // If the count query returned any number of records, we perform the real query,
         // selecting records.
@@ -671,8 +674,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     $this->showLimit = $this->totalItems;
                     $this->iLimit = $this->totalItems;
                 }
-                $result = $db->exec_SELECT_queryArray($queryParts);
-                $dbCount = $db->sql_num_rows($result);
+                $dbCount = $queryResult->rowCount();
             }
         }
         // If any records was selected, render the list:
@@ -718,14 +720,14 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 $prevPrevUid = 0;
                 // Get first two rows and initialize prevPrevUid and prevUid if on page > 1
                 if ($this->firstElementNumber > 2 && $this->iLimit > 0) {
-                    $row = $db->sql_fetch_assoc($result);
+                    $row = $queryResult->fetch();
                     $prevPrevUid = -((int)$row['uid']);
-                    $row = $db->sql_fetch_assoc($result);
+                    $row = $queryResult->fetch();
                     $prevUid = $row['uid'];
                 }
                 $accRows = array();
                 // Accumulate rows here
-                while ($row = $db->sql_fetch_assoc($result)) {
+                while ($row = $queryResult->fetch()) {
                     if (!$this->isRowListingConditionFulfilled($table, $row)) {
                         continue;
                     }
@@ -745,7 +747,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         }
                     }
                 }
-                $db->sql_free_result($result);
                 $this->totalRowCount = count($accRows);
                 // CSV initiated
                 if ($this->csvOutput) {
@@ -1019,11 +1020,18 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
      */
     protected function getReferenceCount($tableName, $uid)
     {
-        $db = $this->getDatabaseConnection();
         if (!isset($this->referenceCount[$tableName][$uid])) {
-            $where = 'ref_table = ' . $db->fullQuoteStr($tableName, 'sys_refindex')
-                . ' AND ref_uid = ' . $uid . ' AND deleted = 0';
-            $numberOfReferences = $db->exec_SELECTcountRows('*', 'sys_refindex', $where);
+            $numberOfReferences = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('sys_refindex')
+                ->count(
+                    '*',
+                    'sys_refindex',
+                    [
+                        'ref_table' => $tableName,
+                        'ref_uid' => (int)$uid,
+                        'deleted' => 0
+                    ]
+                );
             $this->referenceCount[$tableName][$uid] = $numberOfReferences;
         }
         return $this->referenceCount[$tableName][$uid];
@@ -1831,14 +1839,22 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
      */
     protected function createReferenceHtml($tableName, $uid)
     {
-        $db = $this->getDatabaseConnection();
-        $referenceCount = $db->exec_SELECTcountRows(
-            '*',
-            'sys_refindex',
-            'ref_table = ' . $db->fullQuoteStr($tableName, 'sys_refindex') .
-            ' AND ref_uid = ' . $uid . ' AND deleted = 0'
+        $referenceCount = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_refindex')
+            ->count(
+                '*',
+                'sys_refindex',
+                [
+                    'ref_table' => $tableName,
+                    'ref_uid' => (int)$uid,
+                    'deleted' => 0,
+                ]
+            );
+
+        return $this->generateReferenceToolTip(
+            $referenceCount,
+            GeneralUtility::quoteJSvalue($tableName) . ', ' . GeneralUtility::quoteJSvalue($uid)
         );
-        return $this->generateReferenceToolTip($referenceCount, GeneralUtility::quoteJSvalue($tableName) . ', ' . GeneralUtility::quoteJSvalue($uid));
     }
 
     /**
@@ -2278,14 +2294,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
     protected function editLockPermissions()
     {
         return $this->getBackendUserAuthentication()->isAdmin() || !$this->pageRow['editlock'];
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**

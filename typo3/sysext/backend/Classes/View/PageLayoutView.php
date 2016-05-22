@@ -18,7 +18,9 @@ use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Backend\Controller\PageLayoutController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -443,6 +445,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     public function getTable_tt_content($id)
     {
         $backendUser = $this->getBackendUser();
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('tt_content')
+            ->getExpressionBuilder();
         $this->pageinfo = BackendUtility::readPageAccess($this->id, '');
         $this->initializeLanguages();
         $this->initializeClipboard();
@@ -497,9 +502,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             }
 
             if (count($langListArr) === 1 || $lP === 0) {
-                $showLanguage = ' AND sys_language_uid IN (' . $lP . ',-1)';
+                $showLanguage = $expressionBuilder->in('sys_language_uid', [$lP, -1]);
             } else {
-                $showLanguage = ' AND sys_language_uid=' . $lP;
+                $showLanguage = $expressionBuilder->eq('sys_language_uid', $lP);
             }
             $cList = explode(',', $this->tt_contentConfig['cols']);
             $content = array();
@@ -948,15 +953,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     public function makeOrdinaryList($table, $id, $fList, $icon = false, $addWhere = '')
     {
         // Initialize
-        $queryParts = $this->makeQueryArray($table, $id, $addWhere);
-        $this->setTotalItems($queryParts);
+        $addWhere = empty($addWhere) ? [] : [QueryHelper::stripLogicalOperatorPrefix($addWhere)];
+        $queryBuilder = $this->getQueryBuilder($table, $id, $addWhere);
+        $this->setTotalItems($table, $id, $addWhere);
         $dbCount = 0;
         $result = false;
         // Make query for records if there were any records found in the count operation
         if ($this->totalItems) {
-            $result = $this->getDatabase()->exec_SELECT_queryArray($queryParts);
+            $result = $queryBuilder->execute();
             // Will return FALSE, if $result is invalid
-            $dbCount = $this->getDatabase()->sql_num_rows($result);
+            $dbCount = $result->rowCount();
         }
         // If records were found, render the list
         if (!$dbCount) {
@@ -991,7 +997,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         $out .= $this->addElement(1, '', $theData, ' class="c-headLine"', 15, '', 'th');
         // Render Items
         $this->eCounter = $this->firstElementNumber;
-        while ($row = $this->getDatabase()->sql_fetch_assoc($result)) {
+        while ($row = $result->fetch()) {
             BackendUtility::workspaceOL($table, $row);
             if (is_array($row)) {
                 list($flag, $code) = $this->fwd_rwd_nav();
@@ -1026,7 +1032,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 $this->eCounter++;
             }
         }
-        $this->getDatabase()->sql_free_result($result);
         // Wrap it all in a table:
         $out = '
 			<!--
@@ -1136,8 +1141,19 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         $columns = array_map('intval', $columns);
         $contentRecordsPerColumn = array_fill_keys($columns, array());
 
-        $queryParts = $this->makeQueryArray('tt_content', $id, 'AND colPos IN (' . implode(',', $columns) . ')' . $additionalWhereClause);
-        $result = $this->getDatabase()->exec_SELECT_queryArray($queryParts);
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tt_content')
+            ->expr();
+
+        $queryBuilder = $this->getQueryBuilder(
+            'tt_content',
+            $id,
+            [
+                $expressionBuilder->in('colPos', $columns),
+                $additionalWhereClause
+            ]
+        );
+        $result = $queryBuilder->execute();
         // Traverse any selected elements and render their display code:
         $rowArr = $this->getResult($result);
 
@@ -1971,15 +1987,15 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     /**
      * Traverse the result pointer given, adding each record to array and setting some internal values at the same time.
      *
-     * @param bool|\mysqli_result|object $result MySQLi result object / DBAL object
+     * @param \Doctrine\DBAL\Driver\Statement $result MySQLi result object / DBAL object
      * @param string $table Table name defaulting to tt_content
      * @return array The selected rows returned in this array.
      */
-    public function getResult($result, $table = 'tt_content')
+    public function getResult(\Doctrine\DBAL\Driver\Statement $result, string $table = 'tt_content'): array
     {
-        $output = array();
+        $output = [];
         // Traverse the result:
-        while ($row = $this->getDatabase()->sql_fetch_assoc($result)) {
+        while ($row = $result->fetch()) {
             BackendUtility::workspaceOL($table, $row, -99, true);
             if ($row) {
                 // Add the row to the array:
