@@ -14,12 +14,14 @@
 /**
  * Block Style Plugin for TYPO3 htmlArea RTE
  */
-define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+define([
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/CSS/Parser',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
-	function (Plugin, Dom, Event, Parser, Util) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
+	'jquery'
+], function (Plugin, Dom, Event, Parser, Util, $) {
 
 	var BlockStyle = function (editor, pluginName) {
 		this.constructor.super.call(this, editor, pluginName);
@@ -88,6 +90,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					dropDownConfiguration.maxHeight = parseInt(this.pageTSconfiguration.maxHeight, 10);
 				}
 			}
+			dropDownConfiguration.xtype = 'htmlareaselect';
 			this.registerDropDown(dropDownConfiguration);
 			return true;
 		},
@@ -169,7 +172,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				dropDown.setDisabled(true);
 			}
 			// Monitor css parsing being completed
-			Event.one(this.blockStyles, 'HTMLAreaEventCssParsingComplete', function (event) { Event.stopEvent(event); self.onCssParsingComplete(); return false; }); 
+			Event.one(this.blockStyles, 'HTMLAreaEventCssParsingComplete', function (event) { Event.stopEvent(event); self.onCssParsingComplete(); return false; });
 			this.blockStyles.parse();
 		},
 
@@ -231,7 +234,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		},
 
 		/**
-		 * This function reinitializes the options of the dropdown
+		 * This function re-initializes the options of the dropdown
 		 */
 		initializeDropDown: function (dropDown) {
 			switch (dropDown.xtype) {
@@ -239,15 +242,6 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					dropDown.removeAll();
 					dropDown.setFirstOption(this.localize('No style'), 'none', this.localize('No style'));
 					dropDown.setValueByIndex(0);
-					break;
-				case 'combo':
-					var store = dropDown.getStore();
-					store.removeAll(false);
-					store.insert(0, new store.recordType({
-						text: this.localize('No style'),
-						value: 'none'
-					}));
-					dropDown.setValue('none');
 					break;
 			}
 		},

@@ -14,14 +14,19 @@
 /**
  * EditElement plugin for htmlArea RTE
  */
-define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+define([
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 	'TYPO3/CMS/Rtehtmlarea/Plugins/MicrodataSchema',
 	'TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 	'TYPO3/CMS/Rtehtmlarea/Plugins/BlockStyle',
-	'TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle'],
-	function (Plugin, Util, Dom, MicrodataSchema, Language, BlockStyle, TextStyle) {
+	'TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Components/Select',
+	'jquery',
+	'TYPO3/CMS/Backend/Modal',
+	'TYPO3/CMS/Backend/Severity'
+], function (Plugin, Util, Dom, MicrodataSchema, Language, BlockStyle, TextStyle, Select, $, Modal, Severity) {
 
 	var EditElement = function (editor, pluginName) {
 		this.constructor.super.call(this, editor, pluginName);
@@ -66,7 +71,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			this.registerButton(buttonConfiguration);
 			return true;
 		},
-		/*
+		/**
 		 * Sets of default configuration values for dialogue form fields
 		 */
 		configDefaults: {
@@ -83,227 +88,169 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
 			}
 		},
-		/*
+		/**
 		 * This function gets called when the button was pressed
 		 *
-		 * @param	object		editor: the editor instance
-		 * @param	string		id: the button id or the key
-		 *
-		 * @return	boolean		false if action is completed
+		 * @param {Object} editor The editor instance
+		 * @param {String} id The button id or the key
+		 * @return {Boolean} False if action is completed
 		 */
 		onButtonPress: function(editor, id) {
-				// Could be a button or its hotkey
+			// Could be a button or its hotkey
 			var buttonId = this.translateHotKey(id);
 			buttonId = buttonId ? buttonId : id;
-				// Get the parent element of the current selection
+			// Get the parent element of the current selection
 			this.element = this.editor.getSelection().getParentElement();
 			if (this.element && !/^body$/i.test(this.element.nodeName)) {
 					// Open the dialogue window
 				this.openDialogue(
 					buttonId,
 					'editElement',
-					this.getWindowDimensions(
-						{
-							width: 450
-						},
-						buttonId
-					),
 					this.buildTabItemsConfig(this.element),
 					this.buildButtonsConfig(this.element, this.okHandler, this.deleteHandler)
 				);
 			}
 			return false;
 		},
-		/*
+		/**
 		 * Open the dialogue window
 		 *
-		 * @param	string		buttonId: the button id
-		 * @param	string		title: the window title
-		 * @param	object		dimensions: the opening dimensions of the window
-		 * @param	object		tabItems: the configuration of the tabbed panel
-		 * @param	object		buttonsConfig: the configuration of the buttons
-		 *
-		 * @return	void
+		 * @param {String} buttonId The button id
+		 * @param {String} title The window title
+		 * @param {Object} $tabItems The configuration of the tabbed panel
+		 * @param {Object} buttonsConfig The configuration of the buttons
 		 */
-		openDialogue: function (buttonId, title, dimensions, tabItems, buttonsConfig) {
-			this.dialog = new Ext.Window({
-				title: this.getHelpTip('', title),
-				cls: 'htmlarea-window',
-				border: false,
-				width: dimensions.width,
-				height: 'auto',
-				iconCls: this.getButton(buttonId).iconCls,
-				listeners: {
-					close: {
-						fn: this.onClose,
-						scope: this
-					}
-				},
-				items: {
-					xtype: 'tabpanel',
-					activeTab: 0,
-					defaults: {
-						xtype: 'container',
-						layout: 'form',
-						defaults: {
-							labelWidth: 150
-						}
-					},
-					listeners: {
-						tabchange: {
-							fn: function (tabpanel, tab) {
-								this.setTabPanelHeight(tabpanel, tab);
-								this.syncHeight(tabpanel, tab);
-							},
-							scope: this
-						}
-					},
-					items: tabItems
-				},
-				buttons: buttonsConfig
-			});
-			this.show();
+		openDialogue: function (buttonId, title, $tabItems, buttonsConfig) {
+			this.dialog = Modal.show(this.localize(title), $tabItems, Severity.notice, buttonsConfig);
+			this.dialog.on('modal-dismiss', $.proxy(this.onClose, this));
 		},
-		/*
+		/**
 		 * Build the dialogue tab items config
 		 *
-		 * @param	object		element: the element being edited, if any
-		 *
-		 * @return	object		the tab items configuration
+		 * @param {Object} element The element being edited, if any
+		 * @return {Object} The tab items configuration
 		 */
 		buildTabItemsConfig: function (element) {
-			var tabItems = [];
-			var generalTabItemConfig = [];
-			if (this.removedFieldsets.indexOf('identification') == -1) {
+			var $tabs = $('<ul />', {'class': 'nav nav-tabs', role: 'tablist'}),
+				$tabContent = $('<div />', {'class': 'tab-content'}),
+				$finalMarkup,
+				generalTabItemConfig = [],
+				languageTabItemConfig = [],
+				microdataTabItemConfig = [],
+				eventsTabItemConfig = [];
+
+			if (this.removedFieldsets.indexOf('identification') === -1) {
 				this.addConfigElement(this.buildIdentificationFieldsetConfig(element), generalTabItemConfig);
 			}
-			if (this.removedFieldsets.indexOf('style') == -1 && this.removedProperties.indexOf('className') == -1) {
+			if (this.removedFieldsets.indexOf('style') === -1 && this.removedProperties.indexOf('className') === -1) {
 				this.addConfigElement(this.buildClassFieldsetConfig(element), generalTabItemConfig);
 			}
-			tabItems.push({
-				title: this.localize('general'),
-				itemId: 'general',
-				items: generalTabItemConfig
-			});
-			if (this.removedFieldsets.indexOf('language') == -1 && this.getPluginInstance('Language')) {
-				var languageTabItemConfig = [];
+
+			if (generalTabItemConfig.length > 0) {
+				this.buildTabMarkup($tabs, $tabContent, 'general', generalTabItemConfig, this.localize('general'));
+			}
+			if (this.removedFieldsets.indexOf('language') === -1 && this.getPluginInstance('Language')) {
 				this.addConfigElement(this.buildLanguageFieldsetConfig(element), languageTabItemConfig);
-				tabItems.push({
-					title: this.localize('Language'),
-					itemId: 'language',
-					items: languageTabItemConfig
-				});
+				this.buildTabMarkup($tabs, $tabContent, 'language', languageTabItemConfig, this.localize('Language'));
 			}
-			if (this.removedFieldsets.indexOf('microdata') == -1 && this.getPluginInstance('MicrodataSchema')) {
-				var microdataTabItemConfig = [];
+			if (this.removedFieldsets.indexOf('microdata') === -1 && this.getPluginInstance('MicrodataSchema')) {
 				this.addConfigElement(this.getPluginInstance('MicrodataSchema').buildMicrodataFieldsetConfig(element, this.properties), microdataTabItemConfig);
-				tabItems.push({
-					title: this.getPluginInstance('MicrodataSchema').localize('microdata'),
-					itemId: 'microdata',
-					items: microdataTabItemConfig
-				});
+				this.buildTabMarkup($tabs, $tabContent, 'microdata', microdataTabItemConfig, this.getPluginInstance('MicrodataSchema').localize('microdata'));
 			}
-			if (this.removedFieldsets.indexOf('events') == -1) {
-				var eventsTabItemConfig = [];
+			if (this.removedFieldsets.indexOf('events') === -1) {
 				this.addConfigElement(this.buildEventsFieldsetConfig(element), eventsTabItemConfig);
-				tabItems.push({
-					title: this.localize('events'),
-					itemId: 'events',
-					items: eventsTabItemConfig
-				});
+				this.buildTabMarkup($tabs, $tabContent, 'events', eventsTabItemConfig, this.localize('events'));
 			}
-			return tabItems;
+
+			$tabs.find('li:first').addClass('active');
+			$tabContent.find('.tab-pane:first').addClass('active');
+
+			$finalMarkup = $('<form />', {'class': 'form-horizontal'}).append($tabs, $tabContent);
+
+			return $finalMarkup;
 		},
-		/*
+		/**
 		 * This function builds the configuration object for the Identification fieldset
 		 *
-		 * @param	object		element: the element being edited, if any
-		 *
-		 * @return	object		the fieldset configuration object
+		 * @param {Object} element The element being edited, if any
+		 * @return {Object} The fieldset configuration object
 		 */
 		buildIdentificationFieldsetConfig: function (element) {
-			var itemsConfig = [];
-			if (this.removedProperties.indexOf('id') == -1) {
-				itemsConfig.push({
-					itemId: 'id',
-					fieldLabel: this.getHelpTip('id', 'id'),
-					value: element ? element.getAttribute('id') : '',
-					width: ((this.properties['id'] && this.properties['id'].width) ? this.properties['id'].width : 300)
-				});
+			var $fieldset = $('<fieldset />');
+
+			$fieldset.append(
+				$('<h4 />', {'class': 'form-section-headline'}).text(this.localize('identification'))
+			);
+
+			if (this.removedProperties.indexOf('id') === -1) {
+				$fieldset.append(
+					$('<div />', {'class': 'form-group'}).append(
+						$('<label />', {'class': 'col-sm-2'}).html(this.getHelpTip('id', 'id')),
+						$('<div />', {'class': 'col-sm-10'}).append(
+							$('<input />', {name: 'id', 'class': 'form-control', value: element ? element.getAttribute('id') : ''})
+						)
+					)
+				);
 			}
-			if (this.removedProperties.indexOf('title') == -1) {
-				itemsConfig.push({
-					itemId: 'title',
-					fieldLabel: this.getHelpTip('title', 'title'),
-					value: element ? element.getAttribute('title') : '',
-					width: ((this.properties['title'] && this.properties['title'].width) ? this.properties['title'].width : 300)
-				});
+			if (this.removedProperties.indexOf('title') === -1) {
+				$fieldset.append(
+					$('<div />', {'class': 'form-group'}).append(
+						$('<label />', {'class': 'col-sm-2'}).html(this.getHelpTip('title', 'title')),
+						$('<div />', {'class': 'col-sm-10'}).append(
+							$('<input />', {name: 'title', 'class': 'form-control', value: element ? element.getAttribute('title') : ''})
+						)
+					)
+				);
 			}
-			return {
-				xtype: 'fieldset',
-				title: this.localize('identification'),
-				defaultType: 'textfield',
-				labelWidth: 100,
-				defaults: {
-					labelSeparator: ':'
-				},
-				items: itemsConfig
-			};
+
+			return $fieldset;
 		},
-		/*
+		/**
 		 * This function builds the configuration object for the CSS Class fieldset
 		 *
-		 * @param	object		element: the element being edited, if any
-		 *
-		 * @return	object		the fieldset configuration object
+		 * @param {Object} element The element being edited, if any
+		 * @return {Object} The fieldset configuration object
 		 */
 		buildClassFieldsetConfig: function (element) {
-			var itemsConfig = [];
-			var stylingCombo = this.buildStylingField('className', 'className', 'className');
+			var $fieldset = $('<fieldset />'),
+				stylingCombo = new Select(this.buildStylingField('className', 'className', 'className'));
+
+			$fieldset.append(
+				$('<h4 />', {'class': 'form-section-headline'}).text(this.localize('className'))
+			);
+
+			stylingCombo.render($fieldset[0]);
 			this.setStyleOptions(stylingCombo, element);
-			itemsConfig.push(stylingCombo);
-			return {
-				xtype: 'fieldset',
-				title: this.localize('className'),
-				labelWidth: 100,
-				defaults: {
-					labelSeparator: ':'
-				},
-				items: itemsConfig
-			};
+
+			return $fieldset;
 		},
-		/*
+		/**
 		 * This function builds a style selection field
 		 *
-		 * @param	string		fieldName: the name of the field
-		 * @param	string		fieldLabel: the label for the field
-		 * @param	string		cshKey: the csh key
-		 *
-		 * @return	object		the style selection field object
+		 * @param {String} fieldName The name of the field
+		 * @param {String} fieldLabel The label for the field
+		 * @param {String} cshKey The csh key
+		 * @return {Object} The style selection field object
 		 */
 		buildStylingField: function (fieldName, fieldLabel, cshKey) {
-			return new Ext.form.ComboBox(Util.apply({
-				xtype: 'combo',
-				itemId: fieldName,
-				fieldLabel: this.getHelpTip(fieldLabel, cshKey),
-				width: ((this.properties['className'] && this.properties['className'].width) ? this.properties['className'].width : 300),
-				store: new Ext.data.ArrayStore({
-					autoDestroy:  true,
-					fields: [ { name: 'text'}, { name: 'value'}, { name: 'style'} ],
-					data: [[this.localize('No style'), 'none']]
-				})
-				}, {
-				tpl: '<tpl for="."><div ext:qtip="{value}" style="{style}text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
-				}, this.configDefaults['combo']
-			));
+			// This is a nasty hack to fake ExtJS object configuration
+			return Util.apply(
+				{
+					xtype: 'htmlareaselect',
+					itemId: fieldName,
+					fieldLabel: this.getHelpTip(fieldLabel, cshKey),
+					helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize(fieldTitle),
+					width: ((this.properties['className'] && this.properties['className'].width) ? this.properties['className'].width : 300)
+				},
+				this.configDefaults['combo']
+			);
 		},
-		/*
+		/**
 		 * This function populates the class store and sets the selected option
 		 *
-		 * @param	object:		comboBox: the combobox object
-		 * @param	object		element: the element being edited, if any
-		 *
-		 * @return	object		the fieldset configuration object
+		 * @param {Object} comboBox The combobox object
+		 * @param {Object} element The element being edited, if any
+		 * @return {Object} The fieldset configuration object
 		 */
 		setStyleOptions: function (comboBox, element) {
 			var nodeName = element.nodeName.toLowerCase();
@@ -314,194 +261,188 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				this.stylePlugin.setSelectedOption(comboBox, classNames);
 			}
 		},
-		/*
+		/**
 		 * This function builds the configuration object for the Language fieldset
 		 *
-		 * @param	object		element: the element being edited, if any
-		 *
-		 * @return	object		the fieldset configuration object
+		 * @param {Object} element The element being edited, if any
+		 * @return {Object} The fieldset configuration object
 		 */
 		buildLanguageFieldsetConfig: function (element) {
-			var itemsConfig = [];
-			var languagePlugin = this.getPluginInstance('Language');
-			var languageConfigurationUrl;
+			var self = this,
+				$fieldset = $('<fieldset />', {id: 'languageFieldset'}),
+				languagePlugin = this.getPluginInstance('Language'),
+				languageConfigurationUrl;
+
+			$fieldset.append(
+				$('<h4 />', {'class': 'form-section-headline'}).text(self.localize('Language'))
+			);
+
 			if (this.editorConfiguration.buttons && this.editorConfiguration.buttons.language && this.editorConfiguration.buttons.language.dataUrl) {
 				languageConfigurationUrl = this.editorConfiguration.buttons.language.dataUrl;
 			}
-			if (languagePlugin && languageConfigurationUrl && this.removedProperties.indexOf('language') == -1) {
+			if (languagePlugin && languageConfigurationUrl && this.removedProperties.indexOf('language') === -1) {
 				var selectedLanguage = typeof element === 'object' && element !== null ? languagePlugin.getLanguageAttribute(element) : 'none';
-				function initLanguageStore (store) {
-					if (selectedLanguage !== 'none') {
-						store.removeAt(0);
-						store.insert(0, new store.recordType({
-							text: languagePlugin.localize('Remove language mark'),
-							value: 'none'
-						}));
-					}
-				}
-				var languageStore = new Ext.data.JsonStore({
-					autoDestroy:  true,
-					autoLoad: true,
-					root: 'options',
-					fields: [ { name: 'text'}, { name: 'value'} ],
-					url: languageConfigurationUrl,
-					listeners: {
-						load: initLanguageStore
+
+				$fieldset.append(
+					$('<div />', {'class': 'form-group'}).append(
+						$('<label />', {'class': 'col-sm-2'}).html(languagePlugin.getHelpTip('languageCombo', 'Language')),
+						$('<div />', {'class': 'col-sm-10'}).append(
+							$('<select />', {name: 'lang', 'class': 'form-control'})
+						)
+					)
+				);
+
+				$.ajax({
+					url: this.getDropDownConfiguration('Language').dataUrl,
+					dataType: 'json',
+					success: function (response) {
+						var $select = $fieldset.find('select[name="lang"]');
+
+						for (var language in response.options) {
+							if (response.options.hasOwnProperty(language)) {
+								if (selectedLanguage !== 'none') {
+									response.options[language].value = 'none';
+									response.options[language].text = languageObject.localize('Remove language mark');
+								}
+								var attributeConfiguration = {value: response.options[language].value};
+								if (selectedLanguage === response.options[language].value) {
+									attributeConfiguration.selected = 'selected';
+								}
+								$select.append(
+									$('<option />', attributeConfiguration).text(response.options[language].text)
+								);
+							}
+						}
 					}
 				});
-				itemsConfig.push(Util.apply({
-					xtype: 'combo',
-					fieldLabel: languagePlugin.getHelpTip('languageCombo', 'Language'),
-					itemId: 'lang',
-					store: languageStore,
-					width: ((this.properties['language'] && this.properties['language'].width) ? this.properties['language'].width : 200),
-					value: selectedLanguage
-				}, this.configDefaults['combo']));
 			}
-			if (this.removedProperties.indexOf('direction') == -1) {
-				itemsConfig.push(Util.apply({
-					xtype: 'combo',
-					fieldLabel: languagePlugin.getHelpTip('directionCombo', 'Text direction'),
-					itemId: 'dir',
-					store: new Ext.data.ArrayStore({
-						autoDestroy:  true,
-						fields: [ { name: 'text'}, { name: 'value'}],
-						data: [
-							[languagePlugin.localize('Not set'), 'not set'],
-							[languagePlugin.localize('RightToLeft'), 'rtl'],
-							[languagePlugin.localize('LeftToRight'), 'ltr']
-						]
-					}),
-					width: ((this.properties['direction'] && this.properties['dirrection'].width) ? this.properties['direction'].width : 200),
-					value: typeof element === 'object' && element !== null && element.dir ? element.dir : 'not set'
-				}, this.configDefaults['combo']));
+			if (this.removedProperties.indexOf('direction') === -1) {
+				$fieldset = this.attachSelectMarkup(
+					$fieldset,
+					languagePlugin.getHelpTip('directionCombo', 'Text direction'),
+					'dir',
+					[
+						[languagePlugin.localize('Not set'), 'not set'],
+						[languagePlugin.localize('RightToLeft'), 'rtl'],
+						[languagePlugin.localize('LeftToRight'), 'ltr']
+					],
+					typeof element === 'object' && element !== null && element.dir ? element.dir : 'not set'
+				);
 			}
-			return {
-				xtype: 'fieldset',
-				title: this.localize('Language'),
-				labelWidth: 100,
-				defaults: {
-					labelSeparator: ':'
-				},
-				items: itemsConfig
-			};
+			return $fieldset;
 		},
-		/*
+		/**
 		 * This function builds the configuration object for the Events fieldset
 		 *
-		 * @param	object		element: the element being edited, if any
+		 * @param {Object} element The element being edited, if any
 		 *
-		 * @return	object		the fieldset configuration object
+		 * @return {Object} The fieldset configuration object
 		 */
 		buildEventsFieldsetConfig: function (element) {
-			var itemsConfig = [];
+			var $fieldset = $('<fieldset />');
 			var events = ['onkeydown', 'onkeypress', 'onkeyup', 'onclick', 'ondblclick', 'onmousedown', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup'];
 			if (!/^(base|bdo|br|frame|frameset|head|html|iframe|meta|param|script|style|title)$/i.test(element.nodeName)) {
 				var event;
 				for (var i = 0, n = events.length; i < n; i++) {
 					event = events[i];
-					if (this.removedProperties.indexOf(event) == -1) {
-						itemsConfig.push({
-							itemId: event,
-							fieldLabel: this.getHelpTip(event, event),
-							value: element ? element.getAttribute(event) : ''
-						});
+					if (this.removedProperties.indexOf(event) === -1) {
+						$fieldset.append(
+							$('<div />', {'class': 'form-group'}).append(
+								$('<label />', {'class': 'col-sm-3'}).html(this.getHelpTip(event, event)),
+								$('<div />', {'class': 'col-sm-9'}).append(
+									$('<input />', {name: event, 'class': 'form-control', value: element ? element.getAttribute(event) : ''})
+								)
+							)
+						);
 					}
 				}
 			}
-			return itemsConfig.length ? {
-				xtype: 'fieldset',
-				title: this.getHelpTip('events', 'events'),
-				defaultType: 'textfield',
-				labelWidth: 100,
-				defaults: {
-					labelSeparator: ':',
-					width: ((this.properties['event'] && this.properties['event'].width) ? this.properties['event'].width : 300)
-				},
-				items: itemsConfig
-			} : null;
+
+			return $fieldset;
 		},
-		/*
+		/**
 		 * Build the dialogue buttons config
 		 *
-		 * @param	object		element: the element being edited, if any
-		 * @param	function	okHandler: the handler for the ok button
-		 * @param	function	deleteHandler: the handler for the delete button
-		 *
-		 * @return	object		the buttons configuration
+		 * @param {Object} element The element being edited, if any
+		 * @param {Function} okHandler The handler for the ok button
+		 * @param {Function} deleteHandler The handler for the delete button
+		 * @return {Object} The buttons configuration
 		 */
 		buildButtonsConfig: function (element, okHandler, deleteHandler) {
-			var buttonsConfig = [this.buildButtonConfig('OK', okHandler)];
+			var buttonsConfig = [];
+			buttonsConfig.push(this.buildButtonConfig('Cancel', $.proxy(this.onCancel, this), true));
 			if (element) {
-				buttonsConfig.push(this.buildButtonConfig('Delete', deleteHandler));
+				buttonsConfig.push(this.buildButtonConfig('Delete', $.proxy(deleteHandler, this)));
 			}
-			buttonsConfig.push(this.buildButtonConfig('Cancel', this.onCancel));
+			buttonsConfig.push(this.buildButtonConfig('OK', $.proxy(okHandler, this), false, Severity.notice));
 			return buttonsConfig;
 		},
-		/*
+		/**
 		 * Handler when the ok button is pressed
+		 *
+		 * @param {Event} e
 		 */
-		okHandler: function (button, event) {
+		okHandler: function (e) {
 			this.restoreSelection();
-			var textFields = this.dialog.findByType('textfield');
+			var textFields = this.dialog.find('input');
 			for (var i = textFields.length; --i >= 0;) {
-				var field = textFields[i];
-				if (field.getXType() !== 'combo') {
-					if (field.getValue()) {
-						this.element.setAttribute(field.getItemId(), field.getValue());
-					} else {
-						this.element.removeAttribute(field.getItemId());
-					}
+				var field = $(textFields[i]),
+					value = field.val();
+				if (value) {
+					this.element.setAttribute(field.attr('name'), value);
+				} else {
+					this.element.removeAttribute(field.attr('name'));
 				}
 			}
-			var comboFields = this.dialog.findByType('combo');
-			var languageCombo = this.dialog.find('itemId', 'lang')[0];
+			var comboFields = this.dialog.find('select');
+			var languageCombo = this.dialog.find('[name="lang"]'),
+				languageComboValue = languageCombo.val();
 			for (var i = comboFields.length; --i >= 0;) {
-				var field = comboFields[i];
-				var itemId = field.getItemId();
-				var value = field.getValue();
+				var field = $(comboFields[i]),
+					itemId = field.attr('name'),
+					value = field.val();
 				switch (itemId) {
 					case 'className':
 						if (Dom.isBlockElement(this.element)) {
 							this.stylePlugin.applyClassChange(this.element, value);
 						} else {
-								// Do not remove the span element if the language attribute is to be removed
-							this.stylePlugin.applyClassChange(this.element, value, languageCombo && (languageCombo.getValue() === 'none'));
+							// Do not remove the span element if the language attribute is to be removed
+							this.stylePlugin.applyClassChange(this.element, value, languageCombo && languageComboValue === 'none');
 						}
 						break;
 					case 'dir':
-						this.element.setAttribute(itemId, (value === 'not set') ? '' : value);
+						this.element.setAttribute(itemId, value === 'not set' ? '' : value);
 						break;
 				}
 			}
-			var microdataTab = this.dialog.find('itemId', 'microdata')[0];
+			var microdataTab = this.dialog.find('[role="tab"] [href="#microdata"]');
 			if (microdataTab) {
 				this.getPluginInstance('MicrodataSchema').setMicrodataAttributes(this.element);
 			}
 			if (languageCombo) {
-				this.getPluginInstance('Language').setLanguageAttributes(this.element, languageCombo.getValue());
+				this.getPluginInstance('Language').setLanguageAttributes(this.element, languageComboValue);
 			}
-			this.close();
-			event.stopEvent();
+			Modal.currentModal.trigger('modal-dismiss');
+			e.stopImmediatePropagation();
 		},
-		/*
+		/**
 		 * Handler when the delete button is pressed
 		 */
 		deleteHandler: function (button, event) {
 			this.restoreSelection();
 			if (this.element) {
-					// Delete the element
+				// Delete the element
 				Dom.removeFromParent(this.element);
 			}
 			this.close();
 			event.stopEvent();
 		},
-		/*
+		/**
 		 * This function gets called when the toolbar is updated
 		 */
 		onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
-			if ((mode === 'wysiwyg') && this.editor.isEditable()) {
-					// Disable the button if the first ancestor is the document body
+			if (mode === 'wysiwyg' && this.editor.isEditable()) {
+				// Disable the button if the first ancestor is the document body
 				button.setDisabled(!ancestors.length || /^body$/i.test(ancestors[0].nodeName));
 				if (this.dialog) {
 					this.dialog.focus();
@@ -511,5 +452,4 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	});
 
 	return EditElement;
-
 });

@@ -65,10 +65,10 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		/**
 		 * This function gets called when the button was pressed
 		 *
-		 * @param	object		editor: the editor instance
-		 * @param	string		id: the button id or the key
+		 * @param {Object} editor The editor instance
+		 * @param {String} id The button id or the key
 		 *
-		 * @return	boolean		false if action is completed
+		 * @return {Boolean} false if action is completed
 		 */
 		onButtonPress: function (editor, id) {
 			// Could be a button or its hotkey
@@ -85,13 +85,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			this.openContainerWindow(
 				buttonId,
 				this.getButton(buttonId).tooltip,
-				this.getWindowDimensions(
-					{
-						width:	TYPO3.settings.Textarea.RTEPopupWindow.width,
-						height:	TYPO3.settings.Textarea.RTEPopupWindow.height
-					},
-					buttonId
-				),
+				TYPO3.settings.Textarea.RTEPopupWindow.height - 20,
 				this.makeUrlFromModulePath(this.imageModulePath, additionalParameter)
 			);
 			return false;
@@ -134,5 +128,4 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	});
 
 	return TYPO3Image;
-
 });

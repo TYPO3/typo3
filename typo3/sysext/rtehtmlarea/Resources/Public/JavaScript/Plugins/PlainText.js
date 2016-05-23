@@ -131,9 +131,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		/**
 		 * This function toggles the state of a button
 		 *
-		 * @param	string		buttonId: id of button to be toggled
-		 *
-		 * @return	void
+		 * @param {String} buttonId: id of button to be toggled
 		 */
 		toggleButton: function (buttonId) {
 			// Set new state
@@ -144,11 +142,11 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		/**
 		 * This function gets called when a button was pressed.
 		 *
-		 * @param	object		editor: the editor instance
-		 * @param	string		id: the button id or the key
-		 * @return	boolean		false if action is completed
+		 * @param {Object} editor: the editor instance
+		 * @param {String} id: the button id or the key
+		 * @return {Boolean} false if action is completed
 		 */
-		onButtonPress: function (editor, id, target) {
+		onButtonPress: function (editor, id) {
 			// Could be a button or its hotkey
 			var buttonId = this.translateHotKey(id);
 			buttonId = buttonId ? buttonId : id;
@@ -157,14 +155,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					// Open dialogue window
 					this.openDialogue(
 						buttonId,
-						'PasteBehaviourTooltip',
-						this.getWindowDimensions(
-							{
-								width: 260,
-								height:260
-							},
-							buttonId
-						)
+						'PasteBehaviourTooltip'
 					);
 					break;
 				case 'PasteToggle':
@@ -178,55 +169,49 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		/**
 		 * Open the dialogue window
 		 *
-		 * @param	string		buttonId: the button id
-		 * @param	string		title: the window title
-		 * @param	object		dimensions: the opening dimensions of the window
-		 * @return	void
+		 * @param {String} buttonId: the button id
+		 * @param {String} title: the window title
 		 */
-		openDialogue: function (buttonId, title, dimensions) {
-			this.dialog = new Ext.Window({
-				title: this.localize(title),
-				cls: 'htmlarea-window',
-				border: false,
-				width: dimensions.width,
-				height: 'auto',
-				iconCls: this.getButton(buttonId).iconCls,
-				listeners: {
-					close: {
-						fn: this.onClose,
-						scope: this
-					}
-				},
-				items: [{
-						xtype: 'fieldset',
-						defaultType: 'radio',
-						title: this.getHelpTip('behaviour', title),
-						labelWidth: 170,
-						defaults: {
-							labelSeparator: '',
-							name: buttonId
-						},
-						items: [{
-								itemId: 'plainText',
-								fieldLabel: this.getHelpTip('plainText', 'plainText'),
-								checked: (this.currentBehaviour === 'plainText')
-							},{
-								itemId: 'pasteStructure',
-								fieldLabel: this.getHelpTip('pasteStructure', 'pasteStructure'),
-								checked: (this.currentBehaviour === 'pasteStructure')
-							},{
-								itemId: 'pasteFormat',
-								fieldLabel: this.getHelpTip('pasteFormat', 'pasteFormat'),
-								checked: (this.currentBehaviour === 'pasteFormat')
-							}
-						]
-					}
-				],
-				buttons: [
-					this.buildButtonConfig('OK', this.onOK)
-				]
-			});
-			this.show();
+		openDialogue: function (buttonId, title) {
+			this.dialog = Modal.show(this.localize(title), this.generateDialogContent(), Severity.notice, [
+				this.buildButtonConfig('Next', $.proxy(this.onOK, this), true),
+				this.buildButtonConfig('Done', $.proxy(this.onCancel, this), false, Severity.notice)
+			]);
+			this.dialog.on('modal-dismiss', $.proxy(this.onClose, this));
+		},
+
+		/**
+		 * Generates the content for the dialog window
+		 *
+		 * @returns {Object}
+		 */
+		generateDialogContent: function() {
+			var $fieldset = $('<fieldset />', {'class': 'form-section'});
+			$fieldset.append(
+				$('<h4 />', {'class': 'form-section-headline'}).html(this.getHelpTip('behaviour', title)),
+				$('<div />', {'class': 'form-group col-sm-12'}).append(
+					$('<div />', {'class': 'radio'}).append(
+						$('<label />').html(this.getHelpTip('plainText', 'plainText')).prepend(
+							$('<input />', {type: 'radio', name: buttonId, value: 'plainText'})
+								.prop('checked', this.currentBehaviour === 'plainText')
+						)
+					),
+					$('<div />', {'class': 'radio'}).append(
+						$('<label />').html(this.getHelpTip('pasteStructure', 'pasteStructure')).prepend(
+							$('<input />', {type: 'radio', name: buttonId, value: 'pasteStructure'})
+								.prop('checked', this.currentBehaviour === 'pasteStructure')
+						)
+					),
+					$('<div />', {'class': 'radio'}).append(
+						$('<label />').html(this.getHelpTip('pasteFormat', 'pasteFormat')).prepend(
+							$('<input />', {type: 'radio', name: buttonId, value: 'pasteFormat'})
+								.prop('checked', this.currentBehaviour === 'pasteFormat')
+						)
+					)
+				)
+			);
+
+			return $fieldset;
 		},
 
 		/**
@@ -240,7 +225,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			], field;
 			for (var i = fields.length; --i >= 0;) {
 				field = fields[i];
-				if (this.dialog.find('itemId', field)[0].getValue()) {
+				if (this.dialog.find('[name="' + field + '"]').val()) {
 					this.currentBehaviour = field;
 					break;
 				}
@@ -252,8 +237,8 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		/**
 		 * Handler for paste event
 		 *
-		 * @param object event: the jQuery paste event
-		 * @return boolean false, if the event was handled, true otherwise
+		 * @param {Event} event: the jQuery paste event
+		 * @return {Boolean} false, if the event was handled, true otherwise
 		 */
 		onPaste: function (event) {
 			if (!this.getButton('PasteToggle').inactive) {
@@ -284,14 +269,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 							// Show the pasting pad
 							this.openPastingPad(
 								'PasteToggle',
-								this.currentBehaviour,
-								this.getWindowDimensions(
-									{
-										width:  550,
-										height: 550
-									},
-									'PasteToggle'
-								)
+								this.currentBehaviour
 							);
 							Event.stopEvent(event);
 							return false;
@@ -317,9 +295,9 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		 * Grab the text content directly from the clipboard
 		 * If successful, stop the paste event
 		 *
-		 * @param object event: the jQuery paste event
-		 * @param string type: type of content to grab 'plain' ot 'html'
-		 * @return string clipboard content, if access was granted
+		 * @param {Event} event: the jQuery paste event
+		 * @param {String} type: type of content to grab 'plain' ot 'html'
+		 * @return {String} clipboard content, if access was granted
 		 */
 		grabClipboardText: function (event, type) {
 			var clipboardText = '',
@@ -327,8 +305,8 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				clipboardData = '',
 				contentTypes = '';
 			if (browserEvent && (browserEvent.clipboardData || window.clipboardData) && (browserEvent.clipboardData || window.clipboardData).getData) {
-				var clipboardData = (browserEvent.clipboardData || window.clipboardData);
-				var contentTypes = clipboardData.types;
+				clipboardData = (browserEvent.clipboardData || window.clipboardData);
+				contentTypes = clipboardData.types;
 			}
 			if (clipboardData) {
 				switch (type) {
@@ -356,8 +334,6 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 
 		/**
 		 * Redirect the paste operation towards a hidden section
-		 *
-		 * @return	void
 		 */
 		redirectPaste: function () {
 			// Save the current selection
@@ -371,7 +347,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		/**
 		 * Create an hidden section inside the RTE content
 		 *
-		 * @return object the hidden section
+		 * @return {Object} the hidden section
 		 */
 		createHiddenSection: function () {
 			// Create and append hidden section
@@ -388,8 +364,6 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		/**
 		 * Process the pasted content that was redirected towards a hidden section
 		 * and insert it at the original selection
-		 *
-		 * @return	void
 		 */
 		processPastedContent: function () {
 			this.editor.focus();
@@ -426,8 +400,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		 * Process the content that was grabbed form the clipboard
 		 * and insert it at the original selection
 		 *
-		 * @param string content: html content grabbed form the clipboard
-		 * @return void
+		 * @param {String} content: html content grabbed form the clipboard
 		 */
 		processClipboardContent: function (content) {
 			this.editor.focus();
@@ -447,79 +420,60 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		/**
 		 * Open the pasting pad window (for IE)
 		 *
-		 * @param string buttonId: the button id
-		 * @param string title: the window title
-		 * @param object dimensions: the opening dimensions of the window
-		 * @return void
+		 * @param {String} buttonId: the button id
+		 * @param {String} title: the window title
 		 */
-		openPastingPad: function (buttonId, title, dimensions) {
+		openPastingPad: function (buttonId, title) {
 			var self = this;
-			this.dialog = new Ext.Window({
-				title: this.getHelpTip(title, title),
-				cls: 'htmlarea-window',
-				bodyCssClass: 'pasting-pad',
-				border: false,
-				width: dimensions.width,
-				height: 'auto',
-				iconCls: this.getButton(buttonId).iconCls,
-				listeners: {
-					afterrender: {
-						// The document will not be immediately ready
-						fn: function (event) {
-							window.setTimeout(function () {
-								self.onPastingPadAfterRender();
-							}, 100);
-						}
-					},
-					close: {
-						fn: this.onPastingPadClose,
-						scope: this
-					}
-				},
-				items: [{
-						xtype: 'tbtext',
-						text: this.getHelpTip('pasteInPastingPad', 'pasteInPastingPad'),
-						style: {
-							marginBottom: '5px'
-						}
-					},{
-						// The iframe
-						xtype: 'box',
-						itemId: 'pasting-pad-iframe',
-						autoEl: {
-							name: 'contentframe',
-							tag: 'iframe',
-							cls: 'contentframe',
-							src: UserAgent.isGecko ? 'javascript:void(0);' : HTMLArea.editorUrl + 'Resources/Public/Html/blank.html'
-						}
-					}
-				],
-				buttons: [
-					this.buildButtonConfig('OK', this.onPastingPadOK),
-					this.buildButtonConfig('Cancel', function () {try { this.onCancel(); } catch (e) {}})
-				]
-			});
-			// Apparently, IE needs some time before being able to show the iframe
+
+			this.dialog = Modal.show(this.localize(title), this.generatePastingPadContent(), Severity.notice, [
+				this.buildButtonConfig('Next', $.proxy(this.onPastingPadOK, this), true),
+				this.buildButtonConfig('Done', $.proxy(function() {try { this.close(); } catch (e) {}}, this), false, Severity.notice)
+			]);
+
 			window.setTimeout(function () {
-				self.show();
-			}, 100);
+				self.onPastingPadAfterRender();
+			}, 200);
+		},
+
+		generatePastingPadContent: function () {
+			return $('<iframe />', {
+				id: 'pasting-pad-iframe',
+				name: 'contentframe',
+				'class': 'contentframe',
+				src: UserAgent.isGecko ? 'javascript:void(0);' : HTMLArea.editorUrl + 'Resources/Public/Html/blank.html'
+			});
 		},
 
 		/**
 		 * Handler invoked after the pasting pad iframe has been rendered
 		 */
 		onPastingPadAfterRender: function () {
-			var iframe = this.dialog.getComponent('pasting-pad-iframe').getEl().dom;
+			var iframe = this.dialog.find('#pasting-pad-iframe').get(0);
 			this.pastingPadDocument = iframe.contentWindow ? iframe.contentWindow.document : iframe.contentDocument;
 			this.pastingPadBody = this.pastingPadDocument.body;
 			this.pastingPadBody.contentEditable = true;
 			var self = this;
 			// Start monitoring paste events
-			Event.on(this.pastingPadBody, 'paste', function (event) { return self.onPastingPadPaste(); });
+			Event.on(this.pastingPadBody, 'paste', function (event) {
+				return self.onPastingPadPaste();
+			});
 			// Try to keep focus on the pasting pad
-			Event.on(UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement, 'mouseover', function (event) { return self.focusOnPastingPad(); });
-			Event.on(this.editor.document.body, 'focus', function (event) { return self.focusOnPastingPad(); });
-			Event.on(UserAgent.isIE ? this.pastingPadBody: this.pastingPadDocument.documentElement, 'mouseover', function (event) { return self.focusOnPastingPad(); });
+			Event.on(UserAgent.isIE
+				? this.editor.document.body
+				: this.editor.document.documentElement, 'mouseover', function (event) {
+					return self.focusOnPastingPad();
+				}
+			);
+			Event.on(this.editor.document.body, 'focus', function (event) {
+				return self.focusOnPastingPad();
+			});
+			Event.on(UserAgent.isIE
+				? this.pastingPadBody
+				: this.pastingPadDocument.documentElement, 'mouseover', function (event) {
+					return self.focusOnPastingPad();
+				}
+			);
 			this.focusOnPastingPad();
 		},
 
@@ -604,5 +558,4 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	});
 
 	return PlainText;
-
 });

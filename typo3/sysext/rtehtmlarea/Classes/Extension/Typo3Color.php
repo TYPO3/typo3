@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
 
 /**
@@ -67,26 +66,7 @@ class Typo3Color extends RteHtmlAreaApi
     {
         $jsArray = array();
         $jsArray[] = 'RTEarea[editornumber].disableColorPicker = ' . (trim($this->configuration['thisConfig']['disableColorPicker']) ? 'true' : 'false') . ';';
-        // Building the array of configured colors
-        $HTMLAreaColorName = array();
-        if (is_array($this->configuration['RTEsetup']['properties']['colors.'])) {
-            foreach ($this->configuration['RTEsetup']['properties']['colors.'] as $colorName => $conf) {
-                $colorName = substr($colorName, 0, -1);
-                $colorLabel = $this->getPageConfigLabel($conf['name']);
-                $HTMLAreaColorName[$colorName] = array($colorLabel, strtoupper(substr($conf['value'], 1, 6)));
-            }
-        }
-        // Setting the list of colors if specified in the RTE config
-        if ($this->configuration['thisConfig']['colors']) {
-            $HTMLAreaColors = GeneralUtility::trimExplode(',', $this->cleanList($this->configuration['thisConfig']['colors']));
-            $HTMLAreaJSColors = array();
-            foreach ($HTMLAreaColors as $colorName) {
-                if ($HTMLAreaColorName[$colorName]) {
-                    $HTMLAreaJSColors[] = $HTMLAreaColorName[$colorName];
-                }
-            }
-            $jsArray[] = 'RTEarea[editornumber].colors = ' . json_encode($HTMLAreaJSColors) . ';';
-        }
+
         return implode(LF, $jsArray);
     }
 }

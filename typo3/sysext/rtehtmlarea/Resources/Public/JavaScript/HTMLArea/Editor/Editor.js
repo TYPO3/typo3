@@ -242,7 +242,11 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 		this.statusBar = this.htmlArea.getStatusBar();
 		// Get triggered when the framework becomes ready
 		var self = this;
-		Event.one(this.htmlArea, 'HTMLAreaEventFrameworkReady', function (event) { Event.stopEvent(event); self.onFrameworkReady(); return false; });
+		Event.one(this.htmlArea, 'HTMLAreaEventFrameworkReady', function (event) {
+			Event.stopEvent(event);
+			self.onFrameworkReady();
+			return false;
+		});
 	};
 
 	/**

@@ -1978,32 +1978,6 @@ buttons.acronym.lockBeUserToDBmounts
 
 
 
-.. _colors:
-
-colors
-~~~~~~
-
-.. container:: table-row
-
-   Property
-         colors
-
-   Data type
-         list of id-strings
-
-   Description
-         Defines the specific colors generally available in the color
-         selectors. The id-strings must be configured in the RTE.colors array
-         (see description earlier).
-
-         **Example:** ::
-
-            RTE.default {
-              colors = color1, color2,noColor
-            }
-
-
-
 .. _disablecolorpicker:
 
 disableColorPicker

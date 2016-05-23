@@ -29,7 +29,6 @@ this is most often done on the root page of your site.
 
    classes/Index
    mutuallyExclusiveClasses/Index
-   colors/Index
    fonts/Index
    fontSizes/Index
    interfaceConfiguration/Index

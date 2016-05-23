@@ -113,7 +113,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 			appendToLog: function (editorId, objectName, functionName, text, type) {
 				var str = 'RTE[' + editorId + '][' + objectName + '::' + functionName + ']: ' + text;
 				if (typeof type === 'undefined') {
-					var type = 'info';
+					type = 'info';
 				}
 				// IE may not have any console
 				if (typeof console === 'object' && console !== null && typeof console[type] !== 'undefined') {

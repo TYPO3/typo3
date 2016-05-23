@@ -3473,20 +3473,20 @@ class BackendUtility
                 switch ($set) {
                     case 'updatePageTree':
                         $signals[] = '
-								if (top && top.TYPO3.Backend.NavigationContainer.PageTree) {
+								if (top && top.TYPO3.Backend && top.TYPO3.Backend.NavigationContainer.PageTree) {
 									top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
 								}
 							';
                         break;
                     case 'updateFolderTree':
                         $signals[] = '
-								if (top && top.TYPO3.Backend.NavigationIframe) {
+								if (top && top.TYPO3.Backend && top.TYPO3.Backend.NavigationIframe) {
 									top.TYPO3.Backend.NavigationIframe.refresh();
 								}';
                         break;
                     case 'updateModuleMenu':
                         $signals[] = '
-								if (top && top.TYPO3.ModuleMenu.App) {
+								if (top && top.TYPO3.ModuleMenu && top.TYPO3.ModuleMenu.App) {
 									top.TYPO3.ModuleMenu.App.refreshMenu();
 								}';
                 }

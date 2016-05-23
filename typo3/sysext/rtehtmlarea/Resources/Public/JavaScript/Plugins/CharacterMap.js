@@ -14,11 +14,15 @@
 /**
  * Character Map Plugin for TYPO3 htmlArea RTE
  */
-define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+define([
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
-	function (Plugin, UserAgent, Event, Util) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
+	'jquery',
+	'TYPO3/CMS/Backend/Modal',
+	'TYPO3/CMS/Backend/Severity'
+], function (Plugin, UserAgent, Event, Util, $, Modal, Severity) {
 
 	var CharacterMap = function (editor, pluginName) {
 		this.constructor.super.call(this, editor, pluginName);
@@ -49,7 +53,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			 */
 			for (var i = 0, n = this.buttons.length; i < n; ++i) {
 				var button = this.buttons[i];
-				buttonId = button[0];
+				var buttonId = button[0];
 				var buttonConfiguration = {
 					id: buttonId,
 					tooltip: this.localize(buttonId + '-Tooltip'),
@@ -65,9 +69,11 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			 * Localizing the maps
 			 */
 			for (var key in this.maps) {
-				var map = this.maps[key];
-				for (var i = map.length; --i >= 0;) {
-					this.maps[key][i].push(this.localize(map[i][1]));
+				if (this.maps.hasOwnProperty(key)) {
+					var map = this.maps[key];
+					for (var i = map.length; --i >= 0;) {
+						this.maps[key][i].push(this.localize(map[i][1]));
+					}
 				}
 			}
 			return true;
@@ -325,26 +331,22 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				['&lArr;', 'lArr'],
 				['&rArr;', 'rArr'],
 				['&hArr;', 'hArr'],
-				['&nbsp;', 'nbsp'],
-				['&nbsp;', 'nbsp'],
-				['&nbsp;', 'nbsp'],
-				['&nbsp;', 'nbsp'],
 				['&clubs;', 'clubs'],
 				['&diams;', 'diams'],
 				['&hearts;', 'hearts'],
 				['&spades;', 'spades']
 			]
 		},
-		/*
+		/**
 		 * This function gets called when the button was pressed.
 		 *
-		 * @param	object		editor: the editor instance
-		 * @param	string		id: the button id or the key
+		 * @param {Object} editor The editor instance
+		 * @param {String} id The button id or the key
 		 *
-		 * @return	boolean		false if action is completed
+		 * @return {Boolean} false if action is completed
 		 */
 		onButtonPress: function (editor, id) {
-				// Could be a button or its hotkey
+			// Could be a button or its hotkey
 			var buttonId = this.translateHotKey(id);
 			buttonId = buttonId ? buttonId : id;
 			switch (buttonId) {
@@ -352,14 +354,10 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					this.openDialogue(
 						buttonId,
 						'Insert special character',
-						this.getWindowDimensions(
-							{
-								width: 434,
-								height: 360
-							},
-							buttonId
-						),
-						this.buildTabItems()
+						this.buildTabItems(),
+						function () {
+							Modal.currentModal.trigger('modal-dismiss');
+						}
 					);
 					break;
 				case 'InsertSoftHyphen':
@@ -368,96 +366,81 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			}
 			return false;
 		},
-		/*
+		/**
 		 * Open the dialogue window
 		 *
-		 * @param	string		buttonId: the button id
-		 * @param	string		title: the window title
-		 * @param	integer		dimensions: the opening width of the window
-		 * @param	object		tabItems: the configuration of the tabbed panel
-		 * @param	function	handler: handler when the OK button if clicked
-		 *
-		 * @return	void
+		 * @param {String} buttonId The button id
+		 * @param {String} title The window title
+		 * @param {Object} tabItems The configuration of the tabbed panel
+		 * @param {Function} handler Handler when the OK button is clicked
 		 */
-		openDialogue: function (buttonId, title, dimensions, tabItems, handler) {
-			this.dialog = new Ext.Window({
-				title: this.localize(title),
-				cls: 'htmlarea-window',
-				border: false,
-				width: dimensions.width,
-				height: 'auto',
-				iconCls: this.getButton(buttonId).iconCls,
-				listeners: {
-					close: {
-						fn: this.onClose,
-						scope: this
-					}
-				},
-				items: {
-					xtype: 'tabpanel',
-					activeTab: 0,
-					listeners: {
-						activate: {
-							fn: this.resetFocus,
-							scope: this
-						},
-						tabchange: {
-							fn: this.syncHeight,
-							scope: this
-						}
-					},
-					items: tabItems
-				},
-				buttons: [
-					this.buildButtonConfig('Cancel', this.onCancel)
-				]
-			});
-			this.show();
+		openDialogue: function (buttonId, title, tabItems, handler) {
+			this.dialog = Modal.show(title, tabItems, Severity.notice, [
+				this.buildButtonConfig('Close', handler, true, Severity.notice)
+			]);
+
+			this.resetFocus();
+
+			this.dialog.on('modal-dismiss', $.proxy(this.onClose, this));
 		},
-		/*
+		/**
 		 * Build the configuration of the the tab items
 		 *
-		 * @return	array	the configuration array of tab items
+		 * @return {Object} The configuration array of tab items
 		 */
 		buildTabItems: function () {
-			var tabItems = [];
+			var self = this,
+				$finalMarkup,
+				$tabs = $('<ul />', {'class': 'nav nav-tabs', role: 'tablist'}),
+				$tabContent = $('<div />', {'class': 'tab-content'});
+
 			for (var id in this.maps) {
-				tabItems.push({
-					xtype: 'box',
-					cls: 'character-map',
-					title: this.localize(id),
-					itemId: id,
-					tpl: new Ext.XTemplate(
-						'<tpl for="."><a href="#" class="character" hidefocus="on" ext:qtitle="<span>&</span>{1};" ext:qtip="{2}">{0}</a></tpl>'
-					),
-					listeners: {
-						render: {
-							fn: this.renderMap,
-							scope: this
+				if (this.maps.hasOwnProperty(id)) {
+					var isFirst = Object.keys(this.maps).indexOf(id) === 0;
+					$tabs.append(
+						$('<li />', {'class': (isFirst ? 'active' : '')}).append(
+							$('<a />', {
+								href: '#' + id,
+								'aria-controls': id,
+								role: 'tab',
+								'data-toggle': 'tab'
+							}).text(this.localize(id))
+						)
+					);
+
+					var $characters = $('<div />', {'class': 'form-section htmlarea-character-map', id: id});
+					for (var charDefinition in this.maps[id]) {
+						if (this.maps[id].hasOwnProperty(charDefinition)) {
+							var char = this.maps[id][charDefinition];
+							$characters.append(
+								$('<a />', {
+									'class': 'character btn btn-default',
+									hidefocus: 'on',
+									title: char[2] + ' (' + char[1] + ')'
+								}).html(char[0])
+							);
 						}
 					}
-				});
-			}
-			return tabItems;
-		},
+					$characters.on('click', 'a.character', function (e) {
+						return self.insertCharacter(e);
+					});
 
-		/**
-		 * Render an array of characters
-		 *
-		 * @param object component: the box containing the characters
-		 * @return void
-		 */
-		renderMap: function (component) {
-			component.tpl.overwrite(component.el, this.maps[component.itemId]);
-			var self = this;
-			Event.on(component.el.dom, 'click', function (event) { return self.insertCharacter(event); }, {delegate: 'a'});
+					$tabContent.append(
+						$('<div />', {'class': 'tab-pane ' + (isFirst ? 'active' : ''), id: id}).append($characters)
+					);
+				}
+			}
+
+			$finalMarkup = $('<div />').append($tabs, $tabContent);
+
+			return $finalMarkup;
 		},
 
 		/**
 		 * Handle the click on an item of the map
 		 *
-		 * @param object event: the jQuery event
-		 * @return boolean
+		 * @param {Event} event The jQuery event
+		 * @return {Boolean}
 		 */
 		insertCharacter: function (event) {
 			Event.stopEvent(event);
@@ -471,9 +454,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		/**
 		 * Insert the selected entity
 		 *
-		 * @param	string		entity: the entity to insert at the current selection
-		 *
-		 * @return	void
+		 * @param {String} entity The entity to insert at the current selection
 		 */
 		insertEntity: function (entity) {
 			// Firefox, WebKit and IE convert '&nbsp;' to '&amp;nbsp;'
@@ -488,18 +469,6 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		 */
 		resetFocus: function () {
 			this.restoreSelection();
-		},
-
-		/**
-		 * Remove listeners before closing the window
-		 */		
-		removeListeners: function () {
-			var components = this.dialog.findByType('box');
-			for (var i = components.length; --i > 0;) {
-				if (components[i].el) {
-					Event.off(components[i].el.dom);
-				}
-			}			
 		}
 	});
 

@@ -14,11 +14,16 @@
 /**
  * Default Link Plugin for TYPO3 htmlArea RTE
  */
-define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+define([
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM'],
-	function (Plugin, UserAgent, Util, Dom) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
+	'jquery',
+	'TYPO3/CMS/Backend/Modal',
+	'TYPO3/CMS/Backend/Notification',
+	'TYPO3/CMS/Backend/Severity'
+], function (Plugin, UserAgent, Util, Dom, $, Modal, Notification, Severity) {
 
 	var DefaultLink = function (editor, pluginName) {
 		this.constructor.super.call(this, editor, pluginName);
@@ -47,8 +52,8 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				license		: 'GPL'
 			};
 			this.registerPluginInformation(pluginInformation);
-			/*
-			 * Registering the buttons
+			/**
+			 * Registering the button
 			 */
 			var buttonList = this.buttonList, buttonId;
 			for (var i = 0; i < buttonList.length; ++i) {
@@ -78,39 +83,21 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		],
 
 		/**
-		 * Sets of default configuration values for dialogue form fields
-		 */
-		configDefaults: {
-			combo: {
-				editable: true,
-				selectOnFocus: true,
-				typeAhead: true,
-				triggerAction: 'all',
-				forceSelection: true,
-				mode: 'local',
-				valueField: 'value',
-				displayField: 'text',
-				helpIcon: true,
-				tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
-			}
-		},
-
-		/**
 		 * This function gets called when the editor is generated
 		 */
 		onGenerate: function () {
 		},
-		/*
+		/**
 		 * This function gets called when the button was pressed.
 		 *
-		 * @param	object		editor: the editor instance
-		 * @param	string		id: the button id or the key
-		 * @param	object		target: the target element of the contextmenu event, when invoked from the context menu
+		 * @param {Object} editor: the editor instance
+		 * @param {String} id: the button id or the key
+		 * @param {Object} target: the target element of the contextmenu event, when invoked from the context menu
 		 *
-		 * @return	boolean		false if action is completed
+		 * @return {Boolean} false if action is completed
 		 */
 		onButtonPress: function (editor, id, target) {
-				// Could be a button or its hotkey
+			// Could be a button or its hotkey
 			var buttonId = this.translateHotKey(id);
 			buttonId = buttonId ? buttonId : id;
 			this.link = this.editor.getSelection().getFirstAncestorOfType('a');
@@ -142,173 +129,132 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 						// Open dialogue window
 					this.openDialogue(
 						buttonId,
-						this.getButton(buttonId).tooltip,
-						this.getWindowDimensions(
-							{
-								width: 470,
-								height:150
-							},
-							buttonId
-						)
+						this.getButton(buttonId).tooltip
 					);
 					break;
 			}
 			return false;
 		},
-		/*
+		/**
 		 * Open the dialogue window
 		 *
-		 * @param	string		buttonId: the button id
-		 * @param	string		title: the window title
-		 * @param	integer		dimensions: the opening width of the window
-		 *
-		 * @return	void
+		 * @param {String} buttonId: the button id
+		 * @param {String} title: the window title
 		 */
-		openDialogue: function (buttonId, title, dimensions) {
-			this.dialog = new Ext.Window({
-				title: this.localize(title) || title,
-				cls: 'htmlarea-window',
-				border: false,
-				width: dimensions.width,
-				height: 'auto',
-				iconCls: this.getButton(buttonId).iconCls,
-				listeners: {
-					afterrender: {
-						fn: this.onAfterRender,
-						scope: this
-					},
-					close: {
-						fn: this.onClose,
-						scope: this
-					}
-				},
-				items: [{
-						xtype: 'fieldset',
-						defaultType: 'textfield',
-						labelWidth: 100,
-						defaults: {
-							helpIcon: true,
-							width: 250,
-							labelSeparator: ''
-						},
-						items: [{
-								itemId: 'href',
-								name: 'href',
-								fieldLabel: this.localize('URL:'),
-								value: this.parameters.href,
-								helpTitle: this.localize('link_href_tooltip')
-							},{
-								itemId: 'title',
-								name: 'title',
-								fieldLabel: this.localize('Title (tooltip):'),
-								value: this.parameters.title,
-								helpTitle: this.localize('link_title_tooltip')
-							}, Util.apply({
-								xtype: 'combo',
-								fieldLabel: this.localize('Target:'),
-								itemId: 'target',
-								helpTitle: this.localize('link_target_tooltip'),
-								store: new Ext.data.ArrayStore({
-									autoDestroy:  true,
-									fields: [ { name: 'text'}, { name: 'value'}],
-									data: [
-										[this.localize('target_none'), ''],
-										[this.localize('target_blank'), '_blank'],
-										[this.localize('target_self'), '_self'],
-										[this.localize('target_top'), '_top'],
-										[this.localize('target_other'), '_other']
-									]
-								}),
-								listeners: {
-									select: {
-										fn: this.onTargetSelect
-									}
-								},
-								hidden: !this.showTarget
-								}, this.configDefaults['combo'])
-							,{
-								itemId: 'frame',
-								name: 'frame',
-								fieldLabel: this.localize('frame'),
-								helpTitle: this.localize('frame_help'),
-								hideLabel: true,
-								hidden: true
-							}
-						]
-					}
-				],
-				buttons: [
-					this.buildButtonConfig('OK', this.onOK),
-					this.buildButtonConfig('Cancel', this.onCancel)
-				]
-			});
-			this.show();
+		openDialogue: function (buttonId, title) {
+			this.dialog = Modal.show(this.localize(title), this.generateDialogContent(), Severity.notice, [
+				this.buildButtonConfig('Next', $.proxy(this.onOK, this), true),
+				this.buildButtonConfig('Done', $.proxy(this.onCancel, this), false, Severity.notice)
+			]);
+			this.dialog.on('modal-dismiss', $.proxy(this.onClose, this));
+
+			this.onAfterRender();
 		},
-		/*
+		/**
+		 * Generates the content for the dialog window
+		 *
+		 * @returns {Object}
+		 */
+		generateDialogContent: function() {
+			var $fieldset = $('<fieldset />', {'class': 'form-section'});
+			$fieldset.append(
+				$('<div />', {'class': 'form-group'}).append(
+					$('<label />', {'class': 'col-sm-2'}).text(this.localize('URL:')),
+					$('<div />', {'class': 'col-sm-10'}).append(
+						$('<input />', {name: 'href', 'class': 'form-control', value: this.parameters.href})
+					)
+				),
+				$('<div />', {'class': 'form-group'}).append(
+					$('<label />', {'class': 'col-sm-2'}).text(this.localize('Title (tooltip):')),
+					$('<div />', {'class': 'col-sm-10'}).append(
+						$('<input />', {name: 'title', 'class': 'form-control', value: this.parameters.title})
+					)
+				),
+				$('<div />', {'class': 'form-group'}).append(
+					$('<label />', {'class': 'col-sm-2'}).text(this.localize('Title (tooltip):')),
+					$('<div />', {'class': 'col-sm-10'}).append(
+						$('<select />', {name: 'target', 'class': 'form-control'}).append(
+							$('<option />', {value: ''}).text(this.localize('target_none')),
+							$('<option />', {value: '_blank'}).text(this.localize('target_blank')),
+							$('<option />', {value: '_self'}).text(this.localize('target_self')),
+							$('<option />', {value: '_top'}).text(this.localize('target_top')),
+							$('<option />', {value: '_other'}).text(this.localize('target_other'))
+						).on('change', $.proxy(this.onTargetSelect, this))
+					)
+				).toggle(this.showTarget),
+				$('<div />', {'class': 'form-group'}).append(
+					$('<label />', {'class': 'col-sm-2'}).text(this.localize(frame)),
+					$('<div />', {'class': 'col-sm-10'}).append(
+						$('<input />', {name: 'frame', 'class': 'form-control', value: this.parameters.frame})
+					)
+				).hide()
+			);
+
+			return $fieldset;
+		},
+		/**
 		 * Handler invoked after the dialogue window is rendered
 		 * If the current target is not in the available options, show frame field
 		 */
 		onAfterRender: function (dialog) {
-			var targetCombo = dialog.find('itemId', 'target')[0];
-			if (!targetCombo.hidden && this.parameters.target) {
-				var frameField = dialog.find('itemId', 'frame')[0];
-				var index = targetCombo.getStore().find('value', this.parameters.target);
-				if (index == -1) {
-						// The target is a specific frame name
-					targetCombo.setValue('_other');
-					frameField.setValue(this.parameters.target);
-					frameField.show();
-					frameField.label.show();
+			var targetCombo = dialog.find('[name="target"]');
+			if (targetCombo.is(':visible') && this.parameters.target) {
+				var frameField = dialog.find('[name="frame"]');
+				var frameExists = targetCombo.find('option[value="' + this.parameters.target + '"]').length > 0;
+				if (!frameExists) {
+					// The target is a specific frame name
+					targetCombo.val('_other');
+					frameField.val(this.parameters.target);
+					frameField.closest('.form-group').show();
 				} else {
-					targetCombo.setValue(this.parameters.target);
+					targetCombo.val(this.parameters.target);
 				}
 			}
 		},
-		/*
+		/**
 		 * Handler invoked when a target is selected
+		 *
+		 * @param {Event} e
 		 */
-		onTargetSelect: function (combo, record) {
-			var frameField = combo.ownerCt.getComponent('frame');
-			if (record.get('value') == '_other') {
-				frameField.show();
-				frameField.label.show();
+		onTargetSelect: function (e) {
+			var $me = $(e.currentTarget),
+				frameField = $me.closest('fieldset').find('[name="frame"]');
+			if ($me.val() === '_other') {
+				frameField.closest('.form-group').show();
 				frameField.focus();
-			} else if (!frameField.hidden) {
-				frameField.hide();
-				frameField.label.hide();
+			} else if (frameField.is(':visible')) {
+				frameField.closest('.form-group').hide();
 			}
 		},
-		/*
+		/**
 		 * Handler invoked when the OK button is clicked
 		 */
 		onOK: function () {
-			var hrefField = this.dialog.find('itemId', 'href')[0];
-			var href = hrefField.getValue().trim();
-			if (href && href != 'http://') {
-				var title = this.dialog.find('itemId', 'title')[0].getValue();
-				var target = this.dialog.find('itemId', 'target')[0].getValue();
-				if (target == '_other') {
-					target = this.dialog.find('itemId', 'frame')[0].getValue().trim();
+			var hrefField = this.dialog.find('[name="href"]');
+			var href = $.trim(hrefField.val());
+			if (href && href !== 'http://') {
+				var title = this.dialog.find('[name="title"]').val();
+				var target = this.dialog.find('[name="target"]').val();
+				if (target === '_other') {
+					target = $.trim(this.dialog.find('[name="frame"]').val());
 				}
 				this.createLink(href, title, target);
 				this.close();
 			} else {
-				TYPO3.Dialog.InformationDialog({
-					title: this.localize('URL'),
-					msg: this.localize('link_url_required'),
-					fn: function () { hrefField.focus(); }
-				});
+				Notification.warning(
+					this.localize('URL'),
+					this.localize('link_url_required')
+				);
+				hrefField.focus();
 			}
 			return false;
 		},
-		/*
+		/**
 		 * Create the link
 		 *
-		 * @param	string		href: the value of href attribute
-		 * @param	string		title: the value of title attribute
-		 * @param	string		target: the value of target attribute
-		 *
-		 * @return	void
+		 * @param {String} href: the value of href attribute
+		 * @param {String} title: the value of title attribute
+		 * @param {String} target: the value of target attribute
 		 */
 		createLink: function (href, title, target) {
 			var a = this.link;
@@ -342,7 +288,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				}
 			}
 		},
-		/*
+		/**
 		 * Unlink the selection
 		 */
 		unLink: function () {
@@ -352,7 +298,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			}
 			this.editor.getSelection().execCommand('Unlink', false, '');
 		},
-		/*
+		/**
 		 * This function gets called when the toolbar is updated
 		 */
 		onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
@@ -362,7 +308,6 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					case 'CreateLink':
 						button.setDisabled(selectionEmpty && !button.isInContext(mode, selectionEmpty, ancestors));
 						if (!button.disabled) {
-							var node = this.editor.getSelection().getParentElement();
 							var el = this.editor.getSelection().getFirstAncestorOfType('a');
 							if (el != null) {
 								node = el;
@@ -377,10 +322,13 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 						break;
 					case 'UnLink':
 						var link = false;
-							// Let's see if a link was double-clicked in Firefox
+						// Let's see if a link was double-clicked in Firefox
 						if (UserAgent.isGecko && !selectionEmpty) {
 							var range = this.editor.getSelection().createRange();
-							if (range.startContainer.nodeType === Dom.ELEMENT_NODE && range.startContainer == range.endContainer && (range.endOffset - range.startOffset == 1)) {
+							if (range.startContainer.nodeType === Dom.ELEMENT_NODE
+								&& range.startContainer == range.endContainer
+								&& (range.endOffset - range.startOffset == 1)
+							) {
 								var node = range.startContainer.childNodes[range.startOffset];
 								if (node && /^a$/i.test(node.nodeName) && node.textContent == range.toString()) {
 									link = true;
@@ -395,5 +343,4 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	});
 
 	return DefaultLink;
-
 });

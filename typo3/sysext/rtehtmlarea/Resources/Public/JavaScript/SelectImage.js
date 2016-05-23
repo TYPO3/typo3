@@ -29,7 +29,13 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 		plugin: null,
 
 		initialize: function() {
-			SelectImage.plugin = window.parent.RTEarea[LinkBrowser.urlParameters.editorNo].editor.getPlugin("TYPO3Image");
+			var callerWindow;
+			if (typeof top.TYPO3.Backend !== 'undefined' && typeof top.TYPO3.Backend.ContentContainer.iframe !== 'undefined') {
+				callerWindow = top.TYPO3.Backend.ContentContainer.iframe;
+			} else {
+				callerWindow = window.parent;
+			}
+			SelectImage.plugin = callerWindow.RTEarea[LinkBrowser.urlParameters.editorNo].editor.getPlugin("TYPO3Image");
 		},
 
 		getCurrentImage: function() {

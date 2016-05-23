@@ -14,11 +14,15 @@
 /**
  * Insert Smiley Plugin for TYPO3 htmlArea RTE
  */
-define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+define([
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
-	function (Plugin, UserAgent, Event, Util) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
+	'jquery',
+	'TYPO3/CMS/Backend/Modal',
+	'TYPO3/CMS/Backend/Severity'
+], function (Plugin, UserAgent, Event, Util, $, Modal, Severity) {
 
 	var InsertSmiley = function (editor, pluginName) {
 		this.constructor.super.call(this, editor, pluginName);
@@ -31,27 +35,27 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		 */
 		configurePlugin: function (editor) {
 			this.pageTSConfiguration = this.editorConfiguration.buttons.emoticon;
-			// Default set of imoticons from Mozilla Thunderbird
+			// Default set of emoticons from Mozilla Thunderbird
 			var path = HTMLArea.editorUrl + 'Resources/Public/Images/Plugins/InsertSmiley/Smileys/';
 			this.icons = [
-				{ file: path + 'mozilla_smile' + '.png', alt: ':-)', title: this.localize('mozilla_smile')},
-				{ file: path + 'mozilla_frown' + '.png', alt: ':-(', title: this.localize('mozilla_frown')},
-				{ file: path + 'mozilla_wink' + '.png', alt: ';-)', title: this.localize('mozilla_wink')},
-				{ file: path + 'mozilla_tongueout' + '.png', alt: ':-P', title: this.localize('mozilla_tongueout')},
-				{ file: path + 'mozilla_laughing' + '.png', alt: ':-D', title: this.localize('mozilla_laughing')},
-				{ file: path + 'mozilla_embarassed' + '.png', alt: ':-[', title: this.localize('mozilla_embarassed')},
-				{ file: path + 'mozilla_undecided' + '.png', alt: ':-\\', title: this.localize('mozilla_undecided')},
-				{ file: path + 'mozilla_surprised' + '.png', alt: '=-O', title: this.localize('mozilla_surprised')},
-				{ file: path + 'mozilla_kiss' + '.png', alt: ':-*', title: this.localize('mozilla_kiss')},
-				{ file: path + 'mozilla_yell' + '.png', alt: '>:o', title: this.localize('mozilla_yell')},
-				{ file: path + 'mozilla_cool' + '.png', alt: '8-)', title: this.localize('mozilla_cool')},
-				{ file: path + 'mozilla_moneyinmouth' + '.png', alt: ':-$', title: this.localize('mozilla_moneyinmouth')},
-				{ file: path + 'mozilla_footinmouth' + '.png', alt: ':-!', title: this.localize('mozilla_footinmouth')},
-				{ file: path + 'mozilla_innocent' + '.png', alt: 'O:-)', title: this.localize('mozilla_innocent')},
-				{ file: path + 'mozilla_cry' + '.png', alt: ':\'(', title: this.localize('mozilla_cry')},
-				{ file: path + 'mozilla_sealed' + '.png', alt: ':-X', title: this.localize('mozilla_sealed')}
-			 ];
-			/*
+				{ file: path + 'mozilla_smile.png', alt: ':-)', title: this.localize('mozilla_smile')},
+				{ file: path + 'mozilla_frown.png', alt: ':-(', title: this.localize('mozilla_frown')},
+				{ file: path + 'mozilla_wink.png', alt: ';-)', title: this.localize('mozilla_wink')},
+				{ file: path + 'mozilla_tongueout.png', alt: ':-P', title: this.localize('mozilla_tongueout')},
+				{ file: path + 'mozilla_laughing.png', alt: ':-D', title: this.localize('mozilla_laughing')},
+				{ file: path + 'mozilla_embarassed.png', alt: ':-[', title: this.localize('mozilla_embarassed')},
+				{ file: path + 'mozilla_undecided.png', alt: ':-\\', title: this.localize('mozilla_undecided')},
+				{ file: path + 'mozilla_surprised.png', alt: '=-O', title: this.localize('mozilla_surprised')},
+				{ file: path + 'mozilla_kiss.png', alt: ':-*', title: this.localize('mozilla_kiss')},
+				{ file: path + 'mozilla_yell.png', alt: '>:o', title: this.localize('mozilla_yell')},
+				{ file: path + 'mozilla_cool.png', alt: '8-)', title: this.localize('mozilla_cool')},
+				{ file: path + 'mozilla_moneyinmouth.png', alt: ':-$', title: this.localize('mozilla_moneyinmouth')},
+				{ file: path + 'mozilla_footinmouth.png', alt: ':-!', title: this.localize('mozilla_footinmouth')},
+				{ file: path + 'mozilla_innocent.png', alt: 'O:-)', title: this.localize('mozilla_innocent')},
+				{ file: path + 'mozilla_cry.png', alt: ':\'(', title: this.localize('mozilla_cry')},
+				{ file: path + 'mozilla_sealed.png', alt: ':-X', title: this.localize('mozilla_sealed')}
+			];
+			/**
 			 * Registering plugin "About" information
 			 */
 			var pluginInformation = {
@@ -64,7 +68,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				license		: 'GPL'
 			};
 			this.registerPluginInformation(pluginInformation);
-			/*
+			/**
 			 * Registering the button
 			 */
 			var buttonId = 'InsertSmiley';
@@ -79,71 +83,47 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			this.registerButton(buttonConfiguration);
 			return true;
 		},
-		/*
+		/**
 		 * This function gets called when the button was pressed.
 		 *
-		 * @param	object		editor: the editor instance
-		 * @param	string		id: the button id or the key
-		 *
-		 * @return	boolean		false if action is completed
+		 * @param {Object} editor The editor instance
+		 * @param {String} id The button id or the key
+		 * @return {Boolean} False if action is completed
 		 */
 		onButtonPress: function (editor, id) {
-				// Could be a button or its hotkey
-			var buttonId = this.translateHotKey(id);
-			buttonId = buttonId ? buttonId : id;
-			var dimensions = this.getWindowDimensions({width:216, height:230}, buttonId);
-			this.dialog = new Ext.Window({
-				title: this.localize('Insert Smiley'),
-				cls: 'htmlarea-window',
-				border: false,
-				width: dimensions.width,
-				height: 'auto',
-				iconCls: this.getButton(buttonId).iconCls,
-				listeners: {
-					close: {
-						fn: this.onClose,
-						scope: this
-					}
-				},
-				items: {
-					xtype: 'box',
-					cls: 'emoticon-array',
-					tpl: new Ext.XTemplate(
-						'<tpl for="."><a href="#" class="emoticon" hidefocus="on" ext:qtitle="{alt}" ext:qtip="{title}"><img src="{file}" /></a></tpl>'
-					),
-					listeners: {
-						render: {
-							fn: this.render,
-							scope: this
-						}
-					}
-				},
-				buttons: [this.buildButtonConfig('Cancel', this.onCancel)]
-			});
-			this.show();
+			this.dialog = Modal.show(this.localize('Insert Smiley'), this.generateDialogContent(), Severity.notice, [
+				this.buildButtonConfig('Cancel', $.proxy(this.onCancel, this), false, Severity.notice)
+			]);
+			this.dialog.on('modal-dismiss', $.proxy(this.onClose, this));
 		},
 
 		/**
-		 * Render the array of emoticon
-		 *
-		 * @param object component: the box containing the emoticons
-		 * @return void
+		 * Generates the dialog content
 		 */
-		render: function (component) {
-			component.tpl.overwrite(component.el, this.icons);
-			var self = this;
-			Event.on(component.el.dom, 'click', function (event) { return self.insertImageTag(event); }, {delegate: 'a'});
+		generateDialogContent: function() {
+			var $emoticons = $('<div />');
+
+			$.each(this.icons, function() {
+				$emoticons.append(
+					$('<a />', {href: '#', 'class': 'btn btn-default emoticon', title: this.title}).append(
+						$('<img />', {src: this.file, alt: this.alt})
+					)
+				);
+			});
+
+			$emoticons.on('click', 'a.emoticon', $.proxy(this.insertImageTag, this));
+
+			return $emoticons;
 		},
 
 		/**
 		 * Insert the selected emoticon
 		 *
-		 * @param object event: the jQuery click event
-		 * @return void
+		 * @param {Event} event The jQuery click event
 		 */
 		insertImageTag: function (event) {
-			Event.stopEvent(event);
-			var icon = event.target;
+			event.preventDefault();
+			var icon = event.currentTarget.childNodes[0];
 			this.restoreSelection();
 			var imgTag = this.editor.document.createElement('img');
 			imgTag.setAttribute('src', icon.getAttribute('src'));
@@ -153,21 +133,8 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			this.editor.getSelection().selectNode(imgTag, false);
 			this.close();
 			return false;
-		},
-
-		/**
-		 * Remove listeners before closing the window
-		 */		
-		removeListeners: function () {
-			var components = this.dialog.findByType('box');
-			for (var i = components.length; --i > 0;) {
-				if (components[i].el) {
-					Event.off(components[i].el.dom);
-				}
-			}			
 		}
 	});
 
 	return InsertSmiley;
-
 });

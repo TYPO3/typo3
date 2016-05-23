@@ -321,11 +321,11 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 		/**
 		 * Remove the option at the specified index
 		 *
-		 * @param int index: the index of the option to be removed
+		 * @param {Integer} index: the index of the option to be removed
 		 * @return void
 		 */
 		removeAt: function (index) {
-			this.selectElement.remove(index);
+			this.selectElement.removeChild(this.selectElement.childNodes[index]);
 		},
 
 		/**
@@ -334,9 +334,8 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 		 * @return void
 		 */
 		removeAll: function () {
-			var index, options = this.getOptions();
-			while (index = options.length) {
-				this.selectElement.remove(0);
+			while (this.selectElement.firstChild) {
+				this.selectElement.removeChild(this.selectElement.firstChild);
 			}
 		},
 

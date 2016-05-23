@@ -14,10 +14,14 @@
 /**
  * Quick Tag Editor Plugin for TYPO3 htmlArea RTE
  */
-define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+define([
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/ColorPaletteField'],
-	function (Plugin, Util, ColorPaletteField) {
+	'jquery',
+	'TYPO3/CMS/Backend/Modal',
+	'TYPO3/CMS/Backend/Notification',
+	'TYPO3/CMS/Backend/Severity'
+], function (Plugin, Util, $, Modal, Notification, Severity) {
 
 	var QuickTag = function (editor, pluginName) {
 		this.constructor.super.call(this, editor, pluginName);
@@ -48,7 +52,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				license		: 'GPL'
 			};
 			this.registerPluginInformation(pluginInformation);
-			/*
+			/**
 			 * Registering the button
 			 */
 			var buttonId = 'InsertTag';
@@ -63,7 +67,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			this.registerButton(buttonConfiguration);
 			return true;
 		 },
-		/*
+		/**
 		 * Sets of default configuration values for dialogue form fields
 		 */
 		configDefaults: {
@@ -78,17 +82,15 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				helpIcon: true
 			}
 		},
-		/*
+		/**
 		 * This function gets called when the button was pressed.
 		 *
-		 * @param	object		editor: the editor instance
-		 * @param	string		id: the button id or the key
-		 * @param	object		target: the target element of the contextmenu event, when invoked from the context menu
-		 *
-		 * @return	boolean		false if action is completed
+		 * @param {Object} editor The editor instance
+		 * @param {String} id The button id or the key
+		 * @return {Boolean} False if action is completed
 		 */
-		onButtonPress: function (editor, id, target) {
-				// Could be a button or its hotkey
+		onButtonPress: function (editor, id) {
+			// Could be a button or its hotkey
 			var buttonId = this.translateHotKey(id);
 			buttonId = buttonId ? buttonId : id;
 			this.openDialogue(
@@ -96,158 +98,149 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				{
 					buttonId: buttonId
 				},
-				this.getWindowDimensions({ width: 570}, buttonId),
 				this.buildItemsConfig(),
 				this.setTag
 			);
-			this.insertedTag = this.dialog.find('itemId', 'insertedTag')[0];
-			this.tagCombo = this.dialog.find('itemId', 'tags')[0];
-			this.attributeCombo = this.dialog.find('itemId', 'attributes')[0];
-			this.valueCombo = this.dialog.find('itemId', 'values')[0];
-			this.colorCombo = this.dialog.find('itemId', 'colors')[0];
+			this.insertedTag = this.dialog.find('[name="insertedTag"]');
+			this.tagCombo = this.dialog.find('[name="tags"]');
+			this.attributeCombo = this.dialog.find('[name="attributes"]');
+			this.valueCombo = this.dialog.find('[name="values"]');
+			this.colorCombo = this.dialog.find('[name="colors"]');
 		},
-		/*
+		/**
 		 * Build the window items config
 		 */
-		buildItemsConfig: function (element, buttonId) {
-			var tagStore = new Ext.data.ArrayStore({
-				autoDestroy:  true,
-				fields: [ { name: 'text'}, { name: 'value'}],
-				data: this.tags
-			});
+		buildItemsConfig: function () {
+			var self = this,
+				filteredTags = [],
+				$fieldset = $('<fieldset />'),
+				$tagSelect = $('<select />', {name: 'tags', 'class': 'form-control'}),
+				$attributeSelect = $('<select />', {name: 'attributes', 'class': 'form-control'}),
+				$valueSelect = $('<select />', {name: 'values', 'class': 'form-control'}),
+				$colorInput = $('<input />', {name: 'colors', 'class': 'form-control t3js-color-input'});
+
 			if (this.denyTags) {
 				var denyTags = new RegExp('^(' + this.denyTags.split(',').join('|').replace(/ /g, '') + ')$', 'i');
-				tagStore.filterBy(function (record) {
-					return !denyTags.test(record.get('value'));
-				});
-					// Make sure the combo list is filtered
-				tagStore.snapshot = tagStore.data;
+				for (var i = 0; i < this.tags.length; i++) {
+					if (!denyTags.test(this.tags[i][1])) {
+						filteredTags.push(this.tags[i]);
+					}
+				}
 			}
-			var attributeStore = new Ext.data.ArrayStore({
-				autoDestroy:  true,
-				fields: [ {name: 'tag'}, { name: 'text'}, { name: 'value'}],
-				data: this.attributes
-			});
-			this.valueRecord = Ext.data.Record.create([{name: 'attribute'}, { name: 'text'}, { name: 'value'}]);
-			var valueStore = new Ext.data.ArrayStore({
-				autoDestroy:  true,
-				fields: [ {name: 'attribute'}, { name: 'text'}, { name: 'value'}],
-				data: this.values,
-				listeners: {
-					load: {
-						fn: this.captureClasses,
-						scope: this
-					}
+
+			this.captureClasses($valueSelect);
+
+			for (var tag in filteredTags) {
+				if (filteredTags.hasOwnProperty(tag)) {
+					$tagSelect.append(
+						$('<option />', {value: encodeURI(filteredTags[tag][1])}).text(filteredTags[tag][0])
+					);
 				}
-			});
-			var itemsConfig = [{
-					xtype: 'textarea',
-					itemId: 'tagopen',
-					width: 400,
-					itemId: 'insertedTag',
-					fieldLabel: '<',
-					labelSeparator: '',
-					grow: true,
-					listeners: {
-						change: {
-							fn: this.filterAttributes,
-							scope: this
-						},
-						focus: {
-							fn: this.filterAttributes,
-							scope: this
-						}
-					}
-				},{
-					xtype: 'displayfield',
-					text: '>'
-				}, Util.apply({
-					xtype: 'combo',
-					itemId: 'tags',
-					fieldLabel: this.localize('TAGs'),
-					store: tagStore,
-					listeners: {
-						select: {
-							fn: this.onTagSelect,
-							scope: this
-						}
-					}
-				}, this.configDefaults['combo'])
-				, Util.apply({
-					xtype: 'combo',
-					itemId: 'attributes',
-					fieldLabel: this.localize('ATTRIBUTES'),
-					store: attributeStore,
-					hidden: true,
-					listeners: {
-						select: {
-							fn: this.onAttributeSelect,
-							scope: this
-						}
-					}
-				}, this.configDefaults['combo'])
-				, Util.apply({
-					xtype: 'combo',
-					itemId: 'values',
-					fieldLabel: this.localize('OPTIONS'),
-					store: valueStore,
-					hidden: true,
-					listeners: {
-						select: {
-							fn: this.onValueSelect,
-							scope: this
-						}
-					}
-				}, this.configDefaults['combo'])
-				,{
-					xtype: 'colorpalettefield',
-					fieldLabel: this.localize('Colors'),
-					itemId: 'colors',
-					colors: this.editorConfiguration.disableColorPicker ? [] : null,
-					colorsConfiguration: this.editorConfiguration.colors,
-					hidden: true,
-					listeners: {
-						select: {
-							fn: this.onColorSelect,
-							scope: this
-						}
-					}
+			}
+
+			for (var attribute in this.attributes) {
+				if (this.attributes.hasOwnProperty(attribute)) {
+					$attributeSelect.append(
+						$('<option />', {
+							value: encodeURI(this.attributes[attribute][2]),
+							'data-tag': this.attributes[attribute][0]
+						}).text(this.attributes[attribute][1])
+					);
 				}
-			];
-			return {
-				xtype: 'fieldset',
-				title: this.localize('Quick Tag Editor'),
-				defaultType: 'textfield',
-				labelWidth: 100,
-				defaults: {
-					helpIcon: true
-				},
-				items: itemsConfig
-			};
+			}
+
+			for (var value in this.values) {
+				if (this.values.hasOwnProperty(value)) {
+					$valueSelect.append(
+						$('<option />', {
+							value: encodeURI(this.values[value][2]),
+							'data-attribute': this.values[value][0]
+						}).text(this.values[value][1])
+					);
+				}
+			}
+
+			require(['TYPO3/CMS/Core/Contrib/jquery.minicolors'], function () {
+				$colorInput.minicolors({
+					theme: 'bootstrap',
+					format: 'hex',
+					position: 'bottom left',
+					changeDelay: 50
+				});
+			});
+
+			$fieldset.append(
+				$('<h4 />', {'class': 'form-section-headline'}).text(this.localize('Quick Tag Editor')),
+				$('<div />', {'class': 'form-group'}).append(
+					$('<label />', {'class': 'col-sm-2'}).text('<'),
+					$('<div />', {'class': 'col-sm-8'}).append(
+						$('<textarea />', {name: 'insertedTag', 'class': 'form-control'})
+							.on('change focus', $.proxy(this.filterAttributes, this))
+					),
+					$('<label />', {'class': 'col-sm-2'}).text('>')
+				),
+				$('<div />', {'class': 'form-group'}).append(
+					$('<label />', {'class': 'col-sm-2'}).text(this.localize('TAGs')),
+					$('<div />', {'class': 'col-sm-10'}).append(
+						$tagSelect
+							.on('change', $.proxy(this.onTagSelect, this))
+					)
+				),
+				$('<div />', {'class': 'form-group'}).append(
+					$('<label />', {'class': 'col-sm-2'}).text(this.localize('ATTRIBUTES')),
+					$('<div />', {'class': 'col-sm-10'}).append(
+						$attributeSelect
+							.on('change', $.proxy(this.onAttributeSelect, this))
+					)
+				).hide(),
+				$('<div />', {'class': 'form-group'}).append(
+					$('<label />', {'class': 'col-sm-2'}).text(this.localize('OPTIONS')),
+					$('<div />', {'class': 'col-sm-10'}).append(
+						$valueSelect
+							.on('change', $.proxy(this.onValueSelect, this))
+					)
+				).hide(),
+				$('<div />', {'class': 'form-group'}).append(
+					$('<label />', {'class': 'col-sm-2'}).text(this.localize('Colors')),
+					$('<div />', {'class': 'col-sm-10'}).append(
+						$colorInput
+							.on('change', $.proxy(this.onColorSelect, this))
+					)
+				).hide()
+			);
+
+			return $('<form />', {'class': 'form-horizontal'}).append($fieldset);
 		},
-		/*
+		/**
 		 * Add a record for each class selector found in the stylesheets
+		 *
+		 * @param {Object} $valueSelect
 		 */
-		captureClasses: function (valueStore) {
-			this.parseCssRule(this.editor.document.styleSheets, valueStore);
+		captureClasses: function ($valueSelect) {
+			this.parseCssRule(this.editor.document.styleSheets, $valueSelect);
 		},
-		parseCssRule: function (rules, valueStore) {
+		/**
+		 * @param {Object} rules
+		 * @param {Object} $valueSelect
+		 */
+		parseCssRule: function (rules, $valueSelect) {
 			for (var i = 0, n = rules.length; i < n; i++) {
 				var rule = rules[i];
 				if (rule.selectorText) {
 					if (/^(\w*)\.(\w+)$/.test(rule.selectorText)) {
-						valueStore.add(new this.valueRecord({
-							attribute: 'class',
-							text: rule.selectorText,
-							value: RegExp.$2 + '"'
-						}));
+						$valueSelect.append(
+							$('<option />', {
+								value: RegExp.$2 + '"',
+								'data-attribute': 'class'
+							}).text(rule.selectorText)
+						);
 					}
 				} else {
 					// ImportRule (Mozilla)
 					if (rule.styleSheet) {
 						try {
 							if (rule.styleSheet.cssRules) {
-								this.parseCssRule(rule.styleSheet.cssRules, valueStore);
+								this.parseCssRule(rule.styleSheet.cssRules, $valueSelect);
 							}
 						} catch (e) {
 							if (/Security/i.test(e)) {
@@ -259,44 +252,46 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					}
 					// MediaRule (Mozilla)
 					if (rule.cssRules) {
-						this.parseCssRule(rule.cssRules, valueStore);
+						this.parseCssRule(rule.cssRules, $valueSelect);
 					}
 					// IE imports
 					if (rule.imports) {
-						this.parseCssRule(rule.imports, valueStore);
+						this.parseCssRule(rule.imports, $valueSelect);
 					}
 					if (rule.rules) {
-						this.parseCssRule(rule.rules, valueStore);
+						this.parseCssRule(rule.rules, $valueSelect);
 					}
 				}
 			}
 		},
-		/*
+		/**
 		 * Handler invoked when a tag is selected
 		 * Update the attributes combo and the inserted tag field
+		 *
+		 * @param {Event} e
 		 */
-		onTagSelect: function (tagCombo, tagRecord) {
-			var tag = tagRecord.get('value');
-			this.filterAttributes();
-			this.attributeCombo.clearValue();
-			this.attributeCombo.show();
-			this.valueCombo.hide();
-			this.insertedTag.setValue(tag);
-			this.insertedTag.focus(false, 50);
+		onTagSelect: function (e) {
+			var $me = $(e.currentTarget),
+				tag = decodeURI($me.val());
+			this.filterAttributes(e);
+			this.attributeCombo.val('');
+			this.attributeCombo.closest('.form-group').show();
+			this.valueCombo.closest('.form-group').hide();
+			this.insertedTag.val(tag).focus();
 		},
-		/*
+		/**
 		 * Filter out attributes not applicable to the tag, already present in the tag or not allowed
+		 *
+		 * @param {Event} event
 		 */
-		filterAttributes: function () {
-			var tag = this.tagCombo.getValue();
-			var insertedTag = this.insertedTag.getValue();
-			var attributeStore = this.attributeCombo.getStore();
-			if (attributeStore.realSnapshot) {
-				attributeStore.snapshot = attributeStore.realSnapshot;
-				delete attributeStore.realSnapshot;
-				attributeStore.clearFilter(true);
-			}
-			var allowedAttribs = '';
+		filterAttributes: function (event) {
+			var $me = $(event.currentTarget),
+				tag = decodeURI($me.val()),
+				insertedTag = this.insertedTag.val(),
+				allowedAttribs = '';
+
+			this.attributeCombo.find('.hidden').removeClass('hidden');
+
 			if (this.allowedAttribs) {
 				allowedAttribs = this.allowedAttribs.split(',').join('|').replace(/ /g, '');
 			}
@@ -305,123 +300,143 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				allowedAttribs += this.tags[tag].allowedAttribs.split(',').join('|').replace(/ /g, '');
 			}
 			if (allowedAttribs) {
-				var allowedAttribs = new RegExp('^(' + allowedAttribs + ')$');
+				allowedAttribs = new RegExp('^(' + allowedAttribs + ')$');
 			}
-			attributeStore.filterBy(function (attributeRecord) {
-					// Filter out attributes already used in the tag, not applucable to tag or not allowed
-				var testAttrib = new RegExp('(' + attributeRecord.get('value') + ')', 'ig');
-				var tagValue = attributeRecord.get('tag');
-				return (tagValue == 'all' || tagValue == tag) && !testAttrib.test(insertedTag) && (!allowedAttribs || allowedAttribs.test(attributeRecord.get('text')));
+			this.attributeCombo.children().each(function() {
+				var $me = $(this),
+					testAttrib = new RegExp('(' + decodeURI($me.val()) + ')', 'ig'),
+					tagValue = $me.data('tag');
+
+				if (tagValue !== 'all'
+					&& tagValue !== tag
+					|| testAttrib.test(insertedTag)
+					|| allowedAttribs
+					&& !allowedAttribs.test($me.text())
+				) {
+					$me.addClass('hidden');
+				}
 			});
-				// Make sure the combo list is filtered
-			attributeStore.realSnapshot = attributeStore.snapshot;
-			attributeStore.snapshot = attributeStore.data;
 		},
-		/*
+		/**
 		 * Filter out not applicable to the attribute or style values already present in the tag
 		 * Filter out classes not applicable to the current tag
+		 *
+		 * @param {String} attribute
 		 */
 		filterValues: function (attribute) {
-			var tag = this.tagCombo.getValue();
-			var insertedTag = this.insertedTag.getValue();
-			var valueStore = this.valueCombo.getStore();
-			if (valueStore.realSnapshot) {
-				valueStore.snapshot = valueStore.realSnapshot;
-				delete valueStore.realSnapshot;
-				valueStore.clearFilter(true);
-			}
-			var expr = new RegExp('(^' + tag + '[\.])|(^[\.])', 'i');
-			valueStore.filterBy(function (valueRecord) {
-				var value = valueRecord.get('value');
+			var tag = decodeURI(this.tagCombo.val()),
+				insertedTag = this.insertedTag.val(),
+				expr = new RegExp('(^' + tag + '[\.])|(^[\.])', 'i');
+
+			this.valueCombo.find('.hidden').removeClass('hidden');
+			this.valueCombo.find('option').each(function() {
+				var $me = $(this),
+					value = decodeURI($me.val());
+
 				if (attribute === 'style') {
-					expr = new RegExp('(' + ((value.charAt(0) == '+' || value.charAt(0) == '-') ? '\\' : '') + value + ')', 'ig');
+					expr = new RegExp('(' + ((value.charAt(0) === '+' || value.charAt(0) === '-') ? '\\' : '') + value + ')', 'ig');
 				}
-				return valueRecord.get('attribute') == attribute && (attribute !== 'style' || !expr.test(insertedTag)) && (attribute !== 'class' || expr.test(valueRecord.get('text')));
+				if (!($me.data('attribute') === attribute
+					&& (
+						attribute !== 'style'
+						|| !expr.test(insertedTag)
+					) && (
+						attribute !== 'class'
+						|| expr.test($me.text())
+					)
+				)) {
+					$me.addClass('hidden');
+				}
 			});
-				// Make sure the combo list is filtered
-			valueStore.realSnapshot = valueStore.snapshot;
-			valueStore.snapshot = valueStore.data;
-			this.valueCombo.setVisible(valueStore.getCount() ? true : false);
+
+			this.valueCombo.closest('.form-group').toggle(this.valueCombo.find('option:not(.hidden)').length > 0);
 		},
-		/*
+		/**
 		 * Handler invoked when an attribute is selected
 		 * Update the values combo and the inserted tag field
+		 *
+		 * @param {Event} event
 		 */
-		onAttributeSelect: function (attributeCombo, attributeRecord) {
-			var insertedTag = this.insertedTag.getValue();
-			var attribute = attributeRecord.get('text');
-			this.valueCombo.clearValue();
+		onAttributeSelect: function (event) {
+			var $me = $(event.currentTarget),
+				insertedTag = this.insertedTag.val(),
+				attribute = $me.find('option:selected').text();
+
+			this.valueCombo.val('');
 			if (/color/.test(attribute)) {
-				this.valueCombo.hide();
-				this.colorCombo.show();
+				this.valueCombo.closest('.form-group').hide();
+				this.colorCombo.closest('.form-group').show();
 			} else {
 				this.filterValues(attribute);
 			}
-			this.insertedTag.setValue(insertedTag + ((/\"/.test(insertedTag) && (!/\"$/.test(insertedTag) || /=\"$/.test(insertedTag))) ? '" ' : ' ') + attributeRecord.get('value'));
-			this.insertedTag.focus(false, 50);
+			this.insertedTag
+				.val(insertedTag + ((/\"/.test(insertedTag) && (!/\"$/.test(insertedTag) || /=\"$/.test(insertedTag))) ? '" ' : ' ') + decodeURI($me.val()))
+				.focus();
 		},
-		/*
+		/**
 		 * Handler invoked when a value is selected
 		 * Update the inserted tag field
+		 *
+		 * @param {Event} e
 		 */
-		onValueSelect: function (combo, record) {
-			var style = this.attributeCombo.getValue() === 'style="';
-			this.insertedTag.setValue(this.insertedTag.getValue() + (style && !/="$/.test(this.insertedTag.getValue()) ? '; ' : '') + combo.getValue());
-			this.insertedTag.focus(false, 50);
-			combo.clearValue();
+		onValueSelect: function (e) {
+			var $me = $(e.currentTarget),
+				style = decodeURI(this.attributeCombo.val()) === 'style="';
+
+			this.insertedTag
+				.val(this.insertedTag.val() + (style && !/="$/.test(this.insertedTag.val()) ? '; ' : '') + decodeURI($me.val()))
+				.focus();
+
 			if (style) {
-				if (/color/.test(record.get('text'))) {
-					this.colorCombo.show();
+				if (/color/.test($me.find('option:selected').text())) {
+					this.colorCombo.closest('.form-group').show();
 				}
 			} else {
-				combo.hide();
-				this.attributeCombo.clearValue();
+				$me.closest('.form-group').hide();
+				this.attributeCombo.val('');
 			}
+			$me.val('');
 		},
-		/*
+		/**
 		 * Handler invoked when a color is selected
 		 * Update the inserted tag field
+		 *
+		 * @param {Event} event
 		 */
-		onColorSelect: function (combo, record) {
-			var style = this.attributeCombo.getValue() === 'style="';
-			this.insertedTag.setValue(this.insertedTag.getValue() + '#' + combo.getValue() + (style ? '' : '"'));
-			this.insertedTag.focus(false, 50);
-			combo.setValue('');
-			combo.hide();
+		onColorSelect: function (event) {
+			var $me = $(event.currentTarget),
+				style = decodeURI(this.attributeCombo.val()) === 'style="';
+
+			this.insertedTag
+				.val(this.insertedTag.val() + decodeURI($me.val()) + (style ? '' : '"'))
+				.focus();
+
+			$me.val('');
+			$me.closest('.form-group').hide();
 			if (!style) {
 				this.attributeCombo.clearValue();
 			}
 		},
-		/*
+		/**
 		 * Handler invoked when a OK button is pressed
+		 *
+		 * @param {Event} event
 		 */
-		setTag: function (button, event) {
+		setTag: function (event) {
 			this.restoreSelection();
-			var insertedTag = this.insertedTag.getValue();
-			var currentTag = this.tagCombo.getValue();
+			var insertedTag = this.insertedTag.val();
+			var currentTag = this.tagCombo.val();
 			if (!insertedTag) {
-				TYPO3.Dialog.InformationDialog({
-					title: this.getButton('InsertTag').tooltip.title,
-					msg: this.localize('Enter the TAG you want to insert'),
-					fn: function () { this.insertedTag.focus(); },
-					scope: this
-				});
-				event.stopEvent();
+				Notification.info(
+					this.getButton('InsertTag').tooltip.title,
+					this.localize('Enter the TAG you want to insert')
+				);
+				this.insertedTag.focus();
+				event.stopImmediatePropagation();
 				return false;
 			}
-			if (this.quotes.test(insertedTag)) {
-				if (this.quotes.test(insertedTag + '"')) {
-					TYPO3.Dialog.InformationDialog({
-						title: this.getButton('InsertTag').tooltip.title,
-						msg: this.localize('There are some unclosed quote'),
-						fn: function () { this.insertedTag.focus(); this.insertedTag.select(); },
-						scope: this
-					});
-					event.stopEvent();
-					return false;
-				} else {
-					this.insertedTag.setValue(insertedTag + '"');
-				}
+			if (!this.quotes.test(insertedTag)) {
+				insertedTag += '"';
 			}
 			insertedTag = insertedTag.replace(/(<|>)/g, '');
 			var tagOpen = '<' + insertedTag + '>';
@@ -433,51 +448,23 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			}
 			this.editor.getSelection().surroundHtml(tagOpen, tagClose);
 			this.close();
-			event.stopEvent();
+			event.stopImmediatePropagation();
 		},
-		/*
+		/**
 		 * Open the dialogue window
 		 *
-		 * @param	string		title: the window title
-		 * @param	object		arguments: some arguments for the handler
-		 * @param	integer		dimensions: the opening dimensions of the window
-		 * @param	object		items: the configuration of the window items
-		 * @param	function	handler: handler when the OK button if clicked
-		 *
-		 * @return	void
+		 * @param {String} title The window title
+		 * @param {Object} arguments Some arguments for the handler
+		 * @param {Object} items The configuration of the window items
+		 * @param {Function} handler Handler when the OK button if clicked
 		 */
-		openDialogue: function (title, arguments, dimensions, items, handler) {
-			if (this.dialog) {
-				this.dialog.close();
-			}
-			this.dialog = new Ext.Window({
-				title: this.localize(title),
-				arguments: arguments,
-				cls: 'htmlarea-window',
-				border: false,
-				width: dimensions.width,
-				height: 'auto',
-				iconCls: this.getButton(arguments.buttonId).iconCls,
-				listeners: {
-					close: {
-						fn: this.onClose,
-						scope: this
-					}
-				},
-				items: {
-					xtype: 'container',
-					layout: 'form',
-					defaults: {
-						labelWidth: 150
-					},
-					items: items
-				},
-				buttons: [
-					this.buildButtonConfig('OK', handler),
-					this.buildButtonConfig('Cancel', this.onCancel)
-				]
-			});
-			this.show();
+		openDialogue: function (title, arguments, items, handler) {
+			this.dialog = Modal.show(title, items, Severity.notice, [
+				this.buildButtonConfig('Cancel', $.proxy(this.onCancel, this), true),
+				this.buildButtonConfig('OK', $.proxy(handler, this), false, Severity.notice)
+			]);
+			this.dialog.arguments = arguments;
+			this.dialog.on('modal-dismiss', $.proxy(this.onClose, this));
 		},
 		tags: [
 			['a', 'a'],
@@ -782,5 +769,4 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	});
 
 	return QuickTag;
-
 });

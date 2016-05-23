@@ -14,12 +14,14 @@
 /**
  * Context Menu Plugin for TYPO3 htmlArea RTE
  */
-define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+define([
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
-	function (Plugin, UserAgent, Util, Dom, Event) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
+	'jquery'
+], function (Plugin, UserAgent, Util, Dom, Event, $) {
 
 	var ContextMenu = function (editor, pluginName) {
 		this.constructor.super.call(this, editor, pluginName);
@@ -61,33 +63,53 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		 * This function gets called when the editor gets generated
 		 */
 		onGenerate: function() {
-			var self = this;
+			var self = this,
+				$iframeDocument = $(this.editor.document.documentElement);
+
+			this.menu =
+				'<div id="contentMenu0" class="context-menu htmlarea-context-menu"></div>'
+				+ '<div id="contentMenu1" class="context-menu htmlarea-context-menu" style="display: block;"></div>'
+			;
+			this.menuItems = {};
+
 			// Build the context menu
-			this.menu = new Ext.menu.Menu(Util.applyIf({
-				cls: 'htmlarea-context-menu',
-				defaultType: 'menuitem',
-				shadow: false,
-				maxHeight: this.editor.iframe.height - this.editor.document.documentElement.clientHeight,
-				listeners: {
-					itemClick: {
-						fn: this.onItemClick,
-						scope: this
-					},
-					show: {
-						fn: this.onShow,
-						scope: this
-					},
-					hide: {
-						fn: this.onHide,
-						scope: this
-					}
-				},
-				items: this.buildItemsConfig()
-			}, this.pageTSConfiguration));
+			this.buildContextMenu();
+
+			$('body').on('click', '#contentMenu1 [data-type="menuitem"]', function(e) {
+				e.preventDefault();
+
+				self.onItemClick(self.menuItems[$(this).data('itemId')]);
+				$('#contentMenu1').hide();
+			}).on('click', '.t3js-ctx-menu-direction', function(e) {
+				e.stopPropagation();
+
+				var $me = $(this),
+					$firstGroupItem = $me.parent().find('.list-group-item:first'),
+					direction = $me.data('direction'),
+					itemHeight = $firstGroupItem.outerHeight(),
+					listGroup = $firstGroupItem.parent(),
+					scrollTop = direction === 'down'
+						? listGroup.scrollTop() + itemHeight
+						: listGroup.scrollTop() - itemHeight;
+
+				listGroup.scrollTop(scrollTop);
+			});
+
+			Event.on(this.editor.document.documentElement, 'click', function () {
+				$('#contentMenu1').hide();
+			});
+			Event.on('body', 'click', function () {
+				$('#contentMenu1').hide();
+			});
 			// Monitor contextmenu clicks on the iframe
-			Event.on(this.editor.document.documentElement, 'contextmenu', function (event) { return self.show(event, event.target); });
+			Event.on(this.editor.document.documentElement, 'contextmenu', function (event) {
+				return self.show(event, event.target);
+			});
 			// Monitor editor being unloaded
-			Event.one(this.editor.iframe.getIframeWindow(), 'unload', function (event) { self.onBeforeDestroy(event); return  true; });
+			Event.one(this.editor.iframe.getIframeWindow(), 'unload', function () {
+				$('#contentMenu1').remove();
+				return true;
+			});
 
 			this.mousePosition = {
 				x: 0,
@@ -97,54 +119,18 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				self.mousePosition.x = e.pageX;
 				self.mousePosition.y = e.pageY;
 			};
-			Event.on(this.editor.document.documentElement, 'mousemove', onMouseUpdate);
-			Event.on(this.editor.document.documentElement, 'mouseenter', onMouseUpdate);
-
-			this.menu.constrainScroll = this.constrainScroll;
-		},
-
-		/**
-		 * This overrides the constrainScroll method of Ext.menu.Menu. The only difference here is that the Y position
-		 * and the height is NOT recalculated even if maxHeight is set.
-		 *
-		 * @param {Number} y
-		 * @returns {Number}
-		 */
-		constrainScroll: function(y) {
-			var max, full = this.ul.setHeight('auto').getHeight(),
-				returnY = y, normalY, parentEl, scrollTop, viewHeight;
-			if (this.floating){
-				parentEl = Ext.fly(this.el.dom.parentNode);
-				scrollTop = parentEl.getScroll().top;
-				viewHeight = parentEl.getViewSize().height;
-
-				normalY = y - scrollTop;
-				max = this.maxHeight ? this.maxHeight : viewHeight - normalY;
-			} else {
-				max = this.getHeight();
-			}
-
-			if (this.maxHeight){
-				max = Math.min(this.maxHeight, max);
-			}
-			if (full > max && max > 0){
-				this.activeMax = max - this.scrollerHeight * 2 - this.el.getFrameWidth('tb') - Ext.num(this.el.shadowOffset, 0);
-				this.ul.setHeight(this.activeMax);
-				this.createScrollers();
-				this.el.select('.x-menu-scroller').setDisplayed('');
-			} else {
-				this.ul.setHeight(full);
-				this.el.select('.x-menu-scroller').setDisplayed('none');
-			}
-			this.ul.dom.scrollTop = 0;
-			return returnY;
+			$iframeDocument.on('mousemove mouseenter', this.editor.document.documentElement, onMouseUpdate);
 		},
 
 		/**
 		 * Create the menu items config
 		 */
-		buildItemsConfig: function () {
-			var itemsConfig = [];
+		buildContextMenu: function () {
+			// Initialize click menu container
+			if ($('#contentMenu0').length === 0) {
+				$('body').append(this.menu);
+			}
+
 			// Walk through the editor toolbar configuration nested arrays: [ toolbar [ row [ group ] ] ]
 			var firstInGroup = true, convertedItemId;
 			var i, j ,k, n, m, p, row, group, itemId;
@@ -156,10 +142,9 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					group = row[j];
 					if (!firstInGroup) {
 						// If a visible item was added to the line
-						itemsConfig.push({
-								xtype: 'menuseparator',
-								cls: 'separator'
-						});
+						this.menuItems['___' + j] = {
+							type: 'menuseparator'
+						};
 					}
 					firstInGroup = true;
 					// Add each item
@@ -172,15 +157,14 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 							// xtype is set through applied button configuration
 							if (button && button.xtype === 'htmlareabutton' && !button.hideInContextMenu) {
 								itemId = button.getItemId();
-								itemsConfig.push({
+								this.menuItems[itemId] = {
+									type: 'menuitem',
 									itemId: itemId,
-									cls: 'button',
-									overCls: 'hover',
 									text: (button.contextMenuTitle ? button.contextMenuTitle : button.tooltip),
 									iconCls: button.iconCls,
 									helpText: (button.helpText ? button.helpText : this.localize(itemId + '-tooltip')),
 									hidden: true
-								});
+								};
 								firstInGroup = false;
 							}
 						}
@@ -189,21 +173,17 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			}
 			// If a visible item was added
 			if (!firstInGroup) {
-				itemsConfig.push({
-						xtype: 'menuseparator',
-						cls: 'separator'
-				});
+				this.menuItems['___9999'] = {
+					type: 'menuseparator'
+				};
 			}
 			 // Add special target delete item
-			itemId = 'DeleteTarget';
-			itemsConfig.push({
-				itemId: itemId,
-				cls: 'button',
-				overCls: 'hover',
+			this.menuItems['DeleteTarget'] = {
+				type: 'menuitem',
+				itemId: 'DeleteTarget',
 				iconCls: 'htmlarea-action-delete-item',
 				helpText: this.localize('Remove this node from the document')
-			});
-			return itemsConfig;
+			};
 		},
 
 		/**
@@ -218,7 +198,6 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		 * Handler when the menu gets hidden
 		 */
 		onHide: function () {
-			var self = this;
 			Event.off(this.editor.document.documentElement, 'mousedown.contextmeu');
 		},
 
@@ -243,82 +222,123 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			this.ranges = this.editor.getSelection().getRanges();
 			// Show the context menu
 			var iframePosition = Dom.getPosition(this.editor.iframe.getEl());
-			this.menu.showAt([
-				iframePosition.x + this.mousePosition.x,
-				document.body.scrollTop + iframePosition.y + this.mousePosition.y
-			]);
+			$('#contentMenu1').css({
+				left: iframePosition.x + this.mousePosition.x + 'px',
+				top: document.body.scrollTop + iframePosition.y + this.mousePosition.y + 'px'
+			}).show();
 		},
 
 		/**
 		 * Show items depending on context
 		 */
 		showContextItems: function (target) {
-			var lastIsSeparator = false, lastIsButton = false, xtype, lastVisible;
-			this.menu.cascade(function (menuItem) {
-				xtype = menuItem.getXType();
-				if (xtype === 'menuseparator') {
-					menuItem.setVisible(lastIsButton);
+			var self = this,
+				lastIsButton = false,
+				lastVisible;
+
+			$.each(this.menuItems, function(itemId, item) {
+				if (item.type === 'menuseparator') {
+					item.hidden = !lastIsButton;
 					lastIsButton = false;
-				} else if (xtype === 'menuitem') {
-					var button = this.getButton(menuItem.getItemId());
+				} else if (item.type === 'menuitem') {
+					var button = self.getButton(itemId);
 					if (button) {
 						var text = button.contextMenuTitle ? button.contextMenuTitle : button.tooltip;
-						if (menuItem.text != text) {
-							menuItem.setText(text);
+						if (item.text !== text) {
+							item.text = text;
 						}
-						menuItem.helpText = button.helpText ? button.helpText : menuItem.helpText;
-						menuItem.setVisible(!button.disabled);
+						item.helpText = button.helpText ? button.helpText : item.helpText;
+						item.hidden = button.disabled;
 						lastIsButton = lastIsButton || !button.disabled;
 					} else {
 						// Special target delete item
-						this.deleteTarget = target;
+						self.deleteTarget = target;
 						if (/^(html|body)$/i.test(target.nodeName)) {
-							this.deleteTarget = null;
+							self.deleteTarget = null;
 						} else if (/^(table|thead|tbody|tr|td|th|tfoot)$/i.test(target.nodeName)) {
-							this.deleteTarget = Dom.getFirstAncestorOfType(target, 'table');
+							self.deleteTarget = Dom.getFirstAncestorOfType(target, 'table');
 						} else if (/^(ul|ol|dl|li|dd|dt)$/i.test(target.nodeName)) {
-							this.deleteTarget = Dom.getFirstAncestorOfType(target, ['ul', 'ol', 'dl']);
+							self.deleteTarget = Dom.getFirstAncestorOfType(target, ['ul', 'ol', 'dl']);
 						}
-						if (this.deleteTarget) {
-							menuItem.setVisible(true);
-							menuItem.setText(this.localize('Remove the') + ' &lt;' + this.deleteTarget.nodeName.toLowerCase() + '&gt; ');
+						if (self.deleteTarget) {
+							item.hidden = false;
+							item.text = 'Remove the <' + self.deleteTarget.nodeName.toLowerCase() + '>';
 							lastIsButton = true;
 						} else {
-							menuItem.setVisible(false);
+							item.hidden = true;
 						}
 					}
 				}
-				if (!menuItem.hidden) {
-					lastVisible = menuItem;
+
+				if (!item.hidden) {
+					lastVisible = item;
 				}
-			}, this);
-				// Hide the last item if it is a separator
-			if (!lastIsButton) {
-				lastVisible.setVisible(false);
+			});
+
+			if (!lastIsButton && typeof lastVisible) {
+				lastVisible.hidden = true;
 			}
+
+			// Render context menu items
+			var $contentMenu = $('#contentMenu1'),
+				maxHeight = Math.max(160, this.editor.iframe.height - this.editor.document.documentElement.clientHeight),
+				$menuItems = $('<div />', {'class': 'list-group', style: 'max-height: ' + maxHeight + 'px; overflow: hidden;'});
+			$.each(this.menuItems, function(_, item) {
+				if (typeof item.hidden !== 'undefined' && item.hidden) {
+					return true;
+				}
+
+				if (item.type === 'menuseparator') {
+					$menuItems.append($('<span />', {'class': 'list-group-item list-group-item-divider', 'data-type': item.type}));
+				} else if (item.type === 'menuitem') {
+					$menuItems.append(
+					$('<a />', {href: '#', 'class': 'list-group-item', 'data-type': item.type, 'data-item-id': item.itemId})
+						.text(item.text)
+						.prepend(
+							$('<img />', {
+								src: '/typo3/sysext/backend/Resources/Public/Images/clear.gif', 'class': 'ctx-menu-item-icon ' + item.iconCls
+							})
+						)
+					);
+				}
+			});
+
+			$contentMenu.empty().append(
+				$('<button />', {
+					'class': 'btn-block ctx-menu-direction ctx-menu-direction-top t3js-ctx-menu-direction',
+					type: 'button',
+					'data-direction': 'up'
+				}),
+				$menuItems,
+				$('<button />', {
+					'class': 'btn-block ctx-menu-direction ctx-menu-direction-bottom t3js-ctx-menu-direction',
+					type: 'button',
+					'data-direction': 'down'
+				})
+			);
 		},
 
 		/**
 		 * Handler invoked when a menu item is clicked on
 		 */
-		onItemClick: function (item, event) {
+		onItemClick: function (item) {
 			this.editor.getSelection().setRanges(this.ranges);
-			var button = this.getButton(item.getItemId());
+			var button = this.getButton(item.itemId);
 			if (button) {
 				/**
 				 * @event HTMLAreaEventContextMenu
 				 * Fires when the button is triggered from the context menu
 				 */
 				Event.trigger(button, 'HTMLAreaEventContextMenu', [button]);
-			} else if (item.getItemId() === 'DeleteTarget') {
-					// Do not leave a non-ie table cell empty
+			} else if (item.itemId === 'DeleteTarget') {
+				// Do not leave a non-ie table cell empty
 				var parent = this.deleteTarget.parentNode;
 				parent.normalize();
 				if (!UserAgent.isIE && /^(td|th)$/i.test(parent.nodeName) && parent.childNodes.length == 1) {
-						// Do not leave a non-ie table cell empty
+					// Do not leave a non-ie table cell empty
 					parent.appendChild(this.editor.document.createElement('br'));
 				}
-					// Try to find a reasonable replacement selection
+				// Try to find a reasonable replacement selection
 				var nextSibling = this.deleteTarget.nextSibling;
 				var previousSibling = this.deleteTarget.previousSibling;
 				if (nextSibling) {
@@ -329,17 +349,8 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				Dom.removeFromParent(this.deleteTarget);
 				this.editor.updateToolbar();
 			}
-		},
-
-		/**
-		 * Handler invoked when the editor is about to be destroyed
-		 */
-		onBeforeDestroy: function (event) {
-			this.menu.removeAll(true);
-			this.menu.destroy();
 		}
 	});
 
 	return ContextMenu;
-
 });

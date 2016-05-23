@@ -64,10 +64,9 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		/**
 		 * This function gets called when the button was pressed
 		 *
-		 * @param	object		editor: the editor instance
-		 * @param	string		id: the button id or the key
-		 *
-		 * @return	boolean		false if action is completed
+		 * @param {Object} editor The editor instance
+		 * @param {String} id The button id or the key
+		 * @return {Boolean} False if action is completed
 		 */
 		onButtonPress: function(editor, id) {
 			// Could be a button or its hotkey
@@ -76,13 +75,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			this.openContainerWindow(
 				buttonId,
 				'Insert custom element',
-				this.getWindowDimensions(
-					{
-						width:	550,
-						height:	350
-					},
-					buttonId
-				),
+				350,
 				this.makeUrlFromModulePath(this.userModulePath)
 			);
 			return false;
@@ -90,5 +83,4 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	});
 
 	return UserElements;
-
 });

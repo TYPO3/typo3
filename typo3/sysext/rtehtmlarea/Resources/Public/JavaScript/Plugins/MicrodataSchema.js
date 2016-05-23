@@ -14,11 +14,15 @@
 /**
  * Microdata Schema Plugin for TYPO3 htmlArea RTE
  */
-define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+define([
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
-	function (Plugin, UserAgent, Dom, Util) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
+	'jquery',
+	'TYPO3/CMS/Backend/Modal',
+	'TYPO3/CMS/Backend/Severity'
+], function (Plugin, UserAgent, Dom, Util, $, Modal, Severity) {
 
 	var MicrodataSchema = function (editor, pluginName) {
 		this.constructor.super.call(this, editor, pluginName);
@@ -67,104 +71,62 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		buttonList: [
 			['ShowMicrodata', null, 'microdata-show']
 		],
-		/*
-		 * Default configuration values for dialogue form fields
-		 */
-		configDefaults: {
-			combo: {
-				editable: true,
-				selectOnFocus: true,
-				typeAhead: true,
-				triggerAction: 'all',
-				forceSelection: true,
-				mode: 'local',
-				valueField: 'name',
-				displayField: 'label',
-				helpIcon: true,
-				tpl: '<tpl for="."><div ext:qtip="{comment}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{label}</div></tpl>'
-			}
-		},
-		/*
+
+		itemtype: [],
+		itemprop: [],
+		filteredProperties: [],
+		/**
 		 * This function gets called when the editor is generated
 		 */
 		onGenerate: function () {
-				// Create the types and properties stores
-			this.typeStore = Ext.StoreMgr.lookup('itemtype');
-			if (!this.typeStore) {
-				this.typeStore = new Ext.data.JsonStore({
-					autoDestroy:  false,
-					autoLoad: true,
-					fields: [{ name: 'label'}, { name: 'name'},  { name: 'comment'}, { name: 'subClassOf'}],
-					listeners: {
-						load: {
-							fn: this.addMicrodataMarkingRules,
-							scope: this
-						}
-					},
-					root: 'types',
-					storeId: 'itemtype',
-					url: this.editorConfiguration.schemaUrl
-				});
-			} else {
-				this.addMicrodataMarkingRules(this.typeStore);
-			}
-			this.typeStore = Ext.StoreMgr.lookup('itemprop');
-			if (!this.propertyStore) {
-				this.propertyStore = new Ext.data.JsonStore({
-					autoDestroy:  false,
-					autoLoad: true,
-					fields: [{ name: 'label'}, { name: 'name'},  { name: 'comment'}, { name: 'domain'}, { name: 'range'}],
-					listeners: {
-						load: {
-							fn: this.addMicrodataMarkingRules,
-							scope: this
-						}
-					},
-					root: 'properties',
-					storeId: 'itemprop',
-					url: this.editorConfiguration.schemaUrl
-				});
-			} else {
-				this.addMicrodataMarkingRules(this.propertyStore);
-			}
+			var self = this;
+			$.ajax({
+				url: this.editorConfiguration.schemaUrl,
+				dataType: 'json',
+				success: function (response) {
+					self.itemtype = response.types;
+					self.itemprop = response.properties;
+					self.addMicrodataMarkingRules('itemtype', response.types);
+					self.addMicrodataMarkingRules('itemprop', response.properties);
+				}
+			});
 		},
-		/*
+		/**
 		 * This function adds rules to the stylesheet for language mark highlighting
 		 * Model: body.htmlarea-show-language-marks *[lang=en]:before { content: "en: "; }
 		 * Works in IE8, but not in earlier versions of IE
+		 *
+		 * @param {String} category
+		 * @param {Array} items
 		 */
-		addMicrodataMarkingRules: function (store) {
+		addMicrodataMarkingRules: function (category, items) {
 			var styleSheet = this.editor.document.styleSheets[0];
-			store.each(function (option) {
-				var selector = 'body.htmlarea-show-microdata *[' + store.storeId + '="' + option.get('name') + '"]:before';
-				var style = 'content: "' + option.get('label') + ': "; font-variant: small-caps;';
+			$.each(items, function (_, option) {
+				var selector = 'body.htmlarea-show-microdata *[' + category + '="' + option.name + '"]:before';
+				var style = 'content: "' + option.label + ': "; font-variant: small-caps;';
 				var rule = selector + ' { ' + style + ' }';
 				try {
 					styleSheet.insertRule(rule, styleSheet.cssRules.length);
 				} catch (e) {
 					this.appendToLog('onGenerate', 'Error inserting css rule: ' + rule + ' Error text: ' + e, 'warn');
 				}
-				return true;
-			}, this);
+			});
 		},
 
 		/**
 		 * This function gets called when a button was pressed.
 		 *
-		 * @param	object		editor: the editor instance
-		 * @param	string		id: the button id or the key
-		 *
-		 * @return	boolean		false if action is completed
+		 * @param {Object} editor The editor instance
+		 * @param {String} id The button id or the key
+		 * @return {Boolean} false if action is completed
 		 */
-		onButtonPress: function (editor, id, target) {
+		onButtonPress: function (editor, id) {
 			// Could be a button or its hotkey
 			var buttonId = this.translateHotKey(id);
 			buttonId = buttonId ? buttonId : id;
 			switch (buttonId) {
 				case 'ShowMicrodata':
 					this.toggleMicrodata();
-					break;
-				default	:
 					break;
 			}
 			return false;
@@ -173,9 +135,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		/**
 		 * Toggles the display of microdata
 		 *
-		 * @param	boolean		forceMicrodata: if set, microdata is displayed whatever the current state
-		 *
-		 * @return	void
+		 * @param {Boolean} forceMicrodata If set, microdata is displayed whatever the current state
 		 */
 		toggleMicrodata: function (forceMicrodata) {
 			var body = this.editor.document.body;
@@ -185,18 +145,17 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				Dom.removeClass(body,'htmlarea-show-microdata');
 			}
 		},
-		/*
+		/**
 		 * This function builds the configuration object for the Microdata fieldset
 		 *
-		 * @param object element: the element being edited, if any
-		 * @param object configured properties for the microdata fields
-		 *
-		 * @return object the fieldset configuration object
+		 * @param {Object} element The element being edited, if any
+		 * @param {Object} properties configured properties for the microdata fields
+		 * @return {Object} the fieldset configuration object
 		 */
 		buildMicrodataFieldsetConfig: function (element, properties) {
-			var typeStore = Ext.StoreMgr.lookup('itemtype');
-			var propertyStore = Ext.StoreMgr.lookup('itemprop');
-			var itemsConfig = [];
+			var $fieldset = $('<fieldset />');
+			var typeStore = this.itemtype;
+			var propertyStore = this.filteredProperties.length > 0 ? this.filteredProperties : this.itemprop;
 			this.inheritedType = 'none';
 			var parent = element.parentNode;
 			while (parent && !/^(body)$/i.test(parent.nodeName)) {
@@ -209,127 +168,166 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			}
 			var selectedType = element && element.getAttribute('itemtype') ? element.getAttribute('itemtype') : 'none';
 			var selectedProperty = element && element.getAttribute('itemprop') ? element.getAttribute('itemprop') : 'none';
-			itemsConfig.push({
-				xtype: 'displayfield',
-				itemId: 'currentItemType',
-				fieldLabel: this.getHelpTip('currentItemType', 'currentItemType'),
-				style: {
-					fontWeight: 'bold'
-				},
-				value: this.inheritedType
-			});
-			itemsConfig.push(Ext.applyIf({
-				xtype: 'combo',
-				fieldLabel: this.getHelpTip('itemprop', 'itemprop'),
-				hidden: this.inheritedType === 'none',
-				itemId: 'itemprop',
-				store: propertyStore,
-				value: selectedProperty,
-				width: ((properties['itemprop'] && properties['itemprop'].width) ? properties['itemprop'].width : 300)
-			}, this.configDefaults['combo']));
-			itemsConfig.push({
-				itemId: 'itemscope',
-				fieldLabel: this.getHelpTip('itemscope', 'itemscope'),
-				listeners: {
-					check: {
-						fn: this.onItemScopeChecked,
-						scope: this
-					}
-				},
-				style: {
-					marginBottom: '5px'
-				},
-				checked: element ? (element.getAttribute('itemscope') === 'itemscope') : false,
-				xtype: 'checkbox'
-			});
-			itemsConfig.push(Ext.applyIf({
-				xtype: 'combo',
-				fieldLabel: this.getHelpTip('itemtype', 'itemtype'),
-				hidden: element && !element.getAttribute('itemscope'),
-				hideMode: 'visibility',
-				itemId: 'itemtype',
-				store: typeStore,
-				value: selectedType,
-				width: ((properties['itemtype'] && properties['itemtype'].width) ? properties['itemtype'].width : 300)
-			}, this.configDefaults['combo']));
-			return {
-				xtype: 'fieldset',
-				itemId: 'microdataFieldset',
-				title: this.getHelpTip('', 'microdata'),
-				defaultType: 'textfield',
-				defaults: {
-					labelSeparator: ':'
-				},
-				items: itemsConfig,
-				labelWidth: 100,
-				listeners: {
-					afterrender: {
-						fn: this.onMicroDataRender,
-						scope: this
-					}
+
+			$fieldset.append(
+				$('<h4 />', {'class': 'form-section-headline'}).text(this.localize('microdata')),
+				$('<div />', {'class': 'form-group'}).append(
+					$('<label />', {'class': 'col-sm-2'}).html(this.getHelpTip('currentItemType', 'currentItemType')),
+					$('<div />', {'class': 'col-sm-10'}).append(
+						$('<p />', {'class': 'form-control-static'}).text(this.inheritedType)
+					)
+				)
+			);
+
+			var $itemPropSelect = $('<select />', {name: 'itemprop', 'class': 'form-control'});
+			this.attachItemProperties($itemPropSelect, propertyStore, selectedProperty);
+
+			$fieldset.append(
+				$('<div />', {'class': 'form-group'}).append(
+					$('<label />', {'class': 'col-sm-2'}).html(this.getHelpTip('itemprop', 'itemprop')),
+					$('<div />', {'class': 'col-sm-10'}).append(
+						$itemPropSelect
+					)
+				).toggle(this.inheritedType !== 'none')
+			);
+
+			$fieldset.append(
+				$('<div />', {'class': 'form-group col-sm-12'}).append(
+					$('<div />', {'class': 'checkbox'}).append(
+						$('<label />').append(
+							$('<span />').html(this.getHelpTip('itemscope', 'itemscope'))
+						).prepend(
+							$('<input />', {type: 'checkbox', name: 'itemscope'})
+								.prop('checked', element ? (element.getAttribute('itemscope') === 'itemscope') : false)
+								.on('click', $.proxy(this.onItemScopeChecked, this))
+						)
+					)
+				)
+			);
+
+			var $itemTypeSelect = $('<select />', {name: 'itemtype', 'class': 'form-control'});
+			for (var i = 0; i < typeStore.length; ++i) {
+				var attributeConfiguration = {
+					value: typeStore[i].name
+				};
+
+				if (typeStore[i].name === selectedType) {
+					attributeConfiguration.selected = 'selected';
 				}
-			};
+
+				$itemTypeSelect.append(
+					$('<option />', attributeConfiguration).text(typeStore[i].label)
+				);
+			}
+			$fieldset.append(
+				$('<div />', {'class': 'form-group'}).append(
+					$('<label />', {'class': 'col-sm-2'}).html(this.getHelpTip('itemtype', 'itemtype')),
+					$('<div />', {'class': 'col-sm-10'}).append(
+						$itemTypeSelect
+					)
+				).toggle(!(element && !element.getAttribute('itemscope')))
+			);
+
+			this.onMicroDataRender($fieldset);
+
+			return $fieldset;
 		},
-		/*
-		 * Handler invoked when the Microdata fieldset is rendered
-		 */
-		onMicroDataRender: function (fieldset) {
-			this.fieldset = fieldset;
-			var typeStore = Ext.StoreMgr.lookup('itemtype');
-			var index = typeStore.findExact('name', this.inheritedType);
-			if (index !== -1) {
-					// If there is an inherited type, set the label
-				var inheritedTypeName = typeStore.getAt(index).get('label');
-				this.fieldset.find('itemId', 'currentItemType')[0].setValue(inheritedTypeName);
-					// Filter the properties by the inherited type, if any
-				var propertyCombo = this.fieldset.find('itemId', 'itemprop')[0];
-				var selectedProperty = propertyCombo.getValue();
-					// Filter the properties by the inherited type, if any
-				this.filterPropeties(this.inheritedType, selectedProperty);
+		attachItemProperties: function($select, properties, selectedProperty) {
+			$select.empty();
+
+			for (var i = 0; i < properties.length; ++i) {
+				var attributeConfiguration = {
+					value: properties[i].name
+				};
+
+				if (properties[i].name === selectedProperty) {
+					attributeConfiguration.selected = 'selected';
+				}
+
+				$select.append(
+					$('<option />', attributeConfiguration).text(properties[i].label)
+				);
 			}
 		},
-		/*
+		/**
+		 * Handler invoked when the Microdata fieldset is rendered
+		 *
+		 * @param {Object} $fieldset
+		 */
+		onMicroDataRender: function ($fieldset) {
+			this.fieldset = $fieldset;
+			var typeStore = this.itemtype,
+				index = -1;
+
+			for (var i = 0; i < typeStore.length; ++i) {
+				if (typeStore[i].name === this.inheritedType) {
+					index = i;
+					break;
+				}
+			}
+
+			if (index !== -1) {
+				// If there is an inherited type, set the label
+				var inheritedTypeName = typeStore[index].label;
+				this.fieldset.find('[name="currentItemType"]').val(inheritedTypeName);
+
+				// Filter the properties by the inherited type, if any
+				var propertyCombo = this.fieldset.find('[name="itemprop"]');
+				var selectedProperty = propertyCombo.val();
+
+				// Filter the properties by the inherited type, if any
+				this.filterProperties(this.inheritedType, selectedProperty);
+			}
+		},
+		/**
 		 * Handler invoked when the itemscope checkbox is checked/unchecked
 		 *
+		 * @param {Event} e
 		 */
-		onItemScopeChecked: function (checkbox, checked) {
-			this.fieldset.find('itemId', 'itemtype')[0].setVisible(checked);
-			this.synch
+		onItemScopeChecked: function (e) {
+			this.fieldset.find('[name="itemtype"]').closest('.form-group').toggle($(e.currentTarget).prop('checked'));
 		},
-		/*
+		/**
 		 * Filter out properties not part of the selected type
 		 */
-		filterPropeties: function (type, selectedProperty) {
-			var typeStore = Ext.StoreMgr.lookup('itemtype');
-			var propertyStore = Ext.StoreMgr.lookup('itemprop');
-			if (propertyStore.realSnapshot) {
-				propertyStore.snapshot = propertyStore.realSnapshot;
-				delete propertyStore.realSnapshot;
-				propertyStore.clearFilter(true);
-			}
-			var index,
+		filterProperties: function (type, selectedProperty) {
+			var self = this,
+				typeStore = this.itemtype,
+				propertyStore = this.itemprop,
+				index = -1,
 				superType = type,
 				superTypes = [];
+
+			if (this.filteredProperties.length > 0) {
+				this.filteredProperties = [];
+			}
+
 			while (superType) {
 				superTypes.push(superType);
-				index = typeStore.findExact('name', superType);
+				for (var i = 0; i < typeStore.length; ++i) {
+					if (typeStore[i].name === superType) {
+						index = i;
+						break;
+					}
+				}
 				if (index !== -1) {
-					superType = typeStore.getAt(index).get('subClassOf');
+					superType = typeStore[index].subClassOf;
 				} else {
 					superType = null;
 				}
 			}
-			var superTypes = new RegExp( '^(' + superTypes.join('|') + ')$', 'i');
-			propertyStore.filterBy(function (property) {
-					// Filter out properties not part of the type
-				return superTypes.test(property.get('domain')) || property.get('name') === 'none';
+			superTypes = new RegExp( '^(' + superTypes.join('|') + ')$', 'i');
+
+			$.each(propertyStore, function() {
+				// Filter out properties not part of the type
+				if (superTypes.test(this.domain) || this.name === 'none') {
+					self.filteredProperties.push(this);
+				}
 			});
-				// Make sure the combo list is filtered
-			propertyStore.realSnapshot = propertyStore.snapshot;
-			propertyStore.snapshot = propertyStore.data;
-			var propertyCombo = this.fieldset.find('itemId', 'itemprop')[0];
-			propertyCombo.clearValue();
-			propertyCombo.setValue(selectedProperty);
+
+			// Make sure the combo list is filtered
+			var propertyCombo = this.fieldset.find('[name="itemprop"]');
+			this.attachItemProperties(propertyCombo, this.filteredProperties, selectedProperty);
 		},
 
 		/**
@@ -337,21 +335,21 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		 */
 		setMicrodataAttributes: function (element) {
 			if (this.fieldset) {
-				var comboFields = this.fieldset.findByType('combo');
+				var comboFields = this.fieldset.find('select');
 				for (var i = comboFields.length; --i >= 0;) {
-					var field = comboFields[i];
-					var itemId = field.getItemId();
-					var value = field.getValue();
+					var field = $(comboFields[i]);
+					var itemId = field.attr('name');
+					var value = field.val();
 					switch (itemId) {
 						case 'itemprop':
 						case 'itemtype':
-							element.setAttribute(itemId, (value === 'none') ? '' : value);
+							element.setAttribute(itemId, value === 'none' ? '' : value);
 							break;
 					}
 				}
-				var itemScopeField = this.fieldset.find('itemId', 'itemscope')[0];
+				var itemScopeField = this.fieldset.find('[name="itemscope"]');
 				if (itemScopeField) {
-					if (itemScopeField.getValue()) {
+					if (itemScopeField.prop('checked')) {
 						element.setAttribute('itemscope', 'itemscope');
 					} else {
 						element.removeAttribute('itemscope');
@@ -378,5 +376,4 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	});
 
 	return MicrodataSchema;
-
 });

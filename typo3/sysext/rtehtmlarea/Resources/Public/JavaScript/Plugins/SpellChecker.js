@@ -14,11 +14,16 @@
 /**
  * Spell Checker Plugin for TYPO3 htmlArea RTE
  */
-define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+define([
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM'],
-	function (Plugin, UserAgent, Util, Dom) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
+	'jquery',
+	'TYPO3/CMS/Backend/Modal',
+	'TYPO3/CMS/Backend/Notification',
+	'TYPO3/CMS/Backend/Severity'
+], function (Plugin, UserAgent, Util, Dom, $, Modal, Notification, Severity) {
 
 	var SpellChecker = function (editor, pluginName) {
 		this.constructor.super.call(this, editor, pluginName);
@@ -52,7 +57,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				license		: 'GPL'
 			};
 			this.registerPluginInformation(pluginInformation);
-			/*
+			/**
 			 * Registering the button
 			 */
 			var buttonId = 'SpellCheck';
@@ -66,342 +71,160 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			this.registerButton(buttonConfiguration);
 			return true;
 		},
-		/*
-		 * Sets of default configuration values for dialogue form fields
-		 */
-		configDefaults: {
-			combo: {
-				editable: true,
-				selectOnFocus: true,
-				typeAhead: true,
-				triggerAction: 'all',
-				forceSelection: true,
-				mode: 'local',
-				valueField: 'value',
-				displayField: 'text',
-				helpIcon: true,
-				tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
-			}
-		},
-		/*
+		/**
 		 * This function gets called when the button was pressed.
 		 *
-		 * @param	object		editor: the editor instance
-		 * @param	string		id: the button id or the key
-		 *
-		 * @return	boolean		false if action is completed
+		 * @param {Object} editor The editor instance
+		 * @param {String} id The button id or the key
+		 * @return {Boolean} False if action is completed
 		 */
 		onButtonPress: function (editor, id, target) {
-				// Could be a button or its hotkey
+			// Could be a button or its hotkey
 			var buttonId = this.translateHotKey(id);
 			buttonId = buttonId ? buttonId : id;
-				// Open dialogue window
+			// Open dialogue window
 			this.openDialogue(
 				buttonId,
-				'Spell Checker',
-				this.getWindowDimensions(
-					{
-						width: 740,
-						height: 600
-					},
-					buttonId
-				)
+				'Spell Checker'
 			);
 			return false;
 		},
-		/*
+		/**
 		 * Open the dialogue window
 		 *
-		 * @param	string		buttonId: the button id
-		 * @param	string		title: the window title
-		 * @param	object		dimensions: the opening dimensions of the window
-		 *
-		 * @return	void
+		 * @param {String} buttonId The button id
+		 * @param {String} title The window title
 		 */
-		openDialogue: function (buttonId, title, dimensions) {
-			this.dialog = new Ext.Window({
-				title: this.localize(title),
-				cls: 'htmlarea-window',
-				bodyCssClass: 'spell-check',
-				border: false,
-				width: dimensions.width,
-				height: dimensions.height - 50,
-				iconCls: this.getButton(buttonId).iconCls,
-				listeners: {
-					afterrender: {
-						fn: this.onWindowAfterRender,
-						scope: this
-					},
-					resize: {
-						fn: this.onWindowResize
-					},
-					close: {
-						fn: this.onClose,
-						scope: this
-					}
-				},
-				items: [{
-							// The hidden form
-						xtype: 'form',
-						method: 'POST',
-						itemId: 'spell-check-form',
-						url: this.pageTSconfiguration.path,
-						hidden: true,
-						standardSubmit: true,
-						items: [{
-								xtype: 'hidden',
-								name: 'editorId',
-								value: this.editor.editorId
-							},{
-								xtype: 'hidden',
-								itemId: 'content',
-								name: 'content',
-								value: this.editor.getHTML()
-							},{
-								xtype: 'hidden',
-								itemId: 'dictionary',
-								name: 'dictionary',
-								value: this.defaultDictionary ? this.defaultDictionary : this.contentISOLanguage.toLowerCase()
-							},{
-								xtype: 'hidden',
-								name: 'pspell_charset',
-								value: this.contentCharset
-							},{
-								xtype: 'hidden',
-								name: 'pspell_mode',
-								value: this.spellCheckerMode
-							},{
-								xtype: 'hidden',
-								name: 'userUid',
-								value: this.userUid
-							},{
-								xtype: 'hidden',
-								name:'enablePersonalDicts',
-								value: this.enablePersonalDicts
-							},{
-								xtype: 'hidden',
-								name:'restrictToDictionaries',
-								value: this.restrictToDictionaries
-							}
-						]
-					},{
-							// The iframe
-						xtype: 'box',
-						itemId: 'spell-check-iframe',
-						width: dimensions.width - 225,
-						autoEl: {
-							name: 'contentframe',
-							tag: 'iframe',
-							cls: 'contentframe',
-							src: UserAgent.isGecko ? 'javascript:void(0);' : HTMLArea.editorUrl + 'Resources/Public/Html/blank.html'
-						}
-					},{
-							// The original word
-						xtype: 'fieldset',
-						title: this.localize('Original word'),
-						cls: 'controls',
-						labelWidth: 0,
-						defaults: {
-							hideLabel: true,
-							disabled: true,
-							minWidth: 160
-						},
-						items: [{
-								xtype: 'textfield',
-								itemId: 'word',
-								disabled: false
-							},
-							this.buildButtonConfig('Revert', this.onRevertClick)
-						]
-					},{
-							// The replacement word and actions
-						xtype: 'fieldset',
-						title: this.localize('Replacement'),
-						cls: 'controls',
-						defaultType: 'button',
-						labelWidth: 0,
-						defaults: {
-							hideLabel: true,
-							disabled: true,
-							minWidth: 160
-						},
-						items: [{
-								xtype: 'textfield',
-								disabled: false,
-								width: 160,
-								itemId: 'replacement'
-							},{
-								itemId: 'replace',
-								text: this.localize('Replace'),
-								listeners: {
-									click: {
-										fn: this.onReplaceClick,
-										scope: this
-									}
-								}
-							},{
-								itemId: 'replaceAll',
-								text: this.localize('Replace all'),
-								listeners: {
-									click: {
-										fn: this.onReplaceAllClick,
-										scope: this
-									}
-								}
-							},{
-								itemId: 'ignore',
-								text: this.localize('Ignore'),
-								listeners: {
-									click: {
-										fn: this.onIgnoreClick,
-										scope: this
-									}
-								}
-							},{
-								itemId: 'ignoreAll',
-								text: this.localize('Ignore all'),
-								listeners: {
-									click: {
-										fn: this.onIgnoreAllClick,
-										scope: this
-									}
-								}
-							},{
-								itemId: 'learn',
-								text: this.localize('Learn'),
-								hidden: !this.enablePersonalDicts,
-								listeners: {
-									click: {
-										fn: this.onLearnClick,
-										scope: this
-									}
-								}
-							}
-						]
-					},{
-							// The suggestions
-						xtype: 'fieldset',
-						title: this.localize('Suggestions'),
-						cls: 'controls',
-						labelWidth: 0,
-						defaults: {
-							hideLabel: true,
-							minWidth: 160
-						},
-						items: [
-							Util.apply({
-								xtype: 'combo',
-								itemId: 'suggestions',
-								store: new Ext.data.ArrayStore({
-									autoDestroy:  true,
-									fields: [{name: 'text'}, {name: 'value'}],
-									data: []
-								}),
-								listeners: {
-									select: {
-										fn: this.onSuggestionSelect,
-										scope: this
-									}
-								},
-								x: 7,
-								width: 160
-							}, this.configDefaults['combo'])
-						]
-					},{
-							// The dictionaries
-						xtype: 'fieldset',
-						title: this.localize('Dictionary'),
-						cls: 'controls',
-						defaultType: 'button',
-						labelWidth: 0,
-						defaults: {
-							hideLabel: true,
-							disabled: true,
-							minWidth: 160
-						},
-						items: [
-							Util.apply({
-								xtype: 'combo',
-								itemId: 'dictionaries',
-								disabled: false,
-								store: new Ext.data.ArrayStore({
-									autoDestroy:  true,
-									fields: [{name: 'text'}, {name: 'value'}],
-									data: []
-								}),
-								listeners: {
-									select: {
-										fn: this.onDictionarySelect,
-										scope: this
-									}
-								},
-								x: 7,
-								width: 160
-							}, this.configDefaults['combo']),
-							{
-								itemId: 'recheck',
-								text: this.localize('Re-check'),
-								listeners: {
-									click: {
-										fn: this.onRecheckClick,
-										scope: this
-									}
-								}
-							}
-						]
-					}
-				],
-				bbar: {
-					defaults: {
-						disabled: true
-					},
-					items: [
-						{
-							xtype: 'tbtext',
-							itemId: 'spell-check-status',
-							text: this.localize('Please wait. Calling spell checker.'),
-							cls: 'status-wait',
-							disabled: false
-						},
-						'->',
-						this.buildButtonConfig('OK', this.onOK),
-						this.buildButtonConfig('Info', this.onInfoClick),
-						this.buildButtonConfig('Cancel', this.onCancel)
-					]
-				},
-				maximizable: true
-			});
-			this.show();
+		openDialogue: function (buttonId, title) {
+			this.dialog = Modal.show(this.localize(title), this.generateDialogContent(), Severity.notice, [
+				this.buildButtonConfig('Cancel', $.proxy(this.onCancel, this), true),
+				this.buildButtonConfig('Info', $.proxy(this.onInfoClick, this), false),
+				this.buildButtonConfig('OK', $.proxy(this.onOK, this), false, Severity.notice)
+			]);
+			this.dialog
+				.on('modal-dismiss', $.proxy(this.onClose, this))
+				.on('shown.bs.modal', $.proxy(this.onWindowAfterRender, this));
 		},
-		/*
+		/**
+		 * Generates the content for the dialog window
+		 */
+		generateDialogContent: function() {
+			var $finalMarkup = $('<div />', {'class': 'row t3js-spellcheck-container'}),
+				$sidebar = $('<div />', {'class': 'col-sm-4'}),
+				$content = $('<div />', {'class': 'col-sm-8'});
+
+			$sidebar.append(
+				$('<form />', {name: 'spell-check-form', 'method': 'post', 'class': 'hidden', action: this.pageTSconfiguration.path}).append(
+					$('<input />', {type: 'hidden', name: 'editorId', value: this.editor.editorId}),
+					$('<input />', {type: 'hidden', name: 'content', value: this.editor.getHTML()}),
+					$('<input />', {type: 'hidden', name: 'dictionary', value: this.defaultDictionary ? this.defaultDictionary : this.contentISOLanguage.toLowerCase()}),
+					$('<input />', {type: 'hidden', name: 'pspell_charset', value: this.contentCharset}),
+					$('<input />', {type: 'hidden', name: 'pspell_mode', value: this.spellCheckerMode}),
+					$('<input />', {type: 'hidden', name: 'userUid', value: this.userUid}),
+					$('<input />', {type: 'hidden', name: 'enablePersonalDicts', value: this.enablePersonalDicts}),
+					$('<input />', {type: 'hidden', name: 'restrictToDictionaries', value: this.restrictToDictionaries})
+				)
+			);
+
+			$sidebar.append(
+				$('<fieldset />', {'class': 'form-section'}).append(
+					$('<h4 />', {'class': 'form-section-headline'}).text(this.localize('Original word')),
+					$('<div />', {'class': 'form-group'}).append(
+						$('<input />', {'class': 'form-control', name: 'word'}),
+						$('<button />', {'class': 'btn btn-default btn-block', name: 'revert', type: 'button'})
+							.prop('disabled', true)
+							.text(this.localize('Revert'))
+							.on('click', $.proxy(this.onRevertClick, this))
+					)
+				),
+				$('<fieldset />', {'class': 'form-section'}).append(
+					$('<h4 />', {'class': 'form-section-headline'}).text(this.localize('Replacement')),
+					$('<div />', {'class': 'form-group'}).append(
+						$('<input />', {'class': 'form-control', name: 'replacement'}),
+						$('<div />', {'class': 'btn-group-vertical btn-block'}).append(
+							$('<button />', {'class': 'btn btn-default', name: 'replace', type: 'button'})
+								.prop('disabled', true)
+								.text(this.localize('Replace'))
+								.on('click', $.proxy(this.onReplaceClick, this)),
+							$('<button />', {'class': 'btn btn-default', name: 'replaceAll', type: 'button'})
+								.prop('disabled', true)
+								.text(this.localize('Replace all'))
+								.on('click', $.proxy(this.onReplaceAllClick, this)),
+							$('<button />', {'class': 'btn btn-default', name: 'ignore', type: 'button'})
+								.prop('disabled', true)
+								.text(this.localize('Ignore'))
+								.on('click', $.proxy(this.onIgnoreClick, this)),
+							$('<button />', {'class': 'btn btn-default', name: 'ignoreAll', type: 'button'})
+								.prop('disabled', true)
+								.text(this.localize('Ignore all'))
+								.on('click', $.proxy(this.onIgnoreAllClick, this)),
+							$('<button />', {'class': 'btn btn-default', name: 'learn', type: 'button'})
+								.prop('disabled', true)
+								.text(this.localize('Learn'))
+								.on('click', $.proxy(this.onLearnClick, this)).toggle(this.enablePersonalDicts)
+						)
+					)
+				),
+				$('<fieldset />', {'class': 'form-section'}).append(
+					$('<h4 />', {'class': 'form-section-headline'}).text(this.localize('Suggestions')),
+					$('<div />', {'class': 'form-group'}).append(
+						$('<select />', {'class': 'form-control', name: 'suggestions'})
+							.on('change', $.proxy(this.onSuggestionSelect, this))
+					)
+				),
+				$('<fieldset />', {'class': 'form-section'}).append(
+					$('<h4 />', {'class': 'form-section-headline'}).text(this.localize('Dictionary')),
+					$('<div />', {'class': 'form-group'}).append(
+						$('<select />', {'class': 'form-control', name: 'dictionaries'})
+							.on('change', $.proxy(this.onDictionarySelect, this)),
+						$('<button />', {'class': 'btn btn-default btn-block', name: 'recheck', type: 'button'})
+							.prop('disabled', true)
+							.text(this.localize('Re-check'))
+							.on('click', $.proxy(this.onRecheckClick, this))
+					)
+				)
+			);
+
+			$content.append(
+				$('<iframe />', {
+					id: 'spell-check-iframe',
+					name: 'contentframe',
+					src: UserAgent.isGecko ? 'javascript:void(0);' : HTMLArea.editorUrl + 'Resources/Public/Html/blank.html',
+					frameborder: 0
+				})
+			);
+
+			return $finalMarkup.append($sidebar, $content);
+		},
+		synchronizeIframeHeight: function () {
+			var $iframe = $('iframe[name="contentframe"]'),
+				$parentContainer = $iframe.closest('.t3js-spellcheck-container');
+
+			$iframe.height($parentContainer.height());
+		},
+		/**
 		 * Handler invoked after the window has been rendered
 		 */
 		onWindowAfterRender: function () {
-				// True when some word has been modified
+			var self = this;
+			// True when some word has been modified
 			this.modified = false;
-				// Array of words to add to the personal dictionary
+			// Array of words to add to the personal dictionary
 			this.addToPersonalDictionary = [];
-				// List of word pairs to add to replacement list of the personal dictionary
+			// List of word pairs to add to replacement list of the personal dictionary
 			this.addToReplacementList = [];
-				// Initial submit
-			this.dialog.getComponent('spell-check-form').getForm().getEl().set({
-				target: 'contentframe',
-				'accept-charset': this.contentCharset.toUpperCase()
-			});
-			this.dialog.getComponent('spell-check-form').getForm().submit();
-			this.status = this.dialog.getBottomToolbar().getComponent('spell-check-status');
-			this.statusIconClass = 'status-wait';
+			// Initial submit
+			var $form = this.dialog.find('[name="spell-check-form"]');
+			$form
+				.attr('target', 'contentframe')
+				.attr('accept-charset', self.contentCharset.toUpperCase())
+				.submit();
+
+			this.synchronizeIframeHeight();
+
+			this.status = $('<p />', {'class': 'spell-check-status col-sm-12'}).appendTo('.t3js-spellcheck-container');
 		},
-		/*
-		 * Handler invoked after the window is resized
-		 */
-		onWindowResize: function (window, width, height) {
-			var frame = window.getComponent('spell-check-iframe').getEl();
-			if (frame) {
-				frame.setSize(width - 225, height - 75);
-			}
-		},
-		/*
+		/**
 		 * Handler invoked when the OK button is pressed
 		 */
 		onOK: function () {
@@ -414,7 +237,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					cmd: 'learn',
 					enablePersonalDicts: this.enablePersonalDicts,
 					userUid: this.userUid,
-					dictionary: this.dialog.find('itemId', 'dictionary')[0].getValue(),
+					dictionary: this.dialog.find('[name="dictionary"]').val(),
 					pspell_charset: this.contentCharset,
 					pspell_mode: this.spellCheckerMode
 				};
@@ -440,42 +263,23 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		 */
 		onCancel: function () {
 			if (this.modified) {
-				TYPO3.Dialog.QuestionDialog({
-					title: this.getButton('SpellCheck').tooltip.title,
-					msg: this.localize('QUIT_CONFIRMATION'),
-					fn: function (button) {
-						if (button == 'yes') {
-							this.close();
-						}
-					},
-					scope: this
-				});
+				var confirm = window.confirm(this.localize('QUIT_CONFIRMATION'));
+				if (confirm) {
+					this.close();
+				}
 				return false;
 			} else {
 				return SpellChecker.super.prototype.onCancel.call(this);
 			}
 		},
-
-		/**
-		 * Set icon in statusbar
-		 *
-		 * @param	string		iconCls: class to be assigned to the statusbar text
-		 * @return	void
-		 */
-		setStatusIconClass: function (iconCls) {
-			this.status.removeClass(this.statusIconClass);
-			this.statusIconClass = iconCls;
-			this.status.addClass(this.statusIconClass);
-		},
 		/**
 		 * Clean away span elements from the text before leaving or re-submitting
 		 *
-		 * @param	boolean		leaveFixed: if true, span elements of corrected words will be left in the text (re-submit case)
-		 *
-		 * @return	string		cleaned-up html
+		 * @param {Boolean} leaveFixed If true, span elements of corrected words will be left in the text (re-submit case)
+		 * @return {String} cleaned-up html
 		 */
 		cleanDocument: function (leaveFixed) {
-			var iframeDocument = this.dialog.getComponent('spell-check-iframe').getEl().dom.contentWindow.document;
+			var iframeDocument = this.dialog.find('#spell-check-iframe').get(0).contentWindow.document;
 			var spanElements = this.misspelledWords.concat(this.correctedWords);
 			for (var i = spanElements.length; --i >= 0;) {
 				var element = spanElements[i];
@@ -499,23 +303,23 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			}
 			return this.editor.iframe.htmlRenderer.render(iframeDocument.body, false);
 		},
-		/*
-		 * Handler invoked when the response from the server has finished loading
+		/**
+		 * Handler invoked when the response from the server has finished loading.
+		 * This is triggered by SpellCheckingController.php
 		 */
 		spellCheckComplete: function () {
-			var contentWindow = this.dialog.getComponent('spell-check-iframe').getEl().dom.contentWindow;
+			var contentWindow = this.dialog.find('#spell-check-iframe').get(0).contentWindow;
 			this.currentElement = null;
-				// Array of misspelled words
+			// Array of misspelled words
 			this.misspelledWords = [];
-				// Array of corrected words
+			// Array of corrected words
 			this.correctedWords = [];
-				// Object containing array of occurrences of each misspelled word
+			// Object containing array of occurrences of each misspelled word
 			this.allWords = {};
-				// Suggested words
+			// Suggested words
 			this.suggestedWords = contentWindow.suggestedWords;
-				// Set status
-			this.status.setText(this.localize('statusBarReady'));
-			this.setStatusIconClass('status-ready');
+			// Set status
+			this.status.text(this.localize('statusBarReady'));
 			// Process all misspelled words
 			var id = 0;
 			var self = this;
@@ -545,56 +349,44 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				link.onclick = function (event) { return false; };
 			}
 			// Enable buttons
-			var buttons = this.dialog.findByType('button');
-			for (var i = buttons.length; --i >= 0;) {
-				var button = buttons[i];
-				button.setDisabled(false);
-			}
-			var buttons = this.dialog.getBottomToolbar().findByType('button');
-			for (var i = buttons.length; --i >= 0;) {
-				var button = buttons[i];
-				button.setDisabled(false);
-			}
+			var buttons = this.dialog.find('button');
+			buttons.each(function() {
+				$(this).prop('disabled', false);
+			});
 			if (this.misspelledWords.length) {
-					// Set current element to first misspelled word
+				// Set current element to first misspelled word
 				this.currentElement = this.misspelledWords[0];
 				this.setCurrentWord(this.currentElement, true);
-					// Populate the dictionaries combo
+				// Populate the dictionaries combo
 				var dictionaries = contentWindow.dictionaries.split(/,/);
 				if (dictionaries.length) {
-					var select = this.dialog.find('itemId', 'dictionaries')[0];
-					var store = select.getStore();
-					store.removeAll();
+					var select = this.dialog.find('[name="dictionaries"]');
+					select.empty();
 					var dictionary;
 					for (var i = dictionaries.length; --i >= 0;) {
 						dictionary = dictionaries[i];
-						store.add(new store.recordType({
-							text: dictionary,
-							value: dictionary
-						}));
+						$('<option />', {value: dictionary}).text(dictionary).prependTo(select);
 					}
-					select.setValue(contentWindow.selectedDictionary);
-					var selectedIndex = store.find('value', contentWindow.selectedDictionary);
-					select.fireEvent('select', select, store.getAt(selectedIndex), selectedIndex);
+					$('<option />').text('Please select').prependTo(select);
+					select.val(contentWindow.selectedDictionary);
 				}
 			} else {
 				if (!this.modified) {
-					TYPO3.Dialog.InformationDialog({
-						title: this.getButton('SpellCheck').tooltip.title,
-						msg: this.localize('NO_ERRORS_CLOSING'),
-						fn: this.onOK,
-						scope: this
-					});
+					Notification.info(
+						this.getButton('SpellCheck').tooltip.title,
+						this.localize('NO_ERRORS_CLOSING')
+					);
+					this.close();
 				} else {
-					TYPO3.Dialog.InformationDialog({
-						title: this.getButton('SpellCheck').tooltip.title,
-						msg: this.localize('NO_ERRORS')
-					});
+					Notification.info(
+						this.getButton('SpellCheck').tooltip.title,
+						this.localize('NO_ERRORS')
+					);
 				}
 				return false;
 			}
 		},
-		/*
+		/**
 		 * Get absolute position of an element inside the iframe
 		 */
 		getAbsolutePosition: function (element) {
@@ -609,13 +401,13 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			}
 			return position;
 		},
-		/*
+		/**
 		 * Update current word
 		 */
 		setCurrentWord: function (element, scroll) {
-				// Scroll element into view
+			// Scroll element into view
 			if (scroll) {
-				var frame = this.dialog.getComponent('spell-check-iframe').getEl().dom;
+				var frame = this.dialog.find('#spell-check-iframe').get(0);
 				var position = this.getAbsolutePosition(element);
 				var frameSize = {
 					x: frame.offsetWidth - 4,
@@ -631,7 +423,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				}
 				frame.contentWindow.scrollTo(position.x, position.y);
 			}
-				// De-highlight all occurrences of current word
+			// De-highlight all occurrences of current word
 			if (this.currentElement) {
 				Dom.removeClass(this.currentElement, 'htmlarea-spellcheck-current');
 				var occurrences = this.allWords[this.currentElement.htmlareaOriginalWord];
@@ -640,7 +432,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					Dom.removeClass(word, 'htmlarea-spellcheck-same');
 				}
 			}
-				// Highlight all occurrences of new current word
+			// Highlight all occurrences of new current word
 			this.currentElement = element;
 			Dom.addClass(this.currentElement, 'htmlarea-spellcheck-current');
 			var occurrences = this.allWords[this.currentElement.htmlareaOriginalWord];
@@ -650,23 +442,22 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					Dom.addClass(word, 'htmlarea-spellcheck-same');
 				}
 			}
-			this.dialog.find('itemId', 'replaceAll')[0].setDisabled(occurrences.length <= 1);
-			this.dialog.find('itemId', 'ignoreAll')[0].setDisabled(occurrences.length <= 1);
-				// Display status
+			this.dialog.find('[name="replaceAll"]').prop('disabled', occurrences.length <= 1);
+			this.dialog.find('[name="ignoreAll"]').prop('disabled', occurrences.length <= 1);
+			// Display status
 			var txt;
 			var txt2;
-			if (occurrences.length == 1) {
+			if (occurrences.length === 1) {
 				txt = this.localize('One occurrence');
 				txt2 = this.localize('was found.');
-			} else if (occurrences.length == 2) {
+			} else if (occurrences.length === 2) {
 				txt = this.localize('Two occurrences');
 				txt2 = this.localize('were found.');
 			} else {
 				txt = occurrences.length + ' ' + this.localize('occurrences');
 				txt2 = this.localize('were found.');
 			}
-			this.status.setText(txt + ' ' + this.localize('of the word') + ' "<b>' + this.currentElement.htmlareaOriginalWord + '</b>" ' + txt2);
-			this.setStatusIconClass('status-info');
+			this.status.html(txt + ' ' + this.localize('of the word') + ' "<b>' + this.currentElement.htmlareaOriginalWord + '</b>" ' + txt2);
 			// Update suggestions
 			var suggestions = this.suggestedWords[this.currentElement.htmlareaOriginalWord];
 			if (suggestions) {
@@ -674,77 +465,65 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			} else {
 				suggestions = [];
 			}
-			var select = this.dialog.find('itemId', 'suggestions')[0];
-			var store = select.getStore();
-			store.removeAll();
+			var select = this.dialog.find('[name="suggestions"]');
+			select.empty();
 			var suggestion;
 			for (var i = suggestions.length; --i >= 0;) {
 				suggestion = suggestions[i];
-				store.add(new store.recordType({
-					text: suggestion,
-					value: suggestion
-				}));
+				$('<option />', {value: suggestion}).text(suggestion).prependTo(select);
 			}
-				// Update the current word
-			this.dialog.find('itemId', 'word')[0].setValue(this.currentElement.htmlareaOriginalWord);
+			$('<option />').text('Please select').prependTo(select);
+			// Update the current word
+			this.dialog.find('[name="word"]').val(this.currentElement.htmlareaOriginalWord);
 			if (suggestions.length > 0) {
-				select.setValue(store.getAt(0).get('value'));
-				select.fireEvent('select', select, store.getAt(0), 0);
+				select.val(select.find('option:first').val());
 			} else {
-				this.dialog.find('itemId', 'replacement')[0].setValue(this.currentElement.innerHTML);
+				this.dialog.find('[name="replacement"]').val(this.currentElement.innerHTML);
 			}
 			return false;
 		},
-		/*
-		 * Handler invoked when the mouse moves over a misspelled word
-		 */
-		onWordMouseOver: function (event, element) {
-			Dom.addClass(element, 'htmlarea-spellcheck-hover');
-		},
-		/*
-		 * Handler invoked when the mouse moves out of a misspelled word
-		 */
-		onWordMouseOut: function (event, element) {
-			Dom.removeClass(element, 'htmlarea-spellcheck-hover');
-		},
-		/*
+		/**
 		 * Handler invoked when a suggestion is selected
+		 *
+		 * @param {Event} e
 		 */
-		onSuggestionSelect: function (select, record, index) {
-			this.dialog.find('itemId', 'replacement')[0].setValue(record.get('value'));
+		onSuggestionSelect: function (e) {
+			this.dialog.find('[name="replacement"]').val($(e.currentTarget).val());
 		},
-		/*
+		/**
 		 * Handler invoked when a dictionary is selected
+		 *
+		 * @param {Event} e
 		 */
-		onDictionarySelect: function (select, record, index) {
-			this.dialog.find('itemId', 'dictionary')[0].setValue(record.get('value'));
+		onDictionarySelect: function (e) {
+			this.dialog.find('[name="dictionary"]').val($(e.currentTarget).val());
 		},
-		/*
+		/**
 		 * Handler invoked when the Revert button is clicked
 		 */
 		onRevertClick: function () {
-			this.dialog.find('itemId', 'replacement')[0].setValue(this.currentElement.htmlareaOriginalWord);
+			this.dialog.find('[name="replacement"]').val(this.currentElement.htmlareaOriginalWord);
 			this.replaceWord(this.currentElement);
 			Dom.removeClass(this.currentElement, 'htmlarea-spellcheck-fixed');
 			Dom.addClass(this.currentElement, 'htmlarea-spellcheck-error');
 			Dom.addClass(this.currentElement, 'htmlarea-spellcheck-current');
 			return false;
 		},
-		/*
+		/**
 		 * Replace the word contained in the element
 		 */
 		replaceWord: function (element) {
 			Dom.removeClass(element, 'htmlarea-spellcheck-hover');
 			Dom.addClass(element, 'htmlarea-spellcheck-fixed');
 			element.htmlareaFixed = true;
-			var replacement = this.dialog.find('itemId', 'replacement')[0].getValue();
+			var replacement = this.dialog.find('[name="replacement"]').val();
 			if (element.innerHTML != replacement) {
 				this.addToReplacementList.push([element.innerHTML, replacement]);
 				element.innerHTML = replacement;
 				this.modified = true;
 			}
 		},
-		/*
+		/**
 		 * Handler invoked when the Replace button is clicked
 		 */
 		onReplaceClick: function () {
@@ -759,10 +538,10 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			} while (index != start && this.misspelledWords[index].htmlareaFixed);
 			if (index == start) {
 				index = 0;
-				TYPO3.Dialog.InformationDialog({
-					title: this.getButton('SpellCheck').tooltip.title,
-					msg: this.localize('Finished list of mispelled words')
-				});
+				Notification.info(
+					this.getButton('SpellCheck').tooltip.title,
+					this.localize('Finished list of mispelled words')
+				);
 			}
 			this.setCurrentWord(this.misspelledWords[index], true);
 			return false;
@@ -781,73 +560,65 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			// Replace current element last, so that we jump to the next word
 			return this.onReplaceClick();
 		},
-		/*
+		/**
 		 * Handler invoked when the Ignore button is clicked
 		 */
 		onIgnoreClick: function () {
-			this.dialog.find('itemId', 'replacement')[0].setValue(this.currentElement.htmlareaOriginalWord);
+			this.dialog.find('[name="replacement"]').val(this.currentElement.htmlareaOriginalWord);
 			return this.onReplaceClick();
 		},
-		/*
+		/**
 		 * Handler invoked when the Ignore all button is clicked
 		 */
 		onIgnoreAllClick: function () {
-			this.dialog.find('itemId', 'replacement')[0].setValue(this.currentElement.htmlareaOriginalWord);
+			this.dialog.find('[name="replacement"]').val(this.currentElement.htmlareaOriginalWord);
 			return this.onReplaceAllClick();
 		},
-		/*
+		/**
 		 * Handler invoked when the Learn button is clicked
 		 */
 		onLearnClick: function () {
 			this.addToPersonalDictionary.push(this.currentElement.htmlareaOriginalWord);
 			return this.onIgnoreAllClick();
 		},
-		/*
+		/**
 		 * Handler invoked when the Re-check button is clicked
 		 */
 		onRecheckClick: function () {
 			// Disable buttons
-			var buttons = this.dialog.findByType('button');
-			for (var i = buttons.length; --i >= 0;) {
-				var button = buttons[i];
-				button.setDisabled(true);
-			}
-			var buttons = this.dialog.getBottomToolbar().findByType('button');
-			for (var i = buttons.length; --i >= 0;) {
-				var button = buttons[i];
-				button.setDisabled(true);
-			}
-			this.status.setText(this.localize('Please wait: changing dictionary to') + ': "' + this.dialog.find('itemId', 'dictionary')[0].getValue() + '".');
-			this.setStatusIconClass('status-wait');
-			this.dialog.find('itemId', 'content')[0].setValue(this.cleanDocument(true));
-			this.dialog.getComponent('spell-check-form').getForm().submit();
+			var buttons = this.dialog.find('button');
+			buttons.each(function() {
+				$(this).prop('disabled', true);
+			});
+			this.status.text(this.localize('Please wait: changing dictionary to') + ': "' + this.dialog.find('[name="dictionary"]').val() + '".');
+			this.dialog.find('[name="content"]').val(this.cleanDocument(true));
+			this.dialog.find('[name="spell-check-form"]').submit();
 		},
 
 		/**
 		 * Handler invoked when the Info button is clicked
 		 */
 		onInfoClick: function () {
-			var info = this.dialog.getComponent('spell-check-iframe').getEl().dom.contentWindow.spellcheckInfo;
+			var info = this.dialog.find('#spell-check-iframe').get(0).contentWindow.spellcheckInfo;
 			if (!info) {
-				TYPO3.Dialog.InformationDialog({
-					title: this.getButton('SpellCheck').tooltip.title,
-					msg: this.localize('No information available')
-				});
+				Notification.info(
+					this.getButton('SpellCheck').tooltip.title,
+					this.localize('No information available')
+				);
 			} else {
 				var txt = '';
 				for (var key in info) {
-					txt += (txt ? '<br />' : '') + this.localize(key) + ': ' + info[key];
+					txt += (txt ? "\n" : '') + this.localize(key) + ': ' + info[key];
 				}
 				txt += ' ' + this.localize('seconds');
-				TYPO3.Dialog.InformationDialog({
-					title: this.localize('Document information'),
-					msg: txt
-				});
+				Notification.info(
+					this.localize('Document information'),
+					txt
+				);
 			}
 			return false;
 		}
 	});
 
 	return SpellChecker;
-
 });

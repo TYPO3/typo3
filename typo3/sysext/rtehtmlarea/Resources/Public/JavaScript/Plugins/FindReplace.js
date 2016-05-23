@@ -14,9 +14,14 @@
 /**
  * Find and Replace Plugin for TYPO3 htmlArea RTE
  */
-define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
-	function (Plugin, Util) {
+define([
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
+	'jquery',
+	'TYPO3/CMS/Backend/Modal',
+	'TYPO3/CMS/Backend/Notification',
+	'TYPO3/CMS/Backend/Severity'
+], function (Plugin, Util, $, Modal, Notification, Severity) {
 
 	var FindReplace = function (editor, pluginName) {
 		this.constructor.super.call(this, editor, pluginName);
@@ -64,19 +69,19 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		/**
 		 * This function gets called when the 'Find & Replace' button is pressed.
 		 *
-		 * @param	object		editor: the editor instance
-		 * @param	string		id: the button id or the key
+		 * @param {Object} editor The editor instance
+		 * @param {String} id The button id or the key
 		 *
-		 * @return	boolean		false if action is completed
+		 * @return boolean false if action is completed
 		 */
 		onButtonPress: function (editor, id, target) {
-				// Could be a button or its hotkey
+			// Could be a button or its hotkey
 			var buttonId = this.translateHotKey(id);
 			buttonId = buttonId ? buttonId : id;
-				// Initialize search variables
+			// Initialize search variables
 			this.buffer = null;
 			this.initVariables();
-				// Disable the toolbar undo/redo buttons and snapshots while this window is opened
+			// Disable the toolbar undo/redo buttons and snapshots while this window is opened
 			var plugin = this.getPluginInstance('UndoRedo');
 			if (plugin) {
 				plugin.stop();
@@ -89,186 +94,118 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					redo.setDisabled(true);
 				}
 			}
-				// Open dialogue window
-			this.openDialogue(
-				buttonId,
-				'Find and Replace',
-				this.getWindowDimensions(
-					{
-						width: 410,
-						height:360
-					},
-					buttonId
-				)
-			);
+			// Open dialogue window
+			this.openDialogue(buttonId, 'Find and Replace');
 			return false;
 		},
 
 		/**
 		 * Open the dialogue window
 		 *
-		 * @param	string		buttonId: the button id
-		 * @param	string		title: the window title
-		 * @param	integer		dimensions: the opening width of the window
-		 *
-		 * @return	void
+		 * @param {String} buttonId The button id
+		 * @param {String} title The window title
 		 */
-		openDialogue: function (buttonId, title, dimensions) {
-			this.dialog = new Ext.Window({
-				title: this.localize(title),
-				cls: 'htmlarea-window',
-				border: false,
-				width: dimensions.width,
-				height: 'auto',
-				iconCls: this.getButton(buttonId).iconCls,
-				listeners: {
-					close: {
-						fn: this.onClose,
-						scope: this
-					}
-				},
-				items: [{
-						xtype: 'fieldset',
-						defaultType: 'textfield',
-						labelWidth: 100,
-						defaults: {
-							labelSeparator: '',
-							width: 250,
-							listeners: {
-								change: {
-									fn: this.clearDoc,
-									scope: this
-								}
-							}
-						},
-						listeners: {
-							render: {
-								fn: this.initPattern,
-								scope: this
-							}
-						},
-						items: [{
-								itemId: 'pattern',
-								fieldLabel: this.localize('Search for:')
-							},{
-								itemId: 'replacement',
-								fieldLabel: this.localize('Replace with:')
-							}
-						]
-					},{
-						xtype: 'fieldset',
-						defaultType: 'checkbox',
-						title: this.localize('Options'),
-						labelWidth: 150,
-						items: [{
-								itemId: 'words',
-								fieldLabel: this.localize('Whole words only'),
-								listeners: {
-									check: {
-										fn: this.clearDoc,
-										scope: this
-									}
-								}
-							},{
-								itemId: 'matchCase',
-								fieldLabel: this.localize('Case sensitive search'),
-								listeners: {
-									check: {
-										fn: this.clearDoc,
-										scope: this
-									}
-								}
-							},{
-								itemId: 'replaceAll',
-								fieldLabel: this.localize('Substitute all occurrences'),
-								listeners: {
-									check: {
-										fn: this.requestReplacement,
-										scope: this
-									}
-								}
-							}
-						]
-					},{
-						xtype: 'fieldset',
-						defaultType: 'button',
-						title: this.localize('Actions'),
-						defaults: {
-							minWidth: 150,
-							disabled: true,
-							style: {
-								marginBottom: '5px'
-							}
-						},
-						items: [{
-								text: this.localize('Clear'),
-								itemId: 'clear',
-								listeners: {
-									click: {
-										fn: this.clearMarks,
-										scope: this
-									}
-								}
-							},{
-								text: this.localize('Highlight'),
-								itemId: 'hiliteall',
-								listeners: {
-									click: {
-										fn: this.hiliteAll,
-										scope: this
-									}
-								}
-							},{
-								text: this.localize('Undo'),
-								itemId: 'undo',
-								listeners: {
-									click: {
-										fn: this.resetContents,
-										scope: this
-									}
-								}
-							}
-						]
-					}
-				],
-				buttons: [
-					this.buildButtonConfig('Next', this.onNext),
-					this.buildButtonConfig('Done', this.onCancel)
-				]
-			});
-			this.show();
+		openDialogue: function (buttonId, title) {
+			this.dialog = Modal.show(this.localize(title), this.generateDialogContent(), Severity.notice, [
+				this.buildButtonConfig('Next', $.proxy(this.onNext, this), true),
+				this.buildButtonConfig('Done', $.proxy(this.onCancel, this), false, Severity.notice)
+			]);
+			this.dialog.on('modal-dismiss', $.proxy(this.onClose, this));
 		},
-		/*
+		/**
+		 * Generates the content for the dialog window
+		 *
+		 * @returns {Object}
+		 */
+		generateDialogContent: function() {
+			var $searchReplaceFields = $('<fieldset />', {'class': 'form-section'}),
+				$optionFields = $('<fieldset />', {'class': 'form-section'}),
+				$actions = $('<fieldset />', {'class': 'form-section'});
+
+			$searchReplaceFields.append(
+				$('<div />', {'class': 'form-group'}).append(
+					$('<label />', {'class': 'col-sm-2'}).text(this.localize('Search for:')),
+					$('<div />', {'class': 'col-sm-10'}).append(
+						$('<input />', {name: 'pattern', 'class': 'form-control'})
+					)
+				),
+				$('<div />', {'class': 'form-group'}).append(
+					$('<label />', {'class': 'col-sm-2'}).text(this.localize('Replace with:')),
+					$('<div />', {'class': 'col-sm-10'}).append(
+						$('<input />', {name: 'replacement', 'class': 'form-control'})
+					)
+				)
+			);
+			this.initPattern($searchReplaceFields);
+
+			$optionFields.append(
+				$('<h4 />', {'class': 'form-section-headline'}).text(this.localize('Options')),
+				$('<div />', {'class': 'form-group col-sm-12'}).append(
+					$('<div />', {'class': 'checkbox'}).append(
+						$('<label />').text(this.localize('Whole words only')).prepend(
+							$('<input />', {type: 'checkbox', name: 'words'}).on('click', $.proxy(this.clearDoc, this))
+						)
+					),
+					$('<div />', {'class': 'checkbox'}).append(
+						$('<label />').text(this.localize('Case sensitive search')).prepend(
+							$('<input />', {type: 'checkbox', name: 'matchCase'}).on('click', $.proxy(this.clearDoc, this))
+						)
+					),
+					$('<div />', {'class': 'checkbox'}).append(
+						$('<label />').text(this.localize('Substitute all occurrences')).prepend(
+							$('<input />', {type: 'checkbox', name: 'replaceAll'}).on('click', $.proxy(this.requestReplacement, this))
+						)
+					)
+				)
+			);
+
+			$actions.append(
+				$('<h4 />', {'class': 'form-section-headline'}).text(this.localize('Actions')),
+				$('<div />', {'class': 'form-group col-sm-12'}).append(
+					$('<div />', {'class': 'btn-group'}).append(
+						$('<button />', {'class': 'btn btn-default', type: 'button', name: 'clear'})
+							.text(this.localize('Clear'))
+							.prop('disabled', true)
+							.on('click', $.proxy(this.clearMarks, this)),
+						$('<button />', {'class': 'btn btn-default', type: 'button', name: 'hiliteall'})
+							.text(this.localize('Highlight'))
+							.prop('disabled', true)
+							.on('click', $.proxy(this.hiliteAll, this)),
+						$('<button />', {'class': 'btn btn-default', type: 'button', name: 'undo'})
+							.text(this.localize('Undo'))
+							.prop('disabled', true)
+							.on('click', $.proxy(this.resetContents, this))
+					)
+				)
+			);
+
+			return $('<form />', {'class': 'form-horizontal'}).append($searchReplaceFields, $optionFields, $actions);
+		},
+		/**
 		 * Handler invoked to initialize the pattern to search
 		 *
-		 * @param	object		fieldset: the fieldset component
-		 *
-		 * @return	void
+		 * @param {Object} $fieldset The fieldset component
 		 */
-		initPattern: function (fieldset) {
+		initPattern: function ($fieldset) {
 			var selection = this.editor.getSelection().getHtml();
 			if (/\S/.test(selection)) {
 				selection = selection.replace(/<[^>]*>/g, '');
 				selection = selection.replace(/&nbsp;/g, '');
 			}
 			if (/\S/.test(selection)) {
-				fieldset.getComponent('pattern').setValue(selection);
-				fieldset.getComponent('replacement').focus();
+				$fieldset.find('input[name="pattern"]').val(selection);
+				$fieldset.find('input[name="replacement"]').focus();
 			} else {
-				fieldset.getComponent('pattern').focus();
+				$fieldset.find('input[name="pattern"]').focus();
 			}
 		},
-		/*
+		/**
 		 * Handler invoked when the replace all checkbox is checked
 		 */
 		requestReplacement: function () {
-			if (!this.dialog.find('itemId', 'replacement')[0].getValue() && this.dialog.find('itemId', 'replaceAll')[0].getValue()) {
-				TYPO3.Dialog.InformationDialog({
-					title: this.getButton('FindReplace').tooltip.title,
-					msg: this.localize('Inform a replacement word'),
-					fn: function () { this.dialog.find('itemId', 'replacement')[0].focus(); },
-					scope: this
-				});
+			var $replacementField = this.dialog.find('input[name="replacement"]');
+			if ($replacementField.val() === '' && this.dialog.find('input[name="replaceAll"]').is(':checked')) {
+				$replacementField.focus();
 			}
 			this.clearDoc();
 		},
@@ -276,26 +213,33 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		 * Handler invoked when the 'Next' button is pressed
 		 */
 		onNext: function () {
-			if (!this.dialog.find('itemId', 'pattern')[0].getValue()) {
-				TYPO3.Dialog.InformationDialog({
-					title: this.getButton('FindReplace').tooltip.title,
-					msg: this.localize('Enter the text you want to find'),
-					fn: function () { this.dialog.find('itemId', 'pattern')[0].focus(); },
-					scope: this
-				});
+			if (!this.dialog.find('input[name="pattern"]').val()) {
+				Notification.warning(
+					this.getButton('FindReplace').tooltip,
+					this.localize('Enter the text you want to find'),
+					10
+				);
+				this.dialog.find('input[name="pattern"]').focus();
 				return false;
 			}
-			var fields = [
-				'pattern',
-				'replacement',
-				'words',
-				'matchCase',
-				'replaceAll'
-			];
+			var $currentField,
+				fields = [
+					'pattern',
+					'replacement',
+					'words',
+					'matchCase',
+					'replaceAll'
+				];
 			var params = {}, field;
 			for (var i = fields.length; --i >= 0;) {
 				field = fields[i];
-				params[field] = this.dialog.find('itemId', field)[0].getValue();
+				$currentField = this.dialog.find('[name="' + field + '"]');
+
+				if ($currentField.attr('type') === 'checkbox') {
+					params[field] = $currentField.prop('checked');
+				} else {
+					params[field] = $currentField.val();
+				}
 			}
 			this.search(params);
 			return false;
@@ -330,14 +274,12 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			}
 			this.spanWalker(params.pattern, params.replacement, params.replaceAll);
 		},
-		/*
+		/**
 		 * Walk the span tags
 		 *
-		 * @param	string		pattern: the pattern being searched for
-		 * @param	string		replacement: the replacement string
-		 * @param	bolean		replaceAll: true if all occurrences should be replaced
-		 *
-		 * @return	void
+		 * @param {String} pattern The pattern being searched for
+		 * @param {String} replacement The replacement string
+		 * @param {Boolean} replaceAll True if all occurrences should be replaced
 		 */
 		spanWalker: function (pattern, replacement, replaceAll) {
 			this.clearMarks();
@@ -364,12 +306,9 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 						if (replaceAll) {
 							replace('yes');
 						} else {
-							TYPO3.Dialog.QuestionDialog({
-								title: this.getButton('FindReplace').tooltip.title,
-								msg: this.localize('Substitute this occurrence?'),
-								fn: replace,
-								scope: this
-							});
+							// Due to some scope issues, `confirm` only does not work.
+							var confirm = window.confirm('Substitute this occurrence?');
+							replace(confirm ? 'yes' : 'no');
 							break;
 						}
 					}
@@ -378,17 +317,16 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				this.endWalk(pattern, 0);
 			}
 		},
-		/*
+		/**
 		 * End the replacement walk
 		 *
-		 * @param	string		pattern: the pattern being searched for
-		 * @param	integer		index: the index reached in the walk
-		 *
-		 * @return 	void
+		 * @param {String} pattern The pattern being searched for
+		 * @param {Integer} index The index reached in the walk
 		 */
 		endWalk: function (pattern, index) {
 			if (index >= this.spans.length - 1 || !this.spans.length) {
-				var message = this.localize('Done') + ':<br /><br />';
+				var message = '',
+					action = '';
 				if (this.matches > 0) {
 					if (this.matches == 1) {
 						message += this.matches + ' ' + this.localize('found item');
@@ -397,24 +335,26 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					}
 					if (this.replaces > 0) {
 						if (this.replaces == 1) {
-							message += ',<br />' + this.replaces + ' ' + this.localize('replaced item');
+							message += ', ' + this.replaces + ' ' + this.localize('replaced item');
 						} else {
-							message += ',<br />' + this.replaces + ' ' + this.localize('replaced items');
+							message += ', ' + this.replaces + ' ' + this.localize('replaced items');
 						}
 					}
 					this.hiliteAll();
+					action = 'success';
 				} else {
 					message += '"' + pattern + '" ' + this.localize('not found');
+					action = 'warning';
 					this.disableActions('hiliteall,clear', true);
 				}
-				TYPO3.Dialog.InformationDialog({
-					title: this.getButton('FindReplace').tooltip.title,
-					msg: message + '.',
-					minWidth: 300
-				});
+				Notification[action](
+					this.getButton('FindReplace').tooltip,
+					message + '.',
+					10
+				);
 			}
 		},
-		/*
+		/**
 		 * Remove all marks
 		 */
 		clearDoc: function () {
@@ -422,7 +362,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			this.initVariables();
 			this.disableActions('hiliteall,clear', true);
 		},
-		/*
+		/**
 		 * De-highlight all marks
 		 */
 		clearMarks: function () {
@@ -454,7 +394,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			this.disableActions('clear', false);
 			this.disableActions('hiliteall', true);
 		},
-		/*
+		/**
 		 * Undo the replace operation
 		 */
 		resetContents: function () {
@@ -468,23 +408,23 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		/**
 		 * Disable action buttons
 		 *
-		 * @param string actions: comma-separated list of buttonIds to set disabled/enabled
-		 * @param boolean disabled: true to set disabled
+		 * @param {String} actions Comma separated list of buttonIds to set disabled/enabled
+		 * @param {Boolean} disabled True to set disabled
 		 */
 		disableActions: function (actions, disabled) {
 			var buttonIds = actions.split(/[,; ]+/), action;
 			for (var i = buttonIds.length; --i >= 0;) {
 				action = buttonIds[i];
-				this.dialog.find('itemId', action)[0].setDisabled(disabled);
+				this.dialog.find('[value="' + action + '"]').prop('disabled', disabled);
 			}
 		},
-		/*
+		/**
 		 * Initialize find & replace variables
 		 */
 		initVariables: function () {
 			this.matches = 0;
 			this.replaces = 0;
-			this.spans = new Array();
+			this.spans = [];
 		},
 
 		/**

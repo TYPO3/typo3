@@ -47,7 +47,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				license		: 'GPL'
 			};
 			this.registerPluginInformation(pluginInformation);
-			/*
+			/**
 			 * Registering the buttons
 			 */
 			var buttonList = this.buttonList, buttonId;
@@ -68,18 +68,18 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			}
 			return true;
 		},
-		/*
+		/**
 		 * The list of buttons added by this plugin
 		 */
 		buttonList: [
 			['CreateLink', 'a,img', false, true, 'link-edit'],
 			['UnLink', 'a', false, false, 'unlink']
 		],
-		/*
+		/**
 		 * This function is invoked when the editor is being generated
 		 */
 		onGenerate: function () {
-				// Download the definition of special anchor classes if not yet done
+			// Download the definition of special anchor classes if not yet done
 			if (this.classesAnchorUrl && typeof HTMLArea.classesAnchorSetup === 'undefined') {
 				this.getJavascriptFile(this.classesAnchorUrl, function (options, success, response) {
 					if (success) {
@@ -94,20 +94,20 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				});
 			}
 		},
-		/*
+		/**
 		 * This function gets called when the button was pressed
 		 *
-		 * @param	object		editor: the editor instance
-		 * @param	string		id: the button id or the key
-		 * @param	object		target: the target element of the contextmenu event, when invoked from the context menu
+		 * @param {Object} editor The editor instance
+		 * @param {String} id The button id or the key
+		 * @param {Object} target The target element of the contextmenu event, when invoked from the context menu
 		 *
-		 * @return	boolean		false if action is completed
+		 * @return {Boolean}false if action is completed
 		 */
 		onButtonPress: function(editor, id, target) {
-				// Could be a button or its hotkey
+			// Could be a button or its hotkey
 			var buttonId = this.translateHotKey(id);
 			buttonId = buttonId ? buttonId : id;
-				// Download the definition of special anchor classes if not yet done
+			// Download the definition of special anchor classes if not yet done
 			if (this.classesAnchorUrl && typeof HTMLArea.classesAnchorSetup === 'undefined') {
 				this.getJavascriptFile(this.classesAnchorUrl, function (options, success, response) {
 					if (success) {
@@ -160,31 +160,23 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				this.openContainerWindow(
 					buttonId,
 					this.getButton(buttonId).tooltip,
-					this.getWindowDimensions(
-						{
-							width:	TYPO3.settings.Textarea.RTEPopupWindow.width,
-							height:	TYPO3.settings.Textarea.RTEPopupWindow.height
-						},
-						buttonId
-					),
+					TYPO3.settings.Textarea.RTEPopupWindow.height - 20,
 					this.makeUrlFromModulePath(this.modulePath, additionalParameter)
 				);
 			}
 			return false;
 		},
-		/*
+		/**
 		 * Add a link to the selection.
 		 * This function is called from the TYPO3 link popup.
 		 *
-		 * @param	string	theLink: the href attribute of the link to be created
-		 * @param	string	cur_target: value for the target attribute
-		 * @param	string	cur_class: value for the class attribute
-		 * @param	string	cur_title: value for the title attribute
-		 * @param	object	additionalValues: values for additional attributes (may be used by extension)
-		 *
-		 * @return void
+		 * @param {String} theLink The href attribute of the link to be created
+		 * @param {String} cur_target Value for the target attribute
+		 * @param {String} cur_class Value for the class attribute
+		 * @param {String} cur_title Value for the title attribute
+		 * @param {Object} additionalValues Values for additional attributes (may be used by extension)
 		 */
-		createLink: function(theLink,cur_target,cur_class,cur_title,additionalValues) {
+		createLink: function (theLink, cur_target, cur_class, cur_title, additionalValues) {
 			var range, anchorClass, imageNode = null, addIconAfterLink;
 			this.restoreSelection();
 			var node = this.editor.getSelection().getFirstAncestorOfType('a');
@@ -262,9 +254,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		 * Unlink the selection.
 		 * This function is called from the TYPO3 link popup and from unlink button pressed in toolbar or context menu.
 		 *
-		 * @param	string	buttonPressd: true if the unlink button was pressed
-		 *
-		 * @return void
+		 * @param {String} buttonPressed True if the unlink button was pressed
 		 */
 		unLink: function (buttonPressed) {
 				// If no dialogue window was opened, the selection should not be restored
@@ -293,21 +283,19 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		/**
 		 * Set attributes of anchors intersecting a range in the given node
 		 *
-		 * @param object node: a node that may interesect the range
-		 * @param object range: set attributes on all nodes intersecting this range
-		 * @param string cur_target: value for the target attribute
-		 * @param string cur_class: value for the class attribute
-		 * @param string cur_title: value for the title attribute
-		 * @param object imageNode: image to clone and append to the anchor
-		 * @param boolean addIconAfterLink: add icon after rather than before the link
-		 * @param object additionalValues: values for additional attributes (may be used by extension)
-		 * @return void
+		 * @param {Object} node A node that may interesect the range
+		 * @param {Object} range Set attributes on all nodes intersecting this range
+		 * @param {String} cur_target Value for the target attribute
+		 * @param {String} cur_class Value for the class attribute
+		 * @param {String} cur_title Value for the title attribute
+		 * @param {Object} imageNode Image to clone and append to the anchor
+		 * @param {Boolean} addIconAfterLink Add icon after rather than before the link
+		 * @param {Object} additionalValues Values for additional attributes (may be used by extension)
 		 */
 		setLinkAttributes: function(node, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues) {
 			if (/^a$/i.test(node.nodeName)) {
-				var nodeInRange = false;
 				this.editor.focus();
-				nodeInRange = Dom.rangeIntersectsNode(range, node);
+				var nodeInRange = Dom.rangeIntersectsNode(range, node);
 				if (nodeInRange) {
 					if (imageNode != null) {
 						if (addIconAfterLink) {
@@ -336,7 +324,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 						node.removeAttribute('rtekeep');
 					}
 					if (this.pageTSConfiguration && this.pageTSConfiguration.additionalAttributes && typeof(additionalValues) == 'object') {
-						for (additionalAttribute in additionalValues) {
+						for (var additionalAttribute in additionalValues) {
 							if (additionalValues.hasOwnProperty(additionalAttribute)) {
 								if (additionalValues[additionalAttribute].toString().trim()) {
 									node.setAttribute(additionalAttribute, additionalValues[additionalAttribute]);
@@ -381,13 +369,12 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		},
 
 		/**
-		 * Clean up all anchors intesecting with the range in the given node
+		 * Clean up all anchors intersecting with the range in the given node
 		 */
 		cleanAllLinks: function(node, range, keepLinks) {
 			if (/^a$/i.test(node.nodeName)) {
-				var intersection = false;
 				this.editor.focus();
-				intersection = Dom.rangeIntersectsNode(range, node);
+				var intersection = Dom.rangeIntersectsNode(range, node);
 				if (intersection) {
 					this.cleanClassesAnchorImages(node);
 					if (!keepLinks) {
@@ -417,11 +404,12 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
 			button.setInactive(true);
 			if (mode === 'wysiwyg' && this.editor.isEditable()) {
+				var node;
 				switch (button.itemId) {
 					case 'CreateLink':
 						button.setDisabled(selectionEmpty && !button.isInContext(mode, selectionEmpty, ancestors));
 						if (!button.disabled) {
-							var node = this.editor.getSelection().getParentElement();
+							node = this.editor.getSelection().getParentElement();
 							var el = this.editor.getSelection().getFirstAncestorOfType('a');
 							if (el != null) {
 								node = el;
@@ -440,7 +428,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 						if (UserAgent.isGecko && !selectionEmpty) {
 							var range = this.editor.getSelection().createRange();
 							if (range.startContainer.nodeType === Dom.ELEMENT_NODE && range.startContainer == range.endContainer && (range.endOffset - range.startOffset == 1)) {
-								var node = range.startContainer.childNodes[range.startOffset];
+								node = range.startContainer.childNodes[range.startOffset];
 								if (node && /^a$/i.test(node.nodeName) && node.textContent == range.toString()) {
 									link = true;
 								}
@@ -454,5 +442,4 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	});
 
 	return TYPO3Link;
-
 });
