@@ -830,6 +830,18 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Test for the stdWrap_stripHtml
+     *
+     * @test
+     */
+    public function stdWrap_stripHtml()
+    {
+        $content = '<html><p>Hello <span class="inline">inline tag<span>!</p><p>Hello!</p></html>';
+        $expected = 'Hello inline tag!Hello!';
+        $this->assertSame($expected, $this->subject->stdWrap_stripHtml($content));
+    }
+
+    /**
      * @return array
      */
     public function stdWrap_roundDataProvider()
