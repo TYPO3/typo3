@@ -41,7 +41,7 @@ define(['jquery', 'jquery/autocomplete'], function ($) {
 				}
 
 				var formEl = $searchField.data('fieldname');
-				var labelEl = $('<div>').text($(element).data('label'));
+				var labelEl = $('<div>').html($(element).data('label'));
 				var label = labelEl.text();
 				var title = labelEl.find('span').attr('title') || label;
 				setFormValueFromBrowseWin(formEl, insertData, label, title);
