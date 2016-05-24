@@ -390,7 +390,7 @@ class Request implements RequestInterface
             $this->internalArguments[$argumentName] = $value;
             return;
         }
-        if ($argumentName[0] !== '@') {
+        if (!in_array($argumentName, array('@extension', '@subpackage', '@controller', '@action', '@format', '@vendor'), true)) {
             $this->arguments[$argumentName] = $value;
         }
     }
