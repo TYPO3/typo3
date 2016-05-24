@@ -58,7 +58,7 @@
 					<form id="paginator-form-{position}" onsubmit="goToPage{position}(this); return false;" style="display:inline;">
 					<script type="text/javascript">
 						function goToPage{position}(formObject) {
-							var url = '{f:widget.uri(arguments:{currentPage: 987654321})}';
+							var url = '{f:widget.uri(arguments:{currentPage: 987654321}) -> f:format.raw()}';
 							var page = formObject.elements['paginator-target-page'].value;
 							if (page > {pagination.numberOfPages}) {
 								page = {pagination.numberOfPages};
