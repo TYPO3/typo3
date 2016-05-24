@@ -1,3 +1,8 @@
+2016-05-24  9de685d                  [RELEASE] Release of TYPO3 7.6.9 (TYPO3 Release Team)
+2016-05-24  4d26d1e  #76278          [BUGFIX] Allow non critical request arguments with @ (Helmut Hummel)
+2016-05-24  b736365                  [TASK] Set TYPO3 version to 7.6.9-dev (TYPO3 Release Team)
+
+
 2016-05-24  967717f                  [RELEASE] Release of TYPO3 7.6.8 (TYPO3 Release Team)
 2016-05-24  21ed405  #76231,#76256   [SECURITY] Validate complete referring request (Helmut Hummel)
 2016-05-18  f790645  #76097          [BUGFIX] Use `find()` to get option tags from select (Andreas Fernandez)
