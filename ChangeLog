@@ -1,3 +1,11 @@
+2016-05-24  967717f                  [RELEASE] Release of TYPO3 7.6.8 (TYPO3 Release Team)
+2016-05-24  21ed405  #76231,#76256   [SECURITY] Validate complete referring request (Helmut Hummel)
+2016-05-18  f790645  #76097          [BUGFIX] Use `find()` to get option tags from select (Andreas Fernandez)
+2016-05-18  b500cc4  #76149          [BUGFIX] Fixes rendering of page content titles (Tomita Militaru)
+2016-05-18  1a0902c  #76102          [TASK] Make driver registry TCA change cacheable (Helmut Hummel)
+2016-05-17  1fe5a17                  [TASK] Set TYPO3 version to 7.6.8-dev (TYPO3 Release Team)
+
+
 2016-05-17  335fa28                  [RELEASE] Release of TYPO3 7.6.7 (TYPO3 Release Team)
 2016-05-17  7f93c99  #75721          [BUGFIX] Use push parser instead of pull parser on fetching extension list (Oliver Hader)
 2016-05-17  b1f8398  #76205          [BUGFIX] Correctly treat uploaded file when replacing a file (Markus Klein)
