@@ -36,6 +36,22 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  * If the select box is a multi-select box (multiple="1"), then "value" can be an array as well.
  *
+ * = Custom options and option group rendering =
+ *
+ * Child nodes can be used to create a completely custom set of ``<option>`` and ``<optgroup>`` tags in a way compatible with
+ * the HMAC generation. To do so, leave out the ``options`` argument and use child ViewHelpers:
+ * <code title="Custom options and optgroup">
+ * <f:form.select name="myproperty">
+ *     <f:form.select.option value="1">Option one</f:form.select.option>
+ *     <f:form.select.option value="2">Option two</f:form.select.option>
+ *     <f:form.select.optgroup>
+ *         <f:form.select.option value="3">Grouped option one</f:form.select.option>
+ *         <f:form.select.option value="4">Grouped option twi</f:form.select.option>
+ *     </f:form.select.optgroup>
+ * </f:form.select>
+ * </code>
+ * Note: do not use vanilla ``<option>`` or ``<optgroup>`` tags! They will invalidate the HMAC generation!
+ *
  * = Usage on domain objects =
  *
  * If you want to output domain objects, you can just pass them as array into the "options" parameter.
@@ -83,7 +99,8 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('size', 'string', 'Size of input field');
         $this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
-        $this->registerArgument('options', 'array', 'Associative array with internal IDs as key, and the values are displayed in the select box', true);
+        $this->registerArgument('options', 'array', 'Associative array with internal IDs as key, and the values are displayed in the select box. Can be combined with or replaced by child f:form.select.* nodes.');
+        $this->registerArgument('optionsAfterContent', 'boolean', 'If true, places auto-generated option tags after those rendered in the tag content. If false, automatic options come first.', false, false);
         $this->registerArgument('optionValueField', 'string', 'If specified, will call the appropriate getter on each object to determine the value.');
         $this->registerArgument('optionLabelField', 'string', 'If specified, will call the appropriate getter on each object to determine the label.');
         $this->registerArgument('sortByOptionLabel', 'boolean', 'If true, List will be sorted by label.', false, false);
@@ -112,7 +129,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         if (empty($options)) {
             $options = ['' => ''];
         }
-        $this->tag->setContent($this->renderOptionTags($options));
+
         $this->addAdditionalIdentityPropertiesIfNeeded();
         $this->setErrorClassAttribute();
         $content = '';
@@ -124,9 +141,29 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
             for ($i = 0; $i < count($options); $i++) {
                 $this->registerFieldNameForFormTokenGeneration($name);
             }
+            // save the parent field name so that any child f:form.select.option
+            // tag will know to call registerFieldNameForFormTokenGeneration
+            $this->viewHelperVariableContainer->addOrUpdate(
+                static::class,
+                'registerFieldNameForFormTokenGeneration',
+                $name
+            );
         } else {
             $this->registerFieldNameForFormTokenGeneration($name);
         }
+
+        $this->viewHelperVariableContainer->addOrUpdate(static::class, 'selectedValue', $this->getSelectedValue());
+        $tagContent = $this->renderOptionTags($options);
+        $childContent = $this->renderChildren();
+        $this->viewHelperVariableContainer->remove(static::class, 'selectedValue');
+        $this->viewHelperVariableContainer->remove(static::class, 'registerFieldNameForFormTokenGeneration');
+        if ($this->arguments['optionsAfterContent']) {
+            $tagContent = $childContent . $tagContent;
+        } else {
+            $tagContent .= $childContent;
+        }
+
+        $this->tag->setContent($tagContent);
         $content .= $this->tag->render();
         return $content;
     }
