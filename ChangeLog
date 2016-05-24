@@ -1,3 +1,8 @@
+2016-05-24  8926699                  [RELEASE] Release of TYPO3 6.2.25 (TYPO3 Release Team)
+2016-05-24  f18b990  #76278          [BUGFIX] Allow non critical request arguments with @ (Helmut Hummel)
+2016-05-24  8e766a8                  [TASK] Set TYPO3 version to 6.2.25-dev (TYPO3 Release Team)
+
+
 2016-05-24  29df864                  [RELEASE] Release of TYPO3 6.2.24 (TYPO3 Release Team)
 2016-05-24  c10db60  #76231,#76256   [SECURITY] Validate complete referring request (Helmut Hummel)
 2016-05-17  070e747                  [TASK] Set TYPO3 version to 6.2.24-dev (TYPO3 Release Team)
