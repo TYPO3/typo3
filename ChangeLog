@@ -1,3 +1,8 @@
+2016-05-24  29df864                  [RELEASE] Release of TYPO3 6.2.24 (TYPO3 Release Team)
+2016-05-24  c10db60  #76231,#76256   [SECURITY] Validate complete referring request (Helmut Hummel)
+2016-05-17  070e747                  [TASK] Set TYPO3 version to 6.2.24-dev (TYPO3 Release Team)
+
+
 2016-05-17  80a1f39                  [RELEASE] Release of TYPO3 6.2.23 (TYPO3 Release Team)
 2016-05-17  1b58942  #75721          [BUGFIX] Use push parser instead of pull parser on fetching extension list (Oliver Hader)
 2016-05-17  6a038ac                  Revert "[BUGFIX] Load XML files of Extension Manager properly" (Oliver Hader)
