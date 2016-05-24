@@ -68,8 +68,8 @@ define(['jquery',
 	 */
 	FormEngine.openPopupWindow = setFormValueOpenBrowser = function(mode, params, width, height) {
 		var url = FormEngine.browserUrl + '&mode=' + mode + '&bparams=' + params;
-		width = width ? width : top.TYPO3.configuration.PopupWindow.width;
-		height = height ? height : top.TYPO3.configuration.PopupWindow.height;
+		width = width ? width : TYPO3.settings.Popup.PopupWindow.width;
+		height = height ? height : TYPO3.settings.Popup.PopupWindow.height;
 		FormEngine.openedPopupWindow = window.open(url, 'Typo3WinBrowser', 'height=' + height + ',width=' + width + ',status=0,menubar=0,resizable=1,scrollbars=1');
 		FormEngine.openedPopupWindow.focus();
 	};

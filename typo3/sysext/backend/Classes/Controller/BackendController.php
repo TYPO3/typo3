@@ -577,21 +577,6 @@ class BackendController
         // Needed for FormEngine manipulation (date picker)
         $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? array('MM-DD-YYYY', 'HH:mm MM-DD-YYYY') : array('DD-MM-YYYY', 'HH:mm DD-MM-YYYY'));
         $this->pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
-        // define the window size of the element browser etc.
-        $popupWindowWidth  = 700;
-        $popupWindowHeight = 750;
-        $popupWindowSize = trim($beUser->getTSConfigVal('options.popupWindowSize'));
-        if (!empty($popupWindowSize)) {
-            list($popupWindowWidth, $popupWindowHeight) = GeneralUtility::intExplode('x', $popupWindowSize);
-        }
-
-        // define the window size of the popups within the RTE
-        $rtePopupWindowSize = trim($beUser->getTSConfigVal('options.rte.popupWindowSize'));
-        if (!empty($rtePopupWindowSize)) {
-            list($rtePopupWindowWidth, $rtePopupWindowHeight) = GeneralUtility::trimExplode('x', $rtePopupWindowSize);
-        }
-        $rtePopupWindowWidth  = !empty($rtePopupWindowWidth) ? (int)$rtePopupWindowWidth : ($popupWindowWidth-100);
-        $rtePopupWindowHeight = !empty($rtePopupWindowHeight) ? (int)$rtePopupWindowHeight : ($popupWindowHeight-150);
 
         // If another page module was specified, replace the default Page module with the new one
         $newPageModule = trim($beUser->getTSConfigVal('options.overridePageModule'));
@@ -613,14 +598,6 @@ class BackendController
             'ContextHelpWindows' => array(
                 'width' => 600,
                 'height' => 400
-            ),
-            'PopupWindow' => array(
-                'width' => $popupWindowWidth,
-                'height' => $popupWindowHeight
-            ),
-            'RTEPopupWindow' => array(
-                'width' => $rtePopupWindowWidth,
-                'height' => $rtePopupWindowHeight
             )
         );
         $this->js .= '

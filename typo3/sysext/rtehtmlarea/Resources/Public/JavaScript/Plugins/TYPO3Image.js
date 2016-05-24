@@ -87,8 +87,8 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				this.getButton(buttonId).tooltip,
 				this.getWindowDimensions(
 					{
-						width:	top.TYPO3.configuration.RTEPopupWindow.width,
-						height:	top.TYPO3.configuration.RTEPopupWindow.height
+						width:	TYPO3.settings.Textarea.RTEPopupWindow.width,
+						height:	TYPO3.settings.Textarea.RTEPopupWindow.height
 					},
 					buttonId
 				),

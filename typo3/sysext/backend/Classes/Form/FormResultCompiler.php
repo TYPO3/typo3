@@ -242,11 +242,40 @@ class FormResultCompiler
         }
 
         $beUserAuth = $this->getBackendUserAuthentication();
+
+        // define the window size of the element browser etc.
+        $popupWindowWidth  = 700;
+        $popupWindowHeight = 750;
+        $popupWindowSize = trim($beUserAuth->getTSConfigVal('options.popupWindowSize'));
+        if (!empty($popupWindowSize)) {
+            list($popupWindowWidth, $popupWindowHeight) = GeneralUtility::intExplode('x', $popupWindowSize);
+        }
+
+        // define the window size of the popups within the RTE
+        $rtePopupWindowSize = trim($beUserAuth->getTSConfigVal('options.rte.popupWindowSize'));
+        if (!empty($rtePopupWindowSize)) {
+            list($rtePopupWindowWidth, $rtePopupWindowHeight) = GeneralUtility::trimExplode('x', $rtePopupWindowSize);
+        }
+        $rtePopupWindowWidth  = !empty($rtePopupWindowWidth) ? (int)$rtePopupWindowWidth : ($popupWindowWidth-100);
+        $rtePopupWindowHeight = !empty($rtePopupWindowHeight) ? (int)$rtePopupWindowHeight : ($popupWindowHeight-150);
+
         // Make textareas resizable and flexible ("autogrow" in height)
         $textareaSettings = array(
-            'autosize'  => (bool)$beUserAuth->uc['resizeTextareas_Flexible']
+            'autosize'  => (bool)$beUserAuth->uc['resizeTextareas_Flexible'],
+            'RTEPopupWindow' => array(
+                'width' => $rtePopupWindowWidth,
+                'height' => $rtePopupWindowHeight
+            )
         );
         $pageRenderer->addInlineSettingArray('Textarea', $textareaSettings);
+
+        $popupSettings = array(
+            'PopupWindow' => array(
+                'width' => $popupWindowWidth,
+                'height' => $popupWindowHeight
+            )
+        );
+        $pageRenderer->addInlineSettingArray('Popup', $popupSettings);
 
         $this->loadJavascriptLib($backendRelPath . 'Resources/Public/JavaScript/jsfunc.tbe_editor.js');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ValueSlider');

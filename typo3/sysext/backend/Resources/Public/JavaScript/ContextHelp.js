@@ -106,7 +106,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
 	 * @param {Object} $trigger
 	 */
 	ContextHelp.showHelpPopup = function($trigger) {
-		var configuration = top.TYPO3.configuration.ContextHelpWindows || top.TYPO3.configuration.PopupWindow;
+		var configuration = top.TYPO3.configuration.ContextHelpWindows;
 		try {
 			var cshWindow = window.open(
 				ContextHelp.helpModuleUrl +

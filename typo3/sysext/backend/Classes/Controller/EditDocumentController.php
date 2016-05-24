@@ -734,19 +734,7 @@ class EditDocumentController extends AbstractModule
 			}
 '
         );
-        // define the window size of the element browser
-        $popupWindowWidth  = 700;
-        $popupWindowHeight = 750;
-        $popupWindowSize = trim($beUser->getTSConfigVal('options.popupWindowSize'));
-        if (!empty($popupWindowSize)) {
-            list($popupWindowWidth, $popupWindowHeight) = GeneralUtility::intExplode('x', $popupWindowSize);
-        }
-        $t3Configuration = array(
-            'PopupWindow' => array(
-                'width' => $popupWindowWidth,
-                'height' => $popupWindowHeight
-            )
-        );
+        $t3Configuration = array();
 
         if (ExtensionManagementUtility::isLoaded('feedit') && (int)GeneralUtility::_GP('feEdit') === 1) {
             // We have to load some locallang strings and push them into TYPO3.LLL if this request was
@@ -768,18 +756,6 @@ class EditDocumentController extends AbstractModule
                 }
             }
             $pageRenderer->addJsFile('../' . $filePath);
-
-            // define the window size of the popups within the RTE
-            $rtePopupWindowSize = trim($beUser->getTSConfigVal('options.rte.popupWindowSize'));
-            if (!empty($rtePopupWindowSize)) {
-                list($rtePopupWindowWidth, $rtePopupWindowHeight) = GeneralUtility::trimExplode('x', $rtePopupWindowSize);
-            }
-            $rtePopupWindowWidth  = !empty($rtePopupWindowWidth) ? (int)$rtePopupWindowWidth : ($popupWindowWidth-200);
-            $rtePopupWindowHeight = !empty($rtePopupWindowHeight) ? (int)$rtePopupWindowHeight : ($popupWindowHeight-250);
-            $t3Configuration['RTEPopupWindow'] = [
-                'width' => $rtePopupWindowWidth,
-                'height' => $rtePopupWindowHeight
-            ];
         }
 
         $javascript = '
