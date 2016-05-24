@@ -183,18 +183,32 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request {
 	 * @return Request the referring request, or NULL if no referrer found
 	 */
 	public function getReferringRequest() {
-		if (isset($this->internalArguments['__referrer']) && is_array($this->internalArguments['__referrer'])) {
-			$referrerArray = $this->internalArguments['__referrer'];
-			$referringRequest = new \TYPO3\CMS\Extbase\Mvc\Web\Request();
+		$referrerArray = $this->getValidatedReferrerArguments();
+		if ($referrerArray !== NULL) {
 			$arguments = array();
-			if (isset($referrerArray['arguments'])) {
-				$serializedArgumentsWithHmac = $referrerArray['arguments'];
-				$serializedArguments = $this->hashService->validateAndStripHmac($serializedArgumentsWithHmac);
-				$arguments = unserialize(base64_decode($serializedArguments));
-				unset($referrerArray['arguments']);
+			if (isset($this->internalArguments['__referrer']['arguments'])) {
+				// This case is kept for compatibility in 7.6 and 6.2, but will be removed in 8
+				$arguments = unserialize(base64_decode($this->hashService->validateAndStripHmac($this->internalArguments['__referrer']['arguments'])));
 			}
+			$referringRequest = new ReferringRequest();
 			$referringRequest->setArguments(\TYPO3\CMS\Extbase\Utility\ArrayUtility::arrayMergeRecursiveOverrule($arguments, $referrerArray));
 			return $referringRequest;
+		}
+		return NULL;
+	}
+
+	/**
+	 * @return array|NULL
+	 * @throws \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException
+	 * @throws \TYPO3\CMS\Extbase\Security\Exception\InvalidHashException
+	 */
+	public function getValidatedReferrerArguments() {
+		if (isset($this->internalArguments['__referrer']['@request'])) {
+			$referrerArguments = unserialize($this->hashService->validateAndStripHmac($this->internalArguments['__referrer']['@request']));
+			if (!is_array($referrerArguments)) {
+				$referrerArguments = NULL;
+			}
+			return $referrerArguments;
 		}
 		return NULL;
 	}
