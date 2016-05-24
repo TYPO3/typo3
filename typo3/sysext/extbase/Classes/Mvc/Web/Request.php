@@ -183,20 +183,18 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
     /**
      * Get a freshly built request object pointing to the Referrer.
      *
-     * @return Request the referring request, or NULL if no referrer found
+     * @return ReferringRequest the referring request, or null if no referrer found
      */
     public function getReferringRequest()
     {
-        if (isset($this->internalArguments['__referrer']) && is_array($this->internalArguments['__referrer'])) {
-            $referrerArray = $this->internalArguments['__referrer'];
-            $referringRequest = new \TYPO3\CMS\Extbase\Mvc\Web\Request();
+        if (isset($this->internalArguments['__referrer']['@request'])) {
+            $referrerArray = unserialize($this->hashService->validateAndStripHmac($this->internalArguments['__referrer']['@request']));
             $arguments = array();
-            if (isset($referrerArray['arguments'])) {
-                $serializedArgumentsWithHmac = $referrerArray['arguments'];
-                $serializedArguments = $this->hashService->validateAndStripHmac($serializedArgumentsWithHmac);
-                $arguments = unserialize(base64_decode($serializedArguments));
-                unset($referrerArray['arguments']);
+            if (isset($this->internalArguments['__referrer']['arguments'])) {
+                // This case is kept for compatibility in 7.6 and 6.2, but will be removed in 8
+                $arguments = unserialize(base64_decode($this->hashService->validateAndStripHmac($this->internalArguments['__referrer']['arguments'])));
             }
+            $referringRequest = new ReferringRequest();
             $referringRequest->setArguments(\TYPO3\CMS\Extbase\Utility\ArrayUtility::arrayMergeRecursiveOverrule($arguments, $referrerArray));
             return $referringRequest;
         }
