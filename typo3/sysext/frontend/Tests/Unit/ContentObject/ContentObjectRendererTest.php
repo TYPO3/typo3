@@ -1465,6 +1465,28 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * @return array
+     */
+    public function stdWrapRawUrlEncodeDataProvider()
+    {
+        return [
+            'https://typo3.org?id=10' => ['https://typo3.org?id=10', 'https%3A%2F%2Ftypo3.org%3Fid%3D10'],
+            'https://typo3.org?id=10&foo=bar' => ['https://typo3.org?id=10&foo=bar', 'https%3A%2F%2Ftypo3.org%3Fid%3D10%26foo%3Dbar'],
+        ];
+    }
+
+    /**
+     * Check if rawUrlEncode works properly
+     *
+     * @test
+     * @dataProvider stdWrapRawUrlEncodeDataProvider
+     */
+    public function stdWrap_rawUrlEncode($input, $expected)
+    {
+        $this->assertEquals($expected, $this->subject->stdWrap_rawUrlEncode($input));
+    }
+
+    /**
      * Data provider for the getQuery test
      *
      * @return array multi-dimensional array with the second level like this:
