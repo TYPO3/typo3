@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -2979,9 +2980,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $expectedResult = 'array(3items)0=>array(2items)uid=>1(integer)title=>"title1"(6chars)1=>array(2items)uid=>2(integer)title=>"title2"(6chars)2=>array(2items)uid=>3(integer)title=>""(0chars)';
         $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
 
+        DebugUtility::useAnsiColor(false);
         $result = $this->subject->getData('debug:rootLine');
-        $cleanedResult = strip_tags($result);
-        $cleanedResult = str_replace("\r", '', $cleanedResult);
+        $cleanedResult = str_replace("\r", '', $result);
         $cleanedResult = str_replace("\n", '', $cleanedResult);
         $cleanedResult = str_replace("\t", '', $cleanedResult);
         $cleanedResult = str_replace(' ', '', $cleanedResult);
@@ -3004,9 +3005,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $expectedResult = 'array(3items)0=>array(2items)uid=>1(integer)title=>"title1"(6chars)1=>array(2items)uid=>2(integer)title=>"title2"(6chars)2=>array(2items)uid=>3(integer)title=>""(0chars)';
         $GLOBALS['TSFE']->rootLine = $rootline;
 
+        DebugUtility::useAnsiColor(false);
         $result = $this->subject->getData('debug:fullRootLine');
-        $cleanedResult = strip_tags($result);
-        $cleanedResult = str_replace("\r", '', $cleanedResult);
+        $cleanedResult = str_replace("\r", '', $result);
         $cleanedResult = str_replace("\n", '', $cleanedResult);
         $cleanedResult = str_replace("\t", '', $cleanedResult);
         $cleanedResult = str_replace(' ', '', $cleanedResult);
@@ -3027,9 +3028,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $expectedResult = 'array(1item)' . $key . '=>"' . $value . '"(' . strlen($value) . 'chars)';
 
+        DebugUtility::useAnsiColor(false);
         $result = $this->subject->getData('debug:data');
-        $cleanedResult = strip_tags($result);
-        $cleanedResult = str_replace("\r", '', $cleanedResult);
+        $cleanedResult = str_replace("\r", '', $result);
         $cleanedResult = str_replace("\n", '', $cleanedResult);
         $cleanedResult = str_replace("\t", '', $cleanedResult);
         $cleanedResult = str_replace(' ', '', $cleanedResult);
@@ -3050,9 +3051,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $expectedResult = 'array(1item)' . $key . '=>"' . $value . '"(' . strlen($value) . 'chars)';
 
+        DebugUtility::useAnsiColor(false);
         $result = $this->subject->getData('debug:register');
-        $cleanedResult = strip_tags($result);
-        $cleanedResult = str_replace("\r", '', $cleanedResult);
+        $cleanedResult = str_replace("\r", '', $result);
         $cleanedResult = str_replace("\n", '', $cleanedResult);
         $cleanedResult = str_replace("\t", '', $cleanedResult);
         $cleanedResult = str_replace(' ', '', $cleanedResult);
@@ -3072,9 +3073,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $expectedResult = 'array(1item)uid=>' . $uid . '(integer)';
 
+        DebugUtility::useAnsiColor(false);
         $result = $this->subject->getData('debug:page');
-        $cleanedResult = strip_tags($result);
-        $cleanedResult = str_replace("\r", '', $cleanedResult);
+        $cleanedResult = str_replace("\r", '', $result);
         $cleanedResult = str_replace("\n", '', $cleanedResult);
         $cleanedResult = str_replace("\t", '', $cleanedResult);
         $cleanedResult = str_replace(' ', '', $cleanedResult);
