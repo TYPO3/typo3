@@ -86,7 +86,7 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
                 $disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&adminCmd=remove_ENABLE_INSTALL_TOOL';
                 $value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_enabledPermanently');
                 $message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled'),
-                    '<span style="white-space: nowrap;">' . $enableInstallToolFile . '</span>');
+                    '<code style="white-space: nowrap;">' . $enableInstallToolFile . '</code>');
                 $message .= ' <a href="' . htmlspecialchars($disableInstallToolUrl) . '">' .
                     $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
             } else {
@@ -97,7 +97,7 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
                     $disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&adminCmd=remove_ENABLE_INSTALL_TOOL';
                     $value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_enabledTemporarily');
                     $message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_installEnabledTemporarily'),
-                        '<span style="white-space: nowrap;">' . $enableInstallToolFile . '</span>', floor((@filemtime($enableInstallToolFile) + EnableFileService::INSTALL_TOOL_ENABLE_FILE_LIFETIME - time()) / 60));
+                        '<code style="white-space: nowrap;">' . $enableInstallToolFile . '</code>', floor((@filemtime($enableInstallToolFile) + EnableFileService::INSTALL_TOOL_ENABLE_FILE_LIFETIME - time()) / 60));
                     $message .= ' <a href="' . htmlspecialchars($disableInstallToolUrl) . '">' .
                         $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
                 }

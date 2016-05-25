@@ -95,8 +95,8 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface
             foreach ($xclassFoundArray as $originalClass => $xClassName) {
                 $messageDetail = sprintf(
                     $GLOBALS['LANG']->getLL('status_xclassUsageFound_message_detail'),
-                    $originalClass,
-                    $xClassName
+                    '<code>' . htmlspecialchars($originalClass) . '</code>',
+                    '<code>' . htmlspecialchars($xClassName) . '</code>'
                 );
                 $message .= '<li>' . $messageDetail . '</li>';
             }

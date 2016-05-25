@@ -190,7 +190,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
             $logFileSize = 0;
             if (@file_exists($logFile)) {
                 $logFileSize = filesize($logFile);
-                $message .= '<p>' . sprintf($GLOBALS['LANG']->getLL('status_configuration_DeprecationLogFile'), $this->getDeprecationLogFileLink()) . '</p>';
+                $message .= '<p>' . sprintf($GLOBALS['LANG']->getLL('status_configuration_DeprecationLogFile'), '<code>' . $this->getDeprecationLogFileLink()) . '</code></p>';
                 $removeDeprecationLogFileUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&amp;adminCmd=removeDeprecationLogFile';
                 $message .= '<p>' . sprintf($GLOBALS['LANG']->getLL('status_configuration_DeprecationLogSize'), GeneralUtility::formatSize($logFileSize)) . ' <a href="' . $removeDeprecationLogFileUrl . '">' . $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogDeleteLink') . '</a></p>';
             }
