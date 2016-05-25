@@ -21,31 +21,44 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 class DebugUtility
 {
     /**
+     * @var bool
+     */
+    static protected $plainTextOutput = true;
+
+    /**
+     * @var bool
+     */
+    static protected $ansiColorUsage = true;
+
+    /**
      * Debug
+     *
+     * Directly echos out debug information as HTML (or plain in CLI context)
      *
      * @param string $var
      * @param string $header
      * @param string $group
-     * @return void
      */
     public static function debug($var = '', $header = '', $group = 'Debug')
     {
         // buffer the output of debug if no buffering started before
-        if (ob_get_level() == 0) {
+        if (ob_get_level() === 0) {
             ob_start();
         }
-        $debug = self::convertVariableToString($var);
-        if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
+        if (TYPO3_MODE === 'BE' && !self::isCommandLine()) {
             $tabHeader = $header ?: 'Debug';
+            $debug = self::renderDump($var);
+            $debugPlain = PHP_EOL . self::renderDump($var, '', true, false);
             $script = '
 				(function debug() {
 					var message = ' . GeneralUtility::quoteJSvalue($debug) . ',
-						header = ' . GeneralUtility::quoteJSvalue($header) . ',
+						messagePlain = ' . GeneralUtility::quoteJSvalue($debugPlain) . ',
+						header = ' . GeneralUtility::quoteJSvalue($tabHeader) . ',
 						group = ' . GeneralUtility::quoteJSvalue($group) . ';
-					if (top.TYPO3.DebugConsole) {
+					if (top.TYPO3 && top.TYPO3.DebugConsole) {
 						top.TYPO3.DebugConsole.add(message, header, group);
 					} else {
-						var consoleMessage = [group, header, message].join(" | ");
+						var consoleMessage = [group, header, messagePlain].join(" | ");
 						if (typeof console === "object" && typeof console.log === "function") {
 							console.log(consoleMessage);
 						}
@@ -54,7 +67,7 @@ class DebugUtility
 			';
             echo GeneralUtility::wrapJS($script);
         } else {
-            echo $debug;
+            echo self::renderDump($var);
         }
     }
 
@@ -62,20 +75,12 @@ class DebugUtility
      * Converts a variable to a string
      *
      * @param mixed $variable
-     * @return string
+     * @return string plain, not HTML encoded string
      */
     public static function convertVariableToString($variable)
     {
-        if (is_array($variable)) {
-            $string = self::viewArray($variable);
-        } elseif (is_object($variable)) {
-            $string = json_encode($variable, true);
-        } elseif ((string)$variable !== '') {
-            $string = htmlspecialchars((string)$variable);
-        } else {
-            $string = '| debug |';
-        }
-        return $string;
+        $string = self::renderDump($variable, '', true, false);
+        return $string === '' ? '| debug |' : $string;
     }
 
     /**
@@ -87,7 +92,7 @@ class DebugUtility
      */
     public static function debugInPopUpWindow($debugVariable, $header = 'Debug', $group = 'Debug')
     {
-        $debugString = self::convertVariableToString($debugVariable);
+        $debugString = self::renderDump($debugVariable, sprintf('%s (%s)', $header, $group));
         $script = '
 			(function debug() {
 				var debugMessage = ' . GeneralUtility::quoteJSvalue($debugString) . ',
@@ -129,7 +134,7 @@ class DebugUtility
      * Displays the "path" of the function call stack in a string, using debug_backtrace
      *
      * @param bool $prependFileNames If set to true file names are added to the output
-     * @return string
+     * @return string plain, not HTML encoded string
      */
     public static function debugTrail($prependFileNames = false)
     {
@@ -154,11 +159,10 @@ class DebugUtility
      *
      * @param mixed $rows Array of arrays with similar keys
      * @param string $header Table header
-     * @return void Outputs to browser.
      */
     public static function debugRows($rows, $header = '')
     {
-        self::debug('<pre>' . DebuggerUtility::var_dump($rows, $header, 8, true, false, true), $header . '</pre>');
+        self::debug($rows, $header);
     }
 
     /**
@@ -190,7 +194,7 @@ class DebugUtility
      */
     public static function viewArray($array_in)
     {
-        return '<pre>' . DebuggerUtility::var_dump($array_in, '', 8, true, false, true) . '</pre>';
+        return self::renderDump($array_in);
     }
 
     /**
@@ -202,6 +206,62 @@ class DebugUtility
      */
     public static function printArray($array_in)
     {
-        echo self::viewArray($array_in);
+        echo self::renderDump($array_in);
+    }
+
+    /**
+     * Renders the dump according to the context, either for command line or as HTML output
+     *
+     * @param mixed $variable
+     * @param string $title
+     * @param bool|null $plainText
+     * @param bool|null $ansiColors
+     * @return string
+     */
+    protected static function renderDump($variable, $title = '', $plainText = null, $ansiColors = null)
+    {
+        $plainText = $plainText === null ? self::isCommandLine() && self::$plainTextOutput : $plainText;
+        $ansiColors = $ansiColors === null ? self::isCommandLine() && self::$ansiColorUsage : $ansiColors;
+        return trim(DebuggerUtility::var_dump($variable, $title, 8, $plainText, $ansiColors, true));
+    }
+
+    /**
+     * Checks some constants to determine if we are in CLI context
+     *
+     * @return bool
+     */
+    protected static function isCommandLine()
+    {
+        return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) || PHP_SAPI === 'cli';
+    }
+
+    /**
+     * Preset plaintext output
+     *
+     * Warning:
+     * This is NOT a public API method and must not be used in own extensions!
+     * This method is usually only used in tests to preset the output behaviour
+     *
+     * @internal
+     * @param bool $plainTextOutput
+     */
+    public static function usePlainTextOutput($plainTextOutput)
+    {
+        static::$plainTextOutput = $plainTextOutput;
+    }
+
+    /**
+     * Preset ansi color usage
+     *
+     * Warning:
+     * This is NOT a public API method and must not be used in own extensions!
+     * This method is usually only used in tests to preset the ansi color usage
+     *
+     * @internal
+     * @param bool $ansiColorUsage
+     */
+    public static function useAnsiColor($ansiColorUsage)
+    {
+        static::$ansiColorUsage = $ansiColorUsage;
     }
 }
