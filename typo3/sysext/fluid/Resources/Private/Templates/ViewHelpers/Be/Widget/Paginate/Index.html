@@ -1,12 +1,31 @@
 {namespace core=TYPO3\CMS\Core\ViewHelpers}
 <f:if condition="{configuration.insertAbove}">
-	<f:render section="paginator" arguments="{pagination: pagination, position:'top', recordsLabel: configuration.recordsLabel}" />
+	<f:render section="paginator" arguments="{pagination: pagination, recordsLabel: configuration.recordsLabel}" />
+</f:if>
+
+<f:if condition="{configuration.insertAbove} || {configuration.insertBelow}">
+	<script type="text/javascript">
+		function goToPage(formObject) {
+			var formField = formObject.elements['paginator-target-page'];
+			var url = formField.dataset.url;
+			var numberOfPages = formField.dataset.numberOfPages;
+			var page = formField.value;
+			if (page > numberOfPages) {
+				page = numberOfPages;
+			} else if (page < 1) {
+				page = 1;
+			}
+			url = url.replace('987654321', page);
+			self.location.href = url;
+			return false;
+		}
+	</script>
 </f:if>
 
 <f:renderChildren arguments="{contentArguments}" />
 
 <f:if condition="{configuration.insertBelow}">
-	<f:render section="paginator" arguments="{pagination: pagination, position:'bottom', recordsLabel: configuration.recordsLabel}" />
+	<f:render section="paginator" arguments="{pagination: pagination, recordsLabel: configuration.recordsLabel}" />
 </f:if>
 
 <f:section name="paginator">
@@ -55,21 +74,8 @@
 				<span>
 					<f:translate key="widget.pagination.page" />
 
-					<form id="paginator-form-{position}" onsubmit="goToPage{position}(this); return false;" style="display:inline;">
-					<script type="text/javascript">
-						function goToPage{position}(formObject) {
-							var url = '{f:widget.uri(arguments:{currentPage: 987654321}) -> f:format.raw()}';
-							var page = formObject.elements['paginator-target-page'].value;
-							if (page > {pagination.numberOfPages}) {
-								page = {pagination.numberOfPages};
-							} else if (page < 1) {
-								page = 1;
-							}
-							url = url.replace('987654321', page);
-							self.location.href= url;
-						}
-					</script>
-					<f:form.textfield id="paginator-{position}" name="paginator-target-page" class="form-control input-sm paginator-input" size="5" value="{pagination.current}" />
+					<form onsubmit="return goToPage(this);" style="display:inline;">
+						<f:form.textfield additionalAttributes="{data-number-of-pages: '{pagination.numberOfPages}', data-url: '{f:widget.uri(arguments:{currentPage: 987654321})}'}" name="paginator-target-page" class="form-control input-sm paginator-input" size="5" value="{pagination.current}" />
 					</form>
 
 					/ {pagination.numberOfPages}
