@@ -4033,9 +4033,11 @@ class ContentObjectRenderer
      *
      * @param string $text Input string to be cleaned.
      * @return string Return string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function removeBadHTML($text)
     {
+        GeneralUtility::logDeprecatedFunction();
         // Copyright 2002-2003 Thomas Bley
         $text = preg_replace(array(
             '\'<script[^>]*?>.*?</script[^>]*?>\'si',
