@@ -149,6 +149,57 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @return array
      */
+    public function fileExtensionPermissionDataProvider()
+    {
+        return array(
+            'Permissions evaluated, extension not in allowed list' => array(
+                'fileName' => 'foo.txt',
+                'configuration' => array('allow' => 'jpg'),
+                'evaluatePermissions' => true,
+                'isAllowed' => true,
+            ),
+            'Permissions evaluated, extension in deny list' => array(
+                'fileName' => 'foo.txt',
+                'configuration' => array('deny' => 'txt'),
+                'evaluatePermissions' => true,
+                'isAllowed' => false,
+            ),
+            'Permissions not evaluated, extension is php' => array(
+                'fileName' => 'foo.php',
+                'configuration' => array(),
+                'evaluatePermissions' => false,
+                'isAllowed' => false,
+            ),
+            'Permissions evaluated, extension is php' => array(
+                'fileName' => 'foo.php',
+                // It is not possible to allow php file extension through configuration
+                'configuration' => array('allow' => 'php'),
+                'evaluatePermissions' => true,
+                'isAllowed' => false,
+            ),
+        );
+    }
+
+    /**
+     * @param string $fileName
+     * @param array $configuration
+     * @param bool $evaluatePermissions
+     * @param bool $isAllowed
+     * @test
+     * @dataProvider fileExtensionPermissionDataProvider
+     */
+    public function fileExtensionPermissionIsWorkingCorrectly($fileName, array $configuration, $evaluatePermissions, $isAllowed)
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace'] = $configuration;
+        $driverMock = $this->getMockForAbstractClass(AbstractDriver::class, array(), '', false);
+        $subject = $this->getAccessibleMock(ResourceStorage::class, array('dummy'), array($driverMock, array()));
+        $subject->_set('evaluatePermissions', $evaluatePermissions);
+        $this->assertSame($isAllowed, $subject->_call('checkFileExtensionPermission', $fileName));
+    }
+
+    /**
+     * @return array
+     */
     public function isWithinFileMountBoundariesDataProvider()
     {
         return array(
