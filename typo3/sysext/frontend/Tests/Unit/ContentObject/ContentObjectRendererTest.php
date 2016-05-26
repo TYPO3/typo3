@@ -2575,6 +2575,40 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertEquals($expected, $result);
     }
 
+    public function stdWrapBrTagDataProvider()
+    {
+        $noConfig = [];
+        $config1 = ['brTag' => '<br/>'];
+        $config2 = ['brTag' => '<br>'];
+        return [
+            'no config: one break at the beginning' => [LF . 'one' . LF . 'two', 'onetwo', $noConfig],
+            'no config: multiple breaks at the beginning' => [LF . LF . 'one' . LF . 'two', 'onetwo', $noConfig],
+            'no config: one break at the end' => ['one' . LF . 'two' . LF, 'onetwo', $noConfig],
+            'no config: multiple breaks at the end' => ['one' . LF . 'two' . LF . LF, 'onetwo', $noConfig],
+
+            'config1: one break at the beginning' => [LF . 'one' . LF . 'two', '<br/>one<br/>two', $config1],
+            'config1: multiple breaks at the beginning' => [LF . LF . 'one' . LF . 'two', '<br/><br/>one<br/>two', $config1],
+            'config1: one break at the end' => ['one' . LF . 'two' . LF, 'one<br/>two<br/>', $config1],
+            'config1: multiple breaks at the end' => ['one' . LF . 'two' . LF . LF, 'one<br/>two<br/><br/>', $config1],
+
+            'config2: one break at the beginning' => [LF . 'one' . LF . 'two', '<br>one<br>two', $config2],
+            'config2: multiple breaks at the beginning' => [LF . LF . 'one' . LF . 'two', '<br><br>one<br>two', $config2],
+            'config2: one break at the end' => ['one' . LF . 'two' . LF, 'one<br>two<br>', $config2],
+            'config2: multiple breaks at the end' => ['one' . LF . 'two' . LF . LF, 'one<br>two<br><br>', $config2],
+        ];
+    }
+
+    /**
+     * Check if brTag works properly
+     *
+     * @test
+     * @dataProvider stdWrapBrTagDataProvider
+     */
+    public function stdWrap_brTag($input, $expected, $config)
+    {
+        $this->assertEquals($expected, $this->subject->stdWrap_brTag($input, $config));
+    }
+
     ///////////////////////////////
     // Tests concerning getData()
     ///////////////////////////////
