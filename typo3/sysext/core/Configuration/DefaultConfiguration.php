@@ -37,7 +37,7 @@ return array(
         'processor_stripColorProfileCommand' => '+profile \'*\'',    // String: Specify the command to strip the profile information, which can reduce thumbnail size up to 60KB. Command can differ in IM/GM, IM also know the -strip command. See <a href="http://www.imagemagick.org/Usage/thumbnails/#profiles" target="_blank">imagemagick.org</a> for details
         'processor_colorspace' => 'RGB',                            // String: Specify the colorspace to use. Some ImageMagick versions (like 6.7.0 and above) use the sRGB colorspace, so all images are darker then the original. <br />Possible Values: CMY, CMYK, Gray, HCL, HSB, HSL, HWB, Lab, LCH, LMS, Log, Luv, OHTA, Rec601Luma, Rec601YCbCr, Rec709Luma, Rec709YCbCr, RGB, sRGB, Transparent, XYZ, YCbCr, YCC, YIQ, YCbCr, YUV
         'jpg_quality' => 70,                            // Integer: Default JPEG generation quality
-        'png_truecolor' => true,
+        'png_truecolor' => true,                        // Boolean: When creating png images, always use the full colorpalette, if disabled could reduce file sizes for scaled images, but the image quality will be let down.
     ),
     'SYS' => array(
         // System related concerning both frontend and backend.
@@ -1124,7 +1124,7 @@ return array(
         'transport_sendmail_command' => '',        // String: <em>only with transport=sendmail</em>: The command to call to send a mail locally.
         'transport_mbox_file' => '',        // String: <em>only with transport=mbox</em>: The file where to write the mails into. This file will be conforming the mbox format described in RFC 4155. It is a simple text file with a concatenation of all mails. Path must be absolute.
         'defaultMailFromAddress' => '',        // String: This default email address is used when no other "from" address is set for a TYPO3-generated email. You can specify an email address only (ex. info@example.org).
-        'defaultMailFromName' => ''// String: This default name is used when no other "from" name is set for a TYPO3-generated email.
+        'defaultMailFromName' => '',    // String: This default name is used when no other "from" name is set for a TYPO3-generated email.
     ),
     'HTTP' => array(    // HTTP configuration to tune how TYPO3 behaves on HTTP requests made by TYPO3. Have a look at http://docs.guzzlephp.org/en/latest/request-options.html for some background information on those settings.
         'allow_redirects' => array( // Mixed, set to false if you want to allow redirects, or use it as an array to add more values, see http://docs.guzzlephp.org/en/latest/request-options.html#allow-redirects for syntax
