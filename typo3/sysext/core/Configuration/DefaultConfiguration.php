@@ -37,7 +37,7 @@ return array(
         'im_stripProfileCommand' => '+profile \'*\'',    // String: Specify the command to strip the profile information, which can reduce thumbnail size up to 60KB. Command can differ in IM/GM, IM also know the -strip command. See <a href="http://www.imagemagick.org/Usage/thumbnails/#profiles" target="_blank">imagemagick.org</a> for details
         'im_useStripProfileByDefault' => true,            // Boolean: If set, the im_stripProfileCommand is used with all IM Image operations by default. See tsRef for setting this parameter explocit for IMAGE generation.
         'jpg_quality' => 70,                            // Integer: Default JPEG generation quality
-        'png_truecolor' => true,
+        'png_truecolor' => true,                        // Boolean: When creating png images, always use the full colorpalette, if disabled could reduce file sizes for scaled images, but the image quality will be let down.
         'colorspace' => 'RGB',                            // String: Specify the colorspace to use. Some ImageMagick versions (like 6.7.0 and above) use the sRGB colorspace, so all images are darker then the original. <br />Possible Values: CMY, CMYK, Gray, HCL, HSB, HSL, HWB, Lab, LCH, LMS, Log, Luv, OHTA, Rec601Luma, Rec601YCbCr, Rec709Luma, Rec709YCbCr, RGB, sRGB, Transparent, XYZ, YCbCr, YCC, YIQ, YCbCr, YUV
     ),
     'SYS' => array(
@@ -1153,7 +1153,7 @@ return array(
         'transport_sendmail_command' => '',        // String: <em>only with transport=sendmail</em>: The command to call to send a mail locally.
         'transport_mbox_file' => '',        // String: <em>only with transport=mbox</em>: The file where to write the mails into. This file will be conforming the mbox format described in RFC 4155. It is a simple text file with a concatenation of all mails. Path must be absolute.
         'defaultMailFromAddress' => '',        // String: This default email address is used when no other "from" address is set for a TYPO3-generated email. You can specify an email address only (ex. info@example.org).
-        'defaultMailFromName' => ''// String: This default name is used when no other "from" name is set for a TYPO3-generated email.
+        'defaultMailFromName' => '',    // String: This default name is used when no other "from" name is set for a TYPO3-generated email.
     ),
     'HTTP' => array( // HTTP configuration to tune how TYPO3 behaves on HTTP request. Have a look at <a href="http://pear.php.net/manual/en/package.http.http-request2.config.php>HTTP_Request2 Manual</a> for some background information on those settings.
         'adapter' => 'socket',        // String: Default adapter - either "socket" or "curl".
