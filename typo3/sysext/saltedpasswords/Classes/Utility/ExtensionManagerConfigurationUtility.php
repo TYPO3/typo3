@@ -149,7 +149,7 @@ class ExtensionManagerConfigurationUtility
     private function init()
     {
         $requestSetup = $this->processPostData((array) $_REQUEST['data']);
-        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
+        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords'], ['allowed_classes' => false]);
         $this->extConf['BE'] = array_merge((array)$extConf['BE.'], (array)$requestSetup['BE.']);
         $this->extConf['FE'] = array_merge((array)$extConf['FE.'], (array)$requestSetup['FE.']);
         $this->getLanguageService()->includeLLFile('EXT:saltedpasswords/Resources/Private/Language/locallang.xlf');

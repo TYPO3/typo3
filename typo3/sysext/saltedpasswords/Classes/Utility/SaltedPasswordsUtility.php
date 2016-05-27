@@ -51,7 +51,7 @@ class SaltedPasswordsUtility
     {
         $currentConfiguration = self::returnExtConfDefaults();
         if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords'])) {
-            $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
+            $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords'], ['allowed_classes' => false]);
             // Merge default configuration with modified configuration:
             if (isset($extensionConfiguration[$mode . '.'])) {
                 $currentConfiguration = array_merge($currentConfiguration, $extensionConfiguration[$mode . '.']);

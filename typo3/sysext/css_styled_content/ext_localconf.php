@@ -23,24 +23,21 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php'][
     \TYPO3\CMS\CssStyledContent\Hooks\PageLayoutView\TextPreviewRenderer::class;
 
 if (TYPO3_MODE === 'BE') {
-    call_user_func(
-        function ($extKey) {
-            // Get the extension configuration
-            $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extKey]);
+    call_user_func(function () {
+        // Get the extension configuration
+        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['css_styled_content'], ['allowed_classes' => false]);
 
-            if (!isset($extConf['loadContentElementWizardTsConfig']) || (int)$extConf['loadContentElementWizardTsConfig'] === 1) {
-                // Include new content elements to modWizards
-                \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/PageTSconfig/NewContentElementWizard.ts">');
-            }
+        if (!isset($extConf['loadContentElementWizardTsConfig']) || (int)$extConf['loadContentElementWizardTsConfig'] === 1) {
+            // Include new content elements to modWizards
+            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/PageTSconfig/NewContentElementWizard.ts">');
+        }
 
-            $dispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-            $dispatcher->connect(
-                \TYPO3\CMS\Extensionmanager\Controller\ConfigurationController::class,
-                'afterExtensionConfigurationWrite',
-                \TYPO3\CMS\CssStyledContent\Hooks\TcaCacheClearing::class,
-                'clearTcaCache'
-            );
-        },
-        $_EXTKEY
-    );
+        $dispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+        $dispatcher->connect(
+            \TYPO3\CMS\Extensionmanager\Controller\ConfigurationController::class,
+            'afterExtensionConfigurationWrite',
+            \TYPO3\CMS\CssStyledContent\Hooks\TcaCacheClearing::class,
+            'clearTcaCache'
+        );
+    });
 }

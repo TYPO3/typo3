@@ -79,7 +79,8 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
     public function getCurrentConfiguration($extensionKey)
     {
         $mergedConfiguration = $this->getDefaultConfigurationFromExtConfTemplateAsValuedArray($extensionKey);
-        $currentExtensionConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
+        // No objects allowed in extConf at all - it is safe to deny that during unserialize()
+        $currentExtensionConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey], ['allowed_classes' => false]);
         $currentExtensionConfig = is_array($currentExtensionConfig) ? $currentExtensionConfig : array();
         $currentExtensionConfig = $this->convertNestedToValuedConfiguration($currentExtensionConfig);
         \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(

@@ -34,7 +34,7 @@ class BackendWarnings
             $lang = $this->getLanguageService();
             $warnings['rsaauth_cmdline'] = $lang->sL('LLL:EXT:rsaauth/Resources/Private/Language/locallang.xlf:hook_using_cmdline');
             // Check the path
-            $extconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rsaauth']);
+            $extconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rsaauth'], ['allowed_classes' => false]);
             $path = trim($extconf['temporaryDirectory']);
             if ($path == '') {
                 // Path is empty

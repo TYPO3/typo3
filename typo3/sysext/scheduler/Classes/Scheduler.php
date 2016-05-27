@@ -38,7 +38,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
     public function __construct()
     {
         // Get configuration from the extension manager
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['scheduler']);
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['scheduler'], ['allowed_classes' => false]);
         if (empty($this->extConf['maxLifetime'])) {
             $this->extConf['maxLifetime'] = 1440;
         }

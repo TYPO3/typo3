@@ -263,7 +263,7 @@ class BackendController
         $view = $this->getFluidTemplateObject($this->templatePath . 'Backend/Main.html');
 
         // Extension Configuration to find the TYPO3 logo in the left corner
-        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['backend']);
+        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['backend'], ['allowed_classes' => false]);
         $logoPath = '';
         if (!empty($extConf['backendLogo'])) {
             $customBackendLogo = GeneralUtility::getFileAbsFileName($extConf['backendLogo']);

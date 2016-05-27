@@ -2,7 +2,7 @@
 defined('TYPO3_MODE') or die();
 
 // Register extension list update task
-$_EXTCONF = unserialize($_EXTCONF);
+$_EXTCONF = unserialize($_EXTCONF, ['allowed_classes' => false]);
 if (empty($_EXTCONF['offlineMode'])) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class] = array(
         'extension' => $_EXTKEY,

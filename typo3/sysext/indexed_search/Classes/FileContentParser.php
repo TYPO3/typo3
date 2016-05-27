@@ -76,7 +76,7 @@ class FileContentParser
     public function initParser($extension)
     {
         // Then read indexer-config and set if appropriate:
-        $indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
+        $indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'], ['allowed_classes' => false]);
         // If windows, apply extension to tool name:
         $exe = TYPO3_OS == 'WIN' ? '.exe' : '';
         // lg
@@ -288,7 +288,7 @@ class FileContentParser
     public function searchTypeMediaTitle($extension)
     {
         // Read indexer-config
-        $indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
+        $indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'], ['allowed_classes' => false]);
         // Ignore extensions
         $ignoreExtensions = GeneralUtility::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']), true);
         if (in_array($extension, $ignoreExtensions)) {

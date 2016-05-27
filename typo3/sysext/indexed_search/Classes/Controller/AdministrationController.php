@@ -151,7 +151,7 @@ class AdministrationController extends ActionController
     public function initializeAction()
     {
         $this->pageUid = (int)GeneralUtility::_GET('id');
-        $this->indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
+        $this->indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'], ['allowed_classes' => false]);
         $this->enableMetaphoneSearch = (bool)$this->indexerConfig['enableMetaphoneSearch'];
         $this->indexer = GeneralUtility::makeInstance(Indexer::class);
 

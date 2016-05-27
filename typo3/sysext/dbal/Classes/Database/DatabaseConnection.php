@@ -2564,7 +2564,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
      */
     public function sql_query($query)
     {
-        $globalConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dbal']);
+        $globalConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dbal'], ['allowed_classes' => false]);
         if ($globalConfig['sql_query.']['passthrough']) {
             return parent::sql_query($query);
         }

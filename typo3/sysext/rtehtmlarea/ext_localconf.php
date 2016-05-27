@@ -13,7 +13,7 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('rtehtm
 
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['version'] = $EM_CONF['rtehtmlarea']['version'];
 // Unserializing the configuration so we can use it here
-$_EXTCONF = unserialize($_EXTCONF);
+$_EXTCONF = unserialize($_EXTCONF, ['allowed_classes' => false]);
 
 // Add default RTE transformation configuration
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:rtehtmlarea/Configuration/PageTSconfig/Proc/pageTSConfig.txt">');

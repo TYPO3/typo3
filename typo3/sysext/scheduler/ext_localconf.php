@@ -10,7 +10,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['scheduler'] = ar
     '_CLI_scheduler'
 );
 // Get the extensions's configuration
-$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['scheduler']);
+$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['scheduler'], ['allowed_classes' => false]);
 // If sample tasks should be shown,
 // register information for the test and sleep tasks
 if (!empty($extConf['showSampleTasks'])) {

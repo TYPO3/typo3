@@ -98,7 +98,6 @@ class SilentConfigurationUpgradeService
     {
         $this->generateEncryptionKeyIfNeeded();
         $this->configureBackendLoginSecurity();
-        $this->configureSaltedPasswords();
         $this->migrateImageProcessorSetting();
         $this->transferHttpSettings();
         $this->disableImageMagickDetailSettingsIfImageMagickIsDisabled();
@@ -150,43 +149,6 @@ class SilentConfigurationUpgradeService
             // If an exception is thrown, the value is not set in LocalConfiguration
             $this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel',
                 $rsaauthLoaded ? 'rsa' : 'normal');
-            $this->throwRedirectException();
-        }
-    }
-
-    /**
-     * Check the settings for salted passwords extension to load it as a required extension.
-     * Unset obsolete configuration options if given.
-     *
-     * @return void
-     */
-    protected function configureSaltedPasswords()
-    {
-        $defaultConfiguration = $this->configurationManager->getDefaultConfiguration();
-        $defaultExtensionConfiguration = unserialize($defaultConfiguration['EXT']['extConf']['saltedpasswords']);
-        try {
-            $extensionConfiguration = @unserialize($this->configurationManager->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords'));
-        } catch (\RuntimeException $e) {
-            $extensionConfiguration = [];
-        }
-        if (is_array($extensionConfiguration) && !empty($extensionConfiguration)) {
-            if (isset($extensionConfiguration['BE.']['enabled'])) {
-                if ($extensionConfiguration['BE.']['enabled']) {
-                    unset($extensionConfiguration['BE.']['enabled']);
-                } else {
-                    $extensionConfiguration['BE.'] = $defaultExtensionConfiguration['BE.'];
-                }
-                $this->configurationManager->setLocalConfigurationValueByPath(
-                    'EXT/extConf/saltedpasswords',
-                    serialize($extensionConfiguration)
-                );
-                $this->throwRedirectException();
-            }
-        } else {
-            $this->configurationManager->setLocalConfigurationValueByPath(
-                'EXT/extConf/saltedpasswords',
-                serialize($defaultExtensionConfiguration)
-            );
             $this->throwRedirectException();
         }
     }
