@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Contains some parts for staging, versioning and workspaces
@@ -551,7 +552,7 @@ class DataHandlerHook
                 $this->workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
                 // only generate the link if the marker is in the template - prevents database from getting to much entries
                 if (GeneralUtility::isFirstPartOfStr($emailConfig['message'], 'LLL:')) {
-                    $tempEmailMessage = $GLOBALS['LANG']->sL($emailConfig['message']);
+                    $tempEmailMessage = $this->getLanguageService()->sL($emailConfig['message']);
                 } else {
                     $tempEmailMessage = $emailConfig['message'];
                 }
@@ -574,7 +575,7 @@ class DataHandlerHook
             // an array of language objects that are needed
             // for emails with different languages
             $languageObjects = array(
-                $GLOBALS['LANG']->lang => $GLOBALS['LANG']
+                $this->getLanguageService()->lang => $this->getLanguageService()
             );
             // loop through each recipient and send the email
             foreach ($emails as $recipientData) {
@@ -969,9 +970,9 @@ class DataHandlerHook
             // Set log entry for live record:
             $propArr = $tcemainObj->getRecordPropertiesFromRow($table, $swapVersion);
             if ($propArr['_ORIG_pid'] == -1) {
-                $label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tcemain.xlf:version_swap.offline_record_updated');
+                $label = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_tcemain.xlf:version_swap.offline_record_updated');
             } else {
-                $label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tcemain.xlf:version_swap.online_record_updated');
+                $label = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_tcemain.xlf:version_swap.online_record_updated');
             }
             $theLogId = $tcemainObj->log($table, $id, 2, $propArr['pid'], 0, $label, 10, array($propArr['header'], $table . ':' . $id), $propArr['event_pid']);
             $tcemainObj->setHistory($table, $id, $theLogId);
@@ -980,9 +981,9 @@ class DataHandlerHook
             // Set log entry for offline record:
             $propArr = $tcemainObj->getRecordPropertiesFromRow($table, $curVersion);
             if ($propArr['_ORIG_pid'] == -1) {
-                $label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tcemain.xlf:version_swap.offline_record_updated');
+                $label = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_tcemain.xlf:version_swap.offline_record_updated');
             } else {
-                $label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tcemain.xlf:version_swap.online_record_updated');
+                $label = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_tcemain.xlf:version_swap.online_record_updated');
             }
             $theLogId = $tcemainObj->log($table, $swapWith, 2, $propArr['pid'], 0, $label, 10, array($propArr['header'], $table . ':' . $swapWith), $propArr['event_pid']);
             $tcemainObj->setHistory($table, $swapWith, $theLogId);
@@ -1506,5 +1507,13 @@ class DataHandlerHook
     protected function createRelationHandlerInstance()
     {
         return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

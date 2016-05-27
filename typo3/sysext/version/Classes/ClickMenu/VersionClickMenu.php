@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\ClickMenu\ClickMenu;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * "Versioning" item added to click menu of elements.
@@ -59,7 +60,7 @@ class VersionClickMenu
             // "Versioning" element added:
             $url = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', array('table' => $table, 'uid' => $uid));
             $localItems[] = $backRef->linkItem(
-                $GLOBALS['LANG']->getLLL('title', $LL),
+                $this->getLanguageService()->getLLL('title', $LL),
                 $this->iconFactory->getIcon('actions-version-page-open', Icon::SIZE_SMALL)->render(),
                 $backRef->urlRefForCM($url),
                 true
@@ -87,6 +88,14 @@ class VersionClickMenu
      */
     public function includeLL()
     {
-        return $GLOBALS['LANG']->includeLLFile('EXT:version/Resources/Private/Language/locallang.xlf', false);
+        return $this->getLanguageService()->includeLLFile('EXT:version/Resources/Private/Language/locallang.xlf', false);
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }
