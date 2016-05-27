@@ -97,7 +97,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $id = $this->linkParts['pageid'];
         $pageRow = BackendUtility::getRecordWSOL('pages', $id);
 
-        return $lang->getLL('page', true)
+        return htmlspecialchars($lang->getLL('page'))
             . ' \'' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($pageRow['title'], $titleLen)) . '\''
             . ' (ID:' . $id . ($this->linkParts['anchor'] ? ', #' . $this->linkParts['anchor'] : '') . ')';
     }
@@ -318,12 +318,12 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 				<tr>
 					<td>
 						<label>
-							' . $this->getLanguageService()->getLL('page_id', true) . ':
+							' . htmlspecialchars($this->getLanguageService()->getLL('page_id')) . ':
 						</label>
 					</td>
 					<td colspan="3">
 						<input type="text" size="6" name="luid" id="luid" /> <input class="btn btn-default t3js-pageLink" type="submit" value="'
-            . $this->getLanguageService()->getLL('setLink', true) . '" />
+            . htmlspecialchars($this->getLanguageService()->getLL('setLink')) . '" />
 					</td>
 				</tr>';
         }

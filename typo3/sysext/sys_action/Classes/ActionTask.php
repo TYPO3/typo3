@@ -421,7 +421,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
         if (!empty($userList)) {
             $content .= '<div class="panel panel-default">';
             $content .= '<div class="panel-heading">';
-            $content .= '<h3 class="panel-title">' . $this->getLanguageService()->getLL('action_t1_listOfUsers', true) . '</h3>';
+            $content .= '<h3 class="panel-title">' . htmlspecialchars($this->getLanguageService()->getLL('action_t1_listOfUsers')) . '</h3>';
             $content .= '</div>';
             $content .= '<ul class="list-group">' . implode($userList) . '</ul>';
             $content .= '</div>';
@@ -448,7 +448,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
         $link = '<a href="' . htmlspecialchars($href) . '">' . htmlspecialchars($username) . '</a>';
         // Link to delete the user record
         $link .= '
-				<a href="' . htmlspecialchars(($href . '&delete=1')) . '" class="t3js-confirm-trigger" data-title="' . $this->getLanguageService()->getLL('lDelete_warning_title', true) . '" data-message="' . $this->getLanguageService()->getLL('lDelete_warning', true) . '">'
+				<a href="' . htmlspecialchars(($href . '&delete=1')) . '" class="t3js-confirm-trigger" data-title="' . htmlspecialchars($this->getLanguageService()->getLL('lDelete_warning_title')) . '" data-message="' . htmlspecialchars($this->getLanguageService()->getLL('lDelete_warning')) . '">'
                     . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() .
                 '</a>';
         return $link;
@@ -797,7 +797,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                         . $this->getLanguageService()->getLL(($queryIsEmpty ? 'action_createQuery'
                         : 'action_editQuery')) . '</a>';
                 }
-                $content .= '<h2>' . $this->getLanguageService()->getLL('action_t2_result', true) . '</h2>' . $actionContent;
+                $content .= '<h2>' . htmlspecialchars($this->getLanguageService()->getLL('action_t2_result')) . '</h2>' . $actionContent;
             } else {
                 // Query is not configured
                 $this->addMessage(

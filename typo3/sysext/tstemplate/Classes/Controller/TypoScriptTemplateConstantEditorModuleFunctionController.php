@@ -153,7 +153,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
             // Resetting the menu (stop)
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $content = $iconFactory->getIconForRecord('sys_template', $tplRow, Icon::SIZE_SMALL)->render() . '<strong>' . $this->pObj->linkWrapTemplateTitle($tplRow['title'], 'constants') . '</strong>' . (trim($tplRow['sitetitle']) ? htmlspecialchars(' (' . $tplRow['sitetitle'] . ')') : '');
-            $theOutput .= '<h2>' . $lang->getLL('editConstants', true) . '</h2><div>' . $content . '</div>';
+            $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('editConstants')) . '</h2><div>' . $content . '</div>';
             if ($manyTemplatesMenu) {
                 $theOutput .= '<div>' . $manyTemplatesMenu . '</div>';
             }
@@ -162,9 +162,9 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
                 $menu = '<div class="form-inline form-inline-spaced">';
                 $menu .= BackendUtility::getDropdownMenu($this->pObj->id, 'SET[constant_editor_cat]', $this->pObj->MOD_SETTINGS['constant_editor_cat'], $this->pObj->MOD_MENU['constant_editor_cat']);
                 $menu .= '</div>';
-                $theOutput .= '<h3>' . $lang->getLL('category', true) . '</h3><div><span class="text-nowrap">' . $menu . '</span></div>';
+                $theOutput .= '<h3>' . htmlspecialchars($lang->getLL('category')) . '</h3><div><span class="text-nowrap">' . $menu . '</span></div>';
             } else {
-                $theOutput .= '<h3>' . $iconFactory->getIcon('status-dialog-notification', Icon::SIZE_SMALL)->render() . $lang->getLL('noConstants', true) . '</h3><div>' . $lang->getLL('noConstantsDescription', true) . '</div>';
+                $theOutput .= '<h3>' . $iconFactory->getIcon('status-dialog-notification', Icon::SIZE_SMALL)->render() . htmlspecialchars($lang->getLL('noConstants')) . '</h3><div>' . htmlspecialchars($lang->getLL('noConstantsDescription')) . '</div>';
             }
             $theOutput .= '<div style="padding-top: 15px;"></div>';
             // Category and constant editor config:

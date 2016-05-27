@@ -670,7 +670,7 @@ class SetupModuleController extends AbstractModule
     {
         $languageOptions = array();
         // Compile the languages dropdown
-        $langDefault = $this->getLanguageService()->getLL('lang_default', true);
+        $langDefault = htmlspecialchars($this->getLanguageService()->getLL('lang_default'));
         $languageOptions[$langDefault] = '<option value=""' . ($this->getBackendUser()->uc['lang'] === '' ? ' selected="selected"' : '') . '>' . $langDefault . '</option>';
         // Traverse the number of languages
         /** @var $locales \TYPO3\CMS\Core\Localization\Locales */

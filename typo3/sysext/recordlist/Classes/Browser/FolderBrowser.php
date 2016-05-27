@@ -106,7 +106,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
 			-->
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-EBfiles">
 				<tr>
-					<td class="c-wCell" valign="top"><h3>' . $this->getLanguageService()->getLL('folderTree', true) . ':</h3>' . $tree . '</td>
+					<td class="c-wCell" valign="top"><h3>' . htmlspecialchars($this->getLanguageService()->getLL('folderTree')) . ':</h3>' . $tree . '</td>
 					<td class="c-wCell" valign="top">' . $folders . '</td>
 				</tr>
 			</table>
@@ -140,7 +140,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
         $folderIdentifier = $parentFolder->getCombinedIdentifier();
 
         // Create headline (showing number of folders):
-        $content .= '<h3>' . sprintf($lang->getLL('folders', true) . ' (%s):', count($folders)) . '</h3>';
+        $content .= '<h3>' . sprintf(htmlspecialchars($lang->getLL('folders')) . ' (%s):', count($folders)) . '</h3>';
 
         $titleLength = (int)$this->getBackendUser()->uc['titleLen'];
         // Create the header of current folder:
@@ -162,7 +162,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
             $aTag_alt = '<a href="#" data-folder-id="' . htmlspecialchars($folderIdentifier) . '" data-close="1">';
             if (strstr($subFolderIdentifier, ',') || strstr($subFolderIdentifier, '|')) {
                 // In case an invalid character is in the filepath, display error message:
-                $errorMessage = sprintf($lang->getLL('invalidChar', true), ', |');
+                $errorMessage = sprintf(htmlspecialchars($lang->getLL('invalidChar')), ', |');
                 $aTag = '<a href="#" class="t3js-folderIdError" data-message="' . $errorMessage . '">';
             }
             $aTag_e = '</a>';
@@ -171,7 +171,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
             $lines[] = '
 				<tr>
 					<td nowrap="nowrap">' . $foldernameAndIcon . '&nbsp;</td>
-					<td>' . $aTag . '<span title="' . $lang->getLL('addToList', true) . '">' . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . '</span>' . $aTag_e . '</td>
+					<td>' . $aTag . '<span title="' . htmlspecialchars($lang->getLL('addToList')) . '">' . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . '</span>' . $aTag_e . '</td>
 					<td>&nbsp;</td>
 				</tr>';
             $lines[] = '

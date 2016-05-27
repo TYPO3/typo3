@@ -439,7 +439,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
      */
     protected function getNoBrokenLinkMessage(array $brokenLinksMarker)
     {
-        $brokenLinksMarker['LIST_HEADER'] = '<h3>' . $this->getLanguageService()->getLL('list.header', true) . '</h3>';
+        $brokenLinksMarker['LIST_HEADER'] = '<h3>' . htmlspecialchars($this->getLanguageService()->getLL('list.header')) . '</h3>';
         /** @var $message FlashMessage */
         $message = GeneralUtility::makeInstance(
             FlashMessage::class,
@@ -478,7 +478,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
             $makerTableHead[$column] = BackendUtility::wrapInHelp('linkvalidator', $column, $label);
         }
         // Add section header
-        $makerTableHead['list_header'] = '<h3>' . $this->getLanguageService()->getLL('list.header', true) . '</h3>';
+        $makerTableHead['list_header'] = '<h3>' . htmlspecialchars($this->getLanguageService()->getLL('list.header')) . '</h3>';
         return $makerTableHead;
     }
 
@@ -581,7 +581,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         }
         $checkOptionsTemplate = $this->templateService->getSubpart($this->doc->moduleTemplate, '###CHECKOPTIONS_SECTION###');
         $hookSectionTemplate = $this->templateService->getSubpart($checkOptionsTemplate, '###HOOK_SECTION###');
-        $markerArray['statistics_header'] = '<h3>' . $this->getLanguageService()->getLL('report.statistics.header', true) . '</h3>';
+        $markerArray['statistics_header'] = '<h3>' . htmlspecialchars($this->getLanguageService()->getLL('report.statistics.header')) . '</h3>';
         $markerArray['total_count_label'] = BackendUtility::wrapInHelp('linkvalidator', 'checkboxes', $this->getLanguageService()->getLL('overviews.nbtotal'));
         $markerArray['total_count'] = $brokenLinkOverView['brokenlinkCount'] ?: '0';
 

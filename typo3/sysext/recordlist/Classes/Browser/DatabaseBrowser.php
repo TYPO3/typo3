@@ -125,7 +125,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
 				<tr>';
         if ($withTree) {
             $content .= '<td class="c-wCell" valign="top">'
-                . '<h3>' . $this->getLanguageService()->getLL('pageTree', true) . ':</h3>'
+                . '<h3>' . htmlspecialchars($this->getLanguageService()->getLL('pageTree')) . ':</h3>'
                 . $this->getTemporaryTreeMountCancelNotice() . $tree . '</td>';
         }
         $content .= '<td class="c-wCell" valign="top">' . $renderedRecordList . '</td>
@@ -203,7 +203,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             $tablesArr = GeneralUtility::trimExplode(',', $tables, true);
         }
 
-        $out = '<h3>' . $this->getLanguageService()->getLL('selectRecords', true) . ':</h3>';
+        $out = '<h3>' . htmlspecialchars($this->getLanguageService()->getLL('selectRecords')) . ':</h3>';
         // Create the header, showing the current page for which the listing is.
         // Includes link to the page itself, if pages are amount allowed tables.
         $titleLen = (int)$backendUser->uc['titleLen'];

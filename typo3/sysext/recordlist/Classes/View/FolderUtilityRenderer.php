@@ -68,8 +68,8 @@ class FolderUtilityRenderer
         $markup[] = '<div class="element-browser-section element-browser-createfolder">';
         $markup[] = '<form action="' . htmlspecialchars($formAction)
             . '" method="post" name="editform" enctype="multipart/form-data">';
-        $markup[] = '<h3>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:create_folder.title', true) . ':</h3>';
-        $markup[] = '<p><strong>' . $lang->getLL('path', true) . ':</strong>'
+        $markup[] = '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:create_folder.title')) . ':</h3>';
+        $markup[] = '<p><strong>' . htmlspecialchars($lang->getLL('path')) . ':</strong>'
             . htmlspecialchars($folderObject->getIdentifier()) . '</p>';
 
         $a = 1;
@@ -136,7 +136,7 @@ class FolderUtilityRenderer
         $markup[] = '   <form action="' . htmlspecialchars($formAction)
             . '" method="post" name="editform" enctype="multipart/form-data">';
         $markup[] = '   <h3>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle', true) . ':</h3>';
-        $markup[] = '   <p><strong>' . $lang->getLL('path', true) . ':</strong>' . htmlspecialchars($header) . '</p>';
+        $markup[] = '   <p><strong>' . htmlspecialchars($lang->getLL('path')) . ':</strong>' . htmlspecialchars($header) . '</p>';
         // Traverse the number of upload fields:
         for ($a = 1; $a <= $count; $a++) {
             $markup[] = '<div class="form-group">';
@@ -199,7 +199,7 @@ class FolderUtilityRenderer
             $markup[] = '   <form action="' . htmlspecialchars($formAction)
                 . '" method="post" name="editform1" id="typo3-addMediaForm" enctype="multipart/form-data">';
             $markup[] = '<h3>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media', true) . ':</h3>';
-            $markup[] = '<p><strong>' . $lang->getLL('path', true) . ':</strong>' . htmlspecialchars($header) . '</p>';
+            $markup[] = '<p><strong>' . htmlspecialchars($lang->getLL('path')) . ':</strong>' . htmlspecialchars($header) . '</p>';
             $markup[] = '<div class="row form-group"><div class="col-xs-8">';
             $markup[] = '<input type="hidden" name="file[newMedia][0][target]" value="'
                 . htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />';

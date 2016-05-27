@@ -105,7 +105,7 @@ class UrlLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface
                             </div>
                             <div class="col-xs-2">
                                 <input class="btn btn-default" type="submit"
-                                    value="' . $this->getLanguageService()->getLL('setLink', true) . '" />
+                                    value="' . htmlspecialchars($this->getLanguageService()->getLL('setLink')) . '" />
                             </div>
                         </div>
                     </form>

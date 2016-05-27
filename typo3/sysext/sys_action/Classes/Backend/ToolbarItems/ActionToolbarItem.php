@@ -52,7 +52,7 @@ class ActionToolbarItem implements ToolbarItemInterface
      */
     public function getItem()
     {
-        $title = $this->getLanguageService()->getLL('action_toolbaritem', true);
+        $title = htmlspecialchars($this->getLanguageService()->getLL('action_toolbaritem'));
         return '<span title="' . $title . '">' . $this->iconFactory->getIcon('apps-toolbar-menu-actions', Icon::SIZE_SMALL)->render('inline') . '</span>';
     }
 

@@ -340,7 +340,7 @@ abstract class AbstractLinkBrowserController
         return '<!-- Print current URL -->
             <div class="link-browser-section link-browser-current-link">
                 <strong>' .
-                    $this->getLanguageService()->getLL('currentLink', true) .
+                    htmlspecialchars($this->getLanguageService()->getLL('currentLink')) .
                     ': ' .
                     htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) .
                 '</strong>
@@ -475,7 +475,7 @@ abstract class AbstractLinkBrowserController
             $content .= '
                 <form action="" name="lparamsform" id="lparamsform" class="form-horizontal">
                     <div class="form-group form-group-sm">
-                        <input class="btn btn-default t3js-linkCurrent" type="submit" value="' . $this->getLanguageService()->getLL('update', true) . '" />
+                        <input class="btn btn-default t3js-linkCurrent" type="submit" value="' . htmlspecialchars($this->getLanguageService()->getLL('update')) . '" />
                     </div>
                 </form>';
         }
@@ -499,7 +499,7 @@ abstract class AbstractLinkBrowserController
             -->
                 <form action="" name="ltargetform" id="ltargetform" class="t3js-dummyform form-horizontal">
                     <div class="form-group form-group-sm" id="typo3-linkTarget">
-                        <label class="col-xs-4 control-label">' . $lang->getLL('target', true) . '</label>
+                        <label class="col-xs-4 control-label">' . htmlspecialchars($lang->getLL('target')) . '</label>
                         <div class="col-xs-3">
                             <input type="text" name="ltarget" class="t3js-linkTarget form-control"
                                 value="' . htmlspecialchars($this->linkAttributeValues['target']) . '" />
@@ -507,8 +507,8 @@ abstract class AbstractLinkBrowserController
                         <div class="col-xs-5">
                                 <select name="ltarget_type" class="t3js-targetPreselect form-control">
                                     <option value=""></option>
-                                    <option value="_top">' . $lang->getLL('top', true) . '</option>
-                                    <option value="_blank">' . $lang->getLL('newWindow', true) . '</option>
+                                    <option value="_top">' . htmlspecialchars($lang->getLL('top')) . '</option>
+                                    <option value="_blank">' . htmlspecialchars($lang->getLL('newWindow')) . '</option>
                                 </select>
                         </div>
                     </div>
@@ -520,7 +520,7 @@ abstract class AbstractLinkBrowserController
                 -->
                 <form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform form-horizontal">
                     <div class="form-group form-group-sm" id="typo3-linkTitle">
-                        <label class="col-xs-4 control-label">' . $lang->getLL('title', true) . '</label>
+                        <label class="col-xs-4 control-label">' . htmlspecialchars($lang->getLL('title')) . '</label>
                         <div class="col-xs-8">
                             <input type="text" name="ltitle" class="form-control"
                                 value="' . htmlspecialchars($this->linkAttributeValues['title']) . '" />
@@ -535,7 +535,7 @@ abstract class AbstractLinkBrowserController
                 -->
                 <form action="" name="lclassform" id="lclassform" class="t3js-dummyform form-horizontal">
                     <div class="form-group form-group-sm" id="typo3-linkClass">
-                        <label class="col-xs-4 control-label">' . $lang->getLL('class', true) . '</label>
+                        <label class="col-xs-4 control-label">' . htmlspecialchars($lang->getLL('class')) . '</label>
                         <div class="col-xs-8">
                             <input type="text" name="lclass" class="form-control"
                                 value="' . htmlspecialchars($this->linkAttributeValues['class']) . '" /></td>
@@ -550,7 +550,7 @@ abstract class AbstractLinkBrowserController
                 -->
                 <form action="" name="lparamsform" id="lparamsform" class="t3js-dummyform form-horizontal">
                     <div class="form-group form-group-sm" id="typo3-linkParams">
-                        <label class="col-xs-4 control-label">' . $lang->getLL('params', true) . '</label>
+                        <label class="col-xs-4 control-label">' . htmlspecialchars($lang->getLL('params')) . '</label>
                         <div class="col-xs-8">
                             <input type="text" name="lparams" class="form-control"
                                 value="' . htmlspecialchars($this->linkAttributeValues['params']) . '" />

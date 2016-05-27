@@ -99,14 +99,14 @@ class MailLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             <div class="link-browser-section link-browser-tab-content-mail">
                 <form action="" id="lmailform" class="form-horizontal">
                         <div class="form-group form-group-sm">
-                            <label class="col-xs-4 control-label">' . $lang->getLL('emailAddress', true) . ':</label>
+                            <label class="col-xs-4 control-label">' . htmlspecialchars($lang->getLL('emailAddress')) . ':</label>
                             <div class="col-xs-6">
                                 <input type="text" name="lemail" size="20" class="form-control" value="'
                                     . htmlspecialchars(!empty($this->linkParts) ? $this->linkParts['url'] : '')
                                     . '" />
                             </div>
                             <div class="col-xs-2">
-                                <input class="btn btn-default" type="submit" value="' . $lang->getLL('setLink', true) . '" />
+                                <input class="btn btn-default" type="submit" value="' . htmlspecialchars($lang->getLL('setLink')) . '" />
                             </div>
                         </div>
                 </form>

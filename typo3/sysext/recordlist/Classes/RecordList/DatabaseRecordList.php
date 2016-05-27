@@ -266,7 +266,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             if (!$module->modTSconfig['properties']['noCreateRecordsLink'] && $this->editLockPermissions()) {
                 $onClick = htmlspecialchars('return jumpExt(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', ['id' => $this->id])) . ');');
                 $buttons['new_record'] = '<a href="#" onclick="' . $onClick . '" title="'
-                    . $lang->getLL('newRecordGeneral', true) . '">'
+                    . htmlspecialchars($lang->getLL('newRecordGeneral')) . '">'
                     . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</a>';
             }
             // If edit permissions are set, see
@@ -275,7 +275,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 // Edit
                 $params = '&edit[pages][' . $this->pageRow['uid'] . ']=edit';
                 $onClick = htmlspecialchars(BackendUtility::editOnClick($params, '', -1));
-                $buttons['edit'] = '<a href="#" onclick="' . $onClick . '" title="' . $lang->getLL('editPage', true) . '">'
+                $buttons['edit'] = '<a href="#" onclick="' . $onClick . '" title="' . htmlspecialchars($lang->getLL('editPage')) . '">'
                     . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render()
                     . '</a>';
             }
@@ -286,10 +286,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     $confirmText = $this->clipObj->confirmMsgText('pages', $this->pageRow, 'into', $elFromTable);
                     $buttons['paste'] = '<a'
                         . ' href="' . htmlspecialchars($this->clipObj->pasteUrl('', $this->id)) . '"'
-                        . ' title="' . $lang->getLL('clip_paste', true) . '"'
+                        . ' title="' . htmlspecialchars($lang->getLL('clip_paste')) . '"'
                         . ' class="t3js-modal-trigger"'
                         . ' data-severity="warning"'
-                        . ' data-title="' . $lang->getLL('clip_paste', true) . '"'
+                        . ' data-title="' . htmlspecialchars($lang->getLL('clip_paste')) . '"'
                         . ' data-content="' . htmlspecialchars($confirmText) . '"'
                         . '>'
                         . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL)->render()
@@ -688,8 +688,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     . '</span> (<span class="t3js-table-total-items">' . $this->totalItems . '</span>)';
             } else {
                 $icon = $this->table
-                    ? '<span title="' . $lang->getLL('contractView', true) . '">' . $this->iconFactory->getIcon('actions-view-table-collapse', Icon::SIZE_SMALL)->render() . '</span>'
-                    : '<span title="' . $lang->getLL('expandView', true) . '">' . $this->iconFactory->getIcon('actions-view-table-expand', Icon::SIZE_SMALL)->render() . '</span>';
+                    ? '<span title="' . htmlspecialchars($lang->getLL('contractView')) . '">' . $this->iconFactory->getIcon('actions-view-table-collapse', Icon::SIZE_SMALL)->render() . '</span>'
+                    : '<span title="' . htmlspecialchars($lang->getLL('expandView')) . '">' . $this->iconFactory->getIcon('actions-view-table-expand', Icon::SIZE_SMALL)->render() . '</span>';
                 $theData[$titleCol] = $this->linkWrapTable($table, $tableTitle . ' (<span class="t3js-table-total-items">' . $this->totalItems . '</span>) ' . $icon);
             }
             if ($listOnlyInSingleTableMode) {
@@ -1064,7 +1064,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     break;
                 case '_LOCALIZATION_b':
                     // Path
-                    $theData[$fCol] = $lang->getLL('Localize', true);
+                    $theData[$fCol] = htmlspecialchars($lang->getLL('Localize'));
                     break;
                 case '_CLIPBOARD_':
                     if (!$this->getModule()->MOD_SETTINGS['clipBoard']) {
@@ -1080,8 +1080,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         $confirmMessage = $this->clipObj->confirmMsgText('pages', $this->pageRow, 'into', $elFromTable);
                         $cells['pasteAfter'] = '<a class="btn btn-default t3js-modal-trigger"'
                             . ' href="' . $href . '"'
-                            . ' title="' . $lang->getLL('clip_paste', true) . '"'
-                            . ' data-title="' . $lang->getLL('clip_paste', true) . '"'
+                            . ' title="' . htmlspecialchars($lang->getLL('clip_paste')) . '"'
+                            . ' data-title="' . htmlspecialchars($lang->getLL('clip_paste')) . '"'
                             . ' data-content="' . htmlspecialchars($confirmMessage) . '"'
                             . ' data-severity="warning">'
                             . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL)->render()
@@ -1102,7 +1102,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         array_push($onClickArray, $params . '&' . $lastElement);
                         $onClick = implode('?', $onClickArray);
                         $cells['edit'] = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
-                            . $lang->getLL('clip_editMarked', true) . '">'
+                            . htmlspecialchars($lang->getLL('clip_editMarked')) . '">'
                             . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
                         // The "Delete marked" link:
                         $cells['delete'] = $this->linkClipboardHeaderIcon(
@@ -1115,7 +1115,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         // The "Select all" link:
                         $onClick = htmlspecialchars(('checkOffCB(' . GeneralUtility::quoteJSvalue(implode(',', $this->CBnames)) . ', this); return false;'));
                         $cells['markAll'] = '<a class="btn btn-default" rel="" href="#" onclick="' . $onClick . '" title="'
-                            . $lang->getLL('clip_markRecords', true) . '">'
+                            . htmlspecialchars($lang->getLL('clip_markRecords')) . '">'
                             . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '</a>';
                     } else {
                         $cells['empty'] = '';
@@ -1157,11 +1157,11 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
 
                                 $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($newContentWizScriptPath) . ');';
                                 $icon = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
-                                    . $lang->getLL('new', true) . '">' . $spriteIcon->render() . '</a>';
+                                    . htmlspecialchars($lang->getLL('new')) . '">' . $spriteIcon->render() . '</a>';
                             } elseif ($table == 'pages' && $this->newWizards) {
                                 $parameters = ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')];
                                 $href = BackendUtility::getModuleUrl('db_new', $parameters);
-                                $icon = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="' . $lang->getLL('new', true) . '">'
+                                $icon = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="' . htmlspecialchars($lang->getLL('new')) . '">'
                                     . $spriteIcon->render() . '</a>';
                             } else {
                                 $params = '&edit[' . $table . '][' . $this->id . ']=new';
@@ -1169,7 +1169,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                                     $params .= '&overrideVals[pages_language_overlay][doktype]=' . (int)$this->pageRow['doktype'];
                                 }
                                 $icon = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1))
-                                    . '" title="' . $lang->getLL('new', true) . '">' . $spriteIcon->render() . '</a>';
+                                    . '" title="' . htmlspecialchars($lang->getLL('new')) . '">' . $spriteIcon->render() . '</a>';
                             }
                         }
                         // If the table can be edited, add link for editing ALL SHOWN fields for all listed records:
@@ -1186,7 +1186,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                             array_push($onClickArray, $params . '&' . $lastElement);
                             $onClick = implode('?', $onClickArray);
                             $icon .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick)
-                                . '" title="' . $lang->getLL('editShownColumns', true) . '">'
+                                . '" title="' . htmlspecialchars($lang->getLL('editShownColumns')) . '">'
                                 . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
                             $icon = '<div class="btn-group" role="group">' . $icon . '</div>';
                         }
@@ -1214,7 +1214,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         // If the numeric clipboard pads are selected, show duplicate sorting link:
                         if ($this->clipNumPane()) {
                             $theData[$fCol] .= '<a class="btn btn-default" href="' . htmlspecialchars($this->listURL('', '-1') . '&duplicateField=' . $fCol)
-                                . '" title="' . $lang->getLL('clip_duplicates', true) . '">'
+                                . '" title="' . htmlspecialchars($lang->getLL('clip_duplicates')) . '">'
                                 . $this->iconFactory->getIcon('actions-document-duplicates-select', Icon::SIZE_SMALL)->render() . '</a>';
                         }
                         // If the table can be edited, add link for editing THIS field for all
@@ -1431,20 +1431,20 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             $iconIdentifier = 'actions-open';
             $overlayIdentifier = !$this->isEditable($table) ? 'overlay-readonly' : null;
             $editAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1))
-                . '" title="' . $this->getLanguageService()->getLL('edit', true) . '">' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL, $overlayIdentifier)->render() . '</a>';
+                . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL, $overlayIdentifier)->render() . '</a>';
         } else {
             $editAction = $this->spaceIcon;
         }
         $this->addActionToCellGroup($cells, $editAction, 'edit');
         // "Info": (All records)
         $onClick = 'top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . (int)$row['uid'] . '); return false;';
-        $viewBigAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $this->getLanguageService()->getLL('showInfo', true) . '">'
+        $viewBigAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('showInfo')) . '">'
             . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
         $this->addActionToCellGroup($cells, $viewBigAction, 'viewBig');
         // "Move" wizard link for pages/tt_content elements:
         if ($permsEdit && ($table === 'tt_content' || $table === 'pages')) {
             $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('move_element') . '&table=' . $table . '&uid=' . $row['uid']) . ');';
-            $linkTitleLL = $this->getLanguageService()->getLL('move_' . ($table === 'tt_content' ? 'record' : 'page'), true);
+            $linkTitleLL = htmlspecialchars($this->getLanguageService()->getLL('move_' . ($table === 'tt_content' ? 'record' : 'page')));
             $icon = ($table == 'pages' ? $this->iconFactory->getIcon('actions-page-move', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL));
             $moveAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $linkTitleLL . '">' . $icon->render() . '</a>';
             $this->addActionToCellGroup($cells, $moveAction, 'move');
@@ -1455,7 +1455,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             $moduleUrl = BackendUtility::getModuleUrl('record_history', array('element' => $table . ':' . $row['uid']));
             $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($moduleUrl) . ',\'#latest\');';
             $historyAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
-                . $this->getLanguageService()->getLL('history', true) . '">'
+                . htmlspecialchars($this->getLanguageService()->getLL('history')) . '">'
                 . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</a>';
             $this->addActionToCellGroup($cells, $historyAction, 'history');
             // Versioning:
@@ -1467,7 +1467,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         'table' => $table, 'uid' => $row['uid']
                     ));
                     $versionAction = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="'
-                        . $this->getLanguageService()->getLL('displayVersions', true) . '">'
+                        . htmlspecialchars($this->getLanguageService()->getLL('displayVersions')) . '">'
                         . $this->iconFactory->getIcon('actions-version-page-open', Icon::SIZE_SMALL)->render() . '</a>';
                     $this->addActionToCellGroup($cells, $versionAction, 'version');
                 }
@@ -1476,7 +1476,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             if ($table === 'pages' && $this->getBackendUserAuthentication()->check('modules', 'system_BeuserTxPermission') && ExtensionManagementUtility::isLoaded('beuser')) {
                 $href = BackendUtility::getModuleUrl('system_BeuserTxPermission') . '&id=' . $row['uid'] . '&return_id=' . $row['uid'] . '&edit=1';
                 $permsAction = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="'
-                    . $this->getLanguageService()->getLL('permissions', true) . '">'
+                    . htmlspecialchars($this->getLanguageService()->getLL('permissions')) . '">'
                     . $this->iconFactory->getIcon('status-status-locked', Icon::SIZE_SMALL)->render() . '</a>';
                 $this->addActionToCellGroup($cells, $permsAction, 'perms');
             }
@@ -1505,7 +1505,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prev'][$row['uid']];
                     $moveUpAction = '<a class="btn btn-default" href="#" onclick="'
                         . htmlspecialchars('return jumpToUrl(' . BackendUtility::getLinkToDataHandlerAction($params, -1) . ');')
-                        . '" title="' . $this->getLanguageService()->getLL('moveUp', true) . '">'
+                        . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('moveUp')) . '">'
                         . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '</a>';
                 } else {
                     $moveUpAction = $this->spaceIcon;
@@ -1517,7 +1517,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['next'][$row['uid']];
                     $moveDownAction = '<a class="btn btn-default" href="#" onclick="'
                         . htmlspecialchars('return jumpToUrl(' . BackendUtility::getLinkToDataHandlerAction($params, -1) . ');')
-                        . '" title="' . $this->getLanguageService()->getLL('moveDown', true) . '">'
+                        . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('moveDown')) . '">'
                         . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '</a>';
                 } else {
                     $moveDownAction = $this->spaceIcon;
@@ -1535,8 +1535,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 if ($this->isRecordCurrentBackendUser($table, $row)) {
                     $hideAction = $this->spaceIcon;
                 } else {
-                    $hideTitle = $this->getLanguageService()->getLL('hide' . ($table == 'pages' ? 'Page' : ''), true);
-                    $unhideTitle = $this->getLanguageService()->getLL('unHide' . ($table == 'pages' ? 'Page' : ''), true);
+                    $hideTitle = htmlspecialchars($this->getLanguageService()->getLL('hide' . ($table == 'pages' ? 'Page' : '')));
+                    $unhideTitle = htmlspecialchars($this->getLanguageService()->getLL('unHide' . ($table == 'pages' ? 'Page' : '')));
                     if ($row[$hiddenField]) {
                         $params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=0';
                         $hideAction = '<a class="btn btn-default t3js-record-hide" data-state="hidden" href="#"'
@@ -1580,7 +1580,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
 
                     $params = 'cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
                     $icon = $this->iconFactory->getIcon('actions-edit-' . $actionName, Icon::SIZE_SMALL)->render();
-                    $linkTitle = $this->getLanguageService()->getLL($actionName, true);
+                    $linkTitle = htmlspecialchars($this->getLanguageService()->getLL($actionName));
                     $deleteAction = '<a class="btn btn-default t3js-record-delete" href="#" '
                                     . ' data-l10parent="' . htmlspecialchars($row['l10n_parent']) . '"'
                                     . ' data-params="' . htmlspecialchars($params) . '" data-title="' . htmlspecialchars($title) . '"'
@@ -1598,7 +1598,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . -$this->id;
                     $moveLeftAction = '<a class="btn btn-default" href="#" onclick="'
                         . htmlspecialchars('return jumpToUrl(' . BackendUtility::getLinkToDataHandlerAction($params, -1) . ');')
-                        . '" title="' . $this->getLanguageService()->getLL('prevLevel', true) . '">'
+                        . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('prevLevel')) . '">'
                         . $this->iconFactory->getIcon('actions-move-left', Icon::SIZE_SMALL)->render() . '</a>';
                     $this->addActionToCellGroup($cells, $moveLeftAction, 'moveLeft');
                 }
@@ -1609,7 +1609,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prevUid'][$row['uid']];
                         $moveRightAction = '<a class="btn btn-default" href="#" onclick="'
                             . htmlspecialchars('return jumpToUrl(' . BackendUtility::getLinkToDataHandlerAction($params, -1) . ');')
-                            . '" title="' . $this->getLanguageService()->getLL('nextLevel', true) . '">'
+                            . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('nextLevel')) . '">'
                             . $this->iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)->render() . '</a>';
                     } else {
                         $moveRightAction = $this->spaceIcon;
@@ -1783,8 +1783,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 ? $this->spaceIcon
                 : '<a class="btn btn-default t3js-modal-trigger"'
                     . ' href="' . htmlspecialchars($this->clipObj->pasteUrl($table, -$row['uid'])) . '"'
-                    . ' title="' . $this->getLanguageService()->getLL('clip_pasteAfter', true) . '"'
-                    . ' data-title="' . $this->getLanguageService()->getLL('clip_pasteAfter', true) . '"'
+                    . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteAfter')) . '"'
+                    . ' data-title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteAfter')) . '"'
                     . ' data-content="' . htmlspecialchars($this->clipObj->confirmMsgText($table, $row, 'after', $elFromTable)) . '"'
                     . ' data-severity="warning">'
                     . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1794,8 +1794,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         if ($table == 'pages' && !empty($elFromTable)) {
             $cells['pasteInto'] = '<a class="btn btn-default t3js-modal-trigger"'
                 . ' href="' . htmlspecialchars($this->clipObj->pasteUrl('', $row['uid'])) . '"'
-                . ' title="' . $this->getLanguageService()->getLL('clip_pasteInto', true) . '"'
-                . ' data-title="' . $this->getLanguageService()->getLL('clip_pasteInto', true) . '"'
+                . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteInto')) . '"'
+                . ' data-title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteInto')) . '"'
                 . ' data-content="' . htmlspecialchars($this->clipObj->confirmMsgText($table, $row, 'into', $elFromTable)) . '"'
                 . ' data-severity="warning">'
                 . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render() . '</a>';

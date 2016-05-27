@@ -512,7 +512,7 @@ class RecordList extends AbstractModule
                 $this->body .= '<div class="checkbox">' .
                     '<label for="checkLargeControl">' .
                     BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', $this->table ? '&table=' . $this->table : '', 'id="checkLargeControl"') .
-                    BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $lang->getLL('largeControl', true)) .
+                    BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', htmlspecialchars($lang->getLL('largeControl'))) .
                     '</label>' .
                     '</div>';
             }
@@ -523,7 +523,7 @@ class RecordList extends AbstractModule
                     $this->body .= '<div class="checkbox">' .
                         '<label for="checkShowClipBoard">' .
                         BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', $this->table ? '&table=' . $this->table : '', 'id="checkShowClipBoard"') .
-                        BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $lang->getLL('showClipBoard', true)) .
+                        BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', htmlspecialchars($lang->getLL('showClipBoard'))) .
                         '</label>' .
                         '</div>';
                 }
@@ -534,7 +534,7 @@ class RecordList extends AbstractModule
                 $this->body .= '<div class="checkbox">' .
                     '<label for="checkLocalization">' .
                     BackendUtility::getFuncCheck($this->id, 'SET[localization]', $this->MOD_SETTINGS['localization'], '', $this->table ? '&table=' . $this->table : '', 'id="checkLocalization"') .
-                    BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $lang->getLL('localization', true)) .
+                    BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', htmlspecialchars($lang->getLL('localization'))) .
                     '</label>' .
                     '</div>';
             }
