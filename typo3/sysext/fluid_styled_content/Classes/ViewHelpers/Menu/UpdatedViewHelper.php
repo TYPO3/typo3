@@ -14,8 +14,6 @@ namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-
 /**
  * A view helper which returns recently updated subpages (multiple levels) of the given pages
  *
@@ -35,13 +33,11 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Recently updated subpage 3
  * </output>
  */
-class UpdatedViewHelper extends AbstractViewHelper
+class UpdatedViewHelper extends AbstractMenuViewHelper
 {
-    use MenuViewHelperTrait;
-
     /**
      * Output escaping is disabled as child content contains HTML by default
-     * 
+     *
      * @var bool
      */
     protected $escapeOutput = false;

@@ -14,7 +14,6 @@ namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 use TYPO3\CMS\Frontend\Category\Collection\CategoryCollection;
 
@@ -36,10 +35,8 @@ use TYPO3\CMS\Frontend\Category\Collection\CategoryCollection;
  * Page with category 1 and 2 assigned
  * </output>
  */
-class CategoriesViewHelper extends AbstractViewHelper
+class CategoriesViewHelper extends AbstractMenuViewHelper
 {
-    use MenuViewHelperTrait;
-
     /**
      * Output escaping is disabled as child content contains HTML by default
      *

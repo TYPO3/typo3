@@ -14,16 +14,14 @@ namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
- * Trait for Menu-ViewHelpers that require support functions for
- * working with menus that require page selection constraints.
- * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
+ * Class AbstractMenuViewHelper
  */
-trait MenuViewHelperTrait
+abstract class AbstractMenuViewHelper extends AbstractViewHelper
 {
     /**
      * Get the constraints for the page based on doktype and field "nav_hide"
@@ -39,12 +37,10 @@ trait MenuViewHelperTrait
      *
      * @param bool $includeNotInMenu Should pages which are hidden for menu's be included
      * @param bool $includeMenuSeparator Should pages of type "Menu separator" be included
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use AbstractMenuViewHelper instead of MenuViewHelperTrait
      * @return string
      */
     protected function getPageConstraints($includeNotInMenu = false, $includeMenuSeparator = false)
     {
-        GeneralUtility::logDeprecatedFunction();
         $constraints = array();
 
         $constraints[] = 'doktype NOT IN (' . PageRepository::DOKTYPE_BE_USER_SECTION . ',' . PageRepository::DOKTYPE_RECYCLER . ',' . PageRepository::DOKTYPE_SYSFOLDER . ')';
@@ -65,13 +61,11 @@ trait MenuViewHelperTrait
      * of UIDs and entryLevel parameter.
      *
      * @param array $pageUids
-     * @param int|NULL $entryLevel
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use AbstractMenuViewHelper instead of MenuViewHelperTrait
+     * @param int|null $entryLevel
      * @return array
      */
     protected function getPageUids(array $pageUids, $entryLevel = 0)
     {
-        GeneralUtility::logDeprecatedFunction();
         $typoScriptFrontendController = $this->getTypoScriptFrontendController();
 
         // Remove empty entries from array
@@ -94,12 +88,10 @@ trait MenuViewHelperTrait
 
     /**
      * @param array $variables
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use AbstractMenuViewHelper instead of MenuViewHelperTrait
      * @return mixed
      */
     protected function renderChildrenWithVariables(array $variables)
     {
-        GeneralUtility::logDeprecatedFunction();
         foreach ($variables as $name => $value) {
             $this->templateVariableContainer->add($name, $value);
         }
@@ -114,12 +106,10 @@ trait MenuViewHelperTrait
     }
 
     /**
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use AbstractMenuViewHelper instead of MenuViewHelperTrait
      * @return TypoScriptFrontendController
      */
     protected function getTypoScriptFrontendController()
     {
-        GeneralUtility::logDeprecatedFunction();
         return $GLOBALS['TSFE'];
     }
 }

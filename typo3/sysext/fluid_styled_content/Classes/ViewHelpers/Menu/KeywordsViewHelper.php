@@ -14,7 +14,6 @@ namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * A view helper which returns pages with one of the same keywords as the given pages
@@ -38,9 +37,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Page with the keyword "typo3"
  * </output>
  */
-class KeywordsViewHelper extends AbstractViewHelper
+class KeywordsViewHelper extends AbstractMenuViewHelper
 {
-    use MenuViewHelperTrait;
 
     /**
      * Output escaping is disabled as child content contains HTML by default

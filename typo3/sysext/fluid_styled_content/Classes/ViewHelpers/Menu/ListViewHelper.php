@@ -13,7 +13,6 @@ namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Menu;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * A view helper which returns a list of pages
@@ -33,13 +32,11 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Page with uid = 2
  * </output>
  */
-class ListViewHelper extends AbstractViewHelper
+class ListViewHelper extends AbstractMenuViewHelper
 {
-    use MenuViewHelperTrait;
-
     /**
      * Output escaping is disabled as child content contains HTML by default
-     * 
+     *
      * @var bool
      */
     protected $escapeOutput = false;

@@ -14,8 +14,6 @@ namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-
 /**
  * A view helper which returns the subpages of the given pages
  *
@@ -35,10 +33,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Subpage 1 of page with uid = 2
  * </output>
  */
-class DirectoryViewHelper extends AbstractViewHelper
+class DirectoryViewHelper extends AbstractMenuViewHelper
 {
-    use MenuViewHelperTrait;
-
     /**
      * Output escaping is disabled as child content contains HTML by default
      *
@@ -111,8 +107,10 @@ class DirectoryViewHelper extends AbstractViewHelper
             $typoScriptFrontendController->register['ceMenuLevel_directory']--;
 
             if ($typoScriptFrontendController->register['ceMenuLevel_directory'] === 0) {
-                unset($typoScriptFrontendController->register['ceMenuLevel_directory']);
-                unset($typoScriptFrontendController->register['ceMenuMaximumLevel_directory']);
+                unset(
+                    $typoScriptFrontendController->register['ceMenuLevel_directory'],
+                    $typoScriptFrontendController->register['ceMenuMaximumLevel_directory']
+                );
             }
         }
 

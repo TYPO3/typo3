@@ -15,7 +15,6 @@ namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Menu;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * A view helper which returns content elements with 'Show in Section Menus' enabled
@@ -45,9 +44,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Content element 3 in page with uid = 1 and "Show in section menu's" enabled
  * </output>
  */
-class SectionViewHelper extends AbstractViewHelper
+class SectionViewHelper extends AbstractMenuViewHelper
 {
-    use MenuViewHelperTrait;
 
     /**
      * Output escaping is disabled as child content contains HTML by default
