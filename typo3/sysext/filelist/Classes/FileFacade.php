@@ -163,7 +163,7 @@ class FileFacade
      */
     public function getSize()
     {
-        return GeneralUtility::formatSize($this->resource->getSize(), $this->getLanguageService()->getLL('byteSizeUnits', true));
+        return GeneralUtility::formatSize($this->resource->getSize(), htmlspecialchars($this->getLanguageService()->getLL('byteSizeUnits')));
     }
 
     /**

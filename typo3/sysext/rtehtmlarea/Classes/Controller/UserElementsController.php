@@ -172,7 +172,7 @@ class UserElementsController
     public function main_user($openKeys)
     {
         // Starting content:
-        $content = $this->doc->startPage($GLOBALS['LANG']->getLL('Insert Custom Element', true));
+        $content = $this->doc->startPage(htmlspecialchars($GLOBALS['LANG']->getLL('Insert Custom Element')));
         $RTEtsConfigParts = explode(':', \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('RTEtsConfigParams'));
         $RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
         $thisConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::RTEsetup($RTEsetup['properties'], $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
@@ -200,7 +200,7 @@ class UserElementsController
                                         $mArray[$ks . '.'] = array(
                                             'content' => '<img src="' . $this->siteUrl . $v['path'] . $filename . '" />',
                                             '_icon' => '<img src="' . $this->siteUrl . $v['path'] . $filename . '" ' . $iInfo[3] . ' />',
-                                            'description' => $GLOBALS['LANG']->getLL('filesize') . ': ' . str_replace('&nbsp;', ' ', \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(@filesize((PATH_site . $v['path'] . $filename)))) . ', ' . $GLOBALS['LANG']->getLL('pixels', 1) . ': ' . $iInfo[0] . 'x' . $iInfo[1]
+                                            'description' => $GLOBALS['LANG']->getLL('filesize') . ': ' . str_replace('&nbsp;', ' ', \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(@filesize((PATH_site . $v['path'] . $filename)))) . ', ' . htmlspecialchars($GLOBALS['LANG']->getLL('pixels')) . ': ' . $iInfo[0] . 'x' . $iInfo[1]
                                         );
                                         $c++;
                                     }
@@ -220,7 +220,7 @@ class UserElementsController
                             if (substr($k2, -1) == '.' && is_array($v[$k2i . '.'])) {
                                 $title = trim($v[$k2i]);
                                 if (!$title) {
-                                    $title = '[' . $GLOBALS['LANG']->getLL('noTitle', true) . ']';
+                                    $title = '[' . htmlspecialchars($GLOBALS['LANG']->getLL('noTitle')) . ']';
                                 } else {
                                     $title = $GLOBALS['LANG']->sL($title, true);
                                 }
@@ -269,7 +269,7 @@ class UserElementsController
                 $title = trim($thisConfig['userElements.'][$k]);
                 $openK = $k;
                 if (!$title) {
-                    $title = '[' . $GLOBALS['LANG']->getLL('noTitle', true) . ']';
+                    $title = '[' . htmlspecialchars($GLOBALS['LANG']->getLL('noTitle')) . ']';
                 } else {
                     $title = $GLOBALS['LANG']->sL($title, true);
                 }
@@ -277,7 +277,7 @@ class UserElementsController
                 $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
                 $url = (string)$uriBuilder->buildUriFromRoute('rtehtmlarea_wizard_user_elements', array('OC_key' => ($openKeys[$openK] ? 'C|' : 'O|') . $openK));
 
-                $lines[] = '<tr><td colspan="3"><a href="#" title="' . $GLOBALS['LANG']->getLL('expand', true) . '" onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($url) . ');return false;"><i class="fa fa-caret-square-o-' . ($openKeys[$openK] ? 'left' : 'right') . '" title="' . $GLOBALS['LANG']->getLL('expand', true) . '"></i><strong>' . $title . '</strong></a></td></tr>';
+                $lines[] = '<tr><td colspan="3"><a href="#" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('expand')) . '" onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($url) . ');return false;"><i class="fa fa-caret-square-o-' . ($openKeys[$openK] ? 'left' : 'right') . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('expand')) . '"></i><strong>' . $title . '</strong></a></td></tr>';
                 $lines[] = $v;
             }
             $content .= '<table class="table table-striped table-hover">' . implode('', $lines) . '</table>';

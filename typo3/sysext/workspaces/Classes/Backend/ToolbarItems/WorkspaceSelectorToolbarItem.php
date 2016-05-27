@@ -89,7 +89,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
         $index = 0;
         $activeWorkspace = (int)$backendUser->workspace;
         $stateCheckedIcon = $this->iconFactory->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
-        $stateUncheckedIcon = '<span title="' . $languageService->getLL('bookmark_inactive', true) . '">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
+        $stateUncheckedIcon = '<span title="' . htmlspecialchars($languageService->getLL('bookmark_inactive')) . '">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
         $workspaceSections = array(
             'top' => array(),
             'items' => array(),
@@ -111,12 +111,12 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
             // if there is at least one icon on top and if the access rights are there
             if ($backendUser->check('modules', 'web_WorkspacesWorkspaces')) {
                 $workspaceSections['top'][] = '<li><a target="content" data-module="web_WorkspacesWorkspaces" class="dropdown-list-link tx-workspaces-modulelink">'
-                    . $stateUncheckedIcon . ' ' . $languageService->getLL('bookmark_workspace', true)
+                    . $stateUncheckedIcon . ' ' . htmlspecialchars($languageService->getLL('bookmark_workspace'))
                     . '</a></li>';
             }
         } else {
             // no items on top (= no workspace to work in)
-            $workspaceSections['top'][] = '<li>' . $stateUncheckedIcon . ' ' . $languageService->getLL('bookmark_noWSfound', true) . '</li>';
+            $workspaceSections['top'][] = '<li>' . $stateUncheckedIcon . ' ' . htmlspecialchars($languageService->getLL('bookmark_noWSfound')) . '</li>';
         }
 
         $workspaceMenu = array(

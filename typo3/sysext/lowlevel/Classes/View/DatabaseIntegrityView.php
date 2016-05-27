@@ -114,15 +114,15 @@ class DatabaseIntegrityView extends BaseScriptClass
         // Values NOT in this array will not be saved in the settings-array for the module.
         $this->MOD_MENU = array(
             'function' => array(
-                0 => $lang->getLL('menuTitle', true),
-                'records' => $lang->getLL('recordStatistics', true),
-                'relations' => $lang->getLL('databaseRelations', true),
-                'search' => $lang->getLL('fullSearch', true),
-                'refindex' => $lang->getLL('manageRefIndex', true)
+                0 => htmlspecialchars($lang->getLL('menuTitle')),
+                'records' => htmlspecialchars($lang->getLL('recordStatistics')),
+                'relations' => htmlspecialchars($lang->getLL('databaseRelations')),
+                'search' => htmlspecialchars($lang->getLL('fullSearch')),
+                'refindex' => htmlspecialchars($lang->getLL('manageRefIndex'))
             ),
             'search' => array(
-                'raw' => $lang->getLL('rawSearch', true),
-                'query' => $lang->getLL('advancedQuery', true)
+                'raw' => htmlspecialchars($lang->getLL('rawSearch')),
+                'query' => htmlspecialchars($lang->getLL('advancedQuery'))
             ),
             'search_query_smallparts' => '',
             'search_result_labels' => '',
@@ -152,10 +152,10 @@ class DatabaseIntegrityView extends BaseScriptClass
             'storeQueryConfigs' => '',
             // Used to store the available Query configs in memory
             'search_query_makeQuery' => array(
-                'all' => $lang->getLL('selectRecords', true),
-                'count' => $lang->getLL('countResults', true),
-                'explain' => $lang->getLL('explainQuery', true),
-                'csv' => $lang->getLL('csvExport', true)
+                'all' => htmlspecialchars($lang->getLL('selectRecords')),
+                'count' => htmlspecialchars($lang->getLL('countResults')),
+                'explain' => htmlspecialchars($lang->getLL('explainQuery')),
+                'csv' => htmlspecialchars($lang->getLL('csvExport'))
             ),
             'sword' => ''
         );
@@ -439,7 +439,7 @@ class DatabaseIntegrityView extends BaseScriptClass
                 if (is_array($admin->lRecords[$t])) {
                     foreach ($admin->lRecords[$t] as $data) {
                         if (!GeneralUtility::inList($admin->lostPagesList, $data['pid'])) {
-                            $lr .= '<div class="record"><a href="' . htmlspecialchars((BackendUtility::getModuleUrl('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid'])) . '" title="' . $lang->getLL('fixLostRecord', true) . '">' . $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() . '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
+                            $lr .= '<div class="record"><a href="' . htmlspecialchars((BackendUtility::getModuleUrl('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid'])) . '" title="' . htmlspecialchars($lang->getLL('fixLostRecord')) . '">' . $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() . '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
                         } else {
                             $lr .= '<div class="record-noicon">uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
                         }

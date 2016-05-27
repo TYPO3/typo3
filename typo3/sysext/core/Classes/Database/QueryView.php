@@ -680,7 +680,7 @@ class QueryView
                             ]
                         ],
                         'redirect' => GeneralUtility::linkThisScript()
-                    ])) . '" title="' . $this->languageService->getLL('undelete_only', true) . '">';
+                    ])) . '" title="' . htmlspecialchars($this->languageService->getLL('undelete_only')) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL)->render() . '</a>';
             $formEngineParameters = [
                 'edit' => [
@@ -700,7 +700,7 @@ class QueryView
                         ]
                     ],
                     'redirect' => $redirectUrl
-                ]) . '" title="' . $this->languageService->getLL('undelete_and_edit', true) . '">';
+                ]) . '" title="' . htmlspecialchars($this->languageService->getLL('undelete_and_edit')) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore-edit', Icon::SIZE_SMALL)->render() . '</a>';
         }
         $_params = array($table => $row);

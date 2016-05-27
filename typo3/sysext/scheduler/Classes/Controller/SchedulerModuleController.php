@@ -976,14 +976,14 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             // Header row
             $table[] =
                 '<thead><tr>'
-                    . '<th><a href="#" id="checkall" title="' . $this->getLanguageService()->getLL('label.checkAll', true) . '" class="icon">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '</a></th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.id', true) . '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('task', true) . '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.type', true) . '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.frequency', true) . '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.parallel', true) . '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.lastExecution', true) . '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.nextExecution', true) . '</th>'
+                    . '<th><a href="#" id="checkall" title="' . htmlspecialchars($this->getLanguageService()->getLL('label.checkAll')) . '" class="icon">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '</a></th>'
+                    . '<th>' . htmlspecialchars($this->getLanguageService()->getLL('label.id')) . '</th>'
+                    . '<th>' . htmlspecialchars($this->getLanguageService()->getLL('task')) . '</th>'
+                    . '<th>' . htmlspecialchars($this->getLanguageService()->getLL('label.type')) . '</th>'
+                    . '<th>' . htmlspecialchars($this->getLanguageService()->getLL('label.frequency')) . '</th>'
+                    . '<th>' . htmlspecialchars($this->getLanguageService()->getLL('label.parallel')) . '</th>'
+                    . '<th>' . htmlspecialchars($this->getLanguageService()->getLL('label.lastExecution')) . '</th>'
+                    . '<th>' . htmlspecialchars($this->getLanguageService()->getLL('label.nextExecution')) . '</th>'
                     . '<th></th>'
                 . '</tr></thead>';
 
@@ -1029,17 +1029,17 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                         . ' data-severity="warning"'
                         . ' data-title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', true) . '"'
                         . ' data-button-close-text="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel', true) . '"'
-                        . ' data-content="' . $this->getLanguageService()->getLL('msg.delete', true) . '"'
+                        . ' data-content="' . htmlspecialchars($this->getLanguageService()->getLL('msg.delete')) . '"'
                         . ' title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', true) . '" class="icon">' .
                         $this->moduleTemplate->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
                     $stopAction = '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($this->moduleUri . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" '
                         . ' data-severity="warning"'
                         . ' data-title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:stop', true) . '"'
                         . ' data-button-close-text="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel', true) . '"'
-                        . ' data-content="' . $this->getLanguageService()->getLL('msg.stop', true) . '"'
+                        . ' data-content="' . htmlspecialchars($this->getLanguageService()->getLL('msg.stop')) . '"'
                         . ' title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:stop', true) . '" class="icon">' .
                         $this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() . '</a>';
-                    $runAction = '<a class="btn btn-default" href="' . htmlspecialchars($this->moduleUri . '&tx_scheduler[execute][]=' . $schedulerRecord['uid']) . '" title="' . $this->getLanguageService()->getLL('action.run_task', true) . '" class="icon">' .
+                    $runAction = '<a class="btn btn-default" href="' . htmlspecialchars($this->moduleUri . '&tx_scheduler[execute][]=' . $schedulerRecord['uid']) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('action.run_task')) . '" class="icon">' .
                         $this->moduleTemplate->getIconFactory()->getIcon('extensions-scheduler-run-task', Icon::SIZE_SMALL)->render() . '</a>';
 
                     // Define some default values

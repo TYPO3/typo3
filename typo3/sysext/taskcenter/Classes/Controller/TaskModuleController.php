@@ -196,7 +196,7 @@ class TaskModuleController extends BaseScriptClass
                 } else {
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        $this->getLanguageService()->getLL('error-access', true),
+                        $this->getLanguageService()->getLL('error-access'),
                         $this->getLanguageService()->getLL('error_header'),
                         FlashMessage::ERROR
                     );
@@ -205,7 +205,7 @@ class TaskModuleController extends BaseScriptClass
                 // Error if the task is not an instance of \TYPO3\CMS\Taskcenter\TaskInterface
                 $flashMessage = GeneralUtility::makeInstance(
                     FlashMessage::class,
-                    sprintf($this->getLanguageService()->getLL('error_no-instance', true), $taskClass, TaskInterface::class),
+                    sprintf($this->getLanguageService()->getLL('error_no-instance'), $taskClass, TaskInterface::class),
                     $this->getLanguageService()->getLL('error_header'),
                     FlashMessage::ERROR
                 );
@@ -424,7 +424,7 @@ class TaskModuleController extends BaseScriptClass
         } else {
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
-                $this->getLanguageService()->getLL('no-tasks', true),
+                $this->getLanguageService()->getLL('no-tasks'),
                 '',
                 FlashMessage::INFO
             );

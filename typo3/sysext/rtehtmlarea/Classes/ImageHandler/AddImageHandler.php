@@ -258,7 +258,7 @@ class AddImageHandler implements LinkParameterProviderInterface, LinkHandlerInte
 			<div class="element-browser-section element-browser-filetree">
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-EBfiles">
 				<tr>
-					<td class="c-wCell" valign="top"><h3>' . $this->getLanguageService()->getLL('folderTree', true) . ':</h3>' . $tree . '</td>
+					<td class="c-wCell" valign="top"><h3>' . htmlspecialchars($this->getLanguageService()->getLL('folderTree')) . ':</h3>' . $tree . '</td>
 					<td class="c-wCell" valign="top">' . $files . '</td>
 				</tr>
 			</table>
@@ -318,8 +318,8 @@ class AddImageHandler implements LinkParameterProviderInterface, LinkHandlerInte
 				<th class="col-title" nowrap="nowrap">' . $folderIcon . ' ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen)) . '</th>
 				<th class="col-control" nowrap="nowrap"></th>
 				<th class="col-clipboard" nowrap="nowrap">
-					<a href="#" class="btn btn-default" id="t3js-importSelection" title="' . $lang->getLL('importSelection', true) . '">' . $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL) . '</a>
-					<a href="#" class="btn btn-default" id="t3js-toggleSelection" title="' . $lang->getLL('toggleSelection', true) . '">' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL) . '</a>
+					<a href="#" class="btn btn-default" id="t3js-importSelection" title="' . htmlspecialchars($lang->getLL('importSelection')) . '">' . $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL) . '</a>
+					<a href="#" class="btn btn-default" id="t3js-toggleSelection" title="' . htmlspecialchars($lang->getLL('toggleSelection')) . '">' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL) . '</a>
 				</th>
 				<th nowrap="nowrap">&nbsp;</th>
 			</tr>';
@@ -394,8 +394,8 @@ class AddImageHandler implements LinkParameterProviderInterface, LinkHandlerInte
 					<tr class="file_list_normal">
 						<td class="col-title" nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
 						<td class="col-control">
-							<div class="btn-group">' . $ATag . '<span title="' .  $lang->getLL('addToList', true) . '">' . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . '</span>' . $ATag_e . '
-							<a href="' . htmlspecialchars($Ahref) . '" class="btn btn-default" title="' . $lang->getLL('info', true) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . '</a>
+							<div class="btn-group">' . $ATag . '<span title="' .  htmlspecialchars($lang->getLL('addToList')) . '">' . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . '</span>' . $ATag_e . '
+							<a href="' . htmlspecialchars($Ahref) . '" class="btn btn-default" title="' . htmlspecialchars($lang->getLL('info')) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . '</a>
 						</td>
 						<td class="col-clipboard" valign="top">' . $bulkCheckBox . '</td>
 						<td nowrap="nowrap">&nbsp;' . $pDim . '</td>
@@ -408,7 +408,7 @@ class AddImageHandler implements LinkParameterProviderInterface, LinkHandlerInte
             }
         }
 
-        $out = '<h3>' . $lang->getLL('files', true) . ' ' . $filesCount . ':</h3>';
+        $out = '<h3>' . htmlspecialchars($lang->getLL('files')) . ' ' . $filesCount . ':</h3>';
         $out .= GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this)->getFileSearchField($this->searchWord);
         $out .= '<div id="filelist">';
         $out .= $this->getBulkSelector($filesCount);

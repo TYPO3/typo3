@@ -80,13 +80,13 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
                     $m_perms_clause = $this->getBackendUser()->getPagePermsClause(2);
                     // edit permissions for that page!
                     $pRec = BackendUtility::getRecord('pages', $rec['uid'], 'uid', ' AND ' . $m_perms_clause);
-                    $lines[] = '<tr><td nowrap="nowrap">' . $iconFactory->getIconForRecord('pages', $rec, Icon::SIZE_SMALL)->render() . (!is_array($pRec) ? '<strong class="text-danger">' . $lang->getLL('wiz_W', true) . '</strong></span> ' : '') . htmlspecialchars(GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '</td>
+                    $lines[] = '<tr><td nowrap="nowrap">' . $iconFactory->getIconForRecord('pages', $rec, Icon::SIZE_SMALL)->render() . (!is_array($pRec) ? '<strong class="text-danger">' . htmlspecialchars($lang->getLL('wiz_W')) . '</strong></span> ' : '') . htmlspecialchars(GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '</td>
 					<td nowrap="nowrap">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($rec['subtitle'], $this->getBackendUser()->uc['titleLen'])) . '</td>
 					<td nowrap="nowrap">' . BackendUtility::datetime($rec['tstamp']) . '</td>
 					<td nowrap="nowrap">' . BackendUtility::datetime($rec['crdate']) . '</td>
 					</tr>';
                 }
-                $theCode .= '<h2>' . $lang->getLL('wiz_currentPageOrder', true) . '</h2>';
+                $theCode .= '<h2>' . htmlspecialchars($lang->getLL('wiz_currentPageOrder')) . '</h2>';
                 $theCode .= '<div class="table-fit"><table class="table table-striped table-hover">' . implode('', $lines) . '</table></div>';
 
                 // Menu:
@@ -134,7 +134,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
             . ' data-severity="warning"'
             . ' data-title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:pleaseConfirm', true) . '"'
             . ' data-button-close-text="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel', true) . '"'
-            . ' data-content="' . $this->getLanguageService()->getLL('wiz_changeOrder_msg1', true) . '"'
+            . ' data-content="' . htmlspecialchars($this->getLanguageService()->getLL('wiz_changeOrder_msg1')) . '"'
             . ' >' . htmlspecialchars($title) . '</a>';
     }
 

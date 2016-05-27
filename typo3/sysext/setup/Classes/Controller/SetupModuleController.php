@@ -679,7 +679,7 @@ class SetupModuleController extends AbstractModule
         foreach ($languages as $locale => $name) {
             if ($locale !== 'default') {
                 $defaultName = isset($GLOBALS['LOCAL_LANG']['default']['lang_' . $locale]) ? $GLOBALS['LOCAL_LANG']['default']['lang_' . $locale][0]['source'] : $name;
-                $localizedName = $this->getLanguageService()->getLL('lang_' . $locale, true);
+                $localizedName = htmlspecialchars($this->getLanguageService()->getLL('lang_' . $locale));
                 if ($localizedName === '') {
                     $localizedName = htmlspecialchars($name);
                 }
@@ -696,7 +696,7 @@ class SetupModuleController extends AbstractModule
             </select>';
         if ($this->getBackendUser()->uc['lang'] && !@is_dir((PATH_typo3conf . 'l10n/' . $this->getBackendUser()->uc['lang']))) {
             // TODO: The text constants have to be moved into language files
-            $languageUnavailableWarning = 'The selected language "' . $this->getLanguageService()->getLL(('lang_' . $this->getBackendUser()->uc['lang']), true) . '" is not available before the language files are installed.&nbsp;&nbsp;<br />&nbsp;&nbsp;' . ($this->getBackendUser()->isAdmin() ? 'You can use the Language module to easily download new language files.' : 'Please ask your system administrator to do this.');
+            $languageUnavailableWarning = 'The selected language "' . htmlspecialchars($this->getLanguageService()->getLL('lang_' . $this->getBackendUser()->uc['lang'])) . '" is not available before the language files are installed.&nbsp;&nbsp;<br />&nbsp;&nbsp;' . ($this->getBackendUser()->isAdmin() ? 'You can use the Language module to easily download new language files.' : 'Please ask your system administrator to do this.');
             $languageCode = '<br /><span class="label label-danger">' . $languageUnavailableWarning . '</span><br /><br />' . $languageCode;
         }
         return $languageCode;
@@ -716,7 +716,7 @@ class SetupModuleController extends AbstractModule
         $this->loadModules = GeneralUtility::makeInstance(ModuleLoader::class);
         $this->loadModules->observeWorkspaces = true;
         $this->loadModules->load($GLOBALS['TBE_MODULES']);
-        $startModuleSelect = '<option value="">' . $this->getLanguageService()->getLL('startModule.firstInMenu', true) . '</option>';
+        $startModuleSelect = '<option value="">' . htmlspecialchars($this->getLanguageService()->getLL('startModule.firstInMenu')) . '</option>';
         foreach ($pObj->loadModules->modules as $mainMod => $modData) {
             if (!empty($modData['sub']) && is_array($modData['sub'])) {
                 $modules = '';

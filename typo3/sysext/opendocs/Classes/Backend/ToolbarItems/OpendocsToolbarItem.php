@@ -85,7 +85,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     public function getItem()
     {
         $numDocs = count($this->openDocs);
-        $title = $this->getLanguageService()->getLL('toolbaritem', true);
+        $title = htmlspecialchars($this->getLanguageService()->getLL('toolbaritem'));
 
         $opendocsMenu = array();
         $opendocsMenu[] = '<span title="' . $title . '">' . $this->iconFactory->getIcon('apps-toolbar-menu-opendocs', Icon::SIZE_SMALL)->render('inline') . '</span>';
@@ -106,7 +106,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         $recentDocuments = $this->recentDocs;
         $entries = array();
         if (!empty($openDocuments)) {
-            $entries[] = '<li class="dropdown-header">' . $languageService->getLL('open_docs', true) . '</li>';
+            $entries[] = '<li class="dropdown-header">' . htmlspecialchars($languageService->getLL('open_docs')) . '</li>';
             $i = 0;
             foreach ($openDocuments as $md5sum => $openDocument) {
                 $i++;
@@ -116,7 +116,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         }
         // If there are "recent documents" in the list, add them
         if (!empty($recentDocuments)) {
-            $entries[] = '<li class="dropdown-header">' . $languageService->getLL('recent_docs', true) . '</li>';
+            $entries[] = '<li class="dropdown-header">' . htmlspecialchars($languageService->getLL('recent_docs')) . '</li>';
             $i = 0;
             foreach ($recentDocuments as $md5sum => $recentDocument) {
                 $i++;
@@ -126,7 +126,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         if (!empty($entries)) {
             $content = '<ul class="dropdown-list">' . implode('', $entries) . '</ul>';
         } else {
-            $content = '<p>' . $languageService->getLL('no_docs', true) . '</p>';
+            $content = '<p>' . htmlspecialchars($languageService->getLL('no_docs')) . '</p>';
         }
         return $content;
     }

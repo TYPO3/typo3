@@ -849,9 +849,9 @@ class ImportExportController extends BaseScriptClass
             $this->standaloneView->assign('fileSelectOptions', $selectOptions);
 
             if ($path) {
-                $this->standaloneView->assign('importPath', sprintf($this->lang->getLL('importdata_fromPathS', true), $path->getCombinedIdentifier()));
+                $this->standaloneView->assign('importPath', sprintf($this->lang->getLL('importdata_fromPathS'), $path->getCombinedIdentifier()));
             } else {
-                $this->standaloneView->assign('importPath', $this->lang->getLL('importdata_no_default_upload_folder', true));
+                $this->standaloneView->assign('importPath', $this->lang->getLL('importdata_no_default_upload_folder'));
             }
             $this->standaloneView->assign('isAdmin', $beUser->isAdmin());
 

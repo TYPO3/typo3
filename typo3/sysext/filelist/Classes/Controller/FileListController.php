@@ -208,10 +208,10 @@ class FileListController extends ActionController
             $this->folderObject = null;
             $this->errorMessage = GeneralUtility::makeInstance(FlashMessage::class,
                 sprintf(
-                    $this->getLanguageService()->getLL('missingFolderPermissionsMessage', true),
-                    htmlspecialchars($this->id)
+                    $this->getLanguageService()->getLL('missingFolderPermissionsMessage'),
+                    $this->id
                 ),
-                $this->getLanguageService()->getLL('missingFolderPermissionsTitle', true),
+                $this->getLanguageService()->getLL('missingFolderPermissionsTitle'),
                 FlashMessage::NOTICE
             );
         } catch (Exception $fileException) {
@@ -228,17 +228,17 @@ class FileListController extends ActionController
             }
             $this->errorMessage = GeneralUtility::makeInstance(FlashMessage::class,
                 sprintf(
-                    $this->getLanguageService()->getLL('folderNotFoundMessage', true),
-                    htmlspecialchars($this->id)
+                    $this->getLanguageService()->getLL('folderNotFoundMessage'),
+                    $this->id
                 ),
-                $this->getLanguageService()->getLL('folderNotFoundTitle', true),
+                $this->getLanguageService()->getLL('folderNotFoundTitle'),
                 FlashMessage::NOTICE
             );
         } catch (\RuntimeException $e) {
             $this->folderObject = null;
             $this->errorMessage = GeneralUtility::makeInstance(FlashMessage::class,
                 $e->getMessage() . ' (' . $e->getCode() . ')',
-                $this->getLanguageService()->getLL('folderNotFoundTitle', true),
+                $this->getLanguageService()->getLL('folderNotFoundTitle'),
                 FlashMessage::NOTICE
             );
         }
@@ -432,19 +432,19 @@ class FileListController extends ActionController
             $this->view->assign('checkboxes', [
                 'bigControlPanel' => [
                     'enabled' => $this->getBackendUser()->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'selectable',
-                    'label' => $this->getLanguageService()->getLL('bigControlPanel', true),
+                    'label' => htmlspecialchars($this->getLanguageService()->getLL('bigControlPanel')),
                     'html' => BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]',
                         $this->MOD_SETTINGS['bigControlPanel'], '', '', 'id="bigControlPanel"'),
                 ],
                 'displayThumbs' => [
                     'enabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $this->getBackendUser()->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'selectable',
-                    'label' => $this->getLanguageService()->getLL('displayThumbs', true),
+                    'label' => htmlspecialchars($this->getLanguageService()->getLL('displayThumbs')),
                     'html' => BackendUtility::getFuncCheck($this->id, 'SET[displayThumbs]',
                         $this->MOD_SETTINGS['displayThumbs'], '', '', 'id="checkDisplayThumbs"'),
                 ],
                 'enableClipBoard' => [
                     'enabled' => $this->getBackendUser()->getTSConfigVal('options.file_list.enableClipBoard') === 'selectable',
-                    'label' => $this->getLanguageService()->getLL('clipBoard', true),
+                    'label' => htmlspecialchars($this->getLanguageService()->getLL('clipBoard')),
                     'html' => BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]',
                         $this->MOD_SETTINGS['clipBoard'], '', '', 'id="checkClipBoard"'),
                 ]

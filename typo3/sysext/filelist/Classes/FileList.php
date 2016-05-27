@@ -401,16 +401,16 @@ class FileList extends AbstractRecordList
                                     $elToConfirm
                                 )) . '"'
                                 . ' data-severity="warning"'
-                                . ' data-title="' . $this->getLanguageService()->getLL('clip_paste', true) . '"'
-                                . ' title="' . $this->getLanguageService()->getLL('clip_paste', true) . '">'
+                                . ' data-title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_paste')) . '"'
+                                . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_paste')) . '">'
                                 . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL)
                                     ->render()
                                 . '</a>';
                         }
                     }
                     if ($this->clipObj->current !== 'normal' && $iOut) {
-                        $cells[] = $this->linkClipboardHeaderIcon('<span title="' . $this->getLanguageService()->getLL('clip_selectMarked', true) . '">' . $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render() . '</span>', $table, 'setCB');
-                        $cells[] = $this->linkClipboardHeaderIcon('<span title="' . $this->getLanguageService()->getLL('clip_deleteMarked', true) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render(), $table, 'delete', $this->getLanguageService()->getLL('clip_deleteMarkedWarning'));
+                        $cells[] = $this->linkClipboardHeaderIcon('<span title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_selectMarked')) . '">' . $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render() . '</span>', $table, 'setCB');
+                        $cells[] = $this->linkClipboardHeaderIcon('<span title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_deleteMarked')) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render(), $table, 'delete', $this->getLanguageService()->getLL('clip_deleteMarkedWarning'));
                         $onClick = 'checkOffCB(' . GeneralUtility::quoteJSvalue(implode(',', $this->CBnames)) . ', this); return false;';
                         $cells[] = '<a class="btn btn-default" rel="" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $this->getLanguageService()->getLL('clip_markRecords', true) . '">' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '</a>';
                     }
@@ -482,11 +482,11 @@ class FileList extends AbstractRecordList
     public function getFolderInfo()
     {
         if ($this->counter == 1) {
-            $fileLabel = $this->getLanguageService()->getLL('file', true);
+            $fileLabel = htmlspecialchars($this->getLanguageService()->getLL('file'));
         } else {
-            $fileLabel = $this->getLanguageService()->getLL('files', true);
+            $fileLabel = htmlspecialchars($this->getLanguageService()->getLL('files'));
         }
-        return $this->counter . ' ' . $fileLabel . ', ' . GeneralUtility::formatSize($this->totalbytes, $this->getLanguageService()->getLL('byteSizeUnits', true));
+        return $this->counter . ' ' . $fileLabel . ', ' . GeneralUtility::formatSize($this->totalbytes, htmlspecialchars($this->getLanguageService()->getLL('byteSizeUnits')));
     }
 
     /**
@@ -538,13 +538,13 @@ class FileList extends AbstractRecordList
                             } catch (InsufficientFolderAccessPermissionsException $e) {
                                 $numFiles = 0;
                             }
-                            $theData[$field] = $numFiles . ' ' . $this->getLanguageService()->getLL(($numFiles === 1 ? 'file' : 'files'), true);
+                            $theData[$field] = $numFiles . ' ' . htmlspecialchars($this->getLanguageService()->getLL(($numFiles === 1 ? 'file' : 'files')));
                             break;
                         case 'rw':
-                            $theData[$field] = '<strong class="text-danger">' . $this->getLanguageService()->getLL('read', true) . '</strong>' . (!$isWritable ? '' : '<strong class="text-danger">' . $this->getLanguageService()->getLL('write', true) . '</strong>');
+                            $theData[$field] = '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('read')) . '</strong>' . (!$isWritable ? '' : '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('write')) . '</strong>');
                             break;
                         case 'fileext':
-                            $theData[$field] = $this->getLanguageService()->getLL('folder', true);
+                            $theData[$field] = htmlspecialchars($this->getLanguageService()->getLL('folder'));
                             break;
                         case 'tstamp':
                             $tstamp = $folderObject->getModificationTime();
@@ -676,10 +676,10 @@ class FileList extends AbstractRecordList
             foreach ($this->fieldArray as $field) {
                 switch ($field) {
                     case 'size':
-                        $theData[$field] = GeneralUtility::formatSize($fileObject->getSize(), $this->getLanguageService()->getLL('byteSizeUnits', true));
+                        $theData[$field] = GeneralUtility::formatSize($fileObject->getSize(), htmlspecialchars($this->getLanguageService()->getLL('byteSizeUnits')));
                         break;
                     case 'rw':
-                        $theData[$field] = '' . (!$fileObject->checkActionPermission('read') ? ' ' : '<strong class="text-danger">' . $this->getLanguageService()->getLL('read', true) . '</strong>') . (!$fileObject->checkActionPermission('write') ? '' : '<strong class="text-danger">' . $this->getLanguageService()->getLL('write', true) . '</strong>');
+                        $theData[$field] = '' . (!$fileObject->checkActionPermission('read') ? ' ' : '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('read')) . '</strong>') . (!$fileObject->checkActionPermission('write') ? '' : '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('write')) . '</strong>');
                         break;
                     case 'fileext':
                         $theData[$field] = strtoupper($ext);
@@ -736,7 +736,7 @@ class FileList extends AbstractRecordList
                             $theData[$field] = ' <div class="localisationData btn-group" data-fileid="' . $fileObject->getUid() . '"' .
                                 (empty($translations) ? ' style="display: none;"' : '') . '>' . $languageCode . '</div>';
                             $theData[$field] .= '<a class="btn btn-default filelist-translationToggler" data-fileid="' . $fileObject->getUid() . '">' .
-                                '<span title="' . $this->getLanguageService()->getLL('translateMetadata', true) . '">'
+                                '<span title="' . htmlspecialchars($this->getLanguageService()->getLL('translateMetadata')) . '">'
                                 . $this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL)->render() . '</span>'
                                 . '</a>';
                         }
@@ -906,8 +906,8 @@ class FileList extends AbstractRecordList
                     . ' href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $fullIdentifier)) . '"'
                     . ' data-content="' . htmlspecialchars($this->clipObj->confirmMsgText('_FILE', $fullName, 'into', $elToConfirm)) . '"'
                     . ' data-severity="warning"'
-                    . ' data-title="' . $this->getLanguageService()->getLL('clip_pasteInto', true) . '"'
-                    . ' title="' . $this->getLanguageService()->getLL('clip_pasteInto', true) . '"'
+                    . ' data-title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteInto')) . '"'
+                    . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteInto')) . '"'
                     . '>'
                     . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render()
                     . '</a>';

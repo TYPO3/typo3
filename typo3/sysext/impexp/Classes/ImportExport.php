@@ -519,7 +519,7 @@ abstract class ImportExport
         $lang = $this->getLanguageService();
         if ($table === '_SOFTREF_') {
             $pInfo['preCode'] = $preCode;
-            $pInfo['title'] = '<em>' . $lang->getLL('impexpcore_singlereco_softReferencesFiles', true) . '</em>';
+            $pInfo['title'] = '<em>' . htmlspecialchars($lang->getLL('impexpcore_singlereco_softReferencesFiles')) . '</em>';
         } elseif (!isset($GLOBALS['TCA'][$table])) {
             // Unknown table name:
             $pInfo['preCode'] = $preCode;
@@ -631,12 +631,12 @@ abstract class ImportExport
                 $pInfo['title'] = '<em>' . $info['field'] . ', "' . $info['spKey'] . '" </em>: <span title="' . htmlspecialchars($info['matchString']) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['matchString'], 60)) . '</span>';
                 if ($info['subst']['type']) {
                     if (strlen($info['subst']['title'])) {
-                        $pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . $lang->getLL('impexpcore_singlereco_title', true) . '</strong> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['subst']['title'], 60));
+                        $pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . htmlspecialchars($lang->getLL('impexpcore_singlereco_title')) . '</strong> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['subst']['title'], 60));
                     }
                     if (strlen($info['subst']['description'])) {
-                        $pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . $lang->getLL('impexpcore_singlereco_descr', true) . '</strong> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['subst']['description'], 60));
+                        $pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . htmlspecialchars($lang->getLL('impexpcore_singlereco_descr')) . '</strong> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['subst']['description'], 60));
                     }
-                    $pInfo['title'] .= '<br/>' . $preCode_B . ($info['subst']['type'] == 'file' ? $lang->getLL('impexpcore_singlereco_filename', true) . ' <strong>' . $info['subst']['relFileName'] . '</strong>' : '') . ($info['subst']['type'] == 'string' ? $lang->getLL('impexpcore_singlereco_value', true) . ' <strong>' . $info['subst']['tokenValue'] . '</strong>' : '') . ($info['subst']['type'] == 'db' ? $lang->getLL('impexpcore_softrefsel_record', true) . ' <strong>' . $info['subst']['recordRef'] . '</strong>' : '');
+                    $pInfo['title'] .= '<br/>' . $preCode_B . ($info['subst']['type'] == 'file' ? htmlspecialchars($lang->getLL('impexpcore_singlereco_filename')) . ' <strong>' . $info['subst']['relFileName'] . '</strong>' : '') . ($info['subst']['type'] == 'string' ? htmlspecialchars($lang->getLL('impexpcore_singlereco_value')) . ' <strong>' . $info['subst']['tokenValue'] . '</strong>' : '') . ($info['subst']['type'] == 'db' ? htmlspecialchars($lang->getLL('impexpcore_softrefsel_record')) . ' <strong>' . $info['subst']['recordRef'] . '</strong>' : '');
                 }
                 $pInfo['ref'] = 'SOFTREF';
                 $pInfo['size'] = '';
@@ -862,7 +862,7 @@ abstract class ImportExport
     {
         if ($this->mode === 'export') {
             if ($r['type'] === 'record') {
-                return '<input type="checkbox" class="t3js-exclude-checkbox" name="tx_impexp[exclude][' . $r['ref'] . ']" id="checkExclude' . $r['ref'] . '" value="1" /> <label for="checkExclude' . $r['ref'] . '">' . $this->getLanguageService()->getLL('impexpcore_singlereco_exclude', true) . '</label>';
+                return '<input type="checkbox" class="t3js-exclude-checkbox" name="tx_impexp[exclude][' . $r['ref'] . ']" id="checkExclude' . $r['ref'] . '" value="1" /> <label for="checkExclude' . $r['ref'] . '">' . htmlspecialchars($this->getLanguageService()->getLL('impexpcore_singlereco_exclude')) . '</label>';
             } else {
                 return  $r['type'] == 'softref' ? $this->softrefSelector($r['_softRefInfo']) : '';
             }
@@ -913,7 +913,7 @@ abstract class ImportExport
                 // Description:
                 if (!strlen($cfg['subst']['description'])) {
                     $descriptionField .= '
-					' . $this->getLanguageService()->getLL('impexpcore_printerror_description', true) . '<br/>
+					' . htmlspecialchars($this->getLanguageService()->getLL('impexpcore_printerror_description')) . '<br/>
 					<input type="text" name="tx_impexp[softrefCfg][' . $cfg['subst']['tokenID'] . '][description]" value="' . htmlspecialchars($this->softrefCfg[$cfg['subst']['tokenID']]['description']) . '" />';
                 } else {
                     $descriptionField .= '

@@ -361,11 +361,11 @@ class BrowseLinksController extends AbstractLinkBrowserController
      */
     protected function renderCurrentUrl()
     {
-        $removeLink = ' <a href="#" class="btn btn-default t3js-removeCurrentLink">' . $this->getLanguageService()->getLL('removeLink', true) . '</a>';
+        $removeLink = ' <a href="#" class="btn btn-default t3js-removeCurrentLink">' . htmlspecialchars($this->getLanguageService()->getLL('removeLink')) . '</a>';
         return '
             <div class="link-browser-section link-browser-current-link">
                 <strong>' .
-                    $this->getLanguageService()->getLL('currentLink', true) .
+                    htmlspecialchars($this->getLanguageService()->getLL('currentLink')) .
                     ': ' .
                     htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) .
                 '</strong>' .
@@ -448,7 +448,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
             <form action="" name="lrelform" id="lrelform" class="t3js-dummyform form-horizontal">
                  <div class="form-group form-group-sm">
                     <label class="col-xs-4 control-label">' .
-                        $this->getLanguageService()->getLL('linkRelationship', true) .
+                        htmlspecialchars($this->getLanguageService()->getLL('linkRelationship')) .
                     '</label>
                     <div class="col-xs-8">
                         <input type="text" name="lrel" class="form-control" value="' . $currentRel . '" />
@@ -477,8 +477,8 @@ class BrowseLinksController extends AbstractLinkBrowserController
             $targetSelector = '
 						<select name="ltarget_type" class="t3js-targetPreselect form-control">
 							<option value=""></option>
-							<option value="_top">' . $lang->getLL('top', true) . '</option>
-							<option value="_blank">' . $lang->getLL('newWindow', true) . '</option>
+							<option value="_top">' . htmlspecialchars($lang->getLL('top')) . '</option>
+							<option value="_blank">' . htmlspecialchars($lang->getLL('newWindow')) . '</option>
 						</select>
 			';
         }
@@ -486,7 +486,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         return '
 				<form action="" name="ltargetform" id="ltargetform" class="t3js-dummyform form-horizontal">
                     <div class="form-group form-group-sm" ' . ($targetSelectorConfig['disabled'] ? ' style="display: none;"' : '') . '>
-                        <label class="col-xs-4 control-label">' . $lang->getLL('target', true) . '</label>
+                        <label class="col-xs-4 control-label">' . htmlspecialchars($lang->getLL('target')) . '</label>
 						<div class="col-xs-3">
 							<input type="text" name="ltarget" class="t3js-linkTarget form-control"
 							    value="' . htmlspecialchars($target) . '" />
@@ -532,7 +532,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
                 <form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform form-horizontal">
                     <div class="form-group form-group-sm">
                         <label class="col-xs-4 control-label">
-                            ' . $this->getLanguageService()->getLL('anchor_title', true) . '
+                            ' . htmlspecialchars($this->getLanguageService()->getLL('anchor_title')) . '
                          </label>
                          <div class="col-xs-8">
                                 <span style="display: ' . ($readOnly ? 'none' : 'inline') . ';">
@@ -561,7 +561,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
 				<form action="" name="lclassform" id="lclassform" class="t3js-dummyform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkClass">
 						<tr>
-							<td style="width: 96px;">' . $this->getLanguageService()->getLL('anchor_class', true) . '</td>
+							<td style="width: 96px;">' . htmlspecialchars($this->getLanguageService()->getLL('anchor_class')) . '</td>
 							<td><select name="lclass" class="t3js-class-selector form-control">
 								' . $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] . '
 							</select></td>
