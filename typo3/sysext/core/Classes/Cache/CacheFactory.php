@@ -14,14 +14,15 @@ namespace TYPO3\CMS\Core\Cache;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This cache factory takes care of instantiating a cache frontend and injecting
  * a certain cache backend. After creation of the new cache, the cache object
  * is registered at the cache manager.
  *
- * This file is a backport from FLOW3
- * @scope singleton
- * @api
+ * @deprecated This file is not in use anymore, as the functionality
+ * was moved into the CacheManager class.
  */
 class CacheFactory implements \TYPO3\CMS\Core\SingletonInterface
 {
@@ -47,12 +48,13 @@ class CacheFactory implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $context The current FLOW3 context
      * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager The cache manager
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as it is not needed anymore
      */
     public function __construct($context, \TYPO3\CMS\Core\Cache\CacheManager $cacheManager)
     {
+        GeneralUtility::logDeprecatedFunction();
         $this->context = $context;
         $this->cacheManager = $cacheManager;
-        $this->cacheManager->injectCacheFactory($this);
     }
 
     /**
@@ -71,7 +73,7 @@ class CacheFactory implements \TYPO3\CMS\Core\SingletonInterface
     public function create($cacheIdentifier, $cacheObjectName, $backendObjectName, array $backendOptions = array())
     {
         // New operator used on purpose: This class is required early during
-        // bootstrap before makeInstance() is propely set up
+        // bootstrap before makeInstance() is properly set up
         $backendObjectName = '\\' . ltrim($backendObjectName, '\\');
         $backend = new $backendObjectName($this->context, $backendOptions);
         if (!$backend instanceof \TYPO3\CMS\Core\Cache\Backend\BackendInterface) {

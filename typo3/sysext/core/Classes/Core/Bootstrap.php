@@ -564,10 +564,6 @@ class Bootstrap
         $cacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
         $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $cacheManager);
-
-        $cacheFactory = new \TYPO3\CMS\Core\Cache\CacheFactory('production', $cacheManager);
-        GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheFactory::class, $cacheFactory);
-
         $this->setEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $cacheManager);
         return $this;
     }

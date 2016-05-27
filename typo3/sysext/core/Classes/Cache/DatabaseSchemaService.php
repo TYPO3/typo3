@@ -29,10 +29,8 @@ class DatabaseSchemaService
     public function getCachingFrameworkRequiredDatabaseSchema()
     {
         // Use new to circumvent the singleton pattern of CacheManager
-        $cacheManager = new CacheManager;
+        $cacheManager = new CacheManager();
         $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-        // Cache manager needs cache factory. cache factory injects itself to manager in __construct()
-        new CacheFactory('production', $cacheManager);
 
         $tableDefinitions = '';
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $cacheName => $_) {

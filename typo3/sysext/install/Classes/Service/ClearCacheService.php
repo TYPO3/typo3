@@ -84,9 +84,6 @@ class ClearCacheService
         // using new directly!
         $cacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
         $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-        // Cache manager needs cache factory. cache factory injects itself to manager in __construct()
-        new \TYPO3\CMS\Core\Cache\CacheFactory('production', $cacheManager);
-
         $cacheManager->flushCaches();
     }
 
