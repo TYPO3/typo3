@@ -50,7 +50,7 @@ class ElementBrowserRecordList extends DatabaseRecordList
     public function linkWrapItems($table, $uid, $code, $row)
     {
         if (!$code) {
-            $code = '<i>[' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', true) . ']</i>';
+            $code = '<i>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title')) . ']</i>';
         } else {
             $code = BackendUtility::getRecordTitlePrep($code, $this->fixedL);
         }

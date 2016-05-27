@@ -139,7 +139,7 @@ class ConfigurationForm extends ExtendedTemplateService
         }
         $content .= $addFields;
         $content .= $printFields;
-        $content .= '<input class="btn btn-default" type="submit" name="submit" value="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_tsfe.xlf:update', true) . '" id="configuration-submit-' . htmlspecialchars($extKey) . '" />';
+        $content .= '<input class="btn btn-default" type="submit" name="submit" value="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_tsfe.xlf:update')) . '" id="configuration-submit-' . htmlspecialchars($extKey) . '" />';
         $example = $this->ext_displayExample();
         $content .= $example ? '<hr/>' . $example : '';
         return $content;

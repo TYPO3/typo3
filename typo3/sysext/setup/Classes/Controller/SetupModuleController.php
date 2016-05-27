@@ -724,9 +724,9 @@ class SetupModuleController extends AbstractModule
                     $modName = $subData['name'];
                     $modules .= '<option value="' . htmlspecialchars($modName) . '"';
                     $modules .= $this->getBackendUser()->uc['startModule'] === $modName ? ' selected="selected"' : '';
-                    $modules .= '>' . $this->getLanguageService()->sL($this->loadModules->getLabelsForModule($modName)['title'], true) . '</option>';
+                    $modules .= '>' . htmlspecialchars($this->getLanguageService()->sL($this->loadModules->getLabelsForModule($modName)['title'])) . '</option>';
                 }
-                $groupLabel = $this->getLanguageService()->sL($this->loadModules->getLabelsForModule($mainMod)['title'], true);
+                $groupLabel = htmlspecialchars($this->getLanguageService()->sL($this->loadModules->getLabelsForModule($mainMod)['title']));
                 $startModuleSelect .= '<optgroup label="' . htmlspecialchars($groupLabel) . '">' . $modules . '</optgroup>';
             }
         }

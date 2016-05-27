@@ -88,8 +88,8 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
             ];
             $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
         }
-        $title = $lang->sL('LLL:EXT:lang/locallang_common.xlf:editField', true);
-        $startAnchor = '<a href="' . htmlspecialchars($url) . '" title="' . $title . '">';
+        $title = $lang->sL('LLL:EXT:lang/locallang_common.xlf:editField');
+        $startAnchor = '<a href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($title) . '">';
         $icon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
         $ret = '<tr><td>';
         $ret .= $startAnchor . '<strong>' . $label . '</strong></a>';

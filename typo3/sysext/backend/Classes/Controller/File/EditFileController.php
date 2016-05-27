@@ -108,8 +108,8 @@ class EditFileController extends AbstractModule
         }
         // Cleaning and checking target directory
         if (!$this->fileObject) {
-            $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError', true);
-            $message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir', true);
+            $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError'));
+            $message = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir'));
             throw new \RuntimeException($title . ': ' . $message, 1294586841);
         }
         if ($this->fileObject->getStorage()->getUid() === 0) {

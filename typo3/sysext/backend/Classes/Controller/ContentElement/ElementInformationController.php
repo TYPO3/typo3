@@ -322,7 +322,7 @@ class ElementInformationController
                 $showLink .= '
 					<a class="btn btn-primary" href="' . htmlspecialchars($url) . '" target="_blank">
 						' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '
-						' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.show', true) . '
+						' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.show')) . '
 					</a>';
             }
         }
@@ -344,15 +344,15 @@ class ElementInformationController
         $lang = $this->getLanguageService();
         if (in_array($this->type, array('folder', 'file'), true)) {
             if ($this->type === 'file') {
-                $extraFields['creation_date'] = $lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate', true);
-                $extraFields['modification_date'] = $lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp', true);
+                $extraFields['creation_date'] = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate'));
+                $extraFields['modification_date'] = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp'));
             }
-            $extraFields['storage'] = $lang->sL('LLL:EXT:lang/locallang_tca.xlf:sys_file.storage', true);
-            $extraFields['folder'] = $lang->sL('LLL:EXT:lang/locallang_common.xlf:folder', true);
+            $extraFields['storage'] = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_tca.xlf:sys_file.storage'));
+            $extraFields['folder'] = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_common.xlf:folder'));
         } else {
-            $extraFields['crdate'] = $lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate', true);
-            $extraFields['cruser_id'] = $lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationUserId', true);
-            $extraFields['tstamp'] = $lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp', true);
+            $extraFields['crdate'] = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate'));
+            $extraFields['cruser_id'] = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationUserId'));
+            $extraFields['tstamp'] = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp'));
 
             // check if the special fields are defined in the TCA ctrl section of the table
             foreach ($extraFields as $fieldName => $fieldLabel) {
@@ -422,7 +422,7 @@ class ElementInformationController
 
             // format file size as bytes/kilobytes/megabytes
             if ($this->type === 'file' && $name === 'size') {
-                $this->row[$name] = GeneralUtility::formatSize($this->row[$name], $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:byteSizeUnits', true));
+                $this->row[$name] = GeneralUtility::formatSize($this->row[$name], htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:byteSizeUnits')));
             }
 
             $isExcluded = !(!$GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] || $this->getBackendUser()->check('non_exclude_fields', $this->table . ':' . $name));
@@ -431,7 +431,7 @@ class ElementInformationController
             }
 
             $itemValue = BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, false, $uid);
-            $itemLabel = $lang->sL(BackendUtility::getItemLabel($this->table, $name), true);
+            $itemLabel = htmlspecialchars($lang->sL(BackendUtility::getItemLabel($this->table, $name)));
             $tableRows[] = '
 				<tr>
 					<th class="col-nowrap">' . $itemLabel . '</th>
@@ -460,13 +460,13 @@ class ElementInformationController
             case 'db': {
                 $references = $this->makeRef($this->table, $this->row['uid']);
                 if (!empty($references)) {
-                    $content .= '<h3>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesToThisItem', true) . '</h3>';
+                    $content .= '<h3>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesToThisItem')) . '</h3>';
                     $content .= $references;
                 }
 
                 $referencesFrom = $this->makeRefFrom($this->table, $this->row['uid']);
                 if (!empty($referencesFrom)) {
-                    $content .= '<h3>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesFromThisItem', true) . '</h3>';
+                    $content .= '<h3>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesFromThisItem')) . '</h3>';
                     $content .= $referencesFrom;
                 }
                 break;
@@ -477,7 +477,7 @@ class ElementInformationController
                     $references = $this->makeRef('_FILE', $this->fileObject);
 
                     if (!empty($references)) {
-                        $content .= '<h3>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesToThisItem', true) . '</h3>';
+                        $content .= '<h3>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesToThisItem')) . '</h3>';
                         $content .= $references;
                     }
                 }
@@ -501,7 +501,7 @@ class ElementInformationController
             $backLink .= '
 				<a class="btn btn-primary" href="' . htmlspecialchars($returnUrl) . '">
 					' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '
-					' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:back', true) . '
+					' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:back')) . '
 				</a>';
         }
         return $backLink;
@@ -526,7 +526,7 @@ class ElementInformationController
             }
             $uid = $this->row['uid'];
             $itemValue = BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, false, $uid);
-            $itemLabel = $this->getLanguageService()->sL(BackendUtility::getItemLabel($this->table, $name), true);
+            $itemLabel = htmlspecialchars($this->getLanguageService()->sL(BackendUtility::getItemLabel($this->table, $name)));
             $tableRows[] = '
 				<tr>
 					<th>' . $itemLabel . '</th>
@@ -616,7 +616,7 @@ class ElementInformationController
             // View page button
             $viewOnClick = BackendUtility::viewOnClick($uid, '', BackendUtility::BEgetRootLine($uid));
             $pageActionIcons .= '
-				<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($viewOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true) . '">
+				<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($viewOnClick) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage')) . '">
 					' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '
 				</a>';
         }
@@ -704,7 +704,7 @@ class ElementInformationController
 							' . BackendUtility::getRecordTitle($row['tablename'], $record, true) . '
 						</a>
 					</td>
-					<td>' . $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], true) . '</td>
+					<td>' . htmlspecialchars($lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'])) . '</td>
 					<td>
 						<span title="' . $lang->sL('LLL:EXT:lang/locallang_common.xlf:page') . ': '
                             . htmlspecialchars($parentRecordTitle) . ' (uid=' . $record['pid'] . ')">
@@ -806,7 +806,7 @@ class ElementInformationController
 							' . BackendUtility::getRecordTitle($row['ref_table'], $record, true) . '
 						</a>
 					</td>
-					<td>' . $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'], true) . '</td>
+					<td>' . htmlspecialchars($lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'])) . '</td>
 					<td>' . htmlspecialchars($row['ref_uid']) . '</td>
 					<td>' . htmlspecialchars($this->getLabelForTableColumn($table, $row['field'])) . '</td>
 					<td>' . htmlspecialchars($row['flexpointer']) . '</td>
@@ -820,7 +820,7 @@ class ElementInformationController
 				<tr>
 					<td class="col-icon"></td>
 					<td class="col-title">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.missing_record') . ' (uid=' . (int)$row['recuid'] . ')</td>
-					<td>' . $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'], true) . '</td>
+					<td>' . htmlspecialchars($lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'])) . '</td>
 					<td></td>
 					<td>' . htmlspecialchars($this->getLabelForTableColumn($table, $row['field'])) . '</td>
 					<td>' . htmlspecialchars($row['flexpointer']) . '</td>
