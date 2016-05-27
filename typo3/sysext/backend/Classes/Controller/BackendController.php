@@ -485,21 +485,13 @@ class BackendController
             'refresh_login_password' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_password'),
             'refresh_login_emptyPassword' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_emptyPassword'),
             'refresh_login_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_button'),
-            'refresh_logout_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_logout_button'),
             'refresh_exit_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_exit_button'),
             'please_wait' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.please_wait'),
-            'loadingIndicator' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:loadingIndicator'),
             'be_locked' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.be_locked'),
-            'refresh_login_countdown_singular' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_countdown_singular'),
-            'refresh_login_countdown' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_countdown'),
             'login_about_to_expire' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.login_about_to_expire'),
             'login_about_to_expire_title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.login_about_to_expire_title'),
             'refresh_login_logout_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_logout_button'),
             'refresh_login_refresh_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_refresh_button'),
-            'tabs_closeAll' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:tabs.closeAll'),
-            'tabs_closeOther' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:tabs.closeOther'),
-            'tabs_close' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:tabs.close'),
-            'tabs_openInBrowserWindow' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:tabs.openInBrowserWindow'),
             'csh_tooltip_loading' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:csh_tooltip_loading')
         );
         $labels = array(

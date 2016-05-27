@@ -249,42 +249,9 @@ class PreviewController extends AbstractController
                 'height' => 400
             )
         );
-        $t3LLLcore = array(
-            'waitTitle' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_logging_in'),
-            'refresh_login_failed' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_failed'),
-            'refresh_login_failed_message' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_failed_message'),
-            'refresh_login_title' => sprintf($lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_title'), htmlspecialchars($backendUser->user['username'])),
-            'login_expired' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.login_expired'),
-            'refresh_login_username' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_username'),
-            'refresh_login_password' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_password'),
-            'refresh_login_emptyPassword' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_emptyPassword'),
-            'refresh_login_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_button'),
-            'refresh_logout_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_logout_button'),
-            'refresh_exit_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_exit_button'),
-            'please_wait' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.please_wait'),
-            'loadingIndicator' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:loadingIndicator'),
-            'be_locked' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.be_locked'),
-            'refresh_login_countdown_singular' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_countdown_singular'),
-            'refresh_login_countdown' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_countdown'),
-            'login_about_to_expire' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.login_about_to_expire'),
-            'login_about_to_expire_title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.login_about_to_expire_title'),
-            'refresh_login_refresh_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_refresh_button'),
-            'refresh_direct_logout_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_direct_logout_button'),
-            'tabs_closeAll' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:tabs.closeAll'),
-            'tabs_closeOther' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:tabs.closeOther'),
-            'tabs_close' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:tabs.close'),
-            'tabs_openInBrowserWindow' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:tabs.openInBrowserWindow'),
-            'donateWindow_title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:donateWindow.title'),
-            'donateWindow_message' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:donateWindow.message'),
-            'donateWindow_button_donate' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:donateWindow.button_donate'),
-            'donateWindow_button_disable' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:donateWindow.button_disable'),
-            'donateWindow_button_postpone' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:donateWindow.button_postpone')
-        );
+
         return '
 		TYPO3.configuration = ' . json_encode($t3Configuration) . ';
-		TYPO3.LLL = {
-			core : ' . json_encode($t3LLLcore) . '
-		};
 
 		/**
 		 * TypoSetup object.
