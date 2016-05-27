@@ -2620,8 +2620,11 @@ class ContentObjectRenderer
 
     /**
      * char
-     * Will return a character based on its position within the current character set
+     * Returns a one-character string containing the character specified by ascii code.
      *
+     * Reliable results only for character codes in the integer range 0 - 127.
+     *
+     * @see http://php.net/manual/en/function.chr.php
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for char.
      * @return string The processed input value
