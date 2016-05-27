@@ -17,8 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Page;
 use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Admin;
 
 /**
- * This testcase is used to check if a page can be added with the page module.
- * It also tests to remove the new page with the page tree context menu.
+ * Page and page tree related tests.
  */
 class AddPageInPageModuleCest
 {
@@ -32,9 +31,12 @@ class AddPageInPageModuleCest
     }
 
     /**
+     * This test case is used to check if a page can be added with the page module.
+     * It also tests to remove the new page with the page tree context menu.
+     *
      * @param Admin $I
      */
-    public function tryToTest(Admin $I)
+    public function addAndDeletePage(Admin $I)
     {
         // Select page module
         $I->wantToTest('Add a page with page module');

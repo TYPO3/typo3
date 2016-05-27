@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
 use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Admin;
 
 /**
- * This test case is used to check if username is visible in the toolbar.
+ * Topbar username and avatar module tests.
  */
 class UsernameOnAvatarCest
 {
@@ -31,9 +31,11 @@ class UsernameOnAvatarCest
     }
 
     /**
+     * This test case is used to check if username is visible in the toolbar.
+     *
      * @param Admin $I
      */
-    public function tryToTest(Admin $I)
+    public function usernameIsShown(Admin $I)
     {
         $I->see('admin', '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem');
     }
