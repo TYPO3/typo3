@@ -1168,7 +1168,7 @@ class EditDocumentController extends AbstractModule
                                     // Create message from exception.
                                     $message = $e->getMessage() . ' ' . $e->getCode();
                                 }
-                                $editForm .= $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noEditPermission', true)
+                                $editForm .= htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noEditPermission'))
                                     . '<br /><br />' . htmlspecialchars($message) . '<br /><br />';
                             }
                         } // End of for each uid
@@ -1576,7 +1576,7 @@ class EditDocumentController extends AbstractModule
                     ));
                     foreach ($langRows as $lang) {
                         if ($this->getBackendUser()->checkLanguageAccess($lang['uid'])) {
-                            $newTranslation = isset($rowsByLang[$lang['uid']]) ? '' : ' [' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.new', true) . ']';
+                            $newTranslation = isset($rowsByLang[$lang['uid']]) ? '' : ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.new')) . ']';
                             // Create url for creating a localized record
                             if ($newTranslation) {
                                 $redirectUrl = BackendUtility::getModuleUrl('record_edit', array(

@@ -103,8 +103,8 @@ class FileUploadController extends AbstractModule
 
         // Cleaning and checking target directory
         if (!$this->folderObject) {
-            $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError', true);
-            $message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir', true);
+            $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError'));
+            $message = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir'));
             throw new \RuntimeException($title . ': ' . $message, 1294586843);
         }
 
@@ -192,7 +192,7 @@ class FileUploadController extends AbstractModule
         $content .= '
 			<div id="c-submit">
 				<input type="hidden" name="redirect" value="' . $this->returnUrl . '" /><br />
-				<input class="btn btn-default" type="submit" value="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit', true) . '" />
+				<input class="btn btn-default" type="submit" value="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit')) . '" />
 			</div>
 		';
         return $content;

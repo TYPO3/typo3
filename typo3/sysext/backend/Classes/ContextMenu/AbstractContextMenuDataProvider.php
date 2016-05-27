@@ -185,7 +185,7 @@ abstract class AbstractContextMenuDataProvider
                     unset($action);
                     continue;
                 }
-                $label = $this->getLanguageService()->sL($actionConfiguration['label'], true);
+                $label = htmlspecialchars($this->getLanguageService()->sL($actionConfiguration['label']));
                 if ($type === 'SUBMENU') {
                     $action->setType('submenu');
                     $action->setChildActions($this->getNextContextMenuLevel($actionConfiguration, $node, $level + 1));

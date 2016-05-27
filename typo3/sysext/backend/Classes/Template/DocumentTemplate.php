@@ -479,7 +479,7 @@ function jumpToUrl(URL) {
             ', ' . $url . ', ' . $confirmationText . ', ' . $motherModule . ', this);return false;';
 
         return '<a href="#" class="' . htmlspecialchars($classes) . '" onclick="' . htmlspecialchars($onClick) . '" title="' .
-        $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', true) . '">' .
+        htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark')) . '">' .
         $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . '</a>';
     }
 
@@ -1440,7 +1440,7 @@ function jumpToUrl(URL) {
             $title = '';
         }
         // Setting the path of the page
-        $pagePath = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.path', true) . ': <span class="typo3-docheader-pagePath">';
+        $pagePath = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.path')) . ': <span class="typo3-docheader-pagePath">';
         // crop the title to title limit (or 50, if not defined)
         $cropLength = empty($GLOBALS['BE_USER']->uc['titleLen']) ? 50 : $GLOBALS['BE_USER']->uc['titleLen'];
         $croppedTitle = GeneralUtility::fixed_lgd_cs($title, -$cropLength);

@@ -222,9 +222,9 @@ class UserElementsController
                                 if (!$title) {
                                     $title = '[' . htmlspecialchars($GLOBALS['LANG']->getLL('noTitle')) . ']';
                                 } else {
-                                    $title = $GLOBALS['LANG']->sL($title, true);
+                                    $title = htmlspecialchars($GLOBALS['LANG']->sL($title));
                                 }
-                                $description = $GLOBALS['LANG']->sL($v[$k2i . '.']['description'], true) . '<br />';
+                                $description = htmlspecialchars($GLOBALS['LANG']->sL($v[$k2i . '.']['description'])) . '<br />';
                                 if (!$v[$k2i . '.']['dontInsertSiteUrl']) {
                                     $v[$k2i . '.']['content'] = str_replace('###_URL###', $this->siteUrl, $v[$k2i . '.']['content']);
                                 }
@@ -271,7 +271,7 @@ class UserElementsController
                 if (!$title) {
                     $title = '[' . htmlspecialchars($GLOBALS['LANG']->getLL('noTitle')) . ']';
                 } else {
-                    $title = $GLOBALS['LANG']->sL($title, true);
+                    $title = htmlspecialchars($GLOBALS['LANG']->sL($title));
                 }
 
                 $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);

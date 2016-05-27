@@ -244,7 +244,7 @@ abstract class AbstractLinkBrowserController
 
             $this->linkHandlers[$identifier] = [
                 'handlerInstance' => $handler,
-                'label' => $lang->sL($configuration['label'], true),
+                'label' => htmlspecialchars($lang->sL($configuration['label'])),
                 'displayBefore' => isset($configuration['displayBefore']) ? GeneralUtility::trimExplode(',', $configuration['displayBefore']) : [],
                 'displayAfter' => isset($configuration['displayAfter']) ? GeneralUtility::trimExplode(',', $configuration['displayAfter']) : [],
                 'scanBefore' => isset($configuration['scanBefore']) ? GeneralUtility::trimExplode(',', $configuration['scanBefore']) : [],

@@ -275,12 +275,12 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
         foreach ($groupedData as $groupLabel => $items) {
             $groupContent = '';
             foreach ($items as $item) {
-                $label = $this->getLanguageService()->sL($item[0], true);
+                $label = htmlspecialchars($this->getLanguageService()->sL($item[0]));
                 $value = $item[1];
                 $icon = !empty($item[2]) ? FormEngineUtility::getIconHtml($item[2], $label, $label) : '';
                 $groupContent .= '<option value="' . htmlspecialchars($value) . '" data-icon="' . htmlspecialchars($icon) . '">' . $label . '</option>';
             }
-            $groupLabel = $this->getLanguageService()->sL($groupLabel, true);
+            $groupLabel = htmlspecialchars($this->getLanguageService()->sL($groupLabel));
             $content .= '<optgroup label="' . $groupLabel . '">' . $groupContent . '</optgroup>';
         }
 

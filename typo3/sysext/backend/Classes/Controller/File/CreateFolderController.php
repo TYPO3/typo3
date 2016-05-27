@@ -107,8 +107,8 @@ class CreateFolderController extends AbstractModule
         }
         // Cleaning and checking target directory
         if (!$this->folderObject) {
-            $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError', true);
-            $message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir', true);
+            $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError'));
+            $message = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir'));
             throw new \RuntimeException($title . ': ' . $message, 1294586845);
         }
         if ($this->folderObject->getStorage()->getUid() === 0) {
@@ -207,13 +207,13 @@ class CreateFolderController extends AbstractModule
             // Making submit button for folder creation:
             $code .= '
 				</div><div class="form-group">
-					<input class="btn btn-default" type="submit" value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.submit', true) . '" />
+					<input class="btn btn-default" type="submit" value="' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.submit')) . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 				</div>
 				';
 
             // Switching form tags:
-            $pageContent .= '<h3>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfolders', true) . '</h3>';
+            $pageContent .= '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfolders')) . '</h3>';
             $pageContent .= '<div>' . $code . '</form></div>';
         }
 
@@ -232,14 +232,14 @@ class CreateFolderController extends AbstractModule
 				<div class="form-group">
 					<div class="form-section">
 						<div class="form-group">
-							<label for="newMedia">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.label', true) . '</label> ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newMedia') . '
+							<label for="newMedia">' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.label')) . '</label> ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newMedia') . '
 							<div class="form-control-wrap">
 								<input class="form-control" type="text" id="newMedia" name="file[newMedia][0][url]"
-									placeholder="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.placeholder', true) . '" />
+									placeholder="' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.placeholder')) . '" />
 								<input type="hidden" name="file[newMedia][0][target]" value="' . htmlspecialchars($this->target) . '" />
 							</div>
 							<div class="help-block">
-								' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.allowedProviders', true) . '<br>
+								' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.allowedProviders')) . '<br>
 								' . implode(' ', $fileExtList) . '
 							</div>
 						</div>
@@ -249,11 +249,11 @@ class CreateFolderController extends AbstractModule
             // Submit button for creation of a new media:
             $code .= '
 				<div class="form-group">
-					<input class="btn btn-default" type="submit" value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.submit', true) . '" />
+					<input class="btn btn-default" type="submit" value="' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.submit')) . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 				</div>
 				';
-            $pageContent .= '<h3>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media', true) . '</h3>';
+            $pageContent .= '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media')) . '</h3>';
             $pageContent .= '<div>' . $code . '</div>';
             $pageContent .= '</form>';
 
@@ -271,13 +271,13 @@ class CreateFolderController extends AbstractModule
 				<div class="form-group">
 					<div class="form-section">
 						<div class="form-group">
-							<label for="newfile">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.label_newfile', true) . '</label> ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile') . '
+							<label for="newfile">' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.label_newfile')) . '</label> ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile') . '
 							<div class="form-control-wrap">
 								<input class="form-control" type="text" id="newfile" name="file[newfile][0][data]" onchange="changed=true;" />
 								<input type="hidden" name="file[newfile][0][target]" value="' . htmlspecialchars($this->target) . '" />
 							</div>
 							<div class="help-block">
-								' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:cm.allowedFileExtensions', true) . '<br>
+								' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:cm.allowedFileExtensions')) . '<br>
 								' . implode(' ', $fileExtList) . '
 							</div>
 						</div>
@@ -287,11 +287,11 @@ class CreateFolderController extends AbstractModule
             // Submit button for "creation of a new file":
             $code .= '
 				<div class="form-group">
-					<button class="btn btn-default" name="edit" type="submit" value="1">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile_submit', true) . '</button>
+					<button class="btn btn-default" name="edit" type="submit" value="1">' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile_submit')) . '</button>
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 				</div>
 			';
-            $pageContent .= '<h3>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile', true) . '</h3>';
+            $pageContent .= '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile')) . '</h3>';
             $pageContent .= '<div>' . $code . '</div>';
             $pageContent .= '</form>';
         }

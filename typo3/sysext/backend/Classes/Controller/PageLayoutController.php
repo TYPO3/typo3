@@ -1493,7 +1493,7 @@ class PageLayoutController
                         ->setHref('#');
                     $quickEditMenu->addMenuItem($menuItem);
                     $menuItem = $quickEditMenu->makeMenuItem()
-                        ->setTitle('__' . $lang->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $colPos), true) . ':__')
+                        ->setTitle('__' . htmlspecialchars($lang->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $colPos))) . ':__')
                         ->setHref(BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id . '&edit_record=_EDIT_COL:' . $colPos . $retUrlStr);
                     $quickEditMenu->addMenuItem($menuItem);
                 }
@@ -1545,7 +1545,7 @@ class PageLayoutController
             $lang = $this->getLanguageService();
             $languageMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
             $languageMenu->setIdentifier('languageMenu');
-            $languageMenu->setLabel($lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.language', true));
+            $languageMenu->setLabel(htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.language')));
             foreach ($this->MOD_MENU['language'] as $key => $language) {
                 $menuItem = $languageMenu
                     ->makeMenuItem()

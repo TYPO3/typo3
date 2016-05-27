@@ -104,8 +104,8 @@ class ReplaceFileController extends AbstractModule
                 ->retrieveFileOrFolderObject('file:' . $this->uid);
         }
         if (!$this->fileOrFolderObject) {
-            $title = $lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError', true);
-            $message = $lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir', true);
+            $title = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError'));
+            $message = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir'));
             throw new \RuntimeException($title . ': ' . $message, 1436895930);
         }
         if ($this->fileOrFolderObject->getStorage()->getUid() === 0) {
@@ -187,9 +187,9 @@ class ReplaceFileController extends AbstractModule
         $code .= '
 				<div class="form-group">
 					<input class="btn btn-primary" type="submit" value="'
-            . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_replace.php.submit', true) . '" />
+            . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_replace.php.submit')) . '" />
 					<input class="btn btn-danger" type="submit" value="'
-            . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', true)
+            . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel'))
             . '" onclick="backToList(); return false;" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 				</div>

@@ -163,8 +163,8 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
                 ) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
             $info .= str_replace('###LANG_UID###', '0', $viewPageLink);
             $info .= '&nbsp;';
-            $info .= GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? '<span title="' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.1', true) . '">D</span>' : '&nbsp;';
-            $info .= GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) ? '<span title="' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.2', true) . '">N</span>' : '&nbsp;';
+            $info .= GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.1')) . '">D</span>' : '&nbsp;';
+            $info .= GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) ? '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.2')) . '">N</span>' : '&nbsp;';
             // Put into cell:
             $tCells[] = '<td class="' . $status . ' col-border-left btn-group">' . $info . '</td>';
             $tCells[] = '<td class="' . $status . '" title="' . $lang->sL(

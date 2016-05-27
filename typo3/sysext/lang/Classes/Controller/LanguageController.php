@@ -278,7 +278,7 @@ class LanguageController extends ActionController
         /** @var Menu $menu */
         $menu = GeneralUtility::makeInstance(Menu::class);
         $menu->setIdentifier('_languageMenu');
-        $menu->setLabel($this->getLanguageService()->sL('LLL:EXT:lang/locallang_general.xlf:LGL.language', true));
+        $menu->setLabel($this->getLanguageService()->sL('LLL:EXT:lang/locallang_general.xlf:LGL.language'));
 
         /** @var MenuItem $languageListMenuItem */
         $languageListMenuItem = GeneralUtility::makeInstance(MenuItem::class);

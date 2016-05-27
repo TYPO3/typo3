@@ -548,7 +548,7 @@ class ModuleTemplate
             ', ' . $url . ', ' . $confirmationText . ', ' . $motherModule . ', this, ' . GeneralUtility::quoteJSvalue($displayName) . ');return false;';
 
         return '<a href="#" class="' . htmlspecialchars($classes) . '" onclick="' . htmlspecialchars($onClick) . '" title="' .
-        $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', true) . '">' .
+        htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark')) . '">' .
         $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . '</a>';
     }
 

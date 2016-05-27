@@ -451,11 +451,11 @@ class NewRecordController extends AbstractModule
         $newPageLinks = array();
         if ($displayNewPagesIntoLink && $this->isTableAllowedForThisPage($this->pageinfo, 'pages') && $this->getBackendUserAuthentication()->check('tables_modify', 'pages') && $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ?: $this->id), 'pages')) {
             // Create link to new page inside:
-            $newPageLinks[] = $this->linkWrap($this->moduleTemplate->getIconFactory()->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render() . $lang->sL($v['ctrl']['title'], true) . ' (' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.inside', true) . ')', $table, $this->id);
+            $newPageLinks[] = $this->linkWrap($this->moduleTemplate->getIconFactory()->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render() . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.inside')) . ')', $table, $this->id);
         }
         // New pages AFTER this pages
         if ($displayNewPagesAfterLink && $this->isTableAllowedForThisPage($this->pidInfo, 'pages') && $this->getBackendUserAuthentication()->check('tables_modify', 'pages') && $this->getBackendUserAuthentication()->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')) {
-            $newPageLinks[] = $this->linkWrap($pageIcon . $lang->sL($v['ctrl']['title'], true) . ' (' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.after', true) . ')', 'pages', -$this->id);
+            $newPageLinks[] = $this->linkWrap($pageIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.after')) . ')', 'pages', -$this->id);
         }
         // New pages at selection position
         if ($this->newPagesSelectPosition && $this->showNewRecLink('pages')) {
@@ -494,7 +494,7 @@ class NewRecordController extends AbstractModule
                         $rowContent = '';
                         $thisTitle = '';
                         // Create new link for record:
-                        $newLink = $this->linkWrap($newRecordIcon . $lang->sL($v['ctrl']['title'], true), $table, $this->id);
+                        $newLink = $this->linkWrap($newRecordIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])), $table, $this->id);
                         // If the table is 'tt_content', create link to wizard
                         if ($table == 'tt_content') {
                             $groupName = $lang->getLL('createNewContent');

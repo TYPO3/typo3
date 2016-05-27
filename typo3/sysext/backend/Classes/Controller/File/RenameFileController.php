@@ -88,8 +88,8 @@ class RenameFileController extends AbstractModule
             $this->fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->target);
         }
         if (!$this->fileOrFolderObject) {
-            $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError', true);
-            $message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir', true);
+            $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError'));
+            $message = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir'));
             throw new \RuntimeException($title . ': ' . $message, 1294586844);
         }
         if ($this->fileOrFolderObject->getStorage()->getUid() === 0) {
@@ -151,9 +151,9 @@ class RenameFileController extends AbstractModule
         $pageContent .= '
 			<div class="form-group">
 				<input class="btn btn-primary" type="submit" value="' .
-                $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.submit', true) . '" />
+                htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.submit')) . '" />
 				<input class="btn btn-danger" type="submit" value="' .
-                $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', true) .
+                htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel')) .
                 '" onclick="backToList(); return false;" />
 				<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 			</div>
