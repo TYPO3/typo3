@@ -3494,16 +3494,19 @@ class DataHandler
                             true
                         );
                     }
-
-                    foreach ($rows as $row) {
-                        // Skip localized records that will be processed in
-                        // copyL10nOverlayRecords() on copying the default language record
-                        $transOrigPointer = $row[$transOrigPointerField];
-                        if ($row[$languageField] > 0 && $transOrigPointer > 0 && isset($rows[$transOrigPointer])) {
-                            continue;
+                    if (is_array($rows)) {
+                        foreach ($rows as $row) {
+                            // Skip localized records that will be processed in
+                            // copyL10nOverlayRecords() on copying the default language record
+                            $transOrigPointer = $row[$transOrigPointerField];
+                            if ($row[$languageField] > 0 && $transOrigPointer > 0 && isset($rows[$transOrigPointer])) {
+                                continue;
+                            }
+                            // Copying each of the underlying records...
+                            $this->copyRecord($table, $row['uid'], $theNewRootID);
                         }
-                        // Copying each of the underlying records...
-                        $this->copyRecord($table, $row['uid'], $theNewRootID);
+                    } elseif ($this->enableLogging) {
+                        $this->log('pages', $uid, 5, 0, 1, 'An SQL error occurred: ' . $this->databaseConnection->sql_error());
                     }
                 }
             }
