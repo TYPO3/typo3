@@ -11,15 +11,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 /*!
- *  Font Awesome 4.6.1 by @davegandy - http://fontawesome.io - @fontawesome
+ *  Font Awesome 4.6.3 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
  */
 /* FONT PATH
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?v=4.6.1');
-  src: url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?#iefix&v=4.6.1') format('embedded-opentype'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff2?v=4.6.1') format('woff2'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff?v=4.6.1') format('woff'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.ttf?v=4.6.1') format('truetype'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.svg?v=4.6.1#fontawesomeregular') format('svg');
+  src: url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?v=4.6.3');
+  src: url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?#iefix&v=4.6.3') format('embedded-opentype'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff2?v=4.6.3') format('woff2'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff?v=4.6.3') format('woff'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.ttf?v=4.6.3') format('truetype'), url('../../../../../../typo3/sysext/backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.svg?v=4.6.3#fontawesomeregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
