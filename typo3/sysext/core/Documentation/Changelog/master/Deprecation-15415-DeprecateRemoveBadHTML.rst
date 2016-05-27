@@ -7,6 +7,7 @@ Description
 
 Due to the wrong approach of removeBadHTML it is not 100% complete and does not keep its promise.
 
+- :php:``ContentObjectRenderer::stdWrap_removeBadHTML()``
 - :php:``ContentObjectRenderer::removeBadHTML()``
 - :typoscript:``stdWrap.removeBadHTML``
 

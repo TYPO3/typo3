@@ -2817,6 +2817,7 @@ class ContentObjectRenderer
      *
      * @param string $content Input value undergoing processing in this function.
      * @return string The processed input value
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function stdWrap_removeBadHTML($content = '')
     {
