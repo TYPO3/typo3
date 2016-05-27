@@ -123,7 +123,7 @@ class PresetRepository
             $preset = $this->getPreset($presetData['select']);
             if (is_array($preset)) {
                 // Update existing
-                $inData_temp = unserialize($preset['preset_data']);
+                $inData_temp = unserialize($preset['preset_data'], ['allowed_classes' => false]);
                 if (is_array($inData_temp)) {
                     if (isset($presetData['merge'])) {
                         // Merge records in:

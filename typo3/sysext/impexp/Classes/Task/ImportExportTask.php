@@ -107,7 +107,7 @@ class ImportExportTask implements TaskInterface
             if (is_array($presets) && !empty($presets)) {
                 $lines = [];
                 foreach ($presets as $key => $presetCfg) {
-                    $configuration = unserialize($presetCfg['preset_data']);
+                    $configuration = unserialize($presetCfg['preset_data'], ['allowed_classes' => false]);
                     $title = strlen($presetCfg['title']) ? $presetCfg['title'] : '[' . $presetCfg['uid'] . ']';
                     $icon = 'EXT:impexp/Resources/Public/Images/export.gif';
                     $description = array();

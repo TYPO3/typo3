@@ -86,7 +86,7 @@ class ExportPageTreeView extends BrowseTreeView
         // Initialize:
         $this->init(' AND ' . $this->BE_USER->getPagePermsClause(1) . $clause);
         // Get stored tree structure:
-        $this->stored = unserialize($this->BE_USER->uc['browseTrees']['browsePages']);
+        $this->stored = unserialize($this->BE_USER->uc['browseTrees']['browsePages'], ['allowed_classes' => false]);
         $treeArr = array();
         $idx = 0;
         // Set first:
