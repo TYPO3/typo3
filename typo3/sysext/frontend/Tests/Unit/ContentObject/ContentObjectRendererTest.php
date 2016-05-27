@@ -2609,6 +2609,18 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertEquals($expected, $this->subject->stdWrap_brTag($input, $config));
     }
 
+    /**
+     * Check if char works properly
+     *
+     * @test
+     */
+    public function stdWrap_char()
+    {
+        $input = 'discarded';
+        $expected = 'C';
+        $this->assertEquals($expected, $this->subject->stdWrap_char($input, ['char' => '67']));
+    }
+
     ///////////////////////////////
     // Tests concerning getData()
     ///////////////////////////////
