@@ -170,7 +170,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
             if ($configuration->getValue() == $value) {
                 $output .= ' selected="selected"';
             }
-            $output .= '>' . $GLOBALS['LANG']->sL($label, true) . '</option>';
+            $output .= '>' . htmlspecialchars($GLOBALS['LANG']->sL($label)) . '</option>';
         }
         $this->tag->setContent($output);
         return $this->tag->render();

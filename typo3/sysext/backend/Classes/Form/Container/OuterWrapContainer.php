@@ -69,18 +69,18 @@ class OuterWrapContainer extends AbstractContainer
         $tableTitle = $languageService->sL($this->data['processedTca']['ctrl']['title']);
 
         if ($this->data['command'] === 'new') {
-            $newOrUid = ' <span class="typo3-TCEforms-newToken">' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.new', true) . '</span>';
+            $newOrUid = ' <span class="typo3-TCEforms-newToken">' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.new')) . '</span>';
 
             // @todo: There is quite some stuff do to for WS overlays ...
             $workspacedPageRecord = BackendUtility::getRecordWSOL('pages', $this->data['effectivePid'], 'title');
             $pageTitle = BackendUtility::getRecordTitle('pages', $workspacedPageRecord, true, false);
             if ($table === 'pages') {
-                $label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewPage', true);
+                $label = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewPage'));
                 $pageTitle = sprintf($label, $tableTitle);
             } else {
-                $label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecord', true);
+                $label = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecord'));
                 if ($this->data['effectivePid'] === 0) {
-                    $label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecordRootLevel', true);
+                    $label = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecordRootLevel'));
                 }
                 $pageTitle = sprintf($label, $tableTitle, $pageTitle);
             }
@@ -91,17 +91,17 @@ class OuterWrapContainer extends AbstractContainer
             // @todo: getRecordTitlePrep applies an htmlspecialchars here
             $recordLabel = BackendUtility::getRecordTitlePrep($this->data['recordTitle']);
             if ($table === 'pages') {
-                $label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editPage', true);
+                $label = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editPage'));
                 $pageTitle = sprintf($label, $tableTitle, $recordLabel);
             } else {
-                $label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecord', true);
+                $label = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecord'));
                 $workspacedPageRecord = BackendUtility::getRecordWSOL('pages', $row['pid'], 'uid,title');
                 $pageTitle = BackendUtility::getRecordTitle('pages', $workspacedPageRecord, true, false);
                 if (empty($recordLabel)) {
-                    $label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordNoTitle', true);
+                    $label = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordNoTitle'));
                 }
                 if ($this->data['effectivePid'] === 0) {
-                    $label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordRootLevel', true);
+                    $label = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordRootLevel'));
                 }
                 if (!empty($recordLabel)) {
                     // Use record title and prepend an edit label.

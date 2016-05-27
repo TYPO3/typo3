@@ -341,7 +341,7 @@ class SingleFieldContainer extends AbstractContainer
                 /** @var IconFactory $iconFactory */
                 $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                 if ($defaultLanguageValue !== '') {
-                    $item .= '<div class="t3-form-original-language" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:localizeMergeIfNotBlank', true) . '">'
+                    $item .= '<div class="t3-form-original-language" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:localizeMergeIfNotBlank')) . '">'
                         . $iconFactory->getIcon($this->data['systemLanguageRows'][0]['flagIconIdentifier'], Icon::SIZE_SMALL)->render()
                         . $this->getMergeBehaviourIcon($fieldConfig['l10n_mode'])
                         . $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '</div>';
@@ -356,7 +356,7 @@ class SingleFieldContainer extends AbstractContainer
                         true
                     );
                     if ($defaultLanguageValue !== '') {
-                        $item .= '<div class="t3-form-original-language" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:localizeMergeIfNotBlank', true) . '">'
+                        $item .= '<div class="t3-form-original-language" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:localizeMergeIfNotBlank')) . '">'
                             . $iconFactory->getIcon($this->data['systemLanguageRows'][$previewLanguage['sys_language_uid']]['flagIconIdentifier'], Icon::SIZE_SMALL)->render()
                             . $this->getMergeBehaviourIcon($fieldConfig['l10n_mode'])
                             . $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '</div>';

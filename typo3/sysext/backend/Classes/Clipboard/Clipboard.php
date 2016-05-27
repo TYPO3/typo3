@@ -316,8 +316,8 @@ class Clipboard
                 . htmlspecialchars($title) . '</a></li>';
 
             // Clear clipboard
-            $optionArray[] = '<li><a href="' . htmlspecialchars($removeAllUrl) . '#clip_head">' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.clipboard.clear_clipboard', true) . '</a></li>';
-            $deleteLink = '<a class="btn btn-danger" href="' . htmlspecialchars($removeAllUrl) . '#clip_head" title="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:buttons.clear', true) . '">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render(SvgIconProvider::MARKUP_IDENTIFIER_INLINE) . '</a>';
+            $optionArray[] = '<li><a href="' . htmlspecialchars($removeAllUrl) . '#clip_head">' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.clipboard.clear_clipboard')) . '</a></li>';
+            $deleteLink = '<a class="btn btn-danger" href="' . htmlspecialchars($removeAllUrl) . '#clip_head" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:buttons.clear')) . '">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render(SvgIconProvider::MARKUP_IDENTIFIER_INLINE) . '</a>';
 
             // menuSelector
             $menuSelector = '

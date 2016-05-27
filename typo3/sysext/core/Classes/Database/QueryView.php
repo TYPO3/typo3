@@ -614,7 +614,7 @@ class QueryView
                     $markup = [];
                     $markup[] = '<div class="panel panel-default">';
                     $markup[] = '  <div class="panel-heading">';
-                    $markup[] = $this->languageService->sL($conf['ctrl']['title'], true) . ' (' . $count . ')';
+                    $markup[] = htmlspecialchars($this->languageService->sL($conf['ctrl']['title'])) . ' (' . $count . ')';
                     $markup[] = '  </div>';
                     $markup[] = '  <table class="table table-striped table-hover">';
                     $markup[] = $this->resultRowTitles($lrow, $conf, $table);
@@ -1146,7 +1146,7 @@ class QueryView
                         ? $conf['columns'][$fieldName]['label']
                         : $fieldName, true);
                 } else {
-                    $title = $this->languageService->sL($fieldName, true);
+                    $title = htmlspecialchars($this->languageService->sL($fieldName));
                 }
                 $tableHeader[] = '<th>' . $title . '</th>';
             }
@@ -1179,7 +1179,7 @@ class QueryView
                             ? $conf['columns'][$fieldName]['label']
                             : $fieldName, true);
                     } else {
-                        $out = $this->languageService->sL($fieldName, true);
+                        $out = htmlspecialchars($this->languageService->sL($fieldName));
                     }
                 } else {
                     if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels']) {
@@ -1187,7 +1187,7 @@ class QueryView
                             ? $conf['columns'][$fieldName]['label']
                             : $fieldName), true);
                     } else {
-                        $out .= ',' . $this->languageService->sL($fieldName, true);
+                        $out .= ',' . htmlspecialchars($this->languageService->sL($fieldName));
                     }
                 }
             }

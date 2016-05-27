@@ -132,8 +132,8 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
         );
         return '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($href) . '" '
             . ' data-severity="warning"'
-            . ' data-title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:pleaseConfirm', true) . '"'
-            . ' data-button-close-text="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel', true) . '"'
+            . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:pleaseConfirm')) . '"'
+            . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel')) . '"'
             . ' data-content="' . htmlspecialchars($this->getLanguageService()->getLL('wiz_changeOrder_msg1')) . '"'
             . ' >' . htmlspecialchars($title) . '</a>';
     }

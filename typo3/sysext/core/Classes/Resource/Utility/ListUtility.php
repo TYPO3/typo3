@@ -39,7 +39,7 @@ class ListUtility
             $name = $folder->getName();
             $role = $folder->getRole();
             if ($role !== FolderInterface::ROLE_DEFAULT) {
-                $tempName = $lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:role_folder_' . $role, true);
+                $tempName = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:role_folder_' . $role));
                 if (!empty($tempName) && ($tempName !== $name)) {
                     // Set new name and append original name
                     $name = $tempName . ' (' . $name . ')';

@@ -141,7 +141,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
             if (!$isAdmin && !in_array($doktype, $allowedDoktypes)) {
                 continue;
             }
-            $label = $GLOBALS['LANG']->sL($doktypeLabelMap[$doktype], true);
+            $label = htmlspecialchars($GLOBALS['LANG']->sL($doktypeLabelMap[$doktype]));
             $icon = $this->iconFactory->getIcon($GLOBALS['TCA']['pages']['ctrl']['typeicon_classes'][$doktype], Icon::SIZE_SMALL)->render();
             $output[] = array(
                 'nodeType' => $doktype,
@@ -182,20 +182,20 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
         $indicators = $this->getIndicators();
         $configuration = array(
             'LLL' => array(
-                'copyHint' => $GLOBALS['LANG']->sL($file . 'tree.copyHint', true),
-                'fakeNodeHint' => $GLOBALS['LANG']->sL($file . 'mess.please_wait', true),
-                'activeFilterMode' => $GLOBALS['LANG']->sL($file . 'tree.activeFilterMode', true),
-                'dropToRemove' => $GLOBALS['LANG']->sL($file . 'tree.dropToRemove', true),
-                'buttonRefresh' => $GLOBALS['LANG']->sL($file . 'labels.refresh', true),
-                'buttonNewNode' => $GLOBALS['LANG']->sL($file . 'tree.buttonNewNode', true),
-                'buttonFilter' => $GLOBALS['LANG']->sL($file . 'tree.buttonFilter', true),
-                'dropZoneElementRemoved' => $GLOBALS['LANG']->sL($file . 'tree.dropZoneElementRemoved', true),
-                'dropZoneElementRestored' => $GLOBALS['LANG']->sL($file . 'tree.dropZoneElementRestored', true),
-                'searchTermInfo' => $GLOBALS['LANG']->sL($file . 'tree.searchTermInfo', true),
-                'temporaryMountPointIndicatorInfo' => $GLOBALS['LANG']->sL($file . 'labels.temporaryDBmount', true),
-                'deleteDialogTitle' => $GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:deleteItem', true),
-                'deleteDialogMessage' => $GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:deleteWarning', true),
-                'recursiveDeleteDialogMessage' => $GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:recursiveDeleteWarning', true)
+                'copyHint' => htmlspecialchars($GLOBALS['LANG']->sL($file . 'tree.copyHint')),
+                'fakeNodeHint' => htmlspecialchars($GLOBALS['LANG']->sL($file . 'mess.please_wait')),
+                'activeFilterMode' => htmlspecialchars($GLOBALS['LANG']->sL($file . 'tree.activeFilterMode')),
+                'dropToRemove' => htmlspecialchars($GLOBALS['LANG']->sL($file . 'tree.dropToRemove')),
+                'buttonRefresh' => htmlspecialchars($GLOBALS['LANG']->sL($file . 'labels.refresh')),
+                'buttonNewNode' => htmlspecialchars($GLOBALS['LANG']->sL($file . 'tree.buttonNewNode')),
+                'buttonFilter' => htmlspecialchars($GLOBALS['LANG']->sL($file . 'tree.buttonFilter')),
+                'dropZoneElementRemoved' => htmlspecialchars($GLOBALS['LANG']->sL($file . 'tree.dropZoneElementRemoved')),
+                'dropZoneElementRestored' => htmlspecialchars($GLOBALS['LANG']->sL($file . 'tree.dropZoneElementRestored')),
+                'searchTermInfo' => htmlspecialchars($GLOBALS['LANG']->sL($file . 'tree.searchTermInfo')),
+                'temporaryMountPointIndicatorInfo' => htmlspecialchars($GLOBALS['LANG']->sL($file . 'labels.temporaryDBmount')),
+                'deleteDialogTitle' => htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:deleteItem')),
+                'deleteDialogMessage' => htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:deleteWarning')),
+                'recursiveDeleteDialogMessage' => htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:recursiveDeleteWarning'))
             ),
             'Configuration' => array(
                 'hideFilter' => $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.hideFilter'),

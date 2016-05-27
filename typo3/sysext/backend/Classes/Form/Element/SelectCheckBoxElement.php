@@ -156,7 +156,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                     $resetGroupBtn = '';
                     if (!empty($resetGroup)) {
                         $resetGroup[] = 'TYPO3.FormEngine.updateCheckboxState(this);';
-                        $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection', true);
+                        $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection'));
                         $resetGroupBtn = '<a href="#" '
                             . 'class="btn btn-default btn-sm" '
                             . 'onclick="' . implode('', $resetGroup) . ' return false;" '

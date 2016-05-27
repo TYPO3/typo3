@@ -1175,7 +1175,7 @@ abstract class ImportExport
                 foreach ($output as $fN => $state) {
                     $tRows[] = '
 						<tr>
-							<td>' . $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['columns'][$fN]['label'], true) . ' (' . htmlspecialchars($fN) . ')</td>
+							<td>' . htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$table]['columns'][$fN]['label'])) . ' (' . htmlspecialchars($fN) . ')</td>
 							<td>' . $state . '</td>
 						</tr>
 					';

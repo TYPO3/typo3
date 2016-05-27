@@ -53,9 +53,9 @@ class VersionView
                 foreach ($versions as $vRow) {
                     if ($vRow['uid'] == $onlineId) {
                         // Live version
-                        $label = '[' . $GLOBALS['LANG']->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:versionSelect.live', true) . ']';
+                        $label = '[' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:versionSelect.live')) . ']';
                     } else {
-                        $label = $vRow['t3ver_label'] . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:versionId', true) . ' ' . $vRow['t3ver_id'] . ($vRow['t3ver_wsid'] != 0 ? ' ' . $GLOBALS['LANG']->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:workspaceId', true) . ' ' . $vRow['t3ver_wsid'] : '') . ')';
+                        $label = $vRow['t3ver_label'] . ' (' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:versionId')) . ' ' . $vRow['t3ver_id'] . ($vRow['t3ver_wsid'] != 0 ? ' ' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:workspaceId')) . ' ' . $vRow['t3ver_wsid'] : '') . ')';
                     }
                     $opt[] = '<option value="' . htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $vRow['uid']))) . '"' . ($id == $vRow['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
                 }
@@ -65,22 +65,22 @@ class VersionView
                 $management = '
 					<a class="btn btn-default" href="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', array('table' => 'pages', 'uid' => $onlineId))) . '">
 						' . $iconFactory->getIcon('actions-version-page-open', Icon::SIZE_SMALL)->render() . '
-						' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.mgm', true) . '
+						' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.mgm')) . '
 					</a>';
                 // Create onchange handler:
                 $onChange = 'window.location.href=this.options[this.selectedIndex].value;';
                 // Controls:
                 if ($id == $onlineId) {
-                    $controls = '<strong class="text-success">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.online', true) . '</strong>';
+                    $controls = '<strong class="text-success">' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.online')) . '</strong>';
                 } elseif (!$noAction) {
                     $href = BackendUtility::getLinkToDataHandlerAction(
                         '&cmd[pages][' . $onlineId . '][version][swapWith]=' . $id . '&cmd[pages][' . $onlineId . '][version][action]=swap',
                         GeneralUtility::linkThisScript(array('id' => $onlineId))
                     );
                     $controls = '
-						<a href="' . htmlspecialchars($href) . '" class="btn btn-default" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.swapPage', true) . '">
+						<a href="' . htmlspecialchars($href) . '" class="btn btn-default" title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.swapPage')) . '">
 							' . $iconFactory->getIcon('actions-version-swap-version', Icon::SIZE_SMALL)->render() . '
-							' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.swap', true) . '
+							' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.swap')) . '
 						</a>';
                 }
                 // Write out HTML code:
@@ -90,7 +90,7 @@ class VersionView
 					-->
 					<div id="typo3-version-selector" class="form-inline form-inline-spaced">
 						<div class="form-group">
-							<label for="version-selector">' . $GLOBALS['LANG']->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:versionSelect.label', true) . '</label>
+							<label for="version-selector">' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:versionSelect.label')) . '</label>
 							<select id="version-selector" class="form-control" onchange="' . htmlspecialchars($onChange) . '">
 								' . implode('', $opt) . '
 							</select>

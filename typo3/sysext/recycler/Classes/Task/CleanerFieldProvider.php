@@ -125,7 +125,7 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
             $validTca = true;
         } else {
             $schedulerModule->addMessage(
-                $this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskErrorTCAempty', true),
+                $this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskErrorTCAempty'),
                 FlashMessage::ERROR
             );
             $validTca = false;
@@ -148,7 +148,7 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
             if (!isset($GLOBALS['TCA'][$tcaTable])) {
                 $checkTca = false;
                 $schedulerModule->addMessage(
-                    sprintf($this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskErrorTCANotSet', true), $tcaTable),
+                    sprintf($this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskErrorTCANotSet'), $tcaTable),
                     FlashMessage::ERROR
                 );
                 break;
@@ -173,7 +173,7 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
             $validPeriod = true;
         } else {
             $schedulerModule->addMessage(
-                $this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskErrorPeriod', true),
+                $this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskErrorPeriod'),
                 FlashMessage::ERROR
             );
             $validPeriod = false;

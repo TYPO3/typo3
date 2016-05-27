@@ -707,7 +707,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             $path = BackendUtility::getRecordPath($el['id'], $this->taskObject->perms_clause, $this->getBackendUser()->uc['titleLen']);
             $record = BackendUtility::getRecord($el['table'], $dbAnalysis->results[$el['table']][$el['id']]);
             $title = BackendUtility::getRecordTitle($el['table'], $dbAnalysis->results[$el['table']][$el['id']]);
-            $description = $this->getLanguageService()->sL($GLOBALS['TCA'][$el['table']]['ctrl']['title'], true);
+            $description = htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$el['table']]['ctrl']['title']));
             // @todo: which information could be needful
             if (isset($record['crdate'])) {
                 $description .= ' - ' . BackendUtility::dateTimeAge($record['crdate']);

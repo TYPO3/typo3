@@ -88,7 +88,7 @@ class FolderUtilityRenderer
         $markup[] = '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
         $markup[] = '</div><div class="col-xs-4">';
         $markup[] = '<input class="btn btn-default" type="submit" name="submit" value="'
-            . $lang->sL('LLL:EXT:lang/locallang_core.xlf:create_folder.submit', true) . '" />';
+            . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:create_folder.submit')) . '" />';
 
         $markup[] = '</div></div></form>';
         $markup[] = '</div>';
@@ -135,7 +135,7 @@ class FolderUtilityRenderer
         $markup[] = '<div class="element-browser-section element-browser-upload">';
         $markup[] = '   <form action="' . htmlspecialchars($formAction)
             . '" method="post" name="editform" enctype="multipart/form-data">';
-        $markup[] = '   <h3>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle', true) . ':</h3>';
+        $markup[] = '   <h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle')) . ':</h3>';
         $markup[] = '   <p><strong>' . htmlspecialchars($lang->getLL('path')) . ':</strong>' . htmlspecialchars($header) . '</p>';
         // Traverse the number of upload fields:
         for ($a = 1; $a <= $count; $a++) {
@@ -157,7 +157,7 @@ class FolderUtilityRenderer
         if (!empty($fileExtList)) {
             $markup[] = '<div class="form-group">';
             $markup[] = '    <label>';
-            $markup[] = $lang->sL('LLL:EXT:lang/locallang_core.xlf:cm.allowedFileExtensions', true) . '<br/>';
+            $markup[] = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:cm.allowedFileExtensions')) . '<br/>';
             $markup[] = '    </label>';
             $markup[] = '    <div class="form-control">';
             $markup[] = implode(' ', $fileExtList);
@@ -168,11 +168,11 @@ class FolderUtilityRenderer
         $markup[] = '<div class="checkbox">';
         $markup[] = '    <label>';
         $markup[] = '    <input type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" />';
-        $markup[] = $lang->sL('LLL:EXT:lang/locallang_misc.xlf:overwriteExistingFiles', true);
+        $markup[] = htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_misc.xlf:overwriteExistingFiles'));
         $markup[] = '    </label>';
         $markup[] = '</div>';
         $markup[] = '<input class="btn btn-default" type="submit" name="submit" value="'
-            . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit', true) . '" />';
+            . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit')) . '" />';
 
         $markup[] = '   </form>';
         $markup[] = '</div>';
@@ -198,7 +198,7 @@ class FolderUtilityRenderer
             $markup[] = '<div class="element-browser-section element-browser-mediaurls">';
             $markup[] = '   <form action="' . htmlspecialchars($formAction)
                 . '" method="post" name="editform1" id="typo3-addMediaForm" enctype="multipart/form-data">';
-            $markup[] = '<h3>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media', true) . ':</h3>';
+            $markup[] = '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media')) . ':</h3>';
             $markup[] = '<p><strong>' . htmlspecialchars($lang->getLL('path')) . ':</strong>' . htmlspecialchars($header) . '</p>';
             $markup[] = '<div class="row form-group"><div class="col-xs-8">';
             $markup[] = '<input type="hidden" name="file[newMedia][0][target]" value="'
@@ -206,10 +206,10 @@ class FolderUtilityRenderer
             $markup[] = '<input type="hidden" name="file[newMedia][0][allowed]" value="'
                 . htmlspecialchars(implode(',', $allowedExtensions)) . '" />';
             $markup[] = '<input type="text" name="file[newMedia][0][url]" class="form-control" placeholder="'
-                . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.placeholder', true) . '" />';
+                . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.placeholder')) . '" />';
             $markup[] = '</div><div class="col-xs-4">';
             $markup[] = '<button class="btn btn-default">'
-                . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.submit', true) . '</button>';
+                . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.submit')) . '</button>';
 
             $markup[] = '</div></div>';
             $markup[] = '<div class="form-group">';

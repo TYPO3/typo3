@@ -166,7 +166,7 @@ class FlexFormSectionContainer extends AbstractContainer
         }
 
         // Wrap child stuff
-        $toggleAll = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall', true);
+        $toggleAll = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall'));
         $html = array();
         $html[] = '<div class="panel panel-tab">';
         $html[] =     '<div class="panel-body">';

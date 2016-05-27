@@ -88,11 +88,11 @@ class FileInfoHook
             $content .= '<strong>' . htmlspecialchars($file->getName()) . '</strong>';
             $content .= ' (' . htmlspecialchars(GeneralUtility::formatSize($file->getSize())) . 'bytes)<br />';
             $content .= BackendUtility::getProcessedValue('sys_file', 'type', $file->getType()) . ' (' . $file->getMimeType() . ')<br />';
-            $content .= $lang->sL('LLL:EXT:lang/locallang_misc.xlf:fileMetaDataLocation', true) . ': ';
+            $content .= htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_misc.xlf:fileMetaDataLocation')) . ': ';
             $content .= htmlspecialchars($file->getStorage()->getName()) . ' - ' . htmlspecialchars($file->getIdentifier()) . '<br />';
             $content .= '<br />';
         } else {
-            $content = '<h2>' . $lang->sL('LLL:EXT:lang/locallang_misc.xlf:fileMetaErrorInvalidRecord', true) . '</h2>';
+            $content = '<h2>' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_misc.xlf:fileMetaErrorInvalidRecord')) . '</h2>';
         }
 
         return $content;

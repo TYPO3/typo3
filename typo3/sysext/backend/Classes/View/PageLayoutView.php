@@ -409,11 +409,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         if (substr($field, 0, 6) == 'table_') {
                             $f2 = substr($field, 6);
                             if ($GLOBALS['TCA'][$f2]) {
-                                $theData[$field] = '&nbsp;' . '<span title="' . $this->getLanguageService()->sL($GLOBALS['TCA'][$f2]['ctrl']['title'], true) . '">' . $this->iconFactory->getIconForRecord($f2, array(), Icon::SIZE_SMALL)->render() . '</span>';
+                                $theData[$field] = '&nbsp;' . '<span title="' . htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$f2]['ctrl']['title'])) . '">' . $this->iconFactory->getIconForRecord($f2, array(), Icon::SIZE_SMALL)->render() . '</span>';
                             }
                         } else {
                             $theData[$field] = '&nbsp;&nbsp;<strong>'
-                                . $this->getLanguageService()->sL($GLOBALS['TCA']['pages']['columns'][$field]['label'], true)
+                                . htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA']['pages']['columns'][$field]['label']))
                                 . '</strong>' . $eI;
                         }
                 }
@@ -809,7 +809,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 $viewLink = '';
                 if (!VersionState::cast($this->getPageLayoutController()->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
                     $onClick = BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id), '', '', ('&L=' . $lP));
-                    $viewLink = '<a href="#" class="btn btn-default btn-sm" onclick="' . htmlspecialchars($onClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true) . '">' . $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
+                    $viewLink = '<a href="#" class="btn btn-default btn-sm" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage')) . '">' . $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
                 }
                 // Language overlay page header:
                 if ($lP) {
@@ -968,7 +968,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         $theData = array();
         $theData = $this->headerFields($this->fieldArray, $table, $theData);
         // Title row
-        $localizedTableTitle = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title'], true);
+        $localizedTableTitle = htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']));
         $out .= '<tr><th class="col-icon"></th>'
             . '<th colspan="' . (count($theData) - 2) . '"><span class="c-table">'
             . $localizedTableTitle . '</span> (' . $dbCount . ')</td>' . '<td class="col-icon"></td>'
@@ -1115,7 +1115,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     public function headerFields($fieldArr, $table, $out = array())
     {
         foreach ($fieldArr as $fieldName) {
-            $ll = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'], true);
+            $ll = htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label']));
             $out[$fieldName] = $ll ? $ll : '&nbsp;';
         }
         return $out;
@@ -1543,7 +1543,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             $hiddenHeaderNote = '';
             // If header layout is set to 'hidden', display an accordant note:
             if ($row['header_layout'] == 100) {
-                $hiddenHeaderNote = ' <em>[' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.hidden', true) . ']</em>';
+                $hiddenHeaderNote = ' <em>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.hidden')) . ']</em>';
             }
             $outHeader = $row['date']
                 ? htmlspecialchars($this->itemLabels['date'] . ' ' . BackendUtility::date($row['date'])) . '<br />'
@@ -1672,13 +1672,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     } elseif (!empty($row['list_type'])) {
                         $label = BackendUtility::getLabelFromItemListMerged($row['pid'], 'tt_content', 'list_type', $row['list_type']);
                         if (!empty($label)) {
-                            $out .=  $this->linkEditContent('<strong>' . $this->getLanguageService()->sL($label, true) . '</strong>', $row) . '<br />';
+                            $out .=  $this->linkEditContent('<strong>' . htmlspecialchars($this->getLanguageService()->sL($label)) . '</strong>', $row) . '<br />';
                         } else {
                             $message = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue'), $row['list_type']);
                             $out .= '<span class="label label-warning">' . htmlspecialchars($message) . '</span>';
                         }
                     } elseif (!empty($row['select_key'])) {
-                        $out .= $this->getLanguageService()->sL(BackendUtility::getItemLabel('tt_content', 'select_key'), true)
+                        $out .= htmlspecialchars($this->getLanguageService()->sL(BackendUtility::getItemLabel('tt_content', 'select_key')))
                             . ' ' . $row['select_key'] . '<br />';
                     } else {
                         $out .= '<strong>' . $this->getLanguageService()->getLL('noPluginSelected') . '</strong>';
@@ -2235,16 +2235,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 if ($c || $tName === 'tt_content') {
                     // Add row to menu:
                     $out .= '
-					<td><a href="#' . $tName . '" title="' . $this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], true) . '"></a>'
+					<td><a href="#' . $tName . '" title="' . htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title'])) . '"></a>'
                         . $this->iconFactory->getIconForRecord($tName, array(), Icon::SIZE_SMALL)->render()
                         . '</td>';
                     // ... and to the internal array, activeTables we also add table icon and title (for use elsewhere)
-                    $title = $this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], true)
+                    $title = htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title']))
                         . ': ' . $c . ' ' . htmlspecialchars($this->getLanguageService()->getLL('records'));
                     $this->activeTables[$tName] = '<span title="' . $title . '">'
                         . $this->iconFactory->getIconForRecord($tName, array(), Icon::SIZE_SMALL)->render()
                         . '</span>'
-                        . '&nbsp;' . $this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], true);
+                        . '&nbsp;' . htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title']));
                 }
             }
         }

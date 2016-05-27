@@ -175,7 +175,7 @@ class Commands
 
         $data['pages'][$placeholder]['pid'] = $pid;
         $data['pages'][$placeholder]['doktype'] = $pageType;
-        $data['pages'][$placeholder]['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:tree.defaultPageTitle', true);
+        $data['pages'][$placeholder]['title'] = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:tree.defaultPageTitle'));
         $newPageId = self::processTceCmdAndDataMap(array(), $data);
         $node = self::getNode($newPageId[$placeholder]);
         if ($pid !== $targetId) {
@@ -327,7 +327,7 @@ class Commands
             $text = $record['nav_title'];
         }
         if (trim($text) === '') {
-            $visibleText = '[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', true) . ']';
+            $visibleText = '[' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title')) . ']';
         } else {
             $visibleText = $text;
         }

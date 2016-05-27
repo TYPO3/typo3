@@ -87,7 +87,7 @@ class SelectSingleBoxElement extends AbstractFormElement
                 '</div>',
             '</div>',
             '<p>',
-                '<em>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.holdDownCTRL', true) . '</em>',
+                '<em>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.holdDownCTRL')) . '</em>',
             '</p>',
         ]);
         $html = implode(LF, $html);

@@ -158,7 +158,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         }
         $onClickCode = 'jump(' . GeneralUtility::quoteJSvalue($link) . ', \'web_list\', \'web\', ' . $pageId . '); TYPO3.OpendocsMenu.toggleMenu(); return false;';
         if (!$isRecentDoc) {
-            $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', true);
+            $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc'));
             // Open document
             $closeIcon = $this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL)->render('inline');
             $entry = '

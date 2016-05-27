@@ -34,7 +34,7 @@ class CmsLayout implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInt
     {
         if ($row['CType'] === 'login') {
             $drawItem = false;
-            $itemContent .= $parentObject->linkEditContent('<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_login_title', true) . '</strong>', $row);
+            $itemContent .= $parentObject->linkEditContent('<strong>' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_login_title')) . '</strong>', $row);
         }
     }
 }
