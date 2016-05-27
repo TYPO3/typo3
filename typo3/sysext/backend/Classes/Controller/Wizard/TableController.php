@@ -131,8 +131,6 @@ class TableController extends AbstractWizardController
         $this->numNewRows = MathUtility::forceIntegerInRange($this->P['params']['numNewRows'], 1, 50, 5);
         // Textareas or input fields:
         $this->inputStyle = isset($this->TABLECFG['textFields']) ? (bool)$this->TABLECFG['textFields'] : true;
-        // Setting form tag:
-        list($rUri) = explode('#', GeneralUtility::getIndpEnv('REQUEST_URI'));
         $this->tableParsing_delimiter = '|';
         $this->tableParsing_quote = '';
     }
@@ -159,6 +157,7 @@ class TableController extends AbstractWizardController
      */
     public function main()
     {
+        list($rUri) = explode('#', GeneralUtility::getIndpEnv('REQUEST_URI'));
         $this->content .= '<form action="' . htmlspecialchars($rUri) . '" method="post" id="TableController" name="wizardForm">';
         if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
             $this->content .= '<h2>' . htmlspecialchars($this->getLanguageService()->getLL('table_title')) . '</h2>'
