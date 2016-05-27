@@ -106,6 +106,7 @@ class SilentConfigurationUpgradeService
         $this->migrateThumbnailsPngSetting();
         $this->migrateLockSslSetting();
         $this->migrateDatabaseConnectionSettings();
+        $this->migrateDatabaseConnectionCharset();
     }
 
     /**
@@ -660,15 +661,44 @@ class SilentConfigurationUpgradeService
             );
         }
 
-        // Set the utf-8 connection charset by default
-        $confManager->setLocalConfigurationValueByPath('DB/Connections/Default/charset', 'utf-8');
+        // Set the utf-8 connection charset by default if no value has been provided yet
+        try {
+            $confManager->getLocalConfigurationValueByPath('DB/Connections/Default/charset');
+        } catch (\RuntimeException $e) {
+            $confManager->setLocalConfigurationValueByPath('DB/Connections/Default/charset', 'utf8');
+        }
 
-        // Use the mysqli driver by default
-        $confManager->setLocalConfigurationValueByPath('DB/Connections/Default/driver', 'mysqli');
+        // Use the mysqli driver by default if no value has been provided yet
+        try {
+            $confManager->getLocalConfigurationValueByPath('DB/Connections/Default/driver');
+        } catch (\RuntimeException $e) {
+            $confManager->setLocalConfigurationValueByPath('DB/Connections/Default/driver', 'mysqli');
+        }
 
         if (!empty(array_filter($changedSettings))) {
             $confManager->removeLocalConfigurationKeysByPath(array_keys($changedSettings));
             $this->throwRedirectException();
+        }
+    }
+
+    /**
+     * Migrate the configuration setting DB/Connections/Default/charset to 'utf8' as
+     * 'utf-8' is not supported by all MySQL versions.
+     *
+     * @return void
+     */
+    protected function migrateDatabaseConnectionCharset()
+    {
+        $confManager = $this->configurationManager;
+        try {
+            $driver = $confManager->getLocalConfigurationValueByPath('DB/Connections/Default/driver');
+            $charset = $confManager->getLocalConfigurationValueByPath('DB/Connections/Default/charset');
+            if (in_array($driver, ['mysqli', 'pdo_mysql', 'drizzle_pdo_mysql'], true) && $charset === 'utf-8') {
+                $confManager->setLocalConfigurationValueByPath('DB/Connections/Default/charset', 'utf8');
+                $this->throwRedirectException();
+            }
+        } catch (\RuntimeException $e) {
+            // no incompatible charset configuration found, so nothing needs to be modified
         }
     }
 }
