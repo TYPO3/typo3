@@ -216,9 +216,9 @@ class RteController extends AbstractWizardController
                 . $formResultCompiler->printNeededJSFunctions();
         } else {
             // ERROR:
-            $this->content .= '<h2>' . $this->getLanguageService()->getLL('forms_title', true) . '</h2>'
+            $this->content .= '<h2>' . htmlspecialchars($this->getLanguageService()->getLL('forms_title')) . '</h2>'
                 . '<div><span class="text-danger">'
-                . $this->getLanguageService()->getLL('table_noData', true)
+                . htmlspecialchars($this->getLanguageService()->getLL('table_noData'))
                 . '</span></div>';
         }
         // Setting up the buttons and markers for docHeader

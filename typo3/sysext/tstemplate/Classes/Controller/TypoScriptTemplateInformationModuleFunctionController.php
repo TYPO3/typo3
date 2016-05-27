@@ -257,7 +257,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                 }
             }
             $content = '<a href="#" class="t3-js-clickmenutrigger" data-table="sys_template" data-uid="' . $tplRow['uid'] . '" data-listframe="1">' . $this->iconFactory->getIconForRecord('sys_template', $tplRow, Icon::SIZE_SMALL)->render() . '</a><strong>' . htmlspecialchars($tplRow['title']) . '</strong>' . (trim($tplRow['sitetitle']) ? htmlspecialchars(' (' . $tplRow['sitetitle'] . ')') : '');
-            $theOutput .= '<h2>' . $lang->getLL('templateInformation', true) . '</h2><div>' . $content . '</div>';
+            $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('templateInformation')) . '</h2><div>' . $content . '</div>';
             if ($manyTemplatesMenu) {
                 $theOutput .= '<div>' . $manyTemplatesMenu . '</div>';
             }
@@ -274,7 +274,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                 $outCode .= '<div class="checkbox"><label for="checkIncludeTypoScriptFileContent">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[constants]=1', 'id="checkIncludeTypoScriptFileContent"');
                 $outCode .= $lang->getLL('includeTypoScriptFileContent') . '</label></div><br />';
                 $theOutput .= '<div style="padding-top: 15px;"></div>';
-                $theOutput .= '<h3>' . $lang->getLL('constants', true) . '</h3>';
+                $theOutput .= '<h3>' . htmlspecialchars($lang->getLL('constants')) . '</h3>';
                 $theOutput .= $outCode;
             }
             if (isset($e['config'])) {
@@ -284,7 +284,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                 $outCode .= '<div class="checkbox"><label for="checkIncludeTypoScriptFileContent">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[config]=1', 'id="checkIncludeTypoScriptFileContent"');
                 $outCode .= $lang->getLL('includeTypoScriptFileContent') . '</label></div><br />';
                 $theOutput .= '<div style="padding-top: 15px;"></div>';
-                $theOutput .= '<h3>' . $lang->getLL('setup', true) . '</h3>';
+                $theOutput .= '<h3>' . htmlspecialchars($lang->getLL('setup')) . '</h3>';
                 $theOutput .= $outCode;
             }
 
@@ -308,7 +308,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
             ];
             $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
-            $title = $lang->getLL('editTemplateRecord', true);
+            $title = htmlspecialchars($lang->getLL('editTemplateRecord'));
             $icon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
             $outCode .= '<br /><a class="btn btn-default" href="' . htmlspecialchars($url)
                 . '"><strong>' . $icon . '&nbsp;' . $title . '</strong></a>';

@@ -57,8 +57,8 @@ class ElementBrowserRecordList extends DatabaseRecordList
         $title = BackendUtility::getRecordTitle($table, $row, false, true);
         $ficon = $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render();
 
-        $ATag = '<a href="#" data-close="0" title="' . $this->getLanguageService()->getLL('addToList', true) . '">';
-        $ATag_alt = '<a href="#" data-close="1" title="' . $this->getLanguageService()->getLL('addToList', true) . '">';
+        $ATag = '<a href="#" data-close="0" title="' . htmlspecialchars($this->getLanguageService()->getLL('addToList')) . '">';
+        $ATag_alt = '<a href="#" data-close="1" title="' . htmlspecialchars($this->getLanguageService()->getLL('addToList')) . '">';
         $ATag_e = '</a>';
         $out = '<span data-uid="' . htmlspecialchars($row['uid']) . '" data-table="' . htmlspecialchars($table) . '" data-title="' . htmlspecialchars($title) . '" data-icon="' . htmlspecialchars($ficon) . '">';
         $out .= $ATag . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . $ATag_e . $ATag_alt . $code . $ATag_e;

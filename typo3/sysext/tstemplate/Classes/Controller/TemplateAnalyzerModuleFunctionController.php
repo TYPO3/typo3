@@ -116,7 +116,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
         if ($existTemplate) {
             $siteTitle = trim($GLOBALS['tplRow']['sitetitle']);
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-            $theOutput .= '<h3>' . $lang->getLL('currentTemplate', true) . '</h3>';
+            $theOutput .= '<h3>' . htmlspecialchars($lang->getLL('currentTemplate')) . '</h3>';
             $theOutput .= $iconFactory->getIconForRecord('sys_template', $GLOBALS['tplRow'], Icon::SIZE_SMALL)->render()
                 . '<strong>' . $this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']['title']) . '</strong>'
                 . htmlspecialchars($siteTitle ? ' (' . $siteTitle . ')' : '');
@@ -130,18 +130,18 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
         $pointer = count($templateService->hierarchyInfo);
         $hierarchyInfo = $templateService->ext_process_hierarchyInfo(array(), $pointer);
         $head = '<thead><tr>';
-        $head .= '<th>' . $lang->getLL('title', true) . '</th>';
-        $head .= '<th>' . $lang->getLL('rootlevel', true) . '</th>';
-        $head .= '<th>' . $lang->getLL('clearSetup', true) . '</th>';
-        $head .= '<th>' . $lang->getLL('clearConstants', true) . '</th>';
-        $head .= '<th>' . $lang->getLL('pid', true) . '</th>';
-        $head .= '<th>' . $lang->getLL('rootline', true) . '</th>';
-        $head .= '<th>' . $lang->getLL('nextLevel', true) . '</th>';
+        $head .= '<th>' . htmlspecialchars($lang->getLL('title')) . '</th>';
+        $head .= '<th>' . htmlspecialchars($lang->getLL('rootlevel')) . '</th>';
+        $head .= '<th>' . htmlspecialchars($lang->getLL('clearSetup')) . '</th>';
+        $head .= '<th>' . htmlspecialchars($lang->getLL('clearConstants')) . '</th>';
+        $head .= '<th>' . htmlspecialchars($lang->getLL('pid')) . '</th>';
+        $head .= '<th>' . htmlspecialchars($lang->getLL('rootline')) . '</th>';
+        $head .= '<th>' . htmlspecialchars($lang->getLL('nextLevel')) . '</th>';
         $head .= '</tr></thead>';
         $hierar = implode(array_reverse($templateService->ext_getTemplateHierarchyArr($hierarchyInfo, '', array(), 1)), '');
         $hierar = '<div class="table-fit"><table class="table table-striped table-hover" id="ts-analyzer">' . $head . $hierar . '</table></div>';
         $theOutput .= '<div style="padding-top: 5px;"></div>';
-        $theOutput .= '<h2>' . $lang->getLL('templateHierarchy', true) . '</h2>';
+        $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('templateHierarchy')) . '</h2>';
         $theOutput .= '<div>' . $hierar . '</div>';
         $urlParameters = array(
             'id' => $GLOBALS['SOBE']->id,
@@ -149,34 +149,34 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
         );
         $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 
-        $completeLink = '<p><a href="' . htmlspecialchars($aHref) . '" class="btn btn-default">' . $lang->getLL('viewCompleteTS', true) . '</a></p>';
+        $completeLink = '<p><a href="' . htmlspecialchars($aHref) . '" class="btn btn-default">' . htmlspecialchars($lang->getLL('viewCompleteTS')) . '</a></p>';
         $theOutput .= '<div style="padding-top: 5px;"></div>';
-        $theOutput .= '<h2>' . $lang->getLL('completeTS', true) . '</h2>';
+        $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('completeTS')) . '</h2>';
         $theOutput .= '<div>' . $completeLink . '</div>';
         $theOutput .= '<div style="padding-top: 15px;"></div>';
         // Output options
-        $theOutput .= '<h2>' . $lang->getLL('displayOptions', true) . '</h2>';
+        $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('displayOptions')) . '</h2>';
 
         $template = GeneralUtility::_GET('template');
         $addParams = $template ? '&template=' . $template : '';
         $theOutput .= '<div class="tst-analyzer-options">' .
             '<div class="checkbox"><label for="checkTs_analyzer_checkLinenum">' .
                 BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkLinenum]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], '', $addParams, 'id="checkTs_analyzer_checkLinenum"') .
-                $lang->getLL('lineNumbers', true) .
+                htmlspecialchars($lang->getLL('lineNumbers')) .
             '</label></div>' .
             '<div class="checkbox"><label for="checkTs_analyzer_checkSyntax">' .
                 BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkSyntax]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], '', $addParams, 'id="checkTs_analyzer_checkSyntax"') .
-                $lang->getLL('syntaxHighlight', true) . '</label> ' .
+                htmlspecialchars($lang->getLL('syntaxHighlight')) . '</label> ' .
             '</label></div>';
         if (!$this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax']) {
             $theOutput .=
                 '<div class="checkbox"><label for="checkTs_analyzer_checkComments">' .
                     BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkComments]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], '', $addParams, 'id="checkTs_analyzer_checkComments"') .
-                    $lang->getLL('comments', true) .
+                    htmlspecialchars($lang->getLL('comments')) .
                 '</label></div>' .
                 '<div class="checkbox"><label for="checkTs_analyzer_checkCrop">' .
                     BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkCrop]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], '', $addParams, 'id="checkTs_analyzer_checkCrop"') .
-                    $lang->getLL('cropLines', true) .
+                    htmlspecialchars($lang->getLL('cropLines')) .
                 '</label></div>';
         }
         $theOutput .=  '</div>';
@@ -184,7 +184,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
 
         if ($template) {
             // Output Constants
-            $theOutput .= '<h2>' . $lang->getLL('constants', true) . '</h2>';
+            $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('constants')) . '</h2>';
 
             $templateService->ext_lineNumberOffset = 0;
             $templateService->ext_lineNumberOffset_mode = 'const';
@@ -206,7 +206,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
 
             // Output Setup
             $theOutput .= '<div style="padding-top: 15px;"></div>';
-            $theOutput .= '<h2>' . $lang->getLL('setup', true) . '</h2>';
+            $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('setup')) . '</h2>';
             $templateService->ext_lineNumberOffset = 0;
             $templateService->ext_lineNumberOffset_mode = 'setup';
             foreach ($templateService->config as $key => $val) {

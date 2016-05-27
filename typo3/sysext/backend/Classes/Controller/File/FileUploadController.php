@@ -170,9 +170,9 @@ class FileUploadController extends AbstractModule
         // Make checkbox for "overwrite"
         $content = '
 			<div id="c-override">
-				<p><label for="overwriteExistingFiles"><input type="checkbox" class="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="replace" /> ' . $this->getLanguageService()->getLL('overwriteExistingFiles', 1) . '</label></p>
+				<p><label for="overwriteExistingFiles"><input type="checkbox" class="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="replace" /> ' . htmlspecialchars($this->getLanguageService()->getLL('overwriteExistingFiles')) . '</label></p>
 				<p>&nbsp;</p>
-				<p>' . $this->getLanguageService()->getLL('uploadMultipleFilesInfo', true) . '</p>
+				<p>' . htmlspecialchars($this->getLanguageService()->getLL('uploadMultipleFilesInfo')) . '</p>
 			</div>
 			';
         // Produce the number of upload-fields needed:

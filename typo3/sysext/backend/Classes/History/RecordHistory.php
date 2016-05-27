@@ -388,7 +388,7 @@ class RecordHistory
             $pid = $this->getRecord($elParts[0], $elParts[1]);
 
             if ($this->hasPageAccess('pages', $pid['pid'])) {
-                $this->view->assign('fullHistoryLink', $this->linkPage($languageService->getLL('elementHistory_link', true), array('element' => 'pages:' . $pid['pid'])));
+                $this->view->assign('fullHistoryLink', $this->linkPage(htmlspecialchars($languageService->getLL('elementHistory_link')), array('element' => 'pages:' . $pid['pid'])));
             }
         }
     }
@@ -446,13 +446,13 @@ class RecordHistory
                 $this->generateTitle($entry['tablename'], $entry['recuid']),
                 array('element' => $entry['tablename'] . ':' . $entry['recuid']),
                 '',
-                $languageService->getLL('linkRecordHistory', true)
+                htmlspecialchars($languageService->getLL('linkRecordHistory'))
             );
             // add record UID
             // Show insert/delete/diff/changed field names
             if ($entry['action']) {
                 // insert or delete of element
-                $singleLine['action'] = htmlspecialchars($languageService->getLL($entry['action'], true));
+                $singleLine['action'] = htmlspecialchars($languageService->getLL($entry['action']));
             } else {
                 // Display field names instead of full diff
                 if (!$this->showDiff) {
@@ -477,10 +477,10 @@ class RecordHistory
             // Show link to mark/unmark state
             if (!$entry['action']) {
                 if ($entry['snapshot']) {
-                    $title = $languageService->getLL('unmarkState', true);
+                    $title = htmlspecialchars($languageService->getLL('unmarkState'));
                     $image = $this->iconFactory->getIcon('actions-unmarkstate', Icon::SIZE_SMALL)->render();
                 } else {
-                    $title = $languageService->getLL('markState', true);
+                    $title = htmlspecialchars($languageService->getLL('markState'));
                     $image = $this->iconFactory->getIcon('actions-markstate', Icon::SIZE_SMALL)->render();
                 }
                 $singleLine['markState'] = $this->linkPage($image, array('highlight' => $entry['uid']), '', $title);
@@ -493,7 +493,7 @@ class RecordHistory
         $this->view->assign('history', $lines);
 
         if ($this->lastSyslogId) {
-            $this->view->assign('fullViewLink', $this->linkPage($languageService->getLL('fullView', true), array('diff' => '')));
+            $this->view->assign('fullViewLink', $this->linkPage(htmlspecialchars($languageService->getLL('fullView')), array('diff' => '')));
         }
     }
 
@@ -528,11 +528,11 @@ class RecordHistory
                     $singleLine['differences'] = $this->renderDiff($tmpArr, $elParts[0], $elParts[1]);
                 }
                 $elParts = explode(':', $key);
-                $singleLine['revertRecordLink'] = $this->createRollbackLink($key, $languageService->getLL('revertRecord', true), 1);
+                $singleLine['revertRecordLink'] = $this->createRollbackLink($key, htmlspecialchars($languageService->getLL('revertRecord')), 1);
                 $singleLine['title'] = $this->generateTitle($elParts[0], $elParts[1]);
                 $lines[] = $singleLine;
             }
-            $this->view->assign('revertAllLink', $this->createRollbackLink('ALL', $languageService->getLL('revertAll', true), 0));
+            $this->view->assign('revertAllLink', $this->createRollbackLink('ALL', htmlspecialchars($languageService->getLL('revertAll')), 0));
             $this->view->assign('multipleDiff', $lines);
         }
     }
@@ -562,7 +562,7 @@ class RecordHistory
                         BackendUtility::getProcessedValue($table, $fN, $entry['newRecord'][$fN], 0, true)
                     );
                     $lines[] = array(
-                        'title' => ($rollbackUid ? $this->createRollbackLink(($table . ':' . $rollbackUid . ':' . $fN), $languageService->getLL('revertField', true), 2) : '') . '
+                        'title' => ($rollbackUid ? $this->createRollbackLink(($table . ':' . $rollbackUid . ':' . $fN), htmlspecialchars($languageService->getLL('revertField')), 2) : '') . '
                           ' . $languageService->sL(BackendUtility::getItemLabel($table, $fN), true),
                         'result' => str_replace('\n', PHP_EOL, str_replace('\r\n', '\n', $diffres))
                     );

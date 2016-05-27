@@ -473,7 +473,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 $staticsText = '';
             }
             // Extension?
-            $theOutput .= '<h2>' . $lang->getLL('newWebsite', true) . $staticsText . '</h2>';
+            $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('newWebsite')) . $staticsText . '</h2>';
             $theOutput .= '<div><p>' . $lang->getLL('newWebsiteDescription') . '</p>' . $selector
                 . '<input class="btn btn-primary" type="submit" form="TypoScriptTemplateModuleController" name="newWebsite" value="'
                 . $lang->getLL('newWebsiteAction') . '" /></div>';

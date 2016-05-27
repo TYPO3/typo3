@@ -833,7 +833,7 @@ class PageLayoutController
                 }
             } catch (AccessDeniedException $e) {
                 // If no edit access, print error message:
-                $content = '<h2>' . $lang->getLL('noAccess', true) . '</h2>';
+                $content = '<h2>' . htmlspecialchars($lang->getLL('noAccess')) . '</h2>';
                 $content .= '<div>' . $lang->getLL('noAccess_msg') . '<br /><br />' . ($beUser->errorMsg ? 'Reason: ' . $beUser->errorMsg . '<br /><br />' : '') . '</div>';
             }
         } else {
@@ -861,7 +861,7 @@ class PageLayoutController
                 $content .= '<div class="checkbox">';
                 $content .= '<label for="checkTt_content_showHidden">';
                 $content .= BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], '', '', 'id="checkTt_content_showHidden"');
-                $content .= (!$numberOfHiddenElements ? ('<span class="text-muted">' . $lang->getLL('hiddenCE', true) . '</span>') : $lang->getLL('hiddenCE', true) . ' (' . $numberOfHiddenElements . ')');
+                $content .= (!$numberOfHiddenElements ? ('<span class="text-muted">' . htmlspecialchars($lang->getLL('hiddenCE')) . '</span>') : htmlspecialchars($lang->getLL('hiddenCE')) . ' (' . $numberOfHiddenElements . ')');
                 $content .= '</label>';
                 $content .= '</div>';
             }
@@ -921,7 +921,7 @@ class PageLayoutController
                         <div class="checkbox">
                             <label for="checkTt_content_showHidden">
                                 <input type="checkbox" id="checkTt_content_showHidden" class="checkbox" name="SET[tt_content_showHidden]" value="1" ' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? 'checked="checked"' : '') . ' />
-                                ' . $this->getLanguageService()->getLL('hiddenCE', true) . ' (<span class="t3js-hidden-counter">' . $numberOfHiddenElements . '</span>)
+                                ' . htmlspecialchars($this->getLanguageService()->getLL('hiddenCE')) . ' (<span class="t3js-hidden-counter">' . $numberOfHiddenElements . '</span>)
                             </label>
                         </div>';
                 }
@@ -1454,7 +1454,7 @@ class PageLayoutController
             $inValue = 'pages_language_overlay:' . $languageOverlayRecord['uid'];
             $isSelected += (int)$edit_record == $inValue;
             $menuItem = $quickEditMenu->makeMenuItem()
-                ->setTitle('[ ' . $lang->getLL('editLanguageHeader', true) . ' ]')
+                ->setTitle('[ ' . $lang->getLL('editLanguageHeader') . ' ]')
                 ->setHref(BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id . '&edit_record=' . $inValue . $retUrlStr)
                 ->setActive($edit_record == $inValue);
             $quickEditMenu->addMenuItem($menuItem);
@@ -1462,7 +1462,7 @@ class PageLayoutController
             $inValue = 'pages:' . $this->id;
             $isSelected += (int)$edit_record == $inValue;
             $menuItem = $quickEditMenu->makeMenuItem()
-                ->setTitle('[ ' . $lang->getLL('editPageProperties', true) . ' ]')
+                ->setTitle('[ ' . $lang->getLL('editPageProperties') . ' ]')
                 ->setHref(BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id . '&edit_record=' . $inValue . $retUrlStr)
                 ->setActive($edit_record == $inValue);
             $quickEditMenu->addMenuItem($menuItem);
@@ -1513,7 +1513,7 @@ class PageLayoutController
             $inValue = 'tt_content:new/' . $prev . '/' . $colPos;
             $isSelected += (int)$edit_record == $inValue;
             $menuItem = $quickEditMenu->makeMenuItem()
-                ->setTitle('[ ' . $lang->getLL('newLabel', 1) . ' ]')
+                ->setTitle('[ ' . $lang->getLL('newLabel') . ' ]')
                 ->setHref(BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id . '&edit_record=' . $inValue . $retUrlStr)
                 ->setActive($edit_record == $inValue);
             $quickEditMenu->addMenuItem($menuItem);
@@ -1525,7 +1525,7 @@ class PageLayoutController
                 ->setHref('#');
             $quickEditMenu->addMenuItem($menuItem);
             $menuItem = $quickEditMenu->makeMenuItem()
-                ->setTitle('[ ' . $lang->getLL('newLabel', true) . ' ]')
+                ->setTitle('[ ' . $lang->getLL('newLabel') . ' ]')
                 ->setHref(BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id . '&edit_record=' . $edit_record . $retUrlStr)
                 ->setActive($edit_record == $inValue);
             $quickEditMenu->addMenuItem($menuItem);

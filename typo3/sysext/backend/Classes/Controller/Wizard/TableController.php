@@ -161,11 +161,11 @@ class TableController extends AbstractWizardController
     {
         $this->content .= '<form action="' . htmlspecialchars($rUri) . '" method="post" id="TableController" name="wizardForm">';
         if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
-            $this->content .= '<h2>' . $this->getLanguageService()->getLL('table_title', true) . '</h2>'
+            $this->content .= '<h2>' . htmlspecialchars($this->getLanguageService()->getLL('table_title')) . '</h2>'
                 . '<div>' . $this->tableWizard() . '</div>';
         } else {
-            $this->content .= '<h2>' . $this->getLanguageService()->getLL('table_title', true) . '</h2>'
-                . '<div><span class="text-danger">' . $this->getLanguageService()->getLL('table_noData', true) . '</span></div>';
+            $this->content .= '<h2>' . htmlspecialchars($this->getLanguageService()->getLL('table_title')) . '</h2>'
+                . '<div><span class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('table_noData')) . '</span></div>';
         }
         $this->content .= '</form>';
         // Setting up the buttons and markers for docHeader
@@ -373,17 +373,17 @@ class TableController extends AbstractWizardController
                 $onClick = ' onclick="' . htmlspecialchars($onClick) . '"';
                 $ctrl = '';
                 if ($k !== 0) {
-                    $ctrl .= '<button class="btn btn-default" name="TABLE[row_up][' . ($k + 1) * 2 . ']" title="' . $this->getLanguageService()->getLL('table_up', true) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-angle-up"></span></button>';
+                    $ctrl .= '<button class="btn btn-default" name="TABLE[row_up][' . ($k + 1) * 2 . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_up')) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-angle-up"></span></button>';
                 } else {
-                    $ctrl .= '<button class="btn btn-default" name="TABLE[row_bottom][' . ($k + 1) * 2 . ']" title="' . $this->getLanguageService()->getLL('table_bottom', true) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-angle-double-down"></span></button>';
+                    $ctrl .= '<button class="btn btn-default" name="TABLE[row_bottom][' . ($k + 1) * 2 . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_bottom')) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-angle-double-down"></span></button>';
                 }
                 if ($k + 1 !== $countLines) {
-                    $ctrl .= '<button class="btn btn-default" name="TABLE[row_down][' . ($k + 1) * 2 . ']" title="' . $this->getLanguageService()->getLL('table_down', true) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-angle-down"></span></button>';
+                    $ctrl .= '<button class="btn btn-default" name="TABLE[row_down][' . ($k + 1) * 2 . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_down')) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-angle-down"></span></button>';
                 } else {
-                    $ctrl .= '<button class="btn btn-default" name="TABLE[row_top][' . ($k + 1) * 2 . ']" title="' . $this->getLanguageService()->getLL('table_top', true) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-angle-double-up"></span></button>';
+                    $ctrl .= '<button class="btn btn-default" name="TABLE[row_top][' . ($k + 1) * 2 . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_top')) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-angle-double-up"></span></button>';
                 }
-                $ctrl .= '<button class="btn btn-default" name="TABLE[row_remove][' . ($k + 1) * 2 . ']" title="' . $this->getLanguageService()->getLL('table_removeRow', true) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-trash"></span></button>';
-                $ctrl .= '<button class="btn btn-default" name="TABLE[row_add][' . ($k + 1) * 2 . ']" title="' . $this->getLanguageService()->getLL('table_addRow', true) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-plus"></span></button>';
+                $ctrl .= '<button class="btn btn-default" name="TABLE[row_remove][' . ($k + 1) * 2 . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_removeRow')) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-trash"></span></button>';
+                $ctrl .= '<button class="btn btn-default" name="TABLE[row_add][' . ($k + 1) * 2 . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_addRow')) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-plus"></span></button>';
                 $tRows[] = '
 					<tr>
 						<td>
@@ -408,17 +408,17 @@ class TableController extends AbstractWizardController
                 $b = $a * 2;
                 $ctrl = '';
                 if ($a !== 1) {
-                    $ctrl .= '<button class="btn btn-default" name="TABLE[col_left][' . $b . ']" title="' . $this->getLanguageService()->getLL('table_left', true) . '"><span class="t3-icon fa fa-fw fa-angle-left"></span></button>';
+                    $ctrl .= '<button class="btn btn-default" name="TABLE[col_left][' . $b . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_left')) . '"><span class="t3-icon fa fa-fw fa-angle-left"></span></button>';
                 } else {
-                    $ctrl .= '<button class="btn btn-default" name="TABLE[col_end][' . $b . ']" title="' . $this->getLanguageService()->getLL('table_end', true) . '"><span class="t3-icon fa fa-fw fa-angle-double-right"></span></button>';
+                    $ctrl .= '<button class="btn btn-default" name="TABLE[col_end][' . $b . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_end')) . '"><span class="t3-icon fa fa-fw fa-angle-double-right"></span></button>';
                 }
                 if ($a != $cols) {
-                    $ctrl .= '<button class="btn btn-default" name="TABLE[col_right][' . $b . ']" title="' . $this->getLanguageService()->getLL('table_right', true) . '"><span class="t3-icon fa fa-fw fa-angle-right"></span></button>';
+                    $ctrl .= '<button class="btn btn-default" name="TABLE[col_right][' . $b . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_right')) . '"><span class="t3-icon fa fa-fw fa-angle-right"></span></button>';
                 } else {
-                    $ctrl .= '<button class="btn btn-default" name="TABLE[col_start][' . $b . ']" title="' . $this->getLanguageService()->getLL('table_start', true) . '"><span class="t3-icon fa fa-fw fa-angle-double-left"></span></button>';
+                    $ctrl .= '<button class="btn btn-default" name="TABLE[col_start][' . $b . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_start')) . '"><span class="t3-icon fa fa-fw fa-angle-double-left"></span></button>';
                 }
-                $ctrl .= '<button class="btn btn-default" name="TABLE[col_remove][' . $b . ']" title="' . $this->getLanguageService()->getLL('table_removeColumn', true) . '"><span class="t3-icon fa fa-fw fa-trash"></span></button>';
-                $ctrl .= '<button class="btn btn-default" name="TABLE[col_add][' . $b . ']" title="' . $this->getLanguageService()->getLL('table_addColumn', true) . '"><span class="t3-icon fa fa-fw fa-plus"></span></button>';
+                $ctrl .= '<button class="btn btn-default" name="TABLE[col_remove][' . $b . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_removeColumn')) . '"><span class="t3-icon fa fa-fw fa-trash"></span></button>';
+                $ctrl .= '<button class="btn btn-default" name="TABLE[col_add][' . $b . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_addColumn')) . '"><span class="t3-icon fa fa-fw fa-plus"></span></button>';
                 $cells[] = '<span class="btn-group">' . $ctrl . '</span>';
             }
             $tRows[] = '

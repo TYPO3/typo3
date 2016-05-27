@@ -217,17 +217,17 @@ class ColorpickerController extends AbstractWizardController
 					' . $this->colorImage() . '
 
 					<!-- Value box: -->
-					<p class="c-head">' . $this->getLanguageService()->getLL('colorpicker_colorValue', true) . '</p>
+					<p class="c-head">' . htmlspecialchars($this->getLanguageService()->getLL('colorpicker_colorValue')) . '</p>
 					<table border="0" cellpadding="0" cellspacing="3">
 						<tr>
 							<td>
 								<input id="colorValue" type="text" ' . $this->doc->formWidth(7) . ' maxlength="10" name="colorValue" value="' . htmlspecialchars($this->colorValue) . '" />
 							</td>
 							<td style="background-color:' . htmlspecialchars($this->colorValue) . '; border: 1px solid black;">
-								<span style="color: black;">' . $this->getLanguageService()->getLL('colorpicker_black', true) . '</span>&nbsp;<span style="color: white;">' . $this->getLanguageService()->getLL('colorpicker_white', true) . '</span>
+								<span style="color: black;">' . htmlspecialchars($this->getLanguageService()->getLL('colorpicker_black')) . '</span>&nbsp;<span style="color: white;">' . htmlspecialchars($this->getLanguageService()->getLL('colorpicker_white')) . '</span>
 							</td>
 							<td>
-								<input class="btn btn-default" type="submit" id="colorpicker-saveclose" value="' . $this->getLanguageService()->getLL('colorpicker_setClose', true) . '" />
+								<input class="btn btn-default" type="submit" id="colorpicker-saveclose" value="' . htmlspecialchars($this->getLanguageService()->getLL('colorpicker_setClose')) . '" />
 							</td>
 						</tr>
 					</table>
@@ -242,7 +242,7 @@ class ColorpickerController extends AbstractWizardController
 					<input type="hidden" name="exampleImg" value="' . htmlspecialchars($this->exampleImg) . '" />
 				</form>';
 
-            $this->content .= '<h2>' . $this->getLanguageService()->getLL('colorpicker_title', true) . '</h2>';
+            $this->content .= '<h2>' . htmlspecialchars($this->getLanguageService()->getLL('colorpicker_title')) . '</h2>';
             $this->content .= $content;
         }
     }
@@ -320,7 +320,7 @@ class ColorpickerController extends AbstractWizardController
             $tRows[] = '<tr>' . implode('', $tCells) . '</tr>';
             $rows++;
         }
-        return '<p class="c-head">' . $this->getLanguageService()->getLL('colorpicker_fromMatrix', true) . '</p>
+        return '<p class="c-head">' . htmlspecialchars($this->getLanguageService()->getLL('colorpicker_fromMatrix')) . '</p>
 			<table style="width:100%; border: 1px solid black; cursor:crosshair;">' . implode('', $tRows) . '</table>';
     }
 
@@ -341,7 +341,7 @@ class ColorpickerController extends AbstractWizardController
             $opt[] = '<option style="background-color: ' . $colorName . ';" value="' . htmlspecialchars($colorName) . '"' . ($currentValue === $colorName ? ' selected="selected"' : '') . '>' . htmlspecialchars($colorName) . '</option>';
         }
         // Compile selector box and return result:
-        return '<p class="c-head">' . $this->getLanguageService()->getLL('colorpicker_fromList', true) . '</p>
+        return '<p class="c-head">' . htmlspecialchars($this->getLanguageService()->getLL('colorpicker_fromList')) . '</p>
 			<select class="t3js-colorpicker-selector">' . implode(LF, $opt) . '</select><br />';
     }
 
@@ -361,7 +361,7 @@ class ColorpickerController extends AbstractWizardController
                     $this->colorValue = '#' . $this->getIndex($image->imageCreateFromFile($this->pickerImage), GeneralUtility::_POST('coords_x'), GeneralUtility::_POST('coords_y'));
                 }
                 $pickerFormImage = '
-				<p class="c-head">' . $this->getLanguageService()->getLL('colorpicker_fromImage', true) . '</p>
+				<p class="c-head">' . htmlspecialchars($this->getLanguageService()->getLL('colorpicker_fromImage')) . '</p>
 				<input type="image" src="' . PathUtility::getAbsoluteWebPath($this->pickerImage) . '" name="coords" style="cursor:crosshair;" /><br />';
             } else {
                 $pickerFormImage = '';

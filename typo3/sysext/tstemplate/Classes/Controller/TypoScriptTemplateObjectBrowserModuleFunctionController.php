@@ -164,7 +164,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             $content = ' ' . $iconFactory->getIconForRecord('sys_template', $tplRow, Icon::SIZE_SMALL)->render() . ' <strong>'
                 . $this->pObj->linkWrapTemplateTitle($tplRow['title'], ($bType == 'setup' ? 'config' : 'constants')) . '</strong>'
                 . (trim($tplRow['sitetitle']) ? htmlspecialchars(' (' . $tplRow['sitetitle'] . ')') : '');
-            $theOutput .= '<h3>' . $lang->getLL('currentTemplate', true) . '</h3>';
+            $theOutput .= '<h3>' . htmlspecialchars($lang->getLL('currentTemplate')) . '</h3>';
             $theOutput .= '<div>';
             $theOutput .= $content;
             $theOutput .= '</div>';
@@ -280,7 +280,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 $out .= '	<input class="form-control" type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][value]" value="' . htmlspecialchars($theSetupValue) . '"' . $documentTemplate->formWidth(40) . ' />';
                 $out .= '	<input class="btn btn-default" type="submit" name="update_value" value="' . $lang->getLL('updateButton') . '" />';
                 $out .= '</div>';
-                $theOutput .= '<h3>' . $lang->getLL('editProperty', true) . '</h3>';
+                $theOutput .= '<h3>' . htmlspecialchars($lang->getLL('editProperty')) . '</h3>';
                 $theOutput .= $out;
                 // Property
                 $out = '<div class="form-group">';
@@ -291,7 +291,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 $out .= '	<input class="btn btn-default" type="submit" name="add_property" value="' . $lang->getLL('addButton') . '" />';
                 $out .= '</div>';
                 $theOutput .= '<div style="padding-top: 20px;"></div>';
-                $theOutput .= '<h3>' . $lang->getLL('addProperty', true) . '</h3>';
+                $theOutput .= '<h3>' . htmlspecialchars($lang->getLL('addProperty')) . '</h3>';
                 $theOutput .= $out;
                 // clear
                 $out = '<div class="form-group">';
@@ -304,7 +304,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 $out .= '	</div>';
                 $out .= '</div>';
                 $theOutput .='<div style="padding-top: 20px;"></div>';
-                $theOutput .= '<h3>' . $lang->getLL('clearObject', true) . '</h3>';
+                $theOutput .= '<h3>' . htmlspecialchars($lang->getLL('clearObject')) . '</h3>';
                 $theOutput .= $out;
                 $theOutput .= '<div style="padding-top: 10px;"></div>';
                 // Inline Form Area End
@@ -458,11 +458,11 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 
             //start section displayoptions
             $theOutput .= '<div>';
-            $theOutput .= '<h2>' . $lang->getLL('displayOptions', true) . '</h2>';
+            $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('displayOptions')) . '</h2>';
             $theOutput .= $menu;
             // Conditions:
             if (is_array($templateService->sections) && !empty($templateService->sections)) {
-                $theOutput .= '<h2>' . $lang->getLL('conditions', true) . '</h2>';
+                $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('conditions')) . '</h2>';
                 $out = '';
                 foreach ($templateService->sections as $key => $val) {
                     $out .= '<div class="checkbox"><label for="check' . $key . '">';

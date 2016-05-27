@@ -292,12 +292,12 @@ class NewContentElementController extends AbstractModule
                 $menuItems[$key]['content'] .= $this->elementWrapper['section'][1];
             }
             // Add the wizard table to the content, wrapped in tabs
-            $code = '<p>' . $lang->getLL('sel1', 1) . '</p>' . $this->moduleTemplate->getDynamicTabMenu(
+            $code = '<p>' . htmlspecialchars($lang->getLL('sel1')) . '</p>' . $this->moduleTemplate->getDynamicTabMenu(
                 $menuItems,
                 'new-content-element-wizard'
             );
 
-            $this->content .= !$this->onClickEvent ? '<h2>' . $lang->getLL('1_selectType', true) . '</h2>' : '';
+            $this->content .= !$this->onClickEvent ? '<h2>' . htmlspecialchars($lang->getLL('1_selectType')) . '</h2>' : '';
             $this->content .= '<div>' . $code . '</div>';
 
             // If the user must also select a column:
@@ -305,7 +305,7 @@ class NewContentElementController extends AbstractModule
                 // Add anchor "sel2"
                 $this->content .= '<div><a name="sel2"></a></div>';
                 // Select position
-                $code = '<p>' . $lang->getLL('sel2', 1) . '</p>';
+                $code = '<p>' . htmlspecialchars($lang->getLL('sel2')) . '</p>';
 
                 // Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
                 $colPosArray = GeneralUtility::callUserFunction(
@@ -318,7 +318,7 @@ class NewContentElementController extends AbstractModule
                 $colPosList = implode(',', array_unique(array_map('intval', $colPosIds)));
                 // Finally, add the content of the column selector to the content:
                 $code .= $posMap->printContentElementColumns($this->id, 0, $colPosList, 1, $this->R_URI);
-                $this->content .= '<h2>' . $lang->getLL('2_selectPosition', true) . '</h2><div>' . $code . '</div>';
+                $this->content .= '<h2>' . htmlspecialchars($lang->getLL('2_selectPosition')) . '</h2><div>' . $code . '</div>';
             }
         } else {
             // In case of no access:
