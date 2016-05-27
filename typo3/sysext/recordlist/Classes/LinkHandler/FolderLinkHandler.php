@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Link handler for folder links
@@ -33,20 +34,7 @@ class FolderLinkHandler extends FileLinkHandler
     /**
      * @var string
      */
-    protected $additionalFolderClass = 'bg-success';
-
-    /**
-     * @var string
-     */
     protected $expectedClass = Folder::class;
-
-    /**
-     * @return string
-     */
-    protected function getTitle()
-    {
-        return $this->getLanguageService()->getLL('folders');
-    }
 
     /**
      * @param Folder $folder
@@ -71,14 +59,15 @@ class FolderLinkHandler extends FileLinkHandler
         if (!$fileOrFolderObject instanceof Folder) {
             throw new \InvalidArgumentException('Expected Folder object, got "' . get_class($fileOrFolderObject) . '" object.', 1443651369);
         }
-        $fileIdentifier = $fileOrFolderObject->getCombinedIdentifier();
         $overlay = null;
         if ($fileOrFolderObject instanceof InaccessibleFolder) {
             $overlay = array('status-overlay-locked' => array());
         }
-        $icon = '<span title="' . htmlspecialchars($fileOrFolderObject->getName()) . '">'
-            . $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL, $overlay)->render()
-            . '</span>';
-        return [$fileIdentifier, $icon];
+        return [
+            'icon' => $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL, $overlay)->render(),
+            'identifier' => $fileOrFolderObject->getCombinedIdentifier(),
+            'name' => $fileOrFolderObject->getName(),
+            'title' => GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), (int)$this->getBackendUser()->uc['titleLen'])
+        ];
     }
 }

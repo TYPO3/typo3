@@ -1,0 +1,33 @@
+<div class="row link-browser-section link-browser-filetree">
+	<div class="col-xs-6">
+		<h3><f:translate key="LLL:EXT:lang/locallang_browse_links.xlf:folderTree" /></h3>
+		{tree -> f:format.raw()}
+	</div>
+	<div class="col-xs-6">
+		<f:if condition="{selectedFolder}">
+			<h3><f:translate key="LLL:EXT:lang/locallang_browse_links.xlf:folders" /></h3>
+			<span class="{f:if(condition: '{selectedFolder.combinedIdentifier} == {currentIdentifier}', then: 'bg-success')}" title="{selectedFolder.identifier}">
+				{selectedFolderIcon -> f:format.raw()} {selectedFolderTitle}
+			</span>
+
+			<f:if condition="{itemsInSelectedFolder}">
+				<ul class="list-tree">
+					<f:for each="{itemsInSelectedFolder}" as="folder">
+						<li{f:if(condition: '{folder.identifier} == {currentIdentifier}', then: ' class="active"')}>
+							 <span class="list-tree-group">
+									<a href="#" class="t3js-fileLink list-tree-group" title="{folder.name}" data-file="file:{folder.identifier}">
+										<span class="list-tree-icon">
+											<span title="{folder.name}">{folder.icon -> f:format.raw()}</span>
+										</span>
+										<span class="list-tree-title">{folder.title}</span>
+									</a>
+								</span>
+						</li>
+					</f:for>
+				</ul>
+			</f:if>
+		</f:if>
+	</div>
+</div>
+
+{createFolderForm -> f:format.raw()}

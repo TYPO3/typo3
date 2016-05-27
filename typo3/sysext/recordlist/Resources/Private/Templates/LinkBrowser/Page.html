@@ -1,0 +1,40 @@
+<div class="link-browser-section link-browser-pagetree">
+	<div class="col-xs-6">
+		<h3><f:translate key="LLL:EXT:lang/locallang_browse_links.xlf:pageTree" /></h3>
+		<f:if condition="{temporaryTreeMountCancelLink}">
+			<p>
+				<a href="{temporaryTreeMountCancelLink}" class="btn btn-primary">
+					<f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount" />
+				</a>
+			</p>
+		</f:if>
+		{tree -> f:format.raw()}
+	</div>
+	<div class="col-xs-6">
+		<f:if condition="{expandActivePage}">
+			<h3><f:translate key="LLL:EXT:lang/locallang_browse_links.xlf:contentElements" /></h3>
+			<ul class="list-tree list-tree-root list-tree-root-clean">
+				<li class="list-tree-control-open">
+					<span class="list-tree-group">
+						<span class="list-tree-icon">{activePageIcon -> f:format.raw()}</span>
+						<span class="list-tree-title">{activePageTitle}</span>
+					</span>
+					<ul>
+						<f:for each="{contentElements}" as="content">
+							<li{f:if(condition: content.isSelected, then: ' class="active"')}>
+								<span class="list-tree-group">
+									<span class="list-tree-icon">{content.icon -> f:format.raw()}</span>
+									<span class="list-tree-title">
+										<a href="#" class="t3js-pageLink" data-id="{pageId}" data-anchor="#{content.uid}">
+											{content.title}
+										</a>
+									</span>
+								</span>
+							</li>
+						</f:for>
+					</ul>
+				</li>
+			</ul>
+		</f:if>
+	</div>
+</div>

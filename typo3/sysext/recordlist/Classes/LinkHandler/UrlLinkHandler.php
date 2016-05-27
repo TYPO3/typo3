@@ -90,28 +90,8 @@ class UrlLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface
     {
         GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule('TYPO3/CMS/Recordlist/UrlLinkHandler');
 
-        $extUrl = '
-                <!--
-                    Enter External URL:
-                -->
-                <div class="link-browser-section link-browser-tab-content-url">
-                    <form action="" id="lurlform" class="form-horizontal">
-                        <div class="form-group form-group-sm" id="typo3-linkURL">
-                            <label class="col-xs-4 control-label">URL</label>
-                            <div class="col-xs-6">
-                                <input type="text" name="lurl" size="30" class="form-control" value="'
-                                    . htmlspecialchars(!empty($this->linkParts) ? $this->linkParts['url'] : 'http://')
-                                    . '" />
-                            </div>
-                            <div class="col-xs-2">
-                                <input class="btn btn-default" type="submit"
-                                    value="' . htmlspecialchars($this->getLanguageService()->getLL('setLink')) . '" />
-                            </div>
-                        </div>
-                    </form>
-                </div>';
-
-        return $extUrl;
+        $this->view->assign('url', !empty($this->linkParts) ? $this->linkParts['url'] : 'http://');
+        return $this->view->render('Url');
     }
 
     /**

@@ -52,6 +52,11 @@ abstract class AbstractLinkHandler
     protected $iconFactory;
 
     /**
+     * @var \TYPO3\CMS\Fluid\View\StandaloneView
+     */
+    protected $view;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -71,6 +76,11 @@ abstract class AbstractLinkHandler
     {
         $this->linkBrowser = $linkBrowser;
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+        $this->view->getRequest()->setControllerExtensionName('recordlist');
+        $this->view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:recordlist/Resources/Private/Templates/LinkBrowser')]);
+        $this->view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:recordlist/Resources/Private/Partials/LinkBrowser')]);
+        $this->view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:recordlist/Resources/Private/Layouts/LinkBrowser')]);
     }
 
     /**

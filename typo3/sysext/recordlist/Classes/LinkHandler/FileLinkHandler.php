@@ -58,11 +58,6 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     protected $expandFolder;
 
     /**
-     * @var string
-     */
-    protected $additionalFolderClass = '';
-
-    /**
      * Checks if this is the handler for the given link
      *
      * The handler may store this information locally for later usage.
@@ -124,79 +119,33 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         /** @var ElementBrowserFolderTreeView $folderTree */
         $folderTree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
         $folderTree->setLinkParameterProvider($this);
-        $tree = $folderTree->getBrowsableTree();
+        $this->view->assign('tree', $folderTree->getBrowsableTree());
 
         // Create upload/create folder forms, if a path is given
-        $selectedFolder = false;
-        if ($this->expandFolder) {
-            $fileOrFolderObject = null;
-            try {
-                $fileOrFolderObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
-            } catch (\Exception $e) {
-                // No path is selected
-            }
+        $selectedFolder = $this->getSelectedFolder($this->expandFolder);
 
-            if ($fileOrFolderObject instanceof Folder) {
-                // It's a folder
-                $selectedFolder = $fileOrFolderObject;
-            } elseif ($fileOrFolderObject instanceof FileInterface) {
-                // It's a file
-                try {
-                    $selectedFolder = $fileOrFolderObject->getParentFolder();
-                } catch (\Exception $e) {
-                    // Accessing the parent folder failed for some reason. e.g. permissions
-                }
-            }
-        }
-
-        $backendUser = $this->getBackendUser();
-        // If no folder is selected, get the user's default upload folder
-        if (!$selectedFolder) {
-            try {
-                $selectedFolder = $backendUser->getDefaultUploadFolder();
-            } catch (\Exception $e) {
-                // The configured default user folder does not exist
-            }
-        }
         // Build the file upload and folder creation form
-        $uploadForm = '';
-        $createFolder = '';
-        $content = '';
         if ($selectedFolder) {
             $folderUtilityRenderer = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this);
             $uploadForm = $this->mode === 'file' ? $folderUtilityRenderer->uploadForm($selectedFolder, []) : '';
             $createFolder = $folderUtilityRenderer->createFolder($selectedFolder);
-        }
-        // Insert the upload form on top, if so configured
-        if ($backendUser->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
-            $content .= $uploadForm;
+
+            // Insert the upload form on top, if so configured
+            $positionOfUploadFieldsOnTop = $this->getBackendUser()->getTSConfigVal('options.uploadFieldsInTopOfEB');
+            $this->view->assign('positionOfUploadFields', $positionOfUploadFieldsOnTop ? 'top' : 'bottom');
+            $this->view->assign('uploadFileForm', $uploadForm);
+            $this->view->assign('createFolderForm', $createFolder);
+
+            // Render the file or folderlist
+            if ($selectedFolder->checkActionPermission('read')) {
+                $this->view->assign('selectedFolder', $selectedFolder);
+                $parameters = $this->linkBrowser->getUrlParameters();
+                $allowedExtensions = isset($parameters['allowedExtensions']) ? $parameters['allowedExtensions'] : '';
+                $this->expandFolder($selectedFolder, $allowedExtensions);
+            }
         }
 
-        // Render the filelist if there is a folder selected
-        $files = '';
-        if ($selectedFolder) {
-            $parameters = $this->linkBrowser->getUrlParameters();
-            $allowedExtensions = isset($parameters['allowedExtensions']) ? $parameters['allowedExtensions'] : '';
-            $files = $this->expandFolder($selectedFolder, $allowedExtensions);
-        }
-        // Create folder tree:
-        $content .= '
-            <div class="row link-browser-section link-browser-filetree">
-                <div class="col-xs-6">
-                    <h3>' . $this->getLanguageService()->getLL('folderTree') . ':</h3>' .
-                    $tree . '
-                </div>
-                <div class="col-xs-6">
-                    ' . $files . '
-                </div>
-            </div>';
-
-        // Adding create folder + upload form if applicable
-        if (!$backendUser->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
-            $content .= $uploadForm;
-        }
-        $content .= $createFolder;
-        return $content;
+        return $this->view->render(ucfirst($this->mode));
     }
 
     /**
@@ -208,52 +157,23 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      */
     public function expandFolder(Folder $folder, $extensionList = '')
     {
-        if (!$folder->checkActionPermission('read')) {
-            return '';
-        }
-        $out = '<h3>' . htmlspecialchars($this->getTitle()) . ':</h3>';
-
         // Create header element; The folder from which files are listed.
-        $titleLen = (int)$this->getBackendUser()->uc['titleLen'];
-        $folderIcon = $this->iconFactory->getIconForResource($folder, Icon::SIZE_SMALL);
-        $folderIcon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen));
+        $folderIcon = $this->iconFactory->getIconForResource($folder, Icon::SIZE_SMALL)->render();
+        $this->view->assign('selectedFolderIcon', $folderIcon);
+        $this->view->assign('selectedFolderTitle', GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), (int)$this->getBackendUser()->uc['titleLen']));
+        $this->view->assign('currentIdentifier', !empty($this->linkParts) ? $this->linkParts['url'] : '');
 
-        $currentIdentifier = !empty($this->linkParts) ? $this->linkParts['url'] : '';
-        $selected = $currentIdentifier === $folder->getCombinedIdentifier() ? $this->additionalFolderClass : '';
-        $out .= '
-			<span class="' . $selected . '" title="' . htmlspecialchars($folder->getIdentifier()) . '">
-				' . $folderIcon . '
-			</span>
-			';
         // Get files from the folder:
-        $folderContent = $this->getFolderContent($folder, $extensionList);
-        if (!empty($folderContent)) {
-            $out .= '<ul class="list-tree">';
-            foreach ($folderContent as $fileOrFolderObject) {
-                list($fileIdentifier, $icon) = $this->renderItem($fileOrFolderObject);
-                $selected = $currentIdentifier === $fileIdentifier ? ' class="active"' : '';
-                $out .=
-                    '<li' . $selected . '>
-                        <span class="list-tree-group">
-                            <a href="#" class="t3js-fileLink list-tree-group" title="' . htmlspecialchars($fileOrFolderObject->getName()) . '" data-file="file:' . htmlspecialchars($fileIdentifier) . '">
-                                <span class="list-tree-icon">' . $icon . '</span>
-                                <span class="list-tree-title">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) . '</span>
-                            </a>
-                        </span>
-                    </li>';
+        $fileObjects = $this->getFolderContent($folder, $extensionList);
+        $itemsInSelectedFolder = [];
+        if (!empty($fileObjects)) {
+            foreach ($fileObjects as $fileOrFolderObject) {
+                $itemsInSelectedFolder[] = $this->renderItem($fileOrFolderObject);
             }
-            $out .= '</ul>';
         }
-        return $out;
+        $this->view->assign('itemsInSelectedFolder', $itemsInSelectedFolder);
     }
 
-    /**
-     * @return string
-     */
-    protected function getTitle()
-    {
-        return $this->getLanguageService()->getLL('files');
-    }
 
     /**
      * @param Folder $folder
@@ -285,13 +205,19 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         if (!$fileOrFolderObject instanceof File) {
             throw new \InvalidArgumentException('Expected File object, got "' . get_class($fileOrFolderObject) . '" object.', 1443651368);
         }
-        $fileIdentifier = $fileOrFolderObject->getUid();
         // Get size and icon:
-        $size = ' (' . GeneralUtility::formatSize($fileOrFolderObject->getSize()) . 'bytes)';
-        $icon = '<span title="' . htmlspecialchars($fileOrFolderObject->getName() . $size) . '">'
-            . $this->iconFactory->getIconForResource($fileOrFolderObject, Icon::SIZE_SMALL)
-            . '</span>';
-        return [$fileIdentifier, $icon];
+        $size = GeneralUtility::formatSize(
+            $fileOrFolderObject->getSize(),
+            $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:byteSizeUnits')
+        );
+
+        return [
+            'icon' => $this->iconFactory->getIconForResource($fileOrFolderObject, Icon::SIZE_SMALL)->render(),
+            'uid'  => $fileOrFolderObject->getUid(),
+            'size' => $size,
+            'name' => $fileOrFolderObject->getName(),
+            'title' => GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), (int)$this->getBackendUser()->uc['titleLen'])
+        ];
     }
 
     /**
@@ -335,5 +261,44 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     public function getScriptUrl()
     {
         return $this->linkBrowser->getScriptUrl();
+    }
+
+    /**
+     * Returns the currently selected folder, or th default upload folder
+     *
+     * @param string $folderIdentifier
+     * @return mixed the folder object or false if nothing was found
+     */
+    protected function getSelectedFolder($folderIdentifier = '') {
+        $selectedFolder = false;
+        if ($folderIdentifier) {
+            try {
+                $fileOrFolderObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($folderIdentifier);
+                if ($fileOrFolderObject instanceof Folder) {
+                    // It's a folder
+                    $selectedFolder = $fileOrFolderObject;
+                } elseif ($fileOrFolderObject instanceof FileInterface) {
+                    // It's a file
+                    try {
+                        $selectedFolder = $fileOrFolderObject->getParentFolder();
+                    } catch (\Exception $e) {
+                        // Accessing the parent folder failed for some reason. e.g. permissions
+                    }
+                }
+            } catch (\Exception $e) {
+                // No path is selected
+            }
+
+        }
+
+        // If no folder is selected, get the user's default upload folder
+        if (!$selectedFolder) {
+            try {
+                $selectedFolder = $this->getBackendUser()->getDefaultUploadFolder();
+            } catch (\Exception $e) {
+                // The configured default user folder does not exist
+            }
+        }
+        return $selectedFolder;
     }
 }

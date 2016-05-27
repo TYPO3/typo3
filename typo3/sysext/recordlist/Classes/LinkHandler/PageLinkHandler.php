@@ -124,111 +124,71 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $pageTree->ext_showPageId = (bool)$backendUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
         $pageTree->ext_showNavTitle = (bool)$backendUser->getTSConfigVal('options.pageTree.showNavTitle');
         $pageTree->addField('nav_title');
-        $tree = $pageTree->getBrowsableTree();
 
-        return '
-            <div class="link-browser-section link-browser-pagetree">
-                <div class="col-xs-6">
-                    <h3>' . $this->getLanguageService()->getLL('pageTree') . ':</h3>'
-                            . $this->getTemporaryTreeMountCancelNotice() . $tree . '
-                </div>
-                <div class="col-xs-6">' .
-                    $this->expandPage($this->expandPage) . '
-                </div>
-            </div>';
+        $this->view->assign('temporaryTreeMountCancelLink', $this->getTemporaryTreeMountCancelNotice());
+        $this->view->assign('tree', $pageTree->getBrowsableTree());
+        $this->getRecordsOnExpandedPage($this->expandPage);
+        return $this->view->render('Page');
     }
 
     /**
-     * This displays all content elements on a page and lets you create a link to the element.
+     * This adds all content elements on a page to the view and lets you create a link to the element.
      *
-     * @param int $expPageId Page uid to expand
+     * @param int $pageId Page uid to expand
      *
-     * @return string HTML output. Returns content only if the ->expandPage value is set (pointing to a page uid to show tt_content records from ...)
+     * @return void
      */
-    public function expandPage($expPageId)
+    protected function getRecordsOnExpandedPage($pageId)
     {
         // If there is an anchor value (content element reference) in the element reference, then force an ID to expand:
-        if (!$expPageId && isset($this->linkParts['anchor'])) {
+        if (!$pageId && isset($this->linkParts['anchor'])) {
             // Set to the current link page id.
-            $expPageId = $this->linkParts['pageid'];
+            $pageId = $this->linkParts['pageid'];
         }
         // Draw the record list IF there is a page id to expand:
-        if (!$expPageId || !MathUtility::canBeInterpretedAsInteger($expPageId) || !$this->getBackendUser()->isInWebMount($expPageId)) {
-            return '';
-        }
+        if ($pageId && MathUtility::canBeInterpretedAsInteger($pageId) && $this->getBackendUser()->isInWebMount($pageId)) {
+            $pageId = (int)$pageId;
 
-        // Set header:
-        $out = '<h3>' . $this->getLanguageService()->getLL('contentElements') . ':</h3>';
-        // Create header for listing, showing the page title/icon:
-        $mainPageRec = BackendUtility::getRecordWSOL('pages', $expPageId);
-        $db = $this->getDatabaseConnection();
-        $out .= '
-			<ul class="list-tree list-tree-root list-tree-root-clean">
-				<li class="list-tree-control-open">
-					<span class="list-tree-group">
-						<span class="list-tree-icon">' . $this->iconFactory->getIconForRecord('pages', $mainPageRec, Icon::SIZE_SMALL)->render() . '</span>
-						<span class="list-tree-title">' . htmlspecialchars(BackendUtility::getRecordTitle('pages', $mainPageRec, true)) . '</span>
-					</span>
-					<ul>
-			';
+            $activePageRecord = BackendUtility::getRecordWSOL('pages', $pageId);
+            $this->view->assign('expandActivePage', true);
 
-        // Look up tt_content elements from the expanded page:
-        $res = $db->exec_SELECTquery(
-            'uid,header,hidden,starttime,endtime,fe_group,CType,colPos,bodytext',
-            'tt_content',
-            'pid=' . (int)$expPageId . BackendUtility::deleteClause('tt_content')
-            . BackendUtility::versioningPlaceholderClause('tt_content'),
-            '',
-            'colPos,sorting'
-        );
-        // Traverse list of records:
-        $c = 0;
-        while ($row = $db->sql_fetch_assoc($res)) {
-            $c++;
-            $icon = $this->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render();
-            $selected = '';
-            if (!empty($this->linkParts) && (int)$this->linkParts['anchor'] === (int)$row['uid']) {
-                $selected = ' class="active"';
+            // Create header for listing, showing the page title/icon
+            $this->view->assign('activePage', $activePageRecord);
+            $this->view->assign('activePageTitle', BackendUtility::getRecordTitle('pages', $activePageRecord, true));
+            $this->view->assign('activePageIcon', $this->iconFactory->getIconForRecord('pages', $activePageRecord, Icon::SIZE_SMALL)->render());
+
+            // Look up tt_content elements from the expanded page
+            $contentElements = $this->getDatabaseConnection()->exec_SELECTgetRows(
+                'uid,header,hidden,starttime,endtime,fe_group,CType,colPos,bodytext',
+                'tt_content',
+                'pid=' . (int)$pageId . BackendUtility::deleteClause('tt_content')
+                . BackendUtility::versioningPlaceholderClause('tt_content'),
+                '',
+                'colPos,sorting'
+            );
+
+            // Enrich list of records
+            foreach ($contentElements as &$contentElement) {
+                $contentElement['isSelected'] = !empty($this->linkParts) && (int)$this->linkParts['anchor'] === (int)$contentElement['uid'];
+                $contentElement['icon'] = $this->iconFactory->getIconForRecord('tt_content', $contentElement, Icon::SIZE_SMALL)->render();
+                $contentElement['title'] = BackendUtility::getRecordTitle('tt_content', $contentElement, true);
             }
-            // Putting list element HTML together:
-            // Output of BackendUtility::getRecordTitle() is already hsc'ed
-            $out .= '
-				<li' . $selected . '>
-					<span class="list-tree-group">
-						<span class="list-tree-icon">
-							' . $icon . '
-						</span>
-						<span class="list-tree-title">
-							<a href="#" class="t3js-pageLink" data-id="' . (int)$expPageId . '" data-anchor="#' . (int)$row['uid'] . '">
-								' . BackendUtility::getRecordTitle('tt_content', $row, true) . '
-							</a>
-						</span>
-					</span>
-				</li>
-				';
+            $this->view->assign('contentElements', $contentElements);
         }
-        $out .= '
-					</ul>
-				</li>
-			</ul>
-			';
-
-        return $out;
     }
 
     /**
-     * Check if a temporary tree mount is set and return a cancel button
+     * Check if a temporary tree mount is set and return a cancel button link
      *
-     * @return string HTML code
+     * @return string the link to cancel the temporary tree mount
      */
     protected function getTemporaryTreeMountCancelNotice()
     {
-        if ((int)$this->getBackendUser()->getSessionData('pageTree_temporaryMountPoint') === 0) {
+        if ((int)$this->getBackendUser()->getSessionData('pageTree_temporaryMountPoint') > 0) {
+            return GeneralUtility::linkThisScript(['setTempDBmount' => 0]);
+        } else {
             return '';
         }
-        $link = '<p><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '" class="btn btn-primary">'
-            . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount')) . '</a></p>';
-        return $link;
     }
 
     /**
