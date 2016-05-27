@@ -3506,7 +3506,7 @@ class DataHandler
                             $this->copyRecord($table, $row['uid'], $theNewRootID);
                         }
                     } elseif ($this->enableLogging) {
-                        $this->log('pages', $uid, 5, 0, 1, 'An SQL error occurred: ' . $this->databaseConnection->sql_error());
+                        $this->log($table, $uid, 5, 0, 1, 'An SQL error occurred: ' . $this->databaseConnection->sql_error());
                     }
                 }
             }
