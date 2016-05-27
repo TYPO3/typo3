@@ -687,12 +687,9 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return bool TRUE if extension/filename is allowed
 	 */
 	protected function checkFileExtensionPermission($fileName) {
-		if (!$this->evaluatePermissions) {
-			return TRUE;
-		}
 		$fileName = $this->driver->sanitizeFileName($fileName);
 		$isAllowed = GeneralUtility::verifyFilenameAgainstDenyPattern($fileName);
-		if ($isAllowed) {
+		if ($isAllowed && $this->evaluatePermissions) {
 			$fileExtension = strtolower(PathUtility::pathinfo($fileName, PATHINFO_EXTENSION));
 			// Set up the permissions for the file extension
 			$fileExtensionPermissions = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace'];
@@ -719,7 +716,7 @@ class ResourceStorage implements ResourceStorageInterface {
 				return TRUE;
 			}
 		}
-		return FALSE;
+		return $isAllowed;
 	}
 
 	/**
