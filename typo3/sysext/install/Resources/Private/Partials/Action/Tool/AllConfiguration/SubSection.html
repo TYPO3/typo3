@@ -17,7 +17,7 @@
 					<strong>[{sectionName}][{item.key}] </strong>
 					<f:if condition="{item.type} == 'checkbox'">
 						<f:then>
-							= {item.value}
+							= <f:if condition="{item.value}"><f:then>true</f:then><f:else>false</f:else></f:if>
 						</f:then>
 						<f:else>
 							<f:if condition="{item.value}">
@@ -54,6 +54,18 @@
 									value="{item.value}"
 									name="install[values][{sectionName}][{item.key}]"
 									class="t3-install-form-input-text form-control"
+							/>
+						</div>
+					</f:if>
+
+					<f:if condition="{item.type} == 'number'">
+						<div class="form-group">
+							<span class="help-block">{item.description -> f:format.raw()}</span>
+							<input
+								type="number"
+								value="{item.value}"
+								name="install[values][{sectionName}][{item.key}]"
+								class="t3-install-form-input-text form-control"
 							/>
 						</div>
 					</f:if>

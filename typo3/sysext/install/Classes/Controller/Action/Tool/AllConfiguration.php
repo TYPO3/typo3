@@ -113,6 +113,9 @@ class AllConfiguration extends Action\AbstractAction
                         $itemData['type'] = 'checkbox';
                         $itemData['value'] = $value ? '1' : '0';
                         $itemData['checked'] = (bool)$value;
+                    } elseif (preg_match('/^(<.*?>)?integer/i', $description)) {
+                        $itemData['type'] = 'number';
+                        $itemData['value'] = (int)$value;
                     } else {
                         $itemData['type'] = 'input';
                         $itemData['value'] = $value;
@@ -146,30 +149,40 @@ class AllConfiguration extends Action\AbstractAction
                 if (is_array($GLOBALS['TYPO3_CONF_VARS'][$section])) {
                     foreach ($valueArray as $valueKey => $value) {
                         if (isset($GLOBALS['TYPO3_CONF_VARS'][$section][$valueKey])) {
+                            $oldValue = $GLOBALS['TYPO3_CONF_VARS'][$section][$valueKey];
                             $description = trim($commentArray[$section][$valueKey]);
+
                             if (preg_match('/^string \\(textarea\\)/i', $description)) {
                                 // Force Unix linebreaks in textareas
                                 $value = str_replace(CR, '', $value);
                                 // Preserve linebreaks
                                 $value = str_replace(LF, '\' . LF . \'', $value);
                             }
-                            if (preg_match('/^boolean/i', $description)) {
+
+                            if (preg_match('/^(<.*?>)?boolean/i', $description)) {
                                 // When submitting settings in the Install Tool, values that default to "FALSE" or "TRUE"
                                 // in EXT:core/Configuration/DefaultConfiguration.php will be sent as "0" resp. "1".
-                                // Therefore, reset the values to their boolean equivalent.
-                                if ($GLOBALS['TYPO3_CONF_VARS'][$section][$valueKey] === false && $value === '0') {
-                                    $value = false;
-                                } elseif ($GLOBALS['TYPO3_CONF_VARS'][$section][$valueKey] === true && $value === '1') {
-                                    $value = true;
-                                }
+                                $value = $value === '1';
+                                $valueHasChanged = (bool)$oldValue !== $value;
+                            } elseif (preg_match('/^(<.*?>)?integer/i', $description)) {
+                                // Cast integer values to integers (but only for values that can not contain a string as well)
+                                $value = (int)$value;
+                                $valueHasChanged = (int)$oldValue !== $value;
+                            } else {
+                                $valueHasChanged = (string)$oldValue !== (string)$value;
                             }
+
                             // Save if value changed
-                            if ((string)$GLOBALS['TYPO3_CONF_VARS'][$section][$valueKey] !== (string)$value) {
+                            if ($valueHasChanged) {
                                 $configurationPathValuePairs[$section . '/' . $valueKey] = $value;
                                 /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
                                 $status = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
                                 $status->setTitle('$GLOBALS[\'TYPO3_CONF_VARS\'][\'' . $section . '\'][\'' . $valueKey . '\']');
-                                $status->setMessage('New value = ' . $value);
+                                if (is_bool($value)) {
+                                    $status->setMessage('New value = ' . ($value ? 'true' : 'false'));
+                                } else {
+                                    $status->setMessage('New value = ' . $value);
+                                }
                                 $statusObjects[] = $status;
                             }
                         }
