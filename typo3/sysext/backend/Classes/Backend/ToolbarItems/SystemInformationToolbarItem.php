@@ -425,16 +425,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Returns DatabaseConnection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
-    /**
      * Returns current PageRenderer
      *
      * @return PageRenderer
