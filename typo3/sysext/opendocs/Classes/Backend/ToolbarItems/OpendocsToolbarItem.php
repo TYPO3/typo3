@@ -300,13 +300,4 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * Return DatabaseConnection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
 }
