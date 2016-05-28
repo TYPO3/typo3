@@ -271,7 +271,7 @@ class PagePositionMap
      */
     public function insertlabel()
     {
-        return $this->getLanguageService()->getLL($this->l_insertNewPageHere, 1);
+        return htmlspecialchars($this->getLanguageService()->getLL($this->l_insertNewPageHere));
     }
 
     /**
@@ -511,7 +511,7 @@ class PagePositionMap
             $uid = '';
         }
         $cc = hexdec(substr(md5($uid . '-' . $vv . '-' . $kk), 0, 4));
-        return '<a href="#" onclick="' . htmlspecialchars($this->onClickInsertRecord($row, $vv, $moveUid, $pid, $this->cur_sys_language)) . '">' . '<i class="t3-icon fa fa-long-arrow-left" name="mImgEnd' . $cc . '" title="' . $this->getLanguageService()->getLL($this->l_insertNewRecordHere, 1) . '"></i></a>';
+        return '<a href="#" onclick="' . htmlspecialchars($this->onClickInsertRecord($row, $vv, $moveUid, $pid, $this->cur_sys_language)) . '">' . '<i class="t3-icon fa fa-long-arrow-left" name="mImgEnd' . $cc . '" title="' . htmlspecialchars($this->getLanguageService()->getLL($this->l_insertNewRecordHere)) . '"></i></a>';
     }
 
     /**
