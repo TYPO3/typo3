@@ -19,6 +19,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -92,10 +93,10 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         // logoff() call the static factory that has a dependency to a valid BE_USER object. Mock this away
         $GLOBALS['BE_USER'] = $this->getMock(BackendUserAuthentication::class, array(), array(), '', false);
         $GLOBALS['BE_USER']->user = array('uid' => $this->getUniqueId());
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class, array(), array(), '', false);
 
-        $subject = $this->getAccessibleMock(BackendUserAuthentication::class, array('dummy'), array(), '', false);
-        $subject->_set('db', $GLOBALS['TYPO3_DB']);
+        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
+        $subject = $this->getMock(BackendUserAuthentication::class, array('dummy'), array(), '', false);
         $subject->logoff();
     }
 

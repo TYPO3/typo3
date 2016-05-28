@@ -846,7 +846,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
      *   and where the stage is not preventing records
      *
      * @param string $table Table of record
-     * @param array $recData Integer (record uid) or array where fields are at least: pid, t3ver_wsid, t3ver_stage (if versioningWS is set)
+     * @param array|int $recData Integer (record uid) or array where fields are at least: pid, t3ver_wsid, t3ver_stage (if versioningWS is set)
      * @return string String error code, telling the failure state. FALSE=All ok
      */
     public function workspaceCannotEditRecord($table, $recData)
@@ -903,7 +903,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
      * Evaluates if a user is allowed to edit the offline version
      *
      * @param string $table Table of record
-     * @param array $recData Integer (record uid) or array where fields are at least: pid, t3ver_wsid, t3ver_stage (if versioningWS is set)
+     * @param array|int $recData Integer (record uid) or array where fields are at least: pid, t3ver_wsid, t3ver_stage (if versioningWS is set)
      * @return string String error code, telling the failure state. FALSE=All ok
      * @see workspaceCannotEditRecord()
      */

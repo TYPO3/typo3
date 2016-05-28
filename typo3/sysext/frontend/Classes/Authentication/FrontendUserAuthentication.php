@@ -399,9 +399,10 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     public function fetchSessionData()
     {
+        $db = $this->getDatabaseConnection();
         // Gets SesData if any AND if not already selected by session fixation check in ->isExistingSessionRecord()
         if ($this->id && empty($this->sesData)) {
-            $statement = $this->db->prepare_SELECTquery('*', 'fe_session_data', 'hash = :hash');
+            $statement = $db->prepare_SELECTquery('*', 'fe_session_data', 'hash = :hash');
             $statement->execute(array(':hash' => $this->id));
             if (($sesDataRow = $statement->fetch()) !== false) {
                 $this->sesData = unserialize($sesDataRow['content']);
@@ -426,6 +427,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         if ($this->userData_change) {
             $this->writeUC('');
         }
+        $db = $this->getDatabaseConnection();
         if ($this->sesData_change && $this->id) {
             if (empty($this->sesData)) {
                 // Remove session-data
@@ -442,7 +444,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
                     'tstamp' => $GLOBALS['EXEC_TIME']
                 );
                 $this->sessionDataTimestamp = $GLOBALS['EXEC_TIME'];
-                $this->db->exec_INSERTquery('fe_session_data', $insertFields);
+                $db->exec_INSERTquery('fe_session_data', $insertFields);
                 // Now set the cookie (= fix the session)
                 $this->setSessionCookie();
             } else {
@@ -452,7 +454,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
                     'tstamp' => $GLOBALS['EXEC_TIME']
                 );
                 $this->sessionDataTimestamp = $GLOBALS['EXEC_TIME'];
-                $this->db->exec_UPDATEquery('fe_session_data', 'hash=' . $this->db->fullQuoteStr($this->id, 'fe_session_data'), $updateFields);
+                $db->exec_UPDATEquery('fe_session_data', 'hash=' . $db->fullQuoteStr($this->id, 'fe_session_data'), $updateFields);
             }
         }
     }
@@ -464,8 +466,9 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     public function removeSessionData()
     {
+        $db = $this->getDatabaseConnection();
         $this->sessionDataTimestamp = null;
-        $this->db->exec_DELETEquery('fe_session_data', 'hash=' . $this->db->fullQuoteStr($this->id, 'fe_session_data'));
+        $db->exec_DELETEquery('fe_session_data', 'hash=' . $db->fullQuoteStr($this->id, 'fe_session_data'));
     }
 
     /**
@@ -491,12 +494,13 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     protected function regenerateSessionId()
     {
+        $db = $this->getDatabaseConnection();
         $oldSessionId = $this->id;
         parent::regenerateSessionId();
         // Update session data with new ID
-        $this->db->exec_UPDATEquery(
+        $db->exec_UPDATEquery(
             'fe_session_data',
-            'hash=' . $this->db->fullQuoteStr($oldSessionId, 'fe_session_data'),
+            'hash=' . $db->fullQuoteStr($oldSessionId, 'fe_session_data'),
             array('hash' => $this->id)
         );
 
@@ -513,7 +517,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     public function gc()
     {
         $timeoutTimeStamp = (int)($GLOBALS['EXEC_TIME'] - $this->sessionDataLifetime);
-        $this->db->exec_DELETEquery('fe_session_data', 'tstamp < ' . $timeoutTimeStamp);
+        $this->getDatabaseConnection()->exec_DELETEquery('fe_session_data', 'tstamp < ' . $timeoutTimeStamp);
         parent::gc();
     }
 
@@ -658,7 +662,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         $count = parent::isExistingSessionRecord($id);
         // Check if there are any fe_session_data records for the session ID the client claims to have
         if ($count == false) {
-            $statement = $this->db->prepare_SELECTquery('content,tstamp', 'fe_session_data', 'hash = :hash');
+            $statement = $this->getDatabaseConnection()->prepare_SELECTquery('content,tstamp', 'fe_session_data', 'hash = :hash');
             $res = $statement->execute(array(':hash' => $id));
             if ($res !== false) {
                 if ($sesDataRow = $statement->fetch()) {

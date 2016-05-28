@@ -341,16 +341,10 @@ abstract class AbstractUserAuthentication
     public $uc;
 
     /**
-     * @var DatabaseConnection
-     */
-    protected $db = null;
-
-    /**
      * Initialize some important variables
      */
     public function __construct()
     {
-        $this->db = $this->getDatabaseConnection();
     }
 
     /**
@@ -911,7 +905,6 @@ abstract class AbstractUserAuthentication
      */
     public function fetchUserSession($skipSessionUpdate = false)
     {
-        $user = false;
         if ($this->writeDevLog) {
             GeneralUtility::devLog('Fetch session ses_id = ' . $this->id, AbstractUserAuthentication::class);
         }
