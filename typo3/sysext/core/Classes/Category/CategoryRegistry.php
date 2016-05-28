@@ -279,7 +279,7 @@ class CategoryRegistry implements SingletonInterface
             }
 
             $typesList = '';
-            if (!empty($options['typesList'])) {
+            if (isset($options['typesList']) && $options['typesList'] !== '') {
                 $typesList = $options['typesList'];
             }
 
