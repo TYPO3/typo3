@@ -192,7 +192,6 @@ class LiveSearch
     protected function getRecordArray($tableName, $where, $orderBy, $limit)
     {
         $collect = array();
-        $isFirst = true;
         $queryParts = array(
             'SELECT' => '*',
             'FROM' => $tableName,
@@ -201,7 +200,6 @@ class LiveSearch
             'LIMIT' => $limit
         );
         $result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
-        $dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
             $title = 'id=' . $row['uid'] . ', pid=' . $row['pid'];
@@ -213,7 +211,6 @@ class LiveSearch
                 'title' => htmlspecialchars(BackendUtility::getRecordTitle($tableName, $row)),
                 'editLink' => htmlspecialchars($this->getEditLink($tableName, $row))
             );
-            $isFirst = false;
         }
         $GLOBALS['TYPO3_DB']->sql_free_result($result);
         return $collect;
