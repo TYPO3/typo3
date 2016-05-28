@@ -605,8 +605,17 @@ abstract class AbstractUserAuthentication
             }
             $this->logoff();
         }
+        // Determine whether we need to skip session update.
+        // This is used mainly for checking session timeout in advance without refreshing the current session's timeout.
+        $skipSessionUpdate = (bool)GeneralUtility::_GP('skipSessionUpdate');
+        $haveSession = false;
+        if (!$this->newSessionID) {
+            // Read user session
+            $authInfo['userSession'] = $this->fetchUserSession($skipSessionUpdate);
+            $haveSession = is_array($authInfo['userSession']);
+        }
         // Active login (eg. with login form)
-        if ($loginData['status'] === 'login') {
+        if (!$haveSession && $loginData['status'] === 'login') {
             $activeLogin = true;
             if ($this->writeDevLog) {
                 GeneralUtility::devLog('Active login (eg. with login form)', AbstractUserAuthentication::class);
@@ -627,17 +636,6 @@ abstract class AbstractUserAuthentication
             if (strtoupper(substr($loginData['uname'], 0, 5)) == '_CLI_' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
                 throw new \RuntimeException('TYPO3 Fatal Error: You have tried to login using a CLI user. Access prohibited!', 1270853931);
             }
-        }
-        // The following code makes auto-login possible (if configured). No submitted data needed
-        // Determine whether we need to skip session update.
-        // This is used mainly for checking session timeout without
-        // refreshing the session itself while checking.
-        $skipSessionUpdate = (bool)GeneralUtility::_GP('skipSessionUpdate');
-        $haveSession = false;
-        if (!$this->newSessionID) {
-            // Read user session
-            $authInfo['userSession'] = $this->fetchUserSession($skipSessionUpdate);
-            $haveSession = is_array($authInfo['userSession']);
         }
         if ($this->writeDevLog) {
             if ($haveSession) {
