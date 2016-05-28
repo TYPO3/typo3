@@ -200,7 +200,7 @@ class AjaxRequestHandler implements RequestHandlerInterface
         } elseif (empty($ajaxScript)) {
             $ajaxObj->setError('No backend function registered for ajaxID "' . $ajaxID . '".');
         } elseif ($csrfTokenCheck && !$this->isValidRequest($request)) {
-            $ajaxObj->setError('Invalid CSRF token detected for ajaxID "' . $ajaxID . '"!');
+            $ajaxObj->setError('Invalid CSRF token detected for ajaxID "' . $ajaxID . '", reload the backend of TYPO3');
         } else {
             $success = GeneralUtility::callUserFunction($ajaxScript, $ajaxParams, $ajaxObj, false, true);
             if ($success === false) {
