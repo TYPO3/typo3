@@ -258,7 +258,7 @@ class FormResultCompiler
         // support placeholders for IE9 and lower
         $clientInfo = GeneralUtility::clientInfo();
         if ($clientInfo['BROWSER'] == 'msie' && $clientInfo['VERSION'] <= 9) {
-            $this->loadJavascriptLib('sysext/core/Resources/Public/JavaScript/Contrib/placeholders.jquery.min.js');
+            $this->loadJavascriptLib('sysext/core/Resources/Public/JavaScript/Contrib/placeholders.min.js');
         }
 
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');

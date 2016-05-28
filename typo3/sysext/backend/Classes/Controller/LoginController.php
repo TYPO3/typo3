@@ -153,7 +153,7 @@ class LoginController
         // support placeholders for IE9 and lower
         $clientInfo = GeneralUtility::clientInfo();
         if ($clientInfo['BROWSER'] === 'msie' && $clientInfo['VERSION'] <= 9) {
-            $pageRenderer->addJsLibrary('placeholders', 'sysext/core/Resources/Public/JavaScript/Contrib/placeholders.jquery.min.js');
+            $pageRenderer->addJsLibrary('placeholders', 'sysext/core/Resources/Public/JavaScript/Contrib/placeholders.min.js');
         }
 
         // Checking, if we should make a redirect.
