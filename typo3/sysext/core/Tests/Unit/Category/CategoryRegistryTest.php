@@ -46,6 +46,9 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'ctrl' => array(),
                 'columns' => array(),
                 'types' => array(
+                    '0' => array(
+                        'showitem' => ''
+                    ),
                     '1' => array(
                         'showitem' => ''
                     )
@@ -264,6 +267,16 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         foreach ($GLOBALS['TCA'][$this->tables['first']]['types'] as $typeConfig) {
             $this->assertNotContains('--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
         }
+    }
+
+    /**
+     * @test
+     */
+    public function tabIsOnlyAddedForTypesThatAreSpecifiedInTypesList()
+    {
+        $this->subject->add('text_extension_a', $this->tables['first'], 'categories', array('typesList' => '0'));
+        $this->subject->applyTcaForPreRegisteredTables();
+        $this->assertSame('', $GLOBALS['TCA'][$this->tables['first']]['types'][1]['showitem']);
     }
 
     /**
