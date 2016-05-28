@@ -56,6 +56,7 @@ class FormInlineAjaxController
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
         $inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
+        $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
 
         // Parent, this table embeds the child table
         $parent = $inlineStackProcessor->getStructureLevel(-1);
@@ -125,6 +126,10 @@ class FormInlineAjaxController
             'inlineParentTableName' => $parent['table'],
             'inlineParentFieldName' => $parent['field'],
             'inlineParentConfig' => $parentConfig,
+            // Fallback to $parentData is probably not needed here.
+            'inlineTopMostParentUid' => $parentData['inlineTopMostParentUid'] ?: $inlineTopMostParent['uid'],
+            'inlineTopMostParentTableName' => $parentData['inlineTopMostParentTableName'] ?: $inlineTopMostParent['table'],
+            'inlineTopMostParentFieldName' => $parentData['inlineTopMostParentFieldName'] ?: $inlineTopMostParent['field'],
         ];
         if ($childChildUid) {
             $formDataCompilerInput['inlineChildChildUid'] = $childChildUid;
