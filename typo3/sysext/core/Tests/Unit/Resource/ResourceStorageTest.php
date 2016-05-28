@@ -172,7 +172,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 */
 	public function fileExtensionPermissionIsWorkingCorrectly($fileName, array $configuration, $evaluatePermissions, $isAllowed) {
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace'] = $configuration;
-		$driverMock = $this->getMockForAbstractClass(AbstractDriver::class, array(), '', false);
+		$driverMock = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver', array(), '', false);
 		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('dummy'), array($driverMock, array()));
 		$subject->_set('evaluatePermissions', $evaluatePermissions);
 		$this->assertSame($isAllowed, $subject->_call('checkFileExtensionPermission', $fileName));
