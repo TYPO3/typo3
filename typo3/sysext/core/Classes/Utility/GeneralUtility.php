@@ -3690,7 +3690,7 @@ class GeneralUtility
      * Calls a user-defined function/method in class
      * Such a function/method should look like this: "function proc(&$params, &$ref) {...}"
      *
-     * @param string $funcName Function/Method reference or Closure, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
+     * @param string $funcName Function/Method reference or Closure, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". However, using file references has been marked as deprecated and should be avoided, instead use the autoloading mechanism in place directly. Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
      * @param mixed $params Parameters to be pass along (typically an array) (REFERENCE!)
      * @param mixed $ref Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
      * @param string $_ Not used anymore since 6.0
@@ -3714,6 +3714,10 @@ class GeneralUtility
         }
         // Check file-reference prefix; if found, require_once() the file (should be library of code)
         if (strpos($funcName, ':') !== false) {
+            // @deprecated since TYPO3 v8, will be removed in v9
+            self::deprecationLog('Using file references to resolve "' . $funcName . '" has been deprecated in TYPO3 v8 '
+                . 'when calling GeneralUtility::callUserFunction(), make sure the class is available via the class loader. '
+                . 'This functionality will be removed in TYPO3 v9.');
             list($file, $funcRef) = self::revExplode(':', $funcName, 2);
             $requireFile = self::getFileAbsFileName($file);
             if ($requireFile) {
@@ -3794,14 +3798,24 @@ class GeneralUtility
      * Creates and returns reference to a user defined object.
      * This function can return an object reference if you like.
      *
-     * @param string $classRef Class reference, '[file-reference":"]class-name'. You can prefix the class name with "[file-reference]:" and \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:tx_realurl".
-     * @return object The instance of the class asked for. Instance is created with \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance
+     * @param string $classRef Class reference, '[file-reference":"]class-name'.
+     *                         You can prefix the class name with "[file-reference]:" and
+     *                         GeneralUtility::getFileAbsFileName() will then be used to resolve the filename and
+     *                         subsequently include it by "require_once()" which means you don't have to worry about
+     *                         including the class file either! Example: "EXT:realurl/class.tx_realurl.php:tx_realurl".
+     *                         However, the file reference part is marked as deprecated as the class loading mechanism
+     *                         via composer or the autoloading part of TYPO3 should be used instead.
+     * @return object The instance of the class asked for. Instance is created with GeneralUtility::makeInstance
      * @see callUserFunction()
      */
     public static function getUserObj($classRef)
     {
         // Check file-reference prefix; if found, require_once() the file (should be library of code)
         if (strpos($classRef, ':') !== false) {
+            // @deprecated since TYPO3 v8, will be removed in v9
+            self::deprecationLog('Using file references to resolve "' . $classRef . '" has been deprecated in TYPO3 v8 '
+                . 'when calling GeneralUtility::getUserObj(), make sure the class is available via the class loader. '
+                . 'This functionality will be removed in TYPO3 v9.');
             list($file, $class) = self::revExplode(':', $classRef, 2);
             $requireFile = self::getFileAbsFileName($file);
             if ($requireFile) {

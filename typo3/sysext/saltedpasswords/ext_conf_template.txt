@@ -1,19 +1,19 @@
-# cat=Basic/enable; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationFrontend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationFE
+# cat=Basic/enable; type=user[TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationFrontend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationFE
 checkConfigurationFE=0
 
-# cat=Basic/enable; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationBackend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationBE
+# cat=Basic/enable; type=user[TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationBackend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationBE
 checkConfigurationBE=0
 
 # cat=Basic/enable; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.FE.enabled
 FE.enabled = 1
 
-# cat=Basic/enable; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->buildHashMethodSelectorFE]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.FE.saltedPWHashingMethod
+# cat=Basic/enable; type=user[TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->buildHashMethodSelectorFE]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.FE.saltedPWHashingMethod
 FE.saltedPWHashingMethod = tx_saltedpasswords_salts_phpass
 
-# cat=Basic/enable; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->buildHashMethodSelectorBE]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.BE.saltedPWHashingMethod
+# cat=Basic/enable; type=user[TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->buildHashMethodSelectorBE]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.BE.saltedPWHashingMethod
 BE.saltedPWHashingMethod = tx_saltedpasswords_salts_phpass
 
-# cat=Frontend; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationFrontend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationFE2
+# cat=Frontend; type=user[TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationFrontend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationFE2
 checkConfigurationFE2=0
 
 # cat=Frontend; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.FE.forceSalted
@@ -25,7 +25,7 @@ FE.onlyAuthService = 0
 # cat=Frontend; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.FE.updatePasswd
 FE.updatePasswd = 1
 
-# cat=Backend; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationBackend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationBE2
+# cat=Backend; type=user[TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationBackend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationBE2
 checkConfigurationBE2=0
 
 # cat=Backend; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.BE.forceSalted
