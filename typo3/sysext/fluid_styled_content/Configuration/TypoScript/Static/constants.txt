@@ -37,9 +37,9 @@ styles.content {
 		# cat=content/cTextmedia/i3; type=int+; label= Media element border, padding: Padding left and right to the media element, around the border
 		borderPadding = 0
 
-		# cat=content/cTextmedia/c1; type=int+; label= Click-enlarge Media Width: This specifies the width of the enlarged media element when click-enlarge is enabled
+		# cat=content/cTextmedia/c1; type=string; label= Click-enlarge Media Width: This specifies the width of the enlarged media element when click-enlarge is enabled
 		linkWrap.width = 800m
-		# cat=content/cTextmedia/c2; type=int+; label= Click-enlarge Media Height: This specifies the height of the enlarged media element when click-enlarge is enabled
+		# cat=content/cTextmedia/c2; type=string; label= Click-enlarge Media Height: This specifies the height of the enlarged media element when click-enlarge is enabled
 		linkWrap.height = 600m
 		# cat=content/cTextmedia/c3; type=boolean; label= Advanced, New window: If set, every click-enlarged media element will open in it's own popup window and not the current popup window (which may have a wrong size for the media element to fit in)
 		linkWrap.newWindow = 0
