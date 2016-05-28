@@ -1,6 +1,6 @@
 <form action="{moduleName}" method="post" id="InfoModuleController" name="webinfoForm" class="form-inline form-inline-spaced">
     <f:if condition="{versionSelector}">
-        <div>{versionSelector}</div>
+        <div><f:format.raw>{versionSelector}</f:format.raw></div>
     </f:if>
     <f:format.raw>{functionMenuModuleContent}</f:format.raw>
 </form>
