@@ -111,15 +111,12 @@
       }
 
       // Submit the form again but now with encrypted values
-      var form = document.createElement('form');
-      if (form.submit.call) {
-        form.submit.call(rsaEncryption.form);
-      } else {
-        for (var j = rsaEncryption.form.elements.length; j--;) {
-          var submitField = rsaEncryption.form.elements[j];
-          if (submitField.nodeName.toLowerCase() === 'input' && submitField.type === "submit") {
-            submitField.click();
-          }
+      for (var j = rsaEncryption.form.elements.length; j--;) {
+        var submitField = rsaEncryption.form.elements[j];
+        if ((['input', 'button'].indexOf(submitField.nodeName.toLowerCase()) > -1)
+          && (['submit', 'image', 'button'].indexOf(submitField.type.toLowerCase()) > -1)
+        ) {
+          submitField.click();
         }
       }
     };
