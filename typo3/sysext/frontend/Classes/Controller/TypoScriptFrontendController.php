@@ -3770,6 +3770,7 @@ class TypoScriptFrontendController
     public function encryptEmail($string, $back = false)
     {
         $out = '';
+        // obfuscates using the decimal HTML entity references for each character
         if ($this->spamProtectEmailAddresses === 'ascii') {
             $stringLength = strlen($string);
             for ($a = 0; $a < $stringLength; $a++) {
