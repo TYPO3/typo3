@@ -35,7 +35,7 @@ styles.content.imgtext {
   layoutKey = default
 
 
-    # cat=content/cImage/c1; type=int+; label= Click-enlarge Image Width: This specifies the width of the enlarged image when click-enlarge is enabled.
+    # cat=content/cImage/c1; type=string; label= Click-enlarge Image Width: This specifies the width of the enlarged image when click-enlarge is enabled.
   linkWrap.width = 800m
   linkWrap.height = 600m
   linkWrap.effects =
