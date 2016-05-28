@@ -214,7 +214,7 @@ class LanguageService
      * Mostly used from modules with only one LOCAL_LANG file loaded into the global space.
      *
      * @param string $index Label key
-     * @param bool $hsc If set, the return value is htmlspecialchar'ed
+     * @param bool $hsc DEPRECATED If set, the return value is htmlspecialchar'ed
      * @return string
      */
     public function getLL($index, $hsc = false)
@@ -227,11 +227,18 @@ class LanguageService
      *
      * @param string $index Label key
      * @param array $localLanguage $LOCAL_LANG array to get label key from
-     * @param bool $hsc If set, the return value is htmlspecialchar'ed
+     * @param bool $hsc DEPRECATED If set, the return value is htmlspecialchar'ed
      * @return string
      */
     public function getLLL($index, $localLanguage, $hsc = false)
     {
+        // @deprecated since TYPO3 v8, will be removed in TYPO3 v9
+        if ($hsc) {
+            GeneralUtility::deprecationLog(
+                'Calling getLLL() with argument \'hsc\' has been deprecated.'
+            );
+        }
+
         // Get Local Language. Special handling for all extensions that
         // read PHP LL files and pass arrays here directly.
         if (isset($localLanguage[$this->lang][$index])) {
@@ -259,11 +266,18 @@ class LanguageService
      * Refer to 'Inside TYPO3' for more details
      *
      * @param string $input Label key/reference
-     * @param bool $hsc If set, the return value is htmlspecialchar'ed
+     * @param bool $hsc DEPRECATED If set, the return value is htmlspecialchar'ed
      * @return string
      */
     public function sL($input, $hsc = false)
     {
+        // @deprecated since TYPO3 v8, will be removed in TYPO3 v9
+        if ($hsc) {
+            GeneralUtility::deprecationLog(
+                'Calling sL() with argument \'hsc\' has been deprecated.'
+            );
+        }
+
         $identifier = $input . '_' . (int)$hsc . '_' . (int)$this->debugKey;
         if (isset($this->LL_labels_cache[$this->lang][$identifier])) {
             return $this->LL_labels_cache[$this->lang][$identifier];
