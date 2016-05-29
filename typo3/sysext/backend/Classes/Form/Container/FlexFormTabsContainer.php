@@ -62,8 +62,10 @@ class FlexFormTabsContainer extends AbstractContainer
             $dsPointerFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['ds_pointerField'], true);
             $parameterArray['_cshKey'] = $table . '.' . $fieldName;
             foreach ($dsPointerFields as $key) {
-                if ((string)$row[$key] !== '') {
+                if (is_string($row[$key]) && $row[$key] !== '') {
                     $parameterArray['_cshKey'] .= '.' . $row[$key];
+                } elseif (is_array($row[$key]) && isset($row[$key][0]) && is_string($row[$key][0]) && $row[$key][0] !== '') {
+                    $parameterArray['_cshKey'] .= '.' . $row[$key][0];
                 }
             }
 
