@@ -7,7 +7,7 @@
 				id="t3-install-tool-configuration-context-custom"
 				name="install[values][{feature.name}][enable]"
 				value="{preset.name}"
-				{f:if(condition:'{preset.isActive}', then:'checked="checked"')}
+				{f:if(condition: preset.isActive, then:'checked="checked"')}
 			/>
 			<label
 				for="t3-install-tool-configuration-context-custom"
@@ -16,7 +16,7 @@
 				<strong>
 					Custom configuration
 				</strong>
-				{f:if(condition:'{preset.isActive}', then:' [Active]')}
+				{f:if(condition: preset.isActive, then:' [Active]')}
 			</label>
 		</div>
 	</div>
@@ -27,10 +27,11 @@
 
 		<f:for each="{preset.configurationValues}" as="configurationValue" key="configurationKey">
 			<div class="form-group">
-				<label class="col-sm-4 control-label">{configurationKey}</label>
+				<label class="col-sm-4 control-label" for="{feature.name}{preset.name}{configurationKey}">{configurationKey}</label>
 				<div class="col-sm-8">
 					<input
-						type="input"
+						id="{feature.name}{preset.name}{configurationKey}"
+						type="text"
 						name="install[values][{feature.name}][{preset.name}][{configurationKey}]"
 						value="{configurationValue}"
 						class="form-control t3js-custom-preset"
