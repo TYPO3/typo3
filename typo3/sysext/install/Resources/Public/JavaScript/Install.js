@@ -675,4 +675,9 @@ $(function() {
 			TYPO3.Install.Scrolling.handleButtonScrolling();
 		}, 50);
 	});
+
+	// automatically select the custom preset if a value in one of its input fields is changed
+	$('.t3js-custom-preset').on('change', function () {
+		$('#' + $(this).data('radio')).prop('checked', true);
+	});
 });
