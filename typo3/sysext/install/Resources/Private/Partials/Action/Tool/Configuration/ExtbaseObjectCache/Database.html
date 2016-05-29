@@ -7,7 +7,7 @@
 				id="t3-install-tool-configuration-extbaseobjectcache-database"
 				name="install[values][{feature.name}][enable]"
 				value="{preset.name}"
-				{f:if(condition:'{preset.isActive}', then:'checked="checked"')}
+				{f:if(condition: preset.isActive, then:'checked="checked"')}
 			/>
 			<label
 				for="t3-install-tool-configuration-extbaseobjectcache-database"
@@ -16,7 +16,7 @@
 				<strong>
 					Database cache backend
 				</strong>
-				{f:if(condition:'{preset.isActive}', then:' [Active]')}
+				{f:if(condition: preset.isActive, then:' [Active]')}
 			</label>
 		</div>
 	</div>
