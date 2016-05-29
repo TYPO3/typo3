@@ -4,13 +4,13 @@
 			<input
 				type="radio"
 				class="t3-install-tool-configuration-radio"
-				id="t3-install-tool-configuration-charset-custom"
+				id="t3-install-tool-configuration-mail-custom"
 				name="install[values][{feature.name}][enable]"
 				value="{preset.name}"
 				{f:if(condition:'{preset.isActive}', then:'checked="checked"')}
 			/>
 			<label
-				for="t3-install-tool-configuration-charset-custom"
+				for="t3-install-tool-configuration-mail-custom"
 				class="t3-install-tool-configuration-radio-label"
 				>
 				<strong>
@@ -33,7 +33,8 @@
 						type="input"
 						name="install[values][{feature.name}][{preset.name}][{configurationKey}]"
 						value="{configurationValue}"
-						class="form-control"
+						class="form-control t3js-custom-preset"
+						data-radio="t3-install-tool-configuration-mail-custom"
 						/>
 				</div>
 			</div>
