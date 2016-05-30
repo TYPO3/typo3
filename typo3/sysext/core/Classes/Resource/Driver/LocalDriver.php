@@ -575,11 +575,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             $fullPath = $this->getAbsoluteBasePath() . $entryArray['identifier'];
             switch ($sort) {
                 case 'size':
+                    $sortingKey = '0';
                     if ($entryArray['type'] === 'file') {
                         $sortingKey = $this->getSpecificFileInformation($fullPath, $dir, 'size');
-                    } else {
-                        $sortingKey = '0';
                     }
+                    // Add a character for a natural order sorting
+                    $sortingKey .= 's';
                     break;
                 case 'rw':
                     $perms = $this->getPermissions($entryArray['identifier']);
@@ -590,11 +591,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
                     $sortingKey = pathinfo($entryArray['name'], PATHINFO_EXTENSION);
                     break;
                 case 'tstamp':
+                    $sortingKey = '0';
                     if ($entryArray['type'] === 'file') {
                         $sortingKey = $this->getSpecificFileInformation($fullPath, $dir, 'mtime');
-                    } else {
-                        $sortingKey = '0';
                     }
+                    // Add a character for a natural order sorting
+                    $sortingKey .= 't';
                     break;
                 case 'name':
                 case 'file':
