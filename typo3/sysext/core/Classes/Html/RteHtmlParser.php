@@ -459,7 +459,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                         }
                     }
                     // Remove width and height from style attribute
-                    $attribArray['style'] = preg_replace('/((?:^|)\\s*(?:width|height)\\s*:[^;]*(?:$|;))/si', '', $attribArray['style']);
+                    $attribArray['style'] = preg_replace('/(?:^|[^-])(\\s*(?:width|height)\\s*:[^;]*(?:$|;))/si', '', $attribArray['style']);
                     // Must have alt attribute
                     if (!isset($attribArray['alt'])) {
                         $attribArray['alt'] = '';
