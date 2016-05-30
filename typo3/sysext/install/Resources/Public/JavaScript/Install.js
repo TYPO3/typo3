@@ -677,7 +677,7 @@ $(function() {
 	});
 
 	// automatically select the custom preset if a value in one of its input fields is changed
-	$('.t3js-custom-preset').on('change', function () {
+	$('.t3js-custom-preset').on('input', function() {
 		$('#' + $(this).data('radio')).prop('checked', true);
 	});
 });
