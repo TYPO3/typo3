@@ -50,6 +50,8 @@ notifications:
 
 before_script:
   - phpenv config-rm xdebug.ini
+  - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - if [ "$GITHUB_COMPOSER_AUTH" ]; then composer config -g github-oauth.github.com $GITHUB_COMPOSER_AUTH; fi
   - composer install
   - typo3/sysext/core/Build/Configuration/TravisNginxFpm/ConfigureStartNginxFpm.sh
