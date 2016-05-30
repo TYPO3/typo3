@@ -1,5 +1,7 @@
 <h1>{f:translate(key: 'LLL:EXT:info_pagetsconfig/Resources/Private/Language/locallang.xlf:tsconf_title')}</h1>
-<span class="btn btn-default btn-sm"><f:format.raw>{csh}</f:format.raw></span>
+<f:if condition="{csh}">
+    <span class="btn btn-default btn-sm"><f:format.raw>{csh}</f:format.raw></span>
+</f:if>
 <f:render partial="Menu" arguments="{_all}" />
 <f:if condition="{tsconfParts99}">
     <f:then>
