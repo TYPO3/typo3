@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -29,25 +30,18 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 
     /**
      * Set up
-     *
-     * @return void
      */
     protected function setUp()
     {
-        // Package manager is mocked in some tests. Backup the original one here to re-inject it to
-        // ExtensionManagementUtility in tearDown() again. makeInstance() is allowed to be used here
-        // since the PackageManager is registered as singleton by bootstrap.
-        $this->backupPackageManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
+        $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
     }
 
     /**
      * Tear down
-     *
-     * @return void
      */
     protected function tearDown()
     {
-        ExtensionManagementUtility::setPackageManager($this->backupPackageManager);
+        ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backupPackageManager);
         if (file_exists(PATH_site . 'typo3temp/assets/ExtensionCompatibilityTester.txt')) {
             unlink(PATH_site . 'typo3temp/assets/ExtensionCompatibilityTester.txt');
         }

@@ -18,6 +18,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Prophet;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase;
+use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Install\Updates\ContentTypesToTextMediaUpdate as UpdateWizard;
 
@@ -37,10 +38,18 @@ class ContentTypesToTextMediaUpdateTest extends BaseTestCase
     protected $dbProphecy;
 
     /**
+     * @var \TYPO3\CMS\Core\Package\PackageManager
+     */
+    protected $backupPackageManager;
+
+    /**
      * @var ObjectProphecy
      */
     protected $updateWizard;
 
+    /**
+     * Set up
+     */
     public function setUp()
     {
         unset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']);
@@ -49,12 +58,17 @@ class ContentTypesToTextMediaUpdateTest extends BaseTestCase
         $this->dbProphecy = $prophet->prophesize(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
         $this->updateWizard = new UpdateWizard();
+        $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
         ExtensionManagementUtility::setPackageManager($this->packageManagerProphecy->reveal());
     }
 
+    /**
+     * Tear down
+     */
     public function tearDown()
     {
-        ExtensionManagementUtility::setPackageManager(new PackageManager());
+        ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backupPackageManager);
+        parent::tearDown();
     }
 
     /**

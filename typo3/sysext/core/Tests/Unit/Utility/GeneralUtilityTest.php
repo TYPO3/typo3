@@ -20,6 +20,7 @@ use org\bovigo\vfs\vfsStreamWrapper;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\FileStreamWrapper;
+use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFilesystemFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityMinifyJavaScriptFixture;
@@ -41,6 +42,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected $singletonInstances = array();
 
+    /**
+     * @var \TYPO3\CMS\Core\Package\PackageManager
+     */
+    protected $backupPackageManager;
+
+    /**
+     * Set up
+     */
     protected function setUp()
     {
         GeneralUtilityFixture::flushInternalRuntimeCaches();
@@ -48,11 +57,16 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         GeneralUtilityFixture::setAllowHostHeaderValue(false);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL;
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
+        $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
     }
 
+    /**
+     * Tear down
+     */
     protected function tearDown()
     {
         GeneralUtility::resetSingletonInstances($this->singletonInstances);
+        ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backupPackageManager);
         parent::tearDown();
     }
 
@@ -4227,9 +4241,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $result = GeneralUtility::getFileAbsFileName($path);
         $this->assertEquals($expected, $result);
-
-        // Reset the package manager to use the original one again
-        ExtensionManagementUtility::setPackageManager(GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class));
     }
 
     /**

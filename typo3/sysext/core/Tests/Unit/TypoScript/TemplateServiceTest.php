@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for \TYPO3\CMS\Core\TypoScript\TemplateService
@@ -33,9 +33,12 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected $templateServiceMock;
 
     /**
-     * Sets up this test case.
-     *
-     * @return void
+     * @var \TYPO3\CMS\Core\Package\PackageManager
+     */
+    protected $backupPackageManager;
+
+    /**
+     * Set up
      */
     protected function setUp()
     {
@@ -44,6 +47,16 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->templateService->tt_track = false;
         $this->templateServiceMock = $this->getAccessibleMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class, array('dummy'));
         $this->templateServiceMock->tt_track = false;
+        $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
+    }
+
+    /**
+     * Tear down
+     */
+    public function tearDown()
+    {
+        ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backupPackageManager);
+        parent::tearDown();
     }
 
     /**
@@ -108,8 +121,6 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertTrue(
             in_array('test.Core.TypoScript = 1', $this->templateService->config)
         );
-
-        ExtensionManagementUtility::setPackageManager(GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class));
     }
 
     /**

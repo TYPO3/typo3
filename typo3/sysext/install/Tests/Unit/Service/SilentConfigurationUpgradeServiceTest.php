@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Service;
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Install\Controller\Exception\RedirectException;
 
@@ -28,6 +29,28 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
      * @var ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $configurationManager;
+
+    /**
+     * @var \TYPO3\CMS\Core\Package\UnitTestPackageManager A backup of unit test package manager
+     */
+    protected $backupPackageManager;
+
+    /**
+     * Set up
+     */
+    protected function setUp()
+    {
+        $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
+    }
+
+    /**
+     * Tear down
+     */
+    protected function tearDown()
+    {
+        ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backupPackageManager);
+        parent::tearDown();
+    }
 
     /**
      * @param array $methods
