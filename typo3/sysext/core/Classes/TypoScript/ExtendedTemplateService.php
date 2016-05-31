@@ -926,10 +926,12 @@ class ExtendedTemplateService extends TemplateService
     public function ext_compareFlatSetups($default)
     {
         $editableComments = array();
+        $counter = 0;
         foreach ($this->flatSetup as $const => $value) {
             if (substr($const, -2) === '..' || !isset($this->flatSetup[$const . '..'])) {
                 continue;
             }
+            $counter++;
             $comment = trim($this->flatSetup[$const . '..']);
             $c_arr = explode(LF, $comment);
             foreach ($c_arr as $k => $v) {
@@ -961,8 +963,10 @@ class ExtendedTemplateService extends TemplateService
                                     $editableComments[$const]['subcat_name'] = $catSplit[1];
                                     $editableComments[$const]['subcat'] = $this->subCategories[$catSplit[1]][1]
                                         . '/' . $catSplit[1] . '/' . trim($catSplit[2]) . 'z';
-                                } else {
+                                } elseif (isset($catSplit[2])) {
                                     $editableComments[$const]['subcat'] = 'x' . '/' . trim($catSplit[2]) . 'z';
+                                } else {
+                                    $editableComments[$const]['subcat'] = 'x' . '/' . $counter . 'z';
                                 }
                                 break;
                             case 'label':
