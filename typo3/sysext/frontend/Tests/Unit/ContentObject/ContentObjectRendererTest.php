@@ -2588,6 +2588,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertEquals($expected, $result);
     }
 
+    /**
+     * Data provider for stdWrap_brTag
+     *
+     * @return array
+     */
     public function stdWrapBrTagDataProvider()
     {
         $noConfig = [];
@@ -2679,6 +2684,53 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function stdWrap_keywords($expected, $input)
     {
         $this->assertSame($expected, $this->subject->stdWrap_keywords($input));
+    }
+
+    /**
+     * Data provider for stdWrap_br
+     *
+     * @return string[][] Order expected, given, xhtmlDoctype
+     */
+    public function stdWrapBrDataProvider()
+    {
+        return [
+            'no xhtml with LF in between' => [
+                'one<br>' . LF . 'two',
+                'one' . LF . 'two',
+                null
+            ],
+            'no xhtml with LF in between and around' => [
+                '<br>' . LF . 'one<br>' . LF . 'two<br>' . LF,
+                LF . 'one' . LF . 'two' . LF,
+                null
+            ],
+            'xhtml with LF in between' => [
+                'one<br />' . LF . 'two',
+                'one' . LF . 'two',
+                'xhtml_strict'
+            ],
+            'xhtml with LF in between and around' => [
+                '<br />' . LF . 'one<br />' . LF . 'two<br />' . LF,
+                LF . 'one' . LF . 'two' . LF,
+                'xhtml_strict'
+            ],
+        ];
+    }
+
+    /**
+     * Test that stdWrap_br works as expected.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param string $xhtmlDoctype Xhtml document type.
+     * @return void
+     * @test
+     * @dataProvider stdWrapBrDataProvider
+     */
+    public function stdWrap_br($expected, $input, $xhtmlDoctype)
+    {
+        $GLOBALS['TSFE']->xhtmlDoctype = $xhtmlDoctype;
+        $this->assertSame($expected, $this->subject->stdWrap_br($input));
     }
 
     /**
