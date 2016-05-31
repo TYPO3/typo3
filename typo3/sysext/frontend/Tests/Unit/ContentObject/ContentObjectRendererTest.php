@@ -831,6 +831,63 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_csConv
+     *
+     * @return array Order expected, input, conf
+     */
+    public function stdWrap_csConvDataProvider()
+    {
+        return [
+            'empty string from ISO-8859-15' => [
+                '',
+                iconv('UTF-8', 'ISO-8859-15', ''),
+                ['csConv' => 'ISO-8859-15']
+            ],
+            'empty string from BIG-5' => [
+                '',
+                mb_convert_encoding('', 'BIG-5'),
+                ['csConv' => 'BIG-5']
+            ],
+            '"0" from ISO-8859-15' => [
+                '0',
+                iconv('UTF-8', 'ISO-8859-15', '0'),
+                ['csConv' => 'ISO-8859-15']
+            ],
+            '"0" from BIG-5' => [
+                '0',
+                mb_convert_encoding('0', 'BIG-5'),
+                ['csConv' => 'BIG-5']
+            ],
+            'euro symbol from ISO-88859-15' => [
+                '€',
+                iconv('UTF-8', 'ISO-8859-15', '€'),
+                ['csConv' => 'ISO-8859-15']
+            ],
+            'good morning from BIG-5' => [
+                '早安',
+                mb_convert_encoding('早安', 'BIG-5'),
+                ['csConv' => 'BIG-5']
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_csConv works properly.
+     *
+     * @test
+     * @dataProvider stdWrap_csConvDataProvider
+     * @param string $expected The expected value.
+     * @param string $value The input value.
+     * @param array $conf Property: csConv
+     * @return void
+     */
+    public function stdWrap_csConv($expected, $input, $conf)
+    {
+        $this->assertSame($expected,
+            $this->subject->stdWrap_csConv($input, $conf));
+    }
+
+    /**
      * Test for the stdWrap_stripHtml
      *
      * @test
