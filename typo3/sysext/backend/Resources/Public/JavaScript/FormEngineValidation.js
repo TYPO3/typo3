@@ -274,7 +274,6 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 								maxItems = rule.maxItems * 1;
 								if (!isNaN(maxItems) && selected > maxItems) {
 									markParent = true;
-									$field.closest(FormEngineValidation.markerSelector).addClass(FormEngineValidation.errorClass);
 								}
 							}
 						}
@@ -288,7 +287,6 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 							var maxValue = rule.config.upper * 1;
 							if (!isNaN(maxValue) && value > maxValue) {
 								markParent = true;
-								$field.closest(FormEngineValidation.markerSelector).addClass(FormEngineValidation.errorClass);
 							}
 						}
 					}
@@ -311,7 +309,6 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 							maxItems = rule.maxItems * 1;
 							if (!isNaN(maxItems) && selected > maxItems) {
 								markParent = true;
-								$field.closest(FormEngineValidation.markerSelector).addClass(FormEngineValidation.errorClass);
 							}
 						}
 					}
@@ -357,6 +354,9 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 			}
 		});
 		if (markParent) {
+			// mark field
+			$field.closest(FormEngineValidation.markerSelector).addClass(FormEngineValidation.errorClass);
+
 			// check tabs
 			FormEngineValidation.markParentTab($field);
 		}
