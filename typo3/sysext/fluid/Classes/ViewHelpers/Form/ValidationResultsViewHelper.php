@@ -63,6 +63,14 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  */
 class ValidationResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+
+    /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
     /**
      * Iterates through selected errors of the request.
      *
