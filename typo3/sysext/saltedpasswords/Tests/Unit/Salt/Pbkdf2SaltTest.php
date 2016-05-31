@@ -74,7 +74,6 @@ class Pbkdf2SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @requires function hash_pbkdf2
      */
     public function nonEmptyPasswordResultsInNonNullSaltedPassword()
     {
@@ -84,7 +83,6 @@ class Pbkdf2SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @requires function hash_pbkdf2
      */
     public function createdSaltedHashOfProperStructure()
     {
@@ -95,7 +93,6 @@ class Pbkdf2SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @requires function hash_pbkdf2
      */
     public function createdSaltedHashOfProperStructureForCustomSaltWithoutSetting()
     {
@@ -110,7 +107,6 @@ class Pbkdf2SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @requires function hash_pbkdf2
      */
     public function createdSaltedHashOfProperStructureForMinimumHashCount()
     {
@@ -130,7 +126,6 @@ class Pbkdf2SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * same "salted password hash" when using the same salt.
      *
      * @test
-     * @requires function hash_pbkdf2
      */
     public function authenticationWithValidAlphaCharClassPassword()
     {
@@ -146,7 +141,6 @@ class Pbkdf2SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * same "salted password hash" when using the same salt.
      *
      * @test
-     * @requires function hash_pbkdf2
      */
     public function authenticationWithValidNumericCharClassPassword()
     {
@@ -162,7 +156,6 @@ class Pbkdf2SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * same "salted password hash" when using the same salt.
      *
      * @test
-     * @requires function hash_pbkdf2
      */
     public function authenticationWithValidAsciiSpecialCharClassPassword()
     {
@@ -178,7 +171,6 @@ class Pbkdf2SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * same "salted password hash" when using the same salt.
      *
      * @test
-     * @requires function hash_pbkdf2
      */
     public function authenticationWithValidLatin1SpecialCharClassPassword()
     {
@@ -198,7 +190,6 @@ class Pbkdf2SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * same "salted password hash" when using the same salt.
      *
      * @test
-     * @requires function hash_pbkdf2
      */
     public function authenticationWithValidLatin1UmlautCharClassPassword()
     {
@@ -218,7 +209,6 @@ class Pbkdf2SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @requires function hash_pbkdf2
      */
     public function authenticationWithNonValidPassword()
     {
@@ -230,7 +220,6 @@ class Pbkdf2SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @requires function hash_pbkdf2
      */
     public function passwordVariationsResultInDifferentHashes()
     {
@@ -292,7 +281,6 @@ class Pbkdf2SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @requires function hash_pbkdf2
      */
     public function updateNecessityForValidSaltedPassword()
     {
@@ -318,7 +306,6 @@ class Pbkdf2SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @requires function hash_pbkdf2
      */
     public function updateNecessityForDecreasedHashcount()
     {
@@ -334,7 +321,6 @@ class Pbkdf2SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @requires function hash_pbkdf2
      */
     public function isCompatibleWithPythonPasslibHashes()
     {
