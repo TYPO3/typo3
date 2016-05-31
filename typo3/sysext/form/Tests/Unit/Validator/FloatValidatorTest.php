@@ -34,8 +34,7 @@ class FloatValidatorTest extends AbstractValidatorTest
      */
     protected function setUp()
     {
-        parent::setUp();
-        $this->currentLocale = setlocale(LC_NUMERIC, null);
+        $this->currentLocale = setlocale(LC_NUMERIC, 0);
     }
 
     /**
@@ -43,8 +42,8 @@ class FloatValidatorTest extends AbstractValidatorTest
      */
     protected function tearDown()
     {
-        parent::tearDown();
         setlocale(LC_NUMERIC, $this->currentLocale);
+        parent::tearDown();
     }
 
     /**
@@ -52,26 +51,34 @@ class FloatValidatorTest extends AbstractValidatorTest
      */
     public function validFloatProvider()
     {
-        return array(
-            '12.1 for en_US locale' => array(array('12.1', ['en_US', 'en_US.utf8', 'english'])),
+        return [
+            '12.1 for en_US locale' => [
+                '12.1',
+                'en_US.utf8',
+            ],
             // @todo de_DE disabled currently, works locally but not on travis-ci.org
-            // '12,1 for de_DE locale' => array(array('12,1', ['de_DE', 'german'])),
-        );
+            /**
+            '12,1 for de_DE locale' => [
+                '12,1',
+                'de_DE.utf8',
+            ],
+             */
+        ];
     }
 
     /**
      * @test
      * @dataProvider validFloatProvider
      */
-    public function validateForValidInputHasEmptyErrorResult($input)
+    public function validateForValidInputHasEmptyErrorResult($inputValue, $locale)
     {
-        setlocale(LC_NUMERIC, $input[1]);
+        setlocale(LC_NUMERIC, $locale);
 
         $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
         $subject = $this->createSubject($options);
 
         $this->assertEmpty(
-            $subject->validate($input[0])->getErrors()
+            $subject->validate($inputValue)->getErrors()
         );
     }
 }
