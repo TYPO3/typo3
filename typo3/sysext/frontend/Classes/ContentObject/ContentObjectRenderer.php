@@ -3006,15 +3006,16 @@ class ContentObjectRenderer
     /**
      * fontTag
      * A wrap formerly used to apply font tags to format the content
-     * Still used by lib.stdheader although real font tags are not state of the art anymore
      * See wrap
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for fontTag.
      * @return string The processed input value
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function stdWrap_fontTag($content = '', $conf = array())
     {
+        GeneralUtility::logDeprecatedFunction();
         return $this->wrap($content, $conf['fontTag']);
     }
 
