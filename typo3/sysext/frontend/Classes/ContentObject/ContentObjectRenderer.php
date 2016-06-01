@@ -2418,20 +2418,21 @@ class ContentObjectRenderer
     }
 
     /**
-     * csConv
-     * Will convert the current character set of the content to the one given in csConv
+     * stdWrap csConv: Converts the input to UTF-8
      *
-     * @param string $content Input value undergoing processing in this function.
+     * The character set of the input must be specified. Returns the input if
+     * matters go wrong, for example if an invalid character set is given.
+     *
+     * @param string $content The string to convert.
      * @param array $conf stdWrap properties for csConv.
-     * @return string The processed input value
+     * @return string The processed input.
      */
     public function stdWrap_csConv($content = '', $conf = [])
     {
         if (!empty($conf['csConv'])) {
-            /** @var CharsetConverter $charsetConverter */
             $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
             $output = $charsetConverter->conv($content, $charsetConverter->parse_charset($conf['csConv']), 'utf-8');
-            return $output ?: $content;
+            return $output !== false && $output !== '' ? $output : $content;
         } else {
             return $content;
         }
