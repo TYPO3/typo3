@@ -33,10 +33,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
  * $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
  * $myButton = $buttonBar->makeShortcutButton()
  *       ->setModuleName('my_info');
- * $extbaseButton = $buttonBar->makeShortcutButton()
- *      ->setControllerContext($this->controllerContext);
  * $buttonBar->addButton($myButton);
- * $buttonBar->addButton($extbaseButton);
  */
 class ShortcutButton implements ButtonInterface, PositionInterface
 {
