@@ -202,10 +202,10 @@ class UserSettingsController
     protected function getFromDottedNotation($key)
     {
         $subkeys = GeneralUtility::trimExplode('.', $key);
-        $array = &$this->getBackendUser()->uc;
+        $array = $this->getBackendUser()->uc;
         foreach ($subkeys as $subkey) {
             if (isset($array[$subkey])) {
-                $array =  &$array[$subkey];
+                $array = &$array[$subkey];
             } else {
                 $array = [];
                 break;
