@@ -2623,6 +2623,65 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_keywords
+     *
+     * @return string[][] Order expected, input
+     */
+    public function stdWrapKeywordsDataProvider()
+    {
+        return [
+            'empty string' => ['', ''],
+            'blank' => ['', ' '],
+            'tab' => ['', "\t"],
+            'single semicolon' => [',', ' ; '],
+            'single comma' => [',', ' , '],
+            'single nl' => [',', ' ' . PHP_EOL . ' '],
+            'double semicolon' => [',,', ' ; ; '],
+            'double comma' => [',,', ' , , '],
+            'double nl' => [',,', ' ' . PHP_EOL . ' ' . PHP_EOL . ' '],
+            'simple word' => ['one', ' one '],
+            'simple word trimmed' => ['one', 'one'],
+            ', separated' => ['one,two', ' one , two '],
+            '; separated' => ['one,two', ' one ; two '],
+            'nl separated' => ['one,two', ' one ' . PHP_EOL . ' two '],
+            ', typical' => ['one,two,three', 'one, two, three'],
+            '; typical' => ['one,two,three', ' one; two; three'],
+            'nl typical' => [
+                'one,two,three',
+                'one' . PHP_EOL . 'two' . PHP_EOL . 'three'
+            ],
+            ', sourounded' => [',one,two,', ' , one , two , '],
+            '; sourounded' => [',one,two,', ' ; one ; two ; '],
+            'nl sourounded' => [
+                ',one,two,',
+                ' ' . PHP_EOL .' one ' . PHP_EOL . ' two ' . PHP_EOL . ' '
+            ],
+            'mixed' => [
+                'one,two,three,four',
+                ' one, two; three' . PHP_EOL . 'four'
+            ],
+            'keywods with blanks in words' => [
+                'one plus,two minus',
+                ' one plus , two minus ',
+            ]
+        ];
+    }
+
+    /**
+     * Check if stdWrap_keywords works properly.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @return void
+     * @test
+     * @dataProvider stdWrapKeywordsDataProvider
+     */
+    public function stdWrap_keywords($expected, $input)
+    {
+        $this->assertSame($expected, $this->subject->stdWrap_keywords($input));
+    }
+
+    /**
      * Check if char works properly
      *
      * @test
