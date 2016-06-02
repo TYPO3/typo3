@@ -37,7 +37,7 @@ install:
   - IF %PHP%==1 echo memory_limit = 512M >> php.ini
   - cd C:\projects\typotest
   - php -r "readfile('http://getcomposer.org/installer');" | php
-  - php composer.phar install --prefer-dist --no-interaction
+  - php composer.phar install --prefer-source --no-interaction
 
 services:
   - mysql
