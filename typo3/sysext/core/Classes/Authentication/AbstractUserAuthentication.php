@@ -345,6 +345,8 @@ abstract class AbstractUserAuthentication
      */
     public function __construct()
     {
+        // This function has to stay even if it's empty
+        // Implementations of that abstract class might call parent::__construct();
     }
 
     /**
