@@ -22,7 +22,6 @@ use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -747,13 +746,14 @@ class SetupModuleController extends AbstractModule
         unset($this->OLD_BE_USER);
         if ($this->getBackendUser()->isAdmin()) {
             $this->simUser = (int)GeneralUtility::_GP('simUser');
-            /** @var QueryBuilder $queryBuilder */
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
             $users = $queryBuilder
                 ->select('*')
                 ->from('be_users')
-                ->where($queryBuilder->expr()->neq('uid', (int)$this->getBackendUser()->user['uid']))
-                ->andWhere($queryBuilder->expr()->notLike('username', $queryBuilder->createNamedParameter('_cli_%')))
+                ->where(
+                    $queryBuilder->expr()->neq('uid', (int)$this->getBackendUser()->user['uid']),
+                    $queryBuilder->expr()->notLike('username', $queryBuilder->createNamedParameter($queryBuilder->escapeLikeWildcards('_cli_') . '%'))
+                )
                 ->orderBy('username')
                 ->execute()
                 ->fetchAll();
@@ -891,15 +891,16 @@ class SetupModuleController extends AbstractModule
      */
     protected function getAvatarFileUid($beUserId)
     {
-        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
         $file = $queryBuilder
             ->select('uid_local')
             ->from('sys_file_reference')
-            ->where($queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('be_users')))
-            ->andWhere($queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter('avatar')))
-            ->andWhere($queryBuilder->expr()->eq('table_local', $queryBuilder->createNamedParameter('sys_file')))
-            ->andWhere($queryBuilder->expr()->eq('uid_foreign', (int)$beUserId))
+            ->where(
+                $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('be_users')),
+                $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter('avatar')),
+                $queryBuilder->expr()->eq('table_local', $queryBuilder->createNamedParameter('sys_file')),
+                $queryBuilder->expr()->eq('uid_foreign', (int)$beUserId)
+            )
             ->execute()
             ->fetchColumn();
         return (int)$file;
@@ -920,14 +921,16 @@ class SetupModuleController extends AbstractModule
             return;
         }
 
-        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
+        $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder
             ->delete('sys_file_reference')
-            ->where($queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('be_users')))
-            ->andWhere($queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter('avatar')))
-            ->andWhere($queryBuilder->expr()->eq('table_local', $queryBuilder->createNamedParameter('sys_file')))
-            ->andWhere($queryBuilder->expr()->eq('uid_foreign', (int)$beUserId))
+            ->where(
+                $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('be_users')),
+                $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter('avatar')),
+                $queryBuilder->expr()->eq('table_local', $queryBuilder->createNamedParameter('sys_file')),
+                $queryBuilder->expr()->eq('uid_foreign', (int)$beUserId)
+            )
             ->execute();
 
         // Create new reference

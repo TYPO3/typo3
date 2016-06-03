@@ -18,6 +18,8 @@ namespace TYPO3\CMS\Core\Database\Query;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
+use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -51,52 +53,49 @@ class QueryBuilder
     protected $concreteQueryBuilder;
 
     /**
-     * @var QueryContext
+     * @var QueryRestrictionContainerInterface
      */
-    protected $queryContext;
+    protected $restrictionContainer;
 
     /**
      * Initializes a new QueryBuilder.
      *
      * @param Connection $connection The DBAL Connection.
-     * @param QueryContext $queryContext
+     * @param QueryRestrictionContainerInterface $restrictionContainer
      * @param \Doctrine\DBAL\Query\QueryBuilder $concreteQueryBuilder
      */
     public function __construct(
         Connection $connection,
-        QueryContext $queryContext = null,
+        QueryRestrictionContainerInterface $restrictionContainer = null,
         \Doctrine\DBAL\Query\QueryBuilder $concreteQueryBuilder = null
     ) {
         $this->connection = $connection;
-
-        if ($queryContext === null) {
-            $queryContext = GeneralUtility::makeInstance(QueryContext::class);
-        }
-        $this->queryContext = $queryContext;
-
-        if ($concreteQueryBuilder === null) {
-            $concreteQueryBuilder = GeneralUtility::makeInstance(
-                \Doctrine\DBAL\Query\QueryBuilder::class,
-                $connection
-            );
-        }
-        $this->concreteQueryBuilder = $concreteQueryBuilder;
+        $this->restrictionContainer = $restrictionContainer ?: GeneralUtility::makeInstance(DefaultRestrictionContainer::class);
+        $this->concreteQueryBuilder = $concreteQueryBuilder ?: GeneralUtility::makeInstance(\Doctrine\DBAL\Query\QueryBuilder::class, $connection);
     }
 
     /**
-     * @return QueryContext
+     * @return QueryRestrictionContainerInterface
      */
-    public function getQueryContext(): QueryContext
+    public function getRestrictions()
     {
-        return $this->queryContext;
+        return $this->restrictionContainer;
     }
 
     /**
-     * @param QueryContext $queryContext
+     * @param QueryRestrictionContainerInterface $restrictionContainer
      */
-    public function setQueryContext(QueryContext $queryContext)
+    public function setRestrictions(QueryRestrictionContainerInterface $restrictionContainer)
     {
-        $this->queryContext = $queryContext;
+        $this->restrictionContainer = $restrictionContainer;
+    }
+
+    /**
+     * Re-apply default restrictions
+     */
+    public function resetRestrictions()
+    {
+        $this->restrictionContainer = GeneralUtility::makeInstance(DefaultRestrictionContainer::class);
     }
 
     /**
@@ -167,12 +166,12 @@ class QueryBuilder
             return $this->concreteQueryBuilder->execute();
         }
 
-        // set additional query restrictions based on context & TCA config
-        $originalWhereConditions = $this->addAdditonalWhereConditions();
+        // Set additional query restrictions
+        $originalWhereConditions = $this->addAdditionalWhereConditions();
 
         $result = $this->concreteQueryBuilder->execute();
 
-        // restore the original query conditions in case the user keeps
+        // Restore the original query conditions in case the user keeps
         // on modifying the state.
         $this->concreteQueryBuilder->add('where', $originalWhereConditions, false);
 
@@ -193,12 +192,12 @@ class QueryBuilder
             return $this->concreteQueryBuilder->getSQL();
         }
 
-        // set additional query restrictions based on context & TCA config
-        $originalWhereConditions = $this->addAdditonalWhereConditions();
+        // Set additional query restrictions
+        $originalWhereConditions = $this->addAdditionalWhereConditions();
 
         $sql = $this->concreteQueryBuilder->getSQL();
 
-        // restore the original query conditions in case the user keeps
+        // Restore the original query conditions in case the user keeps
         // on modifying the state.
         $this->concreteQueryBuilder->add('where', $originalWhereConditions, false);
 
@@ -901,6 +900,18 @@ class QueryBuilder
     }
 
     /**
+     * Quotes like wildcards for given string value.
+     *
+     * @param string $value The value to be quoted.
+     *
+     * @return string The quoted value.
+     */
+    public function escapeLikeWildcards(string $value): string
+    {
+        return addcslashes($value, '_%');
+    }
+
+    /**
      * Quotes a given input parameter.
      *
      * @param mixed $input The parameter to be quoted.
@@ -1054,28 +1065,24 @@ class QueryBuilder
      *
      * @return \Doctrine\DBAL\Query\Expression\CompositeExpression|mixed
      */
-    protected function addAdditonalWhereConditions()
+    protected function addAdditionalWhereConditions()
     {
-        $queryRestrictionBuilder = GeneralUtility::makeInstance(
-            QueryRestrictionBuilder::class,
-            $this->getQueriedTables(),
-            $this->expr(),
-            $this->getQueryContext()
-        );
-
         $originalWhereConditions = $this->concreteQueryBuilder->getQueryPart('where');
-        if ($originalWhereConditions instanceof CompositeExpression) {
-            $originalWhereConditions = clone($originalWhereConditions);
+        $expression = $this->restrictionContainer->buildExpression($this->getQueriedTables(), $this->expr());
+        // This check would be obsolete, as the composite expression would not add empty expressions anyway
+        // But we keep it here to only clone the previous state, in case we really will change it.
+        // Once we remove this state preserving functionality, we can remove the count check here
+        // and just add the expression to the query builder.
+        if ($expression->count() > 0) {
+            if ($originalWhereConditions instanceof CompositeExpression) {
+                // Save the original query conditions so we can restore
+                // them after the query has been built.
+                $originalWhereConditions = clone($originalWhereConditions);
+            }
+            $this->concreteQueryBuilder->andWhere($expression);
         }
 
-        $additionalQueryRestrictions = $queryRestrictionBuilder->getVisibilityConstraints();
-
-        if ($additionalQueryRestrictions->count() !== 0) {
-            // save the original query conditions so we can restore
-            // them after the query has been built.
-
-            $this->concreteQueryBuilder->andWhere($additionalQueryRestrictions);
-        }
+        // @todo add hook to be able to add additional restrictions
 
         return $originalWhereConditions;
     }

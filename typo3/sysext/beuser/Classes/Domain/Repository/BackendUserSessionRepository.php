@@ -72,9 +72,11 @@ class BackendUserSessionRepository extends Repository
             ->update('be_sessions')
             ->set('ses_userid', $authentication->user['ses_backuserid'])
             ->set('ses_backuserid', 0)
-            ->where($queryBuilder->expr()->eq('ses_id', $queryBuilder->createNamedParameter($GLOBALS['BE_USER']->id)))
-            ->andWhere($queryBuilder->expr()->eq('ses_name', $queryBuilder->createNamedParameter(BackendUserAuthentication::getCookieName())))
-            ->andWhere($queryBuilder->expr()->eq('ses_userid', (int)$GLOBALS['BE_USER']->user['uid']))
+            ->where(
+                $queryBuilder->expr()->eq('ses_id', $queryBuilder->createNamedParameter($GLOBALS['BE_USER']->id)),
+                $queryBuilder->expr()->eq('ses_name', $queryBuilder->createNamedParameter(BackendUserAuthentication::getCookieName())),
+                $queryBuilder->expr()->eq('ses_userid', (int)$GLOBALS['BE_USER']->user['uid'])
+            )
             ->execute();
     }
 }

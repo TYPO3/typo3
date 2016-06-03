@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Recycler\Domain\Model;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryContextType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
@@ -42,7 +41,7 @@ class Tables
             if ($deletedField) {
                 // Determine whether the table has deleted records:
                 $queryBuilder = $connection->getQueryBuilderForTable($tableName);
-                $queryBuilder->getQueryContext()->setContext(QueryContextType::UNRESTRICTED);
+                $queryBuilder->getRestrictions()->removeAll();
 
                 $deletedCount = $queryBuilder->count('uid')
                     ->from($tableName)

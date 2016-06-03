@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Recycler\Domain\Model;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryContextType;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -147,17 +146,17 @@ class DeletedRecords
             return;
         }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-        $queryBuilder->getQueryContext()->setContext(QueryContextType::UNRESTRICTED);
+        $queryBuilder->getRestrictions()->removeAll();
 
         // find the 'deleted' field for this table
         $deletedField = RecyclerUtility::getDeletedField($table);
 
         // create the filter WHERE-clause
         $filterConstraint = null;
-        if (trim($filter) != '') {
+        if (trim($filter) !== '') {
             $labelConstraint = $queryBuilder->expr()->like(
                 $tcaCtrl['label'],
-                $queryBuilder->quote('%' . addcslashes($filter, '_%') . '%')
+                $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($filter) . '%')
             );
             if (MathUtility::canBeInterpretedAsInteger($filter)) {
                 $filterConstraint = $queryBuilder->expr()->orX(
@@ -265,7 +264,7 @@ class DeletedRecords
         if ($allowDepth && $depth >= 1) {
             // check recursively for elements beneath this page
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-            $queryBuilder->getQueryContext()->setContext(QueryContextType::UNRESTRICTED);
+            $queryBuilder->getRestrictions()->removeAll();
             $resPages = $queryBuilder
                 ->select('uid')
                 ->from('pages')
@@ -415,12 +414,14 @@ class DeletedRecords
     protected function getDeletedParentPages($uid, &$pages = array())
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getQueryContext()->setContext(QueryContextType::UNRESTRICTED);
+        $queryBuilder->getRestrictions()->removeAll();
         $record = $queryBuilder
             ->select('uid', 'pid')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('uid', (int)$uid))
-            ->andWhere($queryBuilder->expr()->eq($GLOBALS['TCA']['pages']['ctrl']['delete'], 1))
+            ->where(
+                $queryBuilder->expr()->eq('uid', (int)$uid),
+                $queryBuilder->expr()->eq($GLOBALS['TCA']['pages']['ctrl']['delete'], 1)
+            )
             ->execute()
             ->fetch();
         if ($record) {

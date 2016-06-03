@@ -17,7 +17,10 @@ namespace TYPO3\CMS\Backend\Tree\View;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryContextType;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -341,15 +344,20 @@ class PagePositionMap
         $lines = array();
         foreach ($colPosArray as $kk => $vv) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
-            $queryBuilder->getQueryContext()
-                ->setContext(QueryContextType::BACKEND_NO_VERSIONING_PLACEHOLDERS)
-                ->setIgnoreEnableFields($showHidden);
-
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+            if ($showHidden) {
+                $queryBuilder->getRestrictions()
+                    ->removeByType(HiddenRestriction::class)
+                    ->removeByType(StartTimeRestriction::class)
+                    ->removeByType(EndTimeRestriction::class);
+            }
             $queryBuilder
                 ->select('*')
                 ->from('tt_content')
-                ->where($queryBuilder->expr()->eq('pid', (int)$pid))
-                ->andWhere($queryBuilder->expr()->eq('colPos', (int)$vv))
+                ->where(
+                    $queryBuilder->expr()->eq('pid', (int)$pid),
+                    $queryBuilder->expr()->eq('colPos', (int)$vv)
+                )
                 ->orderBy('sorting');
 
             if ((string)$this->cur_sys_language !== '') {

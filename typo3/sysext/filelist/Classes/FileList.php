@@ -19,7 +19,6 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\RecordList\AbstractRecordList;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryContextType;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -785,11 +784,13 @@ class FileList extends AbstractRecordList
     protected function getTranslationsForMetaData($metaDataRecord)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_metadata');
-        $queryBuilder->getQueryContext()->setContext(QueryContextType::UNRESTRICTED);
+        $queryBuilder->getRestrictions()->removeAll();
         $translationRecords = $queryBuilder->select('*')
             ->from('sys_file_metadata')
-            ->where($queryBuilder->expr()->eq($GLOBALS['TCA']['sys_file_metadata']['ctrl']['transOrigPointerField'], (int)$metaDataRecord['uid']))
-            ->andWhere($queryBuilder->expr()->gt($GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'], 0))
+            ->where(
+                $queryBuilder->expr()->eq($GLOBALS['TCA']['sys_file_metadata']['ctrl']['transOrigPointerField'], (int)$metaDataRecord['uid']),
+                $queryBuilder->expr()->gt($GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'], 0)
+            )
             ->execute()
             ->fetchAll();
 
@@ -1045,9 +1046,12 @@ class FileList extends AbstractRecordList
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
         $referenceCount = $queryBuilder->count('*')
             ->from('sys_refindex')
-            ->where($queryBuilder->expr()->eq('ref_table', $queryBuilder->quote('sys_file')))
-            ->andWhere($queryBuilder->expr()->eq('ref_uid', (int)$fileOrFolderObject->getUid()))
-            ->andWhere($queryBuilder->expr()->neq('tablename', $queryBuilder->quote('sys_file_metadata')))
+            ->where(
+                $queryBuilder->expr()->eq('deleted', 0),
+                $queryBuilder->expr()->eq('ref_table', $queryBuilder->quote('sys_file')),
+                $queryBuilder->expr()->eq('ref_uid', (int)$fileOrFolderObject->getUid()),
+                $queryBuilder->expr()->neq('tablename', $queryBuilder->quote('sys_file_metadata'))
+            )
             ->execute()
             ->fetchColumn();
 

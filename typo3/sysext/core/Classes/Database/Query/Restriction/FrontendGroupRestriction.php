@@ -1,0 +1,70 @@
+<?php
+declare (strict_types = 1);
+namespace TYPO3\CMS\Core\Database\Query\Restriction;
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+
+/**
+ * Restriction to filter records, which are limited to the given user groups
+ */
+class FrontendGroupRestriction implements QueryRestrictionInterface
+{
+    /**
+     * @var array
+     */
+    protected $frontendGroupIds;
+
+    /**
+     * @param array $frontendGroupIds Normalized array with user groups of currently logged in user (typically expolded value of $GLOBALS['TSFE']->gr_list
+     */
+    public function __construct(array $frontendGroupIds = null)
+    {
+        $this->frontendGroupIds = $frontendGroupIds === null ? explode(',', $GLOBALS['TSFE']->gr_list) : $frontendGroupIds;
+    }
+
+    /**
+     * Main method to build expressions for given tables
+     * Evaluates the ctrl/enablecolumns/fe_group flag of the table and adds the according restriction if set
+     *
+     * @param array $queriedTables Array of tables, where array key is table name and value potentially an alias
+     * @param ExpressionBuilder $expressionBuilder Expression builder instance to add restrictions with
+     * @return CompositeExpression The result of query builder expression(s)
+     */
+    public function buildExpression(array $queriedTables, ExpressionBuilder $expressionBuilder): CompositeExpression
+    {
+        $constraints = [];
+        foreach ($queriedTables as $tableName => $tableAlias) {
+            $groupFieldName = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns']['fe_group'] ?? null;
+            if (!empty($groupFieldName)) {
+                $fieldName = ($tableAlias ?: $tableName) . '.' . $groupFieldName;
+                // Allow records where no group access has been configured (field values NULL, 0 or empty string)
+                $constraints = [
+                    $expressionBuilder->isNull($fieldName),
+                    $expressionBuilder->eq($fieldName, $expressionBuilder->literal('')),
+                    $expressionBuilder->eq($fieldName, $expressionBuilder->literal('0')),
+                ];
+                foreach ($this->frontendGroupIds as $frontendGroupId) {
+                    $constraints[] = $expressionBuilder->inSet(
+                        $fieldName,
+                        $expressionBuilder->literal((string)$frontendGroupId)
+                    );
+                }
+            }
+        }
+        return $expressionBuilder->orX(...$constraints);
+    }
+}

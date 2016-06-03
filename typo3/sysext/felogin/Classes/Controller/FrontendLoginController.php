@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Felogin\Controller;
 
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -227,26 +227,24 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $postedHash = $postData['forgot_hash'];
             $hashData = $this->frontendController->fe_user->getKey('ses', 'forgot_hash');
             if ($postedHash === $hashData['forgot_hash']) {
-
-                /** @var QueryBuilder $queryBuilder */
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_users');
+                $userTable = $this->frontendController->fe_user->user_table;
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($userTable);
+                $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
                 $row = $queryBuilder
                     ->select('uid', 'username', 'password', 'email')
-                    ->from('fe_users')
+                    ->from($userTable)
                     ->where(
-                        $queryBuilder->expr()->andX(
-                            $queryBuilder->expr()->orX(
-                                $queryBuilder->expr()->eq(
-                                    'email',
-                                    $queryBuilder->createNamedParameter($this->piVars['forgot_email'])
-                                ),
-                                $queryBuilder->expr()->eq(
-                                    'username',
-                                    $queryBuilder->createNamedParameter($this->piVars['forgot_email'])
-                                )
+                        $queryBuilder->expr()->orX(
+                            $queryBuilder->expr()->eq(
+                                'email',
+                                $queryBuilder->createNamedParameter($this->piVars['forgot_email'])
                             ),
-                            $queryBuilder->expr()->in('pid', GeneralUtility::intExplode(',', $this->spid))
-                        )
+                            $queryBuilder->expr()->eq(
+                                'username',
+                                $queryBuilder->createNamedParameter($this->piVars['forgot_email'])
+                            )
+                        ),
+                        $queryBuilder->expr()->in('pid', GeneralUtility::intExplode(',', $this->spid))
                     )
                     ->execute()
                     ->fetch();
@@ -366,12 +364,13 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                         }
 
                         // Save new password and clear DB-hash
-                        /** @var QueryBuilder $queryBuilder */
-                        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_users');
-                        $queryBuilder->update('fe_users')
+                        $userTable = $this->frontendController->fe_user->user_table;
+                        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($userTable);
+                        $queryBuilder->getRestrictions()->removeAll();
+                        $queryBuilder->update($userTable)
                             ->set('password', $newPass)
                             ->set('felogin_forgotHash', '')
-                            ->set('tstamp', $GLOBALS['EXEC_TIME'])
+                            ->set('tstamp', (int)$GLOBALS['EXEC_TIME'])
                             ->where($queryBuilder->expr()->eq('uid', (int)$user['uid']))
                             ->execute();
 
@@ -423,10 +422,11 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $randHashDB = $validEnd . '|' . md5($hash);
 
         // Write hash to DB
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_users');
-        $queryBuilder->update('fe_users')
-            ->set('felogin_forgotHash', (string)$randHashDB)
+        $userTable = $this->frontendController->fe_user->user_table;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($userTable);
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->update($userTable)
+            ->set('felogin_forgotHash', $randHashDB)
             ->where($queryBuilder->expr()->eq('uid', (int)$user['uid']))
             ->execute();
 
@@ -671,16 +671,14 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
                                 // take the first group with a redirect page
                                 $userGroupTable = $this->frontendController->fe_user->usergroup_table;
-                                /** @var QueryBuilder $queryBuilder */
                                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($userGroupTable);
+                                $queryBuilder->getRestrictions()->removeAll();
                                 $row = $queryBuilder
                                     ->select('felogin_redirectPid')
                                     ->from($userGroupTable)
                                     ->where(
-                                        $queryBuilder->expr()->andX(
-                                            $queryBuilder->expr()->neq('felogin_redirectPid', $queryBuilder->quote('')),
-                                            $queryBuilder->expr()->in('uid', implode(',', $groupData['uid']))
-                                        )
+                                        $queryBuilder->expr()->neq('felogin_redirectPid', $queryBuilder->quote('')),
+                                        $queryBuilder->expr()->in('uid', array_map('intval', $groupData['uid']))
                                     )
                                     ->execute()
                                     ->fetch();
@@ -693,18 +691,16 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                         case 'userLogin':
 
                             $userTable = $this->frontendController->fe_user->user_table;
-                            /** @var QueryBuilder $queryBuilder */
                             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($userTable);
+                            $queryBuilder->getRestrictions()->removeAll();
                             $row = $queryBuilder
                                 ->select('felogin_redirectPid')
                                 ->from($userTable)
                                 ->where(
-                                    $queryBuilder->expr()->andX(
-                                        $queryBuilder->expr()->neq('felogin_redirectPid', $queryBuilder->quote('')),
-                                        $queryBuilder->expr()->eq(
-                                            $this->frontendController->fe_user->userid_column,
-                                            (int)$this->frontendController->fe_user->user['uid']
-                                        )
+                                    $queryBuilder->expr()->neq('felogin_redirectPid', $queryBuilder->quote('')),
+                                    $queryBuilder->expr()->eq(
+                                        $this->frontendController->fe_user->userid_column,
+                                        (int)$this->frontendController->fe_user->user['uid']
                                     )
                                 )
                                 ->execute()
@@ -1046,8 +1042,8 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 // Removes the last path segment and slash sequences like /// (if given):
                 $path = preg_replace('#/+[^/]*$#', '', $parsedUrl['path']);
 
-                /** @var QueryBuilder $queryBuilder */
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_domain');
+                $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
                 $localDomains = $queryBuilder->select('domainName')
                     ->from('sys_domain')
                     ->execute()

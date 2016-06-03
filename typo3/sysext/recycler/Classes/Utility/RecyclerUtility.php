@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Recycler\Utility;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryContextType;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -86,7 +85,7 @@ class RecyclerUtility
             return $output;
         }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getQueryContext()->setContext(QueryContextType::UNRESTRICTED);
+        $queryBuilder->getRestrictions()->removeAll();
 
         $clause = trim($clause);
         $loopCheck = 100;
@@ -154,7 +153,7 @@ class RecyclerUtility
             return false;
         }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getQueryContext()->setContext(QueryContextType::UNRESTRICTED);
+        $queryBuilder->getRestrictions()->removeAll();
 
         $deleted = $queryBuilder
             ->select('deleted')
@@ -176,7 +175,7 @@ class RecyclerUtility
     public static function getPidOfUid($uid, $table)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-        $queryBuilder->getQueryContext()->setContext(QueryContextType::UNRESTRICTED);
+        $queryBuilder->getRestrictions()->removeAll();
 
         $pid = $queryBuilder
             ->select('pid')

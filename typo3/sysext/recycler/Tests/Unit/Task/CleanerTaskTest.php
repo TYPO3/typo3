@@ -83,8 +83,9 @@ class CleanerTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $connection->getExpressionBuilder()->willReturn(new ExpressionBuilder($connection->reveal()));
         $connection->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
 
-        $queryBuilder = GeneralUtility::makeInstance(
-            QueryBuilder::class,
+        // TODO: This should rather be a functional test if we need a query builder
+        // or we should clean up the code itself to not need to mock internal behavior here
+        $queryBuilder = new QueryBuilder(
             $connection->reveal(),
             null,
             new \Doctrine\DBAL\Query\QueryBuilder($connection->reveal())
@@ -116,8 +117,9 @@ class CleanerTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $connection->getExpressionBuilder()->willReturn(new ExpressionBuilder($connection->reveal()));
         $connection->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
 
-        $queryBuilder = GeneralUtility::makeInstance(
-            QueryBuilder::class,
+        // TODO: This should rather be a functional test if we need a query builder
+        // or we should clean up the code itself to not need to mock internal behavior here
+        $queryBuilder = new QueryBuilder(
             $connection->reveal(),
             null,
             new \Doctrine\DBAL\Query\QueryBuilder($connection->reveal())

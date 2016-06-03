@@ -14,9 +14,7 @@ namespace TYPO3\CMS\SysNote\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -76,16 +74,15 @@ class Bootstrap
         if (!isset($arguments['pids']) || empty($arguments['pids']) || empty($GLOBALS['BE_USER']->user['uid'])) {
             return false;
         }
-        $pidList = GeneralUtility::intExplode(',', $arguments['pids'], true);
-        if (empty($pidList)) {
+        $cleanedPageIds = GeneralUtility::intExplode(',', $arguments['pids'], true);
+        if (empty($cleanedPageIds)) {
             return false;
         }
-        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_note');
         $count = $queryBuilder
             ->count('uid')
             ->from('sys_note')
-            ->where($queryBuilder->expr()->in('pid', $pidList))
+            ->where($queryBuilder->expr()->in('pid', $cleanedPageIds))
             ->execute()
             ->fetchColumn();
         return (bool)$count;

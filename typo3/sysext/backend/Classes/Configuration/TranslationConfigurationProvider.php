@@ -16,7 +16,8 @@ namespace TYPO3\CMS\Backend\Configuration;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryContextType;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
@@ -123,18 +124,21 @@ class TranslationConfigurationProvider
             $selFieldList = 'uid,' . $GLOBALS['TCA'][$translationTable]['ctrl']['languageField'];
         }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($translationTable);
-        $queryBuilder->getQueryContext()->setContext(QueryContextType::BACKEND_NO_VERSIONING_PLACEHOLDERS);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
         $queryBuilder
             ->select(...GeneralUtility::trimExplode(',', $selFieldList))
             ->from($translationTable)
-            ->where($queryBuilder->expr()->eq($GLOBALS['TCA'][$translationTable]['ctrl']['transOrigPointerField'], (int)$uid))
-            ->andWhere($queryBuilder->expr()->eq('pid', (int)($table === 'pages' ? $row['uid'] : $row['pid'])));
+            ->where(
+                $queryBuilder->expr()->eq($GLOBALS['TCA'][$translationTable]['ctrl']['transOrigPointerField'], (int)$uid),
+                $queryBuilder->expr()->eq('pid', (int)($table === 'pages' ? $row['uid'] : $row['pid']))
+            );
         if (!$languageUid) {
-            $queryBuilder
-                ->andWhere($queryBuilder->expr()->gt($GLOBALS['TCA'][$translationTable]['ctrl']['languageField'], 0));
+            $queryBuilder->andWhere($queryBuilder->expr()->gt($GLOBALS['TCA'][$translationTable]['ctrl']['languageField'], 0));
         } else {
-            $queryBuilder
-                ->andWhere($queryBuilder->expr()->eq($GLOBALS['TCA'][$translationTable]['ctrl']['languageField'], (int)$languageUid));
+            $queryBuilder->andWhere($queryBuilder->expr()->eq($GLOBALS['TCA'][$translationTable]['ctrl']['languageField'], (int)$languageUid));
         }
         $translationRecords = $queryBuilder
             ->execute()

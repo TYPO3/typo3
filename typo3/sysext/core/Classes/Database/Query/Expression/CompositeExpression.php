@@ -23,6 +23,8 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
 {
     /**
      * Retrieves the string representation of this composite expression.
+     * If expression is empty, just return an empty string.
+     * Native Doctrine expression would return () instead.
      *
      * @return string
      */
@@ -31,7 +33,26 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
         if ($this->count() === 0) {
             return '';
         }
-
         return parent::__toString();
+    }
+
+    /**
+     * Adds an expression to composite expression.
+     *
+     * @param mixed $part
+     *
+     * @return \Doctrine\DBAL\Query\Expression\CompositeExpression
+     */
+    public function add($part)
+    {
+        // Due to a bug in Doctrine DBAL, we must add our own check here,
+        // which we luckily can, as we use a subclass anyway.
+        // @see https://github.com/doctrine/dbal/issues/2388
+        $isEmpty = $part instanceof self ? $part->count() === 0 : empty($part);
+        if (!$isEmpty) {
+            parent::add($part);
+        }
+
+        return $this;
     }
 }

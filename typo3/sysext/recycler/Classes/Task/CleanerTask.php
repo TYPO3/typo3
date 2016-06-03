@@ -62,6 +62,7 @@ class CleanerTask extends AbstractTask
     {
         if (isset($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+            $queryBuilder->getRestrictions()->removeAll();
 
             $constraints = [
                 $queryBuilder->expr()->eq($GLOBALS['TCA'][$tableName]['ctrl']['delete'], 1),
@@ -69,25 +70,17 @@ class CleanerTask extends AbstractTask
 
             if ($GLOBALS['TCA'][$tableName]['ctrl']['tstamp']) {
                 $dateBefore = $this->getPeriodAsTimestamp();
-                $constraints[] = $queryBuilder->expr()->lt($GLOBALS['TCA'][$tableName]['ctrl']['tstamp'], $dateBefore);
+                $constraints[] = $queryBuilder->expr()->lt($GLOBALS['TCA'][$tableName]['ctrl']['tstamp'], (int)$dateBefore);
             }
-
             $this->checkFileResourceFieldsBeforeDeletion($tableName, $constraints);
-
-            $queryBuilder
-                ->getQueryContext()
-                ->setIgnoreEnableFields(true)
-                ->setIncludeDeleted(true);
-
             try {
                 $queryBuilder->delete($tableName)
-                    ->where($queryBuilder->expr()->andX(...$constraints))
+                    ->where(...$constraints)
                     ->execute();
             } catch (\Doctrine\DBAL\DBALException $e) {
                 return false;
             }
         }
-
         return true;
     }
 
@@ -189,10 +182,7 @@ class CleanerTask extends AbstractTask
     protected function deleteFilesForTable($table, array $constraints, array $fieldList)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-        $queryBuilder
-            ->getQueryContext()
-            ->setIgnoreEnableFields(true)
-            ->setIncludeDeleted(true);
+        $queryBuilder->getRestrictions()->removeAll();
 
         $result = $queryBuilder
             ->select(...$fieldList)

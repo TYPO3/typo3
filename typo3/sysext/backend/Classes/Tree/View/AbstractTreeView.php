@@ -20,6 +20,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -834,11 +836,17 @@ abstract class AbstractTreeView
             return $this->getDataCount($res);
         } else {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
             $count = $queryBuilder
                 ->count('uid')
                 ->from($this->table)
-                ->where($queryBuilder->expr()->eq($this->parentField, $queryBuilder->createNamedParameter($uid)))
-                ->andWhere(QueryHelper::stripLogicalOperatorPrefix($this->clause))
+                ->where(
+                    $queryBuilder->expr()->eq($this->parentField, (int)$uid),
+                    QueryHelper::stripLogicalOperatorPrefix($this->clause)
+                )
                 ->execute()
                 ->fetchColumn();
 
@@ -894,11 +902,17 @@ abstract class AbstractTreeView
             return $parentId;
         } else {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
             $queryBuilder
                 ->select(...$this->fieldArray)
                 ->from($this->table)
-                ->where($queryBuilder->expr()->eq($this->parentField, $queryBuilder->createNamedParameter($parentId)))
-                ->andWhere(QueryHelper::stripLogicalOperatorPrefix($this->clause));
+                ->where(
+                    $queryBuilder->expr()->eq($this->parentField, (int)$parentId),
+                    QueryHelper::stripLogicalOperatorPrefix($this->clause)
+                );
 
             foreach (QueryHelper::parseOrderBy($this->orderByFields) as $orderPair) {
                 list($fieldName, $order) = $orderPair;

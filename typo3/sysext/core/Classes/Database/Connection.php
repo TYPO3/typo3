@@ -21,7 +21,6 @@ use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\QueryContext;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Connection extends \Doctrine\DBAL\Connection
@@ -75,12 +74,11 @@ class Connection extends \Doctrine\DBAL\Connection
     /**
      * Creates a new instance of a SQL query builder.
      *
-     * @param \TYPO3\CMS\Core\Database\Query\QueryContext $queryContext
      * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
      */
-    public function createQueryBuilder(QueryContext $queryContext = null): QueryBuilder
+    public function createQueryBuilder(): QueryBuilder
     {
-        return GeneralUtility::makeInstance(QueryBuilder::class, $this, $queryContext);
+        return GeneralUtility::makeInstance(QueryBuilder::class, $this);
     }
 
     /**

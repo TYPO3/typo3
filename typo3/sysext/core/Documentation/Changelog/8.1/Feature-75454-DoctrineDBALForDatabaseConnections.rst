@@ -57,13 +57,13 @@ The :php:``ConnectionPool`` class can be used like this:
    $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('aTable);
    $query->select('*')
       ->from('aTable)
-      ->where($query->expr()->eq('aField', $query->createNamedParameter($aValue)))
-      ->andWhere(
+      ->where(
+         $query->expr()->eq('aField', $query->createNamedParameter($aValue)),
          $query->expr()->lte(
             'anotherField',
             $query->createNamedParameter($anotherValue)
          )
-      )
+      );
    $rows = $query->execute()->fetchAll();
 
 Extension authors are advised to use the ``ConnectionPool`` and ``Connection`` classes instead of using

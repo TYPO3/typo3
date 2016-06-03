@@ -39,8 +39,9 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $connection->getDatabasePlatform()->willReturn(new MockPlatform());
         $connection->getExpressionBuilder()->willReturn(new ExpressionBuilder($connection->reveal()));
 
-        $queryBuilder = GeneralUtility::makeInstance(
-            QueryBuilder::class,
+        // TODO: This should rather be a functional test if we need a query builder
+        // or we should clean up the code itself to not need to mock internal behavior here
+        $queryBuilder = new QueryBuilder(
             $connection->reveal(),
             null,
             $this->prophesize(\Doctrine\DBAL\Query\QueryBuilder::class)->reveal()

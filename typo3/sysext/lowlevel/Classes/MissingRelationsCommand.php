@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Lowlevel;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -92,15 +91,12 @@ Reports missing relations';
         );
 
         // Select DB relations from reference table
-        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
         $rowIterator = $queryBuilder
             ->select('ref_uid', 'ref_table', 'softref_key', 'hash', 'tablename', 'recuid', 'field', 'flexpointer', 'deleted')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->neq('ref_table', $queryBuilder->quote('_FILE'))
-            )
-            ->andWhere(
+                $queryBuilder->expr()->neq('ref_table', $queryBuilder->createNamedParameter('_FILE')),
                 $queryBuilder->expr()->gt('ref_uid', 0)
             )
             ->orderBy('sorting', 'DESC')

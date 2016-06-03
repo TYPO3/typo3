@@ -18,8 +18,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class FileFacade
@@ -256,9 +256,12 @@ class FileFacade
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
             $count = $queryBuilder->count('*')
                 ->from('sys_refindex')
-                ->where($queryBuilder->expr()->eq('ref_table', $queryBuilder->quote('sys_file')))
-                ->andWhere($queryBuilder->expr()->eq('ref_uid', (int)$this->resource->getProperty('uid')))
-                ->andWhere($queryBuilder->expr()->neq('tablename', $queryBuilder->quote('sys_file_metadata')))
+                ->where(
+                    $queryBuilder->expr()->eq('deleted', 0),
+                    $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('sys_file')),
+                    $queryBuilder->expr()->eq('ref_uid', (int)$this->resource->getProperty('uid')),
+                    $queryBuilder->expr()->neq('tablename', $queryBuilder->createNamedParameter('sys_file_metadata'))
+                )
                 ->execute()
                 ->fetchColumn();
 

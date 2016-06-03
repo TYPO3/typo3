@@ -19,6 +19,7 @@ use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -922,7 +923,7 @@ class QueryBuilderTest extends UnitTestCase
             ->from('pages')
             ->where('uid=1');
 
-        $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND ((pages.hidden = 0) AND (pages.deleted = 0))';
+        $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND ((pages.deleted = 0) AND (pages.hidden = 0))';
         $this->connection->executeQuery($expectedSQL, Argument::cetera())
             ->shouldBeCalled();
 
@@ -969,7 +970,7 @@ class QueryBuilderTest extends UnitTestCase
             ->from('pages')
             ->where('uid=1');
 
-        $expectedSQL = 'SELECT COUNT(uid) FROM pages WHERE (uid=1) AND ((pages.hidden = 0) AND (pages.deleted = 0))';
+        $expectedSQL = 'SELECT COUNT(uid) FROM pages WHERE (uid=1) AND ((pages.deleted = 0) AND (pages.hidden = 0))';
         $this->connection->executeQuery($expectedSQL, Argument::cetera())
             ->shouldBeCalled();
 
@@ -1014,12 +1015,10 @@ class QueryBuilderTest extends UnitTestCase
             ->from('pages')
             ->where('uid=1');
 
-        $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND ((pages.hidden = 0) AND (pages.deleted = 0))';
+        $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND ((pages.deleted = 0) AND (pages.hidden = 0))';
         $this->assertSame($expectedSQL, $subject->getSQL());
 
-        $subject->getQueryContext()
-            ->setIgnoreEnableFields(true)
-            ->setIgnoredEnableFields(['disabled']);
+        $subject->getRestrictions()->removeAll()->add(new DeletedRestriction());
 
         $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND (pages.deleted = 0)';
         $this->assertSame($expectedSQL, $subject->getSQL());
@@ -1063,9 +1062,7 @@ class QueryBuilderTest extends UnitTestCase
             ->from('pages')
             ->where('uid=1');
 
-        $subject->getQueryContext()
-            ->setIgnoreEnableFields(true)
-            ->setIgnoredEnableFields(['disabled']);
+        $subject->getRestrictions()->removeAll()->add(new DeletedRestriction());
 
         $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND (pages.deleted = 0)';
         $this->connection->executeQuery($expectedSQL, Argument::cetera())
@@ -1073,10 +1070,9 @@ class QueryBuilderTest extends UnitTestCase
 
         $subject->execute();
 
-        $subject->getQueryContext()
-            ->setIgnoreEnableFields(false);
+        $subject->resetRestrictions();
 
-        $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND ((pages.hidden = 0) AND (pages.deleted = 0))';
+        $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND ((pages.deleted = 0) AND (pages.hidden = 0))';
         $this->connection->executeQuery($expectedSQL, Argument::cetera())
             ->shouldBeCalled();
 

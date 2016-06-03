@@ -13,9 +13,7 @@ namespace TYPO3\CMS\Backend\Backend\Avatar;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -67,15 +65,16 @@ class DefaultAvatarProvider implements AvatarProviderInterface
      */
     protected function getAvatarFileUid($beUserId)
     {
-        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
         $file = $queryBuilder
             ->select('uid_local')
             ->from('sys_file_reference')
-            ->where($queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('be_users')))
-            ->andWhere($queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter('avatar')))
-            ->andWhere($queryBuilder->expr()->eq('table_local', $queryBuilder->createNamedParameter('sys_file')))
-            ->andWhere($queryBuilder->expr()->eq('uid_foreign', (int)$beUserId))
+            ->where(
+                $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('be_users')),
+                $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter('avatar')),
+                $queryBuilder->expr()->eq('table_local', $queryBuilder->createNamedParameter('sys_file')),
+                $queryBuilder->expr()->eq('uid_foreign', (int)$beUserId)
+            )
             ->execute()
             ->fetchColumn();
 

@@ -19,8 +19,14 @@ use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
+use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -1050,6 +1056,7 @@ abstract class AbstractUserAuthentication
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->session_table);
+        $queryBuilder->setRestrictions($this->userConstraints());
         $queryBuilder->select('*')
             ->from($this->session_table)
             ->from($this->user_table)
@@ -1057,28 +1064,21 @@ abstract class AbstractUserAuthentication
                 $queryBuilder->expr()->eq(
                     $this->session_table . '.ses_id',
                     $queryBuilder->createNamedParameter($this->id)
-                )
-            )
-            ->andWhere(
+                ),
                 $queryBuilder->expr()->eq(
                     $this->session_table . '.ses_name',
                     $queryBuilder->createNamedParameter($this->name)
-                )
-            )
-            // Condition on which to join the session and user table
-            ->andWhere(
+                ),
+                // Condition on which to join the session and user table
                 $queryBuilder->expr()->eq(
                     $this->session_table . '.ses_userid',
                     $queryBuilder->quoteIdentifier($this->user_table . '.' . $this->userid_column)
-                )
-            )
-            ->andWhere(
+                ),
                 $queryBuilder->expr()->eq(
                     $this->session_table . '.ses_hashlock',
                     $queryBuilder->createNamedParameter($this->hashLockClause_getHashInt())
                 )
-            )
-            ->andWhere($this->userConstraints($queryBuilder->expr()));
+            );
 
         if ($this->lockIP) {
             $queryBuilder->andWhere(
@@ -1097,50 +1097,38 @@ abstract class AbstractUserAuthentication
     }
 
     /**
-     * @param ExpressionBuilder $expressionBuilder
-     * @param string $tableAlias
-     * @return \Doctrine\DBAL\Query\Expression\CompositeExpression
+     * This returns the restrictions needed to select the user respecting
+     * enable columns and flags like deleted, hidden, starttime, endtime
+     * and rootLevel
+     *
+     * @return \TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface
      * @internal
      */
-    protected function userConstraints(
-        ExpressionBuilder $expressionBuilder,
-        string $tableAlias = ''
-    ): \Doctrine\DBAL\Query\Expression\CompositeExpression {
-        if ($tableAlias === '') {
-            $tableAlias = $this->user_table;
+    protected function userConstraints(): QueryRestrictionContainerInterface
+    {
+        $restrictionContainer = GeneralUtility::makeInstance(DefaultRestrictionContainer::class);
+
+        if (empty($this->enablecolumns['disabled'])) {
+            $restrictionContainer->removeByType(HiddenRestriction::class);
         }
 
-        $constraints = $expressionBuilder->andX();
-        if ($this->enablecolumns['rootLevel']) {
-            $constraints->add(
-                $expressionBuilder->eq($tableAlias . '.pid', 0)
-            );
-        }
-        if ($this->enablecolumns['disabled']) {
-            $constraints->add(
-                $expressionBuilder->eq($tableAlias . '.' . $this->enablecolumns['disabled'], 0)
-            );
-        }
-        if ($this->enablecolumns['deleted']) {
-            $constraints->add(
-                $expressionBuilder->eq($tableAlias . '.' . $this->enablecolumns['deleted'], 0)
-            );
-        }
-        if ($this->enablecolumns['starttime']) {
-            $constraints->add(
-                $expressionBuilder->lte($tableAlias . '.' . $this->enablecolumns['starttime'], $GLOBALS['EXEC_TIME'])
-            );
-        }
-        if ($this->enablecolumns['endtime']) {
-            $constraints->add(
-                $expressionBuilder->orX(
-                    $expressionBuilder->eq($tableAlias . '.' . $this->enablecolumns['endtime'], 0),
-                    $expressionBuilder->gt($tableAlias . '.' . $this->enablecolumns['endtime'], $GLOBALS['EXEC_TIME'])
-                )
-            );
+        if (empty($this->enablecolumns['deleted'])) {
+            $restrictionContainer->removeByType(DeletedRestriction::class);
         }
 
-        return $constraints;
+        if (empty($this->enablecolumns['starttime'])) {
+            $restrictionContainer->removeByType(StartTimeRestriction::class);
+        }
+
+        if (empty($this->enablecolumns['endtime'])) {
+            $restrictionContainer->removeByType(EndTimeRestriction::class);
+        }
+
+        if (!empty($this->enablecolumns['rootLevel'])) {
+            $restrictionContainer->add(GeneralUtility::makeInstance(RootLevelRestriction::class, [$this->user_table]));
+        }
+
+        return $restrictionContainer;
     }
 
     /**
@@ -1479,7 +1467,10 @@ abstract class AbstractUserAuthentication
         $authInfo['db_user']['username_column'] = $this->username_column;
         $authInfo['db_user']['userident_column'] = $this->userident_column;
         $authInfo['db_user']['usergroup_column'] = $this->usergroup_column;
-        $authInfo['db_user']['enable_clause'] = $this->userConstraints($expressionBuilder);
+        $authInfo['db_user']['enable_clause'] = $this->userConstraints()->buildExpression(
+            [$this->user_table],
+            $expressionBuilder
+        );
         if ($this->checkPid && $this->checkPid_value !== null) {
             $authInfo['db_user']['checkPidList'] = $this->checkPid_value;
             $authInfo['db_user']['check_pid_clause'] = $expressionBuilder->in(
@@ -1521,9 +1512,7 @@ abstract class AbstractUserAuthentication
                 $query->expr()->lt(
                     'ses_tstamp',
                     $query->createNamedParameter((int)($GLOBALS['EXEC_TIME'] - $this->gc_time))
-                )
-            )
-            ->andWhere(
+                ),
                 $query->expr()->eq(
                     'ses_name',
                     $query->createNamedParameter($this->name)
@@ -1604,10 +1593,10 @@ abstract class AbstractUserAuthentication
     public function getRawUserByUid($uid)
     {
         $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->user_table);
+        $query->setRestrictions($this->userConstraints());
         $query->select('*')
             ->from($this->user_table)
-            ->where($query->expr()->eq('uid', $query->createNamedParameter($uid)))
-            ->andWhere($this->userConstraints($query->expr()));
+            ->where($query->expr()->eq('uid', (int)$uid));
 
         return $query->execute()->fetch();
     }
@@ -1623,10 +1612,10 @@ abstract class AbstractUserAuthentication
     public function getRawUserByName($name)
     {
         $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->user_table);
+        $query->setRestrictions($this->userConstraints());
         $query->select('*')
             ->from($this->user_table)
-            ->where($query->expr()->eq('username', $query->createNamedParameter($name)))
-            ->andWhere($this->userConstraints($query->expr()));
+            ->where($query->expr()->eq('username', $query->createNamedParameter($name)));
 
         return $query->execute()->fetch();
     }
@@ -1650,6 +1639,7 @@ abstract class AbstractUserAuthentication
         $user = false;
         if ($username || $extraWhere) {
             $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($dbUser['table']);
+            $query->getRestrictions()->removeAll();
 
             $constraints = array_filter([
                 QueryHelper::stripLogicalOperatorPrefix($dbUser['check_pid_clause']),
