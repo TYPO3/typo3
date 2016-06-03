@@ -279,7 +279,8 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @param PackageInterface $package
      */
-    protected function registerActivePackage(PackageInterface $package) {
+    protected function registerActivePackage(PackageInterface $package)
+    {
         // reset the active packages so they are rebuilt.
         $this->activePackages = [];
         $this->packageStatesConfiguration['packages'][$package->getPackageKey()] = ['packagePath' => str_replace($this->packagesBasePath, '',  $package->getPackagePath())];

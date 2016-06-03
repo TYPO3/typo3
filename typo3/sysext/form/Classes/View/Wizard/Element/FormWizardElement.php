@@ -27,7 +27,6 @@ use TYPO3\CMS\Form\Utility\TypoScriptToJsonConverter;
  */
 class FormWizardElement extends AbstractFormElement
 {
-
     /**
      * @var array
      */

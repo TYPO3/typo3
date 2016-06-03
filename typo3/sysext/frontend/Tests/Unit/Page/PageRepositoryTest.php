@@ -393,7 +393,6 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertSame(' AND pages.deleted=0 AND (pages.t3ver_wsid=0 OR pages.t3ver_wsid=2)', $this->pageSelectObject->where_hid_del);
     }
 
-
     /**
      * @test
      */

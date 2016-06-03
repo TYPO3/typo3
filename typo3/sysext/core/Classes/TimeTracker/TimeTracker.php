@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TimeTracker implements SingletonInterface
 {
-
     /**
      * If set to true (see constructor) then then the timetracking is enabled
      * @var bool

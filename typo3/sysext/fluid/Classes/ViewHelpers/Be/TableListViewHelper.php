@@ -43,7 +43,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
 {
-
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
      *

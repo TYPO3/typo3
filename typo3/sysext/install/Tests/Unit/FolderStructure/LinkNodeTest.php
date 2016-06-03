@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
+
 /**
  * Test case
  */

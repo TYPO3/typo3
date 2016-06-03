@@ -52,5 +52,4 @@ class ReferringRequest extends Request
                 break;
         }
     }
-
 }

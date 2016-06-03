@@ -532,7 +532,6 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function requireOnceThrowsExceptionForInvalidIdentifier($identifier)
     {
-
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1282073036);
 

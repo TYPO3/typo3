@@ -39,7 +39,7 @@ class CategoryTreeCest
         $I->click('#web_list');
         $I->switchToIFrame('content');
         $I->waitForElement('#recordlist-sys_category');
-        $I->seeNumberOfElements('#recordlist-sys_category table > tbody > tr', [5,100]);
+        $I->seeNumberOfElements('#recordlist-sys_category table > tbody > tr', [5, 100]);
     }
 
     /**
@@ -54,7 +54,7 @@ class CategoryTreeCest
         // Select category with id 7
         $I->click('#recordlist-sys_category tr[data-uid="7"] a[data-original-title="Edit record"]');
         // Change title and level to root
-        $I->fillField('input[data-formengine-input-name="data[sys_category][7][title]"]','level-1-4');
+        $I->fillField('input[data-formengine-input-name="data[sys_category][7][title]"]', 'level-1-4');
         $I->click('div[ext\:tree-node-id="7"]');
         $I->click('div[ext\:tree-node-id="3"]');
         $I->click('button[name="_savedok"]');
@@ -62,7 +62,4 @@ class CategoryTreeCest
         $I->waitForElement('.x-panel.x-tree');
         $I->see('level-1-4', '.x-panel.x-tree');
     }
-
-
-
 }

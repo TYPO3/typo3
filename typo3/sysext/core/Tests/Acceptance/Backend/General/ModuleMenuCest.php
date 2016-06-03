@@ -61,7 +61,7 @@ class ModuleMenuCest
      */
     public function selectingAModuleDoesHighlightIt(Admin $I)
     {
-        $I->seeNumberOfElements('#web .typo3-module-menu-item-link', [2,20]);
+        $I->seeNumberOfElements('#web .typo3-module-menu-item-link', [2, 20]);
 
         $I->wantTo('check that the second element has no "active" class\'');
         $I->cantSeeElement('#web #web_list.active');

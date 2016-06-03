@@ -49,7 +49,7 @@ class SearchCest
         $I->canSee('Backend user', self::$topBarModuleSelector);
         $I->click('.icon-status-user-admin', self::$topBarModuleSelector);
 
-        $I->switchToIFrame("content");
+        $I->switchToIFrame('content');
         $I->waitForElementVisible('#EditDocumentController');
         $I->canSee('Edit Backend user "admin" on root level');
     }

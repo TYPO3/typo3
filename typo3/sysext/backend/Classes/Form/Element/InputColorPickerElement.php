@@ -14,9 +14,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -26,7 +24,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class InputColorPickerElement extends AbstractFormElement
 {
-
     /**
      * This will render a single-line input form field, possibly with various control/validation features
      *

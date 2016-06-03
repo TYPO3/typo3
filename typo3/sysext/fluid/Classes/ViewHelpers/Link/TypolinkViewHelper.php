@@ -51,7 +51,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class TypolinkViewHelper extends AbstractViewHelper
 {
-
     /**
      * @var bool
      */

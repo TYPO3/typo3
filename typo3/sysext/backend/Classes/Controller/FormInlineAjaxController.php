@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare (strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller;
 
 /*
@@ -818,7 +818,8 @@ class FormInlineAjaxController
      * @param BackendUserAuthentication $backendUser
      * @return bool
      */
-    protected function backendUserHasUcInlineView(BackendUserAuthentication $backendUser) {
+    protected function backendUserHasUcInlineView(BackendUserAuthentication $backendUser)
+    {
         return !empty($backendUser->uc['inlineView']);
     }
 
@@ -993,11 +994,9 @@ class FormInlineAjaxController
          */
 
         if (preg_match($pattern, $domObjectId, $match)) {
-
             return array($match['flexformPath'], $match['tableName']);
         }
 
         return [];
-
     }
 }

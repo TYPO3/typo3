@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\FlexformIrre;
 
 class ActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase
 {
-
     /**
      * @var array
      */

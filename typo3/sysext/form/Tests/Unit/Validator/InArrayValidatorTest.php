@@ -20,7 +20,6 @@ use TYPO3\CMS\Form\Domain\Validator\InArrayValidator;
  */
 class InArrayValidatorTest extends AbstractValidatorTest
 {
-
     /**
      * @var string
      */

@@ -64,7 +64,6 @@ class FormInlineAjaxControllerTest extends UnitTestCase
         $this->assertTrue($mayUploadFile);
     }
 
-
     /**
      * @dataProvider splitDomObjectIdDataProviderForTableName
      * @param string $dataStructure
@@ -192,7 +191,6 @@ class FormInlineAjaxControllerTest extends UnitTestCase
 
         $this->assertEmpty($result);
     }
-
 
     /**
      * Unserialize uc inline view string for IRRE item

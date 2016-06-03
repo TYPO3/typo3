@@ -3207,7 +3207,6 @@ class GeneralUtility
         return $bInfo;
     }
 
-
     /**
      * Get the fully-qualified domain name of the host.
      *
@@ -3415,7 +3414,7 @@ class GeneralUtility
             } elseif (strpos($testAbsoluteUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0 && $decodedUrl[0] === '/') {
                 $sanitizedUrl = $url;
             } elseif (empty($parsedUrl['scheme']) && strpos($testRelativeUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0
-                && $decodedUrl[0] !== '/' && strpbrk($decodedUrl, "*:|\"<>") === FALSE && strpos($decodedUrl, '\\\\') === false
+                && $decodedUrl[0] !== '/' && strpbrk($decodedUrl, '*:|"<>') === false && strpos($decodedUrl, '\\\\') === false
             ) {
                 $sanitizedUrl = $url;
             }

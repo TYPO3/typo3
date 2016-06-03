@@ -21,7 +21,6 @@ namespace TYPO3\CMS\Scheduler\Task;
  */
 abstract class AbstractTask
 {
-
     const TYPE_SINGLE = 1;
     const TYPE_RECURRING = 2;
 

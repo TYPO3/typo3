@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class VariableFrontend extends AbstractFrontend
 {
-
     /**
      * Saves the value of a PHP variable in the cache. Note that the variable
      * will be serialized if necessary.

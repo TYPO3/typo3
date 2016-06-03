@@ -4461,7 +4461,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @test
      * @dataProvider callUserFunctionInvalidParameterDataprovider
      * @param string $functionName
-     * @param integer $expectedException
+     * @param int $expectedException
      */
     public function callUserFunctionWillThrowExceptionForInvalidParameters($functionName, $expectedException)
     {

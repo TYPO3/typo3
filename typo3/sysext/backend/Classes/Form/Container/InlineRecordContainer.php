@@ -502,7 +502,7 @@ class InlineRecordContainer extends AbstractContainer
             $hiddenField = $tcaTableCtrl['enablecolumns']['disabled'];
             if ($enabledControls['hide'] && $permsEdit && $hiddenField && $tcaTableCols[$hiddenField] && (!$tcaTableCols[$hiddenField]['exclude'] || $backendUser->check('non_exclude_fields', $foreignTable . ':' . $hiddenField))) {
                 $onClick = 'return inline.enableDisableRecord(' . GeneralUtility::quoteJSvalue($nameObjectFtId) . ',' .
-                    GeneralUtility::quoteJSvalue($hiddenField) .')';
+                    GeneralUtility::quoteJSvalue($hiddenField) . ')';
                 $className = 't3js-' . $nameObjectFtId . '_disabled';
                 if ($rec[$hiddenField]) {
                     $title = htmlspecialchars($languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:unHide' . ($isPagesTable ? 'Page' : ''))));

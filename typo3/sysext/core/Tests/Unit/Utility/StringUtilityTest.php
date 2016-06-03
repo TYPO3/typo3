@@ -191,9 +191,8 @@ class StringUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      *
      * @param mixed $string
      * @param mixed $part
-     * @param integer $expectedException
+     * @param int $expectedException
      */
-
     public function beginsWithReturnsThrowsExceptionWithInvalidArguments($string, $part, $expectedException)
     {
         $this->expectException(\InvalidArgumentException::class);

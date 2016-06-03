@@ -17,13 +17,12 @@ namespace TYPO3\CMS\Frontend\Controller;
 
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 
 /**
  * Class for displaying translation status of pages in the tree.
@@ -352,8 +351,8 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
         $res = $queryBuilder->execute();
         $outputArray = [];
         if (is_array($allowed_languages) && !empty($allowed_languages)) {
-            while($output = $res->fetch()){
-                if(isset($allowed_languages[$output['uid']])){
+            while ($output = $res->fetch()) {
+                if (isset($allowed_languages[$output['uid']])) {
                     $outputArray[] = $output;
                 }
             }

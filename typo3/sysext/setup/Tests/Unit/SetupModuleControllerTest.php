@@ -22,7 +22,6 @@ use TYPO3\CMS\Setup\Controller\SetupModuleController;
  */
 class SetupModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
-
     /**
      * @test
      * @return void

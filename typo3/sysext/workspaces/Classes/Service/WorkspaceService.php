@@ -837,7 +837,6 @@ class WorkspaceService implements SingletonInterface
             $joinStatement = '(A.t3ver_oid=B.uid AND A.t3ver_state<>' . $movePointer
                 . ' OR A.t3ver_oid=B.t3ver_move_id AND A.t3ver_state=' . $movePointer . ')';
 
-
             $pageIds = $this->getDatabaseConnection()->exec_SELECTgetRows(
                 'B.pid AS pageId',
                 $tableName . ' A,' . $tableName . ' B',

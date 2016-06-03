@@ -2812,7 +2812,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             '; sourounded' => [',one,two,', ' ; one ; two ; '],
             'nl sourounded' => [
                 ',one,two,',
-                ' ' . PHP_EOL .' one ' . PHP_EOL . ' two ' . PHP_EOL . ' '
+                ' ' . PHP_EOL . ' one ' . PHP_EOL . ' two ' . PHP_EOL . ' '
             ],
             'mixed' => [
                 'one,two,three,four',

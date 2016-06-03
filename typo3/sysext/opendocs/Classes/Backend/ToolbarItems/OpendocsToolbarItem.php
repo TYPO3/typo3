@@ -299,5 +299,4 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     {
         return $GLOBALS['LANG'];
     }
-
 }

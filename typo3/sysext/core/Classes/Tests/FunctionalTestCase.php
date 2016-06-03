@@ -52,7 +52,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class FunctionalTestCase extends BaseTestCase
 {
-
     /**
      * An unique identifier for this test case. Location of the test
      * instance and database name depend on this. Calculated early in setUp()

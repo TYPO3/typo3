@@ -46,7 +46,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SectionViewHelper extends AbstractMenuViewHelper
 {
-
     /**
      * Output escaping is disabled as child content contains HTML by default
      *

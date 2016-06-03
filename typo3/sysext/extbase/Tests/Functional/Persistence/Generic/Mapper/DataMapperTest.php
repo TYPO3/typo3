@@ -5,10 +5,8 @@ use ExtbaseTeam\BlogExample\Domain\Model\Comment;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-
 class DataMapperTest extends FunctionalTestCase
 {
-
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
      */
@@ -28,7 +26,6 @@ class DataMapperTest extends FunctionalTestCase
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
      */
     protected $objectManager;
-
 
     /**
      * Sets up this test suite.

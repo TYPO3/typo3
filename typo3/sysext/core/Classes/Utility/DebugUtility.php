@@ -23,12 +23,12 @@ class DebugUtility
     /**
      * @var bool
      */
-    static protected $plainTextOutput = true;
+    protected static $plainTextOutput = true;
 
     /**
      * @var bool
      */
-    static protected $ansiColorUsage = true;
+    protected static $ansiColorUsage = true;
 
     /**
      * Debug

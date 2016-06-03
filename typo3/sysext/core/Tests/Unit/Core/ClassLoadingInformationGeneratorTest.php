@@ -29,7 +29,6 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
      */
     public function buildClassAliasMapForPackageThrowsExceptionForWrongComposerManifestInformation()
     {
-
         $this->expectException(\TYPO3\CMS\Core\Error\Exception::class);
         $this->expectExceptionCode(1444142481);
 

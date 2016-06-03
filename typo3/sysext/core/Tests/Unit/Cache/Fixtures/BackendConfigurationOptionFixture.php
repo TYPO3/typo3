@@ -35,5 +35,4 @@ class BackendConfigurationOptionFixture extends BackendFixture
             throw new \RuntimeException('', 1464555007);
         }
     }
-
 }

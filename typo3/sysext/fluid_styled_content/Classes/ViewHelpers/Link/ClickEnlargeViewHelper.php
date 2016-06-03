@@ -37,7 +37,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class ClickEnlargeViewHelper extends AbstractViewHelper
 {
-
     /**
      * @var bool
      */

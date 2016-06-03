@@ -115,7 +115,6 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1279763057);
 
-
         $this->setUpBackend(array('database' => 'foo'));
     }
 
@@ -168,7 +167,6 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setThrowsExceptionIfIdentifierIsNotAString()
     {
-
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1377006651);
 

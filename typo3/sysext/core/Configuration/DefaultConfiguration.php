@@ -1132,7 +1132,7 @@ return array(
         'transport_sendmail_command' => '',        // String: <em>only with transport=sendmail</em>: The command to call to send a mail locally.
         'transport_mbox_file' => '',        // String: <em>only with transport=mbox</em>: The file where to write the mails into. This file will be conforming the mbox format described in RFC 4155. It is a simple text file with a concatenation of all mails. Path must be absolute.
         'defaultMailFromAddress' => '',        // String: This default email address is used when no other "from" address is set for a TYPO3-generated email. You can specify an email address only (ex. info@example.org).
-        'defaultMailFromName' => '',    // String: This default name is used when no other "from" name is set for a TYPO3-generated email.
+        'defaultMailFromName' => ''// String: This default name is used when no other "from" name is set for a TYPO3-generated email.
     ),
     'HTTP' => array(    // HTTP configuration to tune how TYPO3 behaves on HTTP requests made by TYPO3. Have a look at http://docs.guzzlephp.org/en/latest/request-options.html for some background information on those settings.
         'allow_redirects' => array( // Mixed, set to false if you want to allow redirects, or use it as an array to add more values, see http://docs.guzzlephp.org/en/latest/request-options.html#allow-redirects for syntax

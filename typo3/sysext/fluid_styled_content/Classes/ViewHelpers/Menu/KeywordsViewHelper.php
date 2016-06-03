@@ -39,7 +39,6 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
  */
 class KeywordsViewHelper extends AbstractMenuViewHelper
 {
-
     /**
      * Output escaping is disabled as child content contains HTML by default
      *

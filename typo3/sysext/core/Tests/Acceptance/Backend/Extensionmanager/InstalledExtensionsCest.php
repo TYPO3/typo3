@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Extensionmanager;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Facebook\WebDriver\Remote\DriverCommand;
 use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Admin;
 
 /**
@@ -77,7 +76,8 @@ class InstalledExtensionsCest
      * @param Admin $I
      * @return Admin
      */
-    public function checkIfInstallingAnExtensionWithBackendModuleAddsTheModuleToTheModuleMenu(Admin $I) {
+    public function checkIfInstallingAnExtensionWithBackendModuleAddsTheModuleToTheModuleMenu(Admin $I)
+    {
         $I->switchToIFrame();
         $I->canSeeElement('.typo3-module-menu-item');
         $I->cantSeeElement('#system_BeuserTxBeuser');
@@ -92,7 +92,6 @@ class InstalledExtensionsCest
 
         $I->switchToIFrame();
         $I->canSeeElement('#system_BeuserTxBeuser');
-
 
         return $I;
     }

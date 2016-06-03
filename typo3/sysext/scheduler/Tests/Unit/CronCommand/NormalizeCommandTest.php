@@ -195,7 +195,7 @@ class NormalizeCommandTest extends UnitTestCase
      * @dataProvider normalizeMonthAndWeekdayFieldInvalidDataProvider
      * @param string $expression Cron command partial expression for month and weekday fields (invalid)
      * @param bool $isMonthField Flag to designate month field or not
-     * @param integer $expectedExceptionCode Expected exception code from provider
+     * @param int $expectedExceptionCode Expected exception code from provider
      */
     public function normalizeMonthAndWeekdayFieldThrowsExceptionForInvalidExpression(
         $expression,
@@ -372,7 +372,7 @@ class NormalizeCommandTest extends UnitTestCase
      * @test
      * @dataProvider invalidRangeDataProvider
      * @param string $range Cron command range expression (invalid)
-     * @param integer $expectedExceptionCode Expected exception code from provider
+     * @param int $expectedExceptionCode Expected exception code from provider
      */
     public function convertRangeToListOfValuesThrowsExceptionForInvalidRanges($range, $expectedExceptionCode)
     {
@@ -428,7 +428,7 @@ class NormalizeCommandTest extends UnitTestCase
      * @test
      * @dataProvider invalidStepsDataProvider
      * @param string $stepExpression Cron command step expression (invalid)
-     * @param integer $expectedExceptionCode Expected exception code
+     * @param int $expectedExceptionCode Expected exception code
      */
     public function reduceListOfValuesByStepValueThrowsExceptionForInvalidStepExpressions(
         $stepExpression,
@@ -548,7 +548,7 @@ class NormalizeCommandTest extends UnitTestCase
      * @test
      * @dataProvider invalidMonthNamesDataProvider
      * @param string $invalidMonthName Month name (invalid)
-     * @param integer $expectedExceptionCode Expected exception code
+     * @param int $expectedExceptionCode Expected exception code
      */
     public function normalizeMonthThrowsExceptionForInvalidMonthRepresentation(
         $invalidMonthName,

@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ExtensionManagerTables extends AbstractUpdate
 {
-
     /**
      * @var string
      */

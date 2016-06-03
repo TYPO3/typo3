@@ -2927,7 +2927,8 @@ class ResourceStorage implements ResourceStorageInterface
                     $processingFolder = $processingFolder->createFolder($folderName);
                 }
             }
-        } catch (Exception\FolderDoesNotExistException $e) {}
+        } catch (Exception\FolderDoesNotExistException $e) {
+        }
 
         return $processingFolder;
     }

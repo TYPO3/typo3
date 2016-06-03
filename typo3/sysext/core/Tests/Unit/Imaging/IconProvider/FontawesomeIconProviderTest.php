@@ -73,7 +73,7 @@ class FontawesomeIconProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @dataProvider wrongNamesDataProvider
      * @param string $name
-     * @param integer $expectedExceptionCode
+     * @param int $expectedExceptionCode
      * @test
      */
     public function prepareIconMarkupWithInvalidNameThrowsException($name, $expectedExceptionCode)

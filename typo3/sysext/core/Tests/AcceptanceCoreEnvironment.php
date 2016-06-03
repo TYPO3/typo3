@@ -31,7 +31,6 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
  */
 class AcceptanceCoreEnvironment extends Extension
 {
-
     /**
      * Additional core extensions to load.
      *

@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ReferenceIndexUpdateCommand extends Command
 {
-
     /**
      * Configure the command by defining the name, options and arguments
      */
