@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Authentication;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -459,27 +460,58 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
             if ($this->isAdmin()) {
                 return ' 1=1';
             }
-            $perms = (int)$perms;
             // Make sure it's integer.
-            $str = ' (' . '(pages.perms_everybody & ' . $perms . ' = ' . $perms . ')' . ' OR (pages.perms_userid = '
-                . $this->user['uid'] . ' AND pages.perms_user & ' . $perms . ' = ' . $perms . ')';
+            $perms = (int)$perms;
+            $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages')
+                ->expr();
+
             // User
+            $constraint = $expressionBuilder->orX(
+                $expressionBuilder->comparison(
+                    $expressionBuilder->bitAnd('pages.perms_everybody', $perms),
+                    ExpressionBuilder::EQ,
+                    $perms
+                ),
+                $expressionBuilder->andX(
+                    $expressionBuilder->eq('pages.perms_userid', (int)$this->user['uid']),
+                    $expressionBuilder->comparison(
+                        $expressionBuilder->bitAnd('pages.perms_user', $perms),
+                        ExpressionBuilder::EQ,
+                        $perms
+                    )
+                )
+            );
+
+            // Group (if any is set)
             if ($this->groupList) {
-                // Group (if any is set)
-                $str .= ' OR (pages.perms_groupid in (' . $this->groupList . ') AND pages.perms_group & '
-                    . $perms . ' = ' . $perms . ')';
+                $constraint->add(
+                    $expressionBuilder->andX(
+                        $expressionBuilder->in(
+                            'pages.perms_groupid',
+                            GeneralUtility::intExplode(',', $this->groupList)
+                        ),
+                        $expressionBuilder->comparison(
+                            $expressionBuilder->bitAnd('pages.perms_group', $perms),
+                            ExpressionBuilder::EQ,
+                            $perms
+                        )
+                    )
+                );
             }
-            $str .= ')';
+
+            $constraint = ' (' . (string)$constraint . ')';
+
             // ****************
             // getPagePermsClause-HOOK
             // ****************
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'])) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'] as $_funcRef) {
-                    $_params = array('currentClause' => $str, 'perms' => $perms);
+                    $_params = array('currentClause' => $constraint, 'perms' => $perms);
                     $str = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
                 }
             }
-            return $str;
+            return $constraint;
         } else {
             return ' 1=0';
         }

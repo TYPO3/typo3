@@ -20,6 +20,9 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -715,5 +718,94 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $subject = $this->getMock(BackendUserAuthentication::class, ['getTSConfig']);
 
         $this->assertTrue($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
+    }
+
+    /**
+     * Data provider to test page permissions constraints
+     * returns an array of test conditions:
+     *  - permission bit(s) as integer
+     *  - admin flag
+     *  - groups for user
+     *  - expected SQL fragment
+     *
+     * @return array
+     */
+    public function getPagePermissionsClauseWithValidUserDataProvider(): array
+    {
+        return [
+            'for admin' => [
+                1,
+                true,
+                '',
+                ' 1=1'
+            ],
+            'for admin with groups' => [
+                11,
+                true,
+                '1,2',
+                ' 1=1'
+            ],
+            'for user' => [
+                2,
+                false,
+                '',
+                ' ((`pages`.`perms_everybody` & 2 = 2) OR' .
+                ' ((`pages`.`perms_userid` = 123) AND (`pages`.`perms_user` & 2 = 2)))'
+            ],
+            'for user with groups' => [
+                8,
+                false,
+                '1,2',
+                ' ((`pages`.`perms_everybody` & 8 = 8) OR' .
+                ' ((`pages`.`perms_userid` = 123) AND (`pages`.`perms_user` & 8 = 8))' .
+                ' OR ((`pages`.`perms_groupid` IN (1, 2)) AND (`pages`.`perms_group` & 8 = 8)))'
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getPagePermissionsClauseWithValidUserDataProvider
+     * @param int $perms
+     * @param bool $admin
+     * @param string $groups
+     * @param string $expected
+     */
+    public function getPagePermissionsClauseWithValidUser(int $perms, bool $admin, string $groups, string $expected)
+    {
+        // We only need to setup the mocking for the non-admin cases
+        // If this setup is done for admin cases the FIFO behavior
+        // of GeneralUtility::addInstance will influence other tests
+        // as the ConnectionPool is never used!
+        if (!$admin) {
+            /** @var Connection|ObjectProphecy $connectionProphet */
+            $connectionProphet = $this->prophesize(Connection::class);
+            $connectionProphet->getDatabasePlatform()->willReturn(new MockPlatform());
+            $connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+                return '`' . str_replace('.', '`.`', $args[0]) . '`';
+            });
+
+            /** @var QueryBuilder|ObjectProphecy $queryBuilderProphet */
+            $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
+            $queryBuilderProphet->expr()->willReturn(
+                GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
+            );
+
+            /** @var ConnectionPool|ObjectProphecy $databaseProphet */
+            $databaseProphet = $this->prophesize(ConnectionPool::class);
+            $databaseProphet->getQueryBuilderForTable('pages')->willReturn($queryBuilderProphet->reveal());
+            GeneralUtility::addInstance(ConnectionPool::class, $databaseProphet->reveal());
+        }
+
+        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
+        $subject = $this->getMock(BackendUserAuthentication::class, ['isAdmin']);
+        $subject->expects($this->any())
+            ->method('isAdmin')
+            ->will($this->returnValue($admin));
+
+        $subject->user = ['uid' => 123];
+        $subject->groupList = $groups;
+
+        $this->assertEquals($expected, $subject->getPagePermsClause($perms));
     }
 }
