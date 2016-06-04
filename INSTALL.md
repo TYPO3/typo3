@@ -13,7 +13,7 @@ This document describes:
 Client browser support
 ----------------------
 
-The TYPO3 backend is accessed through a web browser. TYPO3 CMS 8
+The TYPO3 backend is accessed through a web browser. TYPO3 v8
 supports the following web browsers:
 
 * Internet Explorer 11 and later
@@ -27,7 +27,7 @@ Server system requirements
 --------------------------
 
 TYPO3 requires a web server with a PHP environment and a database. The minimum
-system requirements for running TYPO3 CMS 7 are:
+system requirements for running TYPO3 v8 are:
 
 * Webserver capable of running PHP applications (Apache, Nginx, IIS or other)
 * PHP 7
