@@ -27,7 +27,7 @@ Server system requirements
 --------------------------
 
 TYPO3 requires a web server with a PHP environment and a database. The minimum
-system requirements for running TYPO3 CMS 7 are:
+system requirements for running TYPO3 CMS 8 are:
 
 * Webserver capable of running PHP applications (Apache, Nginx, IIS or other)
 * PHP 7
