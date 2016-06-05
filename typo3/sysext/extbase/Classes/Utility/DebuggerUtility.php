@@ -114,7 +114,11 @@ class DebuggerUtility
         } elseif (is_array($value)) {
             $dump = self::renderArray($value, $level + 1, $plainText, $ansiColors);
         } elseif (is_object($value)) {
-            $dump = self::renderObject($value, $level + 1, $plainText, $ansiColors);
+            if ($value instanceof \Closure) {
+                $dump = self::renderClosure($value, $level + 1, $plainText, $ansiColors);
+            } else {
+                $dump = self::renderObject($value, $level + 1, $plainText, $ansiColors);
+            }
         }
         return $dump;
     }
@@ -186,6 +190,30 @@ class DebuggerUtility
             return $header . $content;
         } else {
             return '<span class="extbase-debugger-tree">' . $header . '<span class="extbase-debug-content">' . $content . '</span></span>';
+        }
+    }
+
+    /**
+     * Renders a dump of the given closure
+     *
+     * @param \Closure $object
+     * @param int $level
+     * @param bool $plainText
+     * @param bool $ansiColors
+     * @return string
+     */
+    protected static function renderClosure($object, $level, $plainText = false, $ansiColors = false)
+    {
+        $header = self::renderHeader($object, $level, $plainText, $ansiColors);
+        if ($level < self::$maxDepth && (!self::isAlreadyRendered($object) || $plainText)) {
+            $content = self::renderContent($object, $level, $plainText, $ansiColors);
+        } else {
+            $content = '';
+        }
+        if ($plainText) {
+            return $header . $content;
+        } else {
+            return '<span class="extbase-debugger-tree"><input type="checkbox" /><span class="extbase-debug-header">' . $header . '</span><span class="extbase-debug-content">' . $content . '</span></span>';
         }
     }
 
@@ -322,31 +350,81 @@ class DebuggerUtility
             if (!$plainText) {
                 $dump .= '<a name="' . spl_object_hash($object) . '" id="' . spl_object_hash($object) . '"></a>';
             }
-            if (get_class($object) === 'stdClass') {
-                $objReflection = new \ReflectionObject($object);
-                $properties = $objReflection->getProperties();
-            } else {
-                $classReflection = new \ReflectionClass(get_class($object));
-                $properties = $classReflection->getProperties();
-            }
-            foreach ($properties as $property) {
-                if (self::isBlacklisted($property)) {
-                    continue;
-                }
-                $dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level) . ($plainText ? '' : '<span class="extbase-debug-property">') . self::ansiEscapeWrap($property->getName(), '37', $ansiColors) . ($plainText ? '' : '</span>') . ' => ';
-                $property->setAccessible(true);
-                $visibility = ($property->isProtected() ? 'protected' : ($property->isPrivate() ? 'private' : 'public'));
-                if ($plainText) {
-                    $dump .= self::ansiEscapeWrap($visibility, '42;30', $ansiColors) . ' ';
-                } else {
-                    $dump .= '<span class="extbase-debug-visibility">' . $visibility . '</span>';
-                }
-                $dump .= self::renderDump($property->getValue($object), $level, $plainText, $ansiColors);
-                if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject && !$object->_isNew() && $object->_isDirty($property->getName())) {
-                    if ($plainText) {
-                        $dump .= ' ' . self::ansiEscapeWrap('modified', '43;30', $ansiColors);
+            if ($object instanceof \Closure) {
+                $dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level)
+                    . ($plainText ? '' : '<span class="extbase-debug-closure">')
+                    . self::ansiEscapeWrap('function (', '33', $ansiColors) . ($plainText ? '' : '</span>');
+
+                $reflectionFunction = new \ReflectionFunction($object);
+                $params = [];
+                foreach ($reflectionFunction->getParameters() as $parameter) {
+                    $s = '';
+                    if ($parameter->isArray()) {
+                        $s .= ($plainText ? '' : '<span class="extbase-debug-type">')
+                            . self::ansiEscapeWrap('array ', '36', $ansiColors)
+                            . ($plainText ? '' : '</span>');
                     } else {
-                        $dump .= '<span class="extbase-debug-dirty">modified</span>';
+                        if ($parameter->getClass()) {
+                            $s .= ($plainText ? '' : '<span class="extbase-debug-type">')
+                                . self::ansiEscapeWrap($parameter->getClass()->name . ' ', '36', $ansiColors)
+                                . ($plainText ? '' : '</span>');
+                        }
+                    }
+                    if ($parameter->isPassedByReference()) {
+                        $s .= '&';
+                    }
+                    $s .= ($plainText ? '' : '<span class="extbase-debug-property">')
+                        . self::ansiEscapeWrap('$' . $parameter->name, '37', $ansiColors)
+                        . ($plainText ? '' : '</span>');
+                    if ($parameter->isOptional()) {
+                        $s .= ' = ';
+                        $s .= ($plainText ? '' : '<span class="extbase-debug-string">')
+                        . self::ansiEscapeWrap(var_export($parameter->getDefaultValue(), true), '33', $ansiColors)
+                        . ($plainText ? '' : '</span>');
+                    }
+                    $params[] = $s;
+                }
+                $dump .= implode(', ', $params);
+                $dump .= ($plainText ? '' : '<span class="extbase-debug-closure">')
+                    . self::ansiEscapeWrap(') {' . PHP_EOL, '33', $ansiColors)
+                    . ($plainText ? '' : '</span>');
+                $lines = file($reflectionFunction->getFileName());
+                for ($l = $reflectionFunction->getStartLine(); $l < $reflectionFunction->getEndLine() -1; ++$l) {
+                    $dump .= $plainText ? $lines[$l] : htmlspecialchars($lines[$l]);
+                }
+                $dump .=
+                    str_repeat(self::PLAINTEXT_INDENT, $level)
+                    . ($plainText ? '' : '<span class="extbase-debug-closure">') . self::ansiEscapeWrap('}' . PHP_EOL, '33', $ansiColors)
+                    . ($plainText ? '' : '</span>');
+            } else {
+                if (get_class($object) === 'stdClass') {
+                    $objReflection = new \ReflectionObject($object);
+                    $properties = $objReflection->getProperties();
+                } else {
+                    $classReflection = new \ReflectionClass(get_class($object));
+                    $properties = $classReflection->getProperties();
+                }
+                foreach ($properties as $property) {
+                    if (self::isBlacklisted($property)) {
+                        continue;
+                    }
+                    $dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT,
+                            $level) . ($plainText ? '' : '<span class="extbase-debug-property">') . self::ansiEscapeWrap($property->getName(),
+                            '37', $ansiColors) . ($plainText ? '' : '</span>') . ' => ';
+                    $property->setAccessible(true);
+                    $visibility = ($property->isProtected() ? 'protected' : ($property->isPrivate() ? 'private' : 'public'));
+                    if ($plainText) {
+                        $dump .= self::ansiEscapeWrap($visibility, '42;30', $ansiColors) . ' ';
+                    } else {
+                        $dump .= '<span class="extbase-debug-visibility">' . $visibility . '</span>';
+                    }
+                    $dump .= self::renderDump($property->getValue($object), $level, $plainText, $ansiColors);
+                    if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject && !$object->_isNew() && $object->_isDirty($property->getName())) {
+                        if ($plainText) {
+                            $dump .= ' ' . self::ansiEscapeWrap('modified', '43;30', $ansiColors);
+                        } else {
+                            $dump .= '<span class="extbase-debug-dirty">modified</span>';
+                        }
                     }
                 }
             }
@@ -449,6 +527,7 @@ class DebuggerUtility
 					.extbase-debugger-center .extbase-debug-filtered{background-color:#4F4F4F}
 					.extbase-debugger-center .extbase-debug-seeabove{text-decoration:none;font-style:italic}
 					.extbase-debugger-center .extbase-debug-property{color:#f1f1f1}
+					.extbase-debugger-center .extbase-debug-closure{color:#9BA223;}
 				</style>';
             self::$stylesheetEchoed = true;
         }
