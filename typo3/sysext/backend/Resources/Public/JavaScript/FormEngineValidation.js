@@ -204,7 +204,6 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 		var config = $mainField.data('config');
 		if (typeof config !== 'undefined') {
 			var evalList = FormEngineValidation.trimExplode(',', config.evalList);
-			var origValue = $humanReadableField.val();
 			var newValue = $humanReadableField.val();
 			var i;
 
@@ -217,13 +216,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 				formattedValue = FormEngineValidation.formatValue(evalList[i], formattedValue, config);
 			}
 
-			if ($.inArray('password', evalList) !== -1) {
-				$mainField.val(origValue);
-				$humanReadableField.val(newValue);
-			} else {
-				$mainField.val(newValue);
-				$humanReadableField.val(formattedValue);
-			}
+			$mainField.val(newValue);
+			$humanReadableField.val(formattedValue);
 		}
 	};
 
@@ -487,8 +481,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 				// unknown type null, we ignore it
 				break;
 			case 'password':
-				var theString = (value) ? FormEngineValidation.passwordDummy : '';
-				returnValue = theString;
+				// password is only a display evaluation, we ignore it
 				break;
 			default:
 				if (typeof TBE_EDITOR.customEvalFunctions !== 'undefined' && typeof TBE_EDITOR.customEvalFunctions[command] === 'function') {
