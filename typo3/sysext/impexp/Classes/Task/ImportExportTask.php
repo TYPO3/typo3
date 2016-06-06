@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Impexp\Task;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception;
@@ -177,19 +178,25 @@ class ImportExportTask implements TaskInterface
     /**
      * Select presets for this user
      *
-     * @return array Array of preset records
+     * @return array|bool Array of preset records
      */
     protected function getPresets()
     {
-        $db = $this->getDatabase();
-        $presets = $db->exec_SELECTgetRows(
-            '*',
-            'tx_impexp_presets',
-            '(public > 0 OR user_uid=' . $this->getBackendUser()->user['uid'] . ')',
-            '',
-            'item_uid DESC, title'
-        );
-        return $presets;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_impexp_presets');
+
+        return $queryBuilder->select('*')
+            ->from('tx_impexp_presets')
+            ->where(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->gt('public', 0),
+                    $queryBuilder->expr()->eq('user_uid', (int)$this->getBackendUser()->user['uid'])
+                )
+            )
+            ->orderBy('item_uid', 'DESC')
+            ->addOrderBy('title')
+            ->execute()
+            ->fetchAll();
     }
 
     /**

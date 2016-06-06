@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Impexp\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -31,16 +31,33 @@ class PresetRepository
      */
     public function getPresets($pageId)
     {
-        $options = array('');
-        $where = '(public>0 OR user_uid=' . (int)$this->getBackendUser()->user['uid'] . ')'
-            . ($pageId ? ' AND (item_uid=' . (int)$pageId . ' OR item_uid=0)' : '');
-        $presets = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'tx_impexp_presets', $where);
-        if (is_array($presets)) {
-            foreach ($presets as $presetCfg) {
-                $options[$presetCfg['uid']] = $presetCfg['title'] . ' [' . $presetCfg['uid'] . ']'
-                    . ($presetCfg['public'] ? ' [Public]' : '')
-                    . ($presetCfg['user_uid'] === $this->getBackendUser()->user['uid'] ? ' [Own]' : '');
-            }
+        $options = [''];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_impexp_presets');
+
+        $queryBuilder->select('*')
+            ->from('tx_impexp_presets')
+            ->where(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->gt('public', 0),
+                    $queryBuilder->expr()->eq('user_uid', (int)$this->getBackendUser()->user['uid'])
+                )
+            );
+
+        if ($pageId) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->eq('item_uid', (int)$pageId),
+                    $queryBuilder->expr()->eq('item_uid', 0)
+                )
+            );
+        }
+
+        $presets = $queryBuilder->execute();
+        while ($presetCfg = $presets->fetch()) {
+            $options[$presetCfg['uid']] = $presetCfg['title'] . ' [' . $presetCfg['uid'] . ']'
+                . ($presetCfg['public'] ? ' [Public]' : '')
+                . ($presetCfg['user_uid'] === $this->getBackendUser()->user['uid'] ? ' [Own]' : '');
         }
         return $options;
     }
@@ -53,7 +70,14 @@ class PresetRepository
      */
     public function getPreset($uid)
     {
-        return $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'tx_impexp_presets', 'uid=' . (int)$uid);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_impexp_presets');
+
+        return $queryBuilder->select('*')
+            ->from('tx_impexp_presets')
+            ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+            ->execute()
+            ->fetch();
     }
 
     /**
@@ -64,6 +88,7 @@ class PresetRepository
      */
     public function processPresets(&$inData)
     {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tx_impexp_presets');
         $presetData = GeneralUtility::_GP('preset');
         $err = false;
         $msg = '';
@@ -76,13 +101,17 @@ class PresetRepository
             // Update existing
             if (is_array($preset)) {
                 if ($beUser->isAdmin() || $preset['user_uid'] === $beUser->user['uid']) {
-                    $fields_values = array(
-                        'public' => $inData['preset']['public'],
-                        'title' => $inData['preset']['title'],
-                        'item_uid' => $inData['pagetree']['id'],
-                        'preset_data' => serialize($inData)
+                    $connection->update(
+                        'tx_impexp_presets',
+                        [
+                            'public' => $inData['preset']['public'],
+                            'title' => $inData['preset']['title'],
+                            'item_uid' => $inData['pagetree']['id'],
+                            'preset_data' => serialize($inData)
+                        ],
+                        ['uid' => (int)$preset['uid']]
                     );
-                    $this->getDatabaseConnection()->exec_UPDATEquery('tx_impexp_presets', 'uid=' . (int)$preset['uid'], $fields_values);
+
                     $msg = 'Preset #' . $preset['uid'] . ' saved!';
                 } else {
                     $msg = 'ERROR: The preset was not saved because you were not the owner of it!';
@@ -90,14 +119,17 @@ class PresetRepository
                 }
             } else {
                 // Insert new:
-                $fields_values = array(
-                    'user_uid' => $beUser->user['uid'],
-                    'public' => $inData['preset']['public'],
-                    'title' => $inData['preset']['title'],
-                    'item_uid' => (int)$inData['pagetree']['id'],
-                    'preset_data' => serialize($inData)
+                $connection->insert(
+                    'tx_impexp_presets',
+                    [
+                        'user_uid' => $beUser->user['uid'],
+                        'public' => $inData['preset']['public'],
+                        'title' => $inData['preset']['title'],
+                        'item_uid' => (int)$inData['pagetree']['id'],
+                        'preset_data' => serialize($inData)
+                    ]
                 );
-                $this->getDatabaseConnection()->exec_INSERTquery('tx_impexp_presets', $fields_values);
+
                 $msg = 'New preset "' . htmlspecialchars($inData['preset']['title']) . '" is created';
             }
         }
@@ -107,7 +139,11 @@ class PresetRepository
             if (is_array($preset)) {
                 // Update existing
                 if ($beUser->isAdmin() || $preset['user_uid'] === $beUser->user['uid']) {
-                    $this->getDatabaseConnection()->exec_DELETEquery('tx_impexp_presets', 'uid=' . (int)$preset['uid']);
+                    $connection->delete(
+                        'tx_impexp_presets',
+                        ['uid' => (int)$preset['uid']]
+                    );
+
                     $msg = 'Preset #' . $preset['uid'] . ' deleted!';
                 } else {
                     $msg = 'ERROR: You were not the owner of the preset so you could not delete it.';
@@ -170,13 +206,5 @@ class PresetRepository
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

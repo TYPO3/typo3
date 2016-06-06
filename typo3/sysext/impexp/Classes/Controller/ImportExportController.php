@@ -21,7 +21,10 @@ use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -404,15 +407,13 @@ class ImportExportController extends BaseScriptClass
         }
         // Configure which tables to export
         if (is_array($inData['list'])) {
-            $db = $this->getDatabaseConnection();
             foreach ($inData['list'] as $ref) {
                 $rParts = explode(':', $ref);
                 if ($beUser->check('tables_select', $rParts[0])) {
-                    $res = $this->exec_listQueryPid($rParts[0], $rParts[1], MathUtility::forceIntegerInRange($inData['listCfg']['maxNumber'], 1));
-                    while ($subTrow = $db->sql_fetch_assoc($res)) {
+                    $statement = $this->exec_listQueryPid($rParts[0], $rParts[1], MathUtility::forceIntegerInRange($inData['listCfg']['maxNumber'], 1));
+                    while ($subTrow = $statement->fetch()) {
                         $this->export->export_addRecord($rParts[0], $subTrow);
                     }
-                    $db->sql_free_result($res);
                 }
             }
         }
@@ -591,15 +592,13 @@ class ImportExportController extends BaseScriptClass
         if (!is_array($tables)) {
             return;
         }
-        $db = $this->getDatabaseConnection();
         foreach ($GLOBALS['TCA'] as $table => $value) {
             if ($table != 'pages' && (in_array($table, $tables) || in_array('_ALL', $tables))) {
                 if ($this->getBackendUser()->check('tables_select', $table) && !$GLOBALS['TCA'][$table]['ctrl']['is_static']) {
-                    $res = $this->exec_listQueryPid($table, $k, MathUtility::forceIntegerInRange($maxNumber, 1));
-                    while ($subTrow = $db->sql_fetch_assoc($res)) {
+                    $statement = $this->exec_listQueryPid($table, $k, MathUtility::forceIntegerInRange($maxNumber, 1));
+                    while ($subTrow = $statement->fetch()) {
                         $this->export->export_addRecord($table, $subTrow);
                     }
-                    $db->sql_free_result($res);
                 }
             }
         }
@@ -611,29 +610,36 @@ class ImportExportController extends BaseScriptClass
      * @param string $table Table to select from
      * @param int $pid Page ID to select from
      * @param int $limit Max number of records to select
-     * @return \mysqli_result|object Database resource
+     * @return \Doctrine\DBAL\Driver\Statement Query statement
      */
     public function exec_listQueryPid($table, $pid, $limit)
     {
-        $db = $this->getDatabaseConnection();
-        $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby']
-            ? 'ORDER BY ' . $GLOBALS['TCA'][$table]['ctrl']['sortby']
-            : $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
 
-        $whereClause = 'pid=' . (int)$pid . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table);
-        if ($this->excludeDisabledRecords) {
-            $whereClause .= BackendUtility::BEenableFields($table);
+        $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
+        $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+        if ($this->excludeDisabledRecords === false) {
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
         }
-        $res = $db->exec_SELECTquery(
-            '*',
-            $table,
-            $whereClause,
-            '',
-            $db->stripOrderBy($orderBy),
-            $limit
-        );
+
+        $queryBuilder->select('*')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('pid', (int)$pid))
+            ->setMaxResults($limit);
+
+        foreach (QueryHelper::parseOrderBy((string)$orderBy) as $orderPair) {
+            list($fieldName, $order) = $orderPair;
+            $queryBuilder->addOrderBy($fieldName, $order);
+        }
+
+        $statement = $queryBuilder->execute();
+
         // Warning about hitting limit:
-        if ($db->sql_num_rows($res) == $limit) {
+        if ($statement->rowCount() == $limit) {
             $limitWarning = sprintf($this->lang->getLL('makeconfig_anSqlQueryReturned'), $limit);
             /** @var FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
@@ -648,7 +654,8 @@ class ImportExportController extends BaseScriptClass
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }
-        return $res;
+
+        return $statement;
     }
 
     /**
@@ -754,19 +761,7 @@ class ImportExportController extends BaseScriptClass
      */
     public function makeSaveForm($inData)
     {
-
-        // Presets:
-        $opt = array('');
-        $where = '(public>0 OR user_uid=' . (int)$this->getBackendUser()->user['uid'] . ')'
-            . ($inData['pagetree']['id'] ? ' AND (item_uid=' . (int)$inData['pagetree']['id'] . ' OR item_uid=0)' : '');
-        $presets = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'tx_impexp_presets', $where);
-        if (is_array($presets)) {
-            foreach ($presets as $presetCfg) {
-                $opt[$presetCfg['uid']] = $presetCfg['title'] . ' [' . $presetCfg['uid'] . ']'
-                    . ($presetCfg['public'] ? ' [Public]' : '')
-                    . ($presetCfg['user_uid'] === $this->getBackendUser()->user['uid'] ? ' [Own]' : '');
-            }
-        }
+        $opt = $this->presetRepository->getPresets((int)$inData['pagetree']['id']);
 
         $this->standaloneView->assign('presetSelectOptions', $opt);
 
@@ -1022,14 +1017,6 @@ class ImportExportController extends BaseScriptClass
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**

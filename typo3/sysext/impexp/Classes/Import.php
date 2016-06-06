@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Impexp;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Resource\File;
@@ -537,20 +538,13 @@ class Import extends ImportExport
      */
     protected function fetchStorageRecords()
     {
-        $whereClause = BackendUtility::BEenableFields('sys_file_storage');
-        $whereClause .= BackendUtility::deleteClause('sys_file_storage');
-
-        $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            '*',
-            'sys_file_storage',
-            '1=1' . $whereClause,
-            '',
-            '',
-            '',
-            'uid'
-        );
-
-        return $rows;
+        return GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_file_storage')
+            ->select('*')
+            ->from('sys_file_storage')
+            ->orderBy('uid')
+            ->execute()
+            ->fetchAll();
     }
 
     /**
@@ -837,11 +831,17 @@ class Import extends ImportExport
             } elseif ($table === 'sys_file_metadata' && $record['sys_language_uid'] == '0' && $this->import_mapId['sys_file'][$record['file']]) {
                 // on adding sys_file records the belonging sys_file_metadata record was also created
                 // if there is one the record need to be overwritten instead of creating a new one.
-                $recordInDatabase = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-                    'uid',
-                    'sys_file_metadata',
-                    'file = ' . $this->import_mapId['sys_file'][$record['file']] . ' AND sys_language_uid = 0 AND pid = 0'
-                );
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('sys_file_metadata');
+                $recordInDatabase = $queryBuilder->select('uid')
+                    ->from('sys_file_metadata')
+                    ->where(
+                        $queryBuilder->expr()->eq('file', (int)$this->import_mapId['sys_file'][$record['file']]),
+                        $queryBuilder->expr()->eq('sys_language_uid', 0),
+                        $queryBuilder->expr()->eq('pid', 0)
+                    )
+                    ->execute()
+                    ->fetch();
                 // if no record could be found, $this->import_mapId['sys_file'][$record['file']] is pointing
                 // to a file, that was already there, thus a new metadata record should be created
                 if (is_array($recordInDatabase)) {
