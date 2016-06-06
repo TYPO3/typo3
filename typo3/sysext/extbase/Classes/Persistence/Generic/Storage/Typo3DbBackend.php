@@ -358,10 +358,17 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      * that came from a parsed query.
      *
      * @param array $statementParts
+     * @throws \InvalidArgumentException
      * @return array
      */
     protected function createQueryCommandParametersFromStatementParts(array $statementParts)
     {
+        if (isset($statementParts['offset']) && !isset($statementParts['limit'])) {
+            throw new \InvalidArgumentException(
+                'Trying to make query with offset and no limit, the offset would become a limit. You have to set a limit to use offset. To retrieve all rows from a certain offset up to the end of the result set, you can use some large number for the limit.',
+                1465223252
+            );
+        }
         return array(
             'selectFields' => implode(' ', $statementParts['keywords']) . ' ' . implode(',', $statementParts['fields']),
             'fromTable'    => implode(' ', $statementParts['tables']) . ' ' . implode(' ', $statementParts['unions']),
