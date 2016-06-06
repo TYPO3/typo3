@@ -55,6 +55,8 @@ call_user_func(function () {
         'columnsOverrides' => ['bodytext' => ['defaultExtras' => 'richtext:rte_transform']]
     ];
 
+    $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['search']['andWhere'] .= ' OR CType=\'textmedia\'';
+
     // Add category tab when categories column exits
     if (!empty($GLOBALS['TCA']['tt_content']['columns']['categories'])) {
         $GLOBALS['TCA']['tt_content']['types']['textmedia']['showitem'] .=
