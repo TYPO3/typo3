@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetContextNotFoundException;
 
 /**
  * Test case
@@ -21,12 +22,15 @@ class AjaxWidgetContextHolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetContextNotFoundException
      */
     public function getThrowsExceptionIfWidgetContextIsNotFound()
     {
         /** @var \TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder */
         $ajaxWidgetContextHolder = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder::class, array('dummy'), array(), '', false);
+
+        $this->expectException(WidgetContextNotFoundException::class);
+        $this->expectExceptionCode(1284793775);
+
         $ajaxWidgetContextHolder->get(42);
     }
 }

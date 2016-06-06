@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
+use TYPO3\CMS\Fluid\Core\Widget\Exception\MissingControllerException;
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 
@@ -144,11 +145,14 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Fluid\Core\Widget\Exception\MissingControllerException
      */
     public function initiateSubRequestThrowsExceptionIfControllerIsNoWidgetController()
     {
-        $controller = $this->getMock('Tx_Fluid_MVC_Controller_ControllerInterface');
+        $controller = $this->getMock(AbstractWidgetViewHelper::class);
+
+        $this->expectException(MissingControllerException::class);
+        $this->expectExceptionCode(1289422564);
+
         $this->viewHelper->_set('controller', $controller);
         $this->viewHelper->_call('initiateSubRequest');
     }

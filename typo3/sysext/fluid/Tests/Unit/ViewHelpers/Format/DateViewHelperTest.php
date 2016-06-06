@@ -153,11 +153,12 @@ class DateViewHelperTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
-     * @expectedExceptionMessageRegExp /"foo" could not be parsed by \\DateTime constructor: .* Unexpected character$/
      */
     public function viewHelperThrowsExceptionWithOriginalMessageIfDateStringCantBeParsed()
     {
+        $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class);
+        $this->expectExceptionCode(1241722579);
+
         $this->subject->render('foo');
     }
 

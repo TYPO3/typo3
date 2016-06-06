@@ -493,13 +493,15 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      */
     public function selectOnDomainObjectsThrowsExceptionIfNoValueCanBeFound()
     {
         $mockPersistenceManager = $this->getMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
         $mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue(null));
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
+
+        $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class);
+        $this->expectExceptionCode(1247826696);
 
         $user = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass(1, 'Ingmar', 'Schlecht');
 

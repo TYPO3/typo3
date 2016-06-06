@@ -30,13 +30,15 @@ class TranslateViewHelperTest extends ViewHelperBaseTestcase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
-     * @expectedExceptionCode 1351584844
      */
     public function renderThrowsExceptionIfNoKeyOrIdParameterIsGiven()
     {
         $this->subject = GeneralUtility::makeInstance(TranslateViewHelper::class);
         $this->injectDependenciesIntoViewHelper($this->subject);
+
+        $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException::class);
+        $this->expectExceptionCode(1351584844);
+
         $this->subject->render();
     }
 

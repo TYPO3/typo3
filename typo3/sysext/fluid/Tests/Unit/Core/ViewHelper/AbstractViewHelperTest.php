@@ -188,7 +188,6 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      */
     public function registeringTheSameArgumentNameAgainThrowsException()
     {
@@ -198,6 +197,9 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $description = 'Example desc';
         $type = 'string';
         $isRequired = true;
+
+        $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class);
+        $this->expectExceptionCode(1253036401);
 
         $viewHelper->_call('registerArgument', $name, $type, $description, $isRequired);
         $viewHelper->_call('registerArgument', $name, 'integer', $description, $isRequired);
@@ -226,12 +228,14 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      */
     public function overrideArgumentThrowsExceptionWhenTryingToOverwriteAnNonexistingArgument()
     {
         $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class, array('render'), array(), '', false);
         $viewHelper->injectReflectionService($this->mockReflectionService);
+
+        $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class);
+        $this->expectExceptionCode(1279212461);
 
         $viewHelper->_call('overrideArgument', 'argumentName', 'string', 'description', true);
     }
@@ -317,12 +321,14 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function validateArgumentsCallsTheRightValidatorsAndThrowsExceptionIfValidationIsWrong()
     {
         $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class, array('render', 'prepareArguments'), array(), '', false);
         $viewHelper->injectReflectionService($this->mockReflectionService);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1256475113);
 
         $viewHelper->setArguments(array('test' => 'test'));
 

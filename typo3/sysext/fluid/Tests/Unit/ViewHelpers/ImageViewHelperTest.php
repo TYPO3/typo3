@@ -39,7 +39,6 @@ class ImageViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      * @dataProvider getInvalidArguments
      * @param array $arguments
      */
@@ -47,6 +46,10 @@ class ImageViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $mock = $this->getMock(ImageViewHelper::class, array('dummy'));
         $mock->setArguments($arguments);
+
+        $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class);
+        $this->expectExceptionCode(1382284106);
+
         $mock->render(
             isset($arguments['src']) ? $arguments['src'] : null,
             isset($arguments['width']) ? $arguments['width'] : null,
