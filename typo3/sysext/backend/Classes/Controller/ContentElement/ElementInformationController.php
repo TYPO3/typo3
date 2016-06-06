@@ -391,8 +391,8 @@ class ElementInformationController
                                 ' . $icon . '
                             </div>
                             <div class="media-body">
-                                <strong>' . htmlspecialchars($GLOBALS['BE_USER']->user['username']) . '</strong><br>
-                                ' . ($GLOBALS['BE_USER']->user['realName'] ? htmlspecialchars($GLOBALS['BE_USER']->user['realName']) : '') . '
+                                <strong>' . htmlspecialchars($creatorRecord['username']) . '</strong><br>
+                                ' . ($creatorRecord['realName'] ? htmlspecialchars($creatorRecord['realName']) : '') . '
                             </div>
                         </div>';
                 }
