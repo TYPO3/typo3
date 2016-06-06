@@ -1950,8 +1950,9 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
 				<table border="0" cellpadding="0" cellspacing="0" class="table table-transparent table-hover">
 					<thead>
 						<tr>
-							<th class="col-checkbox" colspan="2">
-								<input type="checkbox" class="checkbox checkAll" ' . ($checkAllChecked ? ' checked="checked"' : '') . '>
+							<th class="col-checkbox checkbox" colspan="2">
+								<label><input type="checkbox" class="checkbox checkAll" ' . ($checkAllChecked ? ' checked="checked"' : '') . '>
+								' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.checkAll')) . '</label>
 							</th>
 						</tr>
 					</thead>
