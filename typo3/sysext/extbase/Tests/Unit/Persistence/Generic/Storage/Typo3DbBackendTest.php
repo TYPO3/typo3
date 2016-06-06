@@ -15,6 +15,10 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
  */
 
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend;
+use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
  * Test case
@@ -126,5 +130,32 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $parameters = array($parameter => $value);
         $result = $mock->_call('resolveParameterPlaceholders', $stmtParts, $parameters);
         $this->assertSame($expected, $result['where']);
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function getObjectCountByQueryThrowsExceptionIfOffsetWithoutLimitIsUsed()
+    {
+        $querySettingsProphecy = $this->prophesize(QuerySettingsInterface::class);
+        $queryInterfaceProphecy = $this->prophesize(QueryInterface::class);
+        $queryParserProphecy = $this->prophesize(Typo3DbQueryParser::class);
+        $queryParserProphecy->preparseQuery($queryInterfaceProphecy->reveal())->willReturn([123, []]);
+        $queryParserProphecy->parseQuery($queryInterfaceProphecy->reveal())->willReturn(
+            ['tables' => ['tt_content']]
+        );
+        $queryParserProphecy->addDynamicQueryParts(\Prophecy\Argument::cetera())->willReturn();
+        $queryInterfaceProphecy->getQuerySettings()->willReturn($querySettingsProphecy->reveal());
+        $queryInterfaceProphecy->getConstraint()->willReturn();
+        $queryInterfaceProphecy->getLimit()->willReturn();
+        $queryInterfaceProphecy->getOffset()->willReturn(10);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1465223252);
+
+        $typo3DbQueryParser = new Typo3DbBackend();
+        $typo3DbQueryParser->injectQueryParser($queryParserProphecy->reveal());
+        $typo3DbQueryParser->getObjectCountByQuery($queryInterfaceProphecy->reveal());
     }
 }
