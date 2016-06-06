@@ -9,7 +9,7 @@
 		{
 			"name": "TYPO3 CMS Core Team",
 			"role": "Developer",
-			"homepage": "http://forge.typo3.org/projects/typo3cms-core"
+			"homepage": "https://forge.typo3.org/projects/typo3cms-core"
 		},
 		{
 			"name": "The TYPO3 Community",
@@ -19,7 +19,7 @@
 	],
 	"support": {
 		"general": "https://typo3.org/support/",
-		"issues": "http://forge.typo3.org",
+		"issues": "https://forge.typo3.org",
 		"irc": "irc://irc.freenode.net/#typo3-cms",
 		"news": "nntp://lists.typo3.org"
 	},
