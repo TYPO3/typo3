@@ -16,13 +16,15 @@ namespace TYPO3\CMS\Core\TypoScript;
 
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Dbal\Database\DatabaseConnection;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -854,56 +856,76 @@ class ExtendedTemplateService extends TemplateService
     }
 
     /**
-     * @param int $id
-     * @param int $template_uid
-     * @return array|NULL Returns the template record or NULL if none was found
+     * Get a single sys_template record attached to a single page.
+     * If multiple template records are on this page, the first (order by sorting)
+     * record will be returned, unless a specific template uid is specified via $templateUid
+     *
+     * @param int $pid The pid to select sys_template records from
+     * @param int $templateUid Optional template uid
+     * @return array|null Returns the template record or null if none was found
      */
-    public function ext_getFirstTemplate($id, $template_uid = 0)
+    public function ext_getFirstTemplate($pid, $templateUid = 0)
     {
-        // Query is taken from the runThroughTemplates($theRootLine) function in the parent class.
-        if ((int)$id) {
-            $addC = $template_uid ? ' AND uid=' . (int)$template_uid : '';
-            $where = 'pid=' . (int)$id . $addC . BackendUtility::deleteClause('sys_template');
-            $res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'sys_template', $where, '', 'sorting', '1');
-            $row = $this->getDatabaseConnection()->sql_fetch_assoc($res);
-            BackendUtility::workspaceOL('sys_template', $row);
-            $this->getDatabaseConnection()->sql_free_result($res);
-            // Returns the template row if found.
-            return $row;
+        if (empty($pid)) {
+            return null;
         }
-        return null;
+
+        // Query is taken from the runThroughTemplates($theRootLine) function in the parent class.
+        $queryBuilder = $this->getTemplateQueryBuilder($pid)
+            ->setMaxResults(1);
+        if ($templateUid) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('uid', (int)$templateUid));
+        }
+        $row = $queryBuilder->execute()->fetch();
+        BackendUtility::workspaceOL('sys_template', $row);
+
+        return $row;
     }
 
     /**
-     * @param int $id
+     * Get an array of all template records on a page.
+     *
+     * @param int $pid Pid to fetch sys_template records for
      * @return array[] Array of template records
      */
-    public function ext_getAllTemplates($id)
+    public function ext_getAllTemplates($pid): array
     {
-        if (!$id) {
-            return array();
+        if (empty($pid)) {
+            return [];
         }
-
-        // Query is taken from the runThroughTemplates($theRootLine) function in the parent class.
-        $res = $this->getDatabaseConnection()->exec_SELECTquery(
-            '*',
-            'sys_template',
-            'pid=' . (int)$id
-                . BackendUtility::deleteClause('sys_template'),
-            '',
-            'sorting'
-        );
-
-        $outRes = array();
-        while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+        $result = $this->getTemplateQueryBuilder($pid)->execute();
+        $outRes = [];
+        while ($row = $result->fetch()) {
             BackendUtility::workspaceOL('sys_template', $row);
             if (is_array($row)) {
                 $outRes[] = $row;
             }
         }
-        $this->getDatabaseConnection()->sql_free_result($res);
-
         return $outRes;
+    }
+
+    /**
+     * Internal helper method to prepare the query builder for
+     * getting sys_template records from a given pid
+     *
+     * @param int $pid The pid to select sys_template records from
+     * @return QueryBuilder Returns a QueryBuilder
+     */
+    protected function getTemplateQueryBuilder(int $pid): QueryBuilder
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_template');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder->select('*')
+            ->from('sys_template')
+            ->where($queryBuilder->expr()->eq('pid', (int)$pid));
+        if (!empty($GLOBALS['TCA']['sys_template']['ctrl']['sortby'])) {
+            $queryBuilder->orderBy($GLOBALS['TCA']['sys_template']['ctrl']['sortby']);
+        }
+
+        return $queryBuilder;
     }
 
     /**
@@ -1650,14 +1672,6 @@ class ExtendedTemplateService extends TemplateService
     protected function getRootLine()
     {
         return isset($GLOBALS['rootLine']) ? $GLOBALS['rootLine'] : array();
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
