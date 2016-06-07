@@ -5,8 +5,6 @@
 #
 # Don't ignore .rej and .orig as we want to see/clean files after conflict resolution.
 #
-# If you feel this file needs adaption please report on http://forge.typo3.org/issues/13627.
-#
 # For local exclude patterns please edit .git/info/exclude.
 #
 ########################
