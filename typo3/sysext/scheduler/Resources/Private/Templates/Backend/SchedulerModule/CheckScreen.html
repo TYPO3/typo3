@@ -10,6 +10,6 @@
 </f:be.infobox>
 
 <f:be.infobox title="{f:translate(key: 'hdg.cliScript')}" state="{isExecutableSeverity}">
-	<p><f:translate key="msg.cliScript" arguments="{0: script}" /></p>
+	<p>{f:translate(key: 'msg.cliScript', arguments: '{0: script}') -> f:format.raw()}</p>
 	{isExecutableMessage}
 </f:be.infobox>
