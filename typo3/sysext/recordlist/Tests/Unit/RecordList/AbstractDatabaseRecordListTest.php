@@ -89,11 +89,11 @@ class AbstractDatabaseRecordListTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \UnexpectedValueException
-     * @expectedExceptionCode 1436195934
      */
     public function setTableDisplayOrderThrowsExceptionOnInvalidAfter()
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1436195934);
         $test = [
             'table' => [ 'after' => new \stdClass ]
         ];
@@ -103,11 +103,11 @@ class AbstractDatabaseRecordListTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \UnexpectedValueException
-     * @expectedExceptionCode 1436195933
      */
     public function setTableDisplayOrderThrowsExceptionOnInvalidBefore()
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1436195933);
         $test = [
             'table' => [ 'before' => new \stdClass ]
         ];
