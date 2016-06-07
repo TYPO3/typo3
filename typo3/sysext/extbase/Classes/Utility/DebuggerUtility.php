@@ -231,39 +231,41 @@ class DebuggerUtility {
 		} else {
 			$dump .= '<span class="debug-type">' . $className . '</span>';
 		}
-		if ($object instanceof \TYPO3\CMS\Core\SingletonInterface) {
-			$scope = 'singleton';
-		} else {
-			$scope = 'prototype';
-		}
-		if ($plainText) {
-			$dump .= ' ' . self::ansiEscapeWrap($scope, '44;37', $ansiColors);
-		} else {
-			$dump .= $scope ? '<span class="debug-scope">' . $scope . '</span>' : '';
-		}
-		if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject) {
-			if ($object->_isDirty()) {
-				$persistenceType = 'modified';
-			} elseif ($object->_isNew()) {
-				$persistenceType = 'transient';
+		if (!$object instanceof \Closure) {
+			if ($object instanceof \TYPO3\CMS\Core\SingletonInterface) {
+				$scope = 'singleton';
 			} else {
-				$persistenceType = 'persistent';
+				$scope = 'prototype';
 			}
-		}
-		if ($object instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage && $object->_isDirty()) {
-			$persistenceType = 'modified';
-		}
-		if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractEntity) {
-			$domainObjectType = 'entity';
-		} elseif ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject) {
-			$domainObjectType = 'valueobject';
-		} else {
-			$domainObjectType = 'object';
-		}
-		if ($plainText) {
-			$dump .= ' ' . self::ansiEscapeWrap(($persistenceType . ' ' . $domainObjectType), '42;30', $ansiColors);
-		} else {
-			$dump .= '<span class="debug-ptype">' . ($persistenceType ? $persistenceType . ' ' : '') . $domainObjectType . '</span>';
+			if ($plainText) {
+				$dump .= ' ' . self::ansiEscapeWrap($scope, '44;37', $ansiColors);
+			} else {
+				$dump .= $scope ? '<span class="debug-scope">' . $scope . '</span>' : '';
+			}
+			if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject) {
+				if ($object->_isDirty()) {
+					$persistenceType = 'modified';
+				} elseif ($object->_isNew()) {
+					$persistenceType = 'transient';
+				} else {
+					$persistenceType = 'persistent';
+				}
+			}
+			if ($object instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage && $object->_isDirty()) {
+				$persistenceType = 'modified';
+			}
+			if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractEntity) {
+				$domainObjectType = 'entity';
+			} elseif ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject) {
+				$domainObjectType = 'valueobject';
+			} else {
+				$domainObjectType = 'object';
+			}
+			if ($plainText) {
+				$dump .= ' ' . self::ansiEscapeWrap(($persistenceType . ' ' . $domainObjectType), '42;30', $ansiColors);
+			} else {
+				$dump .= '<span class="debug-ptype">' . ($persistenceType ? $persistenceType . ' ' : '') . $domainObjectType . '</span>';
+			}
 		}
 		if (strpos(implode('|', self::$blacklistedClassNames), get_class($object)) > 0) {
 			if ($plainText) {
@@ -325,7 +327,14 @@ class DebuggerUtility {
 				if (self::isBlacklisted($property)) {
 					continue;
 				}
-				$dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level) . ($plainText ? '' : '<span class="debug-property">') . self::ansiEscapeWrap($property->getName(), '37', $ansiColors) . ($plainText ? '' : '</span>') . ' => ';
+				$dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level);
+				if ($plainText) {
+					$dump .= self::ansiEscapeWrap($property->getName(), '37', $ansiColors);
+				} else {
+					$dump .= '<span class="extbase-debug-property">' .
+						htmlspecialchars($property->getName()) . '</span>';
+				}
+				$dump .= ' => ';
 				$property->setAccessible(TRUE);
 				$dump .= self::renderDump($property->getValue($object), $level, $plainText, $ansiColors);
 				if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject && !$object->_isNew() && $object->_isDirty($property->getName())) {
