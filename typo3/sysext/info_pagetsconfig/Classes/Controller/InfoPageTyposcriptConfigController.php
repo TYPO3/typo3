@@ -15,6 +15,9 @@ namespace TYPO3\CMS\InfoPagetsconfig\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -233,15 +236,22 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
      */
     protected function getOverviewOfPagesUsingTSConfig()
     {
-        $db = $this->getDatabaseConnection();
-        $res = $db->exec_SELECTquery(
-            'uid, TSconfig',
-            'pages',
-            'TSconfig != \'\''
-            . BackendUtility::deleteClause('pages')
-            . BackendUtility::versioningPlaceholderClause('pages'), 'pages.uid');
-        $pageArray = array();
-        while ($row = $db->sql_fetch_assoc($res)) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+        $res = $queryBuilder
+            ->select('uid', 'TSconfig')
+            ->from('pages')
+            ->where($queryBuilder->expr()->neq('TSconfig', $queryBuilder->quote('')))
+            ->groupBy('uid')
+            ->execute();
+
+        $pageArray = [];
+
+        while ($row = $res->fetch()) {
             $this->setInPageArray($pageArray, BackendUtility::BEgetRootLine($row['uid'], 'AND 1=1'), $row);
         }
         return $this->getList($pageArray);
