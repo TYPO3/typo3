@@ -20,6 +20,10 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 
 /**
  * Class for displaying translation status of pages in the tree.
@@ -30,6 +34,12 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
      * @var IconFactory
      */
     protected $iconFactory;
+
+    /**
+     * @var string
+     * static table for pages_language_overlay
+     */
+    protected static $pageLanguageOverlayTable = 'pages_language_overlay';
 
     /**
      * Construct for initialize class variables
@@ -331,18 +341,25 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
         if (!$this->getBackendUser()->user['admin'] && $this->getBackendUser()->groupData['allowed_languages'] !== '') {
             $allowed_languages = array_flip(explode(',', $this->getBackendUser()->groupData['allowed_languages']));
         }
-        $res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'sys_language', '1=1' . BackendUtility::deleteClause('sys_language'));
-        $outputArray = array();
-        while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
-            if (is_array($allowed_languages) && !empty($allowed_languages)) {
-                if (isset($allowed_languages[$row['uid']])) {
-                    $outputArray[] = $row;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_language');
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll();
+        $queryBuilder
+            ->select('*')
+            ->from('sys_language');
+        $res = $queryBuilder->execute();
+        $outputArray = [];
+        if (is_array($allowed_languages) && !empty($allowed_languages)) {
+            while($output = $res->fetch()){
+                if(isset($allowed_languages[$output['uid']])){
+                    $outputArray[] = $output;
                 }
-            } else {
-                $outputArray[] = $row;
             }
+        } else {
+            $outputArray = $res->fetchAll();
         }
-        $this->getDatabaseConnection()->sql_free_result($res);
         return $outputArray;
     }
 
@@ -355,21 +372,25 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
      */
     public function getLangStatus($pageId, $langId)
     {
-        $res = $this->getDatabaseConnection()->exec_SELECTquery(
-            '*',
-            'pages_language_overlay',
-            'pid=' . (int)$pageId .
-                ' AND sys_language_uid=' . (int)$langId .
-                BackendUtility::deleteClause('pages_language_overlay') .
-                BackendUtility::versioningPlaceholderClause('pages_language_overlay')
-        );
-        $row = $this->getDatabaseConnection()->sql_fetch_assoc($res);
-        BackendUtility::workspaceOL('pages_language_overlay', $row);
-        if (is_array($row)) {
-            $row['_COUNT'] = $this->getDatabaseConnection()->sql_num_rows($res);
-            $row['_HIDDEN'] = $row['hidden'] || (int)$row['endtime'] > 0 && (int)$row['endtime'] < $GLOBALS['EXEC_TIME'] || $GLOBALS['EXEC_TIME'] < (int)$row['starttime'];
+        $res = $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable(static::$pageLanguageOverlayTable);
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class))
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder
+            ->select('*')
+            ->from(static::$pageLanguageOverlayTable)
+            ->where($queryBuilder->expr()->eq('pid', (int)$pageId))
+            ->andWhere($queryBuilder->expr()->eq('sys_language_uid', (int)$langId));
+        $rows = $queryBuilder->execute()->fetchAll();
+        BackendUtility::workspaceOL(static::$pageLanguageOverlayTable, $rows);
+        if (is_array($rows)) {
+            $rows['_COUNT'] = count($rows);
+            $rows['_HIDDEN'] = $rows['hidden'] || (int)$rows['endtime'] > 0 && (int)$rows['endtime'] < $GLOBALS['EXEC_TIME'] || $GLOBALS['EXEC_TIME'] < (int)$rows['starttime'];
         }
-        return $row;
+        return $rows;
     }
 
     /**
@@ -381,7 +402,23 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
      */
     public function getContentElementCount($pageId, $sysLang)
     {
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'tt_content', 'pid=' . (int)$pageId . ' AND sys_language_uid=' . (int)$sysLang . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'));
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable(static::$pageLanguageOverlayTable);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+        $count = $queryBuilder
+            ->count('uid')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq('pid', (int)$pageId)
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('sys_language_uid', (int)$sysLang)
+            )
+            ->execute()
+            ->fetchColumn(0);
         return $count ?: '-';
     }
 
@@ -393,16 +430,6 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Returns the database connection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
