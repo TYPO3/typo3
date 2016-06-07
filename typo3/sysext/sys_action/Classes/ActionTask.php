@@ -15,12 +15,17 @@ namespace TYPO3\CMS\SysAction;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * This class provides a task for the taskcenter
@@ -159,42 +164,90 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
      */
     protected function getActions()
     {
+        $backendUser = $this->getBackendUser();
         $actionList = array();
-        // admins can see any record
-        if ($this->getBackendUser()->isAdmin()) {
-            $res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'sys_action', '', '', 'sys_action.sorting');
-        } else {
-            // Editors can only see the actions which are assigned to a usergroup they belong to
-            $additionalWhere = 'be_groups.uid IN (' . ($this->getBackendUser()->groupList ?: 0) . ')';
-            $res = $this->getDatabaseConnection()->exec_SELECT_mm_query('sys_action.*', 'sys_action', 'sys_action_asgr_mm', 'be_groups', ' AND sys_action.hidden=0 AND ' . $additionalWhere, 'sys_action.uid', 'sys_action.sorting');
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_action');
+        $queryBuilder->select('sys_action.*')
+            ->from('sys_action');
+
+        if (!empty($GLOBALS['TCA']['sys_action']['ctrl']['sortby'])) {
+            $queryBuilder->orderBy('sys_action.' . $GLOBALS['TCA']['sys_action']['ctrl']['sortby']);
         }
-        while ($actionRow = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(RootLevelRestriction::class, ['sys_action']));
+
+        // Editors can only see the actions which are assigned to a usergroup they belong to
+        if (!$backendUser->isAdmin()) {
+            $groupList = $backendUser->groupList ?: '0';
+
+            $queryBuilder->getRestrictions()
+                ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
+
+            $queryBuilder
+                ->join(
+                    'sys_action',
+                    'sys_action_asgr_mm',
+                    'sys_action_asgr_mm',
+                    $queryBuilder->expr()->eq(
+                        'sys_action_asgr_mm.uid_local',
+                        $queryBuilder->quoteIdentifier('sys_action.uid')
+                    )
+                )
+                ->join(
+                    'sys_action_asgr_mm',
+                    'be_groups',
+                    'be_groups',
+                    $queryBuilder->expr()->eq(
+                        'sys_action_asgr_mm.uid_foreign',
+                        $queryBuilder->quoteIdentifier('be_groups.uid')
+                    )
+                )
+                ->where($queryBuilder->expr()->in('be_groups.uid', GeneralUtility::intExplode(',', $groupList, true)))
+                ->groupBy('sys_action.uid');
+        }
+
+        $queryResult = $queryBuilder->execute();
+        while ($actionRow = $queryResult->fetch()) {
             $editActionLink = '';
+
             // Admins are allowed to edit sys_action records
             if ($this->getBackendUser()->isAdmin()) {
+                $uidEditArgument = 'edit[sys_action][' . (int)$actionRow['uid'] . ']';
+
                 $link = BackendUtility::getModuleUrl(
                     'record_edit',
                     array(
-                        'edit[sys_action][' . $actionRow['uid'] . ']' => 'edit',
+                        $uidEditArgument => 'edit',
                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-                    ),
-                    false,
-                    true
+                    )
                 );
+
                 $title = 'title="' . $this->getLanguageService()->getLL('edit-sys_action') . '"';
                 $icon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
                 $editActionLink = '<a class="btn btn-default btn-sm" href="' . $link . '"' . $title . '>';
                 $editActionLink .= $icon . ' ' . $this->getLanguageService()->getLL('edit-sys_action') . '</a>';
             }
-            $actionList[] = array(
+
+            $actionList[] = [
                 'uid' => 'actiontask' . $actionRow['uid'],
                 'title' => $actionRow['title'],
                 'description' => $actionRow['description'],
-                'descriptionHtml' => ($actionRow['description'] ? '<p>' . nl2br(htmlspecialchars($actionRow['description'])) . '</p>' : '') . $editActionLink,
-                'link' => $this->moduleUrl . '&SET[function]=sys_action.TYPO3\\CMS\\SysAction\\ActionTask&show=' . $actionRow['uid']
-            );
+                'descriptionHtml' => (
+                    $actionRow['description']
+                        ? '<p>' . nl2br(htmlspecialchars($actionRow['description'])) . '</p>'
+                        : ''
+                    ) . $editActionLink,
+                'link' => $this->moduleUrl
+                    . '&SET[function]=sys_action.'
+                    . ActionTask::class
+                    . '&show='
+                    . (int)$actionRow['uid']
+            ];
         }
-        $this->getDatabaseConnection()->sql_free_result($res);
+
         return $actionList;
     }
 
@@ -225,10 +278,9 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                 array(
                     'edit[sys_action][0]' => 'new',
                     'returnUrl' => $this->moduleUrl
-                ),
-                false,
-                true
+                )
             );
+
             $content .= '<p>' .
                 '<a class="btn btn-default" href="' . $link . '" title="' . $this->getLanguageService()->getLL('new-sys_action') . '">' .
                 $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . ' ' .
@@ -367,13 +419,14 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
      */
     protected function deleteUser($userId, $actionId)
     {
-        $this->getDatabaseConnection()->exec_UPDATEquery('be_users', 'uid=' . $userId, array(
-            'deleted' => 1,
-            'tstamp' => $GLOBALS['ACCESS_TIME']
-        ));
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users')->update(
+            'be_users',
+            ['deleted' => 1, 'tstamp' => (int)$GLOBALS['ACCESS_TIME']],
+            ['uid' => (int)$userId]
+        );
+
         // redirect to the original task
-        $redirectUrl = $this->moduleUrl . '&show=' . $actionId;
-        \TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
+        HttpUtility::redirect($this->moduleUrl . '&show=' . (int)$actionId);
     }
 
     /**
@@ -404,10 +457,26 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
     {
         $content = '';
         $userList = array();
-        // List of users
-        $res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'be_users', 'cruser_id=' . $this->getBackendUser()->user['uid'] . ' AND createdByAction=' . (int)$action['uid'] . BackendUtility::deleteClause('be_users'), '', 'username');
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('be_users');
+
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $res = $queryBuilder
+            ->select('*')
+            ->from('be_users')
+            ->where(
+                $queryBuilder->expr()->eq('cruser_id', (int)$this->getBackendUser()->user['uid']),
+                $queryBuilder->expr()->eq('createdByAction', (int)$action['uid'])
+            )
+            ->orderBy('username')
+            ->execute();
+
         // Render the user records
-        while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+        while ($row = $res->fetch()) {
             $icon = '<span title="' . htmlspecialchars('uid=' . $row['uid']) . '">' . $this->iconFactory->getIconForRecord('be_users', $row, Icon::SIZE_SMALL)->render() . '</span>';
             $line = $icon . $this->action_linkUserName($row['username'], $row['realName'], $action['uid'], $row['uid']);
             // Selected user
@@ -416,7 +485,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             }
             $userList[] = '<li class="list-group-item">' . $line . '</li>';
         }
-        $this->getDatabaseConnection()->sql_free_result($res);
+
         // If any records found
         if (!empty($userList)) {
             $content .= '<div class="panel panel-default">';
@@ -681,11 +750,9 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             array(
                 'edit[' . $record['t3_tables'] . '][' . (int)$record['t3_listPid'] . ']' => 'new',
                 'returnUrl' => $this->moduleUrl
-            ),
-            false,
-            true
+            )
         );
-        \TYPO3\CMS\Core\Utility\HttpUtility::redirect($link);
+        HttpUtility::redirect($link);
     }
 
     /**
@@ -717,9 +784,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                 array(
                     'edit[' . $el['table'] . '][' . $el['id'] . ']' => 'edit',
                     'returnUrl' => $this->moduleUrl
-                ),
-                false,
-                true
+                )
             );
             $actionList[$el['id']] = array(
                 'uid' => 'record-' . $el['table'] . '-' . $el['id'],
