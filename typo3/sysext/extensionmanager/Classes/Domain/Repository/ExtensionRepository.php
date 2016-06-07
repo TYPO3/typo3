@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A repository for extensions
  */
@@ -23,11 +26,6 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @var string
      */
     const TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
-
-    /**
-     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected $databaseConnection;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
@@ -53,7 +51,6 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $defaultQuerySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
         $defaultQuerySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
-        $this->databaseConnection = $GLOBALS['TYPO3_DB'];
     }
 
     /**
@@ -149,28 +146,43 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function findByTitleOrAuthorNameOrExtensionKey($searchString)
     {
-        $quotedSearchString = $this->databaseConnection->escapeStrForLike($this->databaseConnection->quoteStr($searchString, 'tx_extensionmanager_domain_model_extension'), 'tx_extensionmanager_domain_model_extension');
-        $quotedSearchStringForLike = '\'%' . $quotedSearchString . '%\'';
-        $quotedSearchString = '\'' . $quotedSearchString . '\'';
-        $select =
-            self::TABLE_NAME . '.*, ' .
-            'CASE ' .
-                'WHEN extension_key = ' . $quotedSearchString . ' THEN 16 ' .
-                'WHEN extension_key LIKE ' . $quotedSearchStringForLike . ' THEN 8 ' .
-                'WHEN title LIKE ' . $quotedSearchStringForLike . ' THEN 4 ' .
-                'WHEN description LIKE ' . $quotedSearchStringForLike . ' THEN 2 ' .
-                'WHEN author_name LIKE ' . $quotedSearchStringForLike . ' THEN 1 ' .
-            'END AS position';
-        $where = '(
-					extension_key = ' . $quotedSearchString . ' OR
-					extension_key LIKE ' . $quotedSearchStringForLike . ' OR
-					title LIKE ' . $quotedSearchStringForLike . ' OR
-					description LIKE ' . $quotedSearchStringForLike . ' OR
-					author_name LIKE ' . $quotedSearchStringForLike . '
-				)
-				AND current_version = 1 AND review_state >= 0';
-        $order = 'position DESC';
-        $result = $this->databaseConnection->exec_SELECTgetRows($select, self::TABLE_NAME, $where, '', $order);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable(self::TABLE_NAME);
+
+        $searchPlaceholder = $queryBuilder->createNamedParameter($searchString);
+        $searchPlaceholderForLike = $queryBuilder->createNamedParameter(
+            '%' . $queryBuilder->escapeLikeWildcards($searchString) . '%'
+        );
+
+        $searchConstraints = [
+            'extension_key' => $queryBuilder->expr()->eq('extension_key', $searchPlaceholder),
+            'extension_key_like' => $queryBuilder->expr()->like('extension_key', $searchPlaceholderForLike),
+            'title' => $queryBuilder->expr()->like('title', $searchPlaceholderForLike),
+            'description' => $queryBuilder->expr()->like('description', $searchPlaceholderForLike),
+            'author_name' => $queryBuilder->expr()->like('author_name', $searchPlaceholderForLike),
+        ];
+
+        $caseStatement = 'CASE ' .
+            'WHEN ' . $searchConstraints['extension_key'] . ' THEN 16 ' .
+            'WHEN ' . $searchConstraints['extension_key_like'] . ' THEN 8 ' .
+            'WHEN ' . $searchConstraints['title'] . ' THEN 4 ' .
+            'WHEN ' . $searchConstraints['description'] . ' THEN 2 ' .
+            'WHEN ' . $searchConstraints['author_name'] . ' THEN 1 ' .
+            'END AS ' . $queryBuilder->quoteIdentifier('position');
+
+        $result = $queryBuilder
+            ->select('*')
+            ->addSelectLiteral($caseStatement)
+            ->from(self::TABLE_NAME)
+            ->where(
+                $queryBuilder->expr()->orX(...array_values($searchConstraints)),
+                $queryBuilder->expr()->eq('current_version', 1),
+                $queryBuilder->expr()->gte('review_state', 0)
+            )
+            ->orderBy('position', 'DESC')
+            ->execute()
+            ->fetchAll();
+
         return $this->dataMapper->map(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class, $result);
     }
 
@@ -316,14 +328,14 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     protected function markExtensionWithMaximumVersionAsCurrent($repositoryUid)
     {
         $uidsOfCurrentVersion = $this->fetchMaximalVersionsForAllExtensions($repositoryUid);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable(self::TABLE_NAME);
 
-        $this->databaseConnection->exec_UPDATEquery(
-            self::TABLE_NAME,
-            'uid IN (' . implode(',', $uidsOfCurrentVersion) . ')',
-            array(
-                'current_version' => 1,
-            )
-        );
+        $queryBuilder
+            ->update(self::TABLE_NAME)
+            ->where($queryBuilder->expr()->in('uid', $uidsOfCurrentVersion))
+            ->set('current_version', 1)
+            ->execute();
     }
 
     /**
@@ -336,19 +348,34 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     protected function fetchMaximalVersionsForAllExtensions($repositoryUid)
     {
-        $queryResult = $this->databaseConnection->sql_query(
-            'SELECT a.uid AS uid ' .
-            'FROM ' . self::TABLE_NAME . ' a ' .
-            'LEFT JOIN ' . self::TABLE_NAME . ' b ON a.repository = b.repository AND a.extension_key = b.extension_key AND a.integer_version < b.integer_version ' .
-            'WHERE a.repository = ' . (int)$repositoryUid . ' AND b.extension_key IS NULL ' .
-            'ORDER BY a.uid'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable(self::TABLE_NAME);
 
-        $extensionUids = array();
-        while ($row = $this->databaseConnection->sql_fetch_assoc($queryResult)) {
+        $queryResult = $queryBuilder
+            ->select('a.uid AS uid')
+            ->from(self::TABLE_NAME, 'a')
+            ->leftJoin(
+                'a',
+                self::TABLE_NAME,
+                'b',
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('a.repository', $queryBuilder->quoteIdentifier('b.repository')),
+                    $queryBuilder->expr()->eq('a.extension_key', $queryBuilder->quoteIdentifier('b.extension_key')),
+                    $queryBuilder->expr()->lt('a.integer_version', $queryBuilder->quoteIdentifier('b.integer_version'))
+                )
+            )
+            ->where(
+                $queryBuilder->expr()->eq('a.repository', (int)$repositoryUid),
+                $queryBuilder->expr()->isNull('b.extension_key')
+            )
+            ->orderBy('a.uid')
+            ->execute();
+
+        $extensionUids = [];
+        while ($row = $queryResult->fetch()) {
             $extensionUids[] = $row['uid'];
         }
-        $this->databaseConnection->sql_free_result($queryResult);
+
         return $extensionUids;
     }
 
@@ -359,11 +386,15 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     protected function getNumberOfCurrentExtensions()
     {
-        return $this->databaseConnection->exec_SELECTcountRows(
-            '*',
-            self::TABLE_NAME,
-            'current_version = 1'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable(self::TABLE_NAME);
+
+        return (int)$queryBuilder
+            ->count('*')
+            ->from(self::TABLE_NAME)
+            ->where($queryBuilder->expr()->eq('current_version', 1))
+            ->execute()
+            ->fetchColumn(0);
     }
 
     /**

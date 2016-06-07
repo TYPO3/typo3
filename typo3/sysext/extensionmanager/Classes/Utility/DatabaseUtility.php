@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Utility for dealing with database related operations
  */
@@ -117,17 +120,21 @@ class DatabaseUtility implements \TYPO3\CMS\Core\SingletonInterface
         $replace = array('\\\\', '\\\'', '\\0', '\\n', '\\r', '\\Z');
         $lines = array();
         // Select all rows from the table:
-        $result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, '');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $result = $queryBuilder->select('*')
+            ->from($table)
+            ->execute();
         // Traverse the selected rows and dump each row as a line in the file:
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
+        while ($row = $result->fetch()) {
             $values = array();
             foreach ($fieldStructure as $field => $structure) {
                 $values[] = isset($row[$field]) ? '\'' . str_replace($search, $replace, $row[$field]) . '\'' : 'NULL';
             }
             $lines[] = 'INSERT INTO ' . $table . ' VALUES (' . implode(', ', $values) . ');';
         }
-        // Free DB result:
-        $GLOBALS['TYPO3_DB']->sql_free_result($result);
         // Implode lines and return:
         return implode(LF, $lines);
     }
