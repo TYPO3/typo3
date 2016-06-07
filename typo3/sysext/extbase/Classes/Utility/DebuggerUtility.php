@@ -265,39 +265,41 @@ class DebuggerUtility
         } else {
             $dump .= '<span class="extbase-debug-type">' . $className . '</span>';
         }
-        if ($object instanceof \TYPO3\CMS\Core\SingletonInterface) {
-            $scope = 'singleton';
-        } else {
-            $scope = 'prototype';
-        }
-        if ($plainText) {
-            $dump .= ' ' . self::ansiEscapeWrap($scope, '44;37', $ansiColors);
-        } else {
-            $dump .= $scope ? '<span class="extbase-debug-scope">' . $scope . '</span>' : '';
-        }
-        if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject) {
-            if ($object->_isDirty()) {
-                $persistenceType = 'modified';
-            } elseif ($object->_isNew()) {
-                $persistenceType = 'transient';
+        if (! $object instanceof \Closure) {
+            if ($object instanceof \TYPO3\CMS\Core\SingletonInterface) {
+                $scope = 'singleton';
             } else {
-                $persistenceType = 'persistent';
+                $scope = 'prototype';
             }
-        }
-        if ($object instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage && $object->_isDirty()) {
-            $persistenceType = 'modified';
-        }
-        if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractEntity) {
-            $domainObjectType = 'entity';
-        } elseif ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject) {
-            $domainObjectType = 'valueobject';
-        } else {
-            $domainObjectType = 'object';
-        }
-        if ($plainText) {
-            $dump .= ' ' . self::ansiEscapeWrap((($persistenceType ? $persistenceType . ' ' : '') . $domainObjectType), '42;30', $ansiColors);
-        } else {
-            $dump .= '<span class="extbase-debug-ptype">' . ($persistenceType ? $persistenceType . ' ' : '') . $domainObjectType . '</span>';
+            if ($plainText) {
+                $dump .= ' ' . self::ansiEscapeWrap($scope, '44;37', $ansiColors);
+            } else {
+                $dump .= $scope ? '<span class="extbase-debug-scope">' . $scope . '</span>' : '';
+            }
+            if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject) {
+                if ($object->_isDirty()) {
+                    $persistenceType = 'modified';
+                } elseif ($object->_isNew()) {
+                    $persistenceType = 'transient';
+                } else {
+                    $persistenceType = 'persistent';
+                }
+            }
+            if ($object instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage && $object->_isDirty()) {
+                $persistenceType = 'modified';
+            }
+            if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractEntity) {
+                $domainObjectType = 'entity';
+            } elseif ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject) {
+                $domainObjectType = 'valueobject';
+            } else {
+                $domainObjectType = 'object';
+            }
+            if ($plainText) {
+                $dump .= ' ' . self::ansiEscapeWrap((($persistenceType ? $persistenceType . ' ' : '') . $domainObjectType), '42;30', $ansiColors);
+            } else {
+                $dump .= '<span class="extbase-debug-ptype">' . ($persistenceType ? $persistenceType . ' ' : '') . $domainObjectType . '</span>';
+            }
         }
         if (strpos(implode('|', self::$blacklistedClassNames), get_class($object)) > 0) {
             if ($plainText) {
@@ -358,44 +360,57 @@ class DebuggerUtility
                 $reflectionFunction = new \ReflectionFunction($object);
                 $params = [];
                 foreach ($reflectionFunction->getParameters() as $parameter) {
-                    $s = '';
+                    $parameterDump = '';
                     if ($parameter->isArray()) {
-                        $s .= ($plainText ? '' : '<span class="extbase-debug-type">')
-                            . self::ansiEscapeWrap('array ', '36', $ansiColors)
-                            . ($plainText ? '' : '</span>');
-                    } else {
-                        if ($parameter->getClass()) {
-                            $s .= ($plainText ? '' : '<span class="extbase-debug-type">')
-                                . self::ansiEscapeWrap($parameter->getClass()->name . ' ', '36', $ansiColors)
-                                . ($plainText ? '' : '</span>');
+                        if ($plainText) {
+                            $parameterDump .= self::ansiEscapeWrap('array ', '36', $ansiColors);
+                        } else {
+                            $parameterDump .= '<span class="extbase-debug-type">array </span>';
+                        }
+                    } elseif ($parameter->getClass()) {
+                        if ($plainText) {
+                            $parameterDump .= self::ansiEscapeWrap($parameter->getClass()->name . ' ', '36', $ansiColors);
+                        } else {
+                            $parameterDump .= '<span class="extbase-debug-type">'
+                                . htmlspecialchars($parameter->getClass()->name) . '</span>';
                         }
                     }
                     if ($parameter->isPassedByReference()) {
-                        $s .= '&';
+                        $parameterDump .= '&';
                     }
-                    $s .= ($plainText ? '' : '<span class="extbase-debug-property">')
-                        . self::ansiEscapeWrap('$' . $parameter->name, '37', $ansiColors)
-                        . ($plainText ? '' : '</span>');
+                    if ($plainText) {
+                        $parameterDump .= self::ansiEscapeWrap('$' . $parameter->name, '37', $ansiColors);
+                    } else {
+                        $parameterDump .= '<span class="extbase-debug-property">'
+                            . htmlspecialchars('$' . $parameter->name) . '</span>';
+                    }
                     if ($parameter->isOptional()) {
-                        $s .= ' = ';
-                        $s .= ($plainText ? '' : '<span class="extbase-debug-string">')
-                        . self::ansiEscapeWrap(var_export($parameter->getDefaultValue(), true), '33', $ansiColors)
-                        . ($plainText ? '' : '</span>');
+                        $parameterDump .= ' = ';
+                        if ($plainText) {
+                            $parameterDump .= self::ansiEscapeWrap(var_export($parameter->getDefaultValue(), true), '33', $ansiColors);
+                        } else {
+                            $parameterDump .= '<span class="extbase-debug-string">'
+                                . htmlspecialchars(var_export($parameter->getDefaultValue(), true)) . '</span>';
+                         }
                     }
-                    $params[] = $s;
+                    $params[] = $parameterDump;
                 }
                 $dump .= implode(', ', $params);
-                $dump .= ($plainText ? '' : '<span class="extbase-debug-closure">')
-                    . self::ansiEscapeWrap(') {' . PHP_EOL, '33', $ansiColors)
-                    . ($plainText ? '' : '</span>');
+                if ($plainText) {
+                    $dump .= self::ansiEscapeWrap(') {' . PHP_EOL, '33', $ansiColors);
+                } else {
+                    $dump .= '<span class="extbase-debug-closure">) {' . PHP_EOL . '</span>';
+                }
                 $lines = file($reflectionFunction->getFileName());
                 for ($l = $reflectionFunction->getStartLine(); $l < $reflectionFunction->getEndLine() -1; ++$l) {
                     $dump .= $plainText ? $lines[$l] : htmlspecialchars($lines[$l]);
                 }
-                $dump .=
-                    str_repeat(self::PLAINTEXT_INDENT, $level)
-                    . ($plainText ? '' : '<span class="extbase-debug-closure">') . self::ansiEscapeWrap('}' . PHP_EOL, '33', $ansiColors)
-                    . ($plainText ? '' : '</span>');
+                $dump .= str_repeat(self::PLAINTEXT_INDENT, $level);
+                if ($plainText) {
+                    $dump .= self::ansiEscapeWrap('}' . PHP_EOL, '33', $ansiColors);
+                } else {
+                    $dump .= '<span class="extbase-debug-closure">}</span>';
+                }
             } else {
                 if (get_class($object) === 'stdClass') {
                     $objReflection = new \ReflectionObject($object);
@@ -408,9 +423,14 @@ class DebuggerUtility
                     if (self::isBlacklisted($property)) {
                         continue;
                     }
-                    $dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT,
-                            $level) . ($plainText ? '' : '<span class="extbase-debug-property">') . self::ansiEscapeWrap($property->getName(),
-                            '37', $ansiColors) . ($plainText ? '' : '</span>') . ' => ';
+                    $dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level);
+                    if ($plainText) {
+                        $dump .= self::ansiEscapeWrap($property->getName(), '37', $ansiColors);
+                    } else {
+                        $dump .= '<span class="extbase-debug-property">'
+                            . htmlspecialchars($property->getName()) . '</span>';
+                    }
+                    $dump .= ' => ';
                     $property->setAccessible(true);
                     $visibility = ($property->isProtected() ? 'protected' : ($property->isPrivate() ? 'private' : 'public'));
                     if ($plainText) {
