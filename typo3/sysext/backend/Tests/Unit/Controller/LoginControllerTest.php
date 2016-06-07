@@ -38,44 +38,44 @@ class LoginControllerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
-     * @expectedExceptionCode 1433417281
      */
     public function validateAndSortLoginProvidersDetectsMissingProviderConfiguration()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1433417281);
         unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders']);
         $this->loginControllerMock->_call('validateAndSortLoginProviders');
     }
 
     /**
      * @test
-     * @expectedException \RuntimeException
-     * @expectedExceptionCode 1433417281
      */
     public function validateAndSortLoginProvidersDetectsNonArrayProviderConfiguration()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1433417281);
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = 'foo';
         $this->loginControllerMock->_call('validateAndSortLoginProviders');
     }
 
     /**
      * @test
-     * @expectedException \RuntimeException
-     * @expectedExceptionCode 1433417281
      */
     public function validateAndSortLoginProvidersDetectsIfNoProviderIsRegistered()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1433417281);
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = [];
         $this->loginControllerMock->_call('validateAndSortLoginProviders');
     }
 
     /**
      * @test
-     * @expectedException \RuntimeException
-     * @expectedExceptionCode 1433416043
      */
     public function validateAndSortLoginProvidersDetectsMissingConfigurationForProvider()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1433416043);
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = [
             1433419736 => []
         ];
@@ -84,11 +84,11 @@ class LoginControllerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
-     * @expectedExceptionCode 1460977275
      */
     public function validateAndSortLoginProvidersDetectsWrongProvider()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1460977275);
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = [
             1433419736 => [
                 'provider' => \stdClass::class
@@ -99,11 +99,11 @@ class LoginControllerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
-     * @expectedExceptionCode 1433416044
      */
     public function validateAndSortLoginProvidersDetectsMissingLabel()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1433416044);
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = [
             1433419736 => [
                 'provider' => UsernamePasswordLoginProvider::class,
@@ -116,11 +116,11 @@ class LoginControllerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
-     * @expectedExceptionCode 1433416045
      */
     public function validateAndSortLoginProvidersDetectsMissingIconClass()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1433416045);
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = [
             1433419736 => [
                 'provider' => UsernamePasswordLoginProvider::class,
@@ -133,11 +133,11 @@ class LoginControllerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
-     * @expectedExceptionCode 1433416046
      */
     public function validateAndSortLoginProvidersDetectsMissingSorting()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1433416046);
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = [
             1433419736 => [
                 'provider' => UsernamePasswordLoginProvider::class,

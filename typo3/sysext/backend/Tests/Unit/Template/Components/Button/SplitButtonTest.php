@@ -41,12 +41,12 @@ class SplitButtonTest extends UnitTestCase
      * Try adding an invalid button to a splitButton
      *
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionCode 1441706330
      * @return void
      */
     public function isButtonValidInvalidButtonGivenExpectFalse()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1441706330);
         $button = new SplitButton();
 
         $primaryAction = new LinkButton();
@@ -60,12 +60,12 @@ class SplitButtonTest extends UnitTestCase
      * Try to add multiple primary actions
      *
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionCode 1441706340
      * @return void
      */
     public function isButtonValidBrokenSetupMultiplePrimaryActionsGivenExpectFalse()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1441706340);
         $button = new SplitButton();
 
         $primaryAction = new LinkButton();
@@ -85,12 +85,12 @@ class SplitButtonTest extends UnitTestCase
      * Try to add an invalid button as second parameter
      *
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionCode 1441706330
      * @return void
      */
     public function isButtonValidBrokenSetupInvalidButtonAsSecondParametersGivenExpectFalse()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1441706330);
         $button = new SplitButton();
 
         $primaryAction = new LinkButton();

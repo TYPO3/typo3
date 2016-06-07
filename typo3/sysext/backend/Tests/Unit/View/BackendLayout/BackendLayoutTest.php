@@ -21,10 +21,11 @@ class BackendLayoutTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
      * @test
-     * @expectedException \UnexpectedValueException
      */
     public function invalidIdentifierIsRecognizedOnCreation()
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1381597630);
         $identifier = $this->getUniqueId('identifier__');
         $title = $this->getUniqueId('title');
         $configuration = $this->getUniqueId('configuration');

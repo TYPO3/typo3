@@ -21,10 +21,11 @@ class BackendLayoutCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
      * @test
-     * @expectedException \UnexpectedValueException
      */
     public function invalidIdentifierIsRecognizedOnCreation()
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1381597631);
         $identifier = $this->getUniqueId('identifier__');
         new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
     }
@@ -42,10 +43,11 @@ class BackendLayoutCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \UnexpectedValueException
      */
     public function invalidBackendLayoutIsRecognizedOnAdding()
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1381597628);
         $identifier = $this->getUniqueId('identifier');
         $backendLayoutCollection = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
         $backendLayoutIdentifier = $this->getUniqueId('identifier__');
@@ -57,10 +59,11 @@ class BackendLayoutCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \LogicException
      */
     public function duplicateBackendLayoutIsRecognizedOnAdding()
     {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(1381559376);
         $identifier = $this->getUniqueId('identifier');
         $backendLayoutCollection = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
         $backendLayoutIdentifier = $this->getUniqueId('identifier');

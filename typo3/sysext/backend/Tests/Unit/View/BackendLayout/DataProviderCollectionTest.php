@@ -34,10 +34,11 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \UnexpectedValueException
      */
     public function invalidIdentifierIsRecognizedOnAdding()
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1381597629);
         $identifier = $this->getUniqueId('identifier__');
         $dataProviderMock = $this->getMock('stdClass');
 
@@ -46,10 +47,11 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \LogicException
      */
     public function invalidInterfaceIsRecognizedOnAdding()
     {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(1381269811);
         $identifier = $this->getUniqueId('identifier');
         $dataProviderMock = $this->getMock('stdClass');
 

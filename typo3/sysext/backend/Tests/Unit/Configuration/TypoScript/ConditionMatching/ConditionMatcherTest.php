@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Configuration\TypoScript\ConditionMatchin
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Tests\Unit\Configuration\TypoScript\ConditionMatching\Fixtures\TestConditionException;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -943,10 +944,11 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Backend\Tests\Unit\Configuration\TypoScript\ConditionMatching\Fixtures\TestConditionException
      */
     public function matchCallsTestConditionAndHandsOverParameters()
     {
+        $this->expectException(TestConditionException::class);
+        $this->expectExceptionCode(1411581139);
         $this->matchCondition->match('[TYPO3\\CMS\\Backend\\Tests\\Unit\\Configuration\\TypoScript\\ConditionMatching\\Fixtures\\TestCondition = 7, != 6]');
     }
 }
