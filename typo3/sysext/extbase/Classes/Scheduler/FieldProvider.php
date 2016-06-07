@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Scheduler;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
+
 /**
  * Field provider for Extbase CommandController Scheduler task
  */
@@ -264,7 +266,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
         $command = $this->commandManager->getCommandByIdentifier($this->task->getCommandIdentifier());
         $argumentReflection = $this->reflectionService->getMethodParameters($command->getControllerClassName(), $command->getControllerCommandName() . 'Command');
         $defaultValue = $argumentReflection[$argumentName]['defaultValue'];
-        if ($type === 'boolean') {
+        if (TypeHandlingUtility::normalizeType($type) === 'boolean') {
             $defaultValue = (bool)$defaultValue ? 1 : 0;
         }
         return $defaultValue;
@@ -318,7 +320,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
         $type = $this->getArgumentType($argument);
         $name = $argument->getName();
         $fieldName = 'tx_scheduler[task_extbase][arguments][' . htmlspecialchars($name) . ']';
-        if ($type === 'boolean') {
+        if (TypeHandlingUtility::normalizeType($type) === 'boolean') {
             // checkbox field for boolean values.
             $html = '<input type="hidden" name="' . $fieldName . '" value="0">';
             $html .= '<div class="checkbox"><label><input type="checkbox" name="' . $fieldName . '" value="1" ' . ((bool)$currentValue ? ' checked="checked"' : '') . '></label></div>';
