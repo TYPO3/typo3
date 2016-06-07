@@ -69,10 +69,11 @@ class KeypairTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      *
-     * @expectedException \BadMethodCallException
      */
     public function setExponentCalledTwoTimesThrowsException()
     {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionCode(1296062830);
         $this->subject->setExponent(123456);
         $this->subject->setExponent(123456);
     }
@@ -104,10 +105,11 @@ class KeypairTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      *
-     * @expectedException \BadMethodCallException
      */
     public function setPrivateKeyCalledTwoTimesThrowsException()
     {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionCode(1296062831);
         $this->subject->setPrivateKey('foo');
         $this->subject->setPrivateKey('foo');
     }
@@ -139,10 +141,11 @@ class KeypairTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      *
-     * @expectedException \BadMethodCallException
      */
     public function setPublicKeyCalledTwoTimesThrowsException()
     {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionCode(1296062832);
         $this->subject->setPublicKey(123456);
         $this->subject->setPublicKey(123456);
     }
