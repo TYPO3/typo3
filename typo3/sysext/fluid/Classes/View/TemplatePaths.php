@@ -95,7 +95,7 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
             $configuration = (array) $this->typoScript['plugin']['tx_' . $signature]['view'];
         }
         foreach ($paths as $name => $values) {
-            $paths[$name] = $values + (array) $configuration[$name];
+            $paths[$name] = (array)$configuration[$name] + $values;
         }
         return $paths;
     }
