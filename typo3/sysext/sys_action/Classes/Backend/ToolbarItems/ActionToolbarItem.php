@@ -16,9 +16,13 @@ namespace TYPO3\CMS\SysAction\Backend\ToolbarItems;
 
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\SysAction\ActionTask;
 
 /**
  * Adds action links to the backend's toolbar
@@ -78,41 +82,66 @@ class ActionToolbarItem implements ToolbarItemInterface
 
     /**
      * Gets the entries for the action menu
-     *
-     * @return array Array of action menu entries
      */
     protected function initializeActionEntries()
     {
         $backendUser = $this->getBackendUser();
-        $databaseConnection = $this->getDatabaseConnection();
-        $actions = array();
-        if ($backendUser->isAdmin()) {
-            $queryResource = $databaseConnection->exec_SELECTquery('*', 'sys_action', 'pid = 0 AND hidden=0', '', 'sys_action.sorting');
-        } else {
-            $groupList = 0;
-            if ($backendUser->groupList) {
-                $groupList = $backendUser->groupList;
-            }
-            $queryResource = $databaseConnection->exec_SELECT_mm_query(
-                'sys_action.*',
-                'sys_action',
-                'sys_action_asgr_mm',
-                'be_groups',
-                ' AND be_groups.uid IN (' . $groupList . ') AND sys_action.pid = 0 AND sys_action.hidden = 0',
-                'sys_action.uid',
-                'sys_action.sorting'
-            );
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_action');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(HiddenRestriction::class))
+            ->add(GeneralUtility::makeInstance(RootLevelRestriction::class, [
+                'sys_action'
+            ]));
+
+        $queryBuilder
+            ->select('sys_action.*')
+            ->from('sys_action');
+
+        if (!empty($GLOBALS['TCA']['sys_action']['ctrl']['sortby'])) {
+            $queryBuilder->orderBy('sys_action.' . $GLOBALS['TCA']['sys_action']['ctrl']['sortby']);
         }
 
-        if ($queryResource) {
-            while ($actionRow = $databaseConnection->sql_fetch_assoc($queryResource)) {
-                $actions[] = array(
-                    $actionRow['title'],
-                    BackendUtility::getModuleUrl('user_task') . '&SET[mode]=tasks&SET[function]=sys_action.TYPO3\\CMS\\SysAction\\ActionTask&show=' . $actionRow['uid'],
-                    $this->iconFactory->getIconForRecord('sys_action', $actionRow, Icon::SIZE_SMALL)->render()
-                );
-            }
-            $databaseConnection->sql_free_result($queryResource);
+        $actions = [];
+        if (!$backendUser->isAdmin()) {
+            $groupList = $backendUser->groupList ?: '0';
+
+            $queryBuilder
+                ->join(
+                    'sys_action',
+                    'sys_action_asgr_mm',
+                    'sys_action_asgr_mm',
+                    $queryBuilder->expr()->eq(
+                        'sys_action_asgr_mm.uid_local',
+                        $queryBuilder->quoteIdentifier('sys_action.uid')
+                    )
+                )
+                ->join(
+                    'sys_action_asgr_mm',
+                    'be_groups',
+                    'be_groups',
+                    $queryBuilder->expr()->eq(
+                        'sys_action_asgr_mm.uid_foreign',
+                        $queryBuilder->quoteIdentifier('be_groups.uid')
+                    )
+                )
+                ->where($queryBuilder->expr()->in('be_groups.uid', GeneralUtility::intExplode(',', $groupList, true)))
+                ->groupBy('sys_action.uid');
+        }
+
+        $result = $queryBuilder->execute();
+        while ($actionRow = $result->fetch()) {
+            $actions[] = [
+                $actionRow['title'],
+                sprintf(
+                    '%s&SET[mode]=tasks&SET[function]=sys_action.%s&show=%u',
+                    BackendUtility::getModuleUrl('user_task'),
+                    ActionTask::class, // @todo: class name string is hand over as url parameter?!
+                    $actionRow['uid']
+                ),
+                $this->iconFactory->getIconForRecord('sys_action', $actionRow, Icon::SIZE_SMALL)->render()
+            ];
         }
         $this->actionEntries = $actions;
     }
@@ -179,15 +208,5 @@ class ActionToolbarItem implements ToolbarItemInterface
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Return DatabaseConnection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
