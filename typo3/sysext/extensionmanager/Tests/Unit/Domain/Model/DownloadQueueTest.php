@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
  * Download queue test
@@ -67,19 +68,17 @@ class DownloadQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-     * @expectedExceptionCode 1342432103
      */
     public function addExtensionToQueueThrowsExceptionIfUnknownStackIsGiven()
     {
+        $this->expectException(ExtensionManagerException::class);
+        $this->expectExceptionCode(1342432103);
         $this->downloadQueueMock->addExtensionToQueue($this->extensionMock, 'unknownStack');
     }
 
     /**
      * @test
      * @return void
-     * @expectedException \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-     * @expectedExceptionCode 1342432101
      */
     public function addExtensionToQueueThrowsExceptionIfExtensionWithSameKeyAndDifferentValuesAlreadyExists()
     {
@@ -88,6 +87,8 @@ class DownloadQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $extensionMock2->setExtensionKey('foobar');
         $extensionMock2->setVersion('1.0.3');
 
+        $this->expectException(ExtensionManagerException::class);
+        $this->expectExceptionCode(1342432101);
         $this->downloadQueueMock->addExtensionToQueue($extensionMock2);
         $this->downloadQueueMock->addExtensionToQueue($this->extensionMock);
     }
