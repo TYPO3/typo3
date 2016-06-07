@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Beuser\ViewHelpers\Display;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -62,16 +64,25 @@ class SysLanguageViewHelper extends AbstractViewHelper
         }
 
         $content = '';
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            'uid, title, flag',
-            'sys_language',
-            'uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($uids) . ')',
-            'title ASC'
-        );
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_filemounts');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $res = $queryBuilder
+            ->select('uid', 'title', 'flag')
+            ->from('sys_language')
+            ->where(
+                $queryBuilder->expr()->in(
+                    'uid',
+                    GeneralUtility::intExplode(',', $uids)
+                )
+            )
+            ->orderBy('title', 'ASC')
+            ->execute();
+
+        while ($row = $res->fetch()) {
             $content .= '<li>' . htmlspecialchars($row['title']) . ' [' . htmlspecialchars($row['uid']) . ']</li>';
         }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
         return '<ul>' . $content . '</ul>';
     }
 }
