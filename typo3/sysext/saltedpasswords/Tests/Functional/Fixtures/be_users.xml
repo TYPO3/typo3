@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<be_users>
+		<uid>1</uid>
+		<username>user_with_salted_password_1</username>
+		<password>$P$CDmA2Juu2h9/9MNaKaxtgzZgIVmjkh/</password> <!-- salted hash starting with $ -->
+		<disable>0</disable>
+		<deleted>0</deleted>
+	</be_users>
+	<be_users>
+		<uid>2</uid>
+		<username>user_with_salted_password_2</username>
+		<password>M$v2AultVYItaCpb.tpdx2aGAue8eL3/</password> <!-- salted hash starting with M$ -->
+		<disable>0</disable>
+		<deleted>0</deleted>
+	</be_users>
+	<be_users>
+		<uid>3</uid>
+		<username>user_with_insecure_password_1</username>
+		<password>5f4dcc3b5aa765d61d8327deb882cf99</password> <!-- simple md5 hash -->
+		<disable>0</disable>
+		<deleted>0</deleted>
+	</be_users>
+	<be_users>
+		<uid>4</uid>
+		<username>user_with_empty_password</username>
+		<password></password> <!-- empty password -->
+		<disable>0</disable>
+		<deleted>0</deleted>
+	</be_users>
+	<be_users>
+		<uid>5</uid>
+		<username>deleted_user_with_insecure_password</username>
+		<password>819b0643d6b89dc9b579fdfc9094f28e</password> <!-- simple md5 hash -->
+		<disable>0</disable>
+		<deleted>1</deleted> <!-- user is marked as deleted -->
+	</be_users>
+	<be_users>
+		<uid>6</uid>
+		<username>disabled_user_with_insecure_password</username>
+		<password>34cc93ece0ba9e3f6f235d4af979b16c</password> <!-- simple md5 hash -->
+		<disable>1</disable> <!-- user is marked as disabled -->
+		<deleted>0</deleted>
+	</be_users>
+</dataset>

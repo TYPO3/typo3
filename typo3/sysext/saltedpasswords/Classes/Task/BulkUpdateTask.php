@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Saltedpasswords\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Update plaintext and hashed passwords of existing users to salted passwords.
  */
@@ -108,7 +111,19 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     protected function findUsersToUpdate($mode)
     {
-        $usersToUpdate = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, password', strtolower($mode) . '_users', '1 = 1', '', 'uid ASC', $this->userRecordPointer[$mode] . ', ' . $this->numberOfRecords);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->getTablename($mode));
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $usersToUpdate = $queryBuilder
+            ->select('uid', 'password')
+            ->from($this->getTablename($mode))
+            ->orderBy('uid')
+            ->setFirstResult($this->userRecordPointer[$mode])
+            ->setMaxResults($this->numberOfRecords)
+            ->execute()
+            ->fetchAll();
+
         return $usersToUpdate;
     }
 
@@ -155,9 +170,14 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
                 $newPassword = 'M' . $newPassword;
             }
             // Persist updated password
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery(strtolower($mode) . '_users', 'uid = ' . $user['uid'], array(
-                'password' => $newPassword
-            ));
+
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($this->getTablename($mode))
+                ->update(
+                    $this->getTablename($mode),
+                    ['password' => $newPassword],
+                    ['uid' => (int)$user['uid']]
+                );
         }
     }
 
@@ -271,5 +291,25 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     public function getNumberOfRecords()
     {
         return $this->numberOfRecords;
+    }
+
+    /**
+     * @param string $mode FE for fe_users, BE for be_users
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    protected function getTablename(string $mode): string
+    {
+        $mode = strtolower($mode);
+        if ($mode === 'be') {
+            return 'be_users';
+        } elseif ($mode === 'fe') {
+            return 'fe_users';
+        } else {
+            throw new \InvalidArgumentException(
+                'Invalid mode "' . $mode . '" for salted passwords bulk update',
+                1465392861
+            );
+        }
     }
 }

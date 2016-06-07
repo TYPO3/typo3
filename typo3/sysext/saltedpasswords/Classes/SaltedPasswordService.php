@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Saltedpasswords;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -216,8 +217,20 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService
      */
     protected function updatePassword($uid, $updateFields)
     {
-        $GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->pObj->user_table, sprintf('uid = %u', $uid), $updateFields);
-        GeneralUtility::devLog(sprintf('Automatic password update for user record in %s with uid %u', $this->pObj->user_table, $uid), $this->extKey, 1);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($this->pObj->user_table);
+
+        $connection->update(
+            $this->pObj->user_table,
+            $updateFields,
+            ['uid' => (int)$uid]
+        );
+
+        GeneralUtility::devLog(
+            sprintf('Automatic password update for user record in %s with uid %u', $this->pObj->user_table, $uid),
+            $this->extKey,
+            1
+        );
     }
 
     /**

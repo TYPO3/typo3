@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Saltedpasswords\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * General library class.
  */
@@ -25,20 +28,26 @@ class SaltedPasswordsUtility
     const EXTKEY = 'saltedpasswords';
 
     /**
-     * Calculates number of backend users, who have no saltedpasswords
-     * protection.
+     * Calculates number of backend users, who have no saltedpasswords protection.
      *
      * @return int
      */
     public static function getNumberOfBackendUsersWithInsecurePassword()
     {
-        $userCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
-            '*',
-            'be_users',
-            'password != \'\''
-                . ' AND password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('$%', 'be_users')
-                . ' AND password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('M$%', 'be_users')
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $userCount = $queryBuilder
+            ->count('*')
+            ->from('be_users')
+            ->where(
+                $queryBuilder->expr()->neq('password', $queryBuilder->quote('')),
+                $queryBuilder->expr()->notLike('password', $queryBuilder->quote('$%')),
+                $queryBuilder->expr()->notLike('password', $queryBuilder->quote('M$%'))
+            )
+            ->execute()
+            ->fetchColumn();
+
         return $userCount;
     }
 
