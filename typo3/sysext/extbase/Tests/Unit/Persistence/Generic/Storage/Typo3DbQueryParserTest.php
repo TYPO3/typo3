@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
  */
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException;
 
 class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
@@ -191,10 +193,11 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException
      */
     public function orderStatementGenerationThrowsExceptionOnUnsupportedOrder()
     {
+        $this->expectException(UnsupportedOrderException::class);
+        $this->expectExceptionCode(1242816074);
         $mockSource = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Selector::class, array('getNodeTypeName'), array(), '', false);
         $mockSource->expects($this->never())->method('getNodeTypeName');
         $mockDataMapper = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class, array('convertPropertyNameToColumnName', 'convertClassNameToTableName'), array(), '', false);
@@ -321,10 +324,11 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException
      */
     public function visibilityConstraintStatementGenerationThrowsExceptionIfTheQuerySettingsAreInconsistent()
     {
+        $this->expectException(InconsistentQuerySettingsException::class);
+        $this->expectExceptionCode(1460975922);
         $tableName = 'tx_foo_table';
         $GLOBALS['TCA'][$tableName]['ctrl'] = array(
             'enablecolumns' => array(

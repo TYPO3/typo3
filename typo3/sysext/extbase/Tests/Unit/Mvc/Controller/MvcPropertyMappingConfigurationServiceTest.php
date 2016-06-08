@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
 
 /**
  * Test case
@@ -96,18 +97,23 @@ class MvcPropertyMappingConfigurationServiceTest extends \TYPO3\CMS\Core\Tests\U
         return array(
             'Overriding form fields (string overridden by array) - 1' => array(
                 array('field1', 'field2', 'field2[bla]', 'field2[blubb]'),
+                1255072196
             ),
             'Overriding form fields (string overridden by array) - 2' => array(
                 array('field1', 'field2[bla]', 'field2[bla][blubb][blubb]'),
+                1255072196
             ),
             'Overriding form fields (array overridden by string) - 1' => array(
                 array('field1', 'field2[bla]', 'field2[blubb]', 'field2'),
+                1255072587
             ),
             'Overriding form fields (array overridden by string) - 2' => array(
                 array('field1', 'field2[bla][blubb][blubb]', 'field2[bla]'),
+                1255072587
             ),
             'Empty [] not as last argument' => array(
                 array('field1', 'field2[][bla]'),
+                1255072832
             )
 
         );
@@ -125,12 +131,15 @@ class MvcPropertyMappingConfigurationServiceTest extends \TYPO3\CMS\Core\Tests\U
     }
 
     /**
+     * @param $input
+     * @param $expectExceptionCode
      * @test
      * @dataProvider dataProviderForgenerateTrustedPropertiesTokenWithUnallowedValues
-     * @expectedException \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException
      */
-    public function generateTrustedPropertiesTokenThrowsExceptionInWrongCases($input)
+    public function generateTrustedPropertiesTokenThrowsExceptionInWrongCases($input, $expectExceptionCode)
     {
+        $this->expectException(InvalidArgumentForHashGenerationException::class);
+        $this->expectExceptionCode($expectExceptionCode);
         $requestHashService = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class, array('serializeAndHashFormFieldArray'));
         $requestHashService->generateTrustedPropertiesToken($input);
     }

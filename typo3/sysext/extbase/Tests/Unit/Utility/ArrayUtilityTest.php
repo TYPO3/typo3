@@ -83,10 +83,11 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function getValueByPathThrowsExceptionIfPathIsNoArrayOrString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1304950007);
         $array = array('Foo' => array('Bar' => array('Baz' => array(2 => 'the value'))));
         \TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, null);
     }
@@ -173,30 +174,33 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function setValueByPathThrowsExceptionIfPathIsNoArrayOrString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1305111499);
         $array = array('Foo' => array('Bar' => array('Baz' => array(2 => 'the value'))));
         \TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($array, null, 'Some Value');
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function setValueByPathThrowsExceptionIfSubjectIsNoArray()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1306424308);
         $subject = 'foobar';
         \TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($subject, 'foo', 'bar');
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function setValueByPathThrowsExceptionIfSubjectIsNoArrayAccess()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1306424308);
         $subject = new \stdClass();
         \TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($subject, 'foo', 'bar');
     }
@@ -261,10 +265,11 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function unsetValueByPathThrowsExceptionIfPathIsNoArrayOrString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1305111513);
         $array = array('Foo' => array('Bar' => array('Baz' => array(2 => 'the value'))));
         \TYPO3\CMS\Extbase\Utility\ArrayUtility::unsetValueByPath($array, null);
     }

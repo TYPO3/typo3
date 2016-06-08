@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Configuration\Exception\ParseErrorException;
 
 /**
  * Test case
@@ -293,10 +294,11 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Configuration\Exception\ParseErrorException
      */
     public function overrideSwitchableControllerActionsThrowsExceptionIfFlexFormConfigurationIsInvalid()
     {
+        $this->expectException(ParseErrorException::class);
+        $this->expectExceptionCode(1257146403);
         $frameworkConfiguration = array(
             'pluginName' => 'Pi1',
             'extensionName' => 'SomeExtension',

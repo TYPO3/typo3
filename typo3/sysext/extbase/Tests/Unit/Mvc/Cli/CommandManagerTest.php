@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Extbase\Mvc\Exception\AmbiguousCommandIdentifierException;
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException;
 
 /**
  * Test case
@@ -94,10 +96,11 @@ class CommandManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException
      */
     public function getCommandByIdentifierThrowsExceptionIfNoMatchingCommandWasFound()
     {
+        $this->expectException(NoSuchCommandException::class);
+        $this->expectExceptionCode(1310556663);
         $mockCommand = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, array(), array(), '', false);
         $mockCommand->expects($this->once())->method('getCommandIdentifier')->will($this->returnValue('extensionkey:controller:command'));
         $mockCommands = array($mockCommand);
@@ -107,10 +110,11 @@ class CommandManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\AmbiguousCommandIdentifierException
      */
     public function getCommandByIdentifierThrowsExceptionIfMoreThanOneMatchingCommandWasFound()
     {
+        $this->expectException(AmbiguousCommandIdentifierException::class);
+        $this->expectExceptionCode(1310557169);
         $mockCommand1 = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, array(), array(), '', false);
         $mockCommand1->expects($this->once())->method('getCommandIdentifier')->will($this->returnValue('extensionkey:controller:command'));
         $mockCommand2 = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, array(), array(), '', false);

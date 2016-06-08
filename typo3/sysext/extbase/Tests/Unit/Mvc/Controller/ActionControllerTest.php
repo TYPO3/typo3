@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
 
 /**
  * Test case
@@ -172,10 +174,11 @@ class ActionControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException
      */
     public function resolveActionMethodNameThrowsAnExceptionIfTheActionDefinedInTheRequestDoesNotExist()
     {
+        $this->expectException(NoSuchActionException::class);
+        $this->expectExceptionCode(1186669086);
         $mockRequest = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array(), array(), '', false);
         $mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('fooBar'));
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\ActionController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
@@ -279,10 +282,11 @@ class ActionControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException
      */
     public function initializeActionMethodArgumentsThrowsExceptionIfDataTypeWasNotSpecified()
     {
+        $this->expectException(InvalidArgumentTypeException::class);
+        $this->expectExceptionCode(1253175643);
         $mockRequest = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array(), array(), '', false);
         $mockArguments = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments::class, array(), array(), '', false);
         $mockController = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\ActionController::class, array('fooAction'), array(), '', false);

@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -812,10 +813,11 @@ class UriBuilderTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException
      */
     public function conversionOfTansientObjectsThrowsExceptionForOtherThanValueObjects()
     {
+        $this->expectException(InvalidArgumentValueException::class);
+        $this->expectExceptionCode(1260881688);
         $mockEntity = new EntityFixture();
         $mockEntity->name = 'foo';
         /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|Object $mockUriBuilder */

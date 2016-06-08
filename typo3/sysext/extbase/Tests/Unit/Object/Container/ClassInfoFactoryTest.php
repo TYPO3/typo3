@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException;
 
 /**
  * Test case
@@ -34,10 +35,11 @@ class ClassInfoFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException
      */
     public function buildClassInfoFromClassNameThrowsExceptionIfGivenClassNameCantBeReflected()
     {
+        $this->expectException(UnknownObjectException::class);
+        $this->expectExceptionCode(1289386765);
         $this->classInfoFactory->buildClassInfoFromClassName('SomeNonExistingClass');
     }
 

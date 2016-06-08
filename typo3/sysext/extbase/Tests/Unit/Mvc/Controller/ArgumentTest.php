@@ -59,19 +59,21 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function constructingArgumentWithoutNameThrowsException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1232551853);
         new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('', 'Text');
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function constructingArgumentWithInvalidNameThrowsException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1187951688);
         new \TYPO3\CMS\Extbase\Mvc\Controller\Argument(new \ArrayObject(), 'Text');
     }
 
@@ -108,11 +110,12 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      * @dataProvider invalidShortNames
-     * @expectedException \InvalidArgumentException
      * @param string $invalidShortName
      */
     public function shortNameShouldThrowExceptionIfInvalid($invalidShortName)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1195824959);
         $this->simpleValueArgument->setShortName($invalidShortName);
     }
 

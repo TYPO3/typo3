@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentMixingException;
 
 /**
  * Test case
@@ -297,10 +298,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentMixingException
      */
     public function ifNamedArgumentsAreUsedAllRequiredArgumentsMustBeNamed()
     {
+        $this->expectException(InvalidArgumentMixingException::class);
+        $this->expectExceptionCode(1309971820);
         $methodParameters = array(
             'testArgument1' => array('optional' => false, 'type' => 'string'),
             'testArgument2' => array('optional' => false, 'type' => 'string')
@@ -311,10 +313,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentMixingException
      */
     public function ifUnnamedArgumentsAreUsedAllRequiredArgumentsMustBeUnnamed()
     {
+        $this->expectException(InvalidArgumentMixingException::class);
+        $this->expectExceptionCode(1309971821);
         $methodParameters = array(
             'requiredArgument1' => array('optional' => false, 'type' => 'string'),
             'requiredArgument2' => array('optional' => false, 'type' => 'string')

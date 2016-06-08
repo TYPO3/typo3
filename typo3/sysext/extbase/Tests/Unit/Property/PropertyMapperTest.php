@@ -21,6 +21,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderOneInterface;
 use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderThree;
 use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderThreeInterface;
@@ -89,11 +90,12 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      * @dataProvider invalidSourceTypes
-     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
      * @param mixed $source
      */
     public function sourceWhichIsNoSimpleTypeThrowsException($source)
     {
+        $this->expectException(InvalidSourceException::class);
+        $this->expectExceptionCode(1297773150);
         /** @var \TYPO3\CMS\Extbase\Property\PropertyMapper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
         $propertyMapper->_call('determineSourceType', $source);

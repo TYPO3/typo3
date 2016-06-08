@@ -21,6 +21,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Extbase\Property\Exception\TypeConverterException;
 use TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures\DateTimeSubFixture;
 
 /**
@@ -229,10 +230,11 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
      */
     public function convertFromThrowsExceptionIfGivenArrayDoesNotSpecifyTheDate()
     {
+        $this->expectException(TypeConverterException::class);
+        $this->expectExceptionCode(1308003914);
         $this->converter->convertFrom(array('hour' => '12', 'minute' => '30'), 'DateTime');
     }
 
@@ -265,11 +267,12 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
      * @dataProvider invalidDatePartKeyValuesDataProvider
      */
     public function convertFromThrowsExceptionIfDatePartKeysHaveInvalidValuesSpecified($source)
     {
+        $this->expectException(TypeConverterException::class);
+        $this->expectExceptionCode(1308003914);
         $this->converter->convertFrom($source, 'DateTime');
     }
 
@@ -330,10 +333,11 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
      */
     public function convertFromThrowsExceptionIfSpecifiedTimezoneIsInvalid()
     {
+        $this->expectException(TypeConverterException::class);
+        $this->expectExceptionCode(1308240974);
         $source = array(
             'date' => '2011-06-16',
             'dateFormat' => 'Y-m-d',
@@ -344,10 +348,11 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
      */
     public function convertFromArrayThrowsExceptionForEmptyArray()
     {
+        $this->expectException(TypeConverterException::class);
+        $this->expectExceptionCode(1308003914);
         $this->converter->convertFrom(array(), 'DateTime', array(), null);
     }
 

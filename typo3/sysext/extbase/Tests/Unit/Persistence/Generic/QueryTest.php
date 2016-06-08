@@ -82,37 +82,41 @@ class QueryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function setLimitAcceptsOnlyIntegers()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1245071870);
         $this->query->setLimit(1.5);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function setLimitRejectsIntegersLessThanOne()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1245071870);
         $this->query->setLimit(0);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function setOffsetAcceptsOnlyIntegers()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1245071872);
         $this->query->setOffset(1.5);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function setOffsetRejectsIntegersLessThanZero()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1245071872);
         $this->query->setOffset(-1);
     }
 

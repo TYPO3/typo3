@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 
 /**
  * Test case
@@ -105,10 +106,11 @@ class ConjunctionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
      */
     public function removingANotExistingValidatorIndexThrowsException()
     {
+        $this->expectException(NoSuchValidatorException::class);
+        $this->expectExceptionCode(1207020177);
         $validatorConjunction = new \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator(array());
         $validator = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class, array('validate', 'getOptions'));
         $validatorConjunction->removeValidator($validator);

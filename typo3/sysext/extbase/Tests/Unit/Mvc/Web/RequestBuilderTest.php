@@ -13,6 +13,10 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
+use TYPO3\CMS\Extbase\Mvc\Exception;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 
 /**
  * Test case
@@ -227,10 +231,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception
      */
     public function buildThrowsExceptionIfExtensionNameIsNotConfigured()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1289843275);
         unset($this->configuration['extensionName']);
         $mockConfigurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         $mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
@@ -240,10 +245,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception
      */
     public function buildThrowsExceptionIfPluginNameIsNotConfigured()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1289843277);
         unset($this->configuration['pluginName']);
         $mockConfigurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         $mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
@@ -254,10 +260,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception
      */
     public function buildThrowsExceptionIfControllerConfigurationIsEmptyOrNotSet()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1316104317);
         $this->configuration['controllerConfiguration'] = array();
         $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
@@ -267,10 +274,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception
      */
     public function buildThrowsExceptionIfControllerConfigurationHasNoDefaultActionDefined()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1295479651);
         $this->configuration['controllerConfiguration']['TheFirstController'] = array();
         $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
@@ -280,10 +288,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception
      */
     public function buildThrowsExceptionIfNoDefaultControllerCanBeResolved()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1316104317);
         $this->configuration['controllerConfiguration'] = array(
             '' => array(
                 'actions' => array('foo')
@@ -387,10 +396,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception
      */
     public function buildThrowsExceptionIfDefaultControllerCantBeDetermined()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1316104317);
         $this->configuration['controllerConfiguration'] = array();
         $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
@@ -431,10 +441,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException
      */
     public function buildThrowsInvalidControllerNameExceptionIfSpecifiedControllerIsNotAllowed()
     {
+        $this->expectException(InvalidControllerNameException::class);
+        $this->expectExceptionCode(1313855173);
         $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
@@ -449,10 +460,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Error\Http\PageNotFoundException
      */
     public function buildThrowsPageNotFoundExceptionIfEnabledAndSpecifiedControllerIsNotAllowed()
     {
+        $this->expectException(PageNotFoundException::class);
+        $this->expectExceptionCode(1313857897);
         $this->configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved'] = 1;
         $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
@@ -485,10 +497,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception
      */
     public function buildThrowsExceptionIfDefaultActionCantBeDetermined()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1316104317);
         $this->configuration['controllerConfiguration'] = array();
         $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
@@ -545,10 +558,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException
      */
     public function buildThrowsInvalidActionNameExceptionIfSpecifiedActionIsNotAllowed()
     {
+        $this->expectException(InvalidActionNameException::class);
+        $this->expectExceptionCode(1313855175);
         $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
@@ -563,10 +577,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Error\Http\PageNotFoundException
      */
     public function buildThrowsPageNotFoundExceptionIfEnabledAndSpecifiedActionIsNotAllowed()
     {
+        $this->expectException(PageNotFoundException::class);
+        $this->expectExceptionCode(1313857898);
         $this->configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved'] = 1;
         $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);

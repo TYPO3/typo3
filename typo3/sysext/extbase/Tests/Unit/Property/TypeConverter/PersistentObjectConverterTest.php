@@ -21,6 +21,10 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Extbase\Property\Exception\DuplicateObjectException;
+use TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException;
+use TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException;
+use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 use TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures\PersistentObjectEntityFixture;
 use TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures\PersistentObjectFixture;
@@ -217,10 +221,11 @@ class PersistentObjectConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
      */
     public function convertFromShouldThrowExceptionIfObjectNeedsToBeModifiedButConfigurationIsNotSet()
     {
+        $this->expectException(InvalidPropertyMappingConfigurationException::class);
+        $this->expectExceptionCode(1297932028);
         $identifier = '12345';
         $object = new \stdClass();
         $object->someProperty = 'asdf';
@@ -273,10 +278,11 @@ class PersistentObjectConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException
      */
     public function convertFromShouldReturnExceptionIfNoMatchingObjectWasFound()
     {
+        $this->expectException(TargetNotFoundException::class);
+        $this->expectExceptionCode(1297933823);
         $this->setupMockQuery(0, $this->never());
         $this->mockReflectionService->expects($this->never())->method('getClassSchema');
 
@@ -289,25 +295,27 @@ class PersistentObjectConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\DuplicateObjectException
      */
     public function convertFromShouldThrowExceptionIfMoreThanOneObjectWasFound()
     {
+        $this->expectException(DuplicateObjectException::class);
+        // @TODO expectExceptionCode is 0
         $this->setupMockQuery(2, $this->never());
 
         $source = array(
             '__identity' => 666
         );
-        $this->mockPersistenceManager->expects($this->any())->method('getObjectByIdentifier')->with(666)->will($this->throwException(new \TYPO3\CMS\Extbase\Property\Exception\DuplicateObjectException));
+        $this->mockPersistenceManager->expects($this->any())->method('getObjectByIdentifier')->with(666)->will($this->throwException(new DuplicateObjectException));
         $this->converter->convertFrom($source, 'SomeType');
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
      */
     public function convertFromShouldThrowExceptionIfObjectNeedsToBeCreatedButConfigurationIsNotSet()
     {
+        $this->expectException(InvalidPropertyMappingConfigurationException::class);
+        // @TODO expectExceptionCode is 0
         $source = array(
             'foo' => 'bar'
         );
@@ -336,10 +344,11 @@ class PersistentObjectConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
      */
     public function convertFromShouldThrowExceptionIfPropertyOnTargetObjectCouldNotBeSet()
     {
+        $this->expectException(InvalidTargetException::class);
+        $this->expectExceptionCode(1297935345);
         $source = array(
             'propertyX' => 'bar'
         );
@@ -414,10 +423,11 @@ class PersistentObjectConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
      */
     public function convertFromShouldThrowExceptionIfRequiredConstructorParameterWasNotFound()
     {
+        $this->expectException(InvalidTargetException::class);
+        $this->expectExceptionCode(1268734872);
         $source = array(
             'propertyX' => 'bar'
         );

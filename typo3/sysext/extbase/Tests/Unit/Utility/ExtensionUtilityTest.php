@@ -113,11 +113,12 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
      */
     public function configurePluginThrowsExceptionIfExtensionNameIsEmpty()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1239891990);
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('', 'SomePlugin', array(
             'FirstController' => 'index'
         ));
@@ -125,11 +126,12 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
      */
     public function configurePluginThrowsExceptionIfPluginNameIsEmpty()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1239891988);
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('MyExtension', '', array(
             'FirstController' => 'index'
         ));

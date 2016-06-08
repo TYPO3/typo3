@@ -132,10 +132,11 @@ class AbstractControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function addFlashMessageThrowsExceptionOnInvalidMessageBody()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1243258395);
         $controller = $this->getMockForAbstractClass(\TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class,
             array(),
             '',

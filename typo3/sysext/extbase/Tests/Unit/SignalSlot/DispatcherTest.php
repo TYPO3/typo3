@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\SignalSlot;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException;
+use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException;
 use TYPO3\CMS\Extbase\Tests\Unit\SignalSlot\Fixtures\OnlyClassNameSpecifiedFixture;
 use TYPO3\CMS\Extbase\Tests\Unit\SignalSlot\Fixtures\SlotMethodDoesNotExistFixture;
 
@@ -192,10 +194,11 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
     public function dispatchThrowsAnExceptionIfTheSlotReturnsNonArray()
     {
+        $this->expectException(InvalidSlotReturnException::class);
+        $this->expectExceptionCode(1376683067);
         $this->signalSlotDispatcher->_set('isInitialized', true);
 
         $mockSlot = $this->getMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
@@ -212,10 +215,11 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
     public function dispatchThrowsAnExceptionIfTheSlotReturnsDifferentNumberOfItems()
     {
+        $this->expectException(InvalidSlotReturnException::class);
+        $this->expectExceptionCode(1376683066);
         $this->signalSlotDispatcher->_set('isInitialized', true);
 
         $mockSlot = $this->getMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
@@ -232,10 +236,11 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      */
     public function dispatchThrowsAnExceptionIfTheSpecifiedClassOfASlotIsUnknown()
     {
+        $this->expectException(InvalidSlotException::class);
+        $this->expectExceptionCode(1245673367);
         $mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $mockObjectManager->expects($this->once())->method('isRegistered')->with('NonExistingClassName')->will($this->returnValue(false));
         $this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
@@ -246,10 +251,11 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      */
     public function dispatchThrowsAnExceptionIfTheSpecifiedSlotMethodDoesNotExist()
     {
+        $this->expectException(InvalidSlotException::class);
+        $this->expectExceptionCode(1245673368);
         $slotClassName = SlotMethodDoesNotExistFixture::class;
         $mockSlot = new SlotMethodDoesNotExistFixture();
         $mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
@@ -281,10 +287,11 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function connectThrowsInvalidArgumentExceptionIfSlotMethodNameIsEmptyAndSlotClassNameIsNoClosure()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1229531659);
         $this->signalSlotDispatcher->connect('ClassA', 'emitSomeSignal', 'ClassB', '');
     }
 
@@ -319,10 +326,11 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      */
     public function dispatchThrowsInvalidSlotExceptionIfObjectManagerOfSignalSlotDispatcherIsNotSet()
     {
+        $this->expectException(InvalidSlotException::class);
+        $this->expectExceptionCode(1298113624);
         $this->signalSlotDispatcher->_set('isInitialized', true);
         $this->signalSlotDispatcher->_set('objectManager', null);
         $this->signalSlotDispatcher->_set('slots', array('ClassA' => array('emitSomeSignal' => array(array()))));

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 
 /**
  * Test case
@@ -68,28 +69,31 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException
      */
     public function getPropertyReturnsPropertyNotAccessibleExceptionForNotExistingPropertyIfForceDirectAccessIsTrue()
     {
+        $this->expectException(PropertyNotAccessibleException::class);
+        $this->expectExceptionCode(1302855001);
         $property = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($this->dummyObject, 'notExistingProperty', true);
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException
      */
     public function getPropertyReturnsThrowsExceptionIfPropertyDoesNotExist()
     {
+        $this->expectException(PropertyNotAccessibleException::class);
+        $this->expectExceptionCode(1263391473);
         \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($this->dummyObject, 'notExistingProperty');
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException
      */
     public function getPropertyReturnsThrowsExceptionIfArrayKeyDoesNotExist()
     {
+        $this->expectException(PropertyNotAccessibleException::class);
+        $this->expectExceptionCode(1263391473);
         \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty(array(), 'notExistingProperty');
     }
 
@@ -104,19 +108,21 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function getPropertyThrowsExceptionIfThePropertyNameIsNotAString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1231178303);
         \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($this->dummyObject, new \ArrayObject());
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function setPropertyThrowsExceptionIfThePropertyNameIsNotAString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1231178878);
         \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($this->dummyObject, new \ArrayObject(), 42);
     }
 

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 
 /**
  * Test case
@@ -156,10 +157,11 @@ class StringLengthValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException
      */
     public function stringLengthValidatorThrowsAnExceptionIfMinLengthIsGreaterThanMaxLength()
     {
+        $this->expectException(InvalidValidationOptionsException::class);
+        $this->expectExceptionCode(1238107096);
         $options = array('minimum' => 101, 'maximum' => 100);
         $validator = $this->getMock($this->validatorClassName, array('addError', 'translateErrorMessage'), array($options));
         $validator->validate('1234567890');

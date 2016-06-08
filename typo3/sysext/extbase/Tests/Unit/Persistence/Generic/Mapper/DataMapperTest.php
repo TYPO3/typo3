@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
  */
 
 use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 
@@ -309,10 +310,11 @@ class DataMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException
      */
     public function getPlainValueCallsGetRealInstanceOnInputIfInputIsInstanceOfLazyLoadingProxy()
     {
+        $this->expectException(UnexpectedTypeException::class);
+        $this->expectExceptionCode(1274799934);
         $dataMapper = new DataMapper();
         $input = $this->getMock(
             \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy::class,

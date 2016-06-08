@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
 /**
  * Test case
@@ -56,10 +57,11 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
     public function quitThrowsStopActionException()
     {
+        $this->expectException(StopActionException::class);
+        // @TODO expectExceptionCode is 0
         $mockResponse = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Response::class);
         $this->commandController->_set('response', $mockResponse);
         $this->commandController->_call('quit');
@@ -67,10 +69,11 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
     public function quitSetsResponseExitCode()
     {
+        $this->expectException(StopActionException::class);
+        // @TODO expectExceptionCode is 0
         $mockResponse = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Response::class);
         $mockResponse->expects($this->once())->method('setExitCode')->with(123);
         $this->commandController->_set('response', $mockResponse);

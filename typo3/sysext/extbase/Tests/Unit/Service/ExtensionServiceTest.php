@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Exception;
 
 /**
  * Test case
@@ -146,10 +147,11 @@ class ExtensionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Exception
      */
     public function getPluginNameByActionThrowsExceptionIfMoreThanOnePluginMatches()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1280825466);
         $this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->with(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->will($this->returnValue(array('view' => array('pluginNamespace' => 'overridden_plugin_namespace'))));
         $this->extensionService->getPluginNameByAction('ExtensionName', 'ControllerName', 'otherAction');
     }
@@ -253,10 +255,11 @@ class ExtensionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Exception
      */
     public function getTargetPidByPluginSignatureThrowsExceptionIfMoreThanOneTargetPidsWereFound()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1280773643);
         $this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(array('view' => array('defaultPid' => 'auto'))));
         $GLOBALS['TSFE']->sys_page = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, array('enableFields'));
         $GLOBALS['TSFE']->sys_page->expects($this->once())->method('enableFields')->will($this->returnValue(' AND enable_fields'));

@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Object\Exception;
+use TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException;
 
 /**
  * Test case
@@ -99,10 +101,11 @@ class ContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Object\Exception
      */
     public function getInstanceThrowsExceptionWhenTryingToInstanciateASingletonWithConstructorParameters()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1292858051);
         $this->container->getInstance('t3lib_object_tests_amixed_array_singleton', array('somevalue'));
     }
 
@@ -150,28 +153,31 @@ class ContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException
      */
     public function getInstanceThrowsExceptionIfPrototypeObjectsWiredViaConstructorInjectionContainCyclicDependencies()
     {
+        $this->expectException(CannotBuildObjectException::class);
+        $this->expectExceptionCode(1295611406);
         $this->container->getInstance('t3lib_object_tests_cyclic1WithSetterDependency');
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException
      */
     public function getInstanceThrowsExceptionIfPrototypeObjectsWiredViaSetterInjectionContainCyclicDependencies()
     {
+        $this->expectException(CannotBuildObjectException::class);
+        $this->expectExceptionCode(1295611406);
         $this->container->getInstance('t3lib_object_tests_cyclic1');
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Object\Exception
      */
     public function getInstanceThrowsExceptionIfClassWasNotFound()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1289386765);
         $this->container->getInstance('nonextistingclass_bla');
     }
 

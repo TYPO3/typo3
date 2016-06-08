@@ -93,11 +93,12 @@ class CommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      * @dataProvider invalidCommandClassNames
-     * @expectedException \InvalidArgumentException
      * @param string $controllerClassName
      */
     public function constructThrowsExceptionIfCommandClassNameIsInvalid($controllerClassName)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1438782187);
         new \TYPO3\CMS\Extbase\Mvc\Cli\Command($controllerClassName, 'foo');
     }
 

@@ -225,10 +225,11 @@ class ArgumentsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \LogicException
      */
     public function callingInvalidMethodThrowsException()
     {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(1210858451);
         $arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
         $arguments->nonExistingMethod();
     }

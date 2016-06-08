@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 
 /**
@@ -279,10 +280,11 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException
      */
     public function buildMethodArgumentsValidatorConjunctionsThrowsExceptionIfValidationAnnotationForNonExistingArgumentExists()
     {
+        $this->expectException(InvalidValidationConfigurationException::class);
+        $this->expectExceptionCode(1253172726);
         $mockObject = $this->getMock('stdClass', array('fooMethod'), array(), '', false);
         $methodParameters = array(
             'arg1' => array(

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
 use TYPO3\CMS\Core\DataHandling\TableColumnSubType;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 
 /**
@@ -362,10 +363,11 @@ class DataMapFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException
      */
     public function buildDataMapThrowsExceptionIfClassNameIsNotKnown()
     {
+        $this->expectException(InvalidClassException::class);
+        // @TODO expectExceptionCode is 0
         $mockDataMapFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class, array('getControlSection'), array(), '', false);
         $cacheMock = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class, array('get'), array(), '', false);
         $cacheMock->expects($this->any())->method('get')->will($this->returnValue(false));

@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException;
 
 /**
  * Test case
@@ -259,39 +261,44 @@ class RepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException
      */
     public function magicCallMethodTriggersAnErrorIfUnknownMethodsAreCalled()
     {
+        $this->expectException(UnsupportedMethodException::class);
+        $this->expectExceptionCode(1233180480);
         $repository = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Repository::class, array('createQuery'), array($this->mockObjectManager));
         $repository->__call('foo', array());
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
     public function addChecksObjectType()
     {
+        $this->expectException(IllegalObjectTypeException::class);
+        $this->expectExceptionCode(1248363335);
         $this->repository->_set('objectType', 'ExpectedObjectType');
         $this->repository->add(new \stdClass());
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
     public function removeChecksObjectType()
     {
+        $this->expectException(IllegalObjectTypeException::class);
+        $this->expectExceptionCode(1248363336);
         $this->repository->_set('objectType', 'ExpectedObjectType');
         $this->repository->remove(new \stdClass());
     }
+
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
     public function updateChecksObjectType()
     {
+        $this->expectException(IllegalObjectTypeException::class);
+        $this->expectExceptionCode(1249479625);
         $repository = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Repository::class, array('dummy'), array($this->mockObjectManager));
         $repository->_set('objectType', 'ExpectedObjectType');
 
@@ -365,10 +372,11 @@ class RepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
     public function updateRejectsObjectsOfWrongType()
     {
+        $this->expectException(IllegalObjectTypeException::class);
+        $this->expectExceptionCode(1249479625);
         $this->repository->_set('objectType', 'Foo');
         $this->repository->update(new \stdClass());
     }
