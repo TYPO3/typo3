@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 
 /**
  * Testcase for the cache to redis backend
@@ -108,85 +109,105 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test Functional
-     * @expectedException \InvalidArgumentException
      */
     public function setDatabaseThrowsExceptionIfGivenDatabaseNumberIsNotAnInteger()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1279763057);
+
+
         $this->setUpBackend(array('database' => 'foo'));
     }
 
     /**
      * @test Functional
-     * @expectedException \InvalidArgumentException
      */
     public function setDatabaseThrowsExceptionIfGivenDatabaseNumberIsNegative()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1279763534);
+
         $this->setUpBackend(array('database' => -1));
     }
 
     /**
      * @test Functional
-     * @expectedException \InvalidArgumentException
      */
     public function setCompressionThrowsExceptionIfCompressionParameterIsNotOfTypeBoolean()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1289679153);
+
         $this->setUpBackend(array('compression' => 'foo'));
     }
 
     /**
      * @test Functional
-     * @expectedException \InvalidArgumentException
      */
     public function setCompressionLevelThrowsExceptionIfCompressionLevelIsNotInteger()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1289679154);
+
         $this->setUpBackend(array('compressionLevel' => 'foo'));
     }
 
     /**
      * @test Functional
-     * @expectedException \InvalidArgumentException
      */
     public function setCompressionLevelThrowsExceptionIfCompressionLevelIsNotBetweenMinusOneAndNine()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1289679155);
+
         $this->setUpBackend(array('compressionLevel' => 11));
     }
 
     /**
      * @test Functional
-     * @expectedException \InvalidArgumentException
      */
     public function setThrowsExceptionIfIdentifierIsNotAString()
     {
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1377006651);
+
         $this->setUpBackend();
         $this->backend->set(array(), 'data');
     }
 
     /**
      * @test Functional
-     * @expectedException \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      */
     public function setThrowsExceptionIfDataIsNotAString()
     {
+        $this->expectException(InvalidDataException::class);
+        $this->expectExceptionCode(1279469941);
+
         $this->setUpBackend();
         $this->backend->set($this->getUniqueId('identifier'), array());
     }
 
     /**
      * @test Functional
-     * @expectedException \InvalidArgumentException
      */
     public function setThrowsExceptionIfLifetimeIsNegative()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1279487573);
+
         $this->setUpBackend();
         $this->backend->set($this->getUniqueId('identifier'), 'data', array(), -42);
     }
 
     /**
      * @test Functional
-     * @expectedException \InvalidArgumentException
      */
     public function setThrowsExceptionIfLifetimeIsNotNullOrAnInteger()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1279488008);
+
         $this->setUpBackend();
         $this->backend->set($this->getUniqueId('identifier'), 'data', array(), array());
     }
@@ -495,10 +516,12 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test Functional
-     * @expectedException \InvalidArgumentException
      */
     public function hasThrowsExceptionIfIdentifierIsNotAString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1377006653);
+
         $this->setUpBackend();
         $this->backend->has(array());
     }
@@ -526,10 +549,12 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test Functional
-     * @expectedException \InvalidArgumentException
      */
     public function getThrowsExceptionIfIdentifierIsNotAString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        //@todo Add exception code with redis extension
+
         $this->setUpBackend();
         $this->backend->get(array());
     }
@@ -564,10 +589,12 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test Functional
-     * @expectedException \InvalidArgumentException
      */
     public function removeThrowsExceptionIfIdentifierIsNotAString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1377006654);
+
         $this->setUpBackend();
         $this->backend->remove(array());
     }
@@ -652,10 +679,12 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test Functional
-     * @expectedException \InvalidArgumentException
      */
     public function findIdentifiersByTagThrowsExceptionIfTagIsNotAString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1377006655);
+
         $this->setUpBackend();
         $this->backend->findIdentifiersByTag(array());
     }
@@ -705,10 +734,12 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test Functional
-     * @expectedException \InvalidArgumentException
      */
     public function flushByTagThrowsExceptionIfTagIsNotAString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1377006656);
+
         $this->setUpBackend();
         $this->backend->flushByTag(array());
     }

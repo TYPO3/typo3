@@ -26,11 +26,13 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
 {
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Error\Exception
-     * @expectedExceptionCode 1444142481
      */
     public function buildClassAliasMapForPackageThrowsExceptionForWrongComposerManifestInformation()
     {
+
+        $this->expectException(\TYPO3\CMS\Core\Error\Exception::class);
+        $this->expectExceptionCode(1444142481);
+
         $packageMock = $this->createPackageMock([
             'extra' => [
                 'typo3/class-alias-loader' => [
@@ -49,11 +51,12 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Error\Exception
-     * @expectedExceptionCode 1422625075
      */
     public function buildClassAliasMapForPackageThrowsExceptionForWrongClassAliasMapFile()
     {
+        $this->expectException(\TYPO3\CMS\Core\Error\Exception::class);
+        $this->expectExceptionCode(1422625075);
+
         $packageMock = $this->createPackageMock([
             'extra' => [
                 'typo3/class-alias-loader' => [

@@ -64,10 +64,12 @@ class ApplicationContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      * @dataProvider forbiddenContexts
-     * @expectedException \TYPO3\CMS\Core\Exception
      */
     public function constructorThrowsExceptionIfMainContextIsForbidden($forbiddenContext)
     {
+        $this->expectException(\TYPO3\CMS\Core\Exception::class);
+        $this->expectExceptionCode(1335436551);
+
         new ApplicationContext($forbiddenContext);
     }
 

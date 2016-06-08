@@ -44,10 +44,12 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Cache\Exception
      */
     public function setThrowsExceptionIfNoFrontEndHasBeenSet()
     {
+        $this->expectException(\TYPO3\CMS\Core\Cache\Exception::class);
+        $this->expectExceptionCode(1213115903);
+
         $backendOptions = array('servers' => array('localhost:11211'));
         $backend = new MemcachedBackend('Testing', $backendOptions);
         $backend->initializeObject();
@@ -58,10 +60,12 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Cache\Exception
      */
     public function initializeObjectThrowsExceptionIfNoMemcacheServerIsConfigured()
     {
+        $this->expectException(\TYPO3\CMS\Core\Cache\Exception::class);
+        $this->expectExceptionCode(1213115903);
+
         $backend = new MemcachedBackend('Testing');
         $backend->initializeObject();
     }

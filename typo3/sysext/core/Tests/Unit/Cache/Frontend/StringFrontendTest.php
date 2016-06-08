@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 
 /**
  * Testcase for the string cache frontend
@@ -22,11 +23,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
 class StringFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
-     * @expectedException \InvalidArgumentException
      * @test
      */
     public function setChecksIfTheIdentifierIsValid()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1233057566);
+
         $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('isValidEntryIdentifier'), array(), '', false);
         $cache->expects($this->once())->method('isValidEntryIdentifier')->with('foo')->will($this->returnValue(false));
         $cache->set('foo', 'bar');
@@ -59,10 +62,12 @@ class StringFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      */
     public function setThrowsInvalidDataExceptionOnNonStringValues()
     {
+        $this->expectException(InvalidDataException::class);
+        $this->expectExceptionCode(1222808333);
+
         $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
         $cache = new \TYPO3\CMS\Core\Cache\Frontend\StringFrontend('StringFrontend', $backend);
         $cache->set('StringCacheTest', array());
@@ -104,10 +109,12 @@ class StringFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function getByTagRejectsInvalidTags()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1233057772);
+
         $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface::class, array(), array(), '', false);
         $cache = new \TYPO3\CMS\Core\Cache\Frontend\StringFrontend('StringFrontend', $backend);
         $cache->getByTag('SomeInvalid\\Tag');

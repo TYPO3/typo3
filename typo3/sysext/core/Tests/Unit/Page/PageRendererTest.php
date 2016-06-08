@@ -37,11 +37,13 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * @expectedException \UnexpectedValueException
      * @test
      */
     public function includingNotAvailableLocalJqueryVersionThrowsException()
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1341505305);
+
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
         $subject->_set('availableLocalJqueryVersions', array('1.1.1'));
@@ -49,11 +51,13 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * @expectedException \UnexpectedValueException
      * @test
      */
     public function includingJqueryWithNonAlphnumericNamespaceThrowsException()
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1341571604);
+
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
         $subject->loadJquery(null, null, '12sd.12fsd');
@@ -157,10 +161,12 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function includeLanguageFileForInlineThrowsExceptionIfLangIsNotSet()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1284906026);
+
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
         $subject->_set('charSet', 'utf-8');
@@ -169,10 +175,12 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function includeLanguageFileForInlineThrowsExceptionIfCharSetIsNotSet()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1284906026);
+
         /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
         $subject->_set('lang', 'default');

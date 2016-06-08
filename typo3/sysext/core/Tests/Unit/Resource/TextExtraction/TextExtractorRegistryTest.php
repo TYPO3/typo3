@@ -59,22 +59,24 @@ class TextExtractorRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionCode 1422906893
      */
     public function registerTextExtractorThrowsExceptionIfClassDoesNotExist()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1422906893);
+
         $textExtractorRegistry = $this->getTextExtractorRegistry();
         $textExtractorRegistry->registerTextExtractor($this->getUniqueId());
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionCode 1422771427
      */
     public function registerTextExtractorThrowsExceptionIfClassDoesNotImplementRightInterface()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1422771427);
+
         $textExtractorRegistry = $this->getTextExtractorRegistry();
         $textExtractorRegistry->registerTextExtractor(__CLASS__);
     }

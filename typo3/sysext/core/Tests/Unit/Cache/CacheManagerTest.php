@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\InvalidBackendException;
 use TYPO3\CMS\Core\Cache\Exception\InvalidCacheException;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
 use TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\BackendConfigurationOptionFixture;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\BackendDefaultFixture;
@@ -38,10 +39,12 @@ class CacheManagerTest extends UnitTestCase
 {
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Cache\Exception\DuplicateIdentifierException
      */
     public function managerThrowsExceptionOnCacheRegistrationWithAlreadyExistingIdentifier()
     {
+        $this->expectException(\TYPO3\CMS\Core\Cache\Exception\DuplicateIdentifierException::class);
+        $this->expectExceptionCode(1203698223);
+
         $manager = new CacheManager();
         $cache1 = $this->getMock(AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('test'));
@@ -68,10 +71,12 @@ class CacheManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
     public function getCacheThrowsExceptionForNonExistingIdentifier()
     {
+        $this->expectException(\TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException::class);
+        $this->expectExceptionCode(1203699034);
+
         $manager = new CacheManager();
         $cache = $this->getMock(AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
         $cache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('someidentifier'));
@@ -127,20 +132,24 @@ class CacheManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException
      */
     public function flushCachesInGroupThrowsExceptionForNonExistingGroup()
     {
+        $this->expectException(NoSuchCacheGroupException::class);
+        $this->expectExceptionCode(1390334120);
+
         $manager = new CacheManager();
         $manager->flushCachesInGroup('nonExistingGroup');
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException
      */
     public function flushCachesInGroupByTagThrowsExceptionForNonExistingGroup()
     {
+        $this->expectException(NoSuchCacheGroupException::class);
+        $this->expectExceptionCode(1390334120);
+
         $manager = new CacheManager();
         $manager->flushCachesInGroup('nonExistingGroup');
     }

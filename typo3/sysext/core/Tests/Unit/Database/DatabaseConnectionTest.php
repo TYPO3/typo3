@@ -141,10 +141,12 @@ class DatabaseConnectionTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function listQueryThrowsExceptionIfValueContainsComma()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1294585862);
+
         /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(DatabaseConnection::class, ['quoteStr'], [], '', false);
         $subject->_set('isConnected', true);

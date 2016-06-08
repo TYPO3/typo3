@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Log\Exception\InvalidLogProcessorConfigurationException;
+use TYPO3\CMS\Core\Tests\Unit\Log\Fixtures\ProcessorFixture;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case
@@ -21,14 +24,16 @@ class AbstractProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Log\Exception\InvalidLogProcessorConfigurationException
      */
     public function processorRefusesInvalidConfigurationOptions()
     {
+        $this->expectException(InvalidLogProcessorConfigurationException::class);
+        $this->expectExceptionCode(1321696151);
+
         $invalidConfiguration = array(
             'foo' => 'bar'
         );
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Tests\Unit\Log\Fixtures\ProcessorFixture::class, $invalidConfiguration);
+        GeneralUtility::makeInstance(ProcessorFixture::class, $invalidConfiguration);
     }
 
     /**

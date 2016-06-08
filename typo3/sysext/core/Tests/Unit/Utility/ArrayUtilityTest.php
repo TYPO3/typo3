@@ -222,11 +222,13 @@ class ArrayUtilityTest extends UnitTestCase
     ///////////////////////
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function getValueByPathThrowsExceptionIfPathIsEmpty()
     {
-        ArrayUtility::getValueByPath(array(), '');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1341397767);
+
+        ArrayUtility::getValueByPath([], '');
     }
 
     /**
@@ -285,12 +287,14 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getValueByPathInvalidPathDataProvider
-     * @expectedException \RuntimeException
      * @param array $array
      * @param string $path
      */
     public function getValueByPathThrowsExceptionIfPathNotExists(array $array, $path)
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1341397869);
+
         ArrayUtility::getValueByPath($array, $path);
     }
 
@@ -426,20 +430,24 @@ class ArrayUtilityTest extends UnitTestCase
     ///////////////////////
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function setValueByPathThrowsExceptionIfPathIsEmpty()
     {
-        ArrayUtility::setValueByPath(array(), '', null);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1341406194);
+
+        ArrayUtility::setValueByPath([], '', null);
     }
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function setValueByPathThrowsExceptionIfPathIsNotAString()
     {
-        ArrayUtility::setValueByPath(array(), array('foo'), null);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1341406402);
+
+        ArrayUtility::setValueByPath([], ['foo'], null);
     }
 
     /**
@@ -636,47 +644,57 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function removeByPathThrowsExceptionIfPathIsEmpty()
     {
-        ArrayUtility::removeByPath(array(), '');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1371757718);
+
+        ArrayUtility::removeByPath([], '');
     }
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function removeByPathThrowsExceptionIfPathIsNotAString()
     {
-        ArrayUtility::removeByPath(array(), array('foo'));
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1371757719);
+
+        ArrayUtility::removeByPath([], ['foo']);
     }
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function removeByPathThrowsExceptionWithEmptyPathSegment()
     {
-        $inputArray = array(
-            'foo' => array(
+        $inputArray = [
+            'foo' => [
                 'bar' => 42,
-            ),
-        );
+            ]
+        ];
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1371757720);
+
         ArrayUtility::removeByPath($inputArray, 'foo//bar');
     }
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function removeByPathThrowsExceptionIfPathDoesNotExistInArray()
     {
-        $inputArray = array(
-            'foo' => array(
+        $inputArray = [
+            'foo' => [
                 'bar' => 42,
-            ),
-        );
+            ]
+        ];
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1371758436);
+
         ArrayUtility::removeByPath($inputArray, 'foo/baz');
     }
 
@@ -939,11 +957,13 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function sortArraysByKeyThrowsExceptionForNonExistingKey()
     {
-        ArrayUtility::sortArraysByKey(array(array('a'), array('a')), 'dummy');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1373727309);
+
+        ArrayUtility::sortArraysByKey([['a'], ['a']], 'dummy');
     }
 
     ///////////////////////
@@ -990,15 +1010,18 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function arrayExportThrowsExceptionIfObjectShouldBeExported()
     {
-        $array = array(
-            'foo' => array(
+        $array = [
+            'foo' => [
                 'bar' => new \stdClass()
-            )
-        );
+            ]
+        ];
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1342294987);
+
         ArrayUtility::arrayExport($array);
     }
 

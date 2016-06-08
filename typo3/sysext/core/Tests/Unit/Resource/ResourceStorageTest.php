@@ -682,10 +682,12 @@ class ResourceStorageTest extends BaseTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function deleteFolderThrowsExceptionIfFolderIsNotEmptyAndRecursiveDeleteIsDisabled()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1325952534);
+
         /** @var \TYPO3\CMS\Core\Resource\Folder|\PHPUnit_Framework_MockObject_MockObject $folderMock */
         $folderMock = $this->getMock(Folder::class, array(), array(), '', false);
         /** @var $mockedDriver \TYPO3\CMS\Core\Resource\Driver\AbstractDriver|\PHPUnit_Framework_MockObject_MockObject */

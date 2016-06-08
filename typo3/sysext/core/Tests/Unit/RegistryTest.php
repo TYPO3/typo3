@@ -36,19 +36,23 @@ class RegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function getThrowsExceptionForInvalidNamespacesUsingNoNamespace()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1249755131);
+
         $this->registry->get('', 'someKey');
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function getThrowsExceptionForInvalidNamespacesUsingTooShortNamespace()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1249755131);
+
         $this->registry->get('t', 'someKey');
     }
 
@@ -96,19 +100,23 @@ class RegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function setThrowsAnExceptionOnEmptyNamespace()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1249755131);
+
         $this->registry->set('', 'someKey', 'someValue');
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function setThrowsAnExceptionOnWrongNamespace()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1249755131);
+
         $this->registry->set('t', 'someKey', 'someValue');
     }
 
@@ -155,10 +163,12 @@ class RegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function removeThrowsAnExceptionOnWrongNamespace()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1249755131);
+
         $this->registry->remove('t', 'someKey');
     }
 
@@ -188,10 +198,12 @@ class RegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function removeAllByNamespaceThrowsAnExceptionOnWrongNamespace()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1249755131);
+
         $this->registry->removeAllByNamespace('');
     }
 

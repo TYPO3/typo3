@@ -37,11 +37,12 @@ class ExtractorRegistryTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionCode 1422705270
      */
     public function registerExtractorClassThrowsExceptionIfClassDoesNotExist()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1422705270);
+
         $className = 'e1f9aa4e1cd3aa7ff05dcdccb117156a';
         $extractorRegistry = $this->getMockExtractorRegistry();
         $extractorRegistry->registerExtractionService($className);
@@ -49,11 +50,12 @@ class ExtractorRegistryTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionCode 1422705271
      */
     public function registerExtractorClassThrowsExceptionIfClassDoesNotImplementRightInterface()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1422705271);
+
         $className = __CLASS__;
         $extractorRegistry = $this->getMockExtractorRegistry();
         $extractorRegistry->registerExtractionService($className);

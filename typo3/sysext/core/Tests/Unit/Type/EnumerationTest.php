@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Type;
  */
 
 use TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration;
+use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationDefinitionException;
+use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
 
 /**
  * Test case
@@ -23,55 +25,67 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException
      */
     public function constructorThrowsExceptionIfNoConstantsAreDefined()
     {
+        $this->expectException(InvalidEnumerationValueException::class);
+        $this->expectExceptionCode(1381512753);
+
         new Enumeration\MissingConstantsEnumeration();
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException
      */
     public function constructorThrowsExceptionIfInvalidValueIsRequested()
     {
+        $this->expectException(InvalidEnumerationValueException::class);
+        $this->expectExceptionCode(1381512761);
+
         new Enumeration\CompleteEnumeration('bar');
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException
      */
     public function loadValuesThrowsExceptionIfGivenValueIsNotAvailableInEnumeration()
     {
+        $this->expectException(InvalidEnumerationValueException::class);
+        $this->expectExceptionCode(1381512807);
+
         new Enumeration\MissingConstantsEnumeration(2);
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationDefinitionException
      */
     public function loadValuesThrowsExceptionIfDisallowedTypeIsDefinedAsConstant()
     {
+        $this->expectException(InvalidEnumerationDefinitionException::class);
+        $this->expectExceptionCode(1381512797);
+
         new Enumeration\InvalidConstantEnumeration(1);
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException
      */
     public function loadValuesThrowsExceptionIfNoDefaultConstantIsDefinedAndNoValueIsGiven()
     {
+        $this->expectException(InvalidEnumerationValueException::class);
+        $this->expectExceptionCode(1381512753);
+
         new Enumeration\MissingDefaultEnumeration();
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationDefinitionException
      */
     public function loadValuesThrowsExceptionIfValueIsDefinedMultipleTimes()
     {
+        $this->expectException(InvalidEnumerationDefinitionException::class);
+        $this->expectExceptionCode(1381512859);
+
         new Enumeration\DuplicateConstantValueEnumeration(1);
     }
 
@@ -127,10 +141,12 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException
      */
     public function setValueToAnInvalidValueThrowsException()
     {
+        $this->expectException(InvalidEnumerationValueException::class);
+        $this->expectExceptionCode(1381615295);
+
         $enumeration = $this->getAccessibleMock(
             \TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class,
             array('dummy'),

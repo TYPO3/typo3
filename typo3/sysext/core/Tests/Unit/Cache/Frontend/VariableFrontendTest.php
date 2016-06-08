@@ -22,11 +22,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
 class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
-     * @expectedException \InvalidArgumentException
      * @test
      */
     public function setChecksIfTheIdentifierIsValid()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1233057566);
+
         $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('isValidEntryIdentifier'), array(), '', false);
         $cache->expects($this->once())->method('isValidEntryIdentifier')->with('foo')->will($this->returnValue(false));
         $cache->set('foo', 'bar');
@@ -137,10 +139,12 @@ class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function getByTagRejectsInvalidTags()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1233058312);
+
         $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface::class, array(), array(), '', false);
         $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
         $cache->getByTag('SomeInvalid\Tag');

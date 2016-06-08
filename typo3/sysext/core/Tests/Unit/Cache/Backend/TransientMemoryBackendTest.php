@@ -22,11 +22,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 class TransientMemoryBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
-     * @expectedException \TYPO3\CMS\Core\Cache\Exception
      * @test
      */
     public function setThrowsExceptionIfNoFrontEndHasBeenSet()
     {
+        $this->expectException(\TYPO3\CMS\Core\Cache\Exception::class);
+        $this->expectExceptionCode(1238244992);
+
         $backend = new \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend('Testing');
         $data = 'Some data';
         $identifier = 'MyIdentifier';

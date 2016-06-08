@@ -12,6 +12,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Package;
  *                                                                        */
 
 use org\bovigo\vfs\vfsStream;
+use TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException;
+use TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 
@@ -30,10 +32,12 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException
      */
     public function constructThrowsPackageDoesNotExistException()
     {
+        $this->expectException(InvalidPackagePathException::class);
+        $this->expectExceptionCode(1166631890);
+
         $packageManagerMock = $this->getMock(PackageManager::class);
         $packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(true);
         new Package($packageManagerMock, 'Vendor.TestPackage', './ThisPackageSurelyDoesNotExist');
@@ -83,10 +87,12 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      * @dataProvider invalidPackageKeys
-     * @expectedException \TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException
      */
     public function constructRejectsInvalidPackageKeys($packageKey)
     {
+        $this->expectException(InvalidPackageKeyException::class);
+        $this->expectExceptionCode(1217959511);
+
         $packagePath = 'vfs://Packages/' . str_replace('\\', '/', $packageKey) . '/';
         mkdir($packagePath, 0777, true);
 

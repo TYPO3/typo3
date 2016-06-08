@@ -61,10 +61,12 @@ class LogLevelTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      * @dataProvider isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSoDataProvider
-     * @expectedException \Psr\Log\InvalidArgumentException
      */
     public function isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSo($inputValue)
     {
+        $this->expectException(\Psr\Log\InvalidArgumentException::class);
+        $this->expectExceptionCode(1321637121);
+
         \TYPO3\CMS\Core\Log\LogLevel::validateLevel($inputValue);
     }
 

@@ -31,10 +31,12 @@ class PdoBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Cache\Exception
      */
     public function setThrowsExceptionIfNoFrontEndHasBeenSet()
     {
+        $this->expectException(\TYPO3\CMS\Core\Cache\Exception::class);
+        $this->expectExceptionCode(1259515600);
+
         $backend = new \TYPO3\CMS\Core\Cache\Backend\PdoBackend('Testing');
         $data = 'Some data';
         $identifier = 'MyIdentifier';

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Category\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Category\Collection\CategoryCollection;
 
 /**
  * Test case for \TYPO3\CMS\Core\Category\Collection\CategoryCollection
@@ -21,12 +22,14 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
      * @test
-     * @expectedException \RuntimeException
      * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::__construct
      * @return void
      */
     public function missingTableNameArgumentForObjectCategoryCollection()
     {
-        new \TYPO3\CMS\Core\Category\Collection\CategoryCollection();
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1341826168);
+
+        new CategoryCollection();
     }
 }

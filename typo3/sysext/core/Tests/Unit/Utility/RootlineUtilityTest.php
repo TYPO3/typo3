@@ -95,10 +95,12 @@ class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function processMountedPageWithNonMountedPageThrowsException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1343464100);
+
         $this->subject->__construct(1, '1-99');
         $this->subject->_call('processMountedPage', array('uid' => 1), array('uid' => 99, 'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT));
     }

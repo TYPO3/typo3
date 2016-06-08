@@ -79,32 +79,34 @@ class StringUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function endsWithReturnsThrowsExceptionWithInvalidArgumentsDataProvider()
     {
-        return array(
-            'array is not part of string' => array('string', array()),
-            'NULL is not part of string' => array('string', null),
-            'empty string is not part of string' => array('string', ''),
-            'string is not part of array' => array(array(), 'string'),
-            'NULL is not part of array' => array(array(), null),
-            'string is not part of NULL' => array(null, 'string'),
-            'array is not part of NULL' => array(null, array()),
-            'integer is not part of NULL' => array(null, 0),
-            'empty string is not part of NULL' => array(null, ''),
-            'NULL is not part of empty string' => array('', null),
-            'FALSE is not part of empty string' => array('', false),
-            'empty string is not part of FALSE' => array(false, ''),
-            'empty string is not part of integer' => array(0, ''),
-            'string is not part of object' => array(new \stdClass(), 'foo'),
-            'object is not part of string' => array('foo', new \stdClass()),
-        );
+        return [
+            'array is not part of string' => ['string', [], 1347135545],
+            'NULL is not part of string' => ['string', null, 1347135545],
+            'empty string is not part of string' => ['string', '', 1347135545],
+            'string is not part of array' => [[], 'string', 1347135544],
+            'NULL is not part of array' => [[], null, 1347135544],
+            'string is not part of NULL' => [null, 'string', 1347135544],
+            'array is not part of NULL' => [null, [], 1347135544],
+            'integer is not part of NULL' => [null, 0, 1347135544],
+            'empty string is not part of NULL' => [null, '', 1347135544],
+            'NULL is not part of empty string' => ['', null, 1347135545],
+            'FALSE is not part of empty string' => ['', false, 1347135545],
+            'empty string is not part of FALSE' => [false, '', 1347135545],
+            'empty string is not part of integer' => [0, '', 1347135545],
+            'string is not part of object' => [new \stdClass(), 'foo', 1347135544],
+            'object is not part of string' => ['foo', new \stdClass(), 1347135545],
+        ];
     }
 
     /**
      * @test
      * @dataProvider endsWithReturnsThrowsExceptionWithInvalidArgumentsDataProvider
-     * @expectedException \InvalidArgumentException
      */
-    public function endsWithReturnsThrowsExceptionWithInvalidArguments($string, $part)
+    public function endsWithReturnsThrowsExceptionWithInvalidArguments($string, $part, $expectedException)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode($expectedException);
+
         StringUtility::endsWith($string, $part);
     }
 
@@ -164,32 +166,39 @@ class StringUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function beginsWithReturnsInvalidArgumentDataProvider()
     {
-        return array(
-            'array is not part of string' => array('string', array()),
-            'NULL is not part of string' => array('string', null),
-            'empty string is not part of string' => array('string', ''),
-            'string is not part of array' => array(array(), 'string'),
-            'NULL is not part of array' => array(array(), null),
-            'string is not part of NULL' => array(null, 'string'),
-            'array is not part of NULL' => array(null, array()),
-            'integer is not part of NULL' => array(null, 0),
-            'empty string is not part of NULL' => array(null, ''),
-            'NULL is not part of empty string' => array('', null),
-            'FALSE is not part of empty string' => array('', false),
-            'empty string is not part of FALSE' => array(false, ''),
-            'empty string is not part of integer' => array(0, ''),
-            'string is not part of object' => array(new \stdClass(), 'foo'),
-            'object is not part of string' => array('foo', new \stdClass()),
-        );
+        return [
+            'array is not part of string' => ['string', [], 1347135547],
+            'NULL is not part of string' => ['string', null, 1347135547],
+            'empty string is not part of string' => ['string', '', 1347135547],
+            'string is not part of array' => [[], 'string', 1347135546],
+            'NULL is not part of array' => [[], null, 1347135546],
+            'string is not part of NULL' => [null, 'string', 1347135546],
+            'array is not part of NULL' => [null, [], 1347135546],
+            'integer is not part of NULL' => [null, 0, 1347135546],
+            'empty string is not part of NULL' => [null, '', 1347135546],
+            'NULL is not part of empty string' => ['', null, 1347135547],
+            'FALSE is not part of empty string' => ['', false, 1347135547],
+            'empty string is not part of FALSE' => [false, '', 1347135547],
+            'empty string is not part of integer' => [0, '', 1347135547],
+            'string is not part of object' => [new \stdClass(), 'foo', 1347135546],
+            'object is not part of string' => ['foo', new \stdClass(), 1347135547],
+        ];
     }
 
     /**
      * @test
      * @dataProvider beginsWithReturnsInvalidArgumentDataProvider
-     * @expectedException \InvalidArgumentException
+     *
+     * @param mixed $string
+     * @param mixed $part
+     * @param integer $expectedException
      */
-    public function beginsWithReturnsThrowsExceptionWithInvalidArguments($string, $part)
+
+    public function beginsWithReturnsThrowsExceptionWithInvalidArguments($string, $part, $expectedException)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode($expectedException);
+
         StringUtility::beginsWith($string, $part);
     }
 

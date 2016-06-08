@@ -61,10 +61,12 @@ class AbstractFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function flushByTagRejectsInvalidTags()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1233057359);
+
         $identifier = 'someCacheIdentifier';
         $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface::class, array(), array(), '', false);
         $backend->expects($this->never())->method('flushByTag');

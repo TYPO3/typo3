@@ -663,11 +663,12 @@ class DependencyOrderingServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \UnexpectedValueException
-     * @expectedExceptionCode 1381960494
      */
     public function calculateOrderDetectsCyclicGraph()
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1381960494);
+
         (new DependencyOrderingService())->calculateOrder([
             1 => [
                 1 => false,

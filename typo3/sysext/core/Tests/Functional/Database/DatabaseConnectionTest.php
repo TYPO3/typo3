@@ -84,12 +84,14 @@ class DatabaseConnectionTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage TYPO3 Fatal Error: Cannot connect to the current database, "Foo"!
      * @return void
      */
     public function selectDbReturnsFalse()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1270853883);
+        $this->expectExceptionMessage('TYPO3 Fatal Error: Cannot connect to the current database, "Foo"!');
+
         $this->subject->setDatabaseName('Foo');
         $this->assertFalse($this->subject->sql_select_db());
     }
@@ -170,10 +172,12 @@ class DatabaseConnectionTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function connectDbThrowsExeptionsWhenNoDatabaseIsGiven()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1270853882);
+
         /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(DatabaseConnection::class, ['dummy'], [], '', false);
         $subject->connectDB();

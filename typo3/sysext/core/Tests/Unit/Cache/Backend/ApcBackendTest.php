@@ -44,7 +44,6 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Cache\Exception
      */
     public function setThrowsExceptionIfNoFrontEndHasBeenSet()
     {
@@ -52,6 +51,9 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');
         $backend->set($identifier, $data);
+
+        $this->expectException(\TYPO3\CMS\Core\Cache\Exception::class);
+        $this->expectExceptionCode(1232986877);
     }
 
     /**

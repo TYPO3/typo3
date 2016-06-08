@@ -56,22 +56,24 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionCode 1411840171
      */
     public function registerRendererClassThrowsExceptionIfClassDoesNotExist()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1411840171);
+
         $rendererRegistry = $this->getTestRendererRegistry();
         $rendererRegistry->registerRendererClass($this->getUniqueId());
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionCode 1411840172
      */
     public function registerRendererClassThrowsExceptionIfClassDoesNotImplementRightInterface()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1411840172);
+
         $className = __CLASS__;
         $rendererRegistry = $this->getTestRendererRegistry();
         $rendererRegistry->registerRendererClass($className);

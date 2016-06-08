@@ -47,21 +47,23 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionCode 1391295613
      */
     public function registerFileCollectionClassThrowsExceptionIfClassDoesNotExist()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1391295613);
+
         $this->testSubject->registerFileCollectionClass($this->getUniqueId(), substr($this->getUniqueId(), 0, 30));
     }
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionCode 1391295611
      */
     public function registerFileCollectionClassThrowsExceptionIfTypeIsTooLong()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1391295611);
+
         $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class));
         $type = str_pad('', 40);
         $this->testSubject->registerFileCollectionClass($className, $type);
@@ -69,11 +71,12 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionCode 1391295643
      */
     public function registerFileCollectionClassThrowsExceptionIfTypeIsAlreadyRegistered()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1391295643);
+
         $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class));
         $className2 = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\StaticFileCollection::class));
         $this->testSubject->registerFileCollectionClass($className, 'foobar');
@@ -93,11 +96,12 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionCode 1391295644
      */
     public function getFileCollectionClassThrowsExceptionIfClassIsNotRegistered()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1391295644);
+
         $this->testSubject->getFileCollectionClass($this->getUniqueId());
     }
 

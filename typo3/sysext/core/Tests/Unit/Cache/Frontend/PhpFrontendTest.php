@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 
 /**
  * Testcase for the PHP source code cache frontend
@@ -23,10 +24,12 @@ class PhpFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function setChecksIfTheIdentifierIsValid()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1233057566);
+
         $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('isValidEntryIdentifier'), array(), '', false);
         $cache->expects($this->once())->method('isValidEntryIdentifier')->with('foo')->will($this->returnValue(false));
         $cache->set('foo', 'bar');
@@ -47,10 +50,12 @@ class PhpFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      */
     public function setThrowsInvalidDataExceptionOnNonStringValues()
     {
+        $this->expectException(InvalidDataException::class);
+        $this->expectExceptionCode(1264023824);
+
         $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, array('dummy'), array(), '', false);
         $cache->set('Foo-Bar', array());
     }

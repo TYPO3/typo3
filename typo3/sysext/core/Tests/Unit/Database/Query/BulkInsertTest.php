@@ -60,11 +60,12 @@ class BulkInsertTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \LogicException
-     * @expectedExceptionMessage You need to add at least one set of values before generating the SQL.
      */
     public function getSQLWithoutSpecifiedValuesThrowsException()
     {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('You need to add at least one set of values before generating the SQL.');
+
         $query = new BulkInsertQuery($this->connection, $this->testTable);
 
         $query->getSQL();
@@ -149,7 +150,16 @@ class BulkInsertTest extends UnitTestCase
         $this->assertSame("INSERT INTO {$this->testTable} VALUES (), (?, ?), (?, ?, ?), (?, ?, ?)", (string)$query);
         $this->assertSame(['bar', 'baz', 'bar', 'baz', 'bloo', 'bar', 'baz', 'bloo'], $query->getParameters());
         $this->assertSame(
-            [null, Connection::PARAM_BOOL, Connection::PARAM_INT, null, Connection::PARAM_BOOL, null, Connection::PARAM_BOOL, Connection::PARAM_INT],
+            [
+                null,
+                Connection::PARAM_BOOL,
+                Connection::PARAM_INT,
+                null,
+                Connection::PARAM_BOOL,
+                null,
+                Connection::PARAM_BOOL,
+                Connection::PARAM_INT
+            ],
             $query->getParameterTypes()
         );
     }
@@ -271,47 +281,49 @@ class BulkInsertTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage No value specified for column bar (index 0).
      */
     public function emptyInsertWithColumnSpecificationThrowsException()
     {
-        $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('No value specified for column bar (index 0).');
 
+        $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
         $query->addValues([]);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Multiple values specified for column baz (index 1).
      */
     public function insertWithColumnSpecificationAndMultipleValuesForColumnThrowsException()
     {
-        $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Multiple values specified for column baz (index 1).');
 
+        $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
         $query->addValues(['bar', 'baz', 'baz' => 666]);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Multiple types specified for column baz (index 1).
      */
     public function insertWithColumnSpecificationAndMultipleTypesForColumnThrowsException()
     {
-        $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Multiple types specified for column baz (index 1).');
 
-        $query->addValues(['bar', 'baz'], [Connection::PARAM_INT, Connection::PARAM_INT, 'baz' => Connection::PARAM_STR]);
+        $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
+        $query->addValues(['bar', 'baz'],
+            [Connection::PARAM_INT, Connection::PARAM_INT, 'baz' => Connection::PARAM_STR]);
     }
 
     /**
      * @test
-     * @expectedException \LogicException
-     * @expectedExceptionMessage You can only insert 10 rows in a single INSERT statement with platform "mock".
      */
     public function executeWithMaxInsertRowsPerStatementExceededThrowsException()
     {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('You can only insert 10 rows in a single INSERT statement with platform "mock".');
+
         /** @var \PHPUnit_Framework_MockObject_MockObject|BulkInsertQuery $subject */
         $subject = $this->getAccessibleMock(
             BulkInsertQuery::class,

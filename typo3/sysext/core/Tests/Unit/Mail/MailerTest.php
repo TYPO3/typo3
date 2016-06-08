@@ -74,10 +74,12 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @test
      * @param $settings
      * @dataProvider wrongConfigigurationProvider
-     * @expectedException \TYPO3\CMS\Core\Exception
      */
     public function wrongConfigigurationThrowsException($settings)
     {
+        $this->expectException(\TYPO3\CMS\Core\Exception::class);
+        $this->expectExceptionCode(1291068569);
+
         $this->subject->injectMailSettings($settings);
         $this->subject->__construct();
     }

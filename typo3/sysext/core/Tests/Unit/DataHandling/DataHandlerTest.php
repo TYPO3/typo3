@@ -340,12 +340,13 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     //
     /**
      * Tests whether a wrong interface on the 'checkModifyAccessList' hook throws an exception.
-     *
      * @test
-     * @expectedException \UnexpectedValueException
      */
     public function doesCheckModifyAccessListThrowExceptionOnWrongHookInterface()
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1251892472);
+
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = InvalidHookFixture::class;
         $this->subject->checkModifyAccessList('tt_content');
     }

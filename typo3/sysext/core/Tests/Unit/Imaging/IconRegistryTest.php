@@ -85,20 +85,24 @@ class IconRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
      * @test
      */
     public function registerIconThrowsInvalidArgumentExceptionWithInvalidIconProvider()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1437425803);
+
         $this->subject->registerIcon($this->notRegisteredIconIdentifier, GeneralUtility::class);
     }
 
     /**
-     * @expectedException \TYPO3\CMS\Core\Exception
      * @test
      */
     public function getIconConfigurationByIdentifierThrowsExceptionWithUnregisteredIconIdentifier()
     {
+        $this->expectException(\TYPO3\CMS\Core\Exception::class);
+        $this->expectExceptionCode(1437425804);
+
         $this->subject->getIconConfigurationByIdentifier($this->notRegisteredIconIdentifier);
     }
 

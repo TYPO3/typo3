@@ -47,10 +47,12 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function getDefaultConfigurationExecutesDefinedDefaultConfigurationFile()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1310203814);
+
         $defaultConfigurationFile = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('defaultConfiguration');
         file_put_contents(
             $defaultConfigurationFile,
@@ -67,10 +69,11 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function getLocalConfigurationExecutesDefinedConfigurationFile()
     {
+        $this->expectException(\RuntimeException::class);
+
         $configurationFile = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('localConfiguration');
         file_put_contents(
             $configurationFile,
@@ -486,10 +489,11 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function createLocalConfigurationFromFactoryConfigurationThrowsExceptionIfFileExists()
     {
+        $this->expectException(\RuntimeException::class);
+
         /** @var $subject \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, array('dummy'));
 

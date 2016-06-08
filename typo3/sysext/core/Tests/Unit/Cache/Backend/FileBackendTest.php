@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamWrapper;
+use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -42,10 +43,12 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Cache\Exception
      */
     public function setCacheDirectoryThrowsExceptionOnNonWritableDirectory()
     {
+        $this->expectException(\TYPO3\CMS\Core\Cache\Exception::class);
+        $this->expectExceptionCode(1303669848);
+
         $mockCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array(), array(), '', false);
 
         $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\FileBackend::class, array('dummy'), array(), '', false);
@@ -182,10 +185,12 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      */
     public function setThrowsExceptionIfDataIsNotAString()
     {
+        $this->expectException(InvalidDataException::class);
+        $this->expectExceptionCode(1204481674);
+
         $mockCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array(), array(), '', false);
 
         $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\FileBackend::class, array('dummy'), array(), '', false);
@@ -454,10 +459,12 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      * @dataProvider invalidEntryIdentifiers
-     * @expectedException \InvalidArgumentException
      */
     public function setThrowsExceptionForInvalidIdentifier($identifier)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1282073032);
+
         $mockCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array(), array(), '', false);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
@@ -471,10 +478,12 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      * @dataProvider invalidEntryIdentifiers
-     * @expectedException \InvalidArgumentException
      */
     public function getThrowsExceptionForInvalidIdentifier($identifier)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1282073033);
+
         $mockCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array(), array(), '', false);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
@@ -488,22 +497,25 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      * @dataProvider invalidEntryIdentifiers
-     * @expectedException \InvalidArgumentException
      */
     public function hasThrowsExceptionForInvalidIdentifier($identifier)
     {
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\FileBackend::class, array('dummy'), array(), '', false);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1282073034);
 
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\FileBackend::class, array('dummy'), array(), '', false);
         $backend->has($identifier);
     }
 
     /**
      * @test
      * @dataProvider invalidEntryIdentifiers
-     * @expectedException \InvalidArgumentException
      */
     public function removeThrowsExceptionForInvalidIdentifier($identifier)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1282073035);
+
         $mockCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array(), array(), '', false);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
@@ -517,10 +529,13 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      * @dataProvider invalidEntryIdentifiers
-     * @expectedException \InvalidArgumentException
      */
     public function requireOnceThrowsExceptionForInvalidIdentifier($identifier)
     {
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1282073036);
+
         $mockCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array(), array(), '', false);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 

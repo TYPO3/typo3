@@ -38,10 +38,12 @@ class XcacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Cache\Exception
      */
     public function setThrowsExceptionIfNoFrontEndHasBeenSet()
     {
+        $this->expectException(\TYPO3\CMS\Core\Cache\Exception::class);
+        //@todo Add exception code with xcache extension
+
         $backend = new XcacheBackend('Testing');
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');

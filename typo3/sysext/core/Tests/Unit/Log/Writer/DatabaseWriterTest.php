@@ -33,10 +33,12 @@ class DatabaseWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function writeLogThrowsExceptionIfDatabaseInsertFailed()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1345036334);
+
         $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
         $GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_INSERTquery')->will($this->returnValue(false));
         /** @var \TYPO3\CMS\Core\Log\LogRecord|\PHPUnit_Framework_MockObject_MockObject $subject */

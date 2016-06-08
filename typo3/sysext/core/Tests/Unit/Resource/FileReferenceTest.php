@@ -129,25 +129,27 @@ class FileReferenceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * @param array $fileReferenceProperties
-     * @param array $originalFileProperties
-     * @param array $expectedMergedProperties
      * @test
      * @dataProvider propertiesDataProvider
-     * @expectedException \InvalidArgumentException
+     *
+     * @param array $fileReferenceProperties
+     * @param array $originalFileProperties
      */
     public function getPropertyThrowsExceptionForNotAvailableProperty($fileReferenceProperties, $originalFileProperties)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1314226805);
+
         $fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
         $fixture->getProperty($this->getUniqueId('nothingHere'));
     }
 
     /**
-     * @param array $fileReferenceProperties
-     * @param array $originalFileProperties
-     * @param array $expectedMergedProperties
      * @test
      * @dataProvider propertiesDataProvider
+     *
+     * @param array $fileReferenceProperties
+     * @param array $originalFileProperties
      */
     public function getPropertyDoesNotThrowExceptionForPropertyOnlyAvailableInOriginalFile($fileReferenceProperties, $originalFileProperties)
     {
@@ -156,15 +158,18 @@ class FileReferenceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * @test
+     * @dataProvider propertiesDataProvider
+     *
      * @param array $fileReferenceProperties
      * @param array $originalFileProperties
      * @param array $expectedMergedProperties
-     * @test
-     * @dataProvider propertiesDataProvider
-     * @expectedException \InvalidArgumentException
      */
     public function getReferencePropertyThrowsExceptionForPropertyOnlyAvailableInOriginalFile($fileReferenceProperties, $originalFileProperties)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1360684914);
+
         $fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
         $fixture->getReferenceProperty('file_only_property');
     }

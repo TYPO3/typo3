@@ -88,10 +88,12 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function doesFindByUidThrowException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1328646798);
+
         $testUid = rand(1, 1000);
         $this->databaseMock->expects($this->once())->method('exec_SELECTgetSingleRow')->will($this->returnCallback(array($this, 'getSingleRowCallback')));
         $this->getSingleRowCallbackReturnValue = array(

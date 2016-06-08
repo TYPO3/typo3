@@ -76,41 +76,45 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionCode 1369122038
      */
     public function doesAddThrowExceptionOnEmptyTablename()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1369122038);
+
         $this->subject->add('test_extension_a', '', 'categories');
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionCode 1397836158
      */
     public function doesAddThrowExceptionOnEmptyExtensionKey()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1397836158);
+
         $this->subject->add('', 'foo', 'categories');
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionCode 1369122038
      */
     public function doesAddThrowExceptionOnInvalidTablename()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1369122038);
+
         $this->subject->add('test_extension_a', array(), 'categories');
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionCode 1397836158
      */
     public function doesAddThrowExceptionOnInvalidExtensionKey()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1397836158);
+
         $this->subject->add(array(), 'foo', 'categories');
     }
 

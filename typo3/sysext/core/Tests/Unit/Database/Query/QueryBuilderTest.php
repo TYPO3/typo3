@@ -335,10 +335,12 @@ class QueryBuilderTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function quoteIdentifiersForSelectWithInvalidAlias()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1461170686);
+
         $this->connection->quoteIdentifier(Argument::cetera())->will(
             function ($args) {
                 $platform = new MockPlatform();

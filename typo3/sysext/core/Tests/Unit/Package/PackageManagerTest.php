@@ -15,6 +15,8 @@ use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Package\DependencyResolver;
+use TYPO3\CMS\Core\Package\Exception\ProtectedPackageKeyException;
+use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 
@@ -90,10 +92,12 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Package\Exception\UnknownPackageException
      */
     public function getPackageThrowsExceptionOnUnknownPackage()
     {
+        $this->expectException(UnknownPackageException::class);
+        $this->expectExceptionCode(1166546734);
+
         $this->packageManager->getPackage('PrettyUnlikelyThatThisPackageExists');
     }
 
@@ -280,10 +284,12 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Package\Exception\ProtectedPackageKeyException
      */
     public function deactivatePackageThrowsAnExceptionIfPackageIsProtected()
     {
+        $this->expectException(ProtectedPackageKeyException::class);
+        $this->expectExceptionCode(1308662891);
+
         $package = $this->createPackage('Acme.YetAnotherTestPackage');
         $package->setProtected(true);
         $this->packageManager->expects($this->any())->method('sortActivePackagesByDependencies')->will($this->returnValue(array()));
@@ -292,20 +298,24 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Package\Exception\UnknownPackageException
      */
     public function deletePackageThrowsErrorIfPackageIsNotAvailable()
     {
+        $this->expectException(UnknownPackageException::class);
+        $this->expectExceptionCode(1166543253);
+
         $this->packageManager->expects($this->any())->method('sortActivePackagesByDependencies')->will($this->returnValue(array()));
         $this->packageManager->deletePackage('PrettyUnlikelyThatThisPackageExists');
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Package\Exception\ProtectedPackageKeyException
      */
     public function deletePackageThrowsAnExceptionIfPackageIsProtected()
     {
+        $this->expectException(ProtectedPackageKeyException::class);
+        $this->expectExceptionCode(1220722120);
+
         $package = $this->createPackage('Acme.YetAnotherTestPackage');
         $package->setProtected(true);
         $this->packageManager->deletePackage('Acme.YetAnotherTestPackage');

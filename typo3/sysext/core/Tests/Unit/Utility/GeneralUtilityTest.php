@@ -1845,11 +1845,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @param string $hostNamePattern trusted hosts pattern
      * @test
      * @dataProvider hostnamesNotMatchingTrustedHostsConfigurationDataProvider
-     * @expectedException \UnexpectedValueException
-     * @expectedExceptionCode 1396795884
      */
     public function getIndpEnvForHostThrowsExceptionForNotAllowedHostnameValues($httpHost, $hostNamePattern)
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1396795884);
+
         $_SERVER['HTTP_HOST'] = $httpHost;
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = $hostNamePattern;
         GeneralUtilityFixture::getIndpEnv('HTTP_HOST');
@@ -3263,28 +3264,34 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function mkdirDeepThrowsExceptionIfDirectoryCreationFails()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1170251401);
+
         GeneralUtility::mkdir_deep('http://localhost');
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function mkdirDeepThrowsExceptionIfBaseDirectoryIsNotOfTypeString()
     {
-        GeneralUtility::mkdir_deep(array());
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1303662955);
+
+        GeneralUtility::mkdir_deep([]);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function mkdirDeepThrowsExceptionIfDeepDirectoryIsNotOfTypeString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1303662956);
+
         GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/foo', array());
     }
 
@@ -3904,55 +3911,67 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /////////////////////////////////////////////////////////////////////////////////////
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function makeInstanceWithEmptyClassNameThrowsException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1288965219);
+
         GeneralUtility::makeInstance('');
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function makeInstanceWithNullClassNameThrowsException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1288965219);
+
         GeneralUtility::makeInstance(null);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function makeInstanceWithZeroStringClassNameThrowsException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1288965219);
+
         GeneralUtility::makeInstance(0);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function makeInstanceWithEmptyArrayThrowsException()
     {
-        GeneralUtility::makeInstance(array());
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1288965219);
+
+        GeneralUtility::makeInstance([]);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function makeInstanceWithNonEmptyArrayThrowsException()
     {
-        GeneralUtility::makeInstance(array('foo'));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1288965219);
+
+        GeneralUtility::makeInstance(['foo']);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function makeInstanceWithBeginningSlashInClassNameThrowsException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1420281366);
+
         GeneralUtility::makeInstance('\\TYPO3\\CMS\\Backend\\Controller\\BackendController');
     }
 
@@ -4027,20 +4046,24 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function setSingletonInstanceForEmptyClassNameThrowsException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1288967479);
+
         $instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class);
         GeneralUtility::setSingletonInstance('', $instance);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function setSingletonInstanceForClassThatIsNoSubclassOfProvidedClassThrowsException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1288967686);
+
         $instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class, array('foo'));
         $singletonClassName = get_class($this->getMock(\TYPO3\CMS\Core\SingletonInterface::class));
         GeneralUtility::setSingletonInstance($singletonClassName, $instance);
@@ -4113,20 +4136,24 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function addInstanceForEmptyClassNameThrowsException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1288967479);
+
         $instance = $this->getMock('foo');
         GeneralUtility::addInstance('', $instance);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function addInstanceForClassThatIsNoSubclassOfProvidedClassThrowsException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1288967686);
+
         $instance = $this->getMock('foo', array('bar'));
         $singletonClassName = get_class($this->getMock('foo'));
         GeneralUtility::addInstance($singletonClassName, $instance);
@@ -4134,10 +4161,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function addInstanceWithSingletonInstanceThrowsException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1288969325);
+
         $instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class);
         GeneralUtility::addInstance(get_class($instance), $instance);
     }
@@ -4431,10 +4460,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      * @dataProvider callUserFunctionInvalidParameterDataprovider
-     * @expectedException \InvalidArgumentException
+     * @param string $functionName
+     * @param integer $expectedException
      */
-    public function callUserFunctionWillThrowExceptionForInvalidParameters($functionName)
+    public function callUserFunctionWillThrowExceptionForInvalidParameters($functionName, $expectedException)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode($expectedException);
+
         $inputData = array('foo' => 'bar');
         GeneralUtility::callUserFunction($functionName, $inputData, $this, 'user_', 2);
     }
@@ -4448,11 +4481,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function callUserFunctionInvalidParameterDataprovider()
     {
         return array(
-            'Function is not prefixed' => array('t3lib_divTest->calledUserFunction'),
-            'Class doesn\'t exists' => array('t3lib_divTest21345->user_calledUserFunction'),
-            'No method name' => array('t3lib_divTest'),
-            'No class name' => array('->user_calledUserFunction'),
-            'No function name' => array('')
+            'Function is not prefixed' => ['t3lib_divTest->calledUserFunction', 1294585866],
+            'Class doesn\'t exists' => ['t3lib_divTest21345->user_calledUserFunction', 1294585866],
+            'No method name' => ['t3lib_divTest', 1294585867],
+            'No class name' => ['->user_calledUserFunction', 1294585866],
+            'No function name' => ['', 1294585867]
         );
     }
 

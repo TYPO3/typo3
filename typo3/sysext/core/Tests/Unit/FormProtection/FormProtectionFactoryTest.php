@@ -37,19 +37,23 @@ class FormProtectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /////////////////////////
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function getForNotExistingClassThrowsException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1285352962);
+
         FormProtectionFactory::get('noSuchClass');
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function getForClassThatIsNoFormProtectionSubclassThrowsException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1285353026);
+
         FormProtectionFactory::get(\TYPO3\CMS\Core\Tests\Unit\FormProtection\FormProtectionFactoryTest::class);
     }
 

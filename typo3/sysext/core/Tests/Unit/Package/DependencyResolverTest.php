@@ -61,7 +61,6 @@ class DependencyResolverTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \UnexpectedValueException
      */
     public function sortPackageStatesConfigurationByDependencyThrowsExceptionWhenCycleDetected()
     {
@@ -73,6 +72,9 @@ class DependencyResolverTest extends UnitTestCase
                 'dependencies' => array('A')
             ),
         );
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1381960494);
 
         /** @var DependencyResolver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $dependencyResolver */
         $dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('findFrameworkPackages'));

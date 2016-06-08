@@ -111,10 +111,12 @@ class ExtensionManagementUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \BadFunctionCallException
      */
     public function isLoadedThrowsExceptionIfExtensionIsNotLoaded()
     {
+        $this->expectException(\BadFunctionCallException::class);
+        $this->expectExceptionCode(1270853910);
+
         $this->assertFalse(ExtensionManagementUtility::isLoaded($this->getUniqueId('foobar'), true));
     }
 
@@ -123,10 +125,12 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     ///////////////////////////////
     /**
      * @test
-     * @expectedException \BadFunctionCallException
      */
     public function extPathThrowsExceptionIfExtensionIsNotLoaded()
     {
+        $this->expectException(\BadFunctionCallException::class);
+        $this->expectExceptionCode(1365429656);
+
         $packageName = $this->getUniqueId('foo');
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMock(PackageManager::class, array('isPackageActive'));
@@ -1084,57 +1088,69 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /////////////////////////////////////////
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function addTcaSelectItemThrowsExceptionIfTableIsNotOfTypeString()
     {
-        ExtensionManagementUtility::addTcaSelectItem(array(), 'foo', array());
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1303236963);
+
+        ExtensionManagementUtility::addTcaSelectItem([], 'foo', []);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function addTcaSelectItemThrowsExceptionIfFieldIsNotOfTypeString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1303236964);
+
         ExtensionManagementUtility::addTcaSelectItem('foo', array(), array());
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function addTcaSelectItemThrowsExceptionIfRelativeToFieldIsNotOfTypeString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1303236965);
+
         ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', array(), array());
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function addTcaSelectItemThrowsExceptionIfRelativePositionIsNotOfTypeString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1303236966);
+
         ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', array(), 'foo', array());
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function addTcaSelectItemThrowsExceptionIfRelativePositionIsNotOneOfValidKeywords()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1303236967);
+
         ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', array(), 'foo', 'not allowed keyword');
     }
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function addTcaSelectItemThrowsExceptionIfFieldIsNotFoundInTca()
     {
-        $GLOBALS['TCA'] = array();
-        ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', array());
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1303237468);
+
+        $GLOBALS['TCA'] = [];
+        ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', []);
     }
 
     /**
@@ -1269,10 +1285,12 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /////////////////////////////////////////
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function loadSingleExtLocalconfFilesRequiresExtLocalconfFileRegisteredInGlobalTypo3LoadedExt()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1340559079);
+
         $extensionName = $this->getUniqueId('foo');
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
         $extLocalconfLocation = $packageManager->getPackage($extensionName)->getPackagePath() . 'ext_localconf.php';
@@ -1723,13 +1741,15 @@ class ExtensionManagementUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      * @dataProvider getExtensionVersionFaultyDataProvider
      * @param $key
      * @throws \TYPO3\CMS\Core\Package\Exception
      */
     public function getExtensionVersionForFaultyExtensionKeyThrowsException($key)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1294586096);
+
         ExtensionManagementUtility::getExtensionVersion($key);
     }
 
@@ -1769,10 +1789,12 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /////////////////////////////////////////
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function loadExtensionThrowsExceptionIfExtensionIsLoaded()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1342345486);
+
         $extensionKey = $this->getUniqueId('test');
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionKey);
         ExtensionManagementUtility::setPackageManager($packageManager);
@@ -1784,10 +1806,12 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /////////////////////////////////////////
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function unloadExtensionThrowsExceptionIfExtensionIsNotLoaded()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1342345487);
+
         $packageName = $this->getUniqueId('foo');
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
         $packageManager = $this->getMock(PackageManager::class, array('isPackageActive'));
@@ -1884,27 +1908,30 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function addPluginSetsTcaCorrectlyForGivenExtKeyAsGlobal()
     {
         $extKey = 'indexed_search';
-        $GLOBALS['TYPO3_LOADED_EXT'] = array();
+        $GLOBALS['TYPO3_LOADED_EXT'] = [];
         $GLOBALS['TYPO3_LOADED_EXT'][$extKey]['ext_icon'] = 'foo.gif';
         $GLOBALS['_EXTKEY'] = $extKey;
-        $expectedTCA = array(
-            array(
+        $expectedTCA = [
+            [
                 'label',
                 $extKey,
                 'EXT:' . $extKey . '/foo.gif'
-            )
-        );
-        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = array();
-        ExtensionManagementUtility::addPlugin(array('label', $extKey));
+            ]
+        ];
+        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
+        ExtensionManagementUtility::addPlugin(['label', $extKey]);
+
         $this->assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items']);
     }
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function addPluginThrowsExceptionForMissingExtkey()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1404068038);
+
         ExtensionManagementUtility::addPlugin('test');
     }
 }

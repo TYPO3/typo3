@@ -94,11 +94,13 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * @expectedException \UnexpectedValueException
      * @test
      */
     public function restoreSessionTokenFromRegistryThrowsExceptionIfSessionTokenIsEmpty()
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1301827270);
+
         $this->subject->setSessionTokenFromRegistry();
     }
 
@@ -115,11 +117,12 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \Exception
-     * @expectedExceptionCode 1442592030
      */
     public function failingTokenValidationInvokesFailingTokenClosure()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionCode(1442592030);
+
         $this->subject->validateToken('foo', 'bar');
     }
 }

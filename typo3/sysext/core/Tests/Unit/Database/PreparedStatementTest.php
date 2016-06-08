@@ -186,39 +186,48 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         return [
             'integer passed with param type NULL' => [
                 1,
-                PreparedStatement::PARAM_NULL
+                PreparedStatement::PARAM_NULL,
+                1282489834
             ],
             'string passed with param type NULL' => [
                 '1',
-                PreparedStatement::PARAM_NULL
+                PreparedStatement::PARAM_NULL,
+                1282489834
             ],
             'bool passed with param type NULL' => [
                 true,
-                PreparedStatement::PARAM_NULL
+                PreparedStatement::PARAM_NULL,
+                1282489834
             ],
             'NULL passed with param type INT' => [
                 null,
-                PreparedStatement::PARAM_INT
+                PreparedStatement::PARAM_INT,
+                1281868686
             ],
             'string passed with param type INT' => [
                 '1',
-                PreparedStatement::PARAM_INT
+                PreparedStatement::PARAM_INT,
+                1281868686
             ],
             'bool passed with param type INT' => [
                 true,
-                PreparedStatement::PARAM_INT
+                PreparedStatement::PARAM_INT,
+                1281868686
             ],
             'NULL passed with param type BOOL' => [
                 null,
-                PreparedStatement::PARAM_BOOL
+                PreparedStatement::PARAM_BOOL,
+                1281868687
             ],
             'string passed with param type BOOL' => [
                 '1',
-                PreparedStatement::PARAM_BOOL
+                PreparedStatement::PARAM_BOOL,
+                1281868687
             ],
             'integer passed with param type BOOL' => [
                 1,
-                PreparedStatement::PARAM_BOOL
+                PreparedStatement::PARAM_BOOL,
+                1281868687
             ]
         ];
     }
@@ -228,14 +237,17 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * provided vor bindValue().
      *
      * @test
-     * @expectedException \InvalidArgumentException
      * @dataProvider invalidParameterTypesPassedToBindValueThrowsExceptionDataProvider
      * @param mixed $parameter Parameter to be replaced in the query
      * @param int $type Type of the parameter value
+     * @param int $exceptionCode Expected exception code
      * @return void
      */
-    public function invalidParameterTypesPassedToBindValueThrowsException($parameter, $type)
+    public function invalidParameterTypesPassedToBindValueThrowsException($parameter, $type, $exceptionCode)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode($exceptionCode);
+
         $statement = $this->createPreparedStatement('');
         $statement->bindValue(1, $parameter, $type);
     }
@@ -281,7 +293,6 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * Checks if an exception is thrown, if parameter have invalid marker named.
      *
      * @test
-     * @expectedException \InvalidArgumentException
      * @dataProvider passingInvalidMarkersThrowsExceptionDataProvider
      * @param string $query Query with unreplaced markers
      * @param array  $parameters Array of parameters to be replaced in the query
@@ -289,6 +300,9 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function passingInvalidMarkersThrowsException($query, $parameters)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1395055513);
+
         $statement = $this->createPreparedStatement($query);
         $statement->bindValues($parameters);
     }

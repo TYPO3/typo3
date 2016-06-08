@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Locking;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
 use TYPO3\CMS\Core\Locking\FileLockStrategy;
 use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
@@ -50,11 +51,12 @@ class LockFactoryTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionCode 1425990198
      */
     public function addLockingStrategyThrowsExceptionIfInterfaceIsNotImplemented()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1425990198);
+
         $this->mockFactory->addLockingStrategy(\stdClass::class);
     }
 
@@ -80,10 +82,12 @@ class LockFactoryTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Locking\Exception\LockCreateException
      */
     public function getLockerThrowsExceptionIfNoMatchFound()
     {
+        $this->expectException(LockCreateException::class);
+        $this->expectExceptionCode(1425990190);
+
         $this->mockFactory->createLocker('id', 32);
     }
 }

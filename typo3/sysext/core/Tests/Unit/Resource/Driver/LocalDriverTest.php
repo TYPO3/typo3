@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
+use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
 use TYPO3\CMS\Core\Tests\FileStreamWrapper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -1628,10 +1629,12 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException
      */
     public function sanitizeFileNameThrowsExceptionOnInvalidFileName()
     {
+        $this->expectException(InvalidFileNameException::class);
+        $this->expectExceptionCode(1320288991);
+
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'] = 1;
         $this->createDriver()->sanitizeFileName('');
     }

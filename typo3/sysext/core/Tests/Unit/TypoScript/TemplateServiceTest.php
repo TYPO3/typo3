@@ -15,12 +15,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
  */
 
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Testcase for \TYPO3\CMS\Core\TypoScript\TemplateService
  */
-class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class TemplateServiceTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\TypoScript\TemplateService
@@ -151,7 +152,6 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function updateRootlineDataWithInvalidNewRootlineThrowsException()
     {
@@ -164,6 +164,9 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             0 => array('uid' => 1, 'title' => 'newTitle'),
             1 => array('uid' => 2, 'title' => 'newTitle2'),
         );
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1370419654);
 
         $this->templateServiceMock->_set('rootLine', $originalRootline);
         $this->templateServiceMock->updateRootlineData($newInvalidRootline);
