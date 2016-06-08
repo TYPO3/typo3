@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Beuser\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+
 /**
  * Repository for \TYPO3\CMS\Beuser\Domain\Model\BackendUser
  */
@@ -101,11 +104,19 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
     public function findOnline()
     {
         $uids = array();
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT ses_userid', 'be_sessions', '');
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_sessions');
+
+        $res = $queryBuilder
+            ->select('ses_userid')
+            ->from('be_sessions')
+            ->groupBy('ses_userid')
+            ->execute();
+
+        while ($row = $res->fetch()) {
             $uids[] = $row['ses_userid'];
         }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
+
         $query = $this->createQuery();
         $query->matching($query->in('uid', $uids));
         return $query->execute();
