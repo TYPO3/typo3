@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Backend\Controller;
 
 /*
@@ -874,48 +875,12 @@ class FormInlineAjaxController
      * @param string $domObjectId
      * @return array
      */
-    protected function getParentConfigFromFlexForm(array $parentConfig, $domObjectId)
+    protected function getParentConfigFromFlexForm(array $parentConfig, string $domObjectId) : array
     {
-        // Substitute FlexForm addition and make parsing a bit easier
-        $domObjectId = str_replace('---', ':', $domObjectId);
-        // The starting pattern of an object identifier (e.g. "data-<firstPidValue>-<anything>)
-        $pattern = '/^data' . '-' . '(?<firstPidValue>.+?)' . '-' . '(?<anything>.+)$/';
-
-        $flexFormPath = [];
-        // Will be checked against the FlexForm configuration as an additional safeguard
-        $foreignTableName = '';
-
-        if (preg_match($pattern, $domObjectId, $match)) {
-            // For new records the flexform path should be the second to last array element,
-            // followed by the foreign table name. For existing records it should be the third
-            // array element from the end as the UID of the inline record is provided as well.
-            $parts = array_slice(explode('-', $match['anything'], 4), -2, 2);
-
-            if (count($parts) !== 2 || !isset($parts[0]) || strpos($parts[0], ':') === false) {
-                throw new \UnexpectedValueException(
-                    'DOM Object ID ' . $domObjectId . ' does not contain required information '
-                    . 'to extract inline field configuration.',
-                    1446996136
-                );
-            }
-
-            $fieldParts = GeneralUtility::trimExplode(':', $parts[0]);
-
-            // FlexForm parts start with data:
-            if (empty($fieldParts) || !isset($fieldParts[1]) || $fieldParts[1] !== 'data') {
-                throw new \UnexpectedValueException(
-                    'Malformed flexform identifier: ' . $parts[2],
-                    1446996254
-                );
-            }
-
-            $flexFormPath = array_slice($fieldParts, 2);
-            $foreignTableNameParts = explode('-', $parts[1]);
-            $foreignTableName = $foreignTableNameParts[0];
-        }
+        list($flexFormPath, $foreignTableName) = $this->splitDomObjectId($domObjectId);
 
         $childConfig = $parentConfig['ds']['sheets'];
-
+        $flexFormPath = explode(':', $flexFormPath);
         foreach ($flexFormPath as $flexFormNode) {
             // We are dealing with configuration information from a flexform,
             // not value storage, identifiers that reference language or
@@ -972,5 +937,51 @@ class FormInlineAjaxController
         }
 
         return $databaseRow;
+    }
+
+    /**
+     * split the domObjectID and retrieve the needed parts
+     *
+     * @param string $domObjectId
+     *
+     * @return array
+     */
+    protected function splitDomObjectId(string $domObjectId) : array
+    {
+
+        // Substitute FlexForm addition and make parsing a bit easier
+        $domObjectId = str_replace('---', ':', $domObjectId);
+        $pattern = '/:data:(?<flexformPath>.*?)-(?<tableName>[^-]+)(?:-(?:NEW)?\w+)?$/';
+
+        /* EXPLANATION for the regex:
+         * according https://regex101.com/
+         *
+         * :data: matches the characters :data: literally (case sensitive)
+         * (?<flexformPath>.*?) Named capturing group flexformPath
+         * .*? matches any character (except newline)
+         * Quantifier: *? Between zero and unlimited times, as few times as possible, expanding as needed [lazy]
+         * - matches the character - literally
+         * (?<tableName>[^-]+) Named capturing group tableName
+         * [^-]+ match a single character not present in the list below
+         * Quantifier: + Between one and unlimited times, as many times as possible, giving back as needed [greedy]
+         * - the literal character -
+         * (?:-(?:NEW)?\w+)? Non-capturing group
+         * Quantifier: ? Between zero and one time, as many times as possible, giving back as needed [greedy]
+         * - matches the character - literally
+         * (?:NEW)? Non-capturing group
+         * Quantifier: ? Between zero and one time, as many times as possible, giving back as needed [greedy]
+         * NEW matches the characters NEW literally (case sensitive)
+         * \w+ match any word character [a-zA-Z0-9_]
+         * Quantifier: + Between one and unlimited times, as many times as possible, giving back as needed [greedy]
+         * $ assert position at end of a line
+         */
+
+        if (preg_match($pattern, $domObjectId, $match)) {
+
+            return array($match['flexformPath'], $match['tableName']);
+        }
+
+        return [];
+
     }
 }

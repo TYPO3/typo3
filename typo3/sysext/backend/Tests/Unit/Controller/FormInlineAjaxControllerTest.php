@@ -62,4 +62,108 @@ class FormInlineAjaxControllerTest extends UnitTestCase
         $mayUploadFile = $mockObject->_call('checkInlineFileTypeAccessForField', $selectorData, $fileData);
         $this->assertTrue($mayUploadFile);
     }
+
+
+    /**
+     * @dataProvider splitDomObjectIdDataProviderForTableName
+     * @param string $dataStructure
+     * @param string $expectedTableName
+     * @test
+     *
+     * test for the flexform domobject identifier split
+     */
+    public function splitDomObjectIdResolvesTablenameCorrectly($dataStructure, $expectedTableName)
+    {
+        $mock = $this->getAccessibleMock(FormInlineAjaxController::class, ['dummy'], [], '', false);
+        $result = $mock->_call('splitDomObjectId', $dataStructure);
+        $this->assertSame($expectedTableName, $result[1]);
+    }
+
+    /**
+     * @return array
+     */
+    public function splitDomObjectIdDataProviderForTableName()
+    {
+        return [
+            'news new' => [
+                'data-335-tx_news_domain_model_news-2-content_elements-tt_content-999-pi_flexform---data---sheet.tabGeneral---lDEF---settings.related_files---vDEF-tx_news_domain_model_file',
+                'tx_news_domain_model_file'
+            ],
+            'load existing child' => [
+                'data-318-tx_styleguide_flex-4-flex_3---data---sInline---lDEF---inline_1---vDEF-tx_styleguide_flex_flex_3_inline_1_child-4',
+                'tx_styleguide_flex_flex_3_inline_1_child'
+            ],
+            'create new child' => [
+                'data-318-tx_styleguide_flex-4-flex_3---data---sInline---lDEF---inline_1---vDEF-tx_styleguide_flex_flex_3_inline_1_child',
+                'tx_styleguide_flex_flex_3_inline_1_child'
+            ],
+            'insert new after' => [
+                'data-336-tt_content-1000-pi_flexform---data---sheet.tabGeneral---lDEF---settings.related_files---vDEF-tx_news_domain_model_file-6',
+                'tx_news_domain_model_file'
+            ],
+            'fal simple' => [
+                'data-336-tt_content-998-pi_flexform---data---sheet.tabGeneral---lDEF---settings.image---vDEF-sys_file_reference-837',
+                'sys_file_reference'
+            ],
+            'fal down deep' => [
+                'data-335-tx_news_domain_model_news-2-content_elements-tt_content-999-pi_flexform---data---sheet.tabGeneral---lDEF---settings.image---vDEF-sys_file_reference',
+                'sys_file_reference'
+            ],
+            'new record after others' => ['data-336-tt_content-1000-pi_flexform---data---sheet.tabGeneral---lDEF---settings.related_files---vDEF-tx_news_domain_model_file-NEW5757f36287214984252204', 'tx_news_domain_model_file'],
+        ];
+    }
+
+    /**
+     * @dataProvider splitDomObjectIdDataProviderForFlexFormPath
+     *
+     * @param string $dataStructure
+     * @param string $expectedFlexformPath
+     *
+     * @test
+     *
+     * test for the flexform domobject identifier split
+     */
+    public function splitDomObjectIdResolvesFlexformPathCorrectly($dataStructure, $expectedFlexformPath)
+    {
+        $mock = $this->getAccessibleMock(FormInlineAjaxController::class, ['dummy'], [], '', false);
+        $result = $mock->_call('splitDomObjectId', $dataStructure);
+        $this->assertSame($expectedFlexformPath, $result[0]);
+    }
+
+    /**
+     * @return array
+     */
+    public function splitDomObjectIdDataProviderForFlexFormPath()
+    {
+        return [
+            'news new' => [
+                'data-335-tx_news_domain_model_news-2-content_elements-tt_content-999-pi_flexform---data---sheet.tabGeneral---lDEF---settings.related_files---vDEF-tx_news_domain_model_file',
+                'sheet.tabGeneral:lDEF:settings.related_files:vDEF'
+            ],
+            'load existing child' => [
+                'data-318-tx_styleguide_flex-4-flex_3---data---sInline---lDEF---inline_1---vDEF-tx_styleguide_flex_flex_3_inline_1_child-4',
+                'sInline:lDEF:inline_1:vDEF'
+            ],
+            'create new child' => [
+                'data-318-tx_styleguide_flex-4-flex_3---data---sInline---lDEF---inline_1---vDEF-tx_styleguide_flex_flex_3_inline_1_child',
+                'sInline:lDEF:inline_1:vDEF'
+            ],
+            'insert new after' => [
+                'data-336-tt_content-1000-pi_flexform---data---sheet.tabGeneral---lDEF---settings.related_files---vDEF-tx_news_domain_model_file-6',
+                'sheet.tabGeneral:lDEF:settings.related_files:vDEF'
+            ],
+            'fal simple' => [
+                'data-336-tt_content-998-pi_flexform---data---sheet.tabGeneral---lDEF---settings.image---vDEF-sys_file_reference-837',
+                'sheet.tabGeneral:lDEF:settings.image:vDEF'
+            ],
+            'fal down deep' => [
+                'data-335-tx_news_domain_model_news-2-content_elements-tt_content-999-pi_flexform---data---sheet.tabGeneral---lDEF---settings.image---vDEF-sys_file_reference',
+                'sheet.tabGeneral:lDEF:settings.image:vDEF'
+            ],
+            'new record after others' => [
+                'data-336-tt_content-1000-pi_flexform---data---sheet.tabGeneral---lDEF---settings.related_files---vDEF-tx_news_domain_model_file-NEW5757f36287214984252204',
+                'sheet.tabGeneral:lDEF:settings.related_files:vDEF'
+            ],
+        ];
+    }
 }
