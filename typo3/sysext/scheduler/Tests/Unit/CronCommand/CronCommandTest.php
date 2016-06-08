@@ -60,10 +60,11 @@ class CronCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function constructorThrowsExceptionForInvalidCronCommand()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1291470170);
         new CronCommand('61 * * * *');
     }
 
@@ -307,10 +308,11 @@ class CronCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function calculateNextValueThrowsExceptionWithImpossibleCronCommand()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1291501280);
         $instance = new CronCommand('* * 31 apr *', self::TIMESTAMP);
         $instance->calculateNextValue();
     }

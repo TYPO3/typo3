@@ -28,28 +28,31 @@ class NormalizeCommandTest extends UnitTestCase
      */
     public static function normalizeValidDataProvider()
     {
-        return array(
-            '@weekly' => array('@weekly', '0 0 * * 7'),
-            ' @weekly ' => array(' @weekly ', '0 0 * * 7'),
-            '* * * * *' => array('* * * * *', '* * * * *'),
-            '30 4 1,15 * 5' => array('30 4 1,15 * 5', '30 4 1,15 * 5'),
-            '5 0 * * *' => array('5 0 * * *', '5 0 * * *'),
-            '15 14 1 * *' => array('15 14 1 * *', '15 14 1 * *'),
-            '0 22 * * 1-5' => array('0 22 * * 1-5', '0 22 * * 1,2,3,4,5'),
-            '23 0-23/2 * * *' => array('23 0-23/2 * * *', '23 0,2,4,6,8,10,12,14,16,18,20,22 * * *'),
-            '5 4 * * sun' => array('5 4 * * sun', '5 4 * * 7'),
-            '0-3/2,7 0,4 20-22, feb,mar-jun/2,7 1-3,sun' => array('0-3/2,7 0,4 20-22 feb,mar-jun/2,7 1-3,sun', '0,2,7 0,4 20,21,22 2,3,5,7 1,2,3,7'),
-            '0-20/10 * * * *' => array('0-20/10 * * * *', '0,10,20 * * * *'),
-            '* * 2 * *' => array('* * 2 * *', '* * 2 * *'),
-            '* * 2,7 * *' => array('* * 2,7 * *', '* * 2,7 * *'),
-            '* * 2-4,10 * *' => array('* * 2-4,10 * *', '* * 2,3,4,10 * *'),
-            '* * */14 * *' => array('* * */14 * *', '* * 1,15,29 * *'),
-            '* * 2,4-6/2,*/14 * *' => array('* * 2,4-6/2,*/14 * *', '* * 1,2,4,6,15,29 * *'),
-            '* * * * 1' => array('* * * * 1', '* * * * 1'),
-            '0 0 * * 0' => array('0 0 * * 0', '0 0 * * 7'),
-            '0 0 * * 7' => array('0 0 * * 7', '0 0 * * 7'),
-            '* * 1,2 * 1' => array('* * 1,2 * 1', '* * 1,2 * 1')
-        );
+        return [
+            '@weekly' => ['@weekly', '0 0 * * 7'],
+            ' @weekly ' => [' @weekly ', '0 0 * * 7'],
+            '* * * * *' => ['* * * * *', '* * * * *'],
+            '30 4 1,15 * 5' => ['30 4 1,15 * 5', '30 4 1,15 * 5'],
+            '5 0 * * *' => ['5 0 * * *', '5 0 * * *'],
+            '15 14 1 * *' => ['15 14 1 * *', '15 14 1 * *'],
+            '0 22 * * 1-5' => ['0 22 * * 1-5', '0 22 * * 1,2,3,4,5'],
+            '23 0-23/2 * * *' => ['23 0-23/2 * * *', '23 0,2,4,6,8,10,12,14,16,18,20,22 * * *'],
+            '5 4 * * sun' => ['5 4 * * sun', '5 4 * * 7'],
+            '0-3/2,7 0,4 20-22, feb,mar-jun/2,7 1-3,sun' => [
+                '0-3/2,7 0,4 20-22 feb,mar-jun/2,7 1-3,sun',
+                '0,2,7 0,4 20,21,22 2,3,5,7 1,2,3,7'
+            ],
+            '0-20/10 * * * *' => ['0-20/10 * * * *', '0,10,20 * * * *'],
+            '* * 2 * *' => ['* * 2 * *', '* * 2 * *'],
+            '* * 2,7 * *' => ['* * 2,7 * *', '* * 2,7 * *'],
+            '* * 2-4,10 * *' => ['* * 2-4,10 * *', '* * 2,3,4,10 * *'],
+            '* * */14 * *' => ['* * */14 * *', '* * 1,15,29 * *'],
+            '* * 2,4-6/2,*/14 * *' => ['* * 2,4-6/2,*/14 * *', '* * 1,2,4,6,15,29 * *'],
+            '* * * * 1' => ['* * * * 1', '* * * * 1'],
+            '0 0 * * 0' => ['0 0 * * 0', '0 0 * * 7'],
+            '0 0 * * 7' => ['0 0 * * 7', '0 0 * * 7'],
+            '* * 1,2 * 1' => ['* * 1,2 * 1', '* * 1,2 * 1']
+        ];
     }
 
     /**
@@ -69,15 +72,15 @@ class NormalizeCommandTest extends UnitTestCase
      */
     public static function validSpecialKeywordsDataProvider()
     {
-        return array(
-            '@yearly' => array('@yearly', '0 0 1 1 *'),
-            '@annually' => array('@annually', '0 0 1 1 *'),
-            '@monthly' => array('@monthly', '0 0 1 * *'),
-            '@weekly' => array('@weekly', '0 0 * * 0'),
-            '@daily' => array('@daily', '0 0 * * *'),
-            '@midnight' => array('@midnight', '0 0 * * *'),
-            '@hourly' => array('@hourly', '0 * * * *')
-        );
+        return [
+            '@yearly' => ['@yearly', '0 0 1 1 *'],
+            '@annually' => ['@annually', '0 0 1 1 *'],
+            '@monthly' => ['@monthly', '0 0 1 * *'],
+            '@weekly' => ['@weekly', '0 0 * * 0'],
+            '@daily' => ['@daily', '0 0 * * *'],
+            '@midnight' => ['@midnight', '0 0 * * *'],
+            '@hourly' => ['@hourly', '0 * * * *']
+        ];
     }
 
     /**
@@ -107,13 +110,13 @@ class NormalizeCommandTest extends UnitTestCase
      */
     public function normalizeFieldsValidDataProvider()
     {
-        return array(
-            '1-2 * * * *' => array('1-2 * * * *', '1,2 * * * *'),
-            '* 1-2 * * *' => array('* 1-2 * * *', '* 1,2 * * *'),
-            '* * 1-2 * *' => array('* * 1-2 * *', '* * 1,2 * *'),
-            '* * * 1-2 *' => array('* * * 1-2 *', '* * * 1,2 *'),
-            '* * * * 1-2' => array('* * * * 1-2', '* * * * 1,2')
-        );
+        return [
+            '1-2 * * * *' => ['1-2 * * * *', '1,2 * * * *'],
+            '* 1-2 * * *' => ['* 1-2 * * *', '* 1,2 * * *'],
+            '* * 1-2 * *' => ['* * 1-2 * *', '* * 1,2 * *'],
+            '* * * 1-2 *' => ['* * * 1-2 *', '* * * 1,2 *'],
+            '* * * * 1-2' => ['* * * * 1-2', '* * * * 1,2']
+        ];
     }
 
     /**
@@ -133,27 +136,27 @@ class NormalizeCommandTest extends UnitTestCase
      */
     public static function normalizeMonthAndWeekdayFieldValidDataProvider()
     {
-        return array(
-            '* monthField' => array('*', true, '*'),
-            'string 1 monthField' => array('1', true, '1'),
-            'jan' => array('jan', true, '1'),
-            'feb/2' => array('feb/2', true, '2'),
-            'jan-feb/2' => array('jan-feb/2', true, '1'),
-            '1-2 monthField' => array('1-2', true, '1,2'),
-            '1-3/2,feb,may,6' => array('1-3/2,feb,may,6', true, '1,2,3,5,6'),
-            '*/4' => array('*/4', true, '1,5,9'),
-            '* !monthField' => array('*', false, '*'),
-            'string 1, !monthField' => array('1', false, '1'),
-            'fri' => array('fri', false, '5'),
-            'sun' => array('sun', false, '7'),
-            'string 0 for sunday' => array('0', false, '7'),
-            '0,1' => array('0,1', false, '1,7'),
-            '*/3' => array('*/3', false, '1,4,7'),
-            'tue/2' => array('tue/2', false, '2'),
-            '1-2 !monthField' => array('1-2', false, '1,2'),
-            'tue-fri/2' => array('tue-fri/2', false, '2,4'),
-            '1-3/2,tue,fri,6' => array('1-3/2,tue,fri,6', false, '1,2,3,5,6')
-        );
+        return [
+            '* monthField' => ['*', true, '*'],
+            'string 1 monthField' => ['1', true, '1'],
+            'jan' => ['jan', true, '1'],
+            'feb/2' => ['feb/2', true, '2'],
+            'jan-feb/2' => ['jan-feb/2', true, '1'],
+            '1-2 monthField' => ['1-2', true, '1,2'],
+            '1-3/2,feb,may,6' => ['1-3/2,feb,may,6', true, '1,2,3,5,6'],
+            '*/4' => ['*/4', true, '1,5,9'],
+            '* !monthField' => ['*', false, '*'],
+            'string 1, !monthField' => ['1', false, '1'],
+            'fri' => ['fri', false, '5'],
+            'sun' => ['sun', false, '7'],
+            'string 0 for sunday' => ['0', false, '7'],
+            '0,1' => ['0,1', false, '1,7'],
+            '*/3' => ['*/3', false, '1,4,7'],
+            'tue/2' => ['tue/2', false, '2'],
+            '1-2 !monthField' => ['1-2', false, '1,2'],
+            'tue-fri/2' => ['tue-fri/2', false, '2,4'],
+            '1-3/2,tue,fri,6' => ['1-3/2,tue,fri,6', false, '1,2,3,5,6']
+        ];
     }
 
     /**
@@ -163,8 +166,11 @@ class NormalizeCommandTest extends UnitTestCase
      * @param bool $isMonthField Flag to designate month field or not
      * @param string $expected Expected result (normalized months or weekdays)
      */
-    public function normalizeMonthAndWeekdayFieldReturnsNormalizedListForValidExpression($expression, $isMonthField, $expected)
-    {
+    public function normalizeMonthAndWeekdayFieldReturnsNormalizedListForValidExpression(
+        $expression,
+        $isMonthField,
+        $expected
+    ) {
         $result = NormalizeCommandAccessibleProxy::normalizeMonthAndWeekdayField($expression, $isMonthField);
         $this->assertSame($expected, $result);
     }
@@ -174,25 +180,30 @@ class NormalizeCommandTest extends UnitTestCase
      */
     public static function normalizeMonthAndWeekdayFieldInvalidDataProvider()
     {
-        return array(
-            'mon' => array('mon', true),
-            '1-2/mon' => array('1-2/mon', true),
-            '0,1' => array('0,1', true),
-            'feb' => array('feb', false),
-            '1-2/feb' => array('1-2/feb', false),
-            '0-fri/2,7' => array('0-fri/2,7', false, '2,4,7')
-        );
+        return [
+            'mon' => ['mon', true, 1291083486],
+            '1-2/mon' => ['1-2/mon', true, 1291414957],
+            '0,1' => ['0,1', true, 1291083486],
+            'feb' => ['feb', false, 1291163589],
+            '1-2/feb' => ['1-2/feb', false, 1291414957],
+            '0-fri/2,7' => ['0-fri/2,7', false, 1291237145]
+        ];
     }
 
     /**
      * @test
      * @dataProvider normalizeMonthAndWeekdayFieldInvalidDataProvider
-     * @expectedException \InvalidArgumentException
      * @param string $expression Cron command partial expression for month and weekday fields (invalid)
      * @param bool $isMonthField Flag to designate month field or not
+     * @param integer $expectedExceptionCode Expected exception code from provider
      */
-    public function normalizeMonthAndWeekdayFieldThrowsExceptionForInvalidExpression($expression, $isMonthField)
-    {
+    public function normalizeMonthAndWeekdayFieldThrowsExceptionForInvalidExpression(
+        $expression,
+        $isMonthField,
+        $expectedExceptionCode
+    ) {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode($expectedExceptionCode);
         NormalizeCommandAccessibleProxy::normalizeMonthAndWeekdayField($expression, $isMonthField);
     }
 
@@ -201,21 +212,21 @@ class NormalizeCommandTest extends UnitTestCase
      */
     public static function normalizeIntegerFieldValidDataProvider()
     {
-        return array(
-            '*' => array('*', '*'),
-            'string 2' => array('2', '2'),
-            'integer 3' => array(3, '3'),
-            'list of values' => array('1,2,3', '1,2,3'),
-            'unsorted list of values' => array('3,1,5', '1,3,5'),
-            'duplicate values' => array('0-2/2,2', '0,2'),
-            'additional field between steps' => array('1-3/2,2', '1,2,3'),
-            '2-4' => array('2-4', '2,3,4'),
-            'simple step 4/4' => array('4/4', '4'),
-            'step 2-7/5' => array('2-7/5', '2,7'),
-            'steps 4-12/4' => array('4-12/4', '4,8,12'),
-            '0-59/20' => array('0-59/20', '0,20,40'),
-            '*/20' => array('*/20', '0,20,40')
-        );
+        return [
+            '*' => ['*', '*'],
+            'string 2' => ['2', '2'],
+            'integer 3' => [3, '3'],
+            'list of values' => ['1,2,3', '1,2,3'],
+            'unsorted list of values' => ['3,1,5', '1,3,5'],
+            'duplicate values' => ['0-2/2,2', '0,2'],
+            'additional field between steps' => ['1-3/2,2', '1,2,3'],
+            '2-4' => ['2-4', '2,3,4'],
+            'simple step 4/4' => ['4/4', '4'],
+            'step 2-7/5' => ['2-7/5', '2,7'],
+            'steps 4-12/4' => ['4-12/4', '4,8,12'],
+            '0-59/20' => ['0-59/20', '0,20,40'],
+            '*/20' => ['*/20', '0,20,40']
+        ];
     }
 
     /**
@@ -235,30 +246,37 @@ class NormalizeCommandTest extends UnitTestCase
      */
     public static function normalizeIntegerFieldInvalidDataProvider()
     {
-        return array(
-            'string foo' => array('foo', 0, 59),
-            'empty string' => array('', 0, 59),
-            '4-3' => array('4-3', 0, 59),
-            '/2' => array('/2', 0, 59),
-            '/' => array('/', 0, 59),
-            'left bound too low' => array('2-4', 3, 4),
-            'right bound too high' => array('2-4', 2, 3),
-            'left and right bound' => array('2-5', 2, 4),
-            'element in list is lower than allowed' => array('2,1,4', 2, 4),
-            'element in list is higher than allowed' => array('2,5,4', 1, 4)
-        );
+        return [
+            'string foo' => ['foo', 0, 59, 1291429389],
+            'empty string' => ['', 0, 59, 1291429389],
+            '4-3' => ['4-3', 0, 59, 1291237145],
+            '/2' => ['/2', 0, 59, 1291234985],
+            '/' => ['/', 0, 59, 1291234985],
+            'left bound too low' => ['2-4', 3, 4, 1291470084],
+            'right bound too high' => ['2-4', 2, 3, 1291470170],
+            'left and right bound' => ['2-5', 2, 4, 1291470170],
+            'element in list is lower than allowed' => ['2,1,4', 2, 4, 1291470084],
+            'element in list is higher than allowed' => ['2,5,4', 1, 4, 1291470170]
+        ];
     }
 
     /**
      * @test
      * @dataProvider normalizeIntegerFieldInvalidDataProvider
-     * @expectedException \InvalidArgumentException
      * @param string $expression Cron command partial integer expression (invalid)
      * @param int $lowerBound Lower limit
      * @param int $upperBound Upper limit
+     * @param int $expectedExceptionCode Expected exception code
      */
-    public function normalizeIntegerFieldThrowsExceptionForInvalidExpressions($expression, $lowerBound, $upperBound)
-    {
+    public function normalizeIntegerFieldThrowsExceptionForInvalidExpressions(
+        $expression,
+        $lowerBound,
+        $upperBound,
+        $expectedExceptionCode
+    ) {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode($expectedExceptionCode);
+
         NormalizeCommandAccessibleProxy::normalizeIntegerField($expression, $lowerBound, $upperBound);
     }
 
@@ -268,13 +286,13 @@ class NormalizeCommandTest extends UnitTestCase
     public function splitFieldsReturnsIntegerArrayWithFieldsSplitByWhitespace()
     {
         $result = NormalizeCommandAccessibleProxy::splitFields('12,13 * 1-12/2,14 jan fri');
-        $expectedResult = array(
+        $expectedResult = [
             0 => '12,13',
             1 => '*',
             2 => '1-12/2,14',
             3 => 'jan',
             4 => 'fri'
-        );
+        ];
         $this->assertSame($expectedResult, $result);
     }
 
@@ -283,23 +301,24 @@ class NormalizeCommandTest extends UnitTestCase
      */
     public static function invalidCronCommandFieldsDataProvider()
     {
-        return array(
-            'empty string' => array(''),
-            'foo' => array('foo'),
-            'integer 4' => array(4),
-            'four fields' => array('* * * *'),
-            'six fields' => array('* * * * * *')
-        );
+        return [
+            'empty string' => [''],
+            'foo' => ['foo'],
+            'integer 4' => [4],
+            'four fields' => ['* * * *'],
+            'six fields' => ['* * * * * *']
+        ];
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      * @dataProvider invalidCronCommandFieldsDataProvider
      * @param string $cronCommand Invalid cron command
      */
     public function splitFieldsThrowsExceptionIfCronCommandDoesNotContainFiveFields($cronCommand)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1291227373);
         NormalizeCommandAccessibleProxy::splitFields($cronCommand);
     }
 
@@ -308,14 +327,14 @@ class NormalizeCommandTest extends UnitTestCase
      */
     public static function validRangeDataProvider()
     {
-        return array(
-            'single value' => array('3', '3'),
-            'integer 3' => array(3, '3'),
-            '0-0' => array('0-0', '0'),
-            '4-4' => array('4-4', '4'),
-            '0-3' => array('0-3', '0,1,2,3'),
-            '4-5' => array('4-5', '4,5')
-        );
+        return [
+            'single value' => ['3', '3'],
+            'integer 3' => [3, '3'],
+            '0-0' => ['0-0', '0'],
+            '4-4' => ['4-4', '4'],
+            '0-3' => ['0-3', '0,1,2,3'],
+            '4-5' => ['4-5', '4,5']
+        ];
     }
 
     /**
@@ -335,28 +354,30 @@ class NormalizeCommandTest extends UnitTestCase
      */
     public static function invalidRangeDataProvider()
     {
-        return array(
-            'empty string' => array(''),
-            'string' => array('foo'),
-            'single dash' => array('-'),
-            'left part is string' => array('foo-5'),
-            'right part is string' => array('5-foo'),
-            'range of strings' => array('foo-bar'),
-            'string five minus' => array('5-'),
-            'string minus five' => array('-5'),
-            'more than one dash' => array('2-3-4'),
-            'left part bigger than right part' => array('6-3')
-        );
+        return [
+            'empty string' => ['', 1291234985],
+            'string' => ['foo', 1291237668],
+            'single dash' => ['-', 1291237668],
+            'left part is string' => ['foo-5', 1291237668],
+            'right part is string' => ['5-foo', 1291237668],
+            'range of strings' => ['foo-bar', 1291237668],
+            'string five minus' => ['5-', 1291237668],
+            'string minus five' => ['-5', 1291237668],
+            'more than one dash' => ['2-3-4', 1291234986],
+            'left part bigger than right part' => ['6-3', 1291237145]
+        ];
     }
 
     /**
      * @test
      * @dataProvider invalidRangeDataProvider
-     * @expectedException \InvalidArgumentException
      * @param string $range Cron command range expression (invalid)
+     * @param integer $expectedExceptionCode Expected exception code from provider
      */
-    public function convertRangeToListOfValuesThrowsExceptionForInvalidRanges($range)
+    public function convertRangeToListOfValuesThrowsExceptionForInvalidRanges($range, $expectedExceptionCode)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode($expectedExceptionCode);
         NormalizeCommandAccessibleProxy::convertRangeToListOfValues($range);
     }
 
@@ -365,12 +386,12 @@ class NormalizeCommandTest extends UnitTestCase
      */
     public static function validStepsDataProvider()
     {
-        return array(
-            '2/2' => array('2/2', '2'),
-            '2,3,4/2' => array('2,3,4/2', '2,4'),
-            '1,2,3,4,5,6,7/3' => array('1,2,3,4,5,6,7/3', '1,4,7'),
-            '0,1,2,3,4,5,6/3' => array('0,1,2,3,4,5,6/3', '0,3,6')
-        );
+        return [
+            '2/2' => ['2/2', '2'],
+            '2,3,4/2' => ['2,3,4/2', '2,4'],
+            '1,2,3,4,5,6,7/3' => ['1,2,3,4,5,6,7/3', '1,4,7'],
+            '0,1,2,3,4,5,6/3' => ['0,1,2,3,4,5,6/3', '0,3,6']
+        ];
     }
 
     /**
@@ -390,27 +411,32 @@ class NormalizeCommandTest extends UnitTestCase
      */
     public static function invalidStepsDataProvider()
     {
-        return array(
-            'empty string' => array(''),
-            'slash only' => array('/'),
-            'left part empty' => array('/2'),
-            'right part empty' => array('2/'),
-            'multiples slashes' => array('1/2/3'),
-            '2-2' => array('2-2'),
-            '2.3/2' => array('2.3/2'),
-            '2,3,4/2.3' => array('2,3,4/2.3'),
-            '2,3,4/2,3' => array('2,3,4/2,3')
-        );
+        return [
+            'empty string' => ['', 1291234987],
+            'slash only' => ['/', 1291414955],
+            'left part empty' => ['/2', 1291414955],
+            'right part empty' => ['2/', 1291414956],
+            'multiples slashes' => ['1/2/3', 1291242168],
+            '2-2' => ['2-2', 1291414956],
+            '2.3/2' => ['2.3/2', 1291414958],
+            '2,3,4/2.3' => ['2,3,4/2.3', 1291414957],
+            '2,3,4/2,3' => ['2,3,4/2,3', 1291414957]
+        ];
     }
 
     /**
      * @test
      * @dataProvider invalidStepsDataProvider
-     * @expectedException \InvalidArgumentException
      * @param string $stepExpression Cron command step expression (invalid)
+     * @param integer $expectedExceptionCode Expected exception code
      */
-    public function reduceListOfValuesByStepValueThrowsExceptionForInvalidStepExpressions($stepExpression)
-    {
+    public function reduceListOfValuesByStepValueThrowsExceptionForInvalidStepExpressions(
+        $stepExpression,
+        $expectedExceptionCode
+    ) {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode($expectedExceptionCode);
+
         NormalizeCommandAccessibleProxy::reduceListOfValuesByStepValue($stepExpression);
     }
 
@@ -446,24 +472,24 @@ class NormalizeCommandTest extends UnitTestCase
      */
     public static function validMonthNamesDataProvider()
     {
-        return array(
-            'jan' => array('jan', 1),
-            'feb' => array('feb', 2),
-            'MaR' => array('MaR', 3),
-            'aPr' => array('aPr', 4),
-            'MAY' => array('MAY', 5),
-            'jun' => array('jun', 6),
-            'jul' => array('jul', 7),
-            'aug' => array('aug', 8),
-            'sep' => array('sep', 9),
-            'oct' => array('oct', 10),
-            'nov' => array('nov', 11),
-            'dec' => array('dec', 12),
-            'string 7' => array('7', 7),
-            'integer 7' => array(7, 7),
-            'string 07' => array('07', 7),
-            'integer 07' => array(7, 7)
-        );
+        return [
+            'jan' => ['jan', 1],
+            'feb' => ['feb', 2],
+            'MaR' => ['MaR', 3],
+            'aPr' => ['aPr', 4],
+            'MAY' => ['MAY', 5],
+            'jun' => ['jun', 6],
+            'jul' => ['jul', 7],
+            'aug' => ['aug', 8],
+            'sep' => ['sep', 9],
+            'oct' => ['oct', 10],
+            'nov' => ['nov', 11],
+            'dec' => ['dec', 12],
+            'string 7' => ['7', 7],
+            'integer 7' => [7, 7],
+            'string 07' => ['07', 7],
+            'integer 07' => [7, 7]
+        ];
     }
 
     /**
@@ -495,37 +521,42 @@ class NormalizeCommandTest extends UnitTestCase
      */
     public static function invalidMonthNamesDataProvider()
     {
-        return array(
-            'sep-' => array('sep-'),
-            '-September-' => array('-September-'),
-            ',sep' => array(',sep'),
-            ',September,' => array(',September,'),
-            'sep/' => array('sep/'),
-            '/sep' => array('/sep'),
-            '/September/' => array('/September/'),
-            'foo' => array('foo'),
-            'Tuesday' => array('Tuesday'),
-            'Tue' => array('Tue'),
-            'string 0' => array('0'),
-            'integer 0' => array(0),
-            'string seven' => array('seven'),
-            'string 13' => array('13'),
-            'integer 13' => array(13),
-            'integer 100' => array(100),
-            'integer 2010' => array(2010),
-            'string minus 7' => array('-7'),
-            'negative integer 7' => array(-7)
-        );
+        return [
+            'sep-' => ['sep-', 1291083486],
+            '-September-' => ['-September-', 1291083486],
+            ',sep' => [',sep', 1291083486],
+            ',September,' => [',September,', 1291083486],
+            'sep/' => ['sep/', 1291083486],
+            '/sep' => ['/sep', 1291083486],
+            '/September/' => ['/September/', 1291083486],
+            'foo' => ['foo', 1291083486],
+            'Tuesday' => ['Tuesday', 1291083486],
+            'Tue' => ['Tue', 1291083486],
+            'string 0' => ['0', 1291083486],
+            'integer 0' => [0, 1291083486],
+            'string seven' => ['seven', 1291083486],
+            'string 13' => ['13', 1291083486],
+            'integer 13' => [13, 1291083486],
+            'integer 100' => [100, 1291083486],
+            'integer 2010' => [2010, 1291083486],
+            'string minus 7' => ['-7', 1291083486],
+            'negative integer 7' => [-7, 1291083486]
+        ];
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      * @dataProvider invalidMonthNamesDataProvider
      * @param string $invalidMonthName Month name (invalid)
+     * @param integer $expectedExceptionCode Expected exception code
      */
-    public function normalizeMonthThrowsExceptionForInvalidMonthRepresentation($invalidMonthName)
-    {
+    public function normalizeMonthThrowsExceptionForInvalidMonthRepresentation(
+        $invalidMonthName,
+        $expectedExceptionCode
+    ) {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode($expectedExceptionCode);
+
         NormalizeCommandAccessibleProxy::normalizeMonth($invalidMonthName);
     }
 
@@ -534,34 +565,34 @@ class NormalizeCommandTest extends UnitTestCase
      */
     public static function validWeekdayDataProvider()
     {
-        return array(
-            'string 1' => array('1', 1),
-            'string 2' => array('2', 2),
-            'string 02' => array('02', 2),
-            'integer 02' => array(2, 2),
-            'string 3' => array('3', 3),
-            'string 4' => array('4', 4),
-            'string 5' => array('5', 5),
-            'integer 5' => array(5, 5),
-            'string 6' => array('6', 6),
-            'string 7' => array('7', 7),
-            'string 0' => array('0', 7),
-            'integer 0' => array(0, 7),
-            'mon' => array('mon', 1),
-            'monday' => array('monday', 1),
-            'tue' => array('tue', 2),
-            'tuesday' => array('tuesday', 2),
-            'WED' => array('WED', 3),
-            'WEDnesday' => array('WEDnesday', 3),
-            'tHu' => array('tHu', 4),
-            'Thursday' => array('Thursday', 4),
-            'fri' => array('fri', 5),
-            'friday' => array('friday', 5),
-            'sat' => array('sat', 6),
-            'saturday' => array('saturday', 6),
-            'sun' => array('sun', 7),
-            'sunday' => array('sunday', 7)
-        );
+        return [
+            'string 1' => ['1', 1],
+            'string 2' => ['2', 2],
+            'string 02' => ['02', 2],
+            'integer 02' => [2, 2],
+            'string 3' => ['3', 3],
+            'string 4' => ['4', 4],
+            'string 5' => ['5', 5],
+            'integer 5' => [5, 5],
+            'string 6' => ['6', 6],
+            'string 7' => ['7', 7],
+            'string 0' => ['0', 7],
+            'integer 0' => [0, 7],
+            'mon' => ['mon', 1],
+            'monday' => ['monday', 1],
+            'tue' => ['tue', 2],
+            'tuesday' => ['tuesday', 2],
+            'WED' => ['WED', 3],
+            'WEDnesday' => ['WEDnesday', 3],
+            'tHu' => ['tHu', 4],
+            'Thursday' => ['Thursday', 4],
+            'fri' => ['fri', 5],
+            'friday' => ['friday', 5],
+            'sat' => ['sat', 6],
+            'saturday' => ['saturday', 6],
+            'sun' => ['sun', 7],
+            'sunday' => ['sunday', 7]
+        ];
     }
 
     /**
@@ -593,35 +624,37 @@ class NormalizeCommandTest extends UnitTestCase
      */
     public static function invalidWeekdayDataProvider()
     {
-        return array(
-            '-fri' => array('-fri'),
-            'fri-' => array('fri-'),
-            '-friday-' => array('-friday-'),
-            '/fri' => array('/fri'),
-            'fri/' => array('fri/'),
-            '/friday/' => array('/friday/'),
-            ',fri' => array(',fri'),
-            ',friday,' => array(',friday,'),
-            'string minus 1' => array('-1'),
-            'integer -1' => array(-1),
-            'string seven' => array('seven'),
-            'string 8' => array('8'),
-            'string 29' => array('29'),
-            'string 2010' => array('2010'),
-            'Jan' => array('Jan'),
-            'January' => array('January'),
-            'MARCH' => array('MARCH')
-        );
+        return [
+            '-fri' => ['-fri'],
+            'fri-' => ['fri-'],
+            '-friday-' => ['-friday-'],
+            '/fri' => ['/fri'],
+            'fri/' => ['fri/'],
+            '/friday/' => ['/friday/'],
+            ',fri' => [',fri'],
+            ',friday,' => [',friday,'],
+            'string minus 1' => ['-1'],
+            'integer -1' => [-1],
+            'string seven' => ['seven'],
+            'string 8' => ['8'],
+            'string 29' => ['29'],
+            'string 2010' => ['2010'],
+            'Jan' => ['Jan'],
+            'January' => ['January'],
+            'MARCH' => ['MARCH']
+        ];
     }
 
     /**
      * @test
      * @dataProvider invalidWeekdayDataProvider
-     * @expectedException \InvalidArgumentException
      * @param string $weekday Weekday expression (invalid)
      */
     public function normalizeWeekdayThrowsExceptionForInvalidWeekdayRepresentation($weekday)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1291163589);
+
         NormalizeCommandAccessibleProxy::normalizeWeekday($weekday);
     }
 }
