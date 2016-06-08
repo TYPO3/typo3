@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -259,9 +260,11 @@ abstract class FunctionalTestCase extends BaseTestCase
      * $GLOBALS['TYPO3_DB'] for easy IDE auto completion.
      *
      * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     protected function getDatabaseConnection()
     {
+        GeneralUtility::logDeprecatedFunction();
         return $GLOBALS['TYPO3_DB'];
     }
 
@@ -275,8 +278,15 @@ abstract class FunctionalTestCase extends BaseTestCase
     protected function setUpBackendUserFromFixture($userUid)
     {
         $this->importDataSet(ORIGINAL_ROOT . $this->backendUserFixture);
-        $database = $this->getDatabaseConnection();
-        $userRow = $database->exec_SELECTgetSingleRow('*', 'be_users', 'uid = ' . (int)$userUid);
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $userRow = $queryBuilder->select('*')
+            ->from('be_users')
+            ->where($queryBuilder->expr()->eq('uid', (int) $userUid))
+            ->execute()
+            ->fetch();
 
         /** @var $backendUser BackendUserAuthentication */
         $backendUser = GeneralUtility::makeInstance(BackendUserAuthentication::class);
@@ -320,31 +330,36 @@ abstract class FunctionalTestCase extends BaseTestCase
     protected function setUpFrontendRootPage($pageId, array $typoScriptFiles = array())
     {
         $pageId = (int)$pageId;
-        $page = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . $pageId);
+
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
+        $page = $connection->select(['*'], 'pages', ['uid' => $pageId])->fetch();
 
         if (empty($page)) {
             $this->fail('Cannot set up frontend root page "' . $pageId . '"');
         }
 
-        $pagesFields = array(
-            'is_siteroot' => 1
+        $connection->update(
+            'pages',
+            ['is_siteroot' => 1],
+            ['uid' => $pageId]
         );
 
-        $this->getDatabaseConnection()->exec_UPDATEquery('pages', 'uid=' . $pageId, $pagesFields);
-
-        $templateFields = array(
+        $templateFields = [
             'pid' => $pageId,
             'title' => '',
             'config' => '',
             'clear' => 3,
             'root' => 1,
-        );
+        ];
 
         foreach ($typoScriptFiles as $typoScriptFile) {
             $templateFields['config'] .= '<INCLUDE_TYPOSCRIPT: source="FILE:' . $typoScriptFile . '">' . LF;
         }
 
-        $this->getDatabaseConnection()->exec_INSERTquery('sys_template', $templateFields);
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_template')->insert(
+            'sys_template',
+            $templateFields
+        );
     }
 
     /**
