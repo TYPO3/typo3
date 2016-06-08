@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Extbase\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Service for determining basic extension params
  */
@@ -158,7 +162,22 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
         $pluginSignature = strtolower($extensionName . '_' . $pluginName);
         if ($frameworkConfiguration['view']['defaultPid'] === 'auto') {
             if (!array_key_exists($pluginSignature, $this->targetPidPluginCache)) {
-                $pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('pid', 'tt_content', 'list_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($pluginSignature, 'tt_content') . ' AND CType="list"' . $GLOBALS['TSFE']->sys_page->enableFields('tt_content') . ' AND sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid, '', '', 2);
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('tt_content');
+                $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+
+                $pages = $queryBuilder
+                    ->select('pid')
+                    ->from('tt_content')
+                    ->where(
+                        $queryBuilder->expr()->eq('list_type', $queryBuilder->createNamedParameter($pluginSignature)),
+                        $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('list')),
+                        $queryBuilder->expr()->eq('sys_language_uid', (int)$GLOBALS['TSFE']->sys_language_uid)
+                    )
+                    ->setMaxResults(2)
+                    ->execute()
+                    ->fetchAll();
+
                 if (count($pages) > 1) {
                     throw new \TYPO3\CMS\Extbase\Exception('There is more than one "' . $pluginSignature . '" plugin in the current page tree. Please remove one plugin or set the TypoScript configuration "plugin.tx_' . $pluginSignature . '.view.defaultPid" to a fixed page id', 1280773643);
                 }
