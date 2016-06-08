@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Processor;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor;
 
 /**
@@ -41,10 +42,11 @@ class GalleryProcessorTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException
      */
     public function processThrowsExceptionWhenFilesProcessedDataKeyIsNotFound()
     {
+        $this->expectException(ContentRenderingException::class);
+        $this->expectExceptionCode(1436809789);
         $processor = new GalleryProcessor();
         $processor->process(
             $this->contentObjectRenderer,

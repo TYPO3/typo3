@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
  */
 
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException;
 use TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
 
 /**
@@ -24,10 +25,11 @@ class MenuContentObjectFactoryTest extends UnitTestCase
 {
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException
      */
     public function getMenuObjectByTypeThrowsExceptionForUnknownType()
     {
+        $this->expectException(NoSuchMenuTypeException::class);
+        $this->expectExceptionCode(1363278130);
         $factory = new MenuContentObjectFactory;
         $factory->getMenuObjectByType($this->getUniqueId('foo_'));
     }
@@ -75,20 +77,22 @@ class MenuContentObjectFactoryTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function registerMenuTypeThrowsExceptionIfTypeIsNotOfTypeString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1363429303);
         $factory = new MenuContentObjectFactory;
         $factory->registerMenuType(array(), 'foo');
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function registerMenuTypeThrowsExceptionIfClassNameIsNotOfTypeString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1363429303);
         $factory = new MenuContentObjectFactory;
         $factory->registerMenuType('foo', array());
     }

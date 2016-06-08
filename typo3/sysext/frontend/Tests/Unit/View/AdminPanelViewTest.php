@@ -56,10 +56,11 @@ class AdminPanelViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \UnexpectedValueException
      */
     public function extendAdminPanelHookThrowsExceptionIfHookClassDoesNotImplementInterface()
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1311942539);
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'][] = \TYPO3\CMS\Frontend\Tests\Unit\Fixtures\AdminPanelHookWithoutInterfaceFixture::class;
         /** @var $adminPanelMock \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\View\AdminPanelView */
         $adminPanelMock = $this->getMock(\TYPO3\CMS\Frontend\View\AdminPanelView::class, array('dummy'), array(), '', false);

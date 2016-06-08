@@ -77,10 +77,11 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException UnexpectedValueException
      */
     public function sectionIndexThrowsAnExceptionIfTheInternalQueryFails()
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1337334849);
         $this->prepareSectionIndexTest();
         $this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(array()));
         $this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')->will($this->returnValue(0));

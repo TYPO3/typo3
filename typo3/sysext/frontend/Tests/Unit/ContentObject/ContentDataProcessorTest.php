@@ -38,11 +38,11 @@ class ContentDataProcessorTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \UnexpectedValueException
-     * @expectedExceptionCode 1427455378
      */
     public function throwsExceptionIfProcessorClassDoesNotExist()
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1427455378);
         $contentObjectRendererStub = new ContentObjectRenderer();
         $config = [
             'dataProcessing.' => [
@@ -55,11 +55,11 @@ class ContentDataProcessorTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \UnexpectedValueException
-     * @expectedExceptionCode 1427455377
      */
     public function throwsExceptionIfProcessorClassDoesNotImplementInterface()
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1427455377);
         $contentObjectRendererStub = new ContentObjectRenderer();
         $config = [
             'dataProcessing.' => [

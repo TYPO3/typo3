@@ -3897,11 +3897,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \LogicException
-     * @expectedExceptionCode 1414513947
      */
     public function renderingContentObjectThrowsException()
     {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(1414513947);
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
         $this->subject->render($contentObjectFixture, array());
     }
@@ -3946,13 +3946,12 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \LogicException
-     * @expectedExceptionCode 1414513947
      */
     public function globalExceptionHandlerConfigurationCanBeOverriddenByLocalConfiguration()
     {
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
-
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(1414513947);
         $this->typoScriptFrontendControllerMock->config['config']['contentObjectExceptionHandler'] = '1';
         $configuration = array(
             'exceptionHandler' => '0'
@@ -4000,8 +3999,6 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \LogicException
-     * @expectedExceptionCode 1414513947
      */
     public function specificExceptionsCanBeIgnoredByExceptionHandler()
     {
@@ -4013,7 +4010,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'ignoreCodes.' => array('10.' => '1414513947'),
             )
         );
-
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(1414513947);
         $this->subject->render($contentObjectFixture, $configuration);
     }
 

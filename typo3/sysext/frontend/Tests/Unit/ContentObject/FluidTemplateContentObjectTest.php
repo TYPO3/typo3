@@ -648,7 +648,6 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function renderThrowsExceptionForNotAllowedVariableData()
     {
@@ -661,12 +660,13 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 ),
             ),
         );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1288095720);
         $this->subject->render($configuration);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function renderThrowsExceptionForNotAllowedVariableCurrent()
     {
@@ -679,6 +679,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 ),
             ),
         );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1288095720);
         $this->subject->render($configuration);
     }
 

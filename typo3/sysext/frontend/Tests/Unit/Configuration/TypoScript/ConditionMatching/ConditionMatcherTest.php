@@ -14,9 +14,11 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatchi
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
+use TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatching\Fixtures\TestConditionException;
 
 /**
  * Test case
@@ -650,19 +652,21 @@ class ConditionMatcherTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException
      */
     public function matchThrowsExceptionIfConditionClassDoesNotInheritFromAbstractCondition()
     {
+        $this->expectException(InvalidTypoScriptConditionException::class);
+        $this->expectExceptionCode(1410286153);
         $this->matchCondition->match('[stdClass = foo]');
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatching\Fixtures\TestConditionException
      */
     public function matchCallsTestConditionAndHandsOverParameters()
     {
+        $this->expectException(TestConditionException::class);
+        $this->expectExceptionCode(1411581139);
         $this->matchCondition->match('[TYPO3\\CMS\\Frontend\\Tests\\Unit\\Configuration\\TypoScript\\ConditionMatching\\Fixtures\\TestCondition = 7, != 6]');
     }
 }
