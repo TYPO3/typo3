@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\Category\Collection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -35,7 +37,8 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
     public static function create(array $collectionRecord, $fillItems = false)
     {
         /** @var $collection \TYPO3\CMS\Frontend\Category\Collection\CategoryCollection */
-        $collection = GeneralUtility::makeInstance(__CLASS__,
+        $collection = GeneralUtility::makeInstance(
+            __CLASS__,
             $collectionRecord['table_name'],
             $collectionRecord['field_name']
         );
@@ -62,13 +65,23 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
      */
     public static function load($id, $fillItems = false, $tableName = '', $fieldName = '')
     {
-        $collectionRecord = self::getDatabaseConnection()->exec_SELECTgetSingleRow(
-            '*',
-            static::$storageTableName,
-            'uid = ' . (int)$id . self::getTypoScriptFrontendController()->sys_page->enableFields(static::$storageTableName)
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable(static::$storageTableName);
+        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+
+        $collectionRecord = $queryBuilder
+            ->select('*')
+            ->from(static::$storageTableName)
+            ->where(
+                $queryBuilder->expr()->eq('uid', (int)$id)
+            )
+            ->setMaxResults(1)
+            ->execute()
+            ->fetch();
+
         $collectionRecord['table_name'] = $tableName;
         $collectionRecord['field_name'] = $fieldName;
+
         return self::create($collectionRecord, $fillItems);
     }
 
@@ -84,75 +97,73 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
      */
     protected function getCollectedRecords()
     {
-        $db = self::getDatabaseConnection();
+        $relatedRecords = [];
 
-        $relatedRecords = array();
-        // Assemble where clause
-        $where = 'AND ' . self::$storageTableName . '.uid = ' . (int)$this->getIdentifier();
-        // Add condition on tablenames fields
-        $where .= ' AND sys_category_record_mm.tablenames = ' . $db->fullQuoteStr(
-            $this->getItemTableName(),
-            'sys_category_record_mm'
-        );
-        // Add condition on fieldname field
-        $where .= ' AND sys_category_record_mm.fieldname = ' . $db->fullQuoteStr(
-            $this->getRelationFieldName(),
-            'sys_category_record_mm'
-        );
-        // Add enable fields for item table
+        $queryBuilder = $this->getCollectedRecordsQueryBuilder();
+        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
         $tsfe = self::getTypoScriptFrontendController();
-        $where .= $tsfe->sys_page->enableFields($this->getItemTableName());
+
         // If language handling is defined for item table, add language condition
         if (isset($GLOBALS['TCA'][$this->getItemTableName()]['ctrl']['languageField'])) {
             // Consider default or "all" language
-            $languageField = $this->getItemTableName() . '.' . $GLOBALS['TCA'][$this->getItemTableName()]['ctrl']['languageField'];
-            $languageCondition = $languageField . ' IN (0, -1)';
+            $languageField = sprintf(
+                '%s.%s',
+                $this->getItemTableName(),
+                $GLOBALS['TCA'][$this->getItemTableName()]['ctrl']['languageField']
+            );
+
+            $languageConstraint = $queryBuilder->expr()->in($languageField, [0, -1]);
+
             // If not in default language, also consider items in current language with no original
             if ($tsfe->sys_language_content > 0) {
-                $languageCondition .= '
-					OR (' . $languageField . ' = ' . (int)$tsfe->sys_language_content . '
-					AND ' . $this->getItemTableName() . '.' .
-                    $GLOBALS['TCA'][$this->getItemTableName()]['ctrl']['transOrigPointerField'] . ' = 0)
-				';
-            }
-            $where .= ' AND (' . $languageCondition . ')';
-        }
-        // Get the related records from the database
-        $resource = $db->exec_SELECT_mm_query(
-            $this->getItemTableName() . '.*',
-            self::$storageTableName,
-            'sys_category_record_mm',
-            $this->getItemTableName(),
-            $where
-        );
-
-        if ($resource) {
-            while ($record = $db->sql_fetch_assoc($resource)) {
-                // Overlay the record for workspaces
-                $tsfe->sys_page->versionOL(
+                $transOrigPointerField = sprintf(
+                    '%s.%s',
                     $this->getItemTableName(),
-                    $record
+                    $GLOBALS['TCA'][$this->getItemTableName()]['ctrl']['transOrigPointerField']
                 );
-                // Overlay the record for translations
-                if (is_array($record) && $tsfe->sys_language_contentOL) {
-                    if ($this->getItemTableName() === 'pages') {
-                        $record = $tsfe->sys_page->getPageOverlay($record);
-                    } else {
-                        $record = $tsfe->sys_page->getRecordOverlay(
-                            $this->getItemTableName(),
-                            $record,
-                            $tsfe->sys_language_content,
-                            $tsfe->sys_language_contentOL
-                        );
-                    }
-                }
-                // Record may have been unset during the overlay process
-                if (is_array($record)) {
-                    $relatedRecords[] = $record;
+
+                $languageConstraint = $queryBuilder->expr()->orX(
+                    $languageConstraint,
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->eq($languageField, (int)$tsfe->sys_language_content),
+                        $queryBuilder->expr()->eq($transOrigPointerField, 0)
+                    )
+                );
+            }
+
+            $queryBuilder->andWhere($languageConstraint);
+        }
+
+        // Get the related records from the database
+        $result = $queryBuilder->execute();
+
+        while ($record = $result->fetch()) {
+            // Overlay the record for workspaces
+            $tsfe->sys_page->versionOL(
+                $this->getItemTableName(),
+                $record
+            );
+
+            // Overlay the record for translations
+            if (is_array($record) && $tsfe->sys_language_contentOL) {
+                if ($this->getItemTableName() === 'pages') {
+                    $record = $tsfe->sys_page->getPageOverlay($record);
+                } else {
+                    $record = $tsfe->sys_page->getRecordOverlay(
+                        $this->getItemTableName(),
+                        $record,
+                        $tsfe->sys_language_content,
+                        $tsfe->sys_language_contentOL
+                    );
                 }
             }
-            $db->sql_free_result($resource);
+
+            // Record may have been unset during the overlay process
+            if (is_array($record)) {
+                $relatedRecords[] = $record;
+            }
         }
+
         return $relatedRecords;
     }
 

@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Category\Collection;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Collection\AbstractRecordCollection;
 use TYPO3\CMS\Core\Collection\CollectionInterface;
 use TYPO3\CMS\Core\Collection\EditableCollectionInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -96,53 +98,93 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
      */
     public static function load($id, $fillItems = false, $tableName = '', $fieldName = '')
     {
-        $collectionRecord = self::getDatabaseConnection()->exec_SELECTgetSingleRow(
-            '*',
-            static::$storageTableName,
-            'uid = ' . (int)$id . BackendUtility::deleteClause(static::$storageTableName)
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable(static::$storageTableName);
+
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $collectionRecord = $queryBuilder->select('*')
+            ->from(static::$storageTableName)
+            ->where(
+                $queryBuilder->expr()->eq('uid', (int)$id)
+            )
+            ->setMaxResults(1)
+            ->execute()
+            ->fetch();
+
         $collectionRecord['table_name'] = $tableName;
         $collectionRecord['field_name'] = $fieldName;
+
         return self::create($collectionRecord, $fillItems);
     }
 
     /**
-     * Gets the collected records in this collection, by
+     * Selects the collected records in this collection, by
      * looking up the MM relations of this record to the
      * table name defined in the local field 'table_name'.
+     *
+     * @return QueryBuilder
+     */
+    protected function getCollectedRecordsQueryBuilder()
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable(static::$storageTableName);
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $queryBuilder->select($this->getItemTableName() . '.*')
+            ->from(static::$storageTableName)
+            ->join(
+                static::$storageTableName,
+                'sys_category_record_mm',
+                'sys_category_record_mm',
+                $queryBuilder->expr()->eq(
+                    'sys_category_record_mm.uid_local',
+                    $queryBuilder->quoteIdentifier(static::$storageTableName . '.uid')
+                )
+            )
+            ->join(
+                'sys_category_record_mm',
+                $this->getItemTableName(),
+                $this->getItemTableName(),
+                $queryBuilder->expr()->eq(
+                    'sys_category_record_mm.uid_foreign',
+                    $queryBuilder->quoteIdentifier($this->getItemTableName() . '.uid')
+                )
+            )
+            ->where(
+                $queryBuilder->expr()->eq(static::$storageTableName . '.uid', (int)$this->getIdentifier()),
+                $queryBuilder->expr()->eq(
+                    'sys_category_record_mm.tablenames',
+                    $queryBuilder->createNamedParameter($this->getItemTableName())
+                ),
+                $queryBuilder->expr()->eq(
+                    'sys_category_record_mm.fieldname',
+                    $queryBuilder->createNamedParameter($this->getRelationFieldName())
+                )
+            );
+
+        return $queryBuilder;
+    }
+
+    /**
+     * Gets the collected records in this collection, by
+     * using <getCollectedRecordsQueryBuilder>.
      *
      * @return array
      */
     protected function getCollectedRecords()
     {
-        $db = self::getDatabaseConnection();
+        $relatedRecords = [];
 
-        $relatedRecords = array();
-        // Assemble where clause
-        $where = 'AND ' . self::$storageTableName . '.uid = ' . (int)$this->getIdentifier();
-        // Add condition on tablenames fields
-        $where .= ' AND sys_category_record_mm.tablenames = ' . $db->fullQuoteStr(
-            $this->getItemTableName(),
-            'sys_category_record_mm'
-        );
-        // Add condition on fieldname field
-        $where .= ' AND sys_category_record_mm.fieldname = ' . $db->fullQuoteStr(
-            $this->getRelationFieldName(),
-            'sys_category_record_mm'
-        );
-        $resource = $db->exec_SELECT_mm_query(
-            $this->getItemTableName() . '.*',
-            self::$storageTableName,
-            'sys_category_record_mm',
-            $this->getItemTableName(),
-            $where
-        );
-        if ($resource) {
-            while ($record = $db->sql_fetch_assoc($resource)) {
-                $relatedRecords[] = $record;
-            }
-            $db->sql_free_result($resource);
+        $queryBuilder = $this->getCollectedRecordsQueryBuilder();
+        $result = $queryBuilder->execute();
+
+        while ($record = $result->fetch()) {
+            $relatedRecords[] = $record;
         }
+
         return $relatedRecords;
     }
 
