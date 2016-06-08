@@ -217,8 +217,9 @@ class InlineControlContainer extends AbstractContainer
         $resultArray['inlineData'] = $this->inlineData;
 
         // @todo: It might be a good idea to have something like "isLocalizedRecord" or similar set by a data provider
+        $uidOfDefaultRecord = $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
         $isLocalizedParent = $language > 0
-            && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']][0] > 0
+            && ($uidOfDefaultRecord[0] ?? $uidOfDefaultRecord) > 0
             && MathUtility::canBeInterpretedAsInteger($row['uid']);
         $numberOfFullLocalizedChildren = 0;
         $numberOfNotYetLocalizedChildren = 0;
