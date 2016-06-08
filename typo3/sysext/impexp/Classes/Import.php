@@ -538,13 +538,17 @@ class Import extends ImportExport
      */
     protected function fetchStorageRecords()
     {
-        return GeneralUtility::makeInstance(ConnectionPool::class)
+        $result = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_file_storage')
             ->select('*')
             ->from('sys_file_storage')
             ->orderBy('uid')
-            ->execute()
-            ->fetchAll();
+            ->execute();
+        $rows = [];
+        while ($row = $result->fetch()) {
+            $rows[$row['uid']] = $row;
+        }
+        return $rows;
     }
 
     /**
