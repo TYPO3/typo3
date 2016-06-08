@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\View;
  */
 
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Install\Status\Exception;
 
 /**
  * Tests for the custom json view class
@@ -32,10 +33,11 @@ class JsonViewTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\Status\Exception
      */
     public function transformStatusArrayToArrayThrowsExceptionIfArrayContainsNotAMessageInterfaceMessage()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1381059600);
         $jsonView = $this->getAccessibleMock(\TYPO3\CMS\Install\View\JsonView::class, array('dummy'));
         $jsonView->_call('transformStatusMessagesToArray', array('foo'));
     }

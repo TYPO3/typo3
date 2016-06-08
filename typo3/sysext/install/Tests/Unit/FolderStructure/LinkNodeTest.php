@@ -13,7 +13,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
+use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 /**
  * Test case
  */
@@ -21,10 +21,11 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
      */
     public function constructorThrowsExceptionIfParentIsNull()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1380485700);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('dummy'), array(), '', false);
         $node->__construct(array(), null);
@@ -32,10 +33,11 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
      */
     public function constructorThrowsExceptionIfNameContainsForwardSlash()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1380546061);
         $parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class, array(), array(), '', false);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('dummy'), array(), '', false);
@@ -237,10 +239,11 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
      */
     public function isLinkThrowsExceptionIfLinkNotExists()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1380556246);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('exists'), array(), '', false);
         $node->expects($this->once())->method('exists')->will($this->returnValue(false));
@@ -282,10 +285,11 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
      */
     public function isTargetCorrectThrowsExceptionIfLinkNotExists()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1380556245);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('exists'), array(), '', false);
         $node->expects($this->once())->method('exists')->will($this->returnValue(false));
@@ -294,10 +298,11 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
      */
     public function isTargetCorrectThrowsExceptionIfNodeIsNotALink()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1380556247);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('exists', 'isLink', 'getTarget'), array(), '', false);
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));

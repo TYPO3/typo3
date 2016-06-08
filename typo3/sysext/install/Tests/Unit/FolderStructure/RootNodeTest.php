@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
+use TYPO3\CMS\Install\FolderStructure\Exception\RootNodeException;
 
 /**
  * Test case
@@ -21,10 +23,11 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\RootNodeException
      */
     public function constructorThrowsExceptionIfParentIsNotNull()
     {
+        $this->expectException(RootNodeException::class);
+        $this->expectExceptionCode(1366140117);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\RootNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class, array('isWindowsOs'), array(), '', false);
         $falseParent = $this->getMock(
@@ -39,10 +42,11 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
      */
     public function constructorThrowsExceptionIfAbsolutePathIsNotSet()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1366141329);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\RootNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class, array('isWindowsOs'), array(), '', false);
         $structure = array(
@@ -53,10 +57,11 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
      */
     public function constructorThrowsExceptionIfAbsolutePathIsNotAbsoluteOnWindows()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1366141329);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\RootNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class, array('isWindowsOs'), array(), '', false);
         $node
@@ -71,10 +76,11 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
      */
     public function constructorThrowsExceptionIfAbsolutePathIsNotAbsoluteOnUnix()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1366141329);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\RootNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class, array('isWindowsOs'), array(), '', false);
         $node

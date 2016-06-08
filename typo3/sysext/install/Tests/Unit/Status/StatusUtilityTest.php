@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\Status;
  */
 
 use TYPO3\CMS\Install\Status\StatusUtility;
+use TYPO3\CMS\Install\Status\Exception;
 
 /**
  * Test case
@@ -42,10 +43,11 @@ class StatusUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\Status\Exception
      */
     public function filterBySeverityThrowsExceptionIfObjectNotImplementingStatusInterfaceIsGiven()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1366919442);
         $statusUtility = new StatusUtility();
         $statusUtility->filterBySeverity(array(new \stdClass()));
     }

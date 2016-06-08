@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Service;
 
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Install\Service\Exception\CoreVersionServiceException;
 
 /**
  * Test case
@@ -82,10 +83,11 @@ class CoreVersionServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\Service\Exception\CoreVersionServiceException
      */
     public function getTarGzSha1OfVersionThrowsExceptionIfSha1DoesNotExistInMatrix()
     {
+        $this->expectException(CoreVersionServiceException::class);
+        $this->expectExceptionCode(1381263173);
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(
             CoreVersionService::class,
@@ -377,10 +379,11 @@ class CoreVersionServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\Service\Exception\CoreVersionServiceException
      */
     public function getVersionMatrixThrowsExceptionIfVersionMatrixIsNotYetSetInRegistry()
     {
+        $this->expectException(CoreVersionServiceException::class);
+        $this->expectExceptionCode(1380898792);
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(CoreVersionService::class, array('fetchVersionMatrixFromRemote'), array(), '', false);
         $registry = $this->getMock(Registry::class);
@@ -405,10 +408,11 @@ class CoreVersionServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\Service\Exception\CoreVersionServiceException
      */
     public function getReleaseTimestampOfVersionThrowsExceptionIfReleaseDateIsNotDefined()
     {
+        $this->expectException(CoreVersionServiceException::class);
+        $this->expectExceptionCode(1380905853);
         $versionMatrix = array(
             '7' => array(
                 'releases' => array(
@@ -450,10 +454,11 @@ class CoreVersionServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\Service\Exception\CoreVersionServiceException
      */
     public function ensureVersionExistsInMatrixThrowsExceptionIfMinorVersionDoesNotExist()
     {
+        $this->expectException(CoreVersionServiceException::class);
+        $this->expectExceptionCode(1380905851);
         $versionMatrixFixtureFile = __DIR__ . '/Fixtures/VersionMatrixFixture.php';
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(
@@ -470,10 +475,11 @@ class CoreVersionServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\Service\Exception\CoreVersionServiceException
      */
     public function ensureVersionExistsInMatrixThrowsExceptionIfPatchLevelDoesNotExist()
     {
+        $this->expectException(CoreVersionServiceException::class);
+        $this->expectExceptionCode(1380905852);
         $versionMatrixFixtureFile = __DIR__ . '/Fixtures/VersionMatrixFixture.php';
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(

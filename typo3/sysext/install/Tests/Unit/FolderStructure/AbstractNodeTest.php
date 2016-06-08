@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Install\FolderStructure\Exception;
+use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 
 /**
  * Test case
@@ -153,7 +155,6 @@ class AbstractNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTest
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception
      */
     public function fixPermissionThrowsExceptionIfPermissionAreAlreadyCorrect()
     {
@@ -165,6 +166,8 @@ class AbstractNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTest
             '',
             false
         );
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1366744035);
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue(''));
         $node->expects($this->once())->method('isPermissionCorrect')->will($this->returnValue(true));
         $node->_call('fixPermission');
@@ -307,10 +310,11 @@ class AbstractNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTest
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
      */
     public function getRelativePathBelowSiteRootThrowsExceptionIfGivenPathIsNotBelowPathSiteConstant()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1366398198);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\AbstractNode::class, array('dummy'), array(), '', false);
         $node->_call('getRelativePathBelowSiteRoot', '/tmp');

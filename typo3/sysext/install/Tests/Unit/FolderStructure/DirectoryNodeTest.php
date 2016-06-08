@@ -13,7 +13,8 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
+use TYPO3\CMS\Install\FolderStructure\Exception;
+use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 /**
  * Test case
  */
@@ -21,10 +22,11 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
 {
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
      */
     public function constructorThrowsExceptionIfParentIsNull()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1366222203);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, array('dummy'), array(), '', false);
         $node->__construct(array(), null);
@@ -32,10 +34,11 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
      */
     public function constructorThrowsExceptionIfNameContainsForwardSlash()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1366226639);
         $parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class, array(), array(), '', false);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, array('dummy'), array(), '', false);
@@ -429,10 +432,11 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception
      */
     public function createDirectoryThrowsExceptionIfNodeExists()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1366740091);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, array('exists', 'getAbsolutePath'), array(), '', false);
         $node->expects($this->once())->method('getAbsolutePath')->will($this->returnValue(''));
@@ -487,10 +491,11 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
      */
     public function createChildrenThrowsExceptionIfAChildTypeIsNotSet()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1366222204);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, array('dummy'), array(), '', false);
         $brokenStructure = array(
@@ -503,10 +508,11 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
      */
     public function createChildrenThrowsExceptionIfAChildNameIsNotSet()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1366222205);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, array('dummy'), array(), '', false);
         $brokenStructure = array(
@@ -519,10 +525,11 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
      */
     public function createChildrenThrowsExceptionForMultipleChildrenWithSameName()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1366222206);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, array('dummy'), array(), '', false);
         $brokenStructure = array(
