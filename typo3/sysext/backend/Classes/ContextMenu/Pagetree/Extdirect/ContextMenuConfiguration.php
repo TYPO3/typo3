@@ -13,12 +13,41 @@ namespace TYPO3\CMS\Backend\ContextMenu\Pagetree\Extdirect;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection;
+use TYPO3\CMS\Backend\ContextMenu\Pagetree\ContextMenuDataProvider;
+use TYPO3\CMS\Backend\Tree\Pagetree\Commands;
+use TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode;
+use TYPO3\CMS\Backend\Tree\TreeNode;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Context Menu of the Page Tree
  */
-class ContextMenuConfiguration extends \TYPO3\CMS\Backend\ContextMenu\Extdirect\AbstractExtdirectContextMenu
+class ContextMenuConfiguration
 {
+    /**
+     * Data Provider
+     *
+     * @var ContextMenuDataProvider
+     */
+    protected $dataProvider = null;
+
+    /**
+     * @param ContextMenuDataProvider $dataProvider
+     * @return void
+     */
+    public function setDataProvider(ContextMenuDataProvider $dataProvider)
+    {
+        $this->dataProvider = $dataProvider;
+    }
+
+    /**
+     * @return ContextMenuDataProvider
+     */
+    public function getDataProvider()
+    {
+        return $this->dataProvider;
+    }
     /**
      * Sets the data provider
      *
@@ -26,8 +55,7 @@ class ContextMenuConfiguration extends \TYPO3\CMS\Backend\ContextMenu\Extdirect\
      */
     protected function initDataProvider()
     {
-        /** @var $dataProvider \TYPO3\CMS\Backend\ContextMenu\Pagetree\ContextMenuDataProvider */
-        $dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\ContextMenu\Pagetree\ContextMenuDataProvider::class);
+        $dataProvider = GeneralUtility::makeInstance(ContextMenuDataProvider::class);
         $this->setDataProvider($dataProvider);
     }
 
@@ -39,16 +67,26 @@ class ContextMenuConfiguration extends \TYPO3\CMS\Backend\ContextMenu\Extdirect\
      */
     public function getActionsForNodeArray($nodeData)
     {
-        /** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-        $node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
-        $node->setRecord(\TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($node->getId()));
+        $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
+        $node->setRecord(Commands::getNodeRecord($node->getId()));
         $this->initDataProvider();
         $this->dataProvider->setContextMenuType('table.' . $node->getType());
         $actionCollection = $this->dataProvider->getActionsForNode($node);
         $actions = array();
-        if ($actionCollection instanceof \TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection) {
+        if ($actionCollection instanceof ContextMenuActionCollection) {
             $actions = $actionCollection->toArray();
         }
         return $actions;
+    }
+
+    /**
+     * Unused for this implementation
+     *
+     * @see getActionsForNodeArray()
+     * @param TreeNode $node
+     * @return array
+     */
+    public function getActionsForNode(TreeNode $node)
+    {
     }
 }

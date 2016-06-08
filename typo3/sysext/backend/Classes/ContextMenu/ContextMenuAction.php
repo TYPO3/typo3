@@ -57,9 +57,9 @@ class ContextMenuAction
     /**
      * Child Action Collection
      *
-     * @var \TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection
+     * @var ContextMenuActionCollection
      */
-    protected $childActions = null;
+    protected $childActions;
 
     /**
      * Custom Action Attributes
@@ -173,7 +173,7 @@ class ContextMenuAction
     /**
      * Returns the child actions
      *
-     * @return \TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection
+     * @return ContextMenuActionCollection
      */
     public function getChildActions()
     {
@@ -183,10 +183,10 @@ class ContextMenuAction
     /**
      * Sets the child actions
      *
-     * @param \TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection $actions
+     * @param ContextMenuActionCollection $actions
      * @return void
      */
-    public function setChildActions(\TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection $actions)
+    public function setChildActions(ContextMenuActionCollection $actions)
     {
         $this->childActions = $actions;
     }
@@ -198,10 +198,7 @@ class ContextMenuAction
      */
     public function hasChildActions()
     {
-        if ($this->childActions !== null) {
-            return true;
-        }
-        return false;
+        return $this->childActions !== null;
     }
 
     /**
