@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Core\Resource;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
@@ -67,28 +70,36 @@ class FileRepository extends AbstractRepository
      */
     public function findByRelation($tableName, $fieldName, $uid)
     {
-        $itemList = array();
+        $itemList = [];
         if (!MathUtility::canBeInterpretedAsInteger($uid)) {
-            throw new \InvalidArgumentException('UID of related record has to be an integer. UID given: "' . $uid  . '"', 1316789798);
-        }
-        $referenceUids = null;
-        if ($this->getEnvironmentMode() === 'FE' && !empty($GLOBALS['TSFE']->sys_page)) {
-            /** @var $frontendController \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-            $frontendController = $GLOBALS['TSFE'];
-            $references = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                'uid',
-                'sys_file_reference',
-                'tablenames=' . $this->getDatabaseConnection()->fullQuoteStr($tableName, 'sys_file_reference') .
-                    ' AND uid_foreign=' . (int)$uid .
-                    ' AND fieldname=' . $this->getDatabaseConnection()->fullQuoteStr($fieldName, 'sys_file_reference')
-                    . $frontendController->sys_page->enableFields('sys_file_reference', $frontendController->showHiddenRecords),
-                '',
-                'sorting_foreign',
-                '',
-                'uid'
+            throw new \InvalidArgumentException(
+                'UID of related record has to be an integer. UID given: "' . $uid . '"',
+                1316789798
             );
-            if (!empty($references)) {
-                $referenceUids = array_keys($references);
+        }
+        $referenceUids = [];
+        if ($this->getEnvironmentMode() === 'FE' && !empty($GLOBALS['TSFE']->sys_page)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('sys_file_reference');
+
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+            if ($GLOBALS['TSFE']->sys_page->showHiddenRecords) {
+                $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+            }
+
+            $res = $queryBuilder
+                ->select('uid')
+                ->from('sys_file_reference')
+                ->where(
+                    $queryBuilder->expr()->eq('uid_foreign', (int)$uid),
+                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter($tableName)),
+                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter($fieldName))
+                )
+                ->orderBy('sorting_foreign')
+                ->execute();
+
+            while ($row = $res->fetch()) {
+                $referenceUids[] = $row['uid'];
             }
         } else {
             /** @var $relationHandler RelationHandler */
@@ -112,6 +123,7 @@ class FileRepository extends AbstractRepository
                 }
             }
         }
+
         return $itemList;
     }
 
