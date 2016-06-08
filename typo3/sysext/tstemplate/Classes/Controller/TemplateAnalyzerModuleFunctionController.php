@@ -16,10 +16,9 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -33,6 +32,11 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
     public $pObj;
 
     /**
+     * @var string
+     */
+    protected $localLanguageFilePath;
+
+    /**
      * Init
      *
      * @param TypoScriptTemplateModuleController $pObj
@@ -42,7 +46,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
     public function init(&$pObj, $conf)
     {
         parent::init($pObj, $conf);
-        $this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf');
+        $this->localLanguageFilePath = 'EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf';
         $this->pObj->modMenu_setDefaultList .= ',ts_analyzer_checkLinenum,ts_analyzer_checkSyntax';
     }
 
@@ -67,10 +71,10 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
      * Initialize editor
      *
      * @param int $pageId
-     * @param int $template_uid
+     * @param int $templateUid
      * @return bool
      */
-    public function initialize_editor($pageId, $template_uid = 0)
+    public function initialize_editor($pageId, $templateUid = 0)
     {
         // Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
         $templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
@@ -85,10 +89,10 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
         $GLOBALS['rootLine'] = $sys_page->getRootLine($pageId);
 
         // This generates the constants/config + hierarchy info for the template.
-        $templateService->runThroughTemplates($GLOBALS['rootLine'], $template_uid);
+        $templateService->runThroughTemplates($GLOBALS['rootLine'], $templateUid);
 
         // Get the row of the first VISIBLE template of the page. whereclause like the frontend.
-        $GLOBALS['tplRow'] = $templateService->ext_getFirstTemplate($pageId, $template_uid);
+        $GLOBALS['tplRow'] = $templateService->ext_getFirstTemplate($pageId, $templateUid);
         return is_array($GLOBALS['tplRow']);
     }
 
@@ -99,104 +103,95 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
      */
     public function main()
     {
-        $theOutput = '';
-
         // Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
         // Checking for more than one template an if, set a menu...
-        $manyTemplatesMenu = $this->pObj->templateMenu();
+
+        $assigns = [];
         $template_uid = 0;
-        if ($manyTemplatesMenu) {
+        $assigns['manyTemplatesMenu'] = $this->pObj->templateMenu();
+        $assigns['LLPrefix'] = 'LLL:' . $this->localLanguageFilePath . ':';
+        if ($assigns['manyTemplatesMenu']) {
             $template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
         }
 
-        $existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);
+        $assigns['existTemplate'] = $this->initialize_editor($this->pObj->id, $template_uid);
+        if ($assigns['existTemplate']) {
+            $assigns['siteTitle'] = trim($GLOBALS['tplRow']['sitetitle']);
+            $assigns['templateRecord'] = $GLOBALS['tplRow'];
+            $assigns['linkWrappedTemplateTitle'] = $this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']['title']);
+        }
 
-        // initialize
-        $lang = $this->getLanguageService();
-        if ($existTemplate) {
-            $siteTitle = trim($GLOBALS['tplRow']['sitetitle']);
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-            $theOutput .= '<h3>' . htmlspecialchars($lang->getLL('currentTemplate')) . '</h3>';
-            $theOutput .= $iconFactory->getIconForRecord('sys_template', $GLOBALS['tplRow'], Icon::SIZE_SMALL)->render()
-                . '<strong>' . $this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']['title']) . '</strong>'
-                . htmlspecialchars($siteTitle ? ' (' . $siteTitle . ')' : '');
-        }
-        if ($manyTemplatesMenu) {
-            $theOutput .= '<div>' . $manyTemplatesMenu . '</div>';
-        }
-        $templateService = $this->getExtendedTemplateService();
+        $templateService = $GLOBALS['tmpl'];
         $templateService->clearList_const_temp = array_flip($templateService->clearList_const);
         $templateService->clearList_setup_temp = array_flip($templateService->clearList_setup);
         $pointer = count($templateService->hierarchyInfo);
         $hierarchyInfo = $templateService->ext_process_hierarchyInfo(array(), $pointer);
-        $head = '<thead><tr>';
-        $head .= '<th>' . htmlspecialchars($lang->getLL('title')) . '</th>';
-        $head .= '<th>' . htmlspecialchars($lang->getLL('rootlevel')) . '</th>';
-        $head .= '<th>' . htmlspecialchars($lang->getLL('clearSetup')) . '</th>';
-        $head .= '<th>' . htmlspecialchars($lang->getLL('clearConstants')) . '</th>';
-        $head .= '<th>' . htmlspecialchars($lang->getLL('pid')) . '</th>';
-        $head .= '<th>' . htmlspecialchars($lang->getLL('rootline')) . '</th>';
-        $head .= '<th>' . htmlspecialchars($lang->getLL('nextLevel')) . '</th>';
-        $head .= '</tr></thead>';
-        $hierar = implode(array_reverse($templateService->ext_getTemplateHierarchyArr($hierarchyInfo, '', array(), 1)), '');
-        $hierar = '<div class="table-fit"><table class="table table-striped table-hover" id="ts-analyzer">' . $head . $hierar . '</table></div>';
-        $theOutput .= '<div style="padding-top: 5px;"></div>';
-        $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('templateHierarchy')) . '</h2>';
-        $theOutput .= '<div>' . $hierar . '</div>';
+        $assigns['hierarchy'] = implode(array_reverse($templateService->ext_getTemplateHierarchyArr(
+            $hierarchyInfo,
+            '',
+            [],
+            1
+        )), '');
+
         $urlParameters = array(
             'id' => $GLOBALS['SOBE']->id,
             'template' => 'all'
         );
-        $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
+        $assigns['moduleLink'] = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 
-        $completeLink = '<p><a href="' . htmlspecialchars($aHref) . '" class="btn btn-default">' . htmlspecialchars($lang->getLL('viewCompleteTS')) . '</a></p>';
-        $theOutput .= '<div style="padding-top: 5px;"></div>';
-        $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('completeTS')) . '</h2>';
-        $theOutput .= '<div>' . $completeLink . '</div>';
-        $theOutput .= '<div style="padding-top: 15px;"></div>';
-        // Output options
-        $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('displayOptions')) . '</h2>';
-
-        $template = GeneralUtility::_GET('template');
+        $assigns['template'] = $template = GeneralUtility::_GET('template');
         $addParams = $template ? '&template=' . $template : '';
-        $theOutput .= '<div class="tst-analyzer-options">' .
-            '<div class="checkbox"><label for="checkTs_analyzer_checkLinenum">' .
-                BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkLinenum]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], '', $addParams, 'id="checkTs_analyzer_checkLinenum"') .
-                htmlspecialchars($lang->getLL('lineNumbers')) .
-            '</label></div>' .
-            '<div class="checkbox"><label for="checkTs_analyzer_checkSyntax">' .
-                BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkSyntax]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], '', $addParams, 'id="checkTs_analyzer_checkSyntax"') .
-                htmlspecialchars($lang->getLL('syntaxHighlight')) . '</label> ' .
-            '</label></div>';
+        $assigns['checkboxes'] = [
+            'ts_analyzer_checkLinenum' => [
+                'id' => 'checkTs_analyzer_checkLinenum',
+                'll' => 'lineNumbers'
+            ],
+            'ts_analyzer_checkSyntax' => [
+                'id' => 'checkTs_analyzer_checkSyntax',
+                'll' => 'syntaxHighlight'
+            ]
+        ];
+
         if (!$this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax']) {
-            $theOutput .=
-                '<div class="checkbox"><label for="checkTs_analyzer_checkComments">' .
-                    BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkComments]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], '', $addParams, 'id="checkTs_analyzer_checkComments"') .
-                    htmlspecialchars($lang->getLL('comments')) .
-                '</label></div>' .
-                '<div class="checkbox"><label for="checkTs_analyzer_checkCrop">' .
-                    BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkCrop]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], '', $addParams, 'id="checkTs_analyzer_checkCrop"') .
-                    htmlspecialchars($lang->getLL('cropLines')) .
-                '</label></div>';
+            $assigns['checkboxes']['ts_analyzer_checkComments'] = [
+                'id' => 'checkTs_analyzer_checkComments',
+                'll' => 'comments'
+            ];
+            $assigns['checkboxes']['ts_analyzer_checkCrop'] = [
+                'id' => 'checkTs_analyzer_checkCrop',
+                'll' => 'cropLines'
+            ];
         }
-        $theOutput .=  '</div>';
-        $theOutput .= '<div style="padding-top: 25px;"></div>';
+
+        foreach ($assigns['checkboxes'] as $key => $conf) {
+            $assigns['checkboxes'][$key]['label'] = BackendUtility::getFuncCheck(
+                $this->pObj->id,
+                'SET[' . $key . ']',
+                $this->pObj->MOD_SETTINGS[$key],
+                '',
+                $addParams,
+                'id="' . $conf['id'] . '"'
+            );
+        }
 
         if ($template) {
-            // Output Constants
-            $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('constants')) . '</h2>';
-
             $templateService->ext_lineNumberOffset = 0;
             $templateService->ext_lineNumberOffset_mode = 'const';
+            $assigns['constants'] = [];
             foreach ($templateService->constants as $key => $val) {
                 $currentTemplateId = $templateService->hierarchyInfo[$key]['templateID'];
                 if ($currentTemplateId == $template || $template === 'all') {
-                    $theOutput .= '
-						<h3>' . htmlspecialchars($templateService->hierarchyInfo[$key]['title']) . '</h3>
-						<div class="nowrap">' .
-                            $templateService->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], 0) .
-                        '</div>
-					';
+                    $assigns['constants'][] = [
+                        'title' => $templateService->hierarchyInfo[$key]['title'],
+                        'content' => $templateService->ext_outputTS(
+                            array($val),
+                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'],
+                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'],
+                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'],
+                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'],
+                            0
+                        )
+                    ];
                     if ($template !== 'all') {
                         break;
                     }
@@ -205,19 +200,23 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
             }
 
             // Output Setup
-            $theOutput .= '<div style="padding-top: 15px;"></div>';
-            $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('setup')) . '</h2>';
             $templateService->ext_lineNumberOffset = 0;
             $templateService->ext_lineNumberOffset_mode = 'setup';
+            $assigns['setups'] = [];
             foreach ($templateService->config as $key => $val) {
                 $currentTemplateId = $templateService->hierarchyInfo[$key]['templateID'];
-                if ($currentTemplateId == $template || $template == 'all') {
-                    $theOutput .= '
-						<h3>' . htmlspecialchars($templateService->hierarchyInfo[$key]['title']) . '</h3>
-						<div class="nowrap">' .
-                            $templateService->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], 0) .
-                        '</div>
-					';
+                if ($currentTemplateId == $template || $template === 'all') {
+                    $assigns['setups'][] = [
+                        'title' => $templateService->hierarchyInfo[$key]['title'],
+                        'content' => $templateService->ext_outputTS(
+                            array($val),
+                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'],
+                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'],
+                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'],
+                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'],
+                            0
+                        )
+                    ];
                     if ($template !== 'all') {
                         break;
                     }
@@ -225,14 +224,13 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
                 $templateService->ext_lineNumberOffset += count(explode(LF, $val)) + 1;
             }
         }
-        return $theOutput;
-    }
 
-    /**
-     * @return ExtendedTemplateService
-     */
-    protected function getExtendedTemplateService()
-    {
-        return $GLOBALS['tmpl'];
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+            'EXT:tstemplate/Resources/Private/Templates/TemplateAnalyzerModuleFunction.html'
+        ));
+        $view->assignMultiple($assigns);
+
+        return $view->render();
     }
 }

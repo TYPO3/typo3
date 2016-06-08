@@ -1,0 +1,71 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<f:if condition="{existTemplate}">
+    <h3><f:translate key="{LLPrefix}currentTemplate"/></h3>
+    <core:iconForRecord table="sys_template" row="{templateRecord}" />
+    <strong><f:format.raw>{linkWrappedTemplateTitle}</f:format.raw></strong>
+    <f:if condition="{siteTitle}">({siteTitle})</f:if>
+</f:if>
+<f:if condition="{existTemplate}">
+    <div>
+        <f:format.raw>
+            {manyTemplatesMenu}
+        </f:format.raw>
+    </div>
+</f:if>
+<div style="padding-top: 5px;"></div>
+<h2><f:translate key="{LLPrefix}templateHierarchy"/></h2>
+<div>
+    <div class="table-fit"><table class="table table-striped table-hover" id="ts-analyzer">
+        <thead>
+            <tr>
+               <th><f:translate key="{LLPrefix}title"/></th>
+               <th><f:translate key="{LLPrefix}rootlevel"/></th>
+               <th><f:translate key="{LLPrefix}clearSetup"/></th>
+               <th><f:translate key="{LLPrefix}clearConstants"/></th>
+               <th><f:translate key="{LLPrefix}pid"/></th>
+               <th><f:translate key="{LLPrefix}rootline"/></th>
+               <th><f:translate key="{LLPrefix}nextLevel"/></th>
+            </tr>
+        </thead>
+        <f:format.raw>{hierarchy}</f:format.raw>
+    </table>
+    </div>
+</div>
+<div style="padding-top: 5px;"></div>
+<h2><f:translate key="{LLPrefix}completeTS"/></h2>
+<div>
+    <p><a href="{moduleLink}" class="btn btn-default">
+        <f:translate key="{LLPrefix}viewCompleteTS"/>
+    </a></p>
+</div>
+<div style="padding-top: 15px;"></div>
+<h2><f:translate key="{LLPrefix}displayOptions"/></h2>
+<div class="tst-analyzer-options">
+    <f:for each="{checkboxes}" as="checkbox">
+        <div class="checkbox">
+            <label for="{checkbox.id}">
+                <f:format.raw>{checkbox.label}</f:format.raw>
+                <f:translate key="{LLPrefix}{checkbox.ll}"/>
+            </label>
+        </div>
+    </f:for>
+</div>
+<div style="padding-top: 25px;"></div>
+<f:if condition="{template}">
+    <h2><f:translate key="{LLPrefix}constants"/></h2>
+    <f:for each="{constants}" as="constant">
+        <h3>{constant.title}</h3>
+        <div class="nowrap">
+            <f:format.raw>{constant.content}</f:format.raw>
+        </div>
+    </f:for>
+    <div style="padding-top: 15px;"></div>
+    <h2><f:translate key="{LLPrefix}setups"/></h2>
+    <f:for each="{setups}" as="setup">
+        <h3>{setup.title}</h3>
+        <div class="nowrap">
+            <f:format.raw>{setup.content}</f:format.raw>
+        </div>
+    </f:for>
+</f:if>
