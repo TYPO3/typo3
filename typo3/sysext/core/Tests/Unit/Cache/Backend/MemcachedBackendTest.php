@@ -48,7 +48,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setThrowsExceptionIfNoFrontEndHasBeenSet()
     {
         $this->expectException(\TYPO3\CMS\Core\Cache\Exception::class);
-        $this->expectExceptionCode(1213115903);
+        $this->expectExceptionCode(1207149215);
 
         $backendOptions = array('servers' => array('localhost:11211'));
         $backend = new MemcachedBackend('Testing', $backendOptions);
