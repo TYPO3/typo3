@@ -182,9 +182,13 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             }
             $result['databaseRow'][$fieldName] = implode(',', $connectedUidsOfLocalizedOverlay);
             if ($result['inlineCompileExistingChildren']) {
+                $tableNameWithDefaultRecords = $result['tableName'];
+                if (!empty($GLOBALS['TCA'][$tableNameWithDefaultRecords]['ctrl']['transOrigPointerTable'])) {
+                    $tableNameWithDefaultRecords = $GLOBALS['TCA'][$tableNameWithDefaultRecords]['ctrl']['transOrigPointerTable'];
+                }
                 $connectedUidsOfDefaultLanguageRecord = $this->resolveConnectedRecordUids(
                     $result['processedTca']['columns'][$fieldName]['config'],
-                    $result['tableName'],
+                    $tableNameWithDefaultRecords,
                     $result['defaultLanguageRow']['uid'],
                     $result['defaultLanguageRow'][$fieldName]
                 );
