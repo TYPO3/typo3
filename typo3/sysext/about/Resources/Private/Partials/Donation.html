@@ -4,10 +4,7 @@
 			<f:translate key="LLL:EXT:lang/locallang_mod_help_about.xlf:donation_header" />
 		</h2>
 		<p>
-			<f:translate
-				key="LLL:EXT:lang/locallang_mod_help_about.xlf:donation_message"
-				htmlEscape="0"
-			/>
+			{f:translate(key: 'LLL:EXT:lang/locallang_mod_help_about.xlf:donation_message') -> f:format.raw()}
 		</p>
 		<a href="{TYPO3UrlDonate}" class="btn btn-default" title="{f:translate(key:'LLL:EXT:lang/locallang_mod_help_about.xlf:donation_button')}" target="_blank">
 			<f:translate key="LLL:EXT:lang/locallang_mod_help_about.xlf:donation_button" />

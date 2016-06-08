@@ -31,7 +31,7 @@
 				<source>Core Team</source>
 			</trans-unit>
 			<trans-unit id="coredevs_detail">
-				<source>Visit &lt;a href="https://typo3.org/teams-committees/core-development/" target="_blank"&gt;typo3.org/teams-committees/core-development/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The Git Repository and the ChangeLog can be found &lt;a href="http://forge.typo3.org/projects/show/typo3v4-core/" target="_blank"&gt;here&lt;/a&gt;.</source>
+				<source>Visit &lt;a href="https://typo3.org/teams-committees/core-development/" target="_blank"&gt;typo3.org/teams-committees/core-development/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The Git Repository and the ChangeLog can be found &lt;a href="https://forge.typo3.org/projects/typo3cms-core/" target="_blank"&gt;here&lt;/a&gt;.</source>
 			</trans-unit>
 			<trans-unit id="extension_authors">
 				<source>Extension Authors</source>

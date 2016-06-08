@@ -210,10 +210,7 @@
 							<td valign="top">
 								<f:if condition="{f:translate(key:'action_{logItem.type}_{logItem.action}')}">
 									<f:then>
-										<f:translate
-											key="action_{logItem.type}_{logItem.action}"
-											htmlEscape="0"
-										/>
+										<f:translate key="action_{logItem.type}_{logItem.action}" />
 									</f:then>
 									<f:else>
 										[{logItem.action}]
