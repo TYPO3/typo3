@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Reports\Report\Status;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -79,7 +80,14 @@ class ConfigurationStatus implements StatusProviderInterface
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
         $severity = ReportStatus::OK;
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'sys_refindex');
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $count = $queryBuilder
+            ->count('*')
+            ->from('sys_refindex')
+            ->execute()
+            ->fetchColumn(0);
+
         $registry = GeneralUtility::makeInstance(Registry::class);
         $lastRefIndexUpdate = $registry->get('core', 'sys_refindex_lastUpdate');
         if (!$count && $lastRefIndexUpdate) {

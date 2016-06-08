@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Reports\Report\Status;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
@@ -67,25 +67,34 @@ class FalStatus implements StatusProviderInterface
         }
 
         if (!empty($storages)) {
-            $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
-                '*',
-                'sys_file',
-                'missing=1 AND storage IN (' . implode(',', array_keys($storages)) . ')'
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file');
+
+            $count = $queryBuilder
+                ->count('*')
+                ->from('sys_file')
+                ->where(
+                    $queryBuilder->expr()->eq('missing', 1),
+                    $queryBuilder->expr()->in('storage', array_keys($storages))
+                )
+                ->execute()
+                ->fetchColumn(0);
         }
 
         if ($count) {
             $value = sprintf($this->getLanguageService()->getLL('status_missingFilesCount'), $count);
             $severity = ReportStatus::WARNING;
 
-            $files = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                'identifier,storage',
-                'sys_file',
-                'missing=1 AND storage IN (' . implode(',', array_keys($storages)) . ')',
-                '',
-                '',
-                $maxFilesToShow
-            );
+            $queryBuilder->resetQueryParts();
+            $files = $queryBuilder
+                ->select('identifier', 'storage')
+                ->from('sys_file')
+                ->where(
+                    $queryBuilder->expr()->eq('missing', 1),
+                    $queryBuilder->expr()->in('storage', array_keys($storages))
+                )
+                ->setMaxResults($maxFilesToShow)
+                ->execute()
+                ->fetchAll();
 
             $message = '<p>' . $this->getLanguageService()->getLL('status_missingFilesMessage') . '</p>';
             foreach ($files as $file) {
@@ -106,13 +115,5 @@ class FalStatus implements StatusProviderInterface
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

@@ -15,7 +15,8 @@ namespace TYPO3\CMS\Reports\Report\Status;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\TypoScript\ConfigurationForm;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -77,10 +78,24 @@ class SecurityStatus implements StatusProviderInterface
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
         $severity = ReportStatus::OK;
-        $whereClause = 'username = ' . $this->getDatabaseConnection()->fullQuoteStr('admin', 'be_users') .
-            BackendUtility::deleteClause('be_users');
-        $res = $this->getDatabaseConnection()->exec_SELECTquery('uid, username, password', 'be_users', $whereClause);
-        $row = $this->getDatabaseConnection()->sql_fetch_assoc($res);
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $row = $queryBuilder
+            ->select('uid', 'username', 'password')
+            ->from('be_users')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'username',
+                    $queryBuilder->quote('admin')
+                )
+            )
+            ->execute()
+            ->fetch();
+
         if (!empty($row)) {
             $secure = true;
             /** @var \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface $saltingObject */
@@ -111,7 +126,6 @@ class SecurityStatus implements StatusProviderInterface
                 );
             }
         }
-        $this->getDatabaseConnection()->sql_free_result($res);
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_adminUserAccount'), $value, $message, $severity);
     }
 
@@ -234,13 +248,5 @@ class SecurityStatus implements StatusProviderInterface
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
