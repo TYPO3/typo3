@@ -147,7 +147,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                         $tableRows[] =    '<td class="col-title">';
                         $tableRows[] =        '<label class="label-block" for="' . $item['id'] . '">' . $item['title'] . '</label>';
                         $tableRows[] =    '</td>';
-                        $tableRows[] =    '<td>' . $item['help'] . '</td>';
+                        $tableRows[] =    '<td class="text-right">' . $item['help'] . '</td>';
                         $tableRows[] = '</tr>';
                         $resetGroup[] = 'document.editform[' . GeneralUtility::quoteJSvalue($item['name']) . '].checked=' . $item['checked'] . ';';
                     }
@@ -168,16 +168,17 @@ class SelectCheckBoxElement extends AbstractFormElement
                     if (is_array($group['header'])) {
                         $html[] = '<div id="' . $groupId . '" class="panel-collapse collapse" role="tabpanel">';
                     }
-                    $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall');
+                    $checkboxId = uniqid($groupId);
+                    $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall'));
                     $html[] =    '<div class="table-responsive">';
                     $html[] =        '<table class="table table-transparent table-hover">';
                     $html[] =            '<thead>';
                     $html[] =                '<tr>';
                     $html[] =                    '<th class="col-checkbox">';
-                    $html[] =                       '<input type="checkbox" class="t3js-toggle-checkboxes" data-trigger="hover" data-placement="right" data-title="' . htmlspecialchars($title) . '" data-toggle="tooltip" />';
+                    $html[] =                       '<input type="checkbox" id="' . $checkboxId . '" class="t3js-toggle-checkboxes" data-trigger="hover" data-placement="right" data-title="' . $title . '" data-toggle="tooltip" />';
                     $html[] =                    '</th>';
-                    $html[] =                    '<th class="col-icon"></th>';
-                    $html[] =                    '<th class="text-right" colspan="2">' . $resetGroupBtn . '</th>';
+                    $html[] =                    '<th class="col-title" colspan="2"><label for="' . $checkboxId . '">' . $title . '</label></th>';
+                    $html[] =                    '<th class="text-right">' . $resetGroupBtn . '</th>';
                     $html[] =                '</tr>';
                     $html[] =            '</thead>';
                     $html[] =            '<tbody>' . implode(LF, $tableRows) . '</tbody>';

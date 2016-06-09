@@ -10127,6 +10127,9 @@ table {
 .table > thead > tr {
   background-color: #ededed;
 }
+.table > thead > tr th.col-checkbox + th.col-title label {
+  margin-bottom: 0px;
+}
 .table > thead > tr th,
 .table > thead > tr td {
   border-bottom: 1px solid #cccccc;

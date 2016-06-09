@@ -78,6 +78,13 @@ table {
 	}
 	> thead > tr {
 		background-color: darken(@table-bg, 5%);
+                th.col-checkbox {
+                        + th.col-title {
+                                label {
+                                        margin-bottom: 0px;
+                                }
+                        }
+                }
 		th,
 		td {
 			border-bottom: 1px solid @table-border-color;

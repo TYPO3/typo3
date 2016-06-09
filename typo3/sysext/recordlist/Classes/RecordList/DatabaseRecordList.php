@@ -1952,7 +1952,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
 						<tr>
 							<th class="col-checkbox checkbox" colspan="2">
 								<label><input type="checkbox" class="checkbox checkAll" ' . ($checkAllChecked ? ' checked="checked"' : '') . '>
-								' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.checkAll')) . '</label>
+								' . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall')) . '</label>
 							</th>
 						</tr>
 					</thead>
