@@ -3144,6 +3144,62 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_innerWrap
+     *
+     * @return array Order expected, input, conf
+     */
+    public function stdWrap_innerWrapDataProvider()
+    {
+        return [
+            'no conf' => [
+                'XXX',
+                'XXX',
+                [],
+            ],
+            'simple' => [
+                '<wrap>XXX</wrap>',
+                'XXX',
+                ['innerWrap' => '<wrap>|</wrap>'],
+            ],
+            'missing pipe puts wrap before' => [
+                '<pre>XXX',
+                'XXX',
+                ['innerWrap' => '<pre>'],
+            ],
+            'trimms whitespace' => [
+                '<wrap>XXX</wrap>',
+                'XXX',
+                ['innerWrap' => '<wrap>' . TAB . ' | ' . TAB . '</wrap>'],
+            ],
+            'split char change is not possible' => [
+                '<wrap> # </wrap>XXX',
+                'XXX',
+                [
+                    'innerWrap' => '<wrap> # </wrap>',
+                    'innerWrap.' => ['splitChar' => '#'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_innerWrap works properly.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $conf Property: innerWrap
+     * @return void
+     * @test
+     * @dataProvider stdWrap_innerWrapDataProvider
+     */
+    public function stdWrap_innerWrap($expected, $input, $conf)
+    {
+        $this->assertSame($expected,
+            $this->subject->stdWrap_innerWrap($input, $conf));
+    }
+
+
+    /**
      * Data provider for stdWrap_br
      *
      * @return string[][] Order expected, given, xhtmlDoctype
