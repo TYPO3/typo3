@@ -15,6 +15,10 @@ namespace TYPO3\CMS\Version\Utility;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Library with Workspace related functionality
@@ -75,15 +79,56 @@ class WorkspacesUtility
         $wsid = (int)$wsid;
         $filter = (int)$filter;
         $pageId = (int)$pageId;
+        $stage = (int)$stage;
         $output = array();
         // Traversing all tables supporting versioning:
         foreach ($GLOBALS['TCA'] as $table => $cfg) {
             if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
                 // Select all records from this table in the database from the workspace
                 // This joins the online version with the offline version as tables A and B
-                $recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('A.uid, A.t3ver_oid, B.pid AS realpid', $table . ' A,' . $table . ' B', 'A.pid=-1' . ($pageId != -1 ? ($table === 'pages' ? ' AND B.uid=' . $pageId : ' AND B.pid=' . $pageId) : '') . ($wsid > -98 ? ' AND A.t3ver_wsid=' . $wsid : ($wsid === -98 ? ' AND A.t3ver_wsid!=0' : '')) . ($filter === 1 ? ' AND A.t3ver_count=0' : ($filter === 2 ? ' AND A.t3ver_count>0' : '')) . ($stage != -99 ? ' AND A.t3ver_stage=' . (int)$stage : '') . ' AND B.pid>=0' . ' AND A.t3ver_oid=B.uid' . BackendUtility::deleteClause($table, 'A') . BackendUtility::deleteClause($table, 'B'), '', 'B.uid');
-                if (!empty($recs)) {
-                    $output[$table] = $recs;
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($table);
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+                $queryBuilder
+                    ->select('A.uid', 'A.t3ver_oid', 'B.pid AS realpid')
+                    ->from($table, 'A')
+                    ->from($table, 'B')
+                    ->where(
+                        $queryBuilder->expr()->eq('A.pid', -1),
+                        $queryBuilder->expr()->gt('B.pid', 0),
+                        $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.uid'))
+                    );
+
+                if ($pageId !== -1) {
+                    if ($table === 'pages') {
+                        $queryBuilder->andWhere($queryBuilder->expr()->eq('B.uid', $pageId));
+                    } else {
+                        $queryBuilder->andWhere($queryBuilder->expr()->eq('B.pid', $pageId));
+                    }
+                }
+
+                if ($wsid > -98) {
+                    $queryBuilder->andWhere($queryBuilder->expr()->eq('A.t3ver_wsid', $wsid));
+                } elseif ($wsid === -98) {
+                    $queryBuilder->andWhere($queryBuilder->expr()->neq('A.t3ver_wsid', 0));
+                }
+
+                if ($stage !== -99) {
+                    $queryBuilder->andWhere($queryBuilder->expr()->eq('A.t3ver_stage', $stage));
+                }
+
+                if ($filter === 1) {
+                    $queryBuilder->andWhere($queryBuilder->expr()->eq('A.t3ver_count', 0));
+                } elseif ($filter === 2) {
+                    $queryBuilder->andWhere($queryBuilder->expr()->gt('A.t3ver_count', 0));
+                }
+
+                $rows = $queryBuilder->execute()->fetchAll();
+                if (!empty($rows)) {
+                    $output[$table] = $rows;
                 }
             }
         }
@@ -110,14 +155,43 @@ class WorkspacesUtility
         $currentAdminStatus = $GLOBALS['BE_USER']->user['admin'];
         $GLOBALS['BE_USER']->user['admin'] = 1;
         // Select all workspaces that needs to be published / unpublished:
-        $workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,swap_modes,publish_time,unpublish_time', 'sys_workspace', 'pid=0
-				AND
-				((publish_time!=0 AND publish_time<=' . (int)$GLOBALS['EXEC_TIME'] . ')
-				OR (publish_time=0 AND unpublish_time!=0 AND unpublish_time<=' . (int)$GLOBALS['EXEC_TIME'] . '))' . BackendUtility::deleteClause('sys_workspace'));
-        foreach ($workspaces as $rec) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_workspace');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
+
+        $result = $queryBuilder
+            ->select('uid', 'swap_modes', 'publish_time', 'unpublish_time')
+            ->from('sys_workspace')
+            ->where(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->neq('publish_time', 0),
+                        $queryBuilder->expr()->lte('publish_time', (int)$GLOBALS['EXEC_TIME'])
+
+                    ),
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->eq('publish_time', 0),
+                        $queryBuilder->expr()->neq('unpublish_time', 0),
+                        $queryBuilder->expr()->lte('unpublish_time', (int)$GLOBALS['EXEC_TIME'])
+                    )
+                )
+            )
+            ->execute();
+
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_workspace');
+        while ($rec = $result->fetch()) {
             // First, clear start/end time so it doesn't get select once again:
-            $fieldArray = $rec['publish_time'] != 0 ? array('publish_time' => 0) : array('unpublish_time' => 0);
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_workspace', 'uid=' . (int)$rec['uid'], $fieldArray);
+            $fieldArray = $rec['publish_time'] != 0 ? ['publish_time' => 0] : ['unpublish_time' => 0];
+
+            $connection->update(
+                'sys_workspace',
+                $fieldArray,
+                ['uid' => (int)$rec['uid']]
+            );
+
             // Get CMD array:
             $cmd = $this->getCmdArrayForPublishWS($rec['uid'], $rec['swap_modes'] == 1);
             // $rec['swap_modes']==1 means that auto-publishing will swap versions, not just publish and empty the workspace.

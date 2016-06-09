@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Version\Hook;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
@@ -193,11 +195,17 @@ class DataHandlerHook
                     if ($record['t3ver_wsid'] > 0 && $recordVersionState->equals(VersionState::DEFAULT_STATE)) {
                         // Change normal versioned record to delete placeholder
                         // Happens when an edited record is deleted
-                        $updateFields = array(
-                            't3ver_label' => 'DELETED!',
-                            't3ver_state' => 2,
-                        );
-                        $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . $id, $updateFields);
+                        GeneralUtility::makeInstance(ConnectionPool::class)
+                            ->getConnectionForTable($table)
+                            ->update(
+                                $table,
+                                [
+                                    't3ver_label' => 'DELETED!',
+                                    't3ver_state' => 2,
+                                ],
+                                ['uid' => $id]
+                            );
+
                         // Delete localization overlays:
                         $tcemainObj->deleteL10nOverlayRecords($table, $id);
                     } elseif ($record['t3ver_wsid'] == 0 || !$liveRecordVersionState->indicatesPlaceholder()) {
@@ -234,10 +242,16 @@ class DataHandlerHook
             if ($wsRec = BackendUtility::getWorkspaceVersionOfRecord($record['t3ver_wsid'], $table, $record['t3ver_move_id'], 'uid')) {
                 // Clear the state flag of the workspace version of the record
                 // Setting placeholder state value for version (so it can know it is currently a new version...)
-                $updateFields = array(
-                    't3ver_state' => (string)new VersionState(VersionState::DEFAULT_STATE)
-                );
-                $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$wsRec['uid'], $updateFields);
+
+                GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable($table)
+                    ->update(
+                        $table,
+                        [
+                            't3ver_state' => (string)new VersionState(VersionState::DEFAULT_STATE)
+                        ],
+                        ['uid' => (int)$wsRec['uid']]
+                    );
             }
             $tcemainObj->deleteEl($table, $id);
         } else {
@@ -464,7 +478,7 @@ class DataHandlerHook
         }
         if (empty($notificationAlternativeRecipients)) {
             // Compile list of recipients:
-            $emails = array();
+            $emails = [];
             switch ((int)$stat['stagechg_notification']) {
                 case 1:
                     switch ((int)$stageId) {
@@ -480,11 +494,29 @@ class DataHandlerHook
                             // Traverse them, and find the history of each
                             foreach ($allElements as $elRef) {
                                 list($eTable, $eUid) = explode(':', $elRef);
-                                $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('log_data,tstamp,userid', 'sys_log', 'action=6 and details_nr=30
-												AND tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($eTable, 'sys_log') . '
-												AND recuid=' . (int)$eUid, '', 'uid DESC');
+
+                                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                                    ->getQueryBuilderForTable('sys_log');
+
+                                $queryBuilder->getRestrictions()->removeAll();
+
+                                $result = $queryBuilder
+                                    ->select('log_data', 'tstamp', 'userid')
+                                    ->from('sys_log')
+                                    ->where(
+                                        $queryBuilder->expr()->eq('action', 6),
+                                        $queryBuilder->expr()->eq('details_nr', 30),
+                                        $queryBuilder->expr()->eq(
+                                            'tablename',
+                                            $queryBuilder->createNamedParameter($eTable)
+                                        ),
+                                        $queryBuilder->expr()->eq('recuid', (int)$eUid)
+                                    )
+                                    ->orderBy('uid', 'DESC')
+                                    ->execute();
+
                                 // Find all implicated since the last stage-raise from editing to review:
-                                foreach ($rows as $dat) {
+                                while ($dat = $result->fetch()) {
                                     $data = unserialize($dat['log_data']);
                                     $emails = $this->getEmailsForStageChangeNotification($dat['userid'], true) + $emails;
                                     if ($data['stage'] == 1) {
@@ -683,10 +715,15 @@ class DataHandlerHook
             // check if the usere is allowed to the current stage, so it's also allowed to send to next stage
             if ($GLOBALS['BE_USER']->workspaceCheckStageForCurrent($record['t3ver_stage'])) {
                 // Set stage of record:
-                $updateData = array(
-                    't3ver_stage' => $stageId
-                );
-                $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$id, $updateData);
+                GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable($table)
+                    ->update(
+                        $table,
+                        [
+                            't3ver_stage' => $stageId,
+                        ],
+                        ['uid' => (int)$id]
+                    );
                 $tcemainObj->newlog2('Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', $table, $id);
                 // TEMPORARY, except 6-30 as action/detail number which is observed elsewhere!
                 $tcemainObj->log($table, $id, 6, 0, 0, 'Stage raised...', 30, array('comment' => $comment, 'stage' => $stageId));
@@ -927,15 +964,27 @@ class DataHandlerHook
         // Generating proper history data to prepare logging
         $tcemainObj->compareFieldArrayWithCurrentAndUnset($table, $id, $swapVersion);
         $tcemainObj->compareFieldArrayWithCurrentAndUnset($table, $swapWith, $curVersion);
+
         // Execute swapping:
-        $sqlErrors = array();
-        $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$id, $swapVersion);
-        if ($GLOBALS['TYPO3_DB']->sql_error()) {
-            $sqlErrors[] = $GLOBALS['TYPO3_DB']->sql_error();
+        $sqlErrors = [];
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $connection->update(
+            $table,
+            $swapVersion,
+            ['uid' => (int)$id]
+        );
+
+        if ($connection->errorCode()) {
+            $sqlErrors[] = $connection->errorInfo();
         } else {
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$swapWith, $curVersion);
-            if ($GLOBALS['TYPO3_DB']->sql_error()) {
-                $sqlErrors[] = $GLOBALS['TYPO3_DB']->sql_error();
+            $connection->update(
+                $table,
+                $curVersion,
+                ['uid' => (int)$swapWith]
+            );
+
+            if ($connection->errorCode()) {
+                $sqlErrors[] = $connection->errorInfo();
             } else {
                 unlink($lockFileName);
             }
@@ -954,7 +1003,13 @@ class DataHandlerHook
                     $tcemainObj->deleteEl($table, $movePlhID, true, true);
                 } else {
                     // Otherwise update the movePlaceholder:
-                    $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$movePlhID, $movePlh);
+                    GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getConnectionForTable($table)
+                        ->update(
+                            $table,
+                            $movePlh,
+                            ['uid' => (int)$movePlhID]
+                        );
                     $tcemainObj->addRemapStackRefIndex($table, $movePlhID);
                 }
             }
@@ -1146,13 +1201,24 @@ class DataHandlerHook
             't3ver_wsid' => 0,
             't3ver_tstamp' => $GLOBALS['EXEC_TIME']
         );
-        $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$id, $updateData);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $connection->update(
+            $table,
+            $updateData,
+            ['uid' => (int)$id]
+        );
+
         // Clear workspace ID for live version AND DELETE IT as well because it is a new record!
         if (
             VersionState::cast($liveRec['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER)
             || VersionState::cast($liveRec['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
         ) {
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$liveRec['uid'], $updateData);
+            $connection->update(
+                $table,
+                $updateData,
+                ['uid' => (int)$liveRec['uid']]
+            );
+
             // THIS assumes that the record was placeholder ONLY for ONE record (namely $id)
             $tcemainObj->deleteEl($table, $liveRec['uid'], true);
         }
@@ -1198,15 +1264,25 @@ class DataHandlerHook
         foreach ($copyTablesArray as $table) {
             // all records under the page is copied.
             if ($table && is_array($GLOBALS['TCA'][$table]) && $table !== 'pages') {
-                $mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid=' . (int)$oldPageId . $tcemainObj->deleteClause($table));
-                while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($table);
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+                $statement = $queryBuilder
+                    ->select('uid')
+                    ->from($table)
+                    ->where($queryBuilder->expr()->eq('pid', (int)$oldPageId))
+                    ->execute();
+
+                while ($row = $statement->fetch()) {
                     // Check, if this record has already been copied by a parent record as relation:
                     if (!$tcemainObj->copyMappingArray[$table][$row['uid']]) {
                         // Copying each of the underlying records (method RAW)
                         $tcemainObj->copyRecord_raw($table, $row['uid'], $newPageId);
                     }
                 }
-                $GLOBALS['TYPO3_DB']->sql_free_result($mres);
             }
         }
     }
@@ -1241,16 +1317,34 @@ class DataHandlerHook
         // Traversing all tables supporting versioning:
         foreach ($GLOBALS['TCA'] as $table => $cfg) {
             if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $table !== 'pages') {
-                $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.uid AS offlineUid, B.uid AS uid', $table . ' A,' . $table . ' B', 'A.pid=-1 AND B.pid=' . $pageId . ' AND A.t3ver_wsid=' . $workspaceId . ' AND B.uid=A.t3ver_oid' . BackendUtility::deleteClause($table, 'A') . BackendUtility::deleteClause($table, 'B'));
-                while (false != ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))) {
-                    $elementData[$table][] = array($row[1], $row[0]);
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($table);
+
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+                $statement = $queryBuilder
+                    ->select('A.uid AS offlineUid', 'B.uid AS uid')
+                    ->from($table, 'A')
+                    ->from($table, 'B')
+                    ->where(
+                        $queryBuilder->expr()->eq('A.pid', -1),
+                        $queryBuilder->expr()->eq('B.pid', (int)$pageId),
+                        $queryBuilder->expr()->eq('A.t3ver_wsid', (int)$workspaceId),
+                        $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.uid'))
+                    )
+                    ->execute();
+
+                while ($row = $statement->fetch()) {
+                    $elementData[$table][] = [$row['uid'], $row['offlineUid']];
                 }
-                $GLOBALS['TYPO3_DB']->sql_free_result($res);
             }
         }
         if ($offlinePageId && $offlinePageId != $pageId) {
-            $elementData['pages'][] = array($pageId, $offlinePageId);
+            $elementData['pages'][] = [$pageId, $offlinePageId];
         }
+
         return $elementData;
     }
 
@@ -1270,11 +1364,29 @@ class DataHandlerHook
         // Traversing all tables supporting versioning:
         foreach ($GLOBALS['TCA'] as $table => $cfg) {
             if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $table !== 'pages') {
-                $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT A.uid', $table . ' A,' . $table . ' B', 'A.pid=-1' . ' AND A.t3ver_wsid=' . $workspaceId . ' AND B.pid IN (' . implode(',', $pageIdList) . ') AND A.t3ver_oid=B.uid' . BackendUtility::deleteClause($table, 'A') . BackendUtility::deleteClause($table, 'B'));
-                while (false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))) {
-                    $elementList[$table][] = $row[0];
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($table);
+
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+                $statement = $queryBuilder
+                    ->select('A.uid')
+                    ->from($table, 'A')
+                    ->from($table, 'B')
+                    ->where(
+                        $queryBuilder->expr()->eq('A.pid', -1),
+                        $queryBuilder->expr()->in('B.pid', array_map('intval', $pageIdList)),
+                        $queryBuilder->expr()->eq('A.t3ver_wsid', (int)$workspaceId),
+                        $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.uid'))
+                    )
+                    ->groupBy('A.uid')
+                    ->execute();
+
+                while ($row = $statement->fetch()) {
+                    $elementList[$table][] = $row['uid'];
                 }
-                $GLOBALS['TYPO3_DB']->sql_free_result($res);
                 if (is_array($elementList[$table])) {
                     // Yes, it is possible to get non-unique array even with DISTINCT above!
                     // It happens because several UIDs are passed in the array already.
@@ -1299,9 +1411,28 @@ class DataHandlerHook
         if ($workspaceId == 0) {
             return;
         }
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT B.pid', $table . ' A,' . $table . ' B', 'A.pid=-1' . ' AND A.t3ver_wsid=' . $workspaceId . ' AND A.uid IN (' . implode(',', $idList) . ') AND A.t3ver_oid=B.uid' . BackendUtility::deleteClause($table, 'A') . BackendUtility::deleteClause($table, 'B'));
-        while (false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))) {
-            $pageIdList[] = $row[0];
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $statement = $queryBuilder
+            ->select('B.pid')
+            ->from($table, 'A')
+            ->from($table, 'B')
+            ->where(
+                $queryBuilder->expr()->eq('A.pid', -1),
+                $queryBuilder->expr()->eq('A.t3ver_wsid', (int)$workspaceId),
+                $queryBuilder->expr()->in('A.uid', array_map('intval', $idList)),
+                $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.uid'))
+            )
+            ->groupBy('B.pid')
+            ->execute();
+
+        while ($row = $statement->fetch()) {
+            $pageIdList[] = $row['pid'];
             // Find ws version
             // Note: cannot use BackendUtility::getRecordWSOL()
             // here because it does not accept workspace id!
@@ -1311,7 +1442,6 @@ class DataHandlerHook
                 $elementList['pages'][$row[0]] = $rec['_ORIG_uid'];
             }
         }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
         // The line below is necessary even with DISTINCT
         // because several elements can be passed by caller
         $pageIdList = array_unique($pageIdList);
@@ -1433,7 +1563,14 @@ class DataHandlerHook
             $updateFields = array(
                 't3ver_state' => (string)new VersionState(VersionState::MOVE_POINTER)
             );
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$wsUid, $updateFields);
+
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($table)
+                ->update(
+                    $table,
+                    $updateFields,
+                    ['uid' => (int)$wsUid]
+                );
         }
         // Check for the localizations of that element and move them as well
         $tcemainObj->moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid);

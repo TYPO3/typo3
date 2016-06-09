@@ -18,6 +18,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DiffUtility;
@@ -252,8 +254,8 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $buttons['record_list'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl(
                 'web_list',
                 [
-                   'id' => $this->pageinfo['uid'],
-                   'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                    'id' => $this->pageinfo['uid'],
+                    'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                 ]
             )) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render() . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList')) . '</a>';
         }
@@ -452,8 +454,23 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $content = '';
         foreach ($tableNames as $table) {
             // Basically list ALL tables - not only those being copied might be found!
-            $mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'pid=' . (int)$pid . BackendUtility::deleteClause($table), '', $GLOBALS['TCA'][$table]['ctrl']['sortby'] ? $GLOBALS['TCA'][$table]['ctrl']['sortby'] : '');
-            if ($GLOBALS['TYPO3_DB']->sql_num_rows($mres)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+            $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->where($queryBuilder->expr()->eq('pid', (int)$pid));
+
+            if (!empty($GLOBALS['TCA'][$table]['ctrl']['sortby'])) {
+                $queryBuilder->orderBy($GLOBALS['TCA'][$table]['ctrl']['sortby']);
+            }
+
+            $result = $queryBuilder->execute();
+            if ($result->rowCount()) {
                 $content .= '
 					<table class="table">
 						<tr>
@@ -462,7 +479,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 							<th></th>
 							<th></th>
 						</tr>';
-                while ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
+                while ($subrow = $result->fetch()) {
                     $ownVer = $this->lookForOwnVersions($table, $subrow['uid']);
                     $content .= '
 						<tr>
@@ -486,7 +503,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 }
                 $content .= '</table>';
             }
-            $GLOBALS['TYPO3_DB']->sql_free_result($mres);
         }
         return $content;
     }
