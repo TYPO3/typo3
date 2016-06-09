@@ -2666,6 +2666,82 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_doubleBrTag
+     *
+     * @return array Order expected, input, config
+     */
+    public function stdWrapDoubleBrTagDataProvider()
+    {
+        return [
+            'no config: void input' => [
+                '',
+                '',
+                [],
+            ],
+            'no config: single break' => [
+                'one' . LF . 'two',
+                'one' . LF . 'two',
+                [],
+            ],
+            'no config: double break' => [
+                'onetwo',
+                'one' . LF . LF . 'two',
+                [],
+            ],
+            'no config: double break with whitespace' => [
+                'onetwo',
+                'one' . LF . TAB . ' ' . TAB . ' ' . LF . 'two',
+                [],
+            ],
+            'no config: single break around' => [
+                LF . 'one' . LF,
+                LF . 'one' . LF,
+                [],
+            ],
+            'no config: double break around' => [
+                'one',
+                LF . LF . 'one' . LF . LF,
+                [],
+            ],
+            'empty string: double break around' => [
+                'one',
+                LF . LF . 'one' . LF . LF,
+                ['doubleBrTag' => ''],
+            ],
+            'br tag: double break' => [
+                'one<br/>two',
+                'one' . LF . LF . 'two',
+                ['doubleBrTag' => '<br/>'],
+            ],
+            'br tag: double break around' => [
+                '<br/>one<br/>',
+                LF . LF . 'one' . LF . LF,
+                ['doubleBrTag' => '<br/>'],
+            ],
+            'double br tag: double break around' => [
+                '<br/><br/>one<br/><br/>',
+                LF . LF . 'one' . LF . LF,
+                ['doubleBrTag' => '<br/><br/>'],
+            ],
+        ];
+    }
+
+    /**
+     * Check if doubleBrTag works properly
+     *
+     * @test
+     * @dataProvider stdWrapDoubleBrTagDataProvider
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $config The property 'doubleBrTag'.
+     * @return void
+     */
+    public function stdWrap_doubleBrTag($expected, $input, $config)
+    {
+        $this->assertEquals($expected, $this->subject->stdWrap_doubleBrTag($input, $config));
+    }
+
+    /**
      * Data provider for stdWrap_brTag
      *
      * @return array
