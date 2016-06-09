@@ -2560,6 +2560,53 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_htmlSpecialChars
+     *
+     * @return array Order: expected, input, conf
+     */
+    public function stdWrap_htmlSpecialCharsDataProvider()
+    {
+        return [
+            'void conf' => [
+                '&lt;span&gt;1 &amp;lt; 2&lt;/span&gt;',
+                '<span>1 &lt; 2</span>',
+                [],
+            ],
+            'void preserveEntities' => [
+                '&lt;span&gt;1 &amp;lt; 2&lt;/span&gt;',
+                '<span>1 &lt; 2</span>',
+                ['htmlSpecialChars.' => []],
+            ],
+            'false preserveEntities' => [
+                '&lt;span&gt;1 &amp;lt; 2&lt;/span&gt;',
+                '<span>1 &lt; 2</span>',
+                ['htmlSpecialChars.' => ['preserveEntities' => 0]],
+            ],
+            'true preserveEntities' => [
+                '&lt;span&gt;1 &lt; 2&lt;/span&gt;',
+                '<span>1 &lt; 2</span>',
+                ['htmlSpecialChars.' => ['preserveEntities' => 1]],
+            ],
+        ];
+    }
+
+    /**
+     * Check if brTag works properly
+     *
+     * @test
+     * @dataProvider stdWrap_htmlSpecialCharsDataProvider
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $conf htmlSpecialChars.preserveEntities
+     * @return void
+     */
+    public function stdWrap_htmlSpecialChars($expected, $input, $conf)
+    {
+        $this->assertSame($expected,
+            $this->subject->stdWrap_htmlSpecialChars($input, $conf));
+    }
+
+    /**
      * Data provider for stdWrap_encodeForJavaScriptValue test
      *
      * @return array multi-dimensional array with the second level like this:
