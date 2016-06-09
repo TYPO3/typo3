@@ -2840,6 +2840,61 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_outerWrap
+     *
+     * @return array Order expected, input, conf
+     */
+    public function stdWrap_outerWrapDataProvider()
+    {
+        return [
+            'no conf' => [
+                'XXX',
+                'XXX',
+                [],
+            ],
+            'simple' => [
+                '<wrap>XXX</wrap>',
+                'XXX',
+                ['outerWrap' => '<wrap>|</wrap>'],
+            ],
+            'missing pipe puts wrap before' => [
+                '<pre>XXX',
+                'XXX',
+                ['outerWrap' => '<pre>'],
+            ],
+            'trims whitespace' => [
+                '<wrap>XXX</wrap>',
+                'XXX',
+                ['outerWrap' => '<wrap>' . TAB . ' | ' . TAB . '</wrap>'],
+            ],
+            'split char change is not possible' => [
+                '<wrap> # </wrap>XXX',
+                'XXX',
+                [
+                    'outerWrap' => '<wrap> # </wrap>',
+                    'outerWrap.' => ['splitChar' => '#'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_outerWrap works properly.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $conf Property: outerWrap
+     * @return void
+     * @test
+     * @dataProvider stdWrap_outerWrapDataProvider
+     */
+    public function stdWrap_outerWrap($expected, $input, $conf)
+    {
+        $this->assertSame($expected,
+            $this->subject->stdWrap_outerWrap($input, $conf));
+    }
+
+    /**
      * Data provider for stdWrap_innerWrap2
      *
      * @return array Order expected, input, conf
