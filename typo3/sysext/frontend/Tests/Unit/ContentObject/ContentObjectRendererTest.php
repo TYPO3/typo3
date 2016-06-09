@@ -2879,8 +2879,72 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_wrap2($expected, $input, $conf)
     {
-        $this->assertSame($expected,
-            $this->subject->stdWrap_wrap2($input, $conf));
+        $this->assertSame($expected, $this->subject->stdWrap_wrap2($input, $conf));
+    }
+
+
+    /**
+     * Data provider for stdWrap_wrap3
+     *
+     * @return array Order expected, input, conf
+     */
+    public function stdWrap_wrap3DataProvider()
+    {
+        return [
+            'no conf' => [
+                'XXX',
+                'XXX',
+                [],
+            ],
+            'simple' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                ['wrap3' => '<wrapper>|</wrapper>'],
+            ],
+            'trimms whitespace' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                ['wrap3' => '<wrapper>' . TAB . ' | ' . TAB . '</wrapper>'],
+            ],
+            'missing pipe puts wrap3 before' => [
+                '<pre>XXX',
+                'XXX',
+                [
+                    'wrap3' => '<pre>',
+                ],
+            ],
+            'split char change' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                [
+                    'wrap3' => '<wrapper> # </wrapper>',
+                    'wrap3.' => ['splitChar' => '#'],
+                ],
+            ],
+            'split by pattern' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                [
+                    'wrap3' => '<wrapper> ###splitter### </wrapper>',
+                    'wrap3.' => ['splitChar' => '###splitter###'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_wrap3 works properly.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $conf Properties: wrap3, wrap3.splitChar
+     * @return void
+     * @test
+     * @dataProvider stdWrap_wrap3DataProvider
+     */
+    public function stdWrap_wrap3($expected, $input, $conf)
+    {
+        $this->assertSame($expected, $this->subject->stdWrap_wrap3($input, $conf));
     }
 
     /**
