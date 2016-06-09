@@ -372,25 +372,28 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
      */
     public function getLangStatus($pageId, $langId)
     {
-        $res = $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable(static::$pageLanguageOverlayTable);
         $queryBuilder
             ->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class))
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $queryBuilder
+        $result = $queryBuilder
             ->select('*')
             ->from(static::$pageLanguageOverlayTable)
             ->where($queryBuilder->expr()->eq('pid', (int)$pageId))
-            ->andWhere($queryBuilder->expr()->eq('sys_language_uid', (int)$langId));
-        $rows = $queryBuilder->execute()->fetchAll();
-        BackendUtility::workspaceOL(static::$pageLanguageOverlayTable, $rows);
-        if (is_array($rows)) {
-            $rows['_COUNT'] = count($rows);
-            $rows['_HIDDEN'] = $rows['hidden'] || (int)$rows['endtime'] > 0 && (int)$rows['endtime'] < $GLOBALS['EXEC_TIME'] || $GLOBALS['EXEC_TIME'] < (int)$rows['starttime'];
+            ->andWhere($queryBuilder->expr()->eq('sys_language_uid', (int)$langId))
+            ->execute();
+
+        $row = $result->fetch();
+        BackendUtility::workspaceOL(static::$pageLanguageOverlayTable, $row);
+        if (is_array($row)) {
+            $row['_COUNT'] = $result->rowCount();
+            $row['_HIDDEN'] = $row['hidden'] || (int)$row['endtime'] > 0 && (int)$row['endtime'] < $GLOBALS['EXEC_TIME'] || $GLOBALS['EXEC_TIME'] < (int)$row['starttime'];
         }
-        return $rows;
+        $result->closeCursor();
+        return $row;
     }
 
     /**
