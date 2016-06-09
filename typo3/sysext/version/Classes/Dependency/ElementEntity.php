@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Version\Dependency;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Object to hold information on a dependent database element in abstract.
@@ -221,29 +224,43 @@ class ElementEntity
     {
         if (!isset($this->children)) {
             $this->children = array();
-            $where = 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex') . ' AND recuid='
-                . $this->id . ' AND workspace=' . $this->dependency->getWorkspace();
-            $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', $where, '', 'sorting');
-            if (is_array($rows)) {
-                foreach ($rows as $row) {
-                    if ($row['ref_table'] !== '_FILE' && $row['ref_table'] !== '_STRING') {
-                        $arguments = array(
-                            'table' => $row['ref_table'],
-                            'id' => $row['ref_uid'],
-                            'field' => $row['field'],
-                            'scope' => self::REFERENCES_ChildOf
-                        );
 
-                        $callbackResponse = $this->dependency->executeEventCallback(self::EVENT_CreateChildReference, $this, $arguments);
-                        if ($callbackResponse !== self::RESPONSE_Skip) {
-                            $this->children[] = $this->getDependency()->getFactory()->getReferencedElement(
-                                $row['ref_table'],
-                                $row['ref_uid'],
-                                $row['field'],
-                                array(),
-                                $this->getDependency()
-                            );
-                        }
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('sys_refindex');
+
+            $result = $queryBuilder
+                ->select('*')
+                ->from('sys_refindex')
+                ->where(
+                    $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($this->table)),
+                    $queryBuilder->expr()->eq('recuid', $this->id),
+                    $queryBuilder->expr()->eq('workspace', $this->dependency->getWorkspace())
+                )
+                ->orderBy('sorting')
+                ->execute();
+
+            while ($row = $result->fetch()) {
+                if ($row['ref_table'] !== '_FILE' && $row['ref_table'] !== '_STRING') {
+                    $arguments = array(
+                        'table' => $row['ref_table'],
+                        'id' => $row['ref_uid'],
+                        'field' => $row['field'],
+                        'scope' => self::REFERENCES_ChildOf
+                    );
+
+                    $callbackResponse = $this->dependency->executeEventCallback(
+                        self::EVENT_CreateChildReference,
+                        $this,
+                        $arguments
+                    );
+                    if ($callbackResponse !== self::RESPONSE_Skip) {
+                        $this->children[] = $this->getDependency()->getFactory()->getReferencedElement(
+                            $row['ref_table'],
+                            $row['ref_uid'],
+                            $row['field'],
+                            [],
+                            $this->getDependency()
+                        );
                     }
                 }
             }
@@ -260,22 +277,42 @@ class ElementEntity
     {
         if (!isset($this->parents)) {
             $this->parents = array();
-            $where = 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex')
-                . ' AND deleted=0 AND ref_uid=' . $this->id . ' AND workspace=' . $this->dependency->getWorkspace();
-            $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', $where, '', 'sorting');
-            if (is_array($rows)) {
-                foreach ($rows as $row) {
-                    $arguments = array('table' => $row['tablename'], 'id' => $row['recuid'], 'field' => $row['field'], 'scope' => self::REFERENCES_ParentOf);
-                    $callbackResponse = $this->dependency->executeEventCallback(self::EVENT_CreateParentReference, $this, $arguments);
-                    if ($callbackResponse !== self::RESPONSE_Skip) {
-                        $this->parents[] = $this->getDependency()->getFactory()->getReferencedElement(
-                            $row['tablename'],
-                            $row['recuid'],
-                            $row['field'],
-                            array(),
-                            $this->getDependency()
-                        );
-                    }
+
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('sys_refindex');
+
+            $result = $queryBuilder
+                ->select('*')
+                ->from('sys_refindex')
+                ->where(
+                    $queryBuilder->expr()->eq('deleted', 0),
+                    $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($this->table)),
+                    $queryBuilder->expr()->eq('ref_uid', $this->id),
+                    $queryBuilder->expr()->eq('workspace', $this->dependency->getWorkspace())
+                )
+                ->orderBy('sorting')
+                ->execute();
+
+            while ($row = $result->fetch()) {
+                $arguments = array(
+                    'table' => $row['tablename'],
+                    'id' => $row['recuid'],
+                    'field' => $row['field'],
+                    'scope' => self::REFERENCES_ParentOf
+                );
+                $callbackResponse = $this->dependency->executeEventCallback(
+                    self::EVENT_CreateParentReference,
+                    $this,
+                    $arguments
+                );
+                if ($callbackResponse !== self::RESPONSE_Skip) {
+                    $this->parents[] = $this->getDependency()->getFactory()->getReferencedElement(
+                        $row['tablename'],
+                        $row['recuid'],
+                        $row['field'],
+                        [],
+                        $this->getDependency()
+                    );
                 }
             }
         }
@@ -358,12 +395,24 @@ class ElementEntity
     public function getRecord()
     {
         if (empty($this->record['uid']) || (int)$this->record['uid'] !== $this->getId()) {
-            $this->record = array();
-            $row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid,pid,t3ver_wsid,t3ver_state,t3ver_oid', $this->getTable(), 'uid=' . $this->getId());
+            $this->record = [];
+
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($this->getTable());
+            $queryBuilder->getRestrictions()->removeAll();
+
+            $row = $queryBuilder
+                ->select('uid', 'pid', 't3ver_wsid', 't3ver_state', 't3ver_oid')
+                ->from($this->getTable())
+                ->where($queryBuilder->expr()->eq('uid', $this->getId()))
+                ->execute()
+                ->fetch();
+
             if (is_array($row)) {
                 $this->record = $row;
             }
         }
+
         return $this->record;
     }
 }

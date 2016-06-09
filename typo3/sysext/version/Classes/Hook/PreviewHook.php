@@ -15,7 +15,9 @@ namespace TYPO3\CMS\Version\Hook;
  */
 
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -119,11 +121,21 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
                 $tempBackendUser->fetchGroupData();
                 // Handle degradation of admin users
                 if ($tempBackendUser->isAdmin() && ExtensionManagementUtility::isLoaded('workspaces')) {
-                    $workspaceRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-                        'uid, adminusers, reviewers, members, db_mountpoints',
-                        'sys_workspace',
-                        'pid=0 AND uid=' . (int)$workspaceUid . BackendUtility::deleteClause('sys_workspace')
-                    );
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getQueryBuilderForTable('sys_workspace');
+
+                    $queryBuilder->getRestrictions()
+                        ->removeAll()
+                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                        ->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
+
+                    $workspaceRecord = $queryBuilder
+                        ->select('uid', 'adminusers', 'reviewers', 'members', 'db_mountpoints')
+                        ->from('sys_workspace')
+                        ->where($queryBuilder->expr()->eq('uid', (int)$workspaceUid))
+                        ->execute()
+                        ->fetch();
+
                     // Either use configured workspace mount or current page id, if admin user does not have any page mounts
                     if (empty($tempBackendUser->groupData['webmounts'])) {
                         $tempBackendUser->groupData['webmounts'] = !empty($workspaceRecord['db_mountpoints']) ? $workspaceRecord['db_mountpoints'] : $pObj->id;
@@ -244,8 +256,20 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
                 die(sprintf($message, htmlspecialchars(preg_replace('/\\&?' . $this->previewKey . '=[[:alnum:]]+/', '', $returnUrl))));
             }
             // Look for keyword configuration record:
-            $where = 'keyword=' . $this->getDatabaseConnection()->fullQuoteStr($inputCode, 'sys_preview') . ' AND endtime>' . $GLOBALS['EXEC_TIME'];
-            $previewData = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'sys_preview', $where);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('sys_preview');
+
+            $previewData = $queryBuilder
+                ->select('*')
+                ->from('sys_preview')
+                ->where(
+                    $queryBuilder->expr()->eq('keyword', $queryBuilder->createNamedParameter($inputCode)),
+                    $queryBuilder->expr()->gt('endtime', (int)$GLOBALS['EXEC_TIME'])
+                )
+                ->setMaxResults(1)
+                ->execute()
+                ->fetch();
+
             // Get: Backend login status, Frontend login status
             // - Make sure to remove fe/be cookies (temporarily);
             // BE already done in ADMCMD_preview_postInit()
@@ -336,7 +360,13 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
                 'BEUSER_uid' => $backendUserUid
             ))
         );
-        $this->getDatabaseConnection()->exec_INSERTquery('sys_preview', $fieldData);
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_preview')
+            ->insert(
+                'sys_preview',
+                $fieldData
+            );
+
         return $fieldData['keyword'];
     }
 
