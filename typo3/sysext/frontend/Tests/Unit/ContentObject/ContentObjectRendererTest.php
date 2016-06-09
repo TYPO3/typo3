@@ -2819,6 +2819,71 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_wrap2
+     *
+     * @return array Order expected, input, conf
+     */
+    public function stdWrap_wrap2DataProvider()
+    {
+        return [
+            'no conf' => [
+                'XXX',
+                'XXX',
+                [],
+            ],
+            'simple' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                ['wrap2' => '<wrapper>|</wrapper>'],
+            ],
+            'trimms whitespace' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                ['wrap2' => '<wrapper>' . TAB . ' | ' . TAB . '</wrapper>'],
+            ],
+            'missing pipe puts wrap2 before' => [
+                '<pre>XXX',
+                'XXX',
+                [
+                    'wrap2' => '<pre>',
+                ],
+            ],
+            'split char change' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                [
+                    'wrap2' => '<wrapper> # </wrapper>',
+                    'wrap2.' => ['splitChar' => '#'],
+                ],
+            ],
+            'split by pattern' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                [
+                    'wrap2' => '<wrapper> ###splitter### </wrapper>',
+                    'wrap2.' => ['splitChar' => '###splitter###'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_wrap2 works properly.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $conf Properties: wrap2, wrap2.splitChar
+     * @return void
+     * @test
+     * @dataProvider stdWrap_wrap2DataProvider
+     */
+    public function stdWrap_wrap2($expected, $input, $conf)
+    {
+        $this->assertSame($expected,
+            $this->subject->stdWrap_wrap2($input, $conf));
+    }
+
+    /**
      * Data provider for stdWrap_br
      *
      * @return string[][] Order expected, given, xhtmlDoctype
