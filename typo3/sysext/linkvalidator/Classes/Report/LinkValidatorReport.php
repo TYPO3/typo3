@@ -14,9 +14,11 @@ namespace TYPO3\CMS\Linkvalidator\Report;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -378,10 +380,14 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
     protected function renderBrokenLinksTable()
     {
         $brokenLinkItems = '';
-        $brokenLinksTemplate = $this->templateService->getSubpart($this->doc->moduleTemplate, '###NOBROKENLINKS_CONTENT###');
-        $keyOpt = array();
+        $brokenLinksTemplate = $this->templateService->getSubpart(
+            $this->doc->moduleTemplate,
+            '###NOBROKENLINKS_CONTENT###'
+        );
+
+        $linkTypes = [];
         if (is_array($this->checkOpt)) {
-            $keyOpt = array_keys($this->checkOpt);
+            $linkTypes = array_keys($this->checkOpt);
         }
 
         // Table header
@@ -389,32 +395,24 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 
         $rootLineHidden = $this->linkAnalyzer->getRootLineIsHidden($this->pObj->pageinfo);
         if (!$rootLineHidden || (bool)$this->modTS['checkhidden']) {
-            $pageList = $this->linkAnalyzer->extGetTreeList(
-                $this->pObj->id,
-                $this->searchLevel,
-                0,
-                $this->getBackendUser()->getPagePermsClause(1),
-                $this->modTS['checkhidden']
-            );
-            // Always add the current page, because we are just displaying the results
-            $pageList .= $this->pObj->id;
+            $pageList = $this->getPageList($this->pObj->id);
+            $result = $this->getLinkValidatorBrokenLinks($pageList, $linkTypes);
 
-            $records = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                '*',
-                'tx_linkvalidator_link',
-                'record_pid IN (' . $pageList . ') AND link_type IN (\'' . implode('\',\'', $keyOpt) . '\')',
-                '',
-                'record_uid ASC, uid ASC'
-            );
-            if (!empty($records)) {
+            if ($result->rowCount()) {
                 // Display table with broken links
-                $brokenLinksTemplate = $this->templateService->getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_CONTENT###');
-                $brokenLinksItemTemplate = $this->templateService->getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_ITEM###');
+                $brokenLinksTemplate = $this->templateService->getSubpart(
+                    $this->doc->moduleTemplate,
+                    '###BROKENLINKS_CONTENT###'
+                );
+                $brokenLinksItemTemplate = $this->templateService->getSubpart(
+                    $this->doc->moduleTemplate,
+                    '###BROKENLINKS_ITEM###'
+                );
 
                 // Table rows containing the broken links
-                $items = array();
-                foreach ($records as $record) {
-                    $items[] = $this->renderTableRow($record['table_name'], $record, $brokenLinksItemTemplate);
+                $items = [];
+                while ($row = $result->fetch()) {
+                    $items[] = $this->renderTableRow($row['table_name'], $row, $brokenLinksItemTemplate);
                 }
                 $brokenLinkItems = implode(LF, $items);
             } else {
@@ -423,12 +421,70 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         } else {
             $brokenLinksMarker = $this->getNoBrokenLinkMessage($brokenLinksMarker);
         }
+
         $brokenLinksTemplate = $this->templateService->substituteMarkerArray(
             $brokenLinksTemplate,
-            $brokenLinksMarker, '###|###',
+            $brokenLinksMarker,
+            '###|###',
             true
         );
+
         return $this->templateService->substituteSubpart($brokenLinksTemplate, '###BROKENLINKS_ITEM', $brokenLinkItems);
+    }
+
+    /**
+     * Generates an array of page uids from current pageUid.
+     * List does include pageUid itself.
+     *
+     * @param int $currentPageUid
+     * @return array
+     */
+    protected function getPageList(int $currentPageUid): array
+    {
+        $pageList = $this->linkAnalyzer->extGetTreeList(
+            $currentPageUid,
+            $this->searchLevel,
+            0,
+            $this->getBackendUser()->getPagePermsClause(1),
+            $this->modTS['checkhidden']
+        );
+        // Always add the current page, because we are just displaying the results
+        $pageList .= $currentPageUid;
+
+        return GeneralUtility::intExplode(',', $pageList, true);
+    }
+
+    /**
+     * Prepare database query with pageList and keyOpt data.
+     *
+     * @param int[] $pageList Pages to check for broken links
+     * @param string[] $linkTypes Link types to validate
+     * @return Statement
+     */
+    protected function getLinkValidatorBrokenLinks(array $pageList, array $linkTypes): Statement
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_linkvalidator_link');
+        $queryBuilder
+            ->select('*')
+            ->from('tx_linkvalidator_link')
+            ->where(
+                $queryBuilder->expr()->in('record_pid', $pageList)
+            )
+            ->orderBy('record_uid')
+            ->addOrderBy('uid');
+
+        if (!empty($linkTypes)) {
+            $placeholders = array_map(
+                function ($linkType) use ($queryBuilder) {
+                    return $queryBuilder->createNamedParameter($linkType);
+                },
+                $linkTypes
+            );
+            $queryBuilder->andWhere($queryBuilder->expr()->in('link_type', $placeholders));
+        }
+
+        return $queryBuilder->execute();
     }
 
     /**
@@ -715,13 +771,5 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
