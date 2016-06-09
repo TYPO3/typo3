@@ -229,7 +229,8 @@ class PermissionController extends ActionController
             'id' => $this->id
         ))->buildBackendUri();
         foreach (array(1, 2, 3, 4, 10) as $depthLevel) {
-            $depthOptions[$depthLevel] = $depthLevel . ' ' . LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:levels', 'beuser');
+            $levelLabel = $depthLevel === 1 ? 'level' : 'levels';
+            $depthOptions[$depthLevel] = $depthLevel . ' ' . LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:' . $levelLabel, 'beuser');
         }
         $this->view->assign('depthBaseUrl', $url);
         $this->view->assign('depth', $this->depth);
@@ -389,7 +390,9 @@ class PermissionController extends ActionController
         if ($this->getBackendUser()->user['uid'] && !empty($tree->orig_ids_hierarchy)) {
             // Init:
             $labelRecursive = LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:recursive', 'beuser');
+            $labelLevel = LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:level', 'beuser');
             $labelLevels = LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:levels', 'beuser');
+            $labelPageAffected = LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:page_affected', 'beuser');
             $labelPagesAffected = LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:pages_affected', 'beuser');
             $theIdListArr = array();
             // Traverse the number of levels we want to allow recursive
@@ -400,8 +403,9 @@ class PermissionController extends ActionController
                         $theIdListArr[] = $theId;
                     }
                     $lKey = $this->getLevels - $a + 1;
-                    $options[implode(',', $theIdListArr)] = $labelRecursive . ' ' . $lKey . ' ' . $labelLevels .
-                        ' (' . count($theIdListArr) . ' ' . $labelPagesAffected . ')';
+                    $pagesCount = count($theIdListArr);
+                    $options[implode(',', $theIdListArr)] = $labelRecursive . ' ' . $lKey . ' ' . ($lKey === 1 ? $labelLevel : $labelLevels) .
+                        ' (' . $pagesCount . ' ' . ($pagesCount === 1 ? $labelPageAffected : $labelPagesAffected) . ')';
                 }
             }
         }

@@ -42,6 +42,9 @@
 			<trans-unit id="recursive">
 				<source>Set recursively</source>
 			</trans-unit>
+			<trans-unit id="page_affected">
+				<source>page affected</source>
+			</trans-unit>
 			<trans-unit id="pages_affected">
 				<source>pages affected</source>
 			</trans-unit>
@@ -53,6 +56,9 @@
 			</trans-unit>
 			<trans-unit id="Depth">
 				<source>Depth</source>
+			</trans-unit>
+			<trans-unit id="level">
+				<source>level</source>
 			</trans-unit>
 			<trans-unit id="levels">
 				<source>levels</source>
