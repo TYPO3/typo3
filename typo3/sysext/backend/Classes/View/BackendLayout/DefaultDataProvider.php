@@ -14,13 +14,21 @@ namespace TYPO3\CMS\Backend\View\BackendLayout;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Backend layout data provider class
  */
 class DefaultDataProvider implements DataProviderInterface
 {
+
+    /**
+     * @var string
+     * Table name for backend_layouts
+     */
+    protected $tableName = 'backend_layout';
+
     /**
      * Adds backend layouts to the given backend layout collection.
      * The default backend layout ('default_default') is not added
@@ -30,8 +38,10 @@ class DefaultDataProvider implements DataProviderInterface
      * @param BackendLayoutCollection $backendLayoutCollection
      * @return void
      */
-    public function addBackendLayouts(DataProviderContext $dataProviderContext, BackendLayoutCollection $backendLayoutCollection)
-    {
+    public function addBackendLayouts(
+        DataProviderContext $dataProviderContext,
+        BackendLayoutCollection $backendLayoutCollection
+    ) {
         $layoutData = $this->getLayoutData(
             $dataProviderContext->getFieldName(),
             $dataProviderContext->getPageTsConfig(),
@@ -59,11 +69,15 @@ class DefaultDataProvider implements DataProviderInterface
             return $this->createDefaultBackendLayout();
         }
 
-        $data = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-            '*',
-            'backend_layout',
-            'uid=' . (int)$identifier . BackendUtility::BEenableFields('backend_layout') . BackendUtility::deleteClause('backend_layout')
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->tableName);
+        $data = $queryBuilder
+            ->select('*')
+            ->from($this->tableName)
+            ->where($queryBuilder->expr()->eq('uid', (int)$identifier))
+            ->execute()
+            ->fetch();
+
         if (is_array($data)) {
             $backendLayout = $this->createBackendLayout($data);
         }
@@ -131,21 +145,35 @@ class DefaultDataProvider implements DataProviderInterface
         $pageTsConfigId = $this->getPageTSconfigIds($pageTsConfig);
 
         // Add layout records
-        $results = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            '*',
-            'backend_layout',
-                '(
-					( ' . (int)$pageTsConfigId[$fieldName] . ' = 0 AND ' . (int)$storagePid . ' = 0 )
-					OR ( backend_layout.pid = ' . (int)$pageTsConfigId[$fieldName] . ' OR backend_layout.pid = ' . (int)$storagePid . ' )
-					OR ( ' . (int)$pageTsConfigId[$fieldName] . ' = 0 AND backend_layout.pid = ' . (int)$pageUid . ' )
-				) ' . BackendUtility::BEenableFields('backend_layout') . BackendUtility::deleteClause('backend_layout'),
-            '',
-            'sorting ASC'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->tableName);
+        $queryBuilder
+            ->select('*')
+            ->from($this->tableName)
+            ->where(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->comparison((int)$pageTsConfigId[$fieldName], '=', 0),
+                        $queryBuilder->expr()->comparison((int)$storagePid, '=', 0)
+                    ),
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->eq('backend_layout.pid', (int)$pageTsConfigId[$fieldName]),
+                        $queryBuilder->expr()->eq('backend_layout.pid', (int)$storagePid)
+                    ),
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->comparison((int)$pageTsConfigId[$fieldName], '=', 0),
+                        $queryBuilder->expr()->eq('backend_layout.pid', (int)$pageUid)
+                    )
+                )
+            );
 
-        if (!is_array($results)) {
-            $results = array();
-        }
+        if (!empty($GLOBALS['TCA'][$this->tableName]['ctrl']['sortby'])) {
+            $queryBuilder->orderBy($GLOBALS['TCA'][$this->tableName]['ctrl']['sortby']);
+        };
+
+        $results = $queryBuilder
+            ->execute()
+            ->fetchAll();
 
         return $results;
     }
@@ -189,13 +217,5 @@ class DefaultDataProvider implements DataProviderInterface
         }
 
         return $pageTsConfigIds;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

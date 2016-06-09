@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\View;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -137,22 +138,25 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $tableName
      * @param array $data
-     * @return NULL|int
+     * @return int|bool Returns page id or false on error
      */
     protected function determinePageId($tableName, array $data)
     {
-        $pageId = null;
-
         if (strpos($data['uid'], 'NEW') === 0) {
-            // negative uid_pid values of content elements indicate that the element has been inserted after an existing element
-            // so there is no pid to get the backendLayout for and we have to get that first
+            // negative uid_pid values of content elements indicate that the element
+            // has been inserted after an existing element so there is no pid to get
+            // the backendLayout for and we have to get that first
             if ($data['pid'] < 0) {
-                $existingElement = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-                    'pid', $tableName, 'uid=' . abs($data['pid'])
-                );
-                if ($existingElement !== null) {
-                    $pageId = $existingElement['pid'];
-                }
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($tableName);
+                $queryBuilder->getRestrictions()
+                    ->removeAll();
+                $pageId = $queryBuilder
+                    ->select('pid')
+                    ->from($tableName)
+                    ->where($queryBuilder->expr()->eq('uid', abs($data['pid'])))
+                    ->execute()
+                    ->fetchColumn();
             } else {
                 $pageId = $data['pid'];
             }
@@ -237,7 +241,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
     {
         $pageId = $this->determinePageId($parameters['table'], $parameters['row']);
 
-        if ($pageId !== null) {
+        if ($pageId !== false) {
             $parameters['items'] = $this->addColPosListLayoutItems($pageId, $parameters['items']);
         }
     }
@@ -360,11 +364,11 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
                 foreach ($backendLayoutData['__config']['backend_layout.']['rows.'] as $row) {
                     if (!empty($row['columns.'])) {
                         foreach ($row['columns.'] as $column) {
-                            $backendLayoutData['__items'][] = array(
-                                GeneralUtility::isFirstPartOfStr($column['name'], 'LLL:') ? $this->getLanguageService()->sL($column['name']) : $column['name'],
+                            $backendLayoutData['__items'][] = [
+                                $this->getColumnName($column),
                                 $column['colPos'],
                                 null
-                            );
+                            ];
                             $backendLayoutData['__colPosList'][] = $column['colPos'];
                         }
                     }
@@ -423,12 +427,18 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getPage($pageId)
     {
-        $page = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-            'uid, pid, backend_layout',
-            'pages',
-            'uid=' . (int)$pageId
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $page = $queryBuilder
+            ->select('uid', 'pid', 'backend_layout')
+            ->from('pages')
+            ->where($queryBuilder->expr()->eq('uid', (int)$pageId))
+            ->execute()
+            ->fetch();
         BackendUtility::workspaceOL('pages', $page);
+
         return $page;
     }
 
@@ -452,18 +462,27 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
-    /**
      * @return \TYPO3\CMS\Lang\LanguageService
      */
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Get column name from colPos item structure
+     *
+     * @param array $column
+     * @return string
+     */
+    protected function getColumnName($column)
+    {
+        $columnName = $column['name'];
+
+        if (GeneralUtility::isFirstPartOfStr($columnName, 'LLL:')) {
+            $columnName = $this->getLanguageService()->sL($columnName);
+        }
+
+        return $columnName;
     }
 }

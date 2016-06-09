@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -298,15 +300,26 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     {
         // Initializing:
         $out = '';
-        // Select clause for pages:
-        $delClause = BackendUtility::deleteClause('pages') . ' AND ' . $this->getBackendUser()->getPagePermsClause(1);
+        $lang = $this->getLanguageService();
         // Select current page:
         if (!$id) {
             // The root has a pseudo record in pageinfo...
             $row = $this->getPageLayoutController()->pageinfo;
         } else {
-            $result = $this->getDatabase()->exec_SELECTquery('*', 'pages', 'uid=' . (int)$id . $delClause);
-            $row = $this->getDatabase()->sql_fetch_assoc($result);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $row = $queryBuilder
+                ->select('*')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('uid', (int)$id),
+                    $this->getBackendUser()->getPagePermsClause(1)
+                )
+                ->execute()
+                ->fetch();
             BackendUtility::workspaceOL('pages', $row);
         }
         // If there was found a page:
@@ -315,7 +328,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             $pKey = $this->getPageLayoutController()->MOD_SETTINGS['pages'];
             switch ($pKey) {
                 case 1:
-                    $this->fieldArray = array('title','uid') + array_keys($this->cleanTableNames());
+                    $this->fieldArray = array('title', 'uid') + array_keys($this->cleanTableNames());
                     break;
                 case 2:
                     $this->fieldArray = array(
@@ -357,8 +370,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             $editUids = array();
             if ($flag) {
                 // Getting children:
-                $theRows = array();
-                $theRows = $this->pages_getTree($theRows, $row['uid'], $delClause . BackendUtility::versioningPlaceholderClause('pages'), '', $depth);
+                $theRows = $this->getPageRecordsRecursive($row['uid'], $depth);
                 if ($this->getBackendUser()->doesUserHaveAccess($row, 2)) {
                     $editUids[] = $row['uid'];
                 }
@@ -377,10 +389,14 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             $editIdList = implode(',', $editUids);
             // Traverse fields (as set above) in order to create header values:
             foreach ($this->fieldArray as $field) {
-                if ($editIdList && isset($GLOBALS['TCA']['pages']['columns'][$field]) && $field != 'uid' && !$this->pages_noEditColumns) {
+                if ($editIdList
+                    && isset($GLOBALS['TCA']['pages']['columns'][$field])
+                    && $field != 'uid'
+                    && !$this->pages_noEditColumns
+                ) {
                     $iTitle = sprintf(
-                        $this->getLanguageService()->getLL('editThisColumn'),
-                        rtrim(trim($this->getLanguageService()->sL(BackendUtility::getItemLabel('pages', $field))), ':')
+                        $lang->getLL('editThisColumn'),
+                        rtrim(trim($lang->sL(BackendUtility::getItemLabel('pages', $field))), ':')
                     );
                     $urlParameters = [
                         'edit' => [
@@ -401,7 +417,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 switch ($field) {
                     case 'title':
                         $theData[$field] = '&nbsp;<strong>'
-                            . $this->getLanguageService()->sL($GLOBALS['TCA']['pages']['columns'][$field]['label'])
+                            . $lang->sL($GLOBALS['TCA']['pages']['columns'][$field]['label'])
                             . '</strong>' . $eI;
                         break;
                     case 'uid':
@@ -411,11 +427,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         if (substr($field, 0, 6) == 'table_') {
                             $f2 = substr($field, 6);
                             if ($GLOBALS['TCA'][$f2]) {
-                                $theData[$field] = '&nbsp;' . '<span title="' . htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$f2]['ctrl']['title'])) . '">' . $this->iconFactory->getIconForRecord($f2, array(), Icon::SIZE_SMALL)->render() . '</span>';
+                                $theData[$field] = '&nbsp;' .
+                                    '<span title="' .
+                                    htmlspecialchars($lang->sL($GLOBALS['TCA'][$f2]['ctrl']['title'])) .
+                                    '">' .
+                                    $this->iconFactory->getIconForRecord($f2, [], Icon::SIZE_SMALL)->render() .
+                                    '</span>';
                             }
                         } else {
                             $theData[$field] = '&nbsp;&nbsp;<strong>'
-                                . htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA']['pages']['columns'][$field]['label']))
+                                . htmlspecialchars($lang->sL($GLOBALS['TCA']['pages']['columns'][$field]['label']))
                                 . '</strong>' . $eI;
                         }
                 }
@@ -858,11 +879,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     $recordIcon = '';
                     if ($this->getBackendUser()->checkLanguageAccess(0)) {
                         $recordIcon = BackendUtility::wrapClickMenuOnIcon(
-                            $this->iconFactory->getIconForRecord('pages', $this->pageRecord,
-                                Icon::SIZE_SMALL)->render(),
-                            'pages',
-                            $this->id
-                        );
+                            $this->iconFactory->getIconForRecord('pages', $this->pageRecord, Icon::SIZE_SMALL)->render(), 'pages', $this->id);
                         $urlParameters = [
                             'edit' => [
                                 'pages' => [
@@ -908,7 +925,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         $cCont = array();
                         foreach ($langListArr as $lP) {
                             $cCont[] = $defLangBinding[$cKey][$lP][$defUid] . $this->newLanguageButton(
-                                $this->getNonTranslatedTTcontentUids(array($defUid), $id, $lP),
+                                $this->getNonTranslatedTTcontentUids([$defUid], $id, $lP),
                                 $lP,
                                 $cKey
                             );
@@ -1155,9 +1172,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         );
         $result = $queryBuilder->execute();
         // Traverse any selected elements and render their display code:
-        $rowArr = $this->getResult($result);
+        $result = $queryBuilder->execute();
 
-        foreach ($rowArr as $record) {
+        while ($record = $result->fetch()) {
             $columnValue = $record['colPos'];
             $contentRecordsPerColumn[$columnValue][] = $record;
         }
@@ -1170,6 +1187,72 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      * Additional functions; Pages
      *
      **********************************/
+
+    /**
+     * Adds pages-rows to an array, selecting recursively in the page tree.
+     *
+     * @param int $pid Starting page id to select from
+     * @param string $iconPrefix Prefix for icon code.
+     * @param int $depth Depth (decreasing)
+     * @param array $rows Array which will accumulate page rows
+     * @return array $rows with added rows.
+     */
+    protected function getPageRecordsRecursive(int $pid, int $depth, string $iconPrefix = '', array $rows = []): array
+    {
+        $depth--;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+        $queryBuilder
+            ->select('*')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('pid', (int)$pid),
+                $this->getBackendUser()->getPagePermsClause(1)
+            );
+
+        if (!empty($GLOBALS['TCA']['pages']['ctrl']['sortby'])) {
+            $queryBuilder->orderBy($GLOBALS['TCA']['pages']['ctrl']['sortby']);
+        };
+
+        if ($depth >= 0) {
+            $result = $queryBuilder->execute();
+            $rowCount = $result->rowCount();
+            $count = 0;
+            while ($row = $result->fetch()) {
+                BackendUtility::workspaceOL('pages', $row);
+                if (is_array($row)) {
+                    $count++;
+                    $row['treeIcons'] = $iconPrefix
+                        . '<span class="treeline-icon treeline-icon-join'
+                        . ($rowCount === $count ? 'bottom' : '')
+                        . '"></span>';
+                    $rows[] = $row;
+                    // Get the branch
+                    $spaceOutIcons = '<span class="treeline-icon treeline-icon-'
+                        . ($rowCount === $count ? 'clear' : 'line')
+                        . '"></span>';
+                    $rows = $this->getPageRecordsRecursive(
+                        $row['uid'],
+                        $row['php_tree_stop'] ? 0 : $depth,
+                        $iconPrefix . $spaceOutIcons,
+                        $rows
+                    );
+                }
+            }
+        } else {
+            $count = (int)$queryBuilder->count('uid')->execute()->fetchColumn(0);
+            if ($count) {
+                $this->plusPages[$pid] = $count;
+            }
+        }
+
+        return $rows;
+    }
+
     /**
      * Adds pages-rows to an array, selecting recursively in the page tree.
      *
@@ -1179,15 +1262,33 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      * @param string $treeIcons Prefixed icon code.
      * @param int $depth Depth (decreasing)
      * @return array $theRows, but with added rows.
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function pages_getTree($theRows, $pid, $qWhere, $treeIcons, $depth)
     {
+        GeneralUtility::logDeprecatedFunction();
         $depth--;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $queryBuilder
+            ->select('*')
+            ->from('pages')
+            ->where($queryBuilder->expr()->eq('pid', (int)$pid));
+
+        if (!empty($GLOBALS['TCA']['pages']['ctrl']['sortby'])) {
+            $queryBuilder->orderBy($GLOBALS['TCA']['pages']['ctrl']['sortby']);
+        };
+
+        if (!empty($qWhere)) {
+            $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($qWhere));
+        }
+
         if ($depth >= 0) {
-            $res = $this->getDatabase()->exec_SELECTquery('*', 'pages', 'pid=' . (int)$pid . $qWhere, '', 'sorting');
+            $result = $queryBuilder->execute();
+            $rc = $result->rowCount();
             $c = 0;
-            $rc = $this->getDatabase()->sql_num_rows($res);
-            while ($row = $this->getDatabase()->sql_fetch_assoc($res)) {
+            while ($row = $result->fetch()) {
                 BackendUtility::workspaceOL('pages', $row);
                 if (is_array($row)) {
                     $c++;
@@ -1195,11 +1296,12 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     $theRows[] = $row;
                     // Get the branch
                     $spaceOutIcons = '<span class="treeline-icon treeline-icon-' . ($rc === $c ? 'clear' : 'line') . '"></span>';
-                    $theRows = $this->pages_getTree($theRows, $row['uid'], $qWhere, $treeIcons . $spaceOutIcons, $row['php_tree_stop'] ? 0 : $depth);
+                    $theRows = $this->pages_getTree($theRows, $row['uid'], $qWhere, $treeIcons . $spaceOutIcons,
+                        $row['php_tree_stop'] ? 0 : $depth);
                 }
             }
         } else {
-            $count = $this->getDatabase()->exec_SELECTcountRows('uid', 'pages', 'pid=' . (int)$pid . $qWhere);
+            $count = (int)$queryBuilder->count('uid')->execute()->fetchColumn(0);
             if ($count) {
                 $this->plusPages[$pid] = $count;
             }
@@ -1688,7 +1790,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     } elseif (!empty($row['list_type'])) {
                         $label = BackendUtility::getLabelFromItemListMerged($row['pid'], 'tt_content', 'list_type', $row['list_type']);
                         if (!empty($label)) {
-                            $out .=  $this->linkEditContent('<strong>' . htmlspecialchars($this->getLanguageService()->sL($label)) . '</strong>', $row) . '<br />';
+                            $out .= $this->linkEditContent('<strong>' . htmlspecialchars($this->getLanguageService()->sL($label)) . '</strong>', $row) . '<br />';
                         } else {
                             $message = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue'), $row['list_type']);
                             $out .= '<span class="label label-warning">' . htmlspecialchars($message) . '</span>';
@@ -1779,15 +1881,25 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     {
         if ($lP && !empty($defLanguageCount)) {
             // Select all translations here:
-            $where = 'sys_language_uid=' . intval($lP) . ' AND l18n_parent IN ('
-                . implode(',', $defLanguageCount) . ')'
-                . BackendUtility::deleteClause('tt_content');
-            $rowArr = $this->getDatabase()->exec_SELECTgetRows('*', 'tt_content', $where);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('tt_content');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $queryBuilder
+                ->select('*')
+                ->from('tt_content')
+                ->where(
+                    $queryBuilder->expr()->eq('sys_language_uid', intval($lP)),
+                    $queryBuilder->expr()->in('l18n_parent', array_map('intval', $defLanguageCount))
+                );
+
+            $result = $queryBuilder->execute();
 
             // Flip uids:
             $defLanguageCount = array_flip($defLanguageCount);
             // Traverse any selected elements and unset original UID if any:
-            foreach ($rowArr as $row) {
+            while ($row = $result->fetch()) {
                 BackendUtility::workspaceOL('tt_content', $row);
                 unset($defLanguageCount[$row['l18n_parent']]);
             }
@@ -2088,10 +2200,20 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     {
         $count = 0;
         if ($GLOBALS['TCA'][$table]) {
-            $where = 'pid=' . (int)$pid . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table);
-            $count = $this->getDatabase()->exec_SELECTcountRows('uid', $table, $where);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+            $count = (int)$queryBuilder->count('uid')
+                ->from($table)
+                ->where($queryBuilder->expr()->eq('pid', (int)$pid))
+                ->execute()
+                ->fetchColumn();
         }
-        return (int)$count;
+
+        return $count;
     }
 
     /**
@@ -2245,10 +2367,19 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 )
             ) {
                 // Make query to count records from page:
-                $c = $this->getDatabase()->exec_SELECTcountRows('uid', $tName, 'pid=' . (int)$id
-                    . BackendUtility::deleteClause($tName) . BackendUtility::versioningPlaceholderClause($tName));
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($tName);
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                    ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+                $count = $queryBuilder->count('uid')
+                    ->from($tName)
+                    ->where($queryBuilder->expr()->eq('pid', (int)$id))
+                    ->execute()
+                    ->fetchColumn();
                 // If records were found (or if "tt_content" is the table...):
-                if ($c || $tName === 'tt_content') {
+                if ($count || $tName === 'tt_content') {
                     // Add row to menu:
                     $out .= '
 					<td><a href="#' . $tName . '" title="' . htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title'])) . '"></a>'
@@ -2256,7 +2387,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         . '</td>';
                     // ... and to the internal array, activeTables we also add table icon and title (for use elsewhere)
                     $title = htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title']))
-                        . ': ' . $c . ' ' . htmlspecialchars($this->getLanguageService()->getLL('records'));
+                        . ': ' . $count . ' ' . htmlspecialchars($this->getLanguageService()->getLL('records'));
                     $this->activeTables[$tName] = '<span title="' . $title . '">'
                         . $this->iconFactory->getIconForRecord($tName, array(), Icon::SIZE_SMALL)->render()
                         . '</span>'
