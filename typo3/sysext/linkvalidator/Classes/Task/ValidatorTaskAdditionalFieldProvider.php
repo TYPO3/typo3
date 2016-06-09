@@ -202,16 +202,9 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
                 }
             }
         }
-        if ($res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'pages', 'uid = ' . (int)$submittedData['linkvalidator']['page'])) {
-            if ($this->getDatabaseConnection()->sql_num_rows($res) == 0 && $submittedData['linkvalidator']['page'] > 0) {
-                $isValid = false;
-                $schedulerModule->addMessage(
-                    $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.invalidPage'),
-                    FlashMessage::ERROR
-                );
-            }
-            $this->getDatabaseConnection()->sql_free_result($res);
-        } else {
+
+        $row = BackendUtility::getRecord('pages', (int)$submittedData['linkvalidator']['page'], '*', '', false);
+        if (empty($row)) {
             $isValid = false;
             $schedulerModule->addMessage(
                 $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.invalidPage'),
@@ -257,13 +250,5 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

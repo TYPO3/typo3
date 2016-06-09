@@ -312,7 +312,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
         if ($page === 0) {
             $rootLineHidden = false;
         } else {
-            $pageRow = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . $page);
+            $pageRow = BackendUtility::getRecord('pages', $page, '*', '', false);
             $rootLineHidden = $processor->getRootLineIsHidden($pageRow);
         }
         if (!$rootLineHidden || $modTs['checkhidden'] == 1) {
@@ -599,13 +599,5 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
