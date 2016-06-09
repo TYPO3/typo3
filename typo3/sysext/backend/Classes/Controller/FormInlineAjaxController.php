@@ -811,10 +811,10 @@ class FormInlineAjaxController
      *
      * @param mixed $needle The element to be removed.
      * @param array $haystack The array the element should be removed from.
-     * @param mixed $strict Search elements strictly.
+     * @param bool $strict Search elements strictly.
      * @return array The array $haystack without the $needle
      */
-    protected function removeFromArray($needle, $haystack, $strict = null)
+    protected function removeFromArray($needle, $haystack, $strict = false)
     {
         $pos = array_search($needle, $haystack, $strict);
         if ($pos !== false) {
