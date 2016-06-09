@@ -137,7 +137,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
 		var $trigger = ImageManipulation.$trigger;
 		var jsonString = $trigger.parent().find('#' + $trigger.data('field')).val();
 		if (jsonString.length) {
-			cropData = $.parseJSON(jsonString);
+			cropData = JSON.parse(jsonString);
 		}
 
 		var $infoX = ImageManipulation.currentModal.find('.t3js-image-manipulation-info-crop-x');
