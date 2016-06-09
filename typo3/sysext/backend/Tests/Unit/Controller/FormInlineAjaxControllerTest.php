@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
  */
 
 use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
@@ -165,5 +166,56 @@ class FormInlineAjaxControllerTest extends UnitTestCase
                 'sheet.tabGeneral:lDEF:settings.related_files:vDEF'
             ],
         ];
+    }
+
+    /**
+     * Fallback for IRRE items without inline view attribute
+     * @issue https://forge.typo3.org/issues/76561
+     *
+     * @test
+     */
+    public function getInlineExpandCollapseStateArraySwitchesToFallbackIfTheBackendUserDoesNotHaveAnUCInlineViewProperty()
+    {
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $backendUserProphecy->uc = [];
+        $backendUser = $backendUserProphecy->reveal();
+
+        $mockObject = $this->getAccessibleMock(
+            FormInlineAjaxController::class,
+            ['getBackendUserAuthentication'],
+            [],
+            '',
+            false
+        );
+        $mockObject->method('getBackendUserAuthentication')->willReturn($backendUser);
+        $result = $mockObject->_call('getInlineExpandCollapseStateArray');
+
+        $this->assertEmpty($result);
+    }
+
+
+    /**
+     * Unserialize uc inline view string for IRRE item
+     * @issue https://forge.typo3.org/issues/76561
+     *
+     * @test
+     */
+    public function getInlineExpandCollapseStateArrayWillUnserializeUCInlineViewPropertyAsAnArrayWithData()
+    {
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $backendUserProphecy->uc = ['inlineView' => serialize(['foo' => 'bar'])];
+        $backendUser = $backendUserProphecy->reveal();
+
+        $mockObject = $this->getAccessibleMock(
+            FormInlineAjaxController::class,
+            ['getBackendUserAuthentication'],
+            [],
+            '',
+            false
+        );
+        $mockObject->method('getBackendUserAuthentication')->willReturn($backendUser);
+        $result = $mockObject->_call('getInlineExpandCollapseStateArray');
+
+        $this->assertNotEmpty($result);
     }
 }

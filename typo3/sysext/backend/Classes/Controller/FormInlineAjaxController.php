@@ -799,11 +799,27 @@ class FormInlineAjaxController
     protected function getInlineExpandCollapseStateArray()
     {
         $backendUser = $this->getBackendUserAuthentication();
+        if (!$this->backendUserHasUcInlineView($backendUser)) {
+            return [];
+        }
+
         $inlineView = unserialize($backendUser->uc['inlineView']);
         if (!is_array($inlineView)) {
-            $inlineView = array();
+            $inlineView = [];
         }
+
         return $inlineView;
+    }
+
+    /**
+     * Method to check whether the backend user has the property inline view for the current IRRE item.
+     * In existing or old IRRE items the attribute may not exist, then the unserialize will fail.
+     *
+     * @param BackendUserAuthentication $backendUser
+     * @return bool
+     */
+    protected function backendUserHasUcInlineView(BackendUserAuthentication $backendUser) {
+        return !empty($backendUser->uc['inlineView']);
     }
 
     /**
