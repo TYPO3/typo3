@@ -1,11 +1,14 @@
 language: php
 
+node_js:
+    - "0.10"
+
 matrix:
   fast_finish: true
 
   include:
     - php: 7
-      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes ACCEPTANCE_TESTS=no PHP_LINT=yes XLF_CHECK=yes SUBMODULE_TEST=yes  EXCEPTIONCODE_TEST=yes
+      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes ACCEPTANCE_TESTS=no JSUNIT_TESTS=yes PHP_LINT=yes XLF_CHECK=yes SUBMODULE_TEST=yes  EXCEPTIONCODE_TEST=yes
 
 sudo: false
 
@@ -61,6 +64,10 @@ before_script:
   - export typo3DatabaseUsername="root"
   - export typo3DatabasePassword=""
 
+before_install:
+    - export DISPLAY=:99.0
+    - sh -e /etc/init.d/xvfb start
+
 script:
   - >
     if [[ "$UNIT_TESTS" == "yes" ]]; then
@@ -69,35 +76,41 @@ script:
 
   - >
     if [[ "$FUNCTIONAL_TESTS" == "yes" ]]; then
-        find . -wholename '*typo3/sysext/*/Tests/Functional/*Test.php' | parallel --jobs 6 --gnu 'echo; echo "Running functional test suite {}"; ./bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml {}'
+      find . -wholename '*typo3/sysext/*/Tests/Functional/*Test.php' | parallel --jobs 6 --gnu 'echo; echo "Running functional test suite {}"; ./bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml {}'
     fi
 
   - >
     if [[ "$ACCEPTANCE_TESTS" == "yes" ]]; then
-        ./bin/codecept run Acceptance -c typo3/sysext/core/Build/AcceptanceTests.yml --debug
+      ./bin/codecept run Acceptance -c typo3/sysext/core/Build/AcceptanceTests.yml --debug
+    fi
+
+  - >
+    if [[ "$JSUNIT_TESTS" == "yes" ]]; then
+      cd Build && npm install && cd ..
+      ./Build/node_modules/karma/bin/karma start typo3/sysext/core/Build/Configuration/JSUnit/karma.conf.js --single-run
     fi
 
   - >
     if [[ "$PHP_LINT" == "yes" ]]; then
-        find typo3/ -name \*.php -not -path "vendor/*" | parallel --jobs 6 --gnu php -d display_errors=stderr -l {} > /dev/null \;
+      find typo3/ -name \*.php -not -path "vendor/*" | parallel --jobs 6 --gnu php -d display_errors=stderr -l {} > /dev/null \;
     fi
 
   - >
     if [[ "$XLF_CHECK" == "yes" ]]; then
-        ./typo3/sysext/core/Build/Scripts/xlfcheck.sh
+      ./typo3/sysext/core/Build/Scripts/xlfcheck.sh
     fi
 
   - >
-      if [[ "$SUBMODULE_TEST" == "yes" ]]; then
-          /bin/bash -c "
-              if [[ `git submodule status 2>&1 | wc -l` -ne 0 ]]; then
-                  echo \"Found a submodule definition in repository\";
-                  exit 99;
-              fi
-          "
-      fi
+    if [[ "$SUBMODULE_TEST" == "yes" ]]; then
+      /bin/bash -c "
+        if [[ `git submodule status 2>&1 | wc -l` -ne 0 ]]; then
+          echo \"Found a submodule definition in repository\";
+          exit 99;
+        fi
+      "
+    fi
 
   - >
     if [[ "$EXCEPTIONCODE_TEST" == "yes" ]]; then
-        ./typo3/sysext/core/Build/Scripts/duplicateExceptionCodeCheck.sh
+      ./typo3/sysext/core/Build/Scripts/duplicateExceptionCodeCheck.sh
     fi
