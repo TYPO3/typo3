@@ -140,7 +140,6 @@ class YouTubeRendererTest extends UnitTestCase
         $fileReferenceMock->expects($this->any())->method('getProperty')->will($this->returnValue(1));
         $fileReferenceMock->expects($this->any())->method('getOriginalFile')->willReturn($fileResourceMock);
 
-
         $this->assertSame(
             '<iframe src="//www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;autoplay=1&amp;enablejsapi=1&amp;origin=test.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
             $this->subject->render($fileReferenceMock, '300m', '200')

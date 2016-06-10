@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Form\Tests\Unit\Utility;
 
 use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
-use TYPO3\CMS\Form\Utility\TypoScriptToJsonConverter;
 use TYPO3\CMS\Form\Domain\Model\Json\FormJsonElement;
+use TYPO3\CMS\Form\Utility\TypoScriptToJsonConverter;
 
 /**
  * Test case for \TYPO3\CMS\Form\Utility\TypoScriptToJsonConverter
@@ -36,12 +36,12 @@ class TypoScriptToJsonConverterTest extends UnitTestCase
     public function getChildElementsByIntegerKeyCallsAddElement(array $typoScript, $methodCount)
     {
         /** @var FormJsonElement|\PHPUnit_Framework_MockObject_MockObject $mockSubject */
-        $parentElement = $this->getMock(FormJsonElement::class, ['addElement',]);
+        $parentElement = $this->getMock(FormJsonElement::class, ['addElement']);
         // check if method gets called exactly X times
         $parentElement->expects($this->exactly($methodCount))->method('addElement');
 
         /** @var TypoScriptToJsonConverter|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subjectAccessible */
-        $accessibleSubject = $this->getAccessibleMock(TypoScriptToJsonConverter::class, ['dummy',]);
+        $accessibleSubject = $this->getAccessibleMock(TypoScriptToJsonConverter::class, ['dummy']);
         $accessibleSubject->_call('getChildElementsByIntegerKey', $parentElement, $typoScript);
     }
 

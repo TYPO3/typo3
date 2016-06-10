@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\FlexformIrre;
  * The TYPO3 project - inspiring people to share!
  */
 
-
 class ActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase
 {
 
@@ -55,5 +54,4 @@ class ActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Abstr
         // there should be one relation in the live WS and one in the draft WS pointing to the file field.
         $this->assertEquals(2, $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'sys_file_reference', 'uid_local = 20'));
     }
-
 }

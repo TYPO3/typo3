@@ -259,14 +259,16 @@ class SelectImageController extends AbstractLinkBrowserController
     /**
      * @return array
      */
-    public function getButtonConfiguration() {
+    public function getButtonConfiguration()
+    {
         return $this->buttonConfig;
     }
 
     /**
      * @return array
      */
-    public function getRteProperties() {
+    public function getRteProperties()
+    {
         return $this->RTEProperties;
     }
 

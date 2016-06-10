@@ -333,7 +333,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
 							<div class="btn-group">' . $ATag . '<span title="' .  $lang->getLL('addToList', true) . '">' . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . '</span>' . $ATag_e . '
 							<a href="' . htmlspecialchars($Ahref) . '" class="btn btn-default" title="' . $lang->getLL('info', true) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . '</a>
 						</td>
-						<td class="col-clipboard" valign="top">'. $bulkCheckBox .'</td>
+						<td class="col-clipboard" valign="top">' . $bulkCheckBox . '</td>
 						<td nowrap="nowrap">&nbsp;' . $pDim . '</td>
 					</tr>';
             if ($pDim) {

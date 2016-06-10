@@ -63,7 +63,6 @@ class FormInlineAjaxControllerTest extends UnitTestCase
         $this->assertTrue($mayUploadFile);
     }
 
-
     /**
      * @dataProvider splitDomObjectIdDataProviderForTableName
      * @param string $dataStructure

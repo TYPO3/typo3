@@ -611,5 +611,4 @@ class TcaFlexProcess implements FormDataProviderInterface
     {
         return $GLOBALS['BE_USER'];
     }
-
 }

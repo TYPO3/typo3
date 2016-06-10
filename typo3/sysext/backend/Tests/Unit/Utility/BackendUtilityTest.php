@@ -1064,7 +1064,8 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function dateTimeAgeReturnsCorrectValues() {
+    public function dateTimeAgeReturnsCorrectValues()
+    {
         /** @var ObjectProphecy|LanguageService $languageServiceProphecy */
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy->sL(Argument::cetera())->willReturn(' min| hrs| days| yrs| min| hour| day| year');

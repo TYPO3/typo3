@@ -874,7 +874,6 @@ class FormInlineAjaxController
     {
         list($flexFormPath, $foreignTableName) = $this->splitDomObjectId($domObjectId);
 
-
         $childConfig = $parentConfig['ds']['sheets'];
         $flexFormPath = explode(':', $flexFormPath);
         foreach ($flexFormPath as $flexFormNode) {
@@ -973,11 +972,9 @@ class FormInlineAjaxController
          */
 
         if (preg_match($pattern, $domObjectId, $match)) {
-
             return array($match['flexformPath'], $match['tableName']);
         }
 
         return [];
-
     }
 }
