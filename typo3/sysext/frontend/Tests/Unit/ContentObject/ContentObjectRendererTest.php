@@ -2591,7 +2591,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * Check if brTag works properly
+     * Check if stdWrap_htmlSpecialChars works properly
      *
      * @test
      * @dataProvider stdWrap_htmlSpecialCharsDataProvider
