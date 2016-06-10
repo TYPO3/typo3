@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests;
  */
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Response;
@@ -235,6 +236,7 @@ abstract class FunctionalTestCase extends BaseTestCase
             $localConfiguration['SYS']['debugExceptionHandler'] = '';
             $localConfiguration['SYS']['trustedHostsPattern'] = '.*';
             $localConfiguration['SYS']['setDBinit'] = 'SET SESSION sql_mode = \'STRICT_ALL_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_VALUE_ON_ZERO,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ONLY_FULL_GROUP_BY\';';
+            $localConfiguration['SYS']['caching']['cacheConfigurations']['extbase_object']['backend'] = NullBackend::class;
             $testbase->setUpLocalConfiguration($this->instancePath, $localConfiguration, $this->configurationToUseInTestInstance);
             $defaultCoreExtensionsToLoad = [
                 'core',
