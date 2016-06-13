@@ -3024,7 +3024,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'XXX',
                 ['wrap2' => '<wrapper>|</wrapper>'],
             ],
-            'trimms whitespace' => [
+            'trims whitespace' => [
                 '<wrapper>XXX</wrapper>',
                 'XXX',
                 ['wrap2' => '<wrapper>' . TAB . ' | ' . TAB . '</wrapper>'],
@@ -3089,7 +3089,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'XXX',
                 ['wrap3' => '<wrapper>|</wrapper>'],
             ],
-            'trimms whitespace' => [
+            'trims whitespace' => [
                 '<wrapper>XXX</wrapper>',
                 'XXX',
                 ['wrap3' => '<wrapper>' . TAB . ' | ' . TAB . '</wrapper>'],
@@ -3149,14 +3149,14 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 [],
             ],
             'simple' => [
-                '<wapper>XXX</wapper>',
+                '<wrapper>XXX</wrapper>',
                 'XXX',
-                ['wrap' => '<wapper>|</wapper>'],
+                ['wrap' => '<wrapper>|</wrapper>'],
             ],
-            'trimms whitespace' => [
-                '<wapper>XXX</wapper>',
+            'trims whitespace' => [
+                '<wrapper>XXX</wrapper>',
                 'XXX',
-                ['wrap' => '<wapper>' . TAB . ' | ' . TAB . '</wapper>'],
+                ['wrap' => '<wrapper>' . TAB . ' | ' . TAB . '</wrapper>'],
             ],
             'missing pipe puts wrap before' => [
                 '<pre>XXX',
@@ -3166,18 +3166,18 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 ],
             ],
             'split char change' => [
-                '<wapper>XXX</wapper>',
+                '<wrapper>XXX</wrapper>',
                 'XXX',
                 [
-                    'wrap' => '<wapper> # </wapper>',
+                    'wrap' => '<wrapper> # </wrapper>',
                     'wrap.' => ['splitChar' => '#'],
                 ],
             ],
             'split by pattern' => [
-                '<wapper>XXX</wapper>',
+                '<wrapper>XXX</wrapper>',
                 'XXX',
                 [
-                    'wrap' => '<wapper> ###splitter### </wapper>',
+                    'wrap' => '<wrapper> ###splitter### </wrapper>',
                     'wrap.' => ['splitChar' => '###splitter###'],
                 ],
             ],
@@ -3223,7 +3223,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'XXX',
                 ['innerWrap' => '<pre>'],
             ],
-            'trimms whitespace' => [
+            'trims whitespace' => [
                 '<wrap>XXX</wrap>',
                 'XXX',
                 ['innerWrap' => '<wrap>' . TAB . ' | ' . TAB . '</wrap>'],
