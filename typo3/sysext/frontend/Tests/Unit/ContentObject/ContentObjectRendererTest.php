@@ -3201,6 +3201,88 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_lang
+     *
+     * @return array Order expected, input, conf, language
+     */
+    public function stdWrap_langDataProvider()
+    {
+        return [
+            'empty conf' => [
+                'original',
+                'original',
+                [],
+                'de',
+            ],
+            'translation de' => [
+                'Übersetzung',
+                'original',
+                [
+                    'lang.' => [
+                        'de' => 'Übersetzung',
+                        'it' => 'traduzione',
+                    ]
+                ],
+                'de',
+            ],
+            'translation it' => [
+                'traduzione',
+                'original',
+                [
+                    'lang.' => [
+                        'de' => 'Übersetzung',
+                        'it' => 'traduzione',
+                    ]
+                ],
+                'it',
+            ],
+            'no translation' => [
+                'original',
+                'original',
+                [
+                    'lang.' => [
+                        'de' => 'Übersetzung',
+                        'it' => 'traduzione',
+                    ]
+                ],
+                '',
+            ],
+            'missing label' => [
+                'original',
+                'original',
+                [
+                    'lang.' => [
+                        'de' => 'Übersetzung',
+                        'it' => 'traduzione',
+                    ]
+                ],
+                'fr',
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_lang works properly.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $conf Properties: lang.xy.
+     * @param string $language For $TSFE->config[config][language].
+     * @return void
+     * @test
+     * @dataProvider stdWrap_langDataProvider
+     */
+    public function stdWrap_lang($expected, $input, $conf, $language)
+    {
+        if ($language) {
+            $this->typoScriptFrontendControllerMock
+                ->config['config']['language'] = $language;
+        }
+        $this->assertSame($expected,
+            $this->subject->stdWrap_lang($input, $conf));
+    }
+
+    /**
      * Data provider for stdWrap_innerWrap
      *
      * @return array Order expected, input, conf
