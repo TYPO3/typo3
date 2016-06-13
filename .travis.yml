@@ -29,25 +29,6 @@ services:
   - memcached
   - redis-server
 
-notifications:
-  irc:
-    channels:
-      - "irc.freenode.net#typo3-cms"
-    on_success: change
-    on_failure: always
-    use_notice: true
-  slack:
-    rooms:
-      secure: nHWVTPyG3CQWIcYA1LASS11dD0/NBcmrAyr3xxQW0XYtH47ZUKRlEtxrVLuL7ptciNwMbfZgsiRQ1QGWDerHUlBkg0iwRxpUZgeylzWaiXsHFVAp2IBfEX54KrWeYm9gewIBDDtnp+sLgpXGgmpIs2bAGkZe5129UsUExoWh0+g=
-    on_success: change
-    on_failure: always
-  webhooks:
-    urls:
-      - http://www.t3bot.de/hooks/travis/index.php
-    on_success: always
-    on_failure: always
-    on_start: never
-
 before_script:
   - phpenv config-rm xdebug.ini
   - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
