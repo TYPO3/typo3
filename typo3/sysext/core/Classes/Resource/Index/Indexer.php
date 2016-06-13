@@ -93,7 +93,7 @@ class Indexer
     public function processChangesInStorages()
     {
         // get all file-identifiers from the storage
-        $availableFiles = $this->storage->getFileIdentifiersInFolder($this->storage->getRootLevelFolder()->getIdentifier(), true, true);
+        $availableFiles = $this->storage->getFileIdentifiersInFolder($this->storage->getRootLevelFolder(false)->getIdentifier(), true, true);
         $this->detectChangedFilesInStorage($availableFiles);
         $this->processChangedAndNewFiles();
 
