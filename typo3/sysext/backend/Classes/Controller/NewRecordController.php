@@ -21,7 +21,8 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView;
 use TYPO3\CMS\Backend\Tree\View\PagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -167,8 +168,13 @@ class NewRecordController extends AbstractModule
         $this->perms_clause = $beUser->getPagePermsClause(1);
         // This will hide records from display - it has nothing to do with user rights!!
         if ($pidList = $beUser->getTSConfigVal('options.hideRecords.pages')) {
-            if ($pidList = $this->getDatabaseConnection()->cleanIntList($pidList)) {
-                $this->perms_clause .= ' AND pages.uid NOT IN (' . $pidList . ')';
+            if (!empty($pidList)) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('pages');
+                $this->perms_clause .= ' AND ' . $queryBuilder->expr()->in(
+                    'pages.uid',
+                    GeneralUtility::intExplode(',', $pidList)
+                );
             }
         }
         // Setting GPvars:
@@ -380,11 +386,17 @@ class NewRecordController extends AbstractModule
      */
     public function pagesOnly()
     {
-        $numberOfPages = $this->getDatabaseConnection()->exec_SELECTcountRows(
-            '*',
-            'pages',
-            '1=1' . BackendUtility::deleteClause('pages')
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_language');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $numberOfPages = $queryBuilder
+            ->count('*')
+            ->from('pages')
+            ->execute()
+            ->fetchColumn(0);
+
         if ($numberOfPages > 0) {
             $this->code .= '
 				<h3>' . htmlspecialchars($this->getLanguageService()->getLL('selectPosition')) . ':</h3>
@@ -716,11 +728,16 @@ class NewRecordController extends AbstractModule
      */
     protected function checkIfLanguagesExist()
     {
-        $languageCount = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'sys_language', '1=1');
-        if ($languageCount) {
-            $languageCount = true;
-        }
-        return $languageCount;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_language');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $count = $queryBuilder
+            ->count('uid')
+            ->from('sys_language')
+            ->execute()
+            ->fetchColumn(0);
+        return (bool)$count;
     }
 
     /**
@@ -741,15 +758,5 @@ class NewRecordController extends AbstractModule
     protected function getBackendUserAuthentication()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Returns the database connection
-     *
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

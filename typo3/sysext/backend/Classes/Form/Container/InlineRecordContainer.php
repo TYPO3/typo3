@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -466,11 +467,18 @@ class InlineRecordContainer extends AbstractContainer
                 if (!empty($rec['sys_language_uid'])) {
                     $sys_language_uid = $rec['sys_language_uid'][0];
                 }
-                $recordInDatabase = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-                    'uid',
-                    'sys_file_metadata',
-                    'file = ' . (int)substr($rec['uid_local'], 9) . ' AND sys_language_uid = ' . $sys_language_uid
-                );
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('sys_file_metadata');
+                $recordInDatabase = $queryBuilder
+                    ->select('uid')
+                    ->from('sys_file_metadata')
+                    ->where(
+                        $queryBuilder->expr()->eq('file', (int)substr($rec['uid_local'], 9)),
+                        $queryBuilder->expr()->eq('sys_language_uid', (int)$sys_language_uid)
+                    )
+                    ->setMaxResults(1)
+                    ->execute()
+                    ->fetch();
                 if ($backendUser->check('tables_modify', 'sys_file_metadata')) {
                     $url = BackendUtility::getModuleUrl('record_edit', array(
                         'edit[sys_file_metadata][' . (int)$recordInDatabase['uid'] . ']' => 'edit'

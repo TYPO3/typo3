@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -288,8 +289,18 @@ class Commands
      */
     public static function getDomainName($uid)
     {
-        $whereClause = 'pid=' . (int)$uid . BackendUtility::deleteClause('sys_domain') . BackendUtility::BEenableFields('sys_domain');
-        $domain = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('domainName', 'sys_domain', $whereClause, '', 'sorting');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_domain');
+        $domain = $queryBuilder
+            ->select('domainName')
+            ->from('sys_domain')
+            ->where(
+                $queryBuilder->expr()->eq('pid', (int)$uid)
+            )
+            ->setMaxResults(1)
+            ->orderBy('sorting')
+        ->execute()
+        ->fetch();
         return is_array($domain) ? htmlspecialchars($domain['domainName']) : '';
     }
 

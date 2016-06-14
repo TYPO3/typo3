@@ -28,6 +28,9 @@ use TYPO3\CMS\Backend\Tree\View\ContentLayoutPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutView;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -541,17 +544,22 @@ class PageLayoutController
     protected function getLocalizedPageTitle()
     {
         if ($this->current_sys_language > 0) {
-            $overlayRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-                'title',
-                'pages_language_overlay',
-                'pid = ' . (int)$this->id .
-                ' AND sys_language_uid = ' . (int)$this->current_sys_language .
-                BackendUtility::deleteClause('pages_language_overlay') .
-                BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
-                '',
-                '',
-                ''
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages_language_overlay');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+            $overlayRecord = $queryBuilder
+                ->select('title')
+                ->from('pages_language_overlay')
+                ->where(
+                    $queryBuilder->expr()->eq('pid', (int)$this->id),
+                    $queryBuilder->expr()->eq('sys_language_uid', (int)$this->current_sys_language)
+                )
+                ->setMaxResults(1)
+                ->execute()
+                ->fetch();
             return $overlayRecord['title'];
         } else {
             return $this->pageinfo['title'];
@@ -1102,17 +1110,22 @@ class PageLayoutController
             if ($this->pageIsNotLockedForEditors() && $this->getBackendUser()->checkLanguageAccess(0)) {
                 // Edit localized page_language_overlay only when one specific language is selected
                 if ($this->MOD_SETTINGS['function'] == 1 && $this->current_sys_language > 0) {
-                    $overlayRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-                        'uid',
-                        'pages_language_overlay',
-                        'pid = ' . (int)$this->id . ' ' .
-                        'AND sys_language_uid = ' . (int)$this->current_sys_language .
-                        BackendUtility::deleteClause('pages_language_overlay') .
-                        BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
-                        '',
-                        '',
-                        ''
-                    );
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getQueryBuilderForTable('pages_language_overlay');
+                    $queryBuilder->getRestrictions()
+                        ->removeAll()
+                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                        ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+                    $overlayRecord = $queryBuilder
+                        ->select('uid')
+                        ->from('pages_language_overlay')
+                        ->where(
+                            $queryBuilder->expr()->eq('pid', (int)$this->id),
+                            $queryBuilder->expr()->eq('sys_language_uid', (int)$this->current_sys_language)
+                        )
+                        ->setMaxResults(1)
+                        ->execute()
+                        ->fetch();
                     // Edit button
                     $urlParameters = [
                         'edit' => [

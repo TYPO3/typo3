@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -645,11 +646,18 @@ class ElementInformationController
             $selectTable = $table;
             $selectUid = $ref;
         }
-        $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            '*',
-            'sys_refindex',
-            'ref_table=' . $this->getDatabaseConnection()->fullQuoteStr($selectTable, 'sys_refindex') . ' AND ref_uid=' . (int)$selectUid . ' AND deleted=0'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_refindex');
+        $rows = $queryBuilder
+            ->select('*')
+            ->from('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($selectTable)),
+                $queryBuilder->expr()->eq('ref_uid', (int)$selectUid),
+                $queryBuilder->expr()->eq('deleted', 0)
+            )
+            ->execute()
+            ->fetchAll();
 
         // Compile information for title tag:
         $infoData = array();
@@ -755,11 +763,18 @@ class ElementInformationController
     protected function makeRefFrom($table, $ref)
     {
         $lang = $this->getLanguageService();
-        $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            '*',
-            'sys_refindex',
-            'tablename=' . $this->getDatabaseConnection()->fullQuoteStr($table, 'sys_refindex') . ' AND recuid=' . (int)$ref
-        );
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_refindex');
+        $rows = $queryBuilder
+            ->select('*')
+            ->from('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
+                $queryBuilder->expr()->eq('recuid', (int)$ref)
+            )
+            ->execute()
+            ->fetchAll();
 
         // Compile information for title tag:
         $infoData = array();
@@ -853,11 +868,16 @@ class ElementInformationController
      */
     protected function transformFileReferenceToRecordReference(array $referenceRecord)
     {
-        $fileReference = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-            '*',
-            'sys_file_reference',
-            'uid=' . (int)$referenceRecord['recuid']
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_file_reference');
+        $queryBuilder->getRestrictions()->removeAll();
+        $fileReference = $queryBuilder
+            ->select('*')
+            ->from('sys_file_reference')
+            ->where($queryBuilder->expr()->eq('uid', (int)$referenceRecord['recuid']))
+            ->execute()
+            ->fetch();
+
         return array(
             'recuid' => $fileReference['uid_foreign'],
             'tablename' => $fileReference['tablenames'],
@@ -886,15 +906,5 @@ class ElementInformationController
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Returns the database connection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

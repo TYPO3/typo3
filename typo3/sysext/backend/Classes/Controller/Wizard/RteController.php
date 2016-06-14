@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Form\FormResultCompiler;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -243,23 +244,26 @@ class RteController extends AbstractWizardController
             && $this->checkEditAccess($this->P['table'], $this->P['uid'])) {
             $closeUrl = GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']);
             // Getting settings for the undo button:
-            $undoButton = 0;
-            $databaseConnection = $this->getDatabaseConnection();
-            $undoRes = $databaseConnection->exec_SELECTquery(
-                'tstamp',
-                'sys_history',
-                'tablename=' . $databaseConnection->fullQuoteStr(
-                    $this->P['table'],
-                    'sys_history'
-                ) . ' AND recuid=' . (int)$this->P['uid'],
-                '',
-                'tstamp DESC',
-                '1'
-            );
-            if ($undoButtonR = $databaseConnection->sql_fetch_assoc($undoRes)) {
-                $undoButton = 1;
-            }
+            $undoButton = false;
 
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('sys_history');
+
+            $undoButtonR = $queryBuilder
+                ->select('tstamp')
+                ->from('sys_history')
+                ->where(
+                    $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($this->P['table'])),
+                    $queryBuilder->expr()->eq('recuid', (int)$this->P['uid'])
+                )
+                ->orderBy('tstamp', 'desc')
+                ->setMaxResults(1)
+                ->execute()
+                ->fetchColumn();
+
+            if ($undoButtonR !== false) {
+                $undoButton = true;
+            }
             // Close
             $closeButton = $buttonBar->makeLinkButton()
                 ->setHref($closeUrl)
