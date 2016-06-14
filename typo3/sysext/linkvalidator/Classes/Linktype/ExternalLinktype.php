@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  * The TYPO3 project - inspiring people to share!
  */
 
+use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\TooManyRedirectsException;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -66,7 +67,7 @@ class ExternalLinktype extends AbstractLinktype
         }
 
         $options = array(
-            'cookies' => true,
+            'cookies' => GeneralUtility::makeInstance(CookieJar::class),
             'allow_redirects' => ['strict' => true]
         );
 
