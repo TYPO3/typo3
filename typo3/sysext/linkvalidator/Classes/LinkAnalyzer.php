@@ -145,10 +145,11 @@ class LinkAnalyzer
             // Traverse all configured tables
             foreach ($this->searchFields as $table => $fields) {
                 if ($table === 'pages') {
-                    $where = 'deleted = 0 AND uid IN (' . $this->pidList . ')';
+                    $where = 'uid IN (' . $this->pidList . ')';
                 } else {
-                    $where = 'deleted = 0 AND pid IN (' . $this->pidList . ')';
+                    $where = 'pid IN (' . $this->pidList . ')';
                 }
+                $where .= BackendUtility::deleteClause($table);
                 if (!$considerHidden) {
                     $where .= BackendUtility::BEenableFields($table);
                 }
