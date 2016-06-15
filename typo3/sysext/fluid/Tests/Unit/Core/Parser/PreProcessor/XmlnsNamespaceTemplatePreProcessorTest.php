@@ -34,8 +34,12 @@ class XmlnsNamespaceTemplatePreProcessorTest extends UnitTestCase
     public function preProcessSourceExtractsNamespacesAndRemovesTagsAndAttributes($source, array $expectedNamespaces, $expectedSource)
     {
         $subject = new XmlnsNamespaceTemplatePreProcessor();
-        $resolver = $this->getMock(ViewHelperResolver::class, array('addNamespace'));
-        $context = $this->getMock(RenderingContextFixture::class, array('getViewHelperResolver'));
+        $resolver = $this->getMockBuilder(ViewHelperResolver::class)
+            ->setMethods(array('addNamespace'))
+            ->getMock();
+        $context = $this->getMockBuilder(RenderingContextFixture::class)
+            ->setMethods(array('getViewHelperResolver'))
+            ->getMock();
         if (empty($expectedNamespaces)) {
             $context->expects($this->never())->method('getViewHelperResolver');
             $resolver->expects($this->never())->method('addNamespace');

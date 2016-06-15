@@ -49,7 +49,9 @@ class TextExtractorRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function registeredTextExtractorClassCanBeRetrieved()
     {
         $textExtractorClass = $this->getUniqueId('myTextExtractor');
-        $textExtractorInstance = $this->getMock(TextExtractorInterface::class, array(), array(), $textExtractorClass);
+        $textExtractorInstance = $this->getMockBuilder(TextExtractorInterface::class)
+            ->setMockClassName($textExtractorClass)
+            ->getMock();
 
         $textExtractorRegistry = $this->getTextExtractorRegistry(array(array($textExtractorClass, $textExtractorInstance)));
 

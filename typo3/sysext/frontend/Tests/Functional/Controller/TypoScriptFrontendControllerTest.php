@@ -40,7 +40,7 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
             false
         );
 
-        $pageContextMock = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+        $pageContextMock = $this->getMockBuilder(\TYPO3\CMS\Frontend\Page\PageRepository::class)->getMock();
         $this->tsFrontendController->_set('sys_page', $pageContextMock);
     }
 

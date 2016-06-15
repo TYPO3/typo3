@@ -48,7 +48,7 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->simpleValueArgument = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('dummy'), array('someName', 'string'));
         $this->objectArgument = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('dummy'), array('someName', 'DateTime'));
-        $this->mockPropertyMapper = $this->getMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class);
+        $this->mockPropertyMapper = $this->createMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class);
         $this->simpleValueArgument->_set('propertyMapper', $this->mockPropertyMapper);
         $this->objectArgument->_set('propertyMapper', $this->mockPropertyMapper);
         $this->mockConfiguration = new \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration();
@@ -153,7 +153,7 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setValidatorShouldProvideFluentInterfaceAndReallySetValidator()
     {
-        $mockValidator = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class);
+        $mockValidator = $this->createMock(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class);
         $returnedArgument = $this->simpleValueArgument->setValidator($mockValidator);
         $this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
         $this->assertSame($mockValidator, $this->simpleValueArgument->getValidator());
@@ -222,7 +222,9 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setValueShouldSetValidationErrorsIfValidatorIsSetAndValidationFailed()
     {
         $error = new \TYPO3\CMS\Extbase\Error\Error('Some Error', 1234);
-        $mockValidator = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class, array('validate', 'getOptions'));
+        $mockValidator = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+            ->setMethods(array('validate', 'getOptions'))
+            ->getMock();
         $validationMessages = new \TYPO3\CMS\Extbase\Error\Result();
         $validationMessages->addError($error);
         $mockValidator->expects($this->once())->method('validate')->with('convertedValue')->will($this->returnValue($validationMessages));

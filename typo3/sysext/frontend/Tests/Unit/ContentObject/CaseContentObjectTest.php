@@ -37,11 +37,18 @@ class CaseContentObjectTest extends UnitTestCase
     protected function setUp()
     {
         /** @var TypoScriptFrontendController $tsfe */
-        $tsfe = $this->getMock(TypoScriptFrontendController::class, array('dummy'), array(), '', false);
-        $tsfe->tmpl = $this->getMock(TemplateService::class, array('dummy'));
+        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
+            ->setMethods(array('dummy'))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $tsfe->tmpl = $this->getMockBuilder(TemplateService::class)
+            ->setMethods(array('dummy'))
+            ->getMock();
         $tsfe->config = array();
         $tsfe->page = array();
-        $tsfe->sys_page = $this->getMock(PageRepository::class, array('getRawRecord'));
+        $tsfe->sys_page = $this->getMockBuilder(PageRepository::class)
+            ->setMethods(array('getRawRecord'))
+            ->getMock();
         $GLOBALS['TSFE'] = $tsfe;
 
         $contentObjectRenderer = new ContentObjectRenderer();

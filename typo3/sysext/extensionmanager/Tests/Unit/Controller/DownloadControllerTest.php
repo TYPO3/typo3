@@ -31,10 +31,10 @@ class DownloadControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $dummyException = new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($dummyExceptionMessage);
 
         $dummyExtensionName = 'dummy_extension';
-        $dummyExtension = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class);
+        $dummyExtension = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class)->getMock();
         $dummyExtension->expects($this->any())->method('getExtensionKey')->will($this->returnValue($dummyExtensionName));
 
-        $downloadUtilityMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\DownloadUtility::class);
+        $downloadUtilityMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\DownloadUtility::class)->getMock();
         $downloadUtilityMock->expects($this->any())->method('setDownloadPath')->willThrowException($dummyException);
 
         $subject = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Controller\DownloadController::class, array('dummy'));

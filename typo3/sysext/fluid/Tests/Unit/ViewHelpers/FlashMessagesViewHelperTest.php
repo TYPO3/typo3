@@ -43,13 +43,16 @@ class FlashMessagesViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelper
     {
         parent::setUp();
         /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue|\PHPUnit_Framework_MockObject_MockObject $mockFlashMessagingQueue */
-        $mockFlashMessagingQueue = $this->getMock(\TYPO3\CMS\Core\Messaging\FlashMessageQueue::class, array('getAllMessagesAndFlush'), array('foo'));
+        $mockFlashMessagingQueue = $this->getMockBuilder(\TYPO3\CMS\Core\Messaging\FlashMessageQueue::class)
+            ->setMethods(array('getAllMessagesAndFlush'))
+            ->setConstructorArgs(array('foo'))
+            ->getMock();
         $mockFlashMessagingQueue->expects($this->once())->method('getAllMessagesAndFlush')->will($this->returnValue(array()));
         $this->mockFlashMessagingQueue = $mockFlashMessagingQueue;
 
         $this->controllerContext->expects($this->any())->method('getFlashMessageQueue')->will($this->returnValue($mockFlashMessagingQueue));
 
-        $this->mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class);
+        $this->mockTagBuilder = $this->createMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class);
         $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\FlashMessagesViewHelper::class, array('dummy'));
         $this->viewHelper->_set('tag', $this->mockTagBuilder);
         $this->viewHelper->setRenderingContext($this->renderingContext);

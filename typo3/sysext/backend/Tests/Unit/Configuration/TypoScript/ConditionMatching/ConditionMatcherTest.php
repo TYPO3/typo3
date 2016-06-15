@@ -54,7 +54,10 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS[$this->testGlobalNamespace] = array();
         GeneralUtility::flushInternalRuntimeCaches();
         $this->setUpBackend();
-        $this->matchCondition = $this->getMock(\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class, array('determineRootline'), array(), '', false);
+        $this->matchCondition = $this->getMockBuilder(\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class)
+            ->setMethods(array('determineRootline'))
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
@@ -67,7 +70,10 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             1 => array('uid' => 111, 'pid' => 101),
             0 => array('uid' => 101, 'pid' => 0)
         );
-        $GLOBALS['BE_USER'] = $this->getMock(BackendUserAuthentication::class, array('dummy'), array(), '', false);
+        $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->setMethods(array('dummy'))
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
@@ -75,7 +81,9 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     private function setUpDatabaseMockForDeterminePageId()
     {
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('exec_SELECTquery', 'sql_fetch_assoc', 'sql_free_result'));
+        $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)
+            ->setMethods(array('exec_SELECTquery', 'sql_fetch_assoc', 'sql_free_result'))
+            ->getMock();
         $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->will($this->returnCallback(array($this, 'determinePageIdByRecordDatabaseExecuteCallback')));
         $GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->will($this->returnCallback(array($this, 'determinePageIdByRecordDatabaseFetchCallback')));
     }
@@ -499,7 +507,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function treeLevelConditionMatchesCurrentPageIdWhileEditingNewPage()
     {
-        $GLOBALS['SOBE'] = $this->getMock(\TYPO3\CMS\Backend\Controller\EditDocumentController::class, array(), array(), '', false);
+        $GLOBALS['SOBE'] = $this->createMock(\TYPO3\CMS\Backend\Controller\EditDocumentController::class);
         $GLOBALS['SOBE']->elementsData = array(
             array(
                 'table' => 'pages',
@@ -522,7 +530,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function treeLevelConditionMatchesCurrentPageIdWhileSavingNewPage()
     {
-        $GLOBALS['SOBE'] = $this->getMock(\TYPO3\CMS\Backend\Controller\EditDocumentController::class, array(), array(), '', false);
+        $GLOBALS['SOBE'] = $this->createMock(\TYPO3\CMS\Backend\Controller\EditDocumentController::class);
         $GLOBALS['SOBE']->elementsData = array(
             array(
                 'table' => 'pages',
@@ -600,7 +608,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function PIDupinRootlineConditionMatchesCurrentPageIdWhileEditingNewPage()
     {
-        $GLOBALS['SOBE'] = $this->getMock(\TYPO3\CMS\Backend\Controller\EditDocumentController::class, array(), array(), '', false);
+        $GLOBALS['SOBE'] = $this->createMock(\TYPO3\CMS\Backend\Controller\EditDocumentController::class);
         $GLOBALS['SOBE']->elementsData = array(
             array(
                 'table' => 'pages',
@@ -623,7 +631,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function PIDupinRootlineConditionMatchesCurrentPageIdWhileSavingNewPage()
     {
-        $GLOBALS['SOBE'] = $this->getMock(\TYPO3\CMS\Backend\Controller\EditDocumentController::class, array(), array(), '', false);
+        $GLOBALS['SOBE'] = $this->createMock(\TYPO3\CMS\Backend\Controller\EditDocumentController::class);
         $GLOBALS['SOBE']->elementsData = array(
             array(
                 'table' => 'pages',

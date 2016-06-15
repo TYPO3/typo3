@@ -95,9 +95,9 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $dependencyUtilityMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class);
         $dependencyUtilityMock->expects($this->atLeastOnce())->method('checkDependencies');
-        $installUtilityMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class);
+        $installUtilityMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class)->getMock();
         $installUtilityMock->expects($this->any())->method('enrichExtensionWithDetails')->will($this->returnValue(array()));
-        $extensionModelUtilityMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class);
+        $extensionModelUtilityMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class)->getMock();
         $extensionModelUtilityMock->expects($this->any())->method('mapExtensionArrayToModel')->will($this->returnValue($extensionModelMock));
         $managementMock->_set('dependencyUtility', $dependencyUtilityMock);
         $managementMock->_set('installUtility', $installUtilityMock);
@@ -125,7 +125,9 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         ));
 
         /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extensionModelMock */
-        $extensionModelMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class, array('getExtensionKey'));
+        $extensionModelMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class)
+            ->setMethods(array('getExtensionKey'))
+            ->getMock();
         $extensionModelMock->setExtensionKey('foobar');
         $extensionModelMock->setVersion('1.0.0');
         $downloadQueue = array(
@@ -134,9 +136,9 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $dependencyUtilityMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class);
         $dependencyUtilityMock->expects($this->atLeastOnce())->method('checkDependencies');
-        $installUtilityMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class);
+        $installUtilityMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class)->getMock();
         $installUtilityMock->expects($this->any())->method('enrichExtensionWithDetails')->will($this->returnValue(array()));
-        $extensionModelUtilityMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class);
+        $extensionModelUtilityMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class)->getMock();
         $extensionModelUtilityMock->expects($this->any())->method('mapExtensionArrayToModel')->will($this->returnValue($extensionModelMock));
         $managementMock->_set('dependencyUtility', $dependencyUtilityMock);
         $managementMock->_set('installUtility', $installUtilityMock);
@@ -169,9 +171,9 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $dependencyUtilityMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class);
         $dependencyUtilityMock->expects($this->atLeastOnce())->method('checkDependencies');
-        $installUtilityMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class);
+        $installUtilityMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class)->getMock();
         $installUtilityMock->expects($this->any())->method('enrichExtensionWithDetails')->will($this->returnValue(array()));
-        $extensionModelUtilityMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class);
+        $extensionModelUtilityMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class)->getMock();
         $extensionModelUtilityMock->expects($this->any())->method('mapExtensionArrayToModel')->will($this->returnValue($extensionModelMock));
         $managementMock->_set('dependencyUtility', $dependencyUtilityMock);
         $managementMock->_set('installUtility', $installUtilityMock);
@@ -241,7 +243,9 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             array('emitWillInstallExtensionsSignal', 'emitHasInstalledExtensionSignal')
         );
         /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extensionMock */
-        $extensionMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class, array('dummy'));
+        $extensionMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class)
+            ->setMethods(array('dummy'))
+            ->getMock();
         $extensionMock->setExtensionKey('foobar');
         $installQueue = array(
             'foobar' => $extensionMock,
@@ -263,7 +267,9 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'emitHasInstalledExtensionSignal'
         ));
         /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extensionMock */
-        $extensionMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class, array('dummy'));
+        $extensionMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class)
+            ->setMethods(array('dummy'))
+            ->getMock();
         $extensionMock->setExtensionKey('foobar');
         $installQueue = array(
             'foobar' => $extensionMock,

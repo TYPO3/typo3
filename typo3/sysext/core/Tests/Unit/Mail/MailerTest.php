@@ -27,7 +27,10 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->subject = $this->getMock(\TYPO3\CMS\Core\Mail\Mailer::class, array('emitPostInitializeMailerSignal'), array(), '', false);
+        $this->subject = $this->getMockBuilder(\TYPO3\CMS\Core\Mail\Mailer::class)
+            ->setMethods(array('emitPostInitializeMailerSignal'))
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     //////////////////////////

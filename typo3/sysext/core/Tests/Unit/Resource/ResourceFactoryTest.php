@@ -57,7 +57,7 @@ class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function createStorageCollectionObjectCreatesCollectionWithCorrectArguments()
     {
-        $mockedMount = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $mockedMount = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $path = $this->getUniqueId();
         $name = $this->getUniqueId();
         $storageCollection = $this->subject->createFolderObject($mockedMount, $path, $name, 0);
@@ -77,8 +77,8 @@ class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockedDriver = $this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class);
         $driverFixtureClass = get_class($mockedDriver);
         \TYPO3\CMS\Core\Utility\GeneralUtility::addInstance($driverFixtureClass, $mockedDriver);
-        $mockedMount = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
-        $mockedRegistry = $this->getMock(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class);
+        $mockedMount = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
+        $mockedRegistry = $this->createMock(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class);
         $mockedRegistry->expects($this->once())->method('getDriverClass')->with($this->equalTo($driverFixtureClass))->will($this->returnValue($driverFixtureClass));
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class, $mockedRegistry);
         $obj = $this->subject->getDriverObject($driverFixtureClass, array());

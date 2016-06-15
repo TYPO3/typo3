@@ -40,8 +40,14 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         vfsStream::setup('Test');
 
         /** @var PhpFrontend|\PHPUnit_Framework_MockObject_MockObject $mockCache */
-        $mockCache = $this->getMock(PhpFrontend::class, array('has', 'set', 'getBackend'), array(), '', false);
-        $mockCacheBackend = $this->getMock(SimpleFileBackend::class, array('has', 'set', 'getBackend', 'getCacheDirectory'), array(), '', false);
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)
+            ->setMethods(array('has', 'set', 'getBackend'))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mockCacheBackend = $this->getMockBuilder(SimpleFileBackend::class)
+            ->setMethods(array('has', 'set', 'getBackend', 'getCacheDirectory'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockCache->expects($this->any())->method('has')->will($this->returnValue(false));
         $mockCache->expects($this->any())->method('set')->will($this->returnValue(true));
         $mockCache->expects($this->any())->method('getBackend')->will($this->returnValue($mockCacheBackend));
@@ -161,7 +167,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
 
         /** @var DependencyResolver|\PHPUnit_Framework_MockObject_MockObject $dependencyResolver */
-        $dependencyResolver = $this->getMock(DependencyResolver::class);
+        $dependencyResolver = $this->createMock(DependencyResolver::class);
         $dependencyResolver
             ->expects($this->any())
             ->method('sortPackageStatesConfigurationByDependency')
@@ -213,7 +219,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
 
         /** @var DependencyResolver|\PHPUnit_Framework_MockObject_MockObject $dependencyResolver */
-        $dependencyResolver = $this->getMock(DependencyResolver::class);
+        $dependencyResolver = $this->createMock(DependencyResolver::class);
         $dependencyResolver
             ->expects($this->any())
             ->method('sortPackageStatesConfigurationByDependency')

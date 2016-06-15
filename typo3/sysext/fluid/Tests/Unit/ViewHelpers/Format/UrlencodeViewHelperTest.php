@@ -29,10 +29,12 @@ class UrlencodeViewHelperTest extends UnitTestCase
 
     protected function setUp()
     {
-        $this->viewHelper = $this->getMock(UrlencodeViewHelper::class, array('renderChildren'));
+        $this->viewHelper = $this->getMockBuilder(UrlencodeViewHelper::class)
+            ->setMethods(array('renderChildren'))
+            ->getMock();
 
         /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->getMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
+        $renderingContext = $this->createMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
         $this->viewHelper->setRenderingContext($renderingContext);
     }
 

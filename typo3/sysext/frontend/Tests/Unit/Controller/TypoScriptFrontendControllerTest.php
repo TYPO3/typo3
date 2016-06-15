@@ -37,7 +37,7 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
         $this->subject->TYPO3_CONF_VARS = $GLOBALS['TYPO3_CONF_VARS'];
         $this->subject->TYPO3_CONF_VARS['SYS']['encryptionKey'] = '170928423746123078941623042360abceb12341234231';
 
-        $pageRepository = $this->getMock(PageRepository::class);
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
         $this->subject->sys_page = $pageRepository;
     }
 
@@ -74,12 +74,14 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     protected function setupTsfeMockForHeaderFooterReplacementCheck()
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController $tsfe */
-        $tsfe = $this->getMock(TypoScriptFrontendController::class, array(
-            'INTincScript_process',
-            'INTincScript_loadJSCode',
-            'setAbsRefPrefix',
-            'regeneratePageTitle'
-        ), array(), '', false);
+        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
+            ->setMethods(array(
+                'INTincScript_process',
+                'INTincScript_loadJSCode',
+                'setAbsRefPrefix',
+                'regeneratePageTitle'
+            ))->disableOriginalConstructor()
+            ->getMock();
         $tsfe->expects($this->exactly(2))->method('INTincScript_process')->will($this->returnCallback(array($this, 'INTincScript_processCallback')));
         $tsfe->content = file_get_contents(__DIR__ . '/Fixtures/renderedPage.html');
         $tsfe->config['INTincScript_ext']['divKey'] = '679b52796e75d474ccbbed486b6837ab';
@@ -151,7 +153,9 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
                 'forced' => 0,
             ),
         );
-        $GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class, array('exec_SELECTgetRows'));
+        $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(DatabaseConnection::class)
+            ->setMethods(array('exec_SELECTgetRows'))
+            ->getMock();
         $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetRows')->willReturn($domainRecords);
         GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime')->flush();
         $expectedResult = array(
@@ -188,7 +192,9 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
                 'forced' => 0,
             ),
         );
-        $GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class, array('exec_SELECTgetRows'));
+        $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(DatabaseConnection::class)
+            ->setMethods(array('exec_SELECTgetRows'))
+            ->getMock();
         $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetRows')->willReturn($domainRecords);
         GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime')->flush();
         $expectedResult = array(

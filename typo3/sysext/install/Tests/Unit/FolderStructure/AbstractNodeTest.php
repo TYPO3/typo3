@@ -64,7 +64,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTest
     {
         /** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\AbstractNode::class, array('dummy'), array(), '', false);
-        $parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class, array(), array(), '', false);
+        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
         $node->_set('parent', $parent);
         $this->assertSame($parent, $node->_call('getParent'));
     }
@@ -76,7 +76,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTest
     {
         /** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\AbstractNode::class, array('dummy'), array(), '', false);
-        $parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class, array(), array(), '', false);
+        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
         $parentPath = '/foo/bar';
         $parent->expects($this->once())->method('getAbsolutePath')->will($this->returnValue($parentPath));
         $name = $this->getUniqueId('test_');
@@ -92,7 +92,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTest
     {
         /** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\AbstractNode::class, array('dummy'), array(), '', false);
-        $parentMock = $this->getMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class, array(), array(), '', false);
+        $parentMock = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
         $parentMock->expects($this->once())->method('isWritable');
         $node->_set('parent', $parentMock);
         $node->isWritable();
@@ -105,7 +105,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTest
     {
         /** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\AbstractNode::class, array('dummy'), array(), '', false);
-        $parentMock = $this->getMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class, array(), array(), '', false);
+        $parentMock = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
         $parentMock->expects($this->once())->method('isWritable')->will($this->returnValue(true));
         $node->_set('parent', $parentMock);
         $this->assertTrue($node->isWritable());

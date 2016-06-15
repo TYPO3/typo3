@@ -43,7 +43,7 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function createFolderFixture($path, $name, $mockedStorage = null)
     {
         if ($mockedStorage === null) {
-            $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+            $mockedStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         }
         return new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, $path, $name, 0);
     }
@@ -55,7 +55,7 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $path = $this->getUniqueId();
         $name = $this->getUniqueId();
-        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $mockedStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $fixture = $this->createFolderFixture($path, $name, $mockedStorage);
         $this->assertSame($mockedStorage, $fixture->getStorage());
         $this->assertStringStartsWith($path, $fixture->getIdentifier());
@@ -88,7 +88,7 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFilesReturnsArrayWithFilenamesAsKeys()
     {
-        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $mockedStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $mockedStorage->expects($this->once())->method('getFilesInFolder')->will($this->returnValue(array(
                 'somefile.png' => array(
                     'name' => 'somefile.png'
@@ -110,7 +110,7 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFilesHandsOverRecursiveFALSEifNotExplicitlySet()
     {
-        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $mockedStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $mockedStorage
             ->expects($this->once())
             ->method('getFilesInFolder')
@@ -126,7 +126,7 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFilesHandsOverRecursiveTRUEifSet()
     {
-        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $mockedStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $mockedStorage
             ->expects($this->once())
             ->method('getFilesInFolder')
@@ -142,10 +142,10 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getSubfolderCallsFactoryWithCorrectArguments()
     {
-        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $mockedStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $mockedStorage->expects($this->once())->method('hasFolderInFolder')->with($this->equalTo('someSubfolder'))->will($this->returnValue(true));
         /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Resource\ResourceFactory $mockedFactory */
-        $mockedFactory = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+        $mockedFactory = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
         $folderFixture = $this->createFolderFixture(
             '/somePath/someFolder/',
             'someFolder',
@@ -173,7 +173,10 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $currentIdentifier = '/parent/current/';
 
         $parentFolderFixture = $this->createFolderFixture($parentIdentifier, 'parent');
-        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array('getFolderIdentifierFromFileIdentifier', 'getFolder'), array(), '', false);
+        $mockedStorage = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\ResourceStorage::class)
+            ->setMethods(array('getFolderIdentifierFromFileIdentifier', 'getFolder'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockedStorage->expects($this->once())->method('getFolderIdentifierFromFileIdentifier')->with($currentIdentifier)->will($this->returnValue($parentIdentifier));
         $mockedStorage->expects($this->once())->method('getFolder')->with($parentIdentifier)->will($this->returnValue($parentFolderFixture));
 

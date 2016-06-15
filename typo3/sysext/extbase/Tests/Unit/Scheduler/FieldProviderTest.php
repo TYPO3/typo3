@@ -59,7 +59,9 @@ class FieldProviderTest extends UnitTestCase
         $command3->expects($this->once())->method('getCommandIdentifier')->will($this->returnValue('extbase:mockc:funcc'));
 
         /** @var CommandManager|\PHPUnit_Framework_MockObject_MockObject $commandManager */
-        $commandManager = $this->getMock(CommandManager::class, array('getAvailableCommands'));
+        $commandManager = $this->getMockBuilder(CommandManager::class)
+            ->setMethods(array('getAvailableCommands'))
+            ->getMock();
         $commandManager->expects($this->any())->method('getAvailableCommands')->will($this->returnValue(array($command1, $command2, $command3)));
 
         /** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $fieldProvider */
@@ -92,7 +94,9 @@ class FieldProviderTest extends UnitTestCase
         $command->method('getCommandIdentifier')->will($this->returnValue('extbase:mocka:funca'));
 
         /** @var CommandManager|\PHPUnit_Framework_MockObject_MockObject $commandManager */
-        $commandManager = $this->getMock(CommandManager::class, array('getAvailableCommands'));
+        $commandManager = $this->getMockBuilder(CommandManager::class)
+            ->setMethods(array('getAvailableCommands'))
+            ->getMock();
         $commandManager->expects($this->any())->method('getAvailableCommands')->will($this->returnValue(array($command)));
 
         /** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $fieldProvider */
@@ -123,7 +127,9 @@ class FieldProviderTest extends UnitTestCase
         $command->method('getCommandIdentifier')->will($this->returnValue('extbase:mocka:funca'));
 
         /** @var CommandManager|\PHPUnit_Framework_MockObject_MockObject $commandManager */
-        $commandManager = $this->getMock(CommandManager::class, array('getAvailableCommands'));
+        $commandManager = $this->getMockBuilder(CommandManager::class)
+            ->setMethods(array('getAvailableCommands'))
+            ->getMock();
         $commandManager->expects($this->any())->method('getAvailableCommands')->will($this->returnValue(array($command)));
 
         /** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $fieldProvider */
@@ -166,7 +172,7 @@ class FieldProviderTest extends UnitTestCase
         );
         $submittedData = array();
         /** @var SchedulerModuleController $schedulerModule */
-        $schedulerModule = $this->getMock(SchedulerModuleController::class, array(), array(), '', false);
+        $schedulerModule = $this->createMock(SchedulerModuleController::class);
         $this->assertTrue($fieldProvider->validateAdditionalFields($submittedData, $schedulerModule));
     }
 
@@ -200,7 +206,9 @@ class FieldProviderTest extends UnitTestCase
         $command3->expects($this->any())->method('getCommandIdentifier')->will($this->returnValue('extbase:mockc:funcc'));
 
         /** @var CommandManager|\PHPUnit_Framework_MockObject_MockObject $commandManager */
-        $commandManager = $this->getMock(CommandManager::class, array('getAvailableCommands'));
+        $commandManager = $this->getMockBuilder(CommandManager::class)
+            ->setMethods(array('getAvailableCommands'))
+            ->getMock();
         $commandManager->expects($this->any())->method('getAvailableCommands')->will($this->returnValue(array($command1, $command2, $command3)));
 
         /** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $fieldProvider */
@@ -245,7 +253,7 @@ class FieldProviderTest extends UnitTestCase
         $task = new Task();
         $task->setCommandIdentifier($command1->getCommandIdentifier());
         /** @var SchedulerModuleController $schedulerModule */
-        $schedulerModule = $this->getMock(SchedulerModuleController::class, array(), array(), '', false);
+        $schedulerModule = $this->createMock(SchedulerModuleController::class);
 
         $this->assertEquals($expectedAdditionalFields, $fieldProvider->getAdditionalFields($taskInfo, $task, $schedulerModule));
     }

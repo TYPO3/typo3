@@ -32,7 +32,9 @@ class PhpErrorCodeViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->viewHelper = $this->getMock(\TYPO3\CMS\Install\ViewHelpers\Format\PhpErrorCodeViewHelper::class, array('dummy'));
+        $this->viewHelper = $this->getMockBuilder(\TYPO3\CMS\Install\ViewHelpers\Format\PhpErrorCodeViewHelper::class)
+            ->setMethods(array('dummy'))
+            ->getMock();
         /** @var RenderingContext $renderingContext */
         $renderingContext = new RenderingContextFixture();
         $this->viewHelper->setRenderingContext($renderingContext);

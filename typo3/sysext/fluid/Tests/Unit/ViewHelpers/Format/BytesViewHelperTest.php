@@ -34,9 +34,11 @@ class BytesViewHelperTest extends ViewHelperBaseTestcase
         $reflectionClass = new \ReflectionClass(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::class);
         $property = $reflectionClass->getProperty('configurationManager');
         $property->setAccessible(true);
-        $property->setValue($this->getMock(ConfigurationManagerInterface::class));
+        $property->setValue($this->createMock(ConfigurationManagerInterface::class));
 
-        $this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\BytesViewHelper::class, array('renderChildren'));
+        $this->viewHelper = $this->getMockBuilder(\TYPO3\CMS\Fluid\ViewHelpers\Format\BytesViewHelper::class)
+            ->setMethods(array('renderChildren'))
+            ->getMock();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
     }

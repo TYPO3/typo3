@@ -29,7 +29,7 @@ class PlainTextExtractorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $plainTextExtractor = new PlainTextExtractor();
 
-        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock = $this->createMock(File::class);
         $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('text/plain'));
 
         $this->assertTrue($plainTextExtractor->canExtractText($fileResourceMock));
@@ -42,7 +42,7 @@ class PlainTextExtractorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $plainTextExtractor = new PlainTextExtractor();
 
-        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock = $this->createMock(File::class);
         $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('video/mp4'));
 
         $this->assertFalse($plainTextExtractor->canExtractText($fileResourceMock));

@@ -29,16 +29,14 @@ class LocalPreviewHelperTest extends UnitTestCase
      */
     public function processProvidesDefaultSizeIfNotConfigured()
     {
-        $file = $this->getMockBuilder(File::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $file = $this->createMock(File::class);
         // Use size slightly larger than default size to ensure processing
         $file->expects($this->any())->method('getProperty')->will($this->returnValueMap(array(
             array('width', 65),
             array('height', 65),
         )));
 
-        $task = $this->getMock(TaskInterface::class);
+        $task = $this->createMock(TaskInterface::class);
         $task->expects($this->once())->method('getSourceFile')->willReturn($file);
         $task->expects($this->once())->method('getConfiguration')->willReturn(array());
 
@@ -59,9 +57,7 @@ class LocalPreviewHelperTest extends UnitTestCase
      */
     public function processDoesNotScaleUpImages()
     {
-        $file = $this->getMockBuilder(File::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $file = $this->createMock(File::class);
         $file->expects($this->any())->method('getProperty')->will($this->returnValueMap(array(
             array('width', 20),
             array('height', 20),
@@ -72,7 +68,7 @@ class LocalPreviewHelperTest extends UnitTestCase
             ->setMethods(array('dummy'))
             ->getMock();
 
-        $task = $this->getMock(TaskInterface::class);
+        $task = $this->createMock(TaskInterface::class);
         $task->expects($this->once())->method('getSourceFile')->willReturn($file);
         $task->expects($this->once())->method('getConfiguration')->willReturn(array('width' => 30, 'height' => 30));
 
@@ -84,15 +80,13 @@ class LocalPreviewHelperTest extends UnitTestCase
      */
     public function processGeneratesPreviewEvenIfSourceFileHasNoSize()
     {
-        $file = $this->getMockBuilder(File::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $file = $this->createMock(File::class);
         $file->expects($this->any())->method('getProperty')->will($this->returnValueMap(array(
             array('width', 0),
             array('height', 0),
         )));
 
-        $task = $this->getMock(TaskInterface::class);
+        $task = $this->createMock(TaskInterface::class);
         $task->expects($this->once())->method('getSourceFile')->willReturn($file);
         $task->expects($this->once())->method('getConfiguration')->willReturn(array());
 

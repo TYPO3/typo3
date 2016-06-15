@@ -55,9 +55,9 @@ class ObjectConverterTest extends UnitTestCase
      */
     protected function setUp()
     {
-        $this->mockReflectionService = $this->getMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
-        $this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
-        $this->mockContainer = $this->getMock(\TYPO3\CMS\Extbase\Object\Container\Container::class);
+        $this->mockReflectionService = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
+        $this->mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+        $this->mockContainer = $this->createMock(\TYPO3\CMS\Extbase\Object\Container\Container::class);
 
         $this->converter = new ObjectConverter();
         $this->inject($this->converter, 'reflectionService', $this->mockReflectionService);

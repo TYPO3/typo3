@@ -32,7 +32,9 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function alphanumericValidatorShouldReturnNoErrorsForAnAlphanumericString()
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class, array('translateErrorMessage'));
+        $subject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class)
+            ->setMethods(array('translateErrorMessage'))
+            ->getMock();
         $this->assertFalse($subject->validate('12ssDF34daweidf')->hasErrors());
     }
 
@@ -42,7 +44,9 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function alphanumericValidatorReturnsErrorsForAStringWithSpecialCharacters()
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class, array('translateErrorMessage'));
+        $subject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class)
+            ->setMethods(array('translateErrorMessage'))
+            ->getMock();
         $this->assertTrue($subject->validate('adsf%&/$jklsfdö')->hasErrors());
     }
 
@@ -52,7 +56,9 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function alphanumericValidatorCreatesTheCorrectErrorForAnInvalidSubject()
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class, array('translateErrorMessage'));
+        $subject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class)
+            ->setMethods(array('translateErrorMessage'))
+            ->getMock();
         $this->assertEquals(1, count($subject->validate('adsf%&/$jklsfdö')->getErrors()));
     }
 
@@ -62,7 +68,9 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function alphanumericValidatorShouldReturnNoErrorsForAnAlphanumericUnicodeString()
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class, array('translateErrorMessage'));
+        $subject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class)
+            ->setMethods(array('translateErrorMessage'))
+            ->getMock();
         $this->assertFalse($subject->validate('12ssDF34daweidfäøüößØœ你好')->hasErrors());
     }
 }

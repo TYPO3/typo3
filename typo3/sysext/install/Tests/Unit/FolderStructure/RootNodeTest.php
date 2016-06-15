@@ -30,13 +30,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1366140117);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\RootNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class, array('isWindowsOs'), array(), '', false);
-        $falseParent = $this->getMock(
-            \TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class,
-            array(),
-            array(),
-            '',
-            false
-        );
+        $falseParent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
         $node->__construct(array(), $falseParent);
     }
 
@@ -224,7 +218,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $node->expects($this->any())->method('isDirectory')->will($this->returnValue(true));
         $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
         $node->expects($this->any())->method('isWritable')->will($this->returnValue(true));
-        $childStatusMock = $this->getMock(\TYPO3\CMS\Install\Status\ErrorStatus::class, array(), array(), '', false);
+        $childStatusMock = $this->createMock(\TYPO3\CMS\Install\Status\ErrorStatus::class);
         $node->expects($this->once())->method('getChildrenStatus')->will($this->returnValue(array($childStatusMock)));
         $statusArray = $node->getStatus();
         /** @var $status \TYPO3\CMS\Install\Status\StatusInterface */

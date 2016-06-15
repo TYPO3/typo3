@@ -49,7 +49,10 @@ class UploadViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
      */
     public function renderCorrectlySetsTypeNameAndValueAttributes()
     {
-        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('addAttribute', 'setContent', 'render'), array(), '', false);
+        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+            ->setMethods(array('addAttribute', 'setContent', 'render'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('type', 'file');
         $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('name', 'someName');
         $this->viewHelper->expects($this->at(0))->method('registerFieldNameForFormTokenGeneration')->with('someName[name]');

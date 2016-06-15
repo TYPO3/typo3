@@ -46,10 +46,16 @@ class ArgumentsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function addingAnArgumentReplacesArgumentWithSameName()
     {
         $arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
-        $mockFirstArgument = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName'), array(), '', false);
+        $mockFirstArgument = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockFirstArgument->expects($this->any())->method('getName')->will($this->returnValue('argumentName1234'));
         $arguments->addArgument($mockFirstArgument);
-        $mockSecondArgument = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName'), array(), '', false);
+        $mockSecondArgument = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockSecondArgument->expects($this->any())->method('getName')->will($this->returnValue('argumentName1234'));
         $arguments->addArgument($mockSecondArgument);
         $this->assertSame($mockSecondArgument, $arguments->getArgument('argumentName1234'), 'The added and retrieved argument is not the same.');
@@ -60,8 +66,8 @@ class ArgumentsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function addNewArgumentProvidesFluentInterface()
     {
-        $mockArgument = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array(), array(), '', false);
-        $mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+        $mockArgument = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class);
+        $mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $mockObjectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)->will($this->returnValue($mockArgument));
         $arguments = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments::class, array('dummy'));
         $arguments->_set('objectManager', $mockObjectManager);
@@ -74,7 +80,10 @@ class ArgumentsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function addingArgumentThroughArrayAccessWorks()
     {
-        $mockArgument = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName'), array(), '', false);
+        $mockArgument = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockArgument->expects($this->any())->method('getName')->will($this->returnValue('argumentName1234'));
         $arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
         $arguments[] = $mockArgument;
@@ -87,7 +96,10 @@ class ArgumentsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function retrievingArgumentThroughArrayAccessWorks()
     {
-        $mockArgument = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName'), array(), '', false);
+        $mockArgument = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockArgument->expects($this->any())->method('getName')->will($this->returnValue('argumentName1234'));
         $arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
         $arguments[] = $mockArgument;
@@ -112,7 +124,10 @@ class ArgumentsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function issetReturnsCorrectResult()
     {
-        $mockArgument = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName'), array(), '', false);
+        $mockArgument = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockArgument->expects($this->any())->method('getName')->will($this->returnValue('argumentName1234'));
         $arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
         $this->assertFalse(isset($arguments['argumentName1234']), 'isset() did not return FALSE.');
@@ -125,11 +140,20 @@ class ArgumentsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getArgumentNamesReturnsNamesOfAddedArguments()
     {
-        $mockArgument1 = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName'), array(), '', false);
+        $mockArgument1 = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockArgument1->expects($this->any())->method('getName')->will($this->returnValue('argumentName1'));
-        $mockArgument2 = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName'), array(), '', false);
+        $mockArgument2 = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockArgument2->expects($this->any())->method('getName')->will($this->returnValue('argumentName2'));
-        $mockArgument3 = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName'), array(), '', false);
+        $mockArgument3 = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockArgument3->expects($this->any())->method('getName')->will($this->returnValue('argumentName3'));
         $arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
         $arguments[] = $mockArgument1;
@@ -144,13 +168,22 @@ class ArgumentsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getArgumentShortNamesReturnsShortNamesOfAddedArguments()
     {
-        $mockArgument1 = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName', 'getShortName'), array(), '', false);
+        $mockArgument1 = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName', 'getShortName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockArgument1->expects($this->any())->method('getName')->will($this->returnValue('argumentName1'));
         $mockArgument1->expects($this->any())->method('getShortName')->will($this->returnValue('a'));
-        $mockArgument2 = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName', 'getShortName'), array(), '', false);
+        $mockArgument2 = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName', 'getShortName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockArgument2->expects($this->any())->method('getName')->will($this->returnValue('argumentName2'));
         $mockArgument2->expects($this->any())->method('getShortName')->will($this->returnValue('b'));
-        $mockArgument3 = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName', 'getShortName'), array(), '', false);
+        $mockArgument3 = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName', 'getShortName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockArgument3->expects($this->any())->method('getName')->will($this->returnValue('argumentName3'));
         $mockArgument3->expects($this->any())->method('getShortName')->will($this->returnValue('c'));
         $arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
@@ -166,9 +199,12 @@ class ArgumentsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function addNewArgumentCreatesAndAddsNewArgument()
     {
-        $mockArgument = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName'), array(), '', false);
+        $mockArgument = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockArgument->expects($this->any())->method('getName')->will($this->returnValue('dummyName'));
-        $mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+        $mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $mockObjectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)->will($this->returnValue($mockArgument));
         $arguments = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments::class, array('dummy'));
         $arguments->_set('objectManager', $mockObjectManager);
@@ -183,9 +219,12 @@ class ArgumentsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function addNewArgumentAssumesTextDataTypeByDefault()
     {
-        $mockArgument = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName'), array(), '', false);
+        $mockArgument = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockArgument->expects($this->any())->method('getName')->will($this->returnValue('dummyName'));
-        $mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+        $mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $mockObjectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, 'dummyName', 'Text')->will($this->returnValue($mockArgument));
         $arguments = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments::class, array('dummy'));
         $arguments->_set('objectManager', $mockObjectManager);
@@ -197,10 +236,13 @@ class ArgumentsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function addNewArgumentCanAddArgumentsMarkedAsRequired()
     {
-        $mockArgument = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName', 'setRequired'), array(), '', false);
+        $mockArgument = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName', 'setRequired'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockArgument->expects($this->once())->method('getName')->will($this->returnValue('dummyName'));
         $mockArgument->expects($this->once())->method('setRequired')->with(true);
-        $mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+        $mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $mockObjectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, 'dummyName', 'Text')->will($this->returnValue($mockArgument));
         $arguments = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments::class, array('dummy'));
         $arguments->_set('objectManager', $mockObjectManager);
@@ -212,11 +254,14 @@ class ArgumentsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function addNewArgumentCanAddArgumentsMarkedAsOptionalWithDefaultValues()
     {
-        $mockArgument = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName', 'setRequired', 'setDefaultValue'), array(), '', false);
+        $mockArgument = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName', 'setRequired', 'setDefaultValue'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockArgument->expects($this->once())->method('getName')->will($this->returnValue('dummyName'));
         $mockArgument->expects($this->once())->method('setRequired')->with(false);
         $mockArgument->expects($this->once())->method('setDefaultValue')->with('someDefaultValue');
-        $mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+        $mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $mockObjectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, 'dummyName', 'Text')->will($this->returnValue($mockArgument));
         $arguments = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments::class, array('dummy'));
         $arguments->_set('objectManager', $mockObjectManager);
@@ -239,9 +284,15 @@ class ArgumentsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function removeAllClearsAllArguments()
     {
-        $mockArgument1 = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName', 'getShortName'), array(), '', false);
+        $mockArgument1 = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName', 'getShortName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockArgument1->expects($this->any())->method('getName')->will($this->returnValue('argumentName1'));
-        $mockArgument2 = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName', 'getShortName'), array(), '', false);
+        $mockArgument2 = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)
+            ->setMethods(array('getName', 'getShortName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockArgument2->expects($this->any())->method('getName')->will($this->returnValue('argumentName2'));
         $arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
         $arguments[] = $mockArgument1;

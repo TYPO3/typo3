@@ -47,12 +47,19 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $templateService = $this->getMock(TemplateService::class, array('getFileName', 'linkData'));
-        $this->tsfe = $this->getMock(TypoScriptFrontendController::class, array('dummy'), array(), '', false);
+        $templateService = $this->getMockBuilder(TemplateService::class)
+            ->setMethods(array('getFileName', 'linkData'))
+            ->getMock();
+        $this->tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
+            ->setMethods(array('dummy'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->tsfe->tmpl = $templateService;
         $this->tsfe->config = array();
         $this->tsfe->page = array();
-        $sysPageMock = $this->getMock(PageRepository::class, array('getRawRecord'));
+        $sysPageMock = $this->getMockBuilder(PageRepository::class)
+            ->setMethods(array('getRawRecord'))
+            ->getMock();
         $this->tsfe->sys_page = $sysPageMock;
         $GLOBALS['TSFE'] = $this->tsfe;
 
@@ -61,7 +68,10 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'FILES' => FilesContentObject::class,
             'TEXT' => TextContentObject::class,
         ));
-        $this->subject = $this->getMock(FilesContentObject::class, array('getFileCollector'), array($contentObjectRenderer));
+        $this->subject = $this->getMockBuilder(FilesContentObject::class)
+            ->setMethods(array('getFileCollector'))
+            ->setConstructorArgs(array($contentObjectRenderer))
+            ->getMock();
     }
 
     /**
@@ -211,7 +221,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $fileReferenceMap = array();
         for ($i = 1; $i < 4; $i++) {
-            $fileReference = $this->getMock(FileReference::class, array(), array(), '', false);
+            $fileReference = $this->createMock(FileReference::class);
             $fileReference->expects($this->any())
                 ->method('getName')
                 ->will($this->returnValue('File ' . $i));
@@ -227,11 +237,13 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $fileReferenceMap[] = array($i, $fileReference);
         }
 
-        $fileRepository = $this->getMock(\TYPO3\CMS\Core\Resource\FileRepository::class);
+        $fileRepository = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\FileRepository::class)->getMock();
         $fileRepository->expects($this->any())
             ->method('findFileReferenceByUid')
             ->will($this->returnValueMap($fileReferenceMap));
-        $fileCollector = $this->getMock(FileCollector::class, array('getFileRepository'));
+        $fileCollector = $this->getMockBuilder(FileCollector::class)
+            ->setMethods(array('getFileRepository'))
+            ->getMock();
         $fileCollector->expects($this->any())
             ->method('getFileRepository')
             ->will($this->returnValue($fileRepository));
@@ -390,7 +402,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $fileMap = array();
         for ($i = 1; $i < 4; $i++) {
-            $file = $this->getMock(File::class, array(), array(), '', false);
+            $file = $this->createMock(File::class);
             $file->expects($this->any())
                 ->method('getName')
                 ->will($this->returnValue('File ' . $i));
@@ -406,11 +418,13 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $fileMap[] = array($i, array(), $file);
         }
 
-        $resourceFactory = $this->getMock(ResourceFactory::class);
+        $resourceFactory = $this->getMockBuilder(ResourceFactory::class)->getMock();
         $resourceFactory->expects($this->any())
             ->method('getFileObject')
             ->will($this->returnValueMap($fileMap));
-        $fileCollector = $this->getMock(FileCollector::class, array('getResourceFactory'));
+        $fileCollector = $this->getMockBuilder(FileCollector::class)
+            ->setMethods(array('getResourceFactory'))
+            ->getMock();
         $fileCollector->expects($this->any())
             ->method('getResourceFactory')
             ->will($this->returnValue($resourceFactory));
@@ -609,7 +623,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         for ($i = 1; $i < 4; $i++) {
             $fileReferenceArray = array();
             for ($j = 1; $j < 4; $j++) {
-                $fileReference = $this->getMock(FileReference::class, array(), array(), '', false);
+                $fileReference = $this->createMock(FileReference::class);
                 $fileReference->expects($this->any())
                     ->method('getName')
                     ->will($this->returnValue('File ' . $fileCount));
@@ -626,7 +640,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 $fileCount++;
             }
 
-            $collection = $this->getMock(StaticFileCollection::class, array(), array(), '', false);
+            $collection = $this->createMock(StaticFileCollection::class);
             $collection->expects($this->any())
                 ->method('getItems')
                 ->will($this->returnValue($fileReferenceArray));
@@ -634,11 +648,13 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $collectionMap[] = array($i, $collection);
         }
 
-        $collectionRepository = $this->getMock(FileCollectionRepository::class);
+        $collectionRepository = $this->getMockBuilder(FileCollectionRepository::class)->getMock();
         $collectionRepository->expects($this->any())
             ->method('findByUid')
             ->will($this->returnValueMap($collectionMap));
-        $fileCollector = $this->getMock(FileCollector::class, array('getFileCollectionRepository'));
+        $fileCollector = $this->getMockBuilder(FileCollector::class)
+            ->setMethods(array('getFileCollectionRepository'))
+            ->getMock();
         $fileCollector->expects($this->any())
             ->method('getFileCollectionRepository')
             ->will($this->returnValue($collectionRepository));
@@ -869,7 +885,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         for ($i = 1; $i < 4; $i++) {
             $filesArrayForFolder[$i] = [];
             for ($j = 1; $j < 4; $j++) {
-                $file = $this->getMock(File::class, [], [], '', false);
+                $file = $this->createMock(File::class);
                 $file->expects($this->any())
                     ->method('getName')
                     ->will($this->returnValue('File ' . $fileCount));
@@ -886,7 +902,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 $fileCount++;
             }
 
-            $folder = $this->getMock(Folder::class, array(), array(), '', false);
+            $folder = $this->createMock(Folder::class);
 
             if ($recursive) {
                 if ($i < 3) {
@@ -915,11 +931,13 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             }
         }
 
-        $resourceFactory = $this->getMock(ResourceFactory::class);
+        $resourceFactory = $this->getMockBuilder(ResourceFactory::class)->getMock();
         $resourceFactory->expects($this->any())
             ->method('getFolderObjectFromCombinedIdentifier')
             ->will($this->returnValueMap($folderMap));
-        $fileCollector = $this->getMock(FileCollector::class, array('getResourceFactory'));
+        $fileCollector = $this->getMockBuilder(FileCollector::class)
+            ->setMethods(array('getResourceFactory'))
+            ->getMock();
         $fileCollector->expects($this->any())
             ->method('getResourceFactory')
             ->will($this->returnValue($resourceFactory));

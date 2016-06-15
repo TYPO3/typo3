@@ -48,7 +48,7 @@ class CachingFrameworkGarbageCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTe
      */
     public function executeCallsCollectGarbageOfConfiguredBackend()
     {
-        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array(), array(), '', false);
+        $cache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class);
         $cache->expects($this->any())->method('getIdentifier')->will($this->returnValue('cache'));
         $cache->expects($this->atLeastOnce())->method('collectGarbage');
         $mockCacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
@@ -61,7 +61,10 @@ class CachingFrameworkGarbageCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTe
             )
         );
         /** @var \TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask::class, array('dummy'), array(), '', false);
+        $subject = $this->getMockBuilder(\TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask::class)
+            ->setMethods(array('dummy'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $subject->selectedBackends = array(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class);
         $subject->execute();
     }
@@ -71,7 +74,7 @@ class CachingFrameworkGarbageCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTe
      */
     public function executeDoesNotCallCollectGarbageOfNotConfiguredBackend()
     {
-        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array(), array(), '', false);
+        $cache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class);
         $cache->expects($this->any())->method('getIdentifier')->will($this->returnValue('cache'));
         $cache->expects($this->never())->method('collectGarbage');
         $mockCacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
@@ -84,7 +87,10 @@ class CachingFrameworkGarbageCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTe
             )
         );
         /** @var \TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask::class, array('dummy'), array(), '', false);
+        $subject = $this->getMockBuilder(\TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask::class)
+            ->setMethods(array('dummy'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $subject->selectedBackends = array(\TYPO3\CMS\Core\Cache\Backend\NullBackend::class);
         $subject->execute();
     }

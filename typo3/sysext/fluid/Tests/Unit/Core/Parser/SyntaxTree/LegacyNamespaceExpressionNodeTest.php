@@ -30,9 +30,13 @@ class LegacyNamespaceExpressionNodeTest extends UnitTestCase
      */
     public function evaluateExpressionExtractsNamespaces(array $matches, array $expected)
     {
-        $resolver = $this->getMock('TYPO3Fluid\\Fluid\\Core\\ViewHelper\\ViewHelperResolver', array('addNamespace'));
+        $resolver = $this->getMockBuilder('TYPO3Fluid\\Fluid\\Core\\ViewHelper\\ViewHelperResolver')
+            ->setMethods(array('addNamespace'))
+            ->getMock();
         $resolver->expects($this->once())->method('addNamespace')->with($expected[0], $expected[1]);
-        $context = $this->getMock(RenderingContextFixture::class, array('getViewHelperResolver'));
+        $context = $this->getMockBuilder(RenderingContextFixture::class)
+            ->setMethods(array('getViewHelperResolver'))
+            ->getMock();
         $context->expects($this->once())->method('getViewHelperResolver')->willReturn($resolver);
         LegacyNamespaceExpressionNode::evaluateExpression($context, $matches[0], $matches);
     }

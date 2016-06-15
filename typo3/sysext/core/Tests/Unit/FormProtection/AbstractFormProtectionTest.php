@@ -37,7 +37,9 @@ class AbstractFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function generateTokenRetrievesTokenOnce()
     {
-        $subject = $this->getMock(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class, array('retrieveSessionToken'));
+        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class)
+            ->setMethods(array('retrieveSessionToken'))
+            ->getMock();
         $subject->expects($this->once())->method('retrieveSessionToken')->will($this->returnValue('token'));
         $subject->generateToken('foo');
         $subject->generateToken('foo');
@@ -48,7 +50,9 @@ class AbstractFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validateTokenRetrievesTokenOnce()
     {
-        $subject = $this->getMock(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class, array('retrieveSessionToken'));
+        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class)
+            ->setMethods(array('retrieveSessionToken'))
+            ->getMock();
         $subject->expects($this->once())->method('retrieveSessionToken')->will($this->returnValue('token'));
         $subject->validateToken('foo', 'bar');
         $subject->validateToken('foo', 'bar');
@@ -70,7 +74,9 @@ class AbstractFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function cleanPersistsToken()
     {
-        $subject = $this->getMock(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class, array('persistSessionToken'));
+        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class)
+            ->setMethods(array('persistSessionToken'))
+            ->getMock();
         $subject->expects($this->once())->method('persistSessionToken');
         $subject->clean();
     }
@@ -234,7 +240,9 @@ class AbstractFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function validateTokenForValidTokenNotCallsCreateValidationErrorMessage()
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class, array('createValidationErrorMessage'));
+        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class)
+            ->setMethods(array('createValidationErrorMessage'))
+            ->getMock();
         $subject->expects($this->never())->method('createValidationErrorMessage');
         $formName = 'foo';
         $action = 'edit';
@@ -250,7 +258,9 @@ class AbstractFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function validateTokenForInvalidTokenCallsCreateValidationErrorMessage()
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class, array('createValidationErrorMessage'));
+        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class)
+            ->setMethods(array('createValidationErrorMessage'))
+            ->getMock();
         $subject->expects($this->once())->method('createValidationErrorMessage');
         $formName = 'foo';
         $action = 'edit';
@@ -266,7 +276,9 @@ class AbstractFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function validateTokenForInvalidFormNameCallsCreateValidationErrorMessage()
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class, array('createValidationErrorMessage'));
+        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting::class)
+            ->setMethods(array('createValidationErrorMessage'))
+            ->getMock();
         $subject->expects($this->once())->method('createValidationErrorMessage');
         $formName = 'foo';
         $action = 'edit';

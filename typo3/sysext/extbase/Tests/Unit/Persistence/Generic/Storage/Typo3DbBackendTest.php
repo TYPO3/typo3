@@ -43,22 +43,37 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function uidOfAlreadyPersistedValueObjectIsDeterminedCorrectly()
     {
-        $mockValueObject = $this->getMock(\TYPO3\CMS\Extbase\DomainObject\AbstractValueObject::class, array('_getProperties'), array(), '', false);
+        $mockValueObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\DomainObject\AbstractValueObject::class)
+            ->setMethods(array('_getProperties'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockValueObject->expects($this->once())->method('_getProperties')->will($this->returnValue(array('propertyName' => 'propertyValue')));
-        $mockColumnMap = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class, array('isPersistableProperty', 'getColumnName'), array(), '', false);
+        $mockColumnMap = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class)
+            ->setMethods(array('isPersistableProperty', 'getColumnName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockColumnMap->expects($this->any())->method('getColumnName')->will($this->returnValue('column_name'));
         $tableName = 'tx_foo_table';
-        $mockDataMap = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class, array('isPersistableProperty', 'getColumnMap', 'getTableName'), array(), '', false);
+        $mockDataMap = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class)
+            ->setMethods(array('isPersistableProperty', 'getColumnMap', 'getTableName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockDataMap->expects($this->any())->method('isPersistableProperty')->will($this->returnValue(true));
         $mockDataMap->expects($this->any())->method('getColumnMap')->will($this->returnValue($mockColumnMap));
         $mockDataMap->expects($this->any())->method('getTableName')->will($this->returnValue($tableName));
-        $mockDataMapper = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class, array('getDataMap', 'getPlainValue'), array(), '', false);
+        $mockDataMapper = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class)
+            ->setMethods(array('getDataMap', 'getPlainValue'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockDataMapper->expects($this->once())->method('getDataMap')->will($this->returnValue($mockDataMap));
         $mockDataMapper->expects($this->once())->method('getPlainValue')->will($this->returnValue('plainPropertyValue'));
         $expectedStatement = 'SELECT * FROM tx_foo_table WHERE column_name=?';
         $expectedParameters = array('plainPropertyValue');
         $expectedUid = 52;
-        $mockDataBaseHandle = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('sql_query', 'sql_fetch_assoc'), array(), '', false);
+        $mockDataBaseHandle = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)
+            ->setMethods(array('sql_query', 'sql_fetch_assoc'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockDataBaseHandle->expects($this->once())->method('sql_query')->will($this->returnValue('resource'));
         $mockDataBaseHandle->expects($this->any())->method('sql_fetch_assoc')->with('resource')->will($this->returnValue(array('uid' => $expectedUid)));
         $mockTypo3DbBackend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend::class, array('checkSqlErrors', 'replacePlaceholders', 'addVisibilityConstraintStatement'), array(), '', false);
@@ -90,12 +105,17 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'pid' => '-1'
         );
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings|\PHPUnit_Framework_MockObject_MockObject $querySettings */
-        $mockQuerySettings = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class, array('dummy'), array(), '', false);
+        $mockQuerySettings = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)
+            ->setMethods(array('dummy'))
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $workspaceUid = 2;
         $sourceMock = new \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Selector('tx_foo', 'Tx_Foo');
         /** @var $pageRepositoryMock \TYPO3\CMS\Frontend\Page\PageRepository|\PHPUnit_Framework_MockObject_MockObject */
-        $pageRepositoryMock = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, array('movePlhOL', 'getWorkspaceVersionOfRecord'));
+        $pageRepositoryMock = $this->getMockBuilder(\TYPO3\CMS\Frontend\Page\PageRepository::class)
+            ->setMethods(array('movePlhOL', 'getWorkspaceVersionOfRecord'))
+            ->getMock();
         $pageRepositoryMock->versioningPreview = true;
         $pageRepositoryMock->expects($this->once())->method('getWorkspaceVersionOfRecord')->with($workspaceUid, 'tx_foo', '42')->will($this->returnValue($workspaceVersion));
         $mockTypo3DbBackend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend::class, array('dummy'), array(), '', false);

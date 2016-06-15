@@ -61,7 +61,10 @@ class WidgetRequestHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function priorityIsHigherThanDefaultRequestHandler()
     {
-        $defaultWebRequestHandler = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHandler::class, array('handleRequest'), array(), '', false);
+        $defaultWebRequestHandler = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHandler::class)
+            ->setMethods(array('handleRequest'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->assertTrue($this->widgetRequestHandler->getPriority() > $defaultWebRequestHandler->getPriority());
     }
 
@@ -71,12 +74,17 @@ class WidgetRequestHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function handleRequestCallsExpectedMethods()
     {
         $handler = new WidgetRequestHandler();
-        $request = $this->getMock(Request::class);
-        $requestBuilder = $this->getMock(WidgetRequestBuilder::class, array('build'));
+        $request = $this->createMock(Request::class);
+        $requestBuilder = $this->getMockBuilder(WidgetRequestBuilder::class)
+            ->setMethods(array('build'))
+            ->getMock();
         $requestBuilder->expects($this->once())->method('build')->willReturn($request);
-        $objectManager = $this->getMock(ObjectManagerInterface::class);
-        $objectManager->expects($this->once())->method('get')->willReturn($this->getMock(Response::class));
-        $requestDispatcher = $this->getMock(Dispatcher::class, array('dispatch'), array(), '', false);
+        $objectManager = $this->createMock(ObjectManagerInterface::class);
+        $objectManager->expects($this->once())->method('get')->willReturn($this->createMock(Response::class));
+        $requestDispatcher = $this->getMockBuilder(Dispatcher::class)
+            ->setMethods(array('dispatch'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $requestDispatcher->expects($this->once())->method('dispatch')->with($request);
         $this->inject($handler, 'widgetRequestBuilder', $requestBuilder);
         $this->inject($handler, 'dispatcher', $requestDispatcher);

@@ -54,7 +54,9 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
 
         /** @var $mock \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication */
-        $mock = $this->getMock(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, array('dummy'));
+        $mock = $this->getMockBuilder(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class)
+            ->setMethods(array('dummy'))
+            ->getMock();
         $mock->checkPid = true;
         $mock->checkPid_value = null;
         $mock->user_table = 'be_users';

@@ -28,7 +28,9 @@ class ImageViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function registersExpectedArgumentsInInitializeArgumentsMethod()
     {
-        $mock = $this->getMock(ImageViewHelper::class, array('registerUniversalTagAttributes', 'registerTagAttribute'));
+        $mock = $this->getMockBuilder(ImageViewHelper::class)
+            ->setMethods(array('registerUniversalTagAttributes', 'registerTagAttribute'))
+            ->getMock();
         $mock->expects($this->at(0))->method('registerUniversalTagAttributes');
         $mock->expects($this->at(1))->method('registerTagAttribute')->with('alt', 'string', $this->anything(), false);
         $mock->expects($this->at(2))->method('registerTagAttribute')->with('ismap', 'string', $this->anything(), false);
@@ -44,7 +46,9 @@ class ImageViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function renderMethodThrowsExceptionOnInvalidArguments(array $arguments)
     {
-        $mock = $this->getMock(ImageViewHelper::class, array('dummy'));
+        $mock = $this->getMockBuilder(ImageViewHelper::class)
+            ->setMethods(array('dummy'))
+            ->getMock();
         $mock->setArguments($arguments);
 
         $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class);
@@ -84,7 +88,10 @@ class ImageViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function renderMethodCreatesExpectedTag(array $arguments, array $expected)
     {
-        $image = $this->getMock(FileReference::class, array('getProperty'), array(), '', false);
+        $image = $this->getMockBuilder(FileReference::class)
+            ->setMethods(array('getProperty'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $image->expects($this->any())->method('getProperty')->willReturnMap(array(
             array('width', $arguments['width']),
             array('height', $arguments['height']),
@@ -92,11 +99,15 @@ class ImageViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             array('title', 'title'),
             array('crop', 'crop')
         ));
-        $imageService = $this->getMock(ImageService::class, array('getImage', 'applyProcessingInstructions', 'getImageUri'));
+        $imageService = $this->getMockBuilder(ImageService::class)
+            ->setMethods(array('getImage', 'applyProcessingInstructions', 'getImageUri'))
+            ->getMock();
         $imageService->expects($this->once())->method('getImage')->willReturn($image);
         $imageService->expects($this->once())->method('applyProcessingInstructions')->with($image, $this->anything())->willReturn($image);
         $imageService->expects($this->once())->method('getImageUri')->with($image)->willReturn('test.png');
-        $tagBuilder = $this->getMock(TagBuilder::class, array('addAttribute', 'render'));
+        $tagBuilder = $this->getMockBuilder(TagBuilder::class)
+            ->setMethods(array('addAttribute', 'render'))
+            ->getMock();
         $index = -1;
         foreach ($expected as $expectedAttribute => $expectedValue) {
             $tagBuilder->expects($this->at(++ $index))->method('addAttribute')->with($expectedAttribute, $expectedValue);

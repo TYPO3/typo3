@@ -66,19 +66,19 @@ class UriBuilderTest extends UnitTestCase
      */
     protected function setUp()
     {
-        $GLOBALS['TSFE'] = $this->getMock(TypoScriptFrontendController::class, array(), array(), '', false);
-        $this->mockContentObject = $this->getMock(ContentObjectRenderer::class);
-        $this->mockRequest = $this->getMock(Request::class);
-        $this->mockExtensionService = $this->getMock(ExtensionService::class);
-        $this->mockConfigurationManager = $this->getMock(ConfigurationManagerInterface::class);
+        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
+        $this->mockContentObject = $this->createMock(ContentObjectRenderer::class);
+        $this->mockRequest = $this->createMock(Request::class);
+        $this->mockExtensionService = $this->createMock(ExtensionService::class);
+        $this->mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $this->uriBuilder = $this->getAccessibleMock(UriBuilder::class, array('build'));
         $this->uriBuilder->setRequest($this->mockRequest);
         $this->uriBuilder->_set('contentObject', $this->mockContentObject);
         $this->uriBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->uriBuilder->_set('extensionService', $this->mockExtensionService);
-        $this->uriBuilder->_set('environmentService', $this->getMock(EnvironmentService::class));
+        $this->uriBuilder->_set('environmentService', $this->createMock(EnvironmentService::class));
         // Mocking backend user is required for backend URI generation as BackendUtility::getModuleUrl() is called
-        $backendUserMock = $this->getMock(BackendUserAuthentication::class);
+        $backendUserMock = $this->createMock(BackendUserAuthentication::class);
         $backendUserMock->expects($this->any())->method('check')->will($this->returnValue(true));
         $GLOBALS['BE_USER'] = $backendUserMock;
     }
@@ -661,7 +661,7 @@ class UriBuilderTest extends UnitTestCase
         $this->uriBuilder->setFormat('txt');
         $this->mockRequest->expects($this->once())->method('getControllerExtensionName')->will($this->returnValue('SomeExtensionNameFromRequest'));
 
-        $mockConfigurationManager = $this->getMock(ConfigurationManager::class);
+        $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
         $mockConfigurationManager->expects($this->any())->method('getConfiguration')
             ->will($this->returnValue(array('view' => array('formatToPageTypeMapping' => array('txt' => 2)))));
         $this->uriBuilder->_set('configurationManager', $mockConfigurationManager);
@@ -683,7 +683,7 @@ class UriBuilderTest extends UnitTestCase
         $this->uriBuilder->setTargetPageUid(123);
         $this->uriBuilder->setFormat('txt');
 
-        $mockConfigurationManager = $this->getMock(ConfigurationManager::class);
+        $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
         $mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue(array()));
         $this->uriBuilder->_set('configurationManager', $mockConfigurationManager);
 
@@ -705,7 +705,7 @@ class UriBuilderTest extends UnitTestCase
         $this->uriBuilder->setTargetPageUid(123);
         $this->uriBuilder->setFormat('txt');
 
-        $mockConfigurationManager = $this->getMock(ConfigurationManager::class);
+        $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
         $mockConfigurationManager->expects($this->any())->method('getConfiguration')
             ->will($this->returnValue(array(array('view' => array('formatToPageTypeMapping' => array('pdf' => 2))))));
         $this->uriBuilder->_set('configurationManager', $mockConfigurationManager);

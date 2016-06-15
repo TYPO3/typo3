@@ -39,10 +39,9 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function createSubjectWithMockedMethods(array $methods)
     {
-        $this->subject = $this->getMock(
-            \TYPO3\CMS\Core\Configuration\ConfigurationManager::class,
-            $methods
-        );
+        $this->subject = $this->getMockBuilder(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)
+            ->setMethods($methods)
+            ->getMock();
     }
 
     /**

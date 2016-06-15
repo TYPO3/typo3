@@ -39,7 +39,10 @@ class CleanerTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->subject = $this->getMock(CleanerTask::class, array('dummy'), array(), '', false);
+        $this->subject = $this->getMockBuilder(CleanerTask::class)
+            ->setMethods(array('dummy'))
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
@@ -73,7 +76,10 @@ class CleanerTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['TCA']['pages']['ctrl']['tstamp'] = 'tstamp';
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|CleanerTask $subject */
-        $subject = $this->getMock(CleanerTask::class, array('getPeriodAsTimestamp'), array(), '', false);
+        $subject = $this->getMockBuilder(CleanerTask::class)
+            ->setMethods(array('getPeriodAsTimestamp'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $subject->setTcaTables(['pages']);
         $subject->expects($this->once())->method('getPeriodAsTimestamp')->willReturn(400);
 

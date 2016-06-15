@@ -44,8 +44,8 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->mockConfigurationBuilder = $this->getMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder::class);
-        $this->mockConfiguration = $this->getMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface::class);
+        $this->mockConfigurationBuilder = $this->createMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder::class);
+        $this->mockConfiguration = $this->createMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface::class);
     }
 
     /**
@@ -110,7 +110,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function getMockTypeConverter($name = '', $canConvertFrom = true, $properties = array(), $typeOfSubObject = '')
     {
-        $mockTypeConverter = $this->getMock(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class);
+        $mockTypeConverter = $this->createMock(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class);
         $mockTypeConverter->_name = $name;
         $mockTypeConverter->expects($this->any())->method('canConvertFrom')->will($this->returnValue($canConvertFrom));
         $mockTypeConverter->expects($this->any())->method('convertFrom')->will($this->returnValue($name));

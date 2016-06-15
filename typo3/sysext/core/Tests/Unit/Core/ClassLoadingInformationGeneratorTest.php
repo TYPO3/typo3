@@ -43,7 +43,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
             ],
         ]);
         /** @var ClassLoader|\PHPUnit_Framework_MockObject_MockObject $classLoaderMock */
-        $classLoaderMock = $this->getMock(ClassLoader::class);
+        $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
         $generator->buildClassAliasMapForPackage($packageMock);
     }
@@ -66,7 +66,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
             ],
         ]);
         /** @var ClassLoader|\PHPUnit_Framework_MockObject_MockObject $classLoaderMock */
-        $classLoaderMock = $this->getMock(ClassLoader::class);
+        $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
         $generator->buildClassAliasMapForPackage($packageMock);
     }
@@ -92,7 +92,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
         ];
         $packageMock = $this->createPackageMock(array());
         /** @var ClassLoader|\PHPUnit_Framework_MockObject_MockObject $classLoaderMock */
-        $classLoaderMock = $this->getMock(ClassLoader::class);
+        $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
         $this->assertEquals($expectedClassMap, $generator->buildClassAliasMapForPackage($packageMock));
     }
@@ -126,7 +126,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
             ],
         ]);
         /** @var ClassLoader|\PHPUnit_Framework_MockObject_MockObject $classLoaderMock */
-        $classLoaderMock = $this->getMock(ClassLoader::class);
+        $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
         $this->assertEquals($expectedClassMap, $generator->buildClassAliasMapForPackage($packageMock));
     }
@@ -251,7 +251,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
     public function autoloadFilesAreBuildCorrectly($packageManifest, $expectedPsr4Files, $expectedClassMapFiles)
     {
         /** @var ClassLoader|\PHPUnit_Framework_MockObject_MockObject $classLoaderMock */
-        $classLoaderMock = $this->getMock(ClassLoader::class);
+        $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [$this->createPackageMock($packageManifest)], __DIR__);
         $files = $generator->buildAutoloadInformationFiles();
 
@@ -361,7 +361,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
     public function autoloadDevFilesAreBuildCorrectly($packageManifest, $expectedPsr4Files, $expectedClassMapFiles)
     {
         /** @var ClassLoader|\PHPUnit_Framework_MockObject_MockObject $classLoaderMock */
-        $classLoaderMock = $this->getMock(ClassLoader::class);
+        $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [$this->createPackageMock($packageManifest)], __DIR__, true);
         $files = $generator->buildAutoloadInformationFiles();
 
@@ -391,7 +391,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
      */
     protected function createPackageMock($packageManifest)
     {
-        $packageMock = $this->getMock(PackageInterface::class);
+        $packageMock = $this->createMock(PackageInterface::class);
         $packageMock->expects($this->any())->method('getPackagePath')->willReturn(__DIR__ . '/Fixtures/test_extension/');
         $packageMock->expects($this->any())->method('getValueFromComposerManifest')->willReturn(
             json_decode(json_encode($packageManifest))

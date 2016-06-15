@@ -340,7 +340,10 @@ class DatabaseConnectionOracleTest extends AbstractTestCase
      */
     public function tablesAreUnmappedInAdminGetTables()
     {
-        $handlerMock = $this->getMock('\ADODB_mock', array('MetaTables'), array(), '', false);
+        $handlerMock = $this->getMockBuilder('\ADODB_mock')
+            ->setMethods(array('MetaTables'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $handlerMock->expects($this->any())->method('MetaTables')->will($this->returnValue(array('cf_cache_hash')));
         $this->subject->handlerInstance['_DEFAULT'] = $handlerMock;
 

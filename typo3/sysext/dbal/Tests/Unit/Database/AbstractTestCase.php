@@ -42,7 +42,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $subject->conf = $configuration;
 
         // Disable caching
-        $mockCacheFrontend = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, array(), array(), '', false);
+        $mockCacheFrontend = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class);
         $subject->expects($this->any())->method('getFieldInfoCache')->will($this->returnValue($mockCacheFrontend));
 
         // Inject SqlParser - Its logic is tested with the tests, too.
@@ -53,7 +53,10 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $subject->SQLparser = $sqlParser;
 
         // Mock away schema migration service from install tool
-        $installerSqlMock = $this->getMock(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class, array('getFieldDefinitions_fileContent'), array(), '', false);
+        $installerSqlMock = $this->getMockBuilder(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class)
+            ->setMethods(array('getFieldDefinitions_fileContent'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $installerSqlMock->expects($this->any())->method('getFieldDefinitions_fileContent')->will($this->returnValue(array()));
         $subject->_set('installerSql', $installerSqlMock);
 

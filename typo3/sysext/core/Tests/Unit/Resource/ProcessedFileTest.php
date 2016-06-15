@@ -44,10 +44,10 @@ class ProcessedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->storageMock = $this->getMock(ResourceStorage::class, array(), array(), '', false);
+        $this->storageMock = $this->createMock(ResourceStorage::class);
         $this->storageMock->expects($this->any())->method('getUid')->will($this->returnValue(5));
 
-        $this->folderMock = $this->getMock(Folder::class, array(), array(), '', false);
+        $this->folderMock = $this->createMock(Folder::class);
         $this->folderMock->expects($this->any())->method('getStorage')->willReturn($this->storageMock);
 
         $this->storageMock->expects($this->any())->method('getProcessingFolder')->willReturn($this->folderMock);

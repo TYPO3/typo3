@@ -50,11 +50,16 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
-        $this->repositoryRepositoryMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class, array('findByUid'), array($this->mockObjectManager));
+        $this->mockObjectManager = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class)->getMock();
+        $this->repositoryRepositoryMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class)
+            ->setMethods(array('findByUid'))
+            ->setConstructorArgs(array($this->mockObjectManager))
+            ->getMock();
         $this->extensionRepositoryMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository::class, array(), array($this->mockObjectManager));
         $this->repositoryHelperMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::class, array('updateExtList'), array(), '', false);
-        $this->languageServiceMock = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array('__none'));
+        $this->languageServiceMock = $this->getMockBuilder(\TYPO3\CMS\Lang\LanguageService::class)
+            ->setMethods(array('__none'))
+            ->getMock();
     }
 
     /**

@@ -32,14 +32,17 @@ class AbstractFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $currentIdentifier = '/parent/current/';
 
         /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $mockedStorageForParent */
-        $mockedStorageForParent = $this->getMock(ResourceStorage::class, array(), array(), '', false);
+        $mockedStorageForParent = $this->createMock(ResourceStorage::class);
 
         /** @var AbstractFile $parentFolderFixture */
         $parentFolderFixture = $this->getMockForAbstractClass(AbstractFile::class);
         $parentFolderFixture->setIdentifier($parentIdentifier)->setStorage($mockedStorageForParent);
 
         /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $mockedStorage */
-        $mockedStorage = $this->getMock(ResourceStorage::class, array('getFolderIdentifierFromFileIdentifier', 'getFolder'), array(), '', false);
+        $mockedStorage = $this->getMockBuilder(ResourceStorage::class)
+            ->setMethods(array('getFolderIdentifierFromFileIdentifier', 'getFolder'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockedStorage->expects($this->once())->method('getFolderIdentifierFromFileIdentifier')->with($currentIdentifier)->will($this->returnValue($parentIdentifier));
         $mockedStorage->expects($this->once())->method('getFolder')->with($parentIdentifier)->will($this->returnValue($parentFolderFixture));
 

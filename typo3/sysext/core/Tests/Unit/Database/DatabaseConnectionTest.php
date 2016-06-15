@@ -79,7 +79,7 @@ class DatabaseConnectionTest extends UnitTestCase
             ->will($this->returnCallback(function ($data) {
                 return $data;
             }));
-        $mysqliMock = $this->getMock('mysqli');
+        $mysqliMock = $this->createMock('mysqli');
         $mysqliMock
             ->expects($this->once())
             ->method('query')
@@ -106,7 +106,7 @@ class DatabaseConnectionTest extends UnitTestCase
             ->will($this->returnCallback(function ($data) {
                 return $data;
             }));
-        $mysqliMock = $this->getMock('mysqli');
+        $mysqliMock = $this->createMock('mysqli');
         $mysqliMock
             ->expects($this->once())
             ->method('query')
@@ -233,7 +233,10 @@ class DatabaseConnectionTest extends UnitTestCase
     public function searchQueryCreatesQuery($expectedResult, array $searchWords, array $fields, $table, $constraint)
     {
         /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(DatabaseConnection::class, ['quoteStr'], [], '', false);
+        $subject = $this->getMockBuilder(DatabaseConnection::class)
+            ->setMethods(['quoteStr'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $subject
             ->expects($this->any())
             ->method('quoteStr')
@@ -254,7 +257,10 @@ class DatabaseConnectionTest extends UnitTestCase
     public function escapeStringForLikeComparison()
     {
         /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(DatabaseConnection::class, ['dummy'], [], '', false);
+        $subject = $this->getMockBuilder(DatabaseConnection::class)
+            ->setMethods(['dummy'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->assertEquals('foo\\_bar\\%', $subject->escapeStrForLike('foo_bar%', 'table'));
     }
 
@@ -320,7 +326,10 @@ class DatabaseConnectionTest extends UnitTestCase
     public function stripOrderByForOrderByKeyword($orderByClause, $expectedResult)
     {
         /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(DatabaseConnection::class, ['dummy'], [], '', false);
+        $subject = $this->getMockBuilder(DatabaseConnection::class)
+            ->setMethods(['dummy'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $strippedQuery = $subject->stripOrderBy($orderByClause);
         $this->assertEquals($expectedResult, $strippedQuery);
     }
@@ -387,7 +396,10 @@ class DatabaseConnectionTest extends UnitTestCase
     public function stripGroupByForGroupByKeyword($groupByClause, $expectedResult)
     {
         /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(DatabaseConnection::class, ['dummy'], [], '', false);
+        $subject = $this->getMockBuilder(DatabaseConnection::class)
+            ->setMethods(['dummy'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $strippedQuery = $subject->stripGroupBy($groupByClause);
         $this->assertEquals($expectedResult, $strippedQuery);
     }
@@ -541,13 +553,11 @@ class DatabaseConnectionTest extends UnitTestCase
     public function noQuoteForFullQuoteArray(array $input, array $expected, $noQuote)
     {
         /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subject */
-        $subject = $this->getMock(
-            DatabaseConnection::class,
-            ['fullQuoteStr'],
-            [],
-            '',
-            false
-        );
+        $subject = $this->getMockBuilder(DatabaseConnection::class)
+            ->setMethods(['fullQuoteStr'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $subject
             ->expects($this->any())
             ->method('fullQuoteStr')
@@ -567,7 +577,7 @@ class DatabaseConnectionTest extends UnitTestCase
         $subject->_set('isConnected', true);
         $subject->_set('databaseName', $this->testTable);
 
-        $mysqliMock = $this->getMock('mysqli');
+        $mysqliMock = $this->getMockBuilder('mysqli')->getMock();
         $mysqliMock
             ->expects($this->once())
             ->method('select_db')
@@ -589,7 +599,7 @@ class DatabaseConnectionTest extends UnitTestCase
         $subject->_set('isConnected', true);
         $subject->_set('databaseName', $this->testTable);
 
-        $mysqliMock = $this->getMock('mysqli');
+        $mysqliMock = $this->getMockBuilder('mysqli')->getMock();
         $mysqliMock
             ->expects($this->once())
             ->method('select_db')

@@ -67,7 +67,7 @@ class TemplateServiceTest extends UnitTestCase
     {
         $row = array('foo');
         $GLOBALS['TSFE'] = new \stdClass();
-        $sysPageMock = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+        $sysPageMock = $this->createMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
         $sysPageMock->expects($this->once())->method('versionOL')->with('sys_template', $row);
         $GLOBALS['TSFE']->sys_page = $sysPageMock;
         $this->templateService->versionOL($row);
@@ -108,10 +108,15 @@ class TemplateServiceTest extends UnitTestCase
             ),
         );
 
-        $mockPackage = $this->getMock(\TYPO3\CMS\Core\Package\Package::class, array('getPackagePath'), array(), '', false);
+        $mockPackage = $this->getMockBuilder(\TYPO3\CMS\Core\Package\Package::class)
+            ->setMethods(array('getPackagePath'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockPackage->expects($this->any())->method('getPackagePath')->will($this->returnValue(''));
 
-        $mockPackageManager = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class, array('isPackageActive', 'getPackage'));
+        $mockPackageManager = $this->getMockBuilder(\TYPO3\CMS\Core\Package\PackageManager::class)
+            ->setMethods(array('isPackageActive', 'getPackage'))
+            ->getMock();
         $mockPackageManager->expects($this->any())->method('isPackageActive')->will($this->returnValue(true));
         $mockPackageManager->expects($this->any())->method('getPackage')->will($this->returnValue($mockPackage));
         ExtensionManagementUtility::setPackageManager($mockPackageManager);

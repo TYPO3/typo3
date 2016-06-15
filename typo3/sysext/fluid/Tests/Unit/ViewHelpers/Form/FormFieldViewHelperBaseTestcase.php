@@ -31,7 +31,7 @@ abstract class FormFieldViewHelperBaseTestcase extends \TYPO3\CMS\Fluid\Tests\Un
     protected function setUp()
     {
         parent::setUp();
-        $this->mockConfigurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $this->mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
     }
 
     /**

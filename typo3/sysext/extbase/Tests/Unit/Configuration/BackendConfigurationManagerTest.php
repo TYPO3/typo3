@@ -35,7 +35,7 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array());
+        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $this->backendConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class, array('getTypoScriptSetup'));
         $this->mockTypoScriptService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Service\TypoScriptService::class);
         $this->backendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
@@ -346,7 +346,7 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         /** @var $abstractConfigurationManager \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class, array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
-        $queryGenerator = $this->getMock(\TYPO3\CMS\Core\Database\QueryGenerator::class);
+        $queryGenerator = $this->createMock(\TYPO3\CMS\Core\Database\QueryGenerator::class);
         $queryGenerator->expects($this->any())
             ->method('getTreeList')
             ->will($this->onConsecutiveCalls('4', '', '5,6'));
@@ -372,7 +372,7 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         /** @var $abstractConfigurationManager \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class, array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
-        $queryGenerator = $this->getMock(\TYPO3\CMS\Core\Database\QueryGenerator::class);
+        $queryGenerator = $this->createMock(\TYPO3\CMS\Core\Database\QueryGenerator::class);
         $queryGenerator->expects($this->any())
             ->method('getTreeList')
             ->will($this->onConsecutiveCalls('4', '', '3,5,6'));
@@ -392,7 +392,7 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $abstractConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class, array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
 
-        $queryGenerator = $this->getMock(\TYPO3\CMS\Core\Database\QueryGenerator::class);
+        $queryGenerator = $this->createMock(\TYPO3\CMS\Core\Database\QueryGenerator::class);
         $queryGenerator->expects($this->never())->method('getTreeList');
         $abstractConfigurationManager->_set('queryGenerator', $queryGenerator);
 
@@ -411,7 +411,7 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $abstractConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class, array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
 
-        $queryGenerator = $this->getMock(\TYPO3\CMS\Core\Database\QueryGenerator::class);
+        $queryGenerator = $this->createMock(\TYPO3\CMS\Core\Database\QueryGenerator::class);
         $queryGenerator->expects($this->never())->method('getTreeList');
         $abstractConfigurationManager->_set('queryGenerator', $queryGenerator);
 

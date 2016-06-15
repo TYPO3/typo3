@@ -26,7 +26,9 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlentitiesViewHelper::class, array('renderChildren', 'resolveDefaultEncoding'));
+        $this->viewHelper = $this->getMockBuilder(\TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlentitiesViewHelper::class)
+            ->setMethods(array('renderChildren', 'resolveDefaultEncoding'))
+            ->getMock();
         $this->viewHelper->expects($this->any())->method('resolveDefaultEncoding')->will($this->returnValue('UTF-8'));
     }
 

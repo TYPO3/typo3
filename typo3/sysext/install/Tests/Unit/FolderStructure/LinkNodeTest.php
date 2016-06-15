@@ -39,7 +39,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1380546061);
-        $parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class, array(), array(), '', false);
+        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('dummy'), array(), '', false);
         $structure = array(
@@ -53,7 +53,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorSetsParent()
     {
-        $parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class, array(), array(), '', false);
+        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('dummy'), array(), '', false);
         $structure = array(
@@ -70,7 +70,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('dummy'), array(), '', false);
-        $parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class, array(), array(), '', false);
+        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
         $name = $this->getUniqueId('test_');
         $node->__construct(array('name' => $name), $parent);
         $this->assertSame($name, $node->getName());
@@ -83,7 +83,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('dummy'), array(), '', false);
-        $parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class, array(), array(), '', false);
+        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
         $target = '../' . $this->getUniqueId('test_');
         $node->__construct(array('target' => $target), $parent);
         $this->assertSame($target, $node->_call('getTarget'));

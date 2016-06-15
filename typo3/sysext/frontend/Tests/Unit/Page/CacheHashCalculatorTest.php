@@ -35,7 +35,9 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'encryptionKey' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
         );
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
-        $this->subject = $this->getMock(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class, array('foo'));
+        $this->subject = $this->getMockBuilder(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+            ->setMethods(array('foo'))
+            ->getMock();
         $this->subject->setConfiguration(array(
             'excludedParameters' => array('exclude1', 'exclude2'),
             'cachedParametersWhiteList' => array(),

@@ -42,7 +42,7 @@ class ImageScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $this->subject = new ImageService();
-        $this->environmentService = $this->getMock(EnvironmentService::class);
+        $this->environmentService = $this->createMock(EnvironmentService::class);
         $this->inject($this->subject, 'environmentService', $this->environmentService);
         GeneralUtility::flushInternalRuntimeCaches();
         $_SERVER['HTTP_HOST'] = 'foo.bar';
@@ -54,8 +54,8 @@ class ImageScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function fileIsUnwrappedFromReferenceForProcessing()
     {
         $reference = $this->getAccessibleMock(FileReference::class, array(), array(), '', false);
-        $file = $this->getMock(File::class, array(), array(), '', false);
-        $file->expects($this->once())->method('process')->willReturn($this->getMock(ProcessedFile::class, array(), array(), '', false));
+        $file = $this->createMock(File::class);
+        $file->expects($this->once())->method('process')->willReturn($this->createMock(ProcessedFile::class));
         $reference->expects($this->once())->method('getOriginalFile')->willReturn($file);
         $reference->_set('file', $file);
 
@@ -84,7 +84,7 @@ class ImageScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->absRefPrefix = '/prefix/';
 
-        $file = $this->getMock(File::class, array(), array(), '', false);
+        $file = $this->createMock(File::class);
         $file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
 
         $this->assertSame($expected, $this->subject->getImageUri($file));
@@ -112,7 +112,7 @@ class ImageScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->absRefPrefix = '/prefix/';
 
-        $file = $this->getMock(File::class, array(), array(), '', false);
+        $file = $this->createMock(File::class);
         $file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
 
         $this->assertSame($expected, $this->subject->getImageUri($file, true));

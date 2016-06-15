@@ -58,16 +58,16 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $this->query = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Query::class, array('dummy'), array('someType'));
-        $this->querySettings = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
+        $this->querySettings = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
         $this->query->_set('querySettings', $this->querySettings);
-        $this->persistenceManager = $this->getMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
-        $this->backend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
+        $this->persistenceManager = $this->createMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
+        $this->backend = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
         $this->query->_set('persistenceManager', $this->persistenceManager);
-        $this->dataMapper = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
+        $this->dataMapper = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
         $this->query->_set('dataMapper', $this->dataMapper);
         $this->controller = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController::class,
             array('dummy'), array(), '', false);
-        $this->controller->_set('view', $this->getMock(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface::class));
+        $this->controller->_set('view', $this->createMock(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface::class));
     }
 
     /**
@@ -153,8 +153,8 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function acceptQueryResultInterfaceAsObjects()
     {
-        $mockQueryResult = $this->getMock(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface::class);
-        $mockQuery = $this->getMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);
+        $mockQueryResult = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface::class);
+        $mockQuery = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);
         $mockQueryResult->expects($this->any())->method('getQuery')->will($this->returnValue($mockQuery));
         $this->controller->_set('objects', $mockQueryResult);
         $this->controller->indexAction();

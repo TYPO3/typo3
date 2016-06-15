@@ -38,7 +38,7 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(InvalidPackagePathException::class);
         $this->expectExceptionCode(1166631890);
 
-        $packageManagerMock = $this->getMock(PackageManager::class);
+        $packageManagerMock = $this->createMock(PackageManager::class);
         $packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(true);
         new Package($packageManagerMock, 'Vendor.TestPackage', './ThisPackageSurelyDoesNotExist');
     }
@@ -67,7 +67,7 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "flow-test"}');
         file_put_contents($packagePath . 'ext_emconf.php', '');
 
-        $packageManagerMock = $this->getMock(PackageManager::class);
+        $packageManagerMock = $this->createMock(PackageManager::class);
         $packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(true);
         $package = new Package($packageManagerMock, $packageKey, $packagePath);
         $this->assertEquals($packageKey, $package->getPackageKey());
@@ -96,7 +96,7 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $packagePath = 'vfs://Packages/' . str_replace('\\', '/', $packageKey) . '/';
         mkdir($packagePath, 0777, true);
 
-        $packageManagerMock = $this->getMock(PackageManager::class);
+        $packageManagerMock = $this->createMock(PackageManager::class);
         new Package($packageManagerMock, $packageKey, $packagePath);
     }
 
@@ -110,7 +110,7 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         file_put_contents($packagePath . 'composer.json', '{"name": "vendor/dummy", "type": "flow-test"}');
         file_put_contents($packagePath . 'ext_emconf.php', '');
 
-        $packageManagerMock = $this->getMock(PackageManager::class);
+        $packageManagerMock = $this->createMock(PackageManager::class);
         $packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(true);
         $package = new Package($packageManagerMock, 'Vendor.Dummy', $packagePath);
 

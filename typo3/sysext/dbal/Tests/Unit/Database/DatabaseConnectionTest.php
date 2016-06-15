@@ -37,7 +37,7 @@ class DatabaseConnectionTest extends AbstractTestCase
         $subject = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, array('getFieldInfoCache'), array(), '', false);
 
         // Disable caching
-        $mockCacheFrontend = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, array(), array(), '', false);
+        $mockCacheFrontend = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class);
         $subject->expects($this->any())->method('getFieldInfoCache')->will($this->returnValue($mockCacheFrontend));
 
         // Inject SqlParser - Its logic is tested with the tests, too.
@@ -46,7 +46,10 @@ class DatabaseConnectionTest extends AbstractTestCase
         $subject->SQLparser = $sqlParser;
 
         // Mock away schema migration service from install tool
-        $installerSqlMock = $this->getMock(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class, array('getFieldDefinitions_fileContent'), array(), '', false);
+        $installerSqlMock = $this->getMockBuilder(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class)
+            ->setMethods(array('getFieldDefinitions_fileContent'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $installerSqlMock->expects($this->any())->method('getFieldDefinitions_fileContent')->will($this->returnValue(array()));
         $subject->_set('installerSql', $installerSqlMock);
 
@@ -97,14 +100,14 @@ class DatabaseConnectionTest extends AbstractTestCase
         /** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, array('getFieldInfoCache'), array(), '', false);
 
-        $mockCacheFrontend = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, array(), array(), '', false);
+        $mockCacheFrontend = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class);
         $subject->expects($this->any())->method('getFieldInfoCache')->will($this->returnValue($mockCacheFrontend));
 
         $sqlParser = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\SqlParser::class, array('dummy'), array(), '', false);
         $sqlParser->_set('databaseConnection', $subject);
         $subject->SQLparser = $sqlParser;
 
-        $installerSqlMock = $this->getMock(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class, array(), array(), '', false);
+        $installerSqlMock = $this->createMock(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
         $subject->_set('installerSql', $installerSqlMock);
         $schemaMigrationResult = array(
             'cf_cache_pages' => array(),
@@ -126,7 +129,10 @@ class DatabaseConnectionTest extends AbstractTestCase
      */
     public function adminGetTablesReturnsArrayWithNameKey()
     {
-        $handlerMock = $this->getMock('\ADODB_mock', array('MetaTables'), array(), '', false);
+        $handlerMock = $this->getMockBuilder('\ADODB_mock')
+            ->setMethods(array('MetaTables'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $handlerMock->expects($this->any())->method('MetaTables')->will($this->returnValue(array('cf_cache_hash')));
         $this->subject->handlerCfg['_DEFAULT']['type'] = 'adodb';
         $this->subject->handlerInstance['_DEFAULT'] = $handlerMock;

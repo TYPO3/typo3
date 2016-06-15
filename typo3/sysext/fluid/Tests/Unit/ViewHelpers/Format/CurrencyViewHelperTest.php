@@ -30,7 +30,7 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->subject = $this->getAccessibleMock(CurrencyViewHelper::class, array('renderChildren'));
         /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->getMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
+        $renderingContext = $this->createMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
         $this->subject->_set('renderingContext', $renderingContext);
     }
 

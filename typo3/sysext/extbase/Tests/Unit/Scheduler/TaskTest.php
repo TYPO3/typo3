@@ -31,7 +31,10 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->taskExecutor = $this->getMock(\TYPO3\CMS\Extbase\Scheduler\TaskExecutor::class, array('execute'), array(), '', false);
+        $this->taskExecutor = $this->getMockBuilder(\TYPO3\CMS\Extbase\Scheduler\TaskExecutor::class)
+            ->setMethods(array('execute'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->task = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Scheduler\Task::class, array('logException', '__wakeup'), array(), '', false);
     }
 

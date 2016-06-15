@@ -37,14 +37,13 @@ abstract class AbstractValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function createSubject(array $options)
     {
         /** @var AbstractValidator $subject */
-        $subject = $this->getMock(
-            $this->subjectClassName,
-            ['getLocalLanguageLabel', 'humanReadableDateFormat'],
-            ['options' => $options]
-        );
+        $subject = $this->getMockBuilder($this->subjectClassName)
+            ->setMethods(['getLocalLanguageLabel', 'humanReadableDateFormat'])
+            ->setConstructorArgs(['options' => $options])
+            ->getMock();
 
         /** @var FormUtility $formUtilityMock */
-        $formUtilityMock = $this->getMock(FormUtility::class, [], [], '', false);
+        $formUtilityMock = $this->createMock(FormUtility::class);
         $subject->setFormUtility($formUtilityMock);
 
         return $subject;

@@ -47,11 +47,17 @@ class RenderingContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setControllerContextWithSubpackageKeySetsExpectedControllerContext()
     {
-        $renderingContext = $this->getMock(RenderingContextFixture::class, array('setControllerAction', 'setControllerName'));
-        $request = $this->getMock(Request::class, array('getControllerActionName', 'getControllerSubpackageKey', 'getControllerName'));
+        $renderingContext = $this->getMockBuilder(RenderingContextFixture::class)
+            ->setMethods(array('setControllerAction', 'setControllerName'))
+            ->getMock();
+        $request = $this->getMockBuilder(Request::class)
+            ->setMethods(array('getControllerActionName', 'getControllerSubpackageKey', 'getControllerName'))
+            ->getMock();
         $request->expects($this->exactly(2))->method('getControllerSubpackageKey')->willReturn('test1');
         $request->expects($this->once())->method('getControllerName')->willReturn('test2');
-        $controllerContext = $this->getMock(ControllerContext::class, array('getRequest'));
+        $controllerContext = $this->getMockBuilder(ControllerContext::class)
+            ->setMethods(array('getRequest'))
+            ->getMock();
         $controllerContext->expects($this->once())->method('getRequest')->willReturn($request);
         $renderingContext->expects($this->once())->method('setControllerName')->with('test1\\test2');
         $renderingContext->setControllerContext($controllerContext);
@@ -62,7 +68,7 @@ class RenderingContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function templateVariableContainerCanBeReadCorrectly()
     {
-        $templateVariableContainer = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer::class);
+        $templateVariableContainer = $this->createMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer::class);
         $this->renderingContext->setVariableProvider($templateVariableContainer);
         $this->assertSame($this->renderingContext->getTemplateVariableContainer(), $templateVariableContainer, 'Template Variable Container could not be read out again.');
     }
@@ -72,11 +78,11 @@ class RenderingContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function controllerContextCanBeReadCorrectly()
     {
-        $controllerContext = $this->getMock(
-            \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class,
-            array('getRequest'), array(), '', false
-        );
-        $controllerContext->expects($this->atLeastOnce())->method('getRequest')->willReturn($this->getMock(Request::class));
+        $controllerContext = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class)
+            ->setMethods(array('getRequest'))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $controllerContext->expects($this->atLeastOnce())->method('getRequest')->willReturn($this->createMock(Request::class));
         $this->renderingContext->setControllerContext($controllerContext);
         $this->assertSame($this->renderingContext->getControllerContext(), $controllerContext);
     }
@@ -86,7 +92,7 @@ class RenderingContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperVariableContainerCanBeReadCorrectly()
     {
-        $viewHelperVariableContainer = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer::class);
+        $viewHelperVariableContainer = $this->createMock(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer::class);
         $this->renderingContext->_set('viewHelperVariableContainer', $viewHelperVariableContainer);
         $this->assertSame($viewHelperVariableContainer, $this->renderingContext->getViewHelperVariableContainer());
     }

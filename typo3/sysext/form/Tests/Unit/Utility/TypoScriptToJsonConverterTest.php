@@ -36,7 +36,9 @@ class TypoScriptToJsonConverterTest extends UnitTestCase
     public function getChildElementsByIntegerKeyCallsAddElement(array $typoScript, $methodCount)
     {
         /** @var FormJsonElement|\PHPUnit_Framework_MockObject_MockObject $mockSubject */
-        $parentElement = $this->getMock(FormJsonElement::class, ['addElement']);
+        $parentElement = $this->getMockBuilder(FormJsonElement::class)
+            ->setMethods(['addElement'])
+            ->getMock();
         // check if method gets called exactly X times
         $parentElement->expects($this->exactly($methodCount))->method('addElement');
 

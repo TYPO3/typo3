@@ -69,7 +69,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             '',
             false
         );
-        $dependencyUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class);
+        $dependencyUtility = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class)->getMock();
         $this->installMock->_set('dependencyUtility', $dependencyUtility);
         $this->installMock->expects($this->any())
             ->method('getExtensionArray')
@@ -127,7 +127,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('processRuntimeDatabaseUpdates')
             ->with($this->extensionKey);
 
-        $cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
+        $cacheManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\CacheManager::class)->getMock();
         $cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
         $this->installMock->install($this->extensionKey);
@@ -138,7 +138,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function installCallsLoadExtension()
     {
-        $cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
+        $cacheManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\CacheManager::class)->getMock();
         $cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
         $this->installMock->expects($this->once())->method('loadExtension');
@@ -151,7 +151,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function installCallsFlushCachesIfClearCacheOnLoadIsSet()
     {
         $this->extensionData['clearcacheonload'] = true;
-        $cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
+        $cacheManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\CacheManager::class)->getMock();
         $cacheManagerMock->expects($this->once())->method('flushCaches');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
         $this->installMock->install($this->extensionKey);
@@ -163,7 +163,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function installCallsFlushCachesIfClearCacheOnLoadCamelCasedIsSet()
     {
         $this->extensionData['clearCacheOnLoad'] = true;
-        $cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
+        $cacheManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\CacheManager::class)->getMock();
         $cacheManagerMock->expects($this->once())->method('flushCaches');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
         $this->installMock->install($this->extensionKey);
@@ -174,7 +174,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function installationOfAnExtensionWillCallEnsureThatDirectoriesExist()
     {
-        $cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
+        $cacheManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\CacheManager::class)->getMock();
         $cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
         $this->installMock->expects($this->once())->method('ensureConfiguredDirectoriesExist');
@@ -186,7 +186,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function installCallsReloadCaches()
     {
-        $cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
+        $cacheManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\CacheManager::class)->getMock();
         $cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
         $this->installMock->expects($this->once())->method('reloadCaches');
@@ -198,7 +198,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function installCallsSaveDefaultConfigurationWithExtensionKey()
     {
-        $cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
+        $cacheManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\CacheManager::class)->getMock();
         $cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
         $this->installMock->expects($this->once())->method('saveDefaultConfiguration')->with('dummy');
@@ -231,7 +231,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             '',
             false
         );
-        $dependencyUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class);
+        $dependencyUtility = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class)->getMock();
         $installMock->_set('dependencyUtility', $dependencyUtility);
 
         $installMock->expects($this->once())->method('updateDbWithExtTablesSql')->with($this->stringStartsWith($fileContent));
@@ -252,7 +252,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             '',
             false
         );
-        $dependencyUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class);
+        $dependencyUtility = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class)->getMock();
         $installMock->_set('dependencyUtility', $dependencyUtility);
         $installMock->expects($this->once())->method('importStaticSqlFile')->with($extRelPath);
         $installMock->processDatabaseUpdates($this->fakedExtensions[$extKey]);
@@ -291,7 +291,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             '',
             false
         );
-        $dependencyUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class);
+        $dependencyUtility = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class)->getMock();
         $installMock->_set('dependencyUtility', $dependencyUtility);
         $installMock->expects($this->once())->method('importT3DFile')->with($this->fakedExtensions[$extKey]['siteRelPath']);
         $installMock->processDatabaseUpdates($this->fakedExtensions[$extKey]);
@@ -340,7 +340,9 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $absPath = PATH_site . $this->fakedExtensions[$extKey]['siteRelPath'];
         \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($absPath . 'Initialisation');
         file_put_contents($absPath . 'Initialisation/' . $fileName, 'DUMMY');
-        $registryMock = $this->getMock(\TYPO3\CMS\Core\Registry::class, array('get', 'set'));
+        $registryMock = $this->getMockBuilder(\TYPO3\CMS\Core\Registry::class)
+            ->setMethods(array('get', 'set'))
+            ->getMock();
         $registryMock
             ->expects($this->any())
             ->method('get')
@@ -357,7 +359,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             '',
             false
         );
-        $dependencyUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class);
+        $dependencyUtility = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class)->getMock();
         $installMock->_set('dependencyUtility', $dependencyUtility);
         $installMock->_set('registry', $registryMock);
         $installMock->expects($this->never())->method('getImportExportUtility');

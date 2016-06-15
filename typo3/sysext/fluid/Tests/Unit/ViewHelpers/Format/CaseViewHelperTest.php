@@ -29,7 +29,9 @@ class CaseViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        $this->subject = $this->getMock(CaseViewHelper::class, array('renderChildren'));
+        $this->subject = $this->getMockBuilder(CaseViewHelper::class)
+            ->setMethods(array('renderChildren'))
+            ->getMock();
         $this->injectDependenciesIntoViewHelper($this->subject);
     }
 

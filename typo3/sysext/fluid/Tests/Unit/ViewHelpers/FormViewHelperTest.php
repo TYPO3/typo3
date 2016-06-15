@@ -34,8 +34,8 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        $this->mockExtensionService = $this->getMock(\TYPO3\CMS\Extbase\Service\ExtensionService::class);
-        $this->mockConfigurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $this->mockExtensionService = $this->createMock(\TYPO3\CMS\Extbase\Service\ExtensionService::class);
+        $this->mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
     }
 
     /**
@@ -43,7 +43,9 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
      */
     public function initializeArgumentsRegistersExpectedArguments()
     {
-        $viewHelper = $this->getMock(FormViewHelper::class, array('registerTagAttribute', 'registerUniversalTagAttributes'));
+        $viewHelper = $this->getMockBuilder(FormViewHelper::class)
+            ->setMethods(array('registerTagAttribute', 'registerUniversalTagAttributes'))
+            ->getMock();
         $viewHelper->expects($this->at(0))->method('registerTagAttribute')->with('enctype', 'string', $this->anything());
         $viewHelper->expects($this->at(1))->method('registerTagAttribute')->with('method', 'string', $this->anything());
         $viewHelper->expects($this->at(2))->method('registerTagAttribute')->with('name', 'string', $this->anything());
@@ -60,7 +62,9 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
     {
         $viewHelper = $this->getAccessibleMock(FormViewHelper::class, array('hasArgument'));
         $viewHelper->expects($this->once())->method('hasArgument')->with('actionUri')->willReturn(true);
-        $tagBuilder = $this->getMock(TagBuilder::class, array('addAttribute'));
+        $tagBuilder = $this->getMockBuilder(TagBuilder::class)
+            ->setMethods(array('addAttribute'))
+            ->getMock();
         $tagBuilder->expects($this->once())->method('addAttribute')->with('action', 'foobar');
         $viewHelper->_set('tag', $tagBuilder);
         $viewHelper->setArguments(array('actionUri' => 'foobar'));
@@ -75,7 +79,9 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
     {
         $viewHelper->_set('configurationManager', $this->mockConfigurationManager);
         parent::injectDependenciesIntoViewHelper($viewHelper);
-        $hashService = $this->getMock(\TYPO3\CMS\Extbase\Security\Cryptography\HashService::class, array('appendHmac'));
+        $hashService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Security\Cryptography\HashService::class)
+            ->setMethods(array('appendHmac'))
+            ->getMock();
         $hashService->expects($this->any())->method('appendHmac')->will($this->returnValue(''));
         $this->mvcPropertyMapperConfigurationService->_set('hashService', $hashService);
         $viewHelper->_set('mvcPropertyMapperConfigurationService', $this->mvcPropertyMapperConfigurationService);
@@ -185,7 +191,10 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderWrapsHiddenFieldsWithDivAndAnAdditionalClassForXhtmlCompatibilityWithRewrittenPropertyMapper()
     {
-        $viewHelper = $this->getMock($this->buildAccessibleProxy(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class), array('renderChildren', 'renderHiddenIdentityField', 'renderAdditionalIdentityFields', 'renderHiddenReferrerFields', 'renderHiddenSecuredReferrerField', 'renderTrustedPropertiesField'), array(), '', false);
+        $viewHelper = $this->getMockBuilder($this->buildAccessibleProxy(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class))
+            ->setMethods(array('renderChildren', 'renderHiddenIdentityField', 'renderAdditionalIdentityFields', 'renderHiddenReferrerFields', 'renderHiddenSecuredReferrerField', 'renderTrustedPropertiesField'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->mvcPropertyMapperConfigurationService->_set('hashService', new \TYPO3\CMS\Extbase\Security\Cryptography\HashService());
         $viewHelper->_set('mvcPropertyMapperConfigurationService', $this->mvcPropertyMapperConfigurationService);
         parent::injectDependenciesIntoViewHelper($viewHelper);

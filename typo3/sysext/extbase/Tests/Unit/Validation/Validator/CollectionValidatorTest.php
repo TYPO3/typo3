@@ -89,7 +89,11 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->mockValidatorResolver->expects($this->exactly(4))
             ->method('createValidator')
             ->with('EmailAddress')
-            ->will($this->returnValue($this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class, array('translateErrorMessage'))));
+            ->will($this->returnValue(
+                $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class)
+                    ->setMethods(array('translateErrorMessage'))
+                    ->getMock()
+            ));
         $this->validator->_set('validatorResolver', $this->mockValidatorResolver);
         $arrayOfEmailAddresses = array(
             'foo@bar.de',
@@ -120,9 +124,15 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $B->c = array($A);
 
         // Create validators
-        $aValidator = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, array('translateErrorMessage'), array(array()));
+        $aValidator = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class)
+            ->setMethods(array('translateErrorMessage'))
+            ->setConstructorArgs(array(array()))
+            ->getMock();
         $this->validator->_set('options', array('elementValidator' => 'Integer'));
-        $integerValidator = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator::class, array('translateErrorMessage'), array(array()));
+        $integerValidator = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator::class)
+            ->setMethods(array('translateErrorMessage'))
+            ->setConstructorArgs(array(array()))
+            ->getMock();
 
         $this->mockValidatorResolver->expects($this->any())
             ->method('createValidator')

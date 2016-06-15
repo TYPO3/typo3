@@ -29,9 +29,14 @@ class ViewHelperResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function createViewHelperInstanceCreatesViewHelperInstanceUsingObjectManager()
     {
-        $objectManager = $this->getMock(ObjectManager::class, array('get'), array(), '', false);
+        $objectManager = $this->getMockBuilder(ObjectManager::class)
+            ->setMethods(array('get'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $objectManager->expects($this->once())->method('get')->with('x')->willReturn('y');
-        $resolver = $this->getMock(ViewHelperResolver::class, array('getObjectManager'));
+        $resolver = $this->getMockBuilder(ViewHelperResolver::class)
+            ->setMethods(array('getObjectManager'))
+            ->getMock();
         $resolver->expects($this->once())->method('getObjectManager')->willReturn($objectManager);
         $this->assertEquals('y', $resolver->createViewHelperInstanceFromClassName('x'));
     }

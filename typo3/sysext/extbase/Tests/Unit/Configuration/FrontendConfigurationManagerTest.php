@@ -42,7 +42,9 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     {
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->tmpl = new \stdClass();
-        $this->mockContentObject = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array('getTreeList'));
+        $this->mockContentObject = $this->getMockBuilder(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class)
+            ->setMethods(array('getTreeList'))
+            ->getMock();
         $this->frontendConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager::class, array('dummy'));
         $this->frontendConfigurationManager->_set('contentObject', $this->mockContentObject);
         $this->mockTypoScriptService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Service\TypoScriptService::class);
@@ -348,7 +350,7 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
         /** @var $abstractConfigurationManager \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager::class, array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
         /** @var $cObjectMock \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-        $cObjectMock = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+        $cObjectMock = $this->createMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
         $cObjectMock->expects($this->any())
             ->method('getTreeList')
             ->will($this->onConsecutiveCalls('4', '', '898,12'));
@@ -369,7 +371,7 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
         /** @var $abstractConfigurationManager \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager::class, array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
         /** @var $cObjectMock \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-        $cObjectMock = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+        $cObjectMock = $this->createMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
         $cObjectMock->expects($this->any())
             ->method('getTreeList')
             ->will($this->onConsecutiveCalls('3,4', '', '898,12'));
@@ -390,7 +392,7 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
         /** @var $abstractConfigurationManager \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager::class, array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
         /** @var $cObjectMock \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-        $cObjectMock = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+        $cObjectMock = $this->createMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
         $cObjectMock->expects($this->never())->method('getTreeList');
         $abstractConfigurationManager->setContentObject($cObjectMock);
 
@@ -410,7 +412,7 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
         $abstractConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager::class, array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
 
         /** @var $cObjectMock \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-        $cObjectMock = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+        $cObjectMock = $this->createMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
         $cObjectMock->expects($this->never())->method('getTreeList');
         $abstractConfigurationManager->setContentObject($cObjectMock);
 
@@ -473,7 +475,9 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     public function overrideConfigurationFromFlexFormChecksForDataIsString()
     {
         /** @var $flexFormService \TYPO3\CMS\Extbase\Service\FlexFormService|\PHPUnit_Framework_MockObject_MockObject */
-        $flexFormService = $this->getMock(\TYPO3\CMS\Extbase\Service\FlexFormService::class, array('convertFlexFormContentToArray'));
+        $flexFormService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\FlexFormService::class)
+            ->setMethods(array('convertFlexFormContentToArray'))
+            ->getMock();
         $flexFormService->expects($this->once())->method('convertFlexFormContentToArray')->will($this->returnValue(array(
             'persistence' => array(
                 'storagePid' => '0,1,2,3'
@@ -496,7 +500,9 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     public function overrideConfigurationFromFlexFormChecksForDataIsStringAndEmpty()
     {
         /** @var $flexFormService \TYPO3\CMS\Extbase\Service\FlexFormService|\PHPUnit_Framework_MockObject_MockObject */
-        $flexFormService = $this->getMock(\TYPO3\CMS\Extbase\Service\FlexFormService::class, array('convertFlexFormContentToArray'));
+        $flexFormService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\FlexFormService::class)
+            ->setMethods(array('convertFlexFormContentToArray'))
+            ->getMock();
         $flexFormService->expects($this->never())->method('convertFlexFormContentToArray');
 
         $this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
@@ -515,7 +521,9 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     public function overrideConfigurationFromFlexFormChecksForDataIsArray()
     {
         /** @var $flexFormService \TYPO3\CMS\Extbase\Service\FlexFormService|\PHPUnit_Framework_MockObject_MockObject */
-        $flexFormService = $this->getMock(\TYPO3\CMS\Extbase\Service\FlexFormService::class, array('convertFlexFormContentToArray'));
+        $flexFormService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\FlexFormService::class)
+            ->setMethods(array('convertFlexFormContentToArray'))
+            ->getMock();
         $flexFormService->expects($this->never())->method('convertFlexFormContentToArray');
 
         $this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
@@ -534,7 +542,9 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     public function overrideConfigurationFromFlexFormChecksForDataIsArrayAndEmpty()
     {
         /** @var $flexFormService \TYPO3\CMS\Extbase\Service\FlexFormService|\PHPUnit_Framework_MockObject_MockObject */
-        $flexFormService = $this->getMock(\TYPO3\CMS\Extbase\Service\FlexFormService::class, array('convertFlexFormContentToArray'));
+        $flexFormService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\FlexFormService::class)
+            ->setMethods(array('convertFlexFormContentToArray'))
+            ->getMock();
         $flexFormService->expects($this->never())->method('convertFlexFormContentToArray');
 
         $this->frontendConfigurationManager->_set('flexFormService', $flexFormService);

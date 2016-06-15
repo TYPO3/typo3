@@ -60,8 +60,8 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->testHostName = 'hostname.tld';
         $this->testSitePath = '/';
         $this->accessibleFixture = $this->getAccessibleMock(\TYPO3\CMS\Felogin\Controller\FrontendLoginController::class, array('dummy'));
-        $this->accessibleFixture->cObj = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-        $this->accessibleFixture->_set('frontendController', $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', false));
+        $this->accessibleFixture->cObj = $this->createMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+        $this->accessibleFixture->_set('frontendController', $this->createMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class));
         $this->setUpFakeSitePathAndHost();
     }
 

@@ -38,7 +38,9 @@ class SubmitViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
      */
     public function renderCorrectlySetsTagNameAndDefaultAttributes()
     {
-        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
+        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+            ->setMethods(array('setTagName', 'addAttribute'))
+            ->getMock();
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
         $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'submit');
 

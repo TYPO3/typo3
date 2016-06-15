@@ -51,8 +51,12 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
         $this->filter = new \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter();
-        $this->tceMainMock = $this->getMock(\TYPO3\CMS\Core\DataHandling\DataHandler::class, array('deleteAction'), array());
-        $this->fileFactoryMock = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class, array('getFileReferenceObject'), array());
+        $this->tceMainMock = $this->getMockBuilder(\TYPO3\CMS\Core\DataHandling\DataHandler::class)
+            ->setMethods(array('deleteAction'))
+            ->getMock();
+        $this->fileFactoryMock = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\ResourceFactory::class)
+            ->setMethods(array('getFileReferenceObject'))
+            ->getMock();
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class, $this->fileFactoryMock);
     }
 

@@ -333,7 +333,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
      */
     public function selectOnDomainObjectsCreatesExpectedOptions()
     {
-        $mockPersistenceManager = $this->getMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
+        $mockPersistenceManager = $this->createMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
         $mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue(2));
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
@@ -403,7 +403,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
     public function multipleSelectOnDomainObjectsCreatesExpectedOptionsWithoutOptionValueField()
     {
         /** @var $mockPersistenceManager \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface */
-        $mockPersistenceManager = $this->getMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
+        $mockPersistenceManager = $this->createMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
         $mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnCallback(
             function ($object) {
                 return $object->getId();
@@ -443,7 +443,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
      */
     public function selectWithoutFurtherConfigurationOnDomainObjectsUsesUuidForValueAndLabel()
     {
-        $mockPersistenceManager = $this->getMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
+        $mockPersistenceManager = $this->createMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
         $mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('fakeUID'));
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
@@ -469,7 +469,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
      */
     public function selectWithoutFurtherConfigurationOnDomainObjectsUsesToStringForLabelIfAvailable()
     {
-        $mockPersistenceManager = $this->getMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
+        $mockPersistenceManager = $this->createMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
         $mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('fakeUID'));
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
@@ -478,7 +478,10 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
         $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="fakeUID">toStringResult</option>' . chr(10));
         $this->tagBuilder->expects($this->once())->method('render');
 
-        $user = $this->getMock(\TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass::class, array('__toString'), array(1, 'Ingmar', 'Schlecht'));
+        $user = $this->getMockBuilder(\TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass::class)
+            ->setMethods(array('__toString'))
+            ->setConstructorArgs(array(1, 'Ingmar', 'Schlecht'))
+            ->getMock();
         $user->expects($this->atLeastOnce())->method('__toString')->will($this->returnValue('toStringResult'));
 
         $this->arguments['options'] = array(
@@ -496,7 +499,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
      */
     public function selectOnDomainObjectsThrowsExceptionIfNoValueCanBeFound()
     {
-        $mockPersistenceManager = $this->getMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
+        $mockPersistenceManager = $this->createMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
         $mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue(null));
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 

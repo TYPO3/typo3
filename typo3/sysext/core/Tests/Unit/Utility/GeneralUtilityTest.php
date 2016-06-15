@@ -2647,7 +2647,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function minifyJavaScriptCallsRegisteredHookWithInputString()
     {
         $hookClassName = $this->getUniqueId('tx_coretest');
-        $minifyHookMock = $this->getMock('stdClass', array('minify'), array(), $hookClassName);
+        $minifyHookMock = $this->getMockBuilder('stdClass')
+            ->setMethods(array('minify'))
+            ->setMockClassName($hookClassName)
+            ->getMock();
         $functionName = $hookClassName . '->minify';
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName] = array();
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
@@ -2681,7 +2684,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function minifyJavaScriptReturnsErrorStringOfHookException()
     {
         $hookClassName = $this->getUniqueId('tx_coretest');
-        $minifyHookMock = $this->getMock('stdClass', array('minify'), array(), $hookClassName);
+        $minifyHookMock = $this->getMockBuilder('stdClass')
+            ->setMethods(array('minify'))
+            ->setMockClassName($hookClassName)
+            ->getMock();
         $functionName = '&' . $hookClassName . '->minify';
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName] = array();
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
@@ -2702,7 +2708,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function minifyJavaScriptWritesExceptionMessageToDevLog()
     {
         $hookClassName = $this->getUniqueId('tx_coretest');
-        $minifyHookMock = $this->getMock('stdClass', array('minify'), array(), $hookClassName);
+        $minifyHookMock = $this->getMockBuilder('stdClass')
+            ->setMethods(array('minify'))
+            ->setMockClassName($hookClassName)
+            ->getMock();
         $functionName = '&' . $hookClassName . '->minify';
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName] = array();
         $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
@@ -3980,7 +3989,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function makeInstanceReturnsClassInstance()
     {
-        $className = get_class($this->getMock('foo'));
+        $className = get_class($this->getMockBuilder('foo')->getMock());
         $this->assertTrue(GeneralUtility::makeInstance($className) instanceof $className);
     }
 
@@ -4020,7 +4029,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function makeInstanceCalledTwoTimesForNonSingletonClassReturnsDifferentInstances()
     {
-        $className = get_class($this->getMock('foo'));
+        $className = get_class($this->getMockBuilder('foo')->getMock());
         $this->assertNotSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
     }
 
@@ -4029,7 +4038,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function makeInstanceCalledTwoTimesForSingletonClassReturnsSameInstance()
     {
-        $className = get_class($this->getMock(\TYPO3\CMS\Core\SingletonInterface::class));
+        $className = get_class($this->createMock(\TYPO3\CMS\Core\SingletonInterface::class));
         $this->assertSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
     }
 
@@ -4038,7 +4047,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function makeInstanceCalledTwoTimesForSingletonClassWithPurgeInstancesInbetweenReturnsDifferentInstances()
     {
-        $className = get_class($this->getMock(\TYPO3\CMS\Core\SingletonInterface::class));
+        $className = get_class($this->createMock(\TYPO3\CMS\Core\SingletonInterface::class));
         $instance = GeneralUtility::makeInstance($className);
         GeneralUtility::purgeInstances();
         $this->assertNotSame($instance, GeneralUtility::makeInstance($className));
@@ -4052,7 +4061,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288967479);
 
-        $instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class);
+        $instance = $this->createMock(\TYPO3\CMS\Core\SingletonInterface::class);
         GeneralUtility::setSingletonInstance('', $instance);
     }
 
@@ -4064,8 +4073,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288967686);
 
-        $instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class, array('foo'));
-        $singletonClassName = get_class($this->getMock(\TYPO3\CMS\Core\SingletonInterface::class));
+        $instance = $this->getMockBuilder(\TYPO3\CMS\Core\SingletonInterface::class)
+            ->setMethods(array('foo'))
+            ->getMock();
+        $singletonClassName = get_class($this->createMock(\TYPO3\CMS\Core\SingletonInterface::class));
         GeneralUtility::setSingletonInstance($singletonClassName, $instance);
     }
 
@@ -4074,7 +4085,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setSingletonInstanceMakesMakeInstanceReturnThatInstance()
     {
-        $instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class);
+        $instance = $this->createMock(\TYPO3\CMS\Core\SingletonInterface::class);
         $singletonClassName = get_class($instance);
         GeneralUtility::setSingletonInstance($singletonClassName, $instance);
         $this->assertSame($instance, GeneralUtility::makeInstance($singletonClassName));
@@ -4085,7 +4096,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setSingletonInstanceCalledTwoTimesMakesMakeInstanceReturnLastSetInstance()
     {
-        $instance1 = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class);
+        $instance1 = $this->createMock(\TYPO3\CMS\Core\SingletonInterface::class);
         $singletonClassName = get_class($instance1);
         $instance2 = new $singletonClassName();
         GeneralUtility::setSingletonInstance($singletonClassName, $instance1);
@@ -4098,7 +4109,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getSingletonInstancesContainsPreviouslySetSingletonInstance()
     {
-        $instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class);
+        $instance = $this->createMock(\TYPO3\CMS\Core\SingletonInterface::class);
         $instanceClassName = get_class($instance);
         GeneralUtility::setSingletonInstance($instanceClassName, $instance);
         $registeredSingletonInstances = GeneralUtility::getSingletonInstances();
@@ -4111,7 +4122,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function resetSingletonInstancesResetsPreviouslySetInstance()
     {
-        $instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class);
+        $instance = $this->createMock(\TYPO3\CMS\Core\SingletonInterface::class);
         $instanceClassName = get_class($instance);
         GeneralUtility::setSingletonInstance($instanceClassName, $instance);
         GeneralUtility::resetSingletonInstances(array());
@@ -4124,7 +4135,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function resetSingletonInstancesSetsGivenInstance()
     {
-        $instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class);
+        $instance = $this->createMock(\TYPO3\CMS\Core\SingletonInterface::class);
         $instanceClassName = get_class($instance);
         GeneralUtility::resetSingletonInstances(
             array($instanceClassName => $instance)
@@ -4142,7 +4153,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288967479);
 
-        $instance = $this->getMock('foo');
+        $instance = $this->getMockBuilder('foo')->getMock();
         GeneralUtility::addInstance('', $instance);
     }
 
@@ -4154,8 +4165,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288967686);
 
-        $instance = $this->getMock('foo', array('bar'));
-        $singletonClassName = get_class($this->getMock('foo'));
+        $instance = $this->getMockBuilder('foo')
+            ->setMethods(array('bar'))
+            ->getMock();
+        $singletonClassName = get_class($this->createMock('foo'));
         GeneralUtility::addInstance($singletonClassName, $instance);
     }
 
@@ -4167,7 +4180,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288969325);
 
-        $instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class);
+        $instance = $this->createMock(\TYPO3\CMS\Core\SingletonInterface::class);
         GeneralUtility::addInstance(get_class($instance), $instance);
     }
 
@@ -4176,7 +4189,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function addInstanceMakesMakeInstanceReturnThatInstance()
     {
-        $instance = $this->getMock('foo');
+        $instance = $this->createMock('foo');
         $className = get_class($instance);
         GeneralUtility::addInstance($className, $instance);
         $this->assertSame($instance, GeneralUtility::makeInstance($className));
@@ -4187,7 +4200,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function makeInstanceCalledTwoTimesAfterAddInstanceReturnTwoDifferentInstances()
     {
-        $instance = $this->getMock('foo');
+        $instance = $this->createMock('foo');
         $className = get_class($instance);
         GeneralUtility::addInstance($className, $instance);
         $this->assertNotSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
@@ -4198,7 +4211,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function addInstanceCalledTwoTimesMakesMakeInstanceReturnBothInstancesInAddingOrder()
     {
-        $instance1 = $this->getMock('foo');
+        $instance1 = $this->createMock('foo');
         $className = get_class($instance1);
         GeneralUtility::addInstance($className, $instance1);
         $instance2 = new $className();
@@ -4212,7 +4225,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function purgeInstancesDropsAddedInstance()
     {
-        $instance = $this->getMock('foo');
+        $instance = $this->createMock('foo');
         $className = get_class($instance);
         GeneralUtility::addInstance($className, $instance);
         GeneralUtility::purgeInstances();
@@ -4254,7 +4267,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->setMethods(array('getPackagePath'))
             ->getMock();
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
-        $packageManager = $this->getMock(PackageManager::class, array('isPackageActive', 'getPackage'));
+        $packageManager = $this->getMockBuilder(PackageManager::class)
+            ->setMethods(array('isPackageActive', 'getPackage'))
+            ->getMock();
         $package->expects($this->any())
             ->method('getPackagePath')
             ->will($this->returnValue(PATH_site . 'typo3/sysext/foo/'));

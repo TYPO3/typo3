@@ -63,15 +63,24 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
             throw new \InvalidArgumentException('$originalClassName must not be empty.', 1334701880);
         }
 
-        return $this->getMock(
-            $this->buildAccessibleProxy($originalClassName),
-            $methods,
-            $arguments,
-            $mockClassName,
-            $callOriginalConstructor,
-            $callOriginalClone,
-            $callAutoload
-        );
+        $mockBuilder = $this->getMockBuilder($this->buildAccessibleProxy($originalClassName))
+            ->setMethods($methods)
+            ->setConstructorArgs($arguments)
+            ->setMockClassName($mockClassName);
+
+        if (!$callOriginalConstructor) {
+            $mockBuilder->disableOriginalConstructor();
+        }
+
+        if (!$callOriginalClone) {
+            $mockBuilder->disableOriginalClone();
+        }
+
+        if (!$callAutoload) {
+            $mockBuilder->disableAutoload();
+        }
+
+        return $mockBuilder->getMock();
     }
 
     /**

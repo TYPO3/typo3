@@ -45,7 +45,9 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function configureObjectManagerRespectsOverridingOfAlternativeObjectRegistrationViaPluginConfiguration()
     {
         /** @var $objectContainer \TYPO3\CMS\Extbase\Object\Container\Container|\PHPUnit_Framework_MockObject_MockObject */
-        $objectContainer = $this->getMock(\TYPO3\CMS\Extbase\Object\Container\Container::class, array('registerImplementation'));
+        $objectContainer = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\Container\Container::class)
+            ->setMethods(array('registerImplementation'))
+            ->getMock();
         $objectContainer->expects($this->once())->method('registerImplementation')->with(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class, 'TYPO3\CMS\Extbase\Persistence\Reddis\PersistenceManager');
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Object\Container\Container::class, $objectContainer);
 
@@ -60,7 +62,7 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $configurationManagerMock->expects($this->any())->method('getConfiguration')->with('Framework')->will($this->returnValue($frameworkSettings));
 
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject  $objectManager */
-        $objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 
         /** @var $bootstrapMock \TYPO3\CMS\Extbase\Core\Bootstrap|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $bootstrapMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Core\Bootstrap::class, array('inject'));

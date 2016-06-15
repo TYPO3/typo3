@@ -35,9 +35,14 @@ class CleanerFieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $languageServiceMock = $this->getMock(LanguageService::class, array('sL'), array(), '', false);
+        $languageServiceMock = $this->getMockBuilder(LanguageService::class)
+            ->setMethods(array('sL'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $languageServiceMock->expects($this->any())->method('sL')->will($this->returnValue('titleTest'));
-        $this->subject = $this->getMock(CleanerFieldProvider::class, array('getLanguageService'));
+        $this->subject = $this->getMockBuilder(CleanerFieldProvider::class)
+            ->setMethods(array('getLanguageService'))
+            ->getMock();
         $this->subject->expects($this->any())->method('getLanguageService')->willReturn($languageServiceMock);
     }
 
@@ -47,11 +52,17 @@ class CleanerFieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function getScheduleModuleControllerMock($mockedMethods = array())
     {
-        $languageServiceMock = $this->getMock(LanguageService::class, array('sL'), array(), '', false);
+        $languageServiceMock = $this->getMockBuilder(LanguageService::class)
+            ->setMethods(array('sL'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $languageServiceMock->expects($this->any())->method('sL')->will($this->returnValue('titleTest'));
 
         $mockedMethods = array_merge(array('getLanguageService'), $mockedMethods);
-        $scheduleModuleMock = $this->getMock(SchedulerModuleController::class, $mockedMethods, array(), '', false);
+        $scheduleModuleMock = $this->getMockBuilder(SchedulerModuleController::class)
+            ->setMethods($mockedMethods)
+            ->disableOriginalConstructor()
+            ->getMock();
         $scheduleModuleMock->expects($this->any())->method('getLanguageService')->willReturn($languageServiceMock);
 
         return $scheduleModuleMock;
@@ -145,7 +156,7 @@ class CleanerFieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'RecyclerCleanerTCA' => array('pages')
         );
 
-        $taskMock = $this->getMock(CleanerTask::class);
+        $taskMock = $this->getMockBuilder(CleanerTask::class)->getMock();
 
         $taskMock->expects($this->once())
             ->method('setTcaTables')

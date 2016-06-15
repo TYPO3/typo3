@@ -68,8 +68,13 @@ class LocalizationFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var $subject LocalizationFactory */
         $localizationFactory = $this->getAccessibleMock(LocalizationFactory::class, array('localizationOverride'));
-        $languageStore = $this->getMock(\TYPO3\CMS\Core\Localization\LanguageStore::class, array('hasData', 'setConfiguration', 'getData', 'setData'));
-        $cacheInstance = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('get', 'set'), array(), '', false);
+        $languageStore = $this->getMockBuilder(\TYPO3\CMS\Core\Localization\LanguageStore::class)
+            ->setMethods(array('hasData', 'setConfiguration', 'getData', 'setData'))
+            ->getMock();
+        $cacheInstance = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class)
+            ->setMethods(array('get', 'set'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $localizationFactory->_set('store', $languageStore);
         $localizationFactory->_set('cacheInstance', $cacheInstance);
         $languageStore->method('hasData')->willReturn(false);

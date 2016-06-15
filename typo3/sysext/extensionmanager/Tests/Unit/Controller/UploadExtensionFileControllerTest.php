@@ -66,13 +66,16 @@ class UploadExtensionFileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
     public function getExtensionFromZipFileExtractsExtensionKey($filename, $expectedKey)
     {
         $fixture = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Controller\UploadExtensionFileController::class, array('dummy'));
-        $managementServiceMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::class, array('isAvailable'), array(), '', false);
+        $managementServiceMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::class)
+            ->setMethods(array('isAvailable'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $managementServiceMock->expects($this->once())
             ->method('isAvailable')
             ->with($expectedKey)
             ->will($this->returnValue(false));
         $fixture->_set('managementService', $managementServiceMock);
-        $fileHandlingUtilityMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array(), array(), '', false);
+        $fileHandlingUtilityMock = $this->createMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class);
         $fileHandlingUtilityMock->expects($this->once())->method('unzipExtensionFromFile');
         $fixture->_set('fileHandlingUtility', $fileHandlingUtilityMock);
 

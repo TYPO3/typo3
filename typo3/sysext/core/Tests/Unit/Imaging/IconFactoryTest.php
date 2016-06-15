@@ -529,8 +529,10 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function getTestSubjectFileObject($extension, $mimeType = '')
     {
-        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
-        $mockedFile = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(array(), $mockedStorage));
+        $mockedStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
+        $mockedFile = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\File::class)
+            ->setConstructorArgs(array(array(), $mockedStorage))
+            ->getMock();
         $mockedFile->expects($this->atMost(1))->method('getExtension')->will($this->returnValue($extension));
         $mockedFile->expects($this->atLeastOnce())->method('getMimeType')->will($this->returnValue($mimeType));
         return $mockedFile;
@@ -544,7 +546,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function getTestSubjectFolderObject($identifier)
     {
-        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $mockedStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $mockedStorage->expects($this->any())->method('getRootLevelFolder')->will($this->returnValue(
             new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, '/', '/')
         ));

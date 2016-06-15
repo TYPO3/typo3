@@ -49,11 +49,12 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->databaseMock = $this->getMock(
-            \TYPO3\CMS\Core\Database\DatabaseConnection::class,
-            array('exec_UPDATEquery', 'exec_SELECTgetSingleRow', 'exec_SELECTgetRows', 'fullQuoteStr')
-        );
-        $this->subject = $this->getMock(\TYPO3\CMS\Core\Collection\RecordCollectionRepository::class, array('getDatabaseConnection'));
+        $this->databaseMock = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)
+            ->setMethods(array('exec_UPDATEquery', 'exec_SELECTgetSingleRow', 'exec_SELECTgetRows', 'fullQuoteStr'))
+            ->getMock();
+        $this->subject = $this->getMockBuilder(\TYPO3\CMS\Core\Collection\RecordCollectionRepository::class)
+            ->setMethods(array('getDatabaseConnection'))
+            ->getMock();
         $this->subject->expects($this->any())->method('getDatabaseConnection')->will($this->returnValue($this->databaseMock));
         $this->testTableName = $this->getUniqueId('tx_testtable');
     }

@@ -68,7 +68,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUpBackend(array $backendOptions = array())
     {
-        $mockCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', false);
+        $mockCache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
         $mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('TestCache'));
         $this->backend = new \TYPO3\CMS\Core\Cache\Backend\RedisBackend('Testing', $backendOptions);
         $this->backend->setCache($mockCache);

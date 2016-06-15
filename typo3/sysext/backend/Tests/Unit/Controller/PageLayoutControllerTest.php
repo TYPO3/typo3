@@ -35,11 +35,15 @@ class PageLayoutControllerTest extends UnitTestCase
     public function pageIsNotLockedForEditorsReturnsCorrectValue($isAdmin, $permissions, $editLock, $expected)
     {
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $beUserMock */
-        $beUserMock = $this->getMock(BackendUserAuthentication::class, ['isAdmin']);
+        $beUserMock = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->setMethods(['isAdmin'])
+            ->getMock();
         $beUserMock->method('isAdmin')->will($this->returnValue($isAdmin));
 
         /** @var PageLayoutController|\PHPUnit_Framework_MockObject_MockObject $pageController */
-        $pageController = $this->getMock(PageLayoutController::class, ['getBackendUser']);
+        $pageController = $this->getMockBuilder(PageLayoutController::class)
+            ->setMethods(['getBackendUser'])
+            ->getMock();
         $pageController->method('getBackendUser')->will($this->returnValue($beUserMock));
 
         $pageController->CALC_PERMS = $permissions;

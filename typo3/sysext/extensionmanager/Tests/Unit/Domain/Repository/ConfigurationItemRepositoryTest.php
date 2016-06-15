@@ -43,7 +43,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             array('dummy')
         );
 
-        $this->injectedObjectManagerMock = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class, array(), array(), '', false);
+        $this->injectedObjectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $this->configurationItemRepository->_set(
             'objectManager',
             $this->injectedObjectManagerMock
@@ -99,7 +99,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'objectManager',
             $this->injectedObjectManagerMock
         );
-        $configurationUtilityMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class, array(), array(), '', false);
+        $configurationUtilityMock = $this->createMock(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class);
         $configurationUtilityMock
             ->expects($this->once())
             ->method('getDefaultConfigurationFromExtConfTemplateAsValuedArray')
@@ -330,8 +330,8 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function mergeDefaultConfigurationCatchesExceptionOfConfigurationManagerIfNoLocalConfigurationExists()
     {
-        $exception = $this->getMock('RuntimeException');
-        $configurationManagerMock = $this->getMock(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+        $exception = $this->getMockBuilder('RuntimeException')->getMock();
+        $configurationManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)->getMock();
         $configurationManagerMock
             ->expects($this->once())
             ->method('getConfigurationValueByPath')
@@ -354,8 +354,8 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function mergeDefaultConfigurationWithNoCurrentValuesReturnsTheDefaultConfiguration()
     {
-        $exception = $this->getMock('RuntimeException');
-        $configurationManagerMock = $this->getMock(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+        $exception = $this->getMockBuilder('RuntimeException')->getMock();
+        $configurationManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)->getMock();
         $configurationManagerMock
             ->expects($this->once())
             ->method('getConfigurationValueByPath')
@@ -391,7 +391,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             )
         ));
 
-        $configurationManagerMock = $this->getMock(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+        $configurationManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)->getMock();
         $configurationManagerMock
             ->expects($this->once())
             ->method('getConfigurationValueByPath')

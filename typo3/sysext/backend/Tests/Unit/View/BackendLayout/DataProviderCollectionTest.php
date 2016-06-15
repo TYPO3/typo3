@@ -40,7 +40,7 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1381597629);
         $identifier = $this->getUniqueId('identifier__');
-        $dataProviderMock = $this->getMock('stdClass');
+        $dataProviderMock = $this->getMockBuilder('stdClass')->getMock();
 
         $this->dataProviderCollection->add($identifier, get_class($dataProviderMock));
     }
@@ -53,7 +53,7 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1381269811);
         $identifier = $this->getUniqueId('identifier');
-        $dataProviderMock = $this->getMock('stdClass');
+        $dataProviderMock = $this->getMockBuilder('stdClass')->getMock();
 
         $this->dataProviderCollection->add($identifier, get_class($dataProviderMock));
     }
@@ -65,8 +65,14 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $backendLayoutIdentifier = $this->getUniqueId('identifier');
 
-        $dataProviderMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class, array('getBackendLayout'), array(), '', false);
-        $backendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', false);
+        $dataProviderMock = $this->getMockBuilder(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class)
+            ->setMethods(array('getBackendLayout'))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $backendLayoutMock = $this->getMockBuilder(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class)
+            ->setMethods(array('getIdentifier'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $backendLayoutMock->expects($this->any())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
         $dataProviderMock->expects($this->once())->method('getBackendLayout')->will($this->returnValue($backendLayoutMock));
 
@@ -85,8 +91,14 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $dataProviderIdentifier = $this->getUniqueId('custom');
         $backendLayoutIdentifier = $this->getUniqueId('identifier');
 
-        $dataProviderMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class, array('getBackendLayout'), array(), '', false);
-        $backendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', false);
+        $dataProviderMock = $this->getMockBuilder(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class)
+            ->setMethods(array('getBackendLayout'))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $backendLayoutMock = $this->getMockBuilder(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class)
+            ->setMethods(array('getIdentifier'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $backendLayoutMock->expects($this->any())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
         $dataProviderMock->expects($this->once())->method('getBackendLayout')->will($this->returnValue($backendLayoutMock));
 

@@ -61,7 +61,7 @@ class FileNameFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function filterHiddenFilesAndFoldersFiltersHiddenFilesAndFolders($itemName, $itemIdentifier, $expected)
     {
         /** @var DriverInterface|\PHPUnit_Framework_MockObject_MockObject $driverMock */
-        $driverMock = $this->getMock(DriverInterface::class);
+        $driverMock = $this->createMock(DriverInterface::class);
         $this->assertSame(
             $expected,
             FileNameFilter::filterHiddenFilesAndFolders(
@@ -80,7 +80,7 @@ class FileNameFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function filterHiddenFilesAndFoldersAllowsHiddenFilesAndFolders($itemName, $itemIdentifier, $expected)
     {
         /** @var DriverInterface|\PHPUnit_Framework_MockObject_MockObject $driverMock */
-        $driverMock = $this->getMock(DriverInterface::class);
+        $driverMock = $this->createMock(DriverInterface::class);
         FileNameFilter::setShowHiddenFilesAndFolders(true);
         $this->assertSame(
             FileNameFilter::filterHiddenFilesAndFolders(

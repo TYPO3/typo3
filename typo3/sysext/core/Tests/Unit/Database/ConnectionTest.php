@@ -391,9 +391,7 @@ class ConnectionTest extends UnitTestCase
      */
     public function selectQueries(array $args, string $expectedQuery, array $expectedParameters)
     {
-        $resultStatement = $this->getMockBuilder(Statement::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $resultStatement = $this->createMock(Statement::class);
 
         $this->connection->expects($this->once())
             ->method('executeQuery')
@@ -443,9 +441,7 @@ class ConnectionTest extends UnitTestCase
      */
     public function countQueries(array $args, string $expectedQuery, array $expectedParameters)
     {
-        $resultStatement = $this->getMockBuilder(Statement::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $resultStatement = $this->createMock(Statement::class);
 
         $resultStatement->expects($this->once())
             ->method('fetchColumn')

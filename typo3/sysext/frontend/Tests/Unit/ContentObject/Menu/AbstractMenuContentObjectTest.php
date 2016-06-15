@@ -32,8 +32,10 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $proxyClassName = $this->buildAccessibleProxy(\TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::class);
         $this->subject = $this->getMockForAbstractClass($proxyClassName);
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
-        $GLOBALS['TSFE'] = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array($GLOBALS['TYPO3_CONF_VARS'], 1, 1));
+        $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)->getMock();
+        $GLOBALS['TSFE'] = $this->getMockBuilder(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class)
+            ->setConstructorArgs(array($GLOBALS['TYPO3_CONF_VARS'], 1, 1))
+            ->getMock();
         $GLOBALS['TSFE']->cObj = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
         $GLOBALS['TSFE']->page = array();
     }
@@ -48,8 +50,8 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function prepareSectionIndexTest()
     {
-        $this->subject->sys_page = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
-        $this->subject->parent_cObj = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+        $this->subject->sys_page = $this->getMockBuilder(\TYPO3\CMS\Frontend\Page\PageRepository::class)->getMock();
+        $this->subject->parent_cObj = $this->getMockBuilder(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class)->getMock();
     }
 
     /**
@@ -264,7 +266,7 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
 
         $this->prepareSectionIndexTest();
-        $this->subject->parent_cObj = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array());
+        $this->subject->parent_cObj = $this->getMockBuilder(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class)->getMock();
 
         $this->subject->sys_page->expects($this->once())->method('getMenu')->will($this->returnValue($menu));
         $this->subject->menuArr = array(

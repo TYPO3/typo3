@@ -35,7 +35,7 @@ class ClassSchemaTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 		');
 
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
-        $objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $mockClassSchema = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class, array('dummy'), array('Foo\\Bar\\Domain\\Model\\' . $className));
         $objectManager->expects($this->once())->method('get')->will($this->returnValue($mockClassSchema));
 
@@ -60,7 +60,7 @@ class ClassSchemaTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 		');
 
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
-        $objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $mockClassSchema = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class, array('dummy'), array('Foo_Bar_Domain_Model_' . $className));
         $objectManager->expects($this->once())->method('get')->will($this->returnValue($mockClassSchema));
 

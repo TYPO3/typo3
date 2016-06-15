@@ -30,7 +30,7 @@ class CoreVersionServiceTest extends UnitTestCase
     {
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(CoreVersionService::class, array('fetchVersionMatrixFromRemote'), array(), '', false);
-        $registry = $this->getMock(Registry::class);
+        $registry = $this->createMock(Registry::class);
         $versionArray = array(8 => []);
         $registry->expects($this->once())->method('set')->with('TYPO3.CMS.Install', 'coreVersionMatrix', $versionArray);
         $instance->_set('registry', $registry);
@@ -45,7 +45,7 @@ class CoreVersionServiceTest extends UnitTestCase
     {
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(CoreVersionService::class, array('fetchVersionMatrixFromRemote'), array(), '', false);
-        $registry = $this->getMock(Registry::class);
+        $registry = $this->createMock(Registry::class);
         $versionArray = array(
             '7' => array(),
             '6.2' => array(),
@@ -386,7 +386,7 @@ class CoreVersionServiceTest extends UnitTestCase
         $this->expectExceptionCode(1380898792);
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(CoreVersionService::class, array('fetchVersionMatrixFromRemote'), array(), '', false);
-        $registry = $this->getMock(Registry::class);
+        $registry = $this->createMock(Registry::class);
         $registry->expects($this->once())->method('get')->will($this->returnValue(null));
         $instance->_set('registry', $registry);
         $instance->_call('getVersionMatrix');
@@ -399,7 +399,7 @@ class CoreVersionServiceTest extends UnitTestCase
     {
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(CoreVersionService::class, array('fetchVersionMatrixFromRemote'), array(), '', false);
-        $registry = $this->getMock(Registry::class);
+        $registry = $this->createMock(Registry::class);
         $versionArray = array($this->getUniqueId());
         $registry->expects($this->once())->method('get')->will($this->returnValue($versionArray));
         $instance->_set('registry', $registry);

@@ -62,10 +62,10 @@ class YouTubeRendererTest extends UnitTestCase
     public function canRenderReturnsTrueOnCorrectFile()
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock1 */
-        $fileResourceMock1 = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock1 = $this->createMock(File::class);
         $fileResourceMock1->expects($this->any())->method('getMimeType')->will($this->returnValue('video/youtube'));
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock2 */
-        $fileResourceMock2 = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock2 = $this->createMock(File::class);
         $fileResourceMock2->expects($this->any())->method('getMimeType')->will($this->returnValue('video/unknown'));
         $fileResourceMock2->expects($this->any())->method('getExtension')->will($this->returnValue('youtube'));
 
@@ -79,7 +79,7 @@ class YouTubeRendererTest extends UnitTestCase
     public function canRenderReturnsFalseOnCorrectFile()
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
-        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock = $this->createMock(File::class);
         $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('video/vimeo'));
 
         $this->assertFalse($this->subject->canRender($fileResourceMock));
@@ -91,7 +91,7 @@ class YouTubeRendererTest extends UnitTestCase
     public function renderOutputIsCorrect()
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
-        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
             '<iframe src="//www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;enablejsapi=1&amp;origin=test.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
@@ -105,7 +105,7 @@ class YouTubeRendererTest extends UnitTestCase
     public function renderOutputWithLoopIsCorrect()
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
-        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
             '<iframe src="//www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;loop=1&amp;enablejsapi=1&amp;origin=test.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
@@ -119,7 +119,7 @@ class YouTubeRendererTest extends UnitTestCase
     public function renderOutputWithAutoplayIsCorrect()
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
-        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
             '<iframe src="//www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;autoplay=1&amp;enablejsapi=1&amp;origin=test.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
@@ -133,10 +133,10 @@ class YouTubeRendererTest extends UnitTestCase
     public function renderOutputWithAutoplayFromFileReferenceIsCorrect()
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
-        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock = $this->createMock(File::class);
 
         /** @var FileReference|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
-        $fileReferenceMock = $this->getMock(FileReference::class, array(), array(), '', false);
+        $fileReferenceMock = $this->createMock(FileReference::class);
         $fileReferenceMock->expects($this->any())->method('getProperty')->will($this->returnValue(1));
         $fileReferenceMock->expects($this->any())->method('getOriginalFile')->willReturn($fileResourceMock);
 
@@ -152,7 +152,7 @@ class YouTubeRendererTest extends UnitTestCase
     public function renderOutputWithAutoplayAndWithoutControllsIsCorrect()
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
-        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock = $this->createMock(File::class);
 
         $this->assertSame(
             '<iframe src="//www.youtube.com/embed/7331?autohide=1&amp;autoplay=1&amp;enablejsapi=1&amp;origin=test.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',

@@ -57,10 +57,9 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
      */
     protected function createConfigurationManagerWithMockedMethods(array $methods)
     {
-        $this->configurationManager = $this->getMock(
-            ConfigurationManager::class,
-            $methods
-        );
+        $this->configurationManager = $this->getMockBuilder(ConfigurationManager::class)
+            ->setMethods($methods)
+            ->getMock();
     }
 
     /**
@@ -97,7 +96,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         );
 
         /** @var $packageManager PackageManager|\PHPUnit_Framework_MockObject_MockObject */
-        $packageManager = $this->getMock(PackageManager::class, array(), array(), '', false);
+        $packageManager = $this->createMock(PackageManager::class);
         $packageManager->expects($this->any())
             ->method('isPackageActive')
             ->will($this->returnValue($isPackageActive));

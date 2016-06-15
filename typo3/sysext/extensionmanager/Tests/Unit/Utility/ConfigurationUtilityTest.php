@@ -26,10 +26,9 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getCurrentConfigurationReturnsExtensionConfigurationAsValuedConfiguration()
     {
         /** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $configurationUtility = $this->getMock(
-            \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class,
-            array('getDefaultConfigurationFromExtConfTemplateAsValuedArray')
-        );
+        $configurationUtility = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class)
+            ->setMethods(array('getDefaultConfigurationFromExtConfTemplateAsValuedArray'))
+            ->getMock();
         $configurationUtility
             ->expects($this->once())
             ->method('getDefaultConfigurationFromExtConfTemplateAsValuedArray')
@@ -77,9 +76,9 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('getExtensionPathInformation')
             ->will($this->returnValue(null));
 
-        $tsStyleConfig = $this->getMock(\TYPO3\CMS\Core\TypoScript\ConfigurationForm::class);
+        $tsStyleConfig = $this->getMockBuilder(\TYPO3\CMS\Core\TypoScript\ConfigurationForm::class)->getMock();
 
-        $objectManagerMock = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+        $objectManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class)->getMock();
         $configurationUtility->_set('objectManager', $objectManagerMock);
         $objectManagerMock
             ->expects($this->once())

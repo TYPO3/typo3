@@ -223,7 +223,7 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getProcessedValueForSelectWithMMRelation()
     {
-        $GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(DatabaseConnection::class);
         $GLOBALS['TYPO3_DB']->expects($this->any())->method('fullQuoteStr')
             ->will($this->returnCallback(
                 function ($quoteStr) {
@@ -755,7 +755,7 @@ class BackendUtilityTest extends UnitTestCase
     public function getLabelsFromItemsListReturnsCorrectValue($table, $col, $keyList, $tca, array $pageTsConfig, $expectedLabel)
     {
         // Stub LanguageService and let sL() return the same value that came in again
-        $GLOBALS['LANG'] = $this->getMock(LanguageService::class, array(), array(), '', false);
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
         $GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
 
         $GLOBALS['TCA'][$table] = $tca;
@@ -784,7 +784,7 @@ class BackendUtilityTest extends UnitTestCase
             )
         );
         // Stub LanguageService and let sL() return the same value that came in again
-        $GLOBALS['LANG'] = $this->getMock(LanguageService::class, array(), array(), '', false);
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
         $GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
 
         $GLOBALS['TCA'][$table] = $tca;
@@ -812,7 +812,7 @@ class BackendUtilityTest extends UnitTestCase
             )
         );
         // Stub LanguageService and let sL() return the same value that came in again
-        $GLOBALS['LANG'] = $this->getMock(LanguageService::class, array(), array(), '', false);
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
         $GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
 
         $GLOBALS['TCA'][$table] = $tca;
@@ -859,7 +859,7 @@ class BackendUtilityTest extends UnitTestCase
             )
         );
 
-        $GLOBALS['BE_USER'] = $this->getMock(BackendUserAuthentication::class, array(), array(), '', false);
+        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
         $GLOBALS['BE_USER']->expects($this->at(0))->method('getTSConfig')->will($this->returnValue($completeConfiguration));
         $GLOBALS['BE_USER']->expects($this->at(1))->method('getTSConfig')->will($this->returnValue(array('value' => null, 'properties' => null)));
 
@@ -1017,7 +1017,7 @@ class BackendUtilityTest extends UnitTestCase
     public function replaceL10nModeFieldsReplacesFields($table, array $row, array $tca, array $originalRow, $expected)
     {
         $GLOBALS['TCA'] = $tca;
-        $GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(DatabaseConnection::class);
         $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->will($this->returnValue($originalRow));
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|BackendUtility $subject */

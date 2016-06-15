@@ -72,7 +72,7 @@ class TranslationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     protected function setUpBasicFrontendEnvironment()
     {
-        $environmentServiceMock = $this->getMock(\TYPO3\CMS\Extbase\Service\EnvironmentService::class);
+        $environmentServiceMock = $this->createMock(\TYPO3\CMS\Extbase\Service\EnvironmentService::class);
         $environmentServiceMock
             ->expects($this->any())
             ->method('isEnvironmentInFrontendMode')
@@ -80,7 +80,7 @@ class TranslationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Service\EnvironmentService::class, $environmentServiceMock);
 
         $pageRepositoryFixture = new PageRepository();
-        $frontendControllerMock = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', false);
+        $frontendControllerMock = $this->createMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
         $frontendControllerMock->sys_page = $pageRepositoryFixture;
         $GLOBALS['TSFE'] = $frontendControllerMock;
     }

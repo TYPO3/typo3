@@ -45,7 +45,9 @@ class AbstractProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $writer = new \TYPO3\CMS\Core\Log\Writer\NullWriter();
         $level = \TYPO3\CMS\Core\Log\LogLevel::DEBUG;
         $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('dummy', $level, 'message');
-        $processor = $this->getMock(\TYPO3\CMS\Core\Log\Processor\ProcessorInterface::class, array('processLogRecord'));
+        $processor = $this->getMockBuilder(\TYPO3\CMS\Core\Log\Processor\ProcessorInterface::class)
+            ->setMethods(array('processLogRecord'))
+            ->getMock();
         $processor->expects($this->once())->method('processLogRecord')->willReturn($logRecord);
 
         $logger->addWriter($level, $writer);

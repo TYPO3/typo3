@@ -41,7 +41,7 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
             ]
         ];
 
-        $pageRepository = $this->getMock(PageRepository::class);
+        $pageRepository = $this->createMock(PageRepository::class);
         $pageRepository->versioningPreview = false;
 
         $subject = new FrontendWorkspaceRestriction(0);
@@ -62,7 +62,7 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
             ]
         ];
 
-        $pageRepository = $this->getMock(PageRepository::class);
+        $pageRepository = $this->createMock(PageRepository::class);
         $pageRepository->versioningPreview = true;
         $pageRepository->versioningWorkspaceId = 42;
 
@@ -84,7 +84,7 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
             ]
         ];
 
-        $pageRepository = $this->getMock(PageRepository::class);
+        $pageRepository = $this->createMock(PageRepository::class);
         $pageRepository->versioningPreview = true;
         $pageRepository->versioningWorkspaceId = 42;
 

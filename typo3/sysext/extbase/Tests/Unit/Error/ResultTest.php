@@ -54,7 +54,7 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function getMockMessage($type)
     {
-        return $this->getMock('TYPO3\\CMS\\Extbase\\Error\\' . $type, array(), array(), '', false);
+        return $this->createMock('TYPO3\\CMS\\Extbase\\Error\\' . $type);
     }
 
     /**

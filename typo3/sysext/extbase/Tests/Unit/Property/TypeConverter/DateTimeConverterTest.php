@@ -101,7 +101,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function convertFromUsesDefaultDateFormatIfItIsNotConfigured()
     {
         $expectedResult = '1980-12-13T20:15:07+01:23';
-        $mockMappingConfiguration = $this->getMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface::class);
+        $mockMappingConfiguration = $this->createMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface::class);
         $mockMappingConfiguration
                 ->expects($this->atLeastOnce())
                 ->method('getConfigurationValue')
@@ -150,7 +150,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function convertFromStringTests($source, $dateFormat, $isValid)
     {
         if ($dateFormat !== null) {
-            $mockMappingConfiguration = $this->getMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface::class);
+            $mockMappingConfiguration = $this->createMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface::class);
             $mockMappingConfiguration
                     ->expects($this->atLeastOnce())
                     ->method('getConfigurationValue')
@@ -394,7 +394,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $dateFormat = isset($source['dateFormat']) && $source['dateFormat'] !== '' ? $source['dateFormat'] : null;
         if ($dateFormat !== null) {
-            $mockMappingConfiguration = $this->getMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface::class);
+            $mockMappingConfiguration = $this->createMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface::class);
             $mockMappingConfiguration
                     ->expects($this->atLeastOnce())
                     ->method('getConfigurationValue')

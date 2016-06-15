@@ -33,7 +33,7 @@ class SqlParserTest extends AbstractTestCase
     {
         $subject = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\SqlParser::class, array('dummy'), array(), '', false);
 
-        $mockDatabaseConnection = $this->getMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, array(), array(), '', false);
+        $mockDatabaseConnection = $this->createMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class);
         $mockDatabaseConnection->lastHandlerKey = '_DEFAULT';
         $subject->_set('databaseConnection', $mockDatabaseConnection);
         $subject->_set('sqlCompiler', GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\SqlCompilers\Adodb::class, $mockDatabaseConnection));

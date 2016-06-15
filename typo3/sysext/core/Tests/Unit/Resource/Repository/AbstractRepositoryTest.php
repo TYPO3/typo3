@@ -28,7 +28,7 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function createDatabaseMock()
     {
-        $this->mockedDb = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
+        $this->mockedDb = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $GLOBALS['TYPO3_DB'] = $this->mockedDb;
     }
 
@@ -93,7 +93,7 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getWhereClauseForEnabledFieldsCallsSysPageForDeletedFlagInFrontend()
     {
         $GLOBALS['TSFE'] = new \stdClass();
-        $sysPageMock = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+        $sysPageMock = $this->createMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
         $GLOBALS['TSFE']->sys_page = $sysPageMock;
         $sysPageMock
             ->expects($this->once())

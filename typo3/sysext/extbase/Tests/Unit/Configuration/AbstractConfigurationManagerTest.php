@@ -514,7 +514,7 @@ class AbstractConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
      */
     public function getContentObjectTheCurrentContentObject()
     {
-        $mockContentObject = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+        $mockContentObject = $this->createMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
         $this->abstractConfigurationManager->setContentObject($mockContentObject);
         $this->assertSame($this->abstractConfigurationManager->getContentObject(), $mockContentObject);
     }

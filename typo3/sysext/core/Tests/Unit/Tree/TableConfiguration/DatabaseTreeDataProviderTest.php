@@ -47,7 +47,9 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
      */
     protected function setUp()
     {
-        $this->database = $this->getMock(DatabaseConnection::class, array('exec_SELECTgetSingleRow'));
+        $this->database = $this->getMockBuilder(DatabaseConnection::class)
+            ->setMethods(array('exec_SELECTgetSingleRow'))
+            ->getMock();
         $this->database->expects($this->any())->method('exec_SELECTgetSingleRow')->will($this->returnValue(array('uid' => 0, 'parent' => '')));
         $this->treeData = new TreeNode();
         $GLOBALS['TYPO3_DB'] = $this->database;

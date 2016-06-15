@@ -35,7 +35,9 @@ class NumberValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     public function setup()
     {
-        $this->validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'));
+        $this->validator = $this->getMockBuilder($this->validatorClassName)
+            ->setMethods(array('translateErrorMessage'))
+            ->getMock();
     }
 
     /**

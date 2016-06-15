@@ -37,7 +37,9 @@ class DownloadQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $this->downloadQueueMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue::class, array('dummy'));
-        $this->extensionMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class, array('dummy'));
+        $this->extensionMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class)
+            ->setMethods(array('dummy'))
+            ->getMock();
         $this->extensionMock->setExtensionKey('foobar');
         $this->extensionMock->setVersion('1.0.0');
     }
@@ -83,7 +85,9 @@ class DownloadQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function addExtensionToQueueThrowsExceptionIfExtensionWithSameKeyAndDifferentValuesAlreadyExists()
     {
         /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extensionMock2 */
-        $extensionMock2 = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class, array('dummy'));
+        $extensionMock2 = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class)
+            ->setMethods(array('dummy'))
+            ->getMock();
         $extensionMock2->setExtensionKey('foobar');
         $extensionMock2->setVersion('1.0.3');
 

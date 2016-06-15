@@ -64,18 +64,20 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper::class, array('validateArguments', 'initialize', 'callRenderMethod', 'getWidgetConfiguration', 'getRenderingContext'));
-        $this->mockExtensionService = $this->getMock(\TYPO3\CMS\Extbase\Service\ExtensionService::class);
+        $this->mockExtensionService = $this->createMock(\TYPO3\CMS\Extbase\Service\ExtensionService::class);
         $this->viewHelper->_set('extensionService', $this->mockExtensionService);
-        $this->ajaxWidgetContextHolder = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder::class, array(), array(), '', false);
+        $this->ajaxWidgetContextHolder = $this->createMock(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder::class);
         $this->viewHelper->injectAjaxWidgetContextHolder($this->ajaxWidgetContextHolder);
-        $this->widgetContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class);
-        $this->objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+        $this->widgetContext = $this->createMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class);
+        $this->objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $this->objectManager->expects($this->at(0))->method('get')->with(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class)->will($this->returnValue($this->widgetContext));
         $this->viewHelper->injectObjectManager($this->objectManager);
-        $this->request = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Web\Request::class);
-        $this->controllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, array(), array(), '', false);
+        $this->request = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Web\Request::class);
+        $this->controllerContext = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class);
         $this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
-        $this->renderingContext = $this->getMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class, array('getControllerContext'));
+        $this->renderingContext = $this->getMockBuilder(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class)
+            ->setMethods(array('getControllerContext'))
+            ->getMock();
         $this->renderingContext->expects($this->any())->method('getControllerContext')->willReturn($this->controllerContext);
         $this->viewHelper->_set('renderingContext', $this->renderingContext);
     }
@@ -105,9 +107,9 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function callViewHelper()
     {
-        $mockViewHelperVariableContainer = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer::class);
+        $mockViewHelperVariableContainer = $this->createMock(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer::class);
         $mockViewHelperVariableContainer->expects($this->any())->method('get')->willReturnArgument(2);
-        $mockRenderingContext = $this->getMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
+        $mockRenderingContext = $this->createMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
         $mockRenderingContext->expects($this->atLeastOnce())->method('getViewHelperVariableContainer')->will($this->returnValue($mockViewHelperVariableContainer));
         $mockRenderingContext->expects($this->any())->method('getControllerContext')->willReturn($this->controllerContext);
         $this->viewHelper->setRenderingContext($mockRenderingContext);
@@ -129,15 +131,15 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setChildNodesAddsChildNodesToWidgetContext()
     {
-        $node1 = $this->getMock(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\AbstractNode::class);
-        $node2 = $this->getMock(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\TextNode::class, array(), array(), '', false);
-        $node3 = $this->getMock(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\AbstractNode::class);
-        $rootNode = $this->getMock(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode::class);
+        $node1 = $this->createMock(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\AbstractNode::class);
+        $node2 = $this->createMock(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\TextNode::class);
+        $node3 = $this->createMock(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\AbstractNode::class);
+        $rootNode = $this->createMock(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode::class);
         $rootNode->expects($this->at(0))->method('addChildNode')->with($node1);
         $rootNode->expects($this->at(1))->method('addChildNode')->with($node2);
         $rootNode->expects($this->at(2))->method('addChildNode')->with($node3);
         $this->objectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode::class)->will($this->returnValue($rootNode));
-        $renderingContext = $this->getMock(\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface::class);
+        $renderingContext = $this->createMock(\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface::class);
         $this->viewHelper->_set('renderingContext', $renderingContext);
         $this->widgetContext->expects($this->once())->method('setViewHelperChildNodes')->with($rootNode, $renderingContext);
         $this->viewHelper->setChildNodes(array($node1, $node2, $node3));
@@ -148,7 +150,7 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function initiateSubRequestThrowsExceptionIfControllerIsNoWidgetController()
     {
-        $controller = $this->getMock(AbstractWidgetViewHelper::class);
+        $controller = $this->createMock(AbstractWidgetViewHelper::class);
 
         $this->expectException(MissingControllerException::class);
         $this->expectExceptionCode(1289422564);
@@ -162,11 +164,11 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function initiateSubRequestBuildsRequestProperly()
     {
-        $controller = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class, array(), array(), '', false);
+        $controller = $this->createMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class);
         $this->viewHelper->_set('controller', $controller);
         // Initial Setup
-        $widgetRequest = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class);
-        $response = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Web\Response::class);
+        $widgetRequest = $this->createMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class);
+        $response = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Web\Response::class);
         $this->objectManager->expects($this->at(0))->method('get')->with(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class)->will($this->returnValue($widgetRequest));
         $this->objectManager->expects($this->at(1))->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Web\Response::class)->will($this->returnValue($response));
         // Widget Context is set
@@ -200,7 +202,9 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getWidgetConfigurationReturnsArgumentsProperty()
     {
-        $viewHelper = $this->getMock(AbstractWidgetViewHelper::class, array('dummy'));
+        $viewHelper = $this->getMockBuilder(AbstractWidgetViewHelper::class)
+            ->setMethods(array('dummy'))
+            ->getMock();
         $viewHelper->setArguments(array('foo' => 'bar'));
         $this->assertEquals(array('foo' => 'bar'), $this->callInaccessibleMethod($viewHelper, 'getWidgetConfiguration'));
     }
@@ -210,9 +214,16 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function compileDisablesTemplateCompiler()
     {
-        $viewHelper = $this->getMock(AbstractWidgetViewHelper::class, array('dummy'));
-        $node = $this->getMock(ViewHelperNode::class, array('dummy'), array(), '', false);
-        $compiler = $this->getMock(TemplateCompiler::class, array('disable'));
+        $viewHelper = $this->getMockBuilder(AbstractWidgetViewHelper::class)
+            ->setMethods(array('dummy'))
+            ->getMock();
+        $node = $this->getMockBuilder(ViewHelperNode::class)
+            ->setMethods(array('dummy'))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $compiler = $this->getMockBuilder(TemplateCompiler::class)
+            ->setMethods(array('disable'))
+            ->getMock();
         $compiler->expects($this->once())->method('disable');
         $code = ''; // referenced
         $result = $viewHelper->compile('', '', $code, $node, $compiler);

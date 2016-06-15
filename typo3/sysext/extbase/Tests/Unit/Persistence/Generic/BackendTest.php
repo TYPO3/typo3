@@ -27,15 +27,15 @@ class BackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Backend|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $fixture = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, array('dummy'), array(), '', false);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper|\PHPUnit_Framework_MockObject_MockObject */
-        $dataMapper = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
+        $dataMapper = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap|\PHPUnit_Framework_MockObject_MockObject */
-        $dataMap = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class, array(), array(), '', false);
+        $dataMap = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap|\PHPUnit_Framework_MockObject_MockObject */
-        $columnMap = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::class, array(), array(), '', false);
+        $columnMap = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::class);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $storageBackend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface::class);
+        $storageBackend = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface::class);
         /* \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $domainObject = $this->getMock(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface::class);
+        $domainObject = $this->createMock(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface::class);
 
         $mmMatchFields = array(
             'identifier' => 'myTable:myField',
@@ -78,8 +78,11 @@ class BackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getIdentifierByObjectReturnsIdentifierForNonlazyObject()
     {
         $fakeUuid = 'fakeUuid';
-        $configurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
-        $session = $this->getMock('stdClass', array('getIdentifierByObject'), array(), '', false);
+        $configurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $session = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getIdentifierByObject'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $object = new \stdClass();
 
         $session->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
@@ -97,10 +100,17 @@ class BackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getIdentifierByObjectReturnsIdentifierForLazyObject()
     {
         $fakeUuid = 'fakeUuid';
-        $configurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $configurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         $parentObject = new \stdClass();
-        $proxy = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy::class, array('_loadRealInstance'), array($parentObject, 'y', 'z'), '', false);
-        $session = $this->getMock('stdClass', array('getIdentifierByObject'), array(), '', false);
+        $proxy = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy::class)
+            ->setMethods(array('_loadRealInstance'))
+            ->setConstructorArgs(array($parentObject, 'y', 'z'))
+            ->disableProxyingToOriginalMethods()
+            ->getMock();
+        $session = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getIdentifierByObject'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $object = new \stdClass();
 
         $proxy->expects($this->once())->method('_loadRealInstance')->will($this->returnValue($object));

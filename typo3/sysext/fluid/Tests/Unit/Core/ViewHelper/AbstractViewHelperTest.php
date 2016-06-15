@@ -68,7 +68,7 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->mockReflectionService = $this->getMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class, array(), array(), '', false);
+        $this->mockReflectionService = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
     }
 
     /**
@@ -79,7 +79,9 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function registerRenderMethodArgumentsThrowsExceptionOnMissingType(array $arguments, $expectsException = false)
     {
-        $reflectionService = $this->getMock(ReflectionService::class, array('getMethodParameters', 'getMethodTagsValues'));
+        $reflectionService = $this->getMockBuilder(ReflectionService::class)
+            ->setMethods(array('getMethodParameters', 'getMethodTagsValues'))
+            ->getMock();
         $reflectionService->expects($this->once())->method('getMethodParameters')->willReturn(
             array(
                 'param1' => array(
@@ -105,7 +107,9 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function callRenderMethodBehavesAsExpected(array $arguments, $expectsException = false)
     {
-        $reflectionService = $this->getMock(ReflectionService::class, array('getMethodParameters', 'getMethodTagsValues'));
+        $reflectionService = $this->getMockBuilder(ReflectionService::class)
+            ->setMethods(array('getMethodParameters', 'getMethodTagsValues'))
+            ->getMock();
         $reflectionService->expects($this->once())->method('getMethodParameters')->willReturn(
             array(
                 'param1' => array(
@@ -258,7 +262,7 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function prepareArgumentsRegistersAnnotationBasedArgumentsWithDescriptionIfDebugModeIsEnabled()
     {
-        $dataCacheMock = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class, array(), array(), '', false);
+        $dataCacheMock = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class);
         $dataCacheMock->expects($this->any())->method('has')->will($this->returnValue(true));
         $dataCacheMock->expects($this->any())->method('get')->will($this->returnValue(array()));
 
@@ -359,10 +363,13 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setRenderingContextShouldSetInnerVariables()
     {
-        $templateVariableContainer = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer::class);
-        $viewHelperVariableContainer = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer::class);
-        $controllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, array('getRequest'), array(), '', false);
-        $controllerContext->expects($this->atLeastOnce())->method('getRequest')->willReturn($this->getMock(Request::class));
+        $templateVariableContainer = $this->createMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer::class);
+        $viewHelperVariableContainer = $this->createMock(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer::class);
+        $controllerContext = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class)
+            ->setMethods(array('getRequest'))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $controllerContext->expects($this->atLeastOnce())->method('getRequest')->willReturn($this->createMock(Request::class));
 
         $renderingContext = $this->getAccessibleMock(RenderingContextFixture::class, array('getControllerContext'));
         $renderingContext->expects($this->any())->method('getControllerContext')->willReturn($controllerContext);

@@ -26,7 +26,7 @@ class StructureFacadeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var $facade \TYPO3\CMS\Install\FolderStructure\StructureFacade|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $facade = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\StructureFacade::class, array('dummy'), array(), '', false);
-        $root = $this->getMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class, array(), array(), '', false);
+        $root = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class);
         $root->expects($this->once())->method('getStatus')->will($this->returnValue(array()));
         $facade->_set('structure', $root);
         $status = $facade->getStatus();
@@ -40,7 +40,7 @@ class StructureFacadeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var $facade \TYPO3\CMS\Install\FolderStructure\StructureFacade|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $facade = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\StructureFacade::class, array('dummy'), array(), '', false);
-        $root = $this->getMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class, array(), array(), '', false);
+        $root = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class);
         $root->expects($this->once())->method('fix')->will($this->returnValue(array()));
         $facade->_set('structure', $root);
         $status = $facade->fix();

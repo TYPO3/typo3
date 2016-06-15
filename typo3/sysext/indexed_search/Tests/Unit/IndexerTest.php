@@ -31,7 +31,9 @@ class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->subject = $this->getMock(\TYPO3\CMS\IndexedSearch\Indexer::class, array('dummy'));
+        $this->subject = $this->getMockBuilder(\TYPO3\CMS\IndexedSearch\Indexer::class)
+            ->setMethods(array('dummy'))
+            ->getMock();
     }
 
     /**
@@ -103,7 +105,7 @@ class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $absRefPrefix = '/' . $this->getUniqueId();
         $html = 'test <a href="' . $absRefPrefix . 'index.php">test</a> test';
-        $GLOBALS['TSFE'] = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', false);
+        $GLOBALS['TSFE'] = $this->createMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
         $GLOBALS['TSFE']->config['config']['absRefPrefix'] = $absRefPrefix;
         $result = $this->subject->extractHyperLinks($html);
         $this->assertEquals(1, count($result));

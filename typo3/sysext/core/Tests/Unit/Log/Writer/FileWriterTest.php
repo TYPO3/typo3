@@ -177,8 +177,12 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->setUpVfsStream();
 
-        $firstWriter = $this->getMock(\TYPO3\CMS\Core\Log\Writer\FileWriter::class, array('dummy'));
-        $secondWriter = $this->getMock(\TYPO3\CMS\Core\Log\Writer\FileWriter::class, array('createLogFile'));
+        $firstWriter = $this->getMockBuilder(\TYPO3\CMS\Core\Log\Writer\FileWriter::class)
+            ->setMethods(array('dummy'))
+            ->getMock();
+        $secondWriter = $this->getMockBuilder(\TYPO3\CMS\Core\Log\Writer\FileWriter::class)
+            ->setMethods(array('createLogFile'))
+            ->getMock();
 
         $secondWriter->expects($this->never())->method('createLogFile');
 

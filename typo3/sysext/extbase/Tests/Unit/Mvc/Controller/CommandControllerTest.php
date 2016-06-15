@@ -62,7 +62,7 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(StopActionException::class);
         // @TODO expectExceptionCode is 0
-        $mockResponse = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Response::class);
+        $mockResponse = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Cli\Response::class);
         $this->commandController->_set('response', $mockResponse);
         $this->commandController->_call('quit');
     }
@@ -74,7 +74,7 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->expectException(StopActionException::class);
         // @TODO expectExceptionCode is 0
-        $mockResponse = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Response::class);
+        $mockResponse = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Cli\Response::class);
         $mockResponse->expects($this->once())->method('setExitCode')->with(123);
         $this->commandController->_set('response', $mockResponse);
         $this->commandController->_call('quit', 123);
@@ -85,7 +85,7 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function settingRequestAdminPropertySetsAdminRoleInUserAuthentication()
     {
-        $mockedUserAuthentication = $this->getMock(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+        $mockedUserAuthentication = $this->createMock(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
         $mockedUserAuthentication->user['admin'] = 42;
         $this->commandController->expects($this->once())
             ->method('dummyCommand')

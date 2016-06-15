@@ -33,9 +33,15 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function canHandleWidgetRequest()
     {
         /** @var WidgetRequest|\PHPUnit_Framework_MockObject_MockObject $request */
-        $request = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class, array('dummy'), array(), '', false);
+        $request = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class)
+            ->setMethods(array('dummy'))
+            ->disableOriginalConstructor()
+            ->getMock();
         /** @var AbstractWidgetController|\PHPUnit_Framework_MockObject_MockObject $abstractWidgetController */
-        $abstractWidgetController = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class, array('dummy'), array(), '', false);
+        $abstractWidgetController = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class)
+            ->setMethods(array('dummy'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->assertTrue($abstractWidgetController->canProcessRequest($request));
     }
 
@@ -44,20 +50,20 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function processRequestSetsWidgetConfiguration()
     {
-        $widgetContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class);
+        $widgetContext = $this->createMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class);
         $widgetContext->expects($this->once())->method('getWidgetConfiguration')->will($this->returnValue('myConfiguration'));
         /** @var WidgetRequest|\PHPUnit_Framework_MockObject_MockObject $request */
-        $request = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class, array(), array(), '', false);
+        $request = $this->createMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class);
         $request->expects($this->once())->method('getWidgetContext')->will($this->returnValue($widgetContext));
         /** @var ResponseInterface|\PHPUnit_Framework_MockObject_MockObject $response */
-        $response = $this->getMock(\TYPO3\CMS\Extbase\Mvc\ResponseInterface::class);
+        $response = $this->createMock(\TYPO3\CMS\Extbase\Mvc\ResponseInterface::class);
         /** @var AbstractWidgetController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $abstractWidgetController */
         $abstractWidgetController = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class, array('resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'initializeAction', 'checkRequestHash', 'mapRequestArgumentsToControllerArguments', 'buildControllerContext', 'resolveView', 'callActionMethod'), array(), '', false);
-        $mockUriBuilder = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
-        $objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+        $mockUriBuilder = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
+        $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $objectManager->expects($this->any())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class)->will($this->returnValue($mockUriBuilder));
 
-        $configurationService = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class);
+        $configurationService = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class);
         $abstractWidgetController->_set('mvcPropertyMappingConfigurationService', $configurationService);
         $abstractWidgetController->_set('arguments', new Arguments());
 
@@ -76,7 +82,7 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setViewConfigurationPerformsExpectedInitialization(array $parent, $widget, array $expected)
     {
-        $configurationManager = $this->getMock(ConfigurationManagerInterface::class);
+        $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $configurationManager->expects($this->once())->method('getConfiguration')->willReturn(array(
             'view' => array(
                 'widget' => array(
@@ -84,16 +90,26 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 )
             )
         ));
-        $parentRequest = $this->getMock(Request::class, array('getControllerExtensionKey'));
+        $parentRequest = $this->getMockBuilder(Request::class)
+            ->setMethods(array('getControllerExtensionKey'))
+            ->getMock();
         $parentRequest->expects($this->once())->method('getControllerExtensionKey')->willReturn(null);
-        $controllerContext = $this->getMock(ControllerContext::class, array('getRequest'));
+        $controllerContext = $this->getMockBuilder(ControllerContext::class)
+            ->setMethods(array('getRequest'))
+            ->getMock();
         $controllerContext->expects($this->once())->method('getRequest')->willReturn($parentRequest);
-        $templatePaths = $this->getMock(TemplatePaths::class, array('fillFromConfigurationArray', 'toArray'));
+        $templatePaths = $this->getMockBuilder(TemplatePaths::class)
+            ->setMethods(array('fillFromConfigurationArray', 'toArray'))
+            ->getMock();
         $templatePaths->expects($this->once())->method('fillFromConfigurationArray')->with($expected);
         $templatePaths->expects($this->any())->method('toArray')->willReturn($parent);
-        $widgetContext = $this->getMock(WidgetContext::class, array('getWidgetViewHelperClassName'));
+        $widgetContext = $this->getMockBuilder(WidgetContext::class)
+            ->setMethods(array('getWidgetViewHelperClassName'))
+            ->getMock();
         $widgetContext->expects($this->once())->method('getWidgetViewHelperClassName')->willReturn('foobarClassName');
-        $request = $this->getMock(Request::class, array('getWidgetContext'));
+        $request = $this->getMockBuilder(Request::class)
+            ->setMethods(array('getWidgetContext'))
+            ->getMock();
         $request->expects($this->once())->method('getWidgetContext')->willReturn($widgetContext);
 
         $view = $this->getAccessibleMock(TemplateView::class, array('getTemplatePaths', 'toArray'), array(), '', false);

@@ -46,9 +46,15 @@ class CacheManagerTest extends UnitTestCase
         $this->expectExceptionCode(1203698223);
 
         $manager = new CacheManager();
-        $cache1 = $this->getMock(AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache1 = $this->getMockBuilder(AbstractFrontend::class)
+            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('test'));
-        $cache2 = $this->getMock(AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache2 = $this->getMockBuilder(AbstractFrontend::class)
+            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $cache2->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('test'));
         $manager->registerCache($cache1);
         $manager->registerCache($cache2);
@@ -60,9 +66,15 @@ class CacheManagerTest extends UnitTestCase
     public function managerReturnsThePreviouslyRegisteredCache()
     {
         $manager = new CacheManager();
-        $cache1 = $this->getMock(AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache1 = $this->getMockBuilder(AbstractFrontend::class)
+            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('cache1'));
-        $cache2 = $this->getMock(AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache2 = $this->getMockBuilder(AbstractFrontend::class)
+            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $cache2->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('cache2'));
         $manager->registerCache($cache1);
         $manager->registerCache($cache2);
@@ -78,7 +90,10 @@ class CacheManagerTest extends UnitTestCase
         $this->expectExceptionCode(1203699034);
 
         $manager = new CacheManager();
-        $cache = $this->getMock(AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache = $this->getMockBuilder(AbstractFrontend::class)
+            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $cache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('someidentifier'));
         $manager->registerCache($cache);
         $manager->getCache('someidentifier');
@@ -91,7 +106,10 @@ class CacheManagerTest extends UnitTestCase
     public function hasCacheReturnsCorrectResult()
     {
         $manager = new CacheManager();
-        $cache1 = $this->getMock(AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache1 = $this->getMockBuilder(AbstractFrontend::class)
+            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('cache1'));
         $manager->registerCache($cache1);
         $this->assertTrue($manager->hasCache('cache1'), 'hasCache() did not return TRUE.');
@@ -104,11 +122,17 @@ class CacheManagerTest extends UnitTestCase
     public function flushCachesByTagCallsTheFlushByTagMethodOfAllRegisteredCaches()
     {
         $manager = new CacheManager();
-        $cache1 = $this->getMock(AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache1 = $this->getMockBuilder(AbstractFrontend::class)
+            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('cache1'));
         $cache1->expects($this->once())->method('flushByTag')->with($this->equalTo('theTag'));
         $manager->registerCache($cache1);
-        $cache2 = $this->getMock(AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache2 = $this->getMockBuilder(AbstractFrontend::class)
+            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $cache2->expects($this->once())->method('flushByTag')->with($this->equalTo('theTag'));
         $manager->registerCache($cache2);
         $manager->flushCachesByTag('theTag');
@@ -120,11 +144,17 @@ class CacheManagerTest extends UnitTestCase
     public function flushCachesCallsTheFlushMethodOfAllRegisteredCaches()
     {
         $manager = new CacheManager();
-        $cache1 = $this->getMock(AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache1 = $this->getMockBuilder(AbstractFrontend::class)
+            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('cache1'));
         $cache1->expects($this->once())->method('flush');
         $manager->registerCache($cache1);
-        $cache2 = $this->getMock(AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache2 = $this->getMockBuilder(AbstractFrontend::class)
+            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $cache2->expects($this->once())->method('flush');
         $manager->registerCache($cache2);
         $manager->flushCaches();

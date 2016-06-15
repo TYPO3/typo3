@@ -39,7 +39,9 @@ class FlexFormToolsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         );
         $editData = '';
         /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(FlexFormTools::class, array('executeCallBackMethod'));
+        $subject = $this->getMockBuilder(FlexFormTools::class)
+            ->setMethods(array('executeCallBackMethod'))
+            ->getMock();
         $subject->expects($this->never())->method('executeCallBackMethod');
         $subject->traverseFlexFormXMLData_recurse($dataStruct, $editData, $pA);
     }
@@ -66,7 +68,7 @@ class FlexFormToolsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         );
         $editData2 = '';
         /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(FlexFormTools::class);
+        $subject = $this->createMock(FlexFormTools::class);
         $this->assertEquals(
             $subject->traverseFlexFormXMLData_recurse($dataStruct, $editData, $pA),
             $subject->traverseFlexFormXMLData_recurse($dataStruct, $editData2, $pA)

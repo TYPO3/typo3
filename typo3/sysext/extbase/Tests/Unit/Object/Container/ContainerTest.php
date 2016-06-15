@@ -34,10 +34,14 @@ class ContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         // The mocked cache will always indicate that he has nothing in the cache to force that we get the real class info
-        $mockedCache = $this->getMock(\TYPO3\CMS\Extbase\Object\Container\ClassInfoCache::class, array('get', 'set', 'has'));
+        $mockedCache = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\Container\ClassInfoCache::class)
+            ->setMethods(array('get', 'set', 'has'))
+            ->getMock();
         $mockedCache->expects($this->any())->method('get')->will($this->returnValue(false));
         $mockedCache->expects($this->never())->method('has');
-        $this->container = $this->getMock(\TYPO3\CMS\Extbase\Object\Container\Container::class, array('log', 'getClassInfoCache'));
+        $this->container = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\Container\Container::class)
+            ->setMethods(array('log', 'getClassInfoCache'))
+            ->getMock();
         $this->container->expects($this->any())->method('getClassInfoCache')->will($this->returnValue($mockedCache));
     }
 
@@ -125,7 +129,7 @@ class ContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getInstancePassesGivenParameterToTheNewObject()
     {
-        $mockObject = $this->getMock('t3lib_object_tests_c');
+        $mockObject = $this->createMock('t3lib_object_tests_c');
         $object = $this->container->getInstance('t3lib_object_tests_a', array($mockObject));
         $this->assertInstanceOf('t3lib_object_tests_a', $object);
         $this->assertSame($mockObject, $object->c);
@@ -188,8 +192,12 @@ class ContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $className = \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\NamespacedClass::class;
         $classNameHash = md5($className);
-        $mockedCache = $this->getMock(\TYPO3\CMS\Extbase\Object\Container\ClassInfoCache::class, array('has', 'set', 'get'));
-        $container = $this->getMock(\TYPO3\CMS\Extbase\Object\Container\Container::class, array('log', 'getClassInfoCache'));
+        $mockedCache = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\Container\ClassInfoCache::class)
+            ->setMethods(array('has', 'set', 'get'))
+            ->getMock();
+        $container = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\Container\Container::class)
+            ->setMethods(array('log', 'getClassInfoCache'))
+            ->getMock();
         $container->expects($this->any())->method('getClassInfoCache')->will($this->returnValue($mockedCache));
         $mockedCache->expects($this->never())->method('has');
         $mockedCache->expects($this->once())->method('get')->with($classNameHash)->will($this->returnValue(false));

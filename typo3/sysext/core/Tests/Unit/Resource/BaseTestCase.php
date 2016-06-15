@@ -119,7 +119,10 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 $mockedMethods[] = 'getName';
             }
         }
-        $mock = $this->getMock($type, $mockedMethods, array(), '', false);
+        $mock = $this->getMockBuilder($type)
+            ->setMethods($mockedMethods)
+            ->disableOriginalConstructor()
+            ->getMock();
         $mock->expects($this->any())->method('getIdentifier')->will($this->returnValue($identifier));
         $mock->expects($this->any())->method('getName')->will($this->returnValue(basename($identifier)));
         return $mock;

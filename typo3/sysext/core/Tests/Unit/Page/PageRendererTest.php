@@ -28,7 +28,9 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function renderMethodCallsResetInAnyCase()
     {
-        $pageRenderer = $this->getMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplateForPart'));
+        $pageRenderer = $this->getMockBuilder(\TYPO3\CMS\Core\Page\PageRenderer::class)
+            ->setMethods(array('reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplateForPart'))
+            ->getMock();
         $pageRenderer->expects($this->exactly(3))->method('reset');
 
         $pageRenderer->render(PageRenderer::PART_COMPLETE);

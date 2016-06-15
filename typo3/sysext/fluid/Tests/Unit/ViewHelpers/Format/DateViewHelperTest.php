@@ -51,7 +51,7 @@ class DateViewHelperTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = 'Y-m-d';
         $this->subject = $this->getAccessibleMock(DateViewHelper::class, array('renderChildren'));
         /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->getMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
+        $renderingContext = $this->createMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
         $this->subject->_set('renderingContext', $renderingContext);
     }
 

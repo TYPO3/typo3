@@ -68,15 +68,15 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $this->request = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Cli\Request::class, array('dummy'));
-        $this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+        $this->mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $this->mockObjectManager->expects($this->any())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Cli\Request::class)->will($this->returnValue($this->request));
-        $this->mockCommand = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, array(), array(), '', false);
+        $this->mockCommand = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class);
         $this->mockCommand->expects($this->any())->method('getControllerClassName')->will($this->returnValue('Tx_SomeExtensionName_Command_DefaultCommandController'));
         $this->mockCommand->expects($this->any())->method('getControllerCommandName')->will($this->returnValue('list'));
-        $this->mockCommandManager = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager::class);
+        $this->mockCommandManager = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager::class);
         $this->mockCommandManager->expects($this->any())->method('getCommandByIdentifier')->with('some_extension_name:default:list')->will($this->returnValue($this->mockCommand));
-        $this->mockReflectionService = $this->getMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
-        $this->mockConfigurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $this->mockReflectionService = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
+        $this->mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         $this->requestBuilder = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder::class, array('dummy'));
         $this->requestBuilder->_set('objectManager', $this->mockObjectManager);
         $this->requestBuilder->_set('reflectionService', $this->mockReflectionService);
@@ -105,7 +105,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         // The following call is only made to satisfy PHPUnit. For some weird reason PHPUnit complains that the
         // mocked method ("getObjectNameByClassName") does not exist _if the mock object is not used_.
         $this->mockCommandManager->getCommandByIdentifier('some_extension_name:default:list');
-        $mockCommandManager = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager::class);
+        $mockCommandManager = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager::class);
         $mockCommandManager->expects($this->any())->method('getCommandByIdentifier')->with('test:default:list')->will($this->throwException(new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException()));
         $this->requestBuilder->_set('commandManager', $mockCommandManager);
         $request = $this->requestBuilder->build('test:default:list');

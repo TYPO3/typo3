@@ -33,7 +33,7 @@ class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->pageContextMock = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+        $this->pageContextMock = $this->createMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
         $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Utility\RootlineUtility::class, array('enrichWithRelationFields'), array(1, '', $this->pageContextMock));
     }
 
@@ -308,7 +308,7 @@ class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->with(2, $pageDataTranslated)
             ->will($this->returnArgument(1));
 
-        $databaseConnectionMock = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
+        $databaseConnectionMock = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $databaseConnectionMock
             ->expects($this->once())
             ->method('exec_SELECTgetSingleRow')
@@ -333,7 +333,10 @@ class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function enrichWithRelationFieldsCreatesWhereClauseForDisabledField()
     {
-        $mockDatabaseConnection = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('exec_SELECTgetRows'), array(), '', false);
+        $mockDatabaseConnection = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)
+            ->setMethods(array('exec_SELECTgetRows'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Utility\RootlineUtility::class, array('columnHasRelationToResolve'), array(1, '', $this->pageContextMock));
         $subject->_set('databaseConnection', $mockDatabaseConnection);
         $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields'] = '';

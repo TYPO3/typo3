@@ -161,7 +161,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
             )
         ];
 
-        $pageRepository = $this->getMock(PageRepository::class);
+        $pageRepository = $this->createMock(PageRepository::class);
         $pageRepository->versioningWorkspaceId = $workspaceId;
         $pageRepository->versioningPreview = $workspacePreview;
 
@@ -171,7 +171,9 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
         $typoScriptFrontendController->gr_list = $feGroupList;
         $typoScriptFrontendController->sys_page = $pageRepository;
 
-        $dbMock = $this->getMock(DatabaseConnection::class, ['quoteStr']);
+        $dbMock = $this->getMockBuilder(DatabaseConnection::class)
+            ->setMethods(['quoteStr'])
+            ->getMock();
         $dbMock->expects($this->any())->method('quoteStr')->willReturnArgument(0);
 
         $GLOBALS['TSFE'] = $typoScriptFrontendController;

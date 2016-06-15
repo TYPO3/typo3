@@ -33,7 +33,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUpMockFrontendOfBackend(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend $backend)
     {
-        $mockCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array(), array(), '', false);
+        $mockCache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class);
         $mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('Testing'));
         $backend->setCache($mockCache);
         return $mockCache;
@@ -45,7 +45,10 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setCacheCalculatesCacheTableName()
     {
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
         $this->assertEquals('cf_Testing', $backend->getCacheTable());
     }
@@ -56,7 +59,10 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setCacheCalculatesTagsTableName()
     {
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
         $this->assertEquals('cf_Testing_tags', $backend->getTagsTable());
     }
@@ -70,7 +76,10 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1236518288);
 
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $backend->set('identifier', 'data');
     }
 
@@ -83,7 +92,10 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1236518298);
 
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
         $data = array('Some data');
         $entryIdentifier = 'BackendDbTest';
@@ -96,9 +108,12 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setInsertsEntryInTable()
     {
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $GLOBALS['TYPO3_DB']
             ->expects($this->once())
             ->method('exec_INSERTquery')
@@ -120,9 +135,12 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setRemovesAnAlreadyExistingCacheEntryForTheSameIdentifier()
     {
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('remove'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('remove'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
 
         $backend->expects($this->once())->method('remove');
         $data = $this->getUniqueId('someData');
@@ -136,11 +154,14 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setReallySavesSpecifiedTags()
     {
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
-        $connectionPool = $this->getMock(ConnectionPool::class);
-        $connection = $this->getMock(Connection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
+        $connectionPool = $this->createMock(ConnectionPool::class);
+        $connection = $this->createMock(Connection::class);
         $connectionPool->expects($this->once())->method('getConnectionForTable')->willReturn($connection);
         $connection->expects($this->once())->method('bulkInsert')->with(
             'cf_Testing_tags',
@@ -173,14 +194,14 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'compression' => true
         );
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(
-            \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-            array('dummy'),
-            array('Testing', $backendOptions)
-        );
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing', $backendOptions))
+            ->getMock();
+
         $this->setUpMockFrontendOfBackend($backend);
 
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $GLOBALS['TYPO3_DB']
             ->expects($this->once())
             ->method('exec_INSERTquery')
@@ -203,10 +224,13 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setWithUnlimitedLifetimeWritesCorrectEntry()
     {
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
 
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $GLOBALS['TYPO3_DB']
             ->expects($this->once())
             ->method('exec_INSERTquery')
@@ -233,7 +257,10 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1236518288);
 
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $backend->get('identifier');
     }
 
@@ -243,10 +270,13 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getReturnsContentOfTheCorrectCacheEntry()
     {
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
 
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $GLOBALS['TYPO3_DB']
             ->expects($this->once())
             ->method('exec_SELECTgetSingleRow')
@@ -263,10 +293,13 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getSetsExceededLifetimeQueryPart()
     {
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
 
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $GLOBALS['TYPO3_DB']
             ->expects($this->once())
             ->method('exec_SELECTgetSingleRow')
@@ -288,7 +321,10 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1236518288);
 
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $backend->has('identifier');
     }
 
@@ -298,10 +334,13 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function hasReturnsTrueForExistingEntry()
     {
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
 
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $GLOBALS['TYPO3_DB']
             ->expects($this->once())
             ->method('exec_SELECTcountRows')
@@ -317,10 +356,13 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function hasSetsExceededLifetimeQueryPart()
     {
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
 
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $GLOBALS['TYPO3_DB']
             ->expects($this->once())
             ->method('exec_SELECTcountRows')
@@ -342,7 +384,10 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1236518288);
 
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $backend->remove('identifier');
     }
 
@@ -352,10 +397,13 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function removeReallyRemovesACacheEntry()
     {
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
 
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $GLOBALS['TYPO3_DB']
             ->expects($this->at(0))
             ->method('fullQuoteStr')
@@ -385,7 +433,10 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1236518288);
 
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $backend->collectGarbage();
     }
 
@@ -395,10 +446,13 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function collectGarbageDeletesTagsFromExpiredEntries()
     {
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
 
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $GLOBALS['TYPO3_DB']
             ->expects($this->at(1))
             ->method('sql_fetch_assoc')
@@ -425,10 +479,13 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function collectGarbageDeletesExpiredEntry()
     {
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
 
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $GLOBALS['TYPO3_DB']
             ->expects($this->at(1))
             ->method('sql_fetch_assoc')
@@ -450,7 +507,10 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1236518288);
 
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $backend->findIdentifiersByTag('identifier');
     }
 
@@ -460,10 +520,13 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag()
     {
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
 
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $GLOBALS['TYPO3_DB']
             ->expects($this->at(0))
             ->method('fullQuoteStr')
@@ -490,7 +553,10 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1236518288);
 
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $backend->flush();
     }
 
@@ -500,7 +566,10 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function flushRemovesAllCacheEntries()
     {
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
 
         $connectionProphet = $this->prophesize(Connection::class);
@@ -526,7 +595,10 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectExceptionCode(1236518288);
 
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $backend->flushByTag(array());
     }
 
@@ -536,10 +608,13 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function flushByTagRemovesCacheEntriesWithSpecifiedTag()
     {
         /** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
+        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class)
+            ->setMethods(array('dummy'))
+            ->setConstructorArgs(array('Testing'))
+            ->getMock();
         $this->setUpMockFrontendOfBackend($backend);
 
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
         $GLOBALS['TYPO3_DB']
             ->expects($this->at(0))
             ->method('fullQuoteStr')

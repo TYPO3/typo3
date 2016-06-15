@@ -128,7 +128,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
         // tryToLoadExtLocalconfAndExtTablesOfExtensions() triggers a call to ExtensionManagementUtility::loadBaseTca
         // that works on our UnitTestPackageManager to do things. This package manager needs to be mocked here to
         // not trigger unwanted side effects.
-        $packageManager = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class, array(), array(), '', false);
+        $packageManager = $this->createMock(\TYPO3\CMS\Core\Package\PackageManager::class);
         $packageManager->expects($this->any())->method('getActivePackages')->will($this->returnValue(array()));
         ExtensionManagementUtility::setPackageManager($packageManager);
 
@@ -151,7 +151,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
         // tryToLoadExtLocalconfAndExtTablesOfExtensions() triggers a call to ExtensionManagementUtility::loadBaseTca
         // that works on our UnitTestPackageManager to do things. This package manager needs to be mocked here to
         // not trigger unwanted side effects.
-        $packageManager = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class, array(), array(), '', false);
+        $packageManager = $this->createMock(\TYPO3\CMS\Core\Package\PackageManager::class);
         $packageManager->expects($this->any())->method('getActivePackages')->will($this->returnValue(array()));
         ExtensionManagementUtility::setPackageManager($packageManager);
 
@@ -192,7 +192,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
         // tryToLoadExtLocalconfAndExtTablesOfExtensions() triggers a call to ExtensionManagementUtility::loadBaseTca
         // that works on our UnitTestPackageManager to do things. This package manager needs to be mocked here to
         // not trigger unwanted side effects.
-        $packageManager = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class, array(), array(), '', false);
+        $packageManager = $this->createMock(\TYPO3\CMS\Core\Package\PackageManager::class);
         $packageManager->expects($this->any())->method('getActivePackages')->will($this->returnValue(array()));
         ExtensionManagementUtility::setPackageManager($packageManager);
 

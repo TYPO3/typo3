@@ -111,17 +111,17 @@ class StandaloneViewTest extends UnitTestCase
             \TYPO3\CMS\Fluid\View\StandaloneView::class,
             array('testFileExistence', 'buildParserConfiguration', 'getOrParseAndStoreTemplate'), array(), '', false
         );
-        $this->mockConfigurationManager = $this->getMock(ConfigurationManagerInterface::class);
-        $this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $this->mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
+        $this->mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $this->mockObjectManager->expects($this->any())->method('get')->will($this->returnCallback(array($this, 'objectManagerCallback')));
-        $this->mockRequest = $this->getMock(Request::class);
-        $this->mockUriBuilder = $this->getMock(UriBuilder::class);
-        $this->mockContentObject = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-        $this->mockControllerContext = $this->getMock(ControllerContext::class);
+        $this->mockRequest = $this->createMock(Request::class);
+        $this->mockUriBuilder = $this->createMock(UriBuilder::class);
+        $this->mockContentObject = $this->createMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+        $this->mockControllerContext = $this->createMock(ControllerContext::class);
         $this->mockControllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->mockRequest));
-        $this->mockTemplatePaths = $this->getMock(TemplatePaths::class);
-        $this->mockViewHelperVariableContainer = $this->getMock(ViewHelperVariableContainer::class);
-        $this->mockRenderingContext = $this->getMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
+        $this->mockTemplatePaths = $this->createMock(TemplatePaths::class);
+        $this->mockViewHelperVariableContainer = $this->createMock(ViewHelperVariableContainer::class);
+        $this->mockRenderingContext = $this->createMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
         $this->mockRenderingContext->expects($this->any())->method('getControllerContext')->will($this->returnValue($this->mockControllerContext));
         $this->mockRenderingContext->expects($this->any())->method('getViewHelperVariableContainer')->will($this->returnValue($this->mockViewHelperVariableContainer));
         $this->mockRenderingContext->expects($this->any())->method('getVariableProvider')->willReturn($this->mockVariableProvider);
@@ -133,8 +133,8 @@ class StandaloneViewTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class, $this->mockObjectManager);
         GeneralUtility::addInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, $this->mockContentObject);
 
-        $this->mockCacheManager = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class, array(), array(), '', false);
-        $mockCache = $this->getMock(\TYPO3Fluid\Fluid\Core\Cache\FluidCacheInterface::class, array(), array(), '', false);
+        $this->mockCacheManager = $this->createMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
+        $mockCache = $this->createMock(\TYPO3Fluid\Fluid\Core\Cache\FluidCacheInterface::class);
         $this->mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $this->mockCacheManager);
     }
@@ -185,7 +185,7 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function constructorSetsSpecifiedContentObject()
     {
-        $mockContentObject = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+        $mockContentObject = $this->createMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
         $this->mockConfigurationManager->expects($this->once())->method('setContentObject')->with($this->identicalTo($mockContentObject));
         new StandaloneView($mockContentObject);
     }

@@ -25,9 +25,9 @@ class CategoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function initializeObjectSetsRespectStoragePidToFalse()
     {
         /** @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManagerInterface */
-        $objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+        $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $fixture = new \TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository($objectManager);
-        $querySettings = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
+        $querySettings = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
         $querySettings->expects($this->once())->method('setRespectStoragePage')->with(false);
         $objectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)->will($this->returnValue($querySettings));
         $fixture->initializeObject();

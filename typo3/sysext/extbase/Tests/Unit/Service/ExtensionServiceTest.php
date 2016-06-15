@@ -41,11 +41,13 @@ class ExtensionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('fullQuoteStr', 'exec_SELECTgetRows'));
+        $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)
+            ->setMethods(array('fullQuoteStr', 'exec_SELECTgetRows'))
+            ->getMock();
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->gr_list = '';
         $this->extensionService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Service\ExtensionService::class, array('dummy'));
-        $this->mockConfigurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $this->mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         $this->extensionService->_set('configurationManager', $this->mockConfigurationManager);
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'] = array(
             'ExtensionName' => array(

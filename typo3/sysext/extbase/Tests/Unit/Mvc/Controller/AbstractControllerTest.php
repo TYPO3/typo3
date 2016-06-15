@@ -104,17 +104,16 @@ class AbstractControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function addFlashMessageAddsFlashMessageObjectToFlashMessageQueue($expectedMessage, $messageBody, $messageTitle = '', $severity = \TYPO3\CMS\Core\Messaging\FlashMessage::OK, $storeInSession = true)
     {
-        $flashMessageQueue = $this->getMock(
-            \TYPO3\CMS\Core\Messaging\FlashMessageQueue::class,
-            array('enqueue'),
-            array($this->getUniqueId('identifier_'))
-        );
+        $flashMessageQueue = $this->getMockBuilder(\TYPO3\CMS\Core\Messaging\FlashMessageQueue::class)
+            ->setMethods(array('enqueue'))
+            ->setConstructorArgs(array($this->getUniqueId('identifier_')))
+            ->getMock();
+
         $flashMessageQueue->expects($this->once())->method('enqueue')->with($this->equalTo($expectedMessage));
 
-        $controllerContext = $this->getMock(
-            \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class,
-            array('getFlashMessageQueue')
-        );
+        $controllerContext = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class)
+            ->setMethods(array('getFlashMessageQueue'))
+            ->getMock();
         $controllerContext->expects($this->once())->method('getFlashMessageQueue')->will($this->returnValue($flashMessageQueue));
 
         $controller = $this->getMockForAbstractClass(\TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class,

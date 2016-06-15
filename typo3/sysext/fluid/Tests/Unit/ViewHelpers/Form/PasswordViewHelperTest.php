@@ -38,7 +38,10 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
      */
     public function renderCorrectlySetsTagName()
     {
-        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName'), array(), '', false);
+        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+            ->setMethods(array('setTagName'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
         $this->viewHelper->_set('tag', $mockTagBuilder);
 
@@ -51,7 +54,10 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
      */
     public function renderCorrectlySetsTypeNameAndValueAttributes()
     {
-        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('addAttribute', 'setContent', 'render'), array(), '', false);
+        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+            ->setMethods(array('addAttribute', 'setContent', 'render'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('type', 'password');
         $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('name', 'NameOfTextbox');
         $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('NameOfTextbox');

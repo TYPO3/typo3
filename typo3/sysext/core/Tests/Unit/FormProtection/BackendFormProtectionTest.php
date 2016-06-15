@@ -43,9 +43,9 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->backendUserMock = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
+        $this->backendUserMock = $this->createMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
         $this->backendUserMock->user['uid'] = 1;
-        $this->registryMock = $this->getMock(Registry::class);
+        $this->registryMock = $this->createMock(Registry::class);
         $this->subject = new BackendFormProtection(
             $this->backendUserMock,
             $this->registryMock,

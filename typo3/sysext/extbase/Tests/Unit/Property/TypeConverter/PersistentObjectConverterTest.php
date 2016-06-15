@@ -68,13 +68,13 @@ class PersistentObjectConverterTest extends UnitTestCase
     protected function setUp()
     {
         $this->converter = new PersistentObjectConverter();
-        $this->mockReflectionService = $this->getMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
+        $this->mockReflectionService = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
         $this->inject($this->converter, 'reflectionService', $this->mockReflectionService);
 
-        $this->mockPersistenceManager = $this->getMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
+        $this->mockPersistenceManager = $this->createMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
         $this->inject($this->converter, 'persistenceManager', $this->mockPersistenceManager);
 
-        $this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class, array());
+        $this->mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $this->mockObjectManager->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($className, ...$arguments) {
@@ -87,7 +87,7 @@ class PersistentObjectConverterTest extends UnitTestCase
                 }));
         $this->inject($this->converter, 'objectManager', $this->mockObjectManager);
 
-        $this->mockContainer = $this->getMock(\TYPO3\CMS\Extbase\Object\Container\Container::class);
+        $this->mockContainer = $this->createMock(\TYPO3\CMS\Extbase\Object\Container\Container::class);
         $this->inject($this->converter, 'objectContainer', $this->mockContainer);
     }
 
@@ -256,15 +256,17 @@ class PersistentObjectConverterTest extends UnitTestCase
      */
     public function setupMockQuery($numberOfResults, $howOftenIsGetFirstCalled)
     {
-        $mockClassSchema = $this->getMock(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class, array(), array('Dummy'));
+        $mockClassSchema = $this->getMockBuilder(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class)
+            ->setConstructorArgs(array('Dummy'))
+            ->getMock();
         $mockClassSchema->expects($this->any())->method('getIdentityProperties')->will($this->returnValue(array('key1' => 'someType')));
         $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('SomeType')->will($this->returnValue($mockClassSchema));
 
         $mockConstraint = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Comparison::class)->disableOriginalConstructor()->getMock();
 
         $mockObject = new \stdClass();
-        $mockQuery = $this->getMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);
-        $mockQueryResult = $this->getMock(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface::class);
+        $mockQuery = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);
+        $mockQueryResult = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface::class);
         $mockQueryResult->expects($this->any())->method('count')->will($this->returnValue($numberOfResults));
         $mockQueryResult->expects($howOftenIsGetFirstCalled)->method('getFirst')->will($this->returnValue($mockObject));
         $mockQuery->expects($this->any())->method('equals')->with('key1', 'value1')->will($this->returnValue($mockConstraint));

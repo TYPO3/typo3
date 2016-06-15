@@ -27,7 +27,7 @@ class FluidTemplateCacheTest extends UnitTestCase
      */
     public function flushCallsFlushOnBackend()
     {
-        $backend = $this->getMock(PhpCapableBackendInterface::class);
+        $backend = $this->createMock(PhpCapableBackendInterface::class);
         $backend->expects($this->once())->method('flush');
         $instance = new FluidTemplateCache('dummy', $backend);
         $instance->flush();
@@ -38,7 +38,10 @@ class FluidTemplateCacheTest extends UnitTestCase
      */
     public function getDelegatesToRequireOnce()
     {
-        $instance = $this->getMock(FluidTemplateCache::class, array('requireOnce'), array(), '', false);
+        $instance = $this->getMockBuilder(FluidTemplateCache::class)
+            ->setMethods(array('requireOnce'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $instance->expects($this->once())->method('requireOnce')->with('foobar');
         $instance->get('foobar');
     }
@@ -48,7 +51,7 @@ class FluidTemplateCacheTest extends UnitTestCase
      */
     public function setCallsSetOnBackend()
     {
-        $backend = $this->getMock(PhpCapableBackendInterface::class);
+        $backend = $this->createMock(PhpCapableBackendInterface::class);
         $backend->expects($this->once())->method('set')->with(
             'test',
             '<?php' . LF . 'test' . LF . '#',
@@ -64,7 +67,7 @@ class FluidTemplateCacheTest extends UnitTestCase
      */
     public function setRemovesLeadingPhpTagBeforeCallingParentWhichAddsLeadingPhpTag()
     {
-        $backend = $this->getMock(PhpCapableBackendInterface::class);
+        $backend = $this->createMock(PhpCapableBackendInterface::class);
         $backend->expects($this->once())->method('set')->with(
             'test',
             '<?php' . LF . 'test' . LF . '#',

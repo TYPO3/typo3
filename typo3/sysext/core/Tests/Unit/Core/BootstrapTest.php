@@ -36,17 +36,14 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             '',
             false
         );
-        $mockCache = $this->getMock(
-            \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class,
-            array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'),
-            array(),
-            '',
-            false
-        );
-        $mockCacheManager = $this->getMock(
-            \TYPO3\CMS\Core\Cache\CacheManager::class,
-            array('getCache')
-        );
+        $mockCache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class)
+            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'))
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mockCacheManager = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\CacheManager::class)
+            ->setMethods(array('getCache'))
+            ->getMock();
         $mockCacheManager
             ->expects($this->any())
             ->method('getCache')
@@ -75,17 +72,14 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             '',
             false
         );
-        $mockCache = $this->getMock(
-            \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class,
-            array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'),
-            array(),
-            '',
-            false
-        );
-        $mockCacheManager = $this->getMock(
-            \TYPO3\CMS\Core\Cache\CacheManager::class,
-            array('getCache')
-        );
+        $mockCache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class)
+            ->setMethods(array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'))
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mockCacheManager = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\CacheManager::class)
+            ->setMethods(array('getCache'))
+            ->getMock();
         $mockCacheManager
             ->expects($this->any())
             ->method('getCache')

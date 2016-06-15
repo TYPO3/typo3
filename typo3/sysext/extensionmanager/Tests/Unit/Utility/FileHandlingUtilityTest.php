@@ -142,7 +142,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(ExtensionManagerException::class);
         $this->expectExceptionCode(1337280417);
         $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array('removeDirectory', 'addDirectory'));
-        $languageServiceMock = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class);
+        $languageServiceMock = $this->getMockBuilder(\TYPO3\CMS\Lang\LanguageService::class)->getMock();
         $fileHandlerMock->_set('languageService', $languageServiceMock);
         $fileHandlerMock->_call('makeAndClearExtensionDir', 'testing123', 'fakepath');
     }
@@ -454,7 +454,9 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function getPreparedFileHandlingMockForDirectoryCreationTests()
     {
         /** @var $fileHandlerMock \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility|\PHPUnit_Framework_MockObject_MockObject */
-        $fileHandlerMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array('createNestedDirectory', 'getAbsolutePath', 'directoryExists'));
+        $fileHandlerMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class)
+            ->setMethods(array('createNestedDirectory', 'getAbsolutePath', 'directoryExists'))
+            ->getMock();
         $fileHandlerMock->expects($this->any())
             ->method('getAbsolutePath')
             ->will($this->returnArgument(0));

@@ -94,12 +94,15 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         );
 
         // logoff() call the static factory that has a dependency to a valid BE_USER object. Mock this away
-        $GLOBALS['BE_USER'] = $this->getMock(BackendUserAuthentication::class, array(), array(), '', false);
+        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
         $GLOBALS['BE_USER']->user = array('uid' => $this->getUniqueId());
-        $GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['TYPO3_DB'] = $this->createMock(DatabaseConnection::class);
 
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(BackendUserAuthentication::class, array('dummy'), array(), '', false);
+        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->setMethods(array('dummy'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $subject->logoff();
     }
 
@@ -250,7 +253,10 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getTSConfigReturnsCorrectArrayForGivenObjectString(array $completeConfiguration, $objectString, array $expectedConfiguration)
     {
-        $subject = $this->getMock(BackendUserAuthentication::class, array('dummy'), array(), '', false);
+        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->setMethods(array('dummy'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $subject->userTS = $completeConfiguration;
 
         $actualConfiguration = $subject->getTSConfig($objectString);
@@ -316,7 +322,9 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFilePermissionsTakesUserDefaultPermissionsFromTsConfigIntoAccountIfUserIsNotAdmin(array $userTsConfiguration)
     {
-        $subject = $this->getMock(BackendUserAuthentication::class, array('isAdmin'));
+        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->setMethods(array('isAdmin'))
+            ->getMock();
 
         $subject
             ->expects($this->any())
@@ -451,8 +459,10 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFilePermissionsFromStorageOverwritesDefaultPermissions(array $defaultPermissions, $storageUid, array $storagePermissions, array $expectedPermissions)
     {
-        $subject = $this->getMock(BackendUserAuthentication::class, array('isAdmin', 'getFilePermissions'));
-        $storageMock = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->setMethods(array('isAdmin', 'getFilePermissions'))
+            ->getMock();
+        $storageMock = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $storageMock->expects($this->any())->method('getUid')->will($this->returnValue($storageUid));
 
         $subject
@@ -487,8 +497,10 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFilePermissionsFromStorageAlwaysReturnsDefaultPermissionsForAdmins(array $defaultPermissions, $storageUid, array $storagePermissions)
     {
-        $subject = $this->getMock(BackendUserAuthentication::class, array('isAdmin', 'getFilePermissions'));
-        $storageMock = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->setMethods(array('isAdmin', 'getFilePermissions'))
+            ->getMock();
+        $storageMock = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $storageMock->expects($this->any())->method('getUid')->will($this->returnValue($storageUid));
 
         $subject
@@ -629,7 +641,9 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdmin($permissionValue, $expectedPermissions)
     {
-        $subject = $this->getMock(BackendUserAuthentication::class, array('isAdmin'));
+        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->setMethods(array('isAdmin'))
+            ->getMock();
 
         $subject
             ->expects($this->any())
@@ -646,7 +660,9 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFilePermissionsGrantsAllPermissionsToAdminUsers()
     {
-        $subject = $this->getMock(BackendUserAuthentication::class, array('isAdmin'));
+        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->setMethods(array('isAdmin'))
+            ->getMock();
 
         $subject
             ->expects($this->any())
@@ -679,7 +695,9 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function jsConfirmationReturnsTrueIfPassedValueEqualsConfiguration()
     {
-        $subject = $this->getMock(BackendUserAuthentication::class, ['getTSConfig']);
+        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->setMethods(['getTSConfig'])
+            ->getMock();
         $subject->method('getTSConfig')->with('options.alertPopups')->willReturn(['value' => 1]);
 
         $this->assertTrue($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
@@ -691,7 +709,9 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function jsConfirmationAllowsSettingMultipleBitsInValue()
     {
-        $subject = $this->getMock(BackendUserAuthentication::class, ['getTSConfig']);
+        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->setMethods(['getTSConfig'])
+            ->getMock();
         $subject->method('getTSConfig')->with('options.alertPopups')->willReturn(['value' => 3]);
 
         $this->assertTrue($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
@@ -703,7 +723,9 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function jsConfirmationAlwaysReturnsFalseIfNoConfirmationIsSet()
     {
-        $subject = $this->getMock(BackendUserAuthentication::class, ['getTSConfig']);
+        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->setMethods(['getTSConfig'])
+            ->getMock();
         $subject->method('getTSConfig')->with('options.alertPopups')->willReturn(['value' => 0]);
 
         $this->assertFalse($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
@@ -715,7 +737,9 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function jsConfirmationReturnsTrueIfConfigurationIsMissing()
     {
-        $subject = $this->getMock(BackendUserAuthentication::class, ['getTSConfig']);
+        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->setMethods(['getTSConfig'])
+            ->getMock();
 
         $this->assertTrue($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
     }
@@ -798,7 +822,9 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
 
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(BackendUserAuthentication::class, ['isAdmin']);
+        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->setMethods(['isAdmin'])
+            ->getMock();
         $subject->expects($this->any())
             ->method('isAdmin')
             ->will($this->returnValue($admin));

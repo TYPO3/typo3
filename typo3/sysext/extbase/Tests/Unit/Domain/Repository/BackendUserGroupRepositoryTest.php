@@ -24,9 +24,9 @@ class BackendUserGroupRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function initializeObjectSetsRespectStoragePidToFalse()
     {
-        $objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+        $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $fixture = new \TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository($objectManager);
-        $querySettings = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
+        $querySettings = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
         $querySettings->expects($this->once())->method('setRespectStoragePage')->with(false);
         $objectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)->will($this->returnValue($querySettings));
         $fixture->initializeObject();
@@ -37,10 +37,13 @@ class BackendUserGroupRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function initializeObjectSetsDefaultQuerySettings()
     {
-        $objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+        $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         /** @var $fixture \TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository */
-        $fixture = $this->getMock(\TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository::class, array('setDefaultQuerySettings'), array($objectManager));
-        $querySettings = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
+        $fixture = $this->getMockBuilder(\TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository::class)
+            ->setMethods(array('setDefaultQuerySettings'))
+            ->setConstructorArgs(array($objectManager))
+            ->getMock();
+        $querySettings = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
         $objectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)->will($this->returnValue($querySettings));
         $fixture->expects($this->once())->method('setDefaultQuerySettings')->with($querySettings);
         $fixture->initializeObject();

@@ -28,7 +28,9 @@ class StripTagsViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\StripTagsViewHelper::class, array('renderChildren'));
+        $this->viewHelper = $this->getMockBuilder(\TYPO3\CMS\Fluid\ViewHelpers\Format\StripTagsViewHelper::class)
+            ->setMethods(array('renderChildren'))
+            ->getMock();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
     }

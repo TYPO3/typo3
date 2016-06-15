@@ -75,7 +75,7 @@ class FloatConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertFromShouldRespectConfiguration()
     {
-        $mockMappingConfiguration = $this->getMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface::class);
+        $mockMappingConfiguration = $this->createMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface::class);
         $mockMappingConfiguration
             ->expects($this->at(0))
             ->method('getConfigurationValue')

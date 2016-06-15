@@ -30,7 +30,10 @@ class PhpFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1233057566);
 
-        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('isValidEntryIdentifier'), array(), '', false);
+        $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class)
+            ->setMethods(array('isValidEntryIdentifier'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $cache->expects($this->once())->method('isValidEntryIdentifier')->with('foo')->will($this->returnValue(false));
         $cache->set('foo', 'bar');
     }
@@ -42,7 +45,7 @@ class PhpFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $originalSourceCode = 'return "hello world!";';
         $modifiedSourceCode = '<?php' . chr(10) . $originalSourceCode . chr(10) . '#';
-        $mockBackend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface::class, array(), array(), '', false);
+        $mockBackend = $this->createMock(\TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface::class);
         $mockBackend->expects($this->once())->method('set')->with('Foo-Bar', $modifiedSourceCode, array('tags'), 1234);
         $cache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, 'PhpFrontend', $mockBackend);
         $cache->set('Foo-Bar', $originalSourceCode, array('tags'), 1234);
@@ -56,7 +59,10 @@ class PhpFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(InvalidDataException::class);
         $this->expectExceptionCode(1264023824);
 
-        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, array('dummy'), array(), '', false);
+        $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class)
+            ->setMethods(array('dummy'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $cache->set('Foo-Bar', array());
     }
 
@@ -65,7 +71,7 @@ class PhpFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function requireOnceCallsTheBackendsRequireOnceMethod()
     {
-        $mockBackend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface::class, array(), array(), '', false);
+        $mockBackend = $this->createMock(\TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface::class);
         $mockBackend->expects($this->once())->method('requireOnce')->with('Foo-Bar')->will($this->returnValue('hello world!'));
         $cache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, 'PhpFrontend', $mockBackend);
         $result = $cache->requireOnce('Foo-Bar');

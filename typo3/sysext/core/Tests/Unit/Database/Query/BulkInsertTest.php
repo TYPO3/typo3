@@ -46,9 +46,7 @@ class BulkInsertTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->connection = $this->getMockBuilder(Connection::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->connection = $this->createMock(Connection::class);
 
         $this->connection->expects($this->any())
             ->method('quoteIdentifier')

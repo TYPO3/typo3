@@ -43,9 +43,11 @@ class JsonViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->view = $this->getMock(\TYPO3\CMS\Extbase\Mvc\View\JsonView::class, array('loadConfigurationFromYamlFile'));
-        $this->controllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, array(), array(), '', false);
-        $this->response = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Web\Response::class, array());
+        $this->view = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\View\JsonView::class)
+            ->setMethods(array('loadConfigurationFromYamlFile'))
+            ->getMock();
+        $this->controllerContext = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class);
+        $this->response = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Web\Response::class);
         $this->controllerContext->expects($this->any())->method('getResponse')->will($this->returnValue($this->response));
         $this->view->setControllerContext($this->controllerContext);
     }
@@ -106,7 +108,9 @@ class JsonViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $output[] = array($object, $configuration, $expected, 'array of objects should be serialized');
 
         $properties = array('foo' => 'bar', 'prohibited' => 'xxx');
-        $nestedObject = $this->getMock($this->getUniqueId('Test'), array('getName', 'getPath', 'getProperties', 'getOther'));
+        $nestedObject = $this->getMockBuilder($this->getUniqueId('Test'))
+            ->setMethods(array('getName', 'getPath', 'getProperties', 'getOther'))
+            ->getMock();
         $nestedObject->expects($this->any())->method('getName')->will($this->returnValue('name'));
         $nestedObject->expects($this->any())->method('getPath')->will($this->returnValue('path'));
         $nestedObject->expects($this->any())->method('getProperties')->will($this->returnValue($properties));
@@ -196,7 +200,9 @@ class JsonViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function testTransformValueWithObjectIdentifierExposure($object, $configuration, $expected, $dummyIdentifier, $description)
     {
-        $persistenceManagerMock = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('getIdentifierByObject'));
+        $persistenceManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)
+            ->setMethods(array('getIdentifierByObject'))
+            ->getMock();
         $jsonView = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\View\JsonView::class, array('dummy'), array(), '', false);
         $jsonView->_set('persistenceManager', $persistenceManagerMock);
 
@@ -256,7 +262,9 @@ class JsonViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 )
             )
         );
-        $reflectionService = $this->getMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class, [ 'getClassNameByObject' ]);
+        $reflectionService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class)
+            ->setMethods([ 'getClassNameByObject' ])
+            ->getMock();
         $reflectionService->expects($this->any())->method('getClassNameByObject')->will($this->returnCallback(function ($object) {
             return get_class($object);
         }));

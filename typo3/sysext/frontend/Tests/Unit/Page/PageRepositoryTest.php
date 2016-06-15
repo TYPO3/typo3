@@ -49,7 +49,9 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('exec_SELECTquery', 'sql_fetch_assoc', 'sql_free_result', 'exec_SELECTgetSingleRow'));
+        $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)
+            ->setMethods(array('exec_SELECTquery', 'sql_fetch_assoc', 'sql_free_result', 'exec_SELECTgetSingleRow'))
+            ->getMock();
         $this->pageSelectObject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, array('getMultipleGroupsWhereClause'));
         $this->pageSelectObject->expects($this->any())->method('getMultipleGroupsWhereClause')->will($this->returnValue(' AND 1=1'));
     }
@@ -63,7 +65,10 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         // Create a hook mock object
         $className = $this->getUniqueId('tx_coretest');
-        $getPageHookMock = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepositoryGetPageHookInterface::class, array('getPage_preProcess'), array(), $className);
+        $getPageHookMock = $this->getMockBuilder(\TYPO3\CMS\Frontend\Page\PageRepositoryGetPageHookInterface::class)
+            ->setMethods(array('getPage_preProcess'))
+            ->setMockClassName($className)
+            ->getMock();
         // Register hook mock object
         GeneralUtility::addInstance($className, $getPageHookMock);
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'][] = $className;

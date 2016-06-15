@@ -35,7 +35,9 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function debuggerRewindsInstancesOfIterator()
     {
         /** @var $objectStorage \TYPO3\CMS\Extbase\Persistence\ObjectStorage */
-        $objectStorage = $this->getMock(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class, array('dummy'));
+        $objectStorage = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class)
+            ->setMethods(array('dummy'))
+            ->getMock();
         for ($i = 0; $i < 5; $i++) {
             $obj = new \stdClass();
             $obj->property = $i;

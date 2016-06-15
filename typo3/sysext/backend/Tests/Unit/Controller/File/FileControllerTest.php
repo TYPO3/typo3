@@ -57,9 +57,18 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->fileResourceMock = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, array('toArray', 'getModificationTime', 'getExtension'), array(), '', false);
-        $this->folderResourceMock = $this->getMock(\TYPO3\CMS\Core\Resource\Folder::class, array('getIdentifier'), array(), '', false);
-        $this->mockFileProcessor = $this->getMock(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class, array('getErrorMessages'), array(), '', false);
+        $this->fileResourceMock = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\File::class)
+            ->setMethods(array('toArray', 'getModificationTime', 'getExtension'))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->folderResourceMock = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Folder::class)
+            ->setMethods(array('getIdentifier'))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->mockFileProcessor = $this->getMockBuilder(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class)
+            ->setMethods(array('getErrorMessages'))
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->fileResourceMock->expects($this->any())->method('toArray')->will($this->returnValue(array('id' => 'foo')));
         $this->fileResourceMock->expects($this->any())->method('getModificationTime')->will($this->returnValue(123456789));

@@ -26,7 +26,9 @@ class LikeWildcardTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         /** @var $databaseConnectionMock \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject */
-        $databaseConnectionMock = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('quoteStr'));
+        $databaseConnectionMock = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)
+            ->setMethods(array('quoteStr'))
+            ->getMock();
         $databaseConnectionMock->method('quoteStr')
             ->will($this->returnArgument(0));
         $GLOBALS['TYPO3_DB'] = $databaseConnectionMock;
