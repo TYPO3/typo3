@@ -93,7 +93,7 @@ abstract class AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\BackendI
     /**
      * Sets the default lifetime for this cache backend
      *
-     * @param int $defaultLifetime Default lifetime of this cache backend in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
+     * @param int $defaultLifetime Default lifetime of this cache backend in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      * @return void
      * @throws \InvalidArgumentException
      * @api
