@@ -120,16 +120,11 @@ class FrontendController extends ActionController
      */
     protected function initializeShowAction()
     {
-        // set validation errors
         $validationResults = $this->request->getOriginalRequestMappingResults()->forProperty('model');
-        if (!$validationResults->hasErrors()) {
-            // If there are errors, the rules already build
-                // but if there are errors, we need to build the rules here,
-                // because of the mandatory message rendering
-            $this->validationBuilder->buildRules();
-            return;
+        $this->validationBuilder->buildRules();
+        if ($validationResults->hasErrors()) {
+            $this->formBuilder->setValidationErrors($validationResults);
         }
-        $this->formBuilder->setValidationErrors($validationResults);
     }
 
     /**
