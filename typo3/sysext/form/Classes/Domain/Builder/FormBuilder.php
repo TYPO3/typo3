@@ -443,32 +443,35 @@ class FormBuilder
 
         if ($this->getIncomingData()->getIncomingField($elementName) !== null) {
             /* filter values and set it back to incoming fields */
-            $keys = ArrayUtility::filterAndSortByNumericKeys($userConfiguredElementTypoScript['filters.']);
-            foreach ($keys as $key) {
-                $class = $userConfiguredElementTypoScript['filters.'][$key];
-                if (
-                    (int)$key
-                    && strpos($key, '.') === false
-                ) {
-                    $filterArguments = $userConfiguredElementTypoScript['filters.'][$key . '.'];
-                    $filterClassName = $this->typoScriptRepository->getRegisteredClassName((string)$class, 'registeredFilters');
-                    if ($filterClassName !== null) {
-                        // toDo: handel array values
-                        if (is_string($this->getIncomingData()->getIncomingField($elementName))) {
-                            if (is_null($filterArguments)) {
-                                $filter = $this->objectManager->get($filterClassName);
-                            } else {
-                                $filter = $this->objectManager->get($filterClassName, $filterArguments);
+            $filters = isset($userConfiguredElementTypoScript['filters.']) ? $userConfiguredElementTypoScript['filters.'] : array();
+            if (!empty($filters)) {
+                $keys = ArrayUtility::filterAndSortByNumericKeys($filters);
+                foreach ($keys as $key) {
+                    $class = $userConfiguredElementTypoScript['filters.'][$key];
+                    if (
+                        (int)$key
+                        && strpos($key, '.') === false
+                    ) {
+                        $filterArguments = $userConfiguredElementTypoScript['filters.'][$key . '.'];
+                        $filterClassName = $this->typoScriptRepository->getRegisteredClassName((string)$class, 'registeredFilters');
+                        if ($filterClassName !== null) {
+                            // toDo: handel array values
+                            if (is_string($this->getIncomingData()->getIncomingField($elementName))) {
+                                if (is_null($filterArguments)) {
+                                    $filter = $this->objectManager->get($filterClassName);
+                                } else {
+                                    $filter = $this->objectManager->get($filterClassName, $filterArguments);
+                                }
+                                if ($filter) {
+                                    $value = $filter->filter($this->getIncomingData()->getIncomingField($elementName));
+                                    $this->getIncomingData()->setIncomingField($elementName, $value);
+                                } else {
+                                    throw new \RuntimeException('Class "' . $filterClassName . '" could not be loaded.');
+                                }
                             }
-                            if ($filter) {
-                                $value = $filter->filter($this->getIncomingData()->getIncomingField($elementName));
-                                $this->getIncomingData()->setIncomingField($elementName, $value);
-                            } else {
-                                throw new \RuntimeException('Class "' . $filterClassName . '" could not be loaded.');
-                            }
+                        } else {
+                            throw new \RuntimeException('Class "' . $filterClassName . '" not registered via TypoScript.');
                         }
-                    } else {
-                        throw new \RuntimeException('Class "' . $filterClassName . '" not registered via TypoScript.');
                     }
                 }
             }
