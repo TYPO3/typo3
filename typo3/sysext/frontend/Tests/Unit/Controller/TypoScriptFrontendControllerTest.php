@@ -254,4 +254,47 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
         $_SERVER['SCRIPT_NAME'] = $scriptName;
         $this->assertEquals($expectedResult, $this->subject->domainNameMatchesCurrentRequest($domainRecord));
     }
+
+    /**
+     * @return array
+     */
+    public function baseUrlWrapHandlesDifferentUrlsDataProvider()
+    {
+        return [
+            'without base url' => [
+                '',
+                'fileadmin/user_uploads/image.jpg',
+                'fileadmin/user_uploads/image.jpg'
+            ],
+            'with base url' => [
+                'http://www.google.com/',
+                'fileadmin/user_uploads/image.jpg',
+                'http://www.google.com/fileadmin/user_uploads/image.jpg'
+            ],
+            'without base url but with url prepended with a forward slash' => [
+                '',
+                '/fileadmin/user_uploads/image.jpg',
+                '/fileadmin/user_uploads/image.jpg',
+            ],
+            'with base url but with url prepended with a forward slash' => [
+                'http://www.google.com/',
+                '/fileadmin/user_uploads/image.jpg',
+                '/fileadmin/user_uploads/image.jpg',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider baseUrlWrapHandlesDifferentUrlsDataProvider
+     * @test
+     * @param string $baseUrl
+     * @param string $url
+     * @param string $expected
+     */
+    public function baseUrlWrapHandlesDifferentUrls($baseUrl, $url, $expected)
+    {
+        $this->subject->baseUrl = $baseUrl;
+        $this->assertSame($expected, $this->subject->baseUrlWrap($url));
+    }
+
 }

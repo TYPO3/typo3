@@ -3870,7 +3870,7 @@ class TypoScriptFrontendController
     {
         if ($this->baseUrl) {
             $urlParts = parse_url($url);
-            if ($urlParts['scheme'] === '' && $url[0] !== '/') {
+            if (empty($urlParts['scheme']) && $url[0] !== '/') {
                 $url = $this->baseUrl . $url;
             }
         }
