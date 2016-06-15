@@ -846,6 +846,65 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_setCurrent
+     *
+     * @return array Order input, conf
+     */
+    public function stdWrap_setCurrentDataProvider()
+    {
+        return [
+            'no conf' => [
+                'content',
+                [],
+            ],
+            'empty string' => [
+                'content',
+                ['setCurrent' => ''],
+            ],
+            'non-empty string' => [
+                'content',
+                ['setCurrent' => 'xxx'],
+            ],
+            'integer null' => [
+                'content',
+                ['setCurrent' => 0],
+            ],
+            'integer not null' => [
+                'content',
+                ['setCurrent' => 1],
+            ],
+            'boolean true' => [
+                'content',
+                ['setCurrent' => true],
+            ],
+            'boolean false' => [
+                'content',
+                ['setCurrent' => false],
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_setCurrent works properly.
+     *
+     * @test
+     * @dataProvider stdWrap_setCurrentDataProvider
+     * @param string $input The input value.
+     * @param array $conf Property: setCurrent
+     * @return void
+     */
+    public function stdWrap_setCurrent($input, $conf)
+    {
+        if (isset($conf['setCurrent'])) {
+            $this->assertNotSame($conf['setCurrent'], $this->subject->getData('current'));
+        }
+        $this->assertSame($input, $this->subject->stdWrap_setCurrent($input, $conf));
+        if (isset($conf['setCurrent'])) {
+            $this->assertSame($conf['setCurrent'], $this->subject->getData('current'));
+        }
+    }
+
+    /**
      * Data provider for stdWrap_csConv
      *
      * @return array Order expected, input, conf
