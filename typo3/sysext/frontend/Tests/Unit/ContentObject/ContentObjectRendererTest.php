@@ -831,6 +831,21 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Check if stdWrap_setContentToCurrent works properly.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_setContentToCurrent()
+    {
+        $content = $this->getUniqueId('content');
+        $this->assertNotSame($content, $this->subject->getData('current'));
+        $this->assertSame($content,
+            $this->subject->stdWrap_setContentToCurrent($content));
+        $this->assertSame($content, $this->subject->getData('current'));
+    }
+
+    /**
      * Data provider for stdWrap_csConv
      *
      * @return array Order expected, input, conf
