@@ -31,24 +31,86 @@ class InArrayValidatorTest extends AbstractValidatorTest
      *
      * @return array
      */
-    public function validArrayProvider()
+    public function validArrayForStringConfigurationProvider()
     {
         return [
-            '12 in (12, 13)' => [
+            '12 in (12, 13, 14)' => [
                 '12',
-                '12,13',
+                '12,13,14',
             ],
             '1 in (5, 3234, oOIUoi8, 3434, 343, 34, 3, 1, 333434, 1234, ssd, ysdfsa)' => [
                 '1',
                 '5,3234,oOIUoi8,3434,343,34,3,1,333434,1234,ssd,ysdfsa',
             ],
+            'Pizza in (Pizza, Lasange, Strogonvo)' => [
+                'Pizza',
+                'Pizza,Lasange,Strogonvo',
+            ],
             'Rißtissen in (Rißtissen, Überligen, Karlsruhe)' => [
                 'Rißtissen',
                 'Rißtissen,Überligen,Karlsruhe',
             ],
-            'Pizza in (Pizza, Lasange, Strogonvo)' => [
-                'Pizza',
+
+            '[12 and 14] in (12, 13, 14)' => [
+                ['12', '14'],
+                '12,13,14',
+            ],
+            '[1 and ssd] in (5, 3234, oOIUoi8, 3434, 343, 34, 3, 1, 333434, 1234, ssd, ysdfsa)' => [
+                ['1', 'ssd'],
+                '5,3234,oOIUoi8,3434,343,34,3,1,333434,1234,ssd,ysdfsa',
+            ],
+            '[Pizza and Strogonvo] in (Pizza, Lasange, Strogonvo)' => [
+                ['Pizza', 'Strogonvo'],
                 'Pizza,Lasange,Strogonvo',
+            ],
+            '[Rißtissen and Karlsruhe] in (Rißtissen, Überligen, Karlsruhe)' => [
+                ['Rißtissen', 'Karlsruhe'],
+                'Rißtissen,Überligen,Karlsruhe',
+            ],
+        ];
+    }
+
+    /**
+     * used for tests with valid input
+     * will result in no errors returned
+     *
+     * @return array
+     */
+    public function validArrayForArrayConfigurationProvider()
+    {
+        return [
+            '12 in [12, 13, 14]' => [
+                '12',
+                ['12', '13', '14'],
+            ],
+            '1 in [5, 3234, oOIUoi8, 3434, 343, 34, 3, 1, 333434, 1234, ssd, ysdfsa]' => [
+                '1',
+                ['5', '3234', 'oOIUoi8', '3434', '343', '34', '3', '1', '333434', '1234', 'ssd', 'ysdfsa'],
+            ],
+            'Pizza in [Pizza, Lasange, Strogonvo]' => [
+                ['Pizza', 'Strogonvo'],
+                ['Pizza', 'Lasange', 'Strogonvo'],
+            ],
+            'Rißtissen in [Rißtissen, Überligen, Karlsruhe]' => [
+                ['Rißtissen', 'Karlsruhe'],
+                ['Rißtissen', 'Überligen', 'Karlsruhe'],
+            ],
+
+            '[12 and 14] in [12, 13, 14]' => [
+                ['12', '14'],
+                ['12', '13', '14'],
+            ],
+            '[1 and ssd] in [5, 3234, oOIUoi8, 3434, 343, 34, 3, 1, 333434, 1234, ssd, ysdfsa]' => [
+                ['1', 'ssd'],
+                ['5', '3234', 'oOIUoi8', '3434', '343', '34', '3', '1', '333434', '1234', 'ssd', 'ysdfsa'],
+            ],
+            '[Pizza and Strogonvo] in [Pizza, Lasange, Strogonvo]' => [
+                'Pizza',
+                ['Pizza', 'Lasange', 'Strogonvo'],
+            ],
+            '[Rißtissen and Karlsruhe] in [Rißtissen, Überligen, Karlsruhe]' => [
+                'Rißtissen',
+                ['Rißtissen', 'Überligen', 'Karlsruhe'],
             ],
         ];
     }
@@ -59,24 +121,102 @@ class InArrayValidatorTest extends AbstractValidatorTest
      *
      * @return array
      */
-    public function invalidArrayProvider()
+    public function invalidArrayForStringConfigurationProvider()
     {
         return [
-            '12 in (11, 13)' => [
+            '12 in (11, 13, 14)' => [
                 '12',
-                '11,13',
+                '11,13,14',
             ],
             '1 in (5, 3234, oOIUoi8, 3434, 343, 34, 3, 333434, 1234, ssd, ysdfsa)' => [
                 '1',
                 '5,3234,oOIUoi8,3434,343,34,3,333434,1234,ssd,ysdfsa',
             ],
+            'pizza in (Pizza, Lasange, Strogonvo)' => [
+                'pizza',
+                'Pizza,Lasange,Strogonvo',
+            ],
             'Eimeldingen in (Rißtissen, Überligen, Karlsruhe)' => [
                 'Eimeldingen',
                 'Rißtissen,Überligen,Karlsruhe',
             ],
+            'überligen in (Rißtissen, Überligen, Karlsruhe)' => [
+                'überligen',
+                'Rißtissen,Überligen,Karlsruhe',
+            ],
+
+            '[12 and 14] in (11, 13, 14)' => [
+                ['12', '14'],
+                '11,13,14',
+            ],
+            '[1 and ssd] in (5, 3234, oOIUoi8, 3434, 343, 34, 3, 333434, 1234, ssd, ysdfsa)' => [
+                ['1', 'ssd'],
+                '5,3234,oOIUoi8,3434,343,34,3,333434,1234,ssd,ysdfsa',
+            ],
+            '[pizza and Lasange] in (Pizza, Lasange, Strogonvo)' => [
+                ['pizza', 'Lasange'],
+                'Pizza,Lasange,Strogonvo',
+            ],
+            '[Eimeldingen and Überligen] in (Rißtissen, Überligen, Karlsruhe)' => [
+                ['Eimeldingen', 'Überligen'],
+                'Rißtissen,Überligen,Karlsruhe',
+            ],
+            '[Eimeldingen and überligen] in (Rißtissen, Überligen, Karlsruhe)' => [
+                ['Eimeldingen', 'überligen'],
+                'Rißtissen,Überligen,Karlsruhe',
+            ],
+        ];
+    }
+
+    /**
+     * used for test with invalid input
+     * will result in errors returned
+     *
+     * @return array
+     */
+    public function invalidArrayForArrayConfigurationProvider()
+    {
+        return [
+            '12 in (11, 13, 14)' => [
+                '12',
+                ['11', '13', '14'],
+            ],
+            '1 in (5, 3234, oOIUoi8, 3434, 343, 34, 3, 333434, 1234, ssd, ysdfsa)' => [
+                '1',
+                ['5', '3234', 'oOIUoi8', '3434', '343', '34', '3', '333434', '1234', 'ssd', 'ysdfsa'],
+            ],
             'pizza in (Pizza, Lasange, Strogonvo)' => [
                 'pizza',
-                'Pizza,Lasange,Strogonvo',
+                ['Pizza', 'Lasange', 'Strogonvo'],
+            ],
+            'Eimeldingen in (Rißtissen, Überligen, Karlsruhe)' => [
+                'Eimeldingen',
+                ['Rißtissen', 'Überligen', 'Karlsruhe'],
+            ],
+            'überligen in (Rißtissen, Überligen, Karlsruhe)' => [
+                'überligen',
+                ['Rißtissen', 'Überligen', 'Karlsruhe'],
+            ],
+
+            '[12 and 14] in (11, 13, 14)' => [
+                ['12', '14'],
+                ['11', '13', '14'],
+            ],
+            '[1 and ssd] in (5, 3234, oOIUoi8, 3434, 343, 34, 3, 333434, 1234, ssd, ysdfsa)' => [
+                ['1', 'ssd'],
+                ['5', '3234', 'oOIUoi8', '3434', '343', '34', '3', '333434', '1234', 'ssd', 'ysdfsa'],
+            ],
+            '[pizza and Lasange] in (Pizza, Lasange, Strogonvo)' => [
+                ['pizza', 'Lasange'],
+                ['Pizza', 'Lasange', 'Strogonvo'],
+            ],
+            '[Eimeldingen and Überligen] in (Rißtissen, Überligen, Karlsruhe)' => [
+                ['Eimeldingen', 'Überligen'],
+                ['Rißtissen', 'Überligen', 'Karlsruhe'],
+            ],
+            '[Eimeldingen and überligen] in (Rißtissen, Überligen, Karlsruhe)' => [
+                ['Eimeldingen', 'überligen'],
+                ['Rißtissen', 'Überligen', 'Karlsruhe'],
             ],
         ];
     }
@@ -88,36 +228,119 @@ class InArrayValidatorTest extends AbstractValidatorTest
      *
      * @return array
      */
-    public function validArrayIgnoreCaseProvider()
+    public function validArrayForStringConfigurationIgnoreCaseProvider()
     {
         return [
-            '12 in (12, 13)' => [
+            '12 in (12, 13, 14)' => [
                 '12',
-                '12,13',
+                '12,13,14',
             ],
             '1 in (5, 3234, oOIUoi8, 3434, 343, 34, 3, 1, 333434, 1234, ssd, ysdfsa)' => [
                 '1',
                 '5,3234,oOIUoi8,3434,343,34,3,1,333434,1234,ssd,ysdfsa',
             ],
-            'Rißtissen in (Rißtissen, Überligen, Karlsruhe)' => [
-                'Rißtissen',
-                'Rißtissen,Überligen,Karlsruhe',
-            ],
-            'überlingen in (Rißtissen, Überligen, Karlsruhe)' => [
-                'überlingen',
-                'Rißtissen,Überlingen,Karlsruhe',
-            ],
-            'Österreich in (österreich, deutschland, schweiz)' => [
-                'Österreich',
-                'österreich,deutschland,schweiz',
-            ],
             'pizza in (Pizza, Lasange, Strogonvo)' => [
                 'pizza',
                 'Pizza,Lasange,Strogonvo',
             ],
-            'lasange in (Pizza, Lasange, Strogonvo)' => [
-                'lasange',
+            'Pizza in (pizza, lasange, strogonvo)' => [
+                'Pizza',
+                'pizza,lasange,strogonvo',
+            ],
+            'Rißtissen in (rißtissen, Überligen, Karlsruhe)' => [
+                'Rißtissen',
+                'rißtissen,Überligen,Karlsruhe',
+            ],
+            'überligen in (Rißtissen, Überligen, Karlsruhe)' => [
+                'überligen',
+                'Rißtissen,Überligen,Karlsruhe',
+            ],
+
+            '[12 and 14] in (12, 13, 14)' => [
+                ['12', '14'],
+                '12,13,14',
+            ],
+            '[1 and Ssd] in (5, 3234, oOIUoi8, 3434, 343, 34, 3, 1, 333434, 1234, ssd, ysdfsa)' => [
+                ['1', 'Ssd'],
+                '5,3234,oOIUoi8,3434,343,34,3,1,333434,1234,ssd,ysdfsa',
+            ],
+            '[pizza and Lasange] in (Pizza, Lasange, Strogonvo)' => [
+                ['pizza', 'Lasange'],
                 'Pizza,Lasange,Strogonvo',
+            ],
+            '[Pizza and lasange] in (pizza, lasange, strogonvo)' => [
+                ['Pizza', 'lasange'],
+                'pizza,lasange,strogonvo',
+            ],
+            '[Rißtissen and Karlsruhe] in (rißtissen, Überligen, Karlsruhe)' => [
+                ['Rißtissen', 'Karlsruhe'],
+                'rißtissen,Überligen,Karlsruhe',
+            ],
+            '[überligen and Karlsruhe] in (Rißtissen, Überligen, Karlsruhe)' => [
+                ['überligen', 'Karlsruhe'],
+                'Rißtissen,Überligen,Karlsruhe',
+            ],
+        ];
+    }
+
+    /**
+     * used for tests with valid input
+     * ignorecase is set to true
+     * results in no errors returned
+     *
+     * @return array
+     */
+    public function validArrayForArrayConfigurationIgnoreCaseProvider()
+    {
+        return [
+            '12 in [12, 13, 14]' => [
+                '12',
+                ['12', '13', '14'],
+            ],
+            '1 in [5, 3234, oOIUoi8, 3434, 343, 34, 3, 1, 333434, 1234, ssd, ysdfsa]' => [
+                '1',
+                ['5', '3234', 'oOIUoi8', '3434', '343', '34', '3', '1', '333434', '1234', 'ssd', 'ysdfsa'],
+            ],
+            'pizza in [Pizza, Lasange, Strogonvo]' => [
+                'pizza',
+                ['Pizza', 'Lasange', 'Strogonvo'],
+            ],
+            'Pizza in [pizza, lasange, strogonvo]' => [
+                'Pizza',
+                ['pizza', 'lasange', 'strogonvo'],
+            ],
+            'Rißtissen in (rißtissen, Überligen, Karlsruhe)' => [
+                'Rißtissen',
+                ['rißtissen', 'Überligen', 'Karlsruhe'],
+            ],
+            'überligen in (Rißtissen, Überligen, Karlsruhe)' => [
+                'überligen',
+                ['Rißtissen', 'Überligen', 'Karlsruhe'],
+            ],
+
+            '[12 and 14] in (12, 13, 14)' => [
+                ['12', '14'],
+                ['12', '13', '14'],
+            ],
+            '[1 and Ssd] in (5, 3234, oOIUoi8, 3434, 343, 34, 3, 1, 333434, 1234, ssd, ysdfsa)' => [
+                ['1', 'Ssd'],
+                ['5', '3234', 'oOIUoi8', '3434', '343', '34', '3', '1', '333434', '1234', 'ssd', 'ysdfsa'],
+            ],
+            '[pizza and Lasange] in (Pizza, Lasange, Strogonvo)' => [
+                ['pizza', 'Lasange'],
+                ['Pizza', 'Lasange', 'Strogonvo'],
+            ],
+            '[Pizza and lasange] in (pizza, lasange, strogonvo)' => [
+                ['Pizza', 'lasange'],
+                ['pizza', 'lasange', 'strogonvo'],
+            ],
+            '[Rißtissen and Karlsruhe] in (rißtissen, Überligen, Karlsruhe)' => [
+                ['Rißtissen', 'Karlsruhe'],
+                ['rißtissen', 'Überligen', 'Karlsruhe'],
+            ],
+            '[überligen and Karlsruhe] in (Rißtissen, Überligen, Karlsruhe)' => [
+                ['überligen', 'Karlsruhe'],
+                ['Rißtissen', 'Überligen', 'Karlsruhe'],
             ],
         ];
     }
@@ -129,12 +352,12 @@ class InArrayValidatorTest extends AbstractValidatorTest
      *
      * @return array
      */
-    public function invalidArrayIgnoreCaseProvider()
+    public function invalidArrayForStringConfigurationIgnoreCaseProvider()
     {
         return [
-            'zwölf in (12, 13)' => [
+            'zwölf in (12, 13, 14)' => [
                 'zwölf',
-                '12,13',
+                '12,13,14',
             ],
             '7 in (5, 3234, oOIUoi8, 3434, 343, 34, 3, 1, 333434, 1234, ssd, ysdfsa)' => [
                 '7',
@@ -152,17 +375,131 @@ class InArrayValidatorTest extends AbstractValidatorTest
                 'lusange',
                 'Pizza,Lasange,Strogonvo',
             ],
+
+            '[zwölf and 14] in (12, 13, 14)' => [
+                ['zwölf', '14'],
+                '12,13,14',
+            ],
+            '[7 and Ssd] in (5, 3234, oOIUoi8, 3434, 343, 34, 3, 1, 333434, 1234, ssd, ysdfsa)' => [
+                ['7', 'Ssd'],
+                '5,3234,oOIUoi8,3434,343,34,3,1,333434,1234,ssd,ysdfsa',
+            ],
+            '[riss and Karlsruhe] in (Rißtissen, Überligen, Karlsruhe)' => [
+                ['riss', 'Karlsruhe'],
+                'Rißtissen,Überligen,Karlsruhe',
+            ],
+            '[pizzas and Lasange] in (Pizza, Lasange, Strogonvo)' => [
+                ['pizzas', 'Lasange'],
+                'Pizza,Lasange,Strogonvo',
+            ],
+            '[lusange and Strogonvo] in (Pizza, Lasange, Strogonvo)' => [
+                ['lusange', 'Strogonvo'],
+                'Pizza,Lasange,Strogonvo',
+            ],
+        ];
+    }
+
+    /**
+     * used for tests with invalid input
+     * ignorecase is set to true
+     * results in errors returned
+     *
+     * @return array
+     */
+    public function invalidArrayForArrayConfigurationIgnoreCaseProvider()
+    {
+        return [
+            'zwölf in (12, 13, 14)' => [
+                'zwölf',
+                ['12', '13', '14'],
+            ],
+            '7 in (5, 3234, oOIUoi8, 3434, 343, 34, 3, 1, 333434, 1234, ssd, ysdfsa)' => [
+                '7',
+                ['5', '3234', 'oOIUoi8', '3434', '343', '34', '3', '1', '333434', '1234', 'ssd', 'ysdfsa'],
+            ],
+            'riss in (Rißtissen, Überligen, Karlsruhe)' => [
+                'riss',
+                ['Rißtissen', 'Überligen', 'Karlsruhe'],
+            ],
+            'pizzas in (Pizza, Lasange, Strogonvo)' => [
+                'pizzas',
+                ['Pizza', 'Lasange', 'Strogonvo'],
+            ],
+            'lusange in (Pizza, Lasange, Strogonvo)' => [
+                'lusange',
+                ['Pizza', 'Lasange', 'Strogonvo'],
+            ],
+
+            '[zwölf and 14] in (12, 13, 14)' => [
+                ['zwölf', '14'],
+                ['12', '13', '14'],
+            ],
+            '[7 and Ssd] in (5, 3234, oOIUoi8, 3434, 343, 34, 3, 1, 333434, 1234, ssd, ysdfsa)' => [
+                ['7', 'Ssd'],
+                ['5', '3234', 'oOIUoi8', '3434', '343', '34', '3', '1', '333434', '1234', 'ssd', 'ysdfsa'],
+            ],
+            '[riss and Karlsruhe] in (Rißtissen, Überligen, Karlsruhe)' => [
+                ['riss', 'Karlsruhe'],
+                ['Rißtissen', 'Überligen', 'Karlsruhe'],
+            ],
+            '[pizzas and Lasange] in (Pizza, Lasange, Strogonvo)' => [
+                ['pizzas', 'Lasange'],
+                ['Pizza', 'Lasange', 'Strogonvo'],
+            ],
+            '[lusange and Strogonvo] in (Pizza, Lasange, Strogonvo)' => [
+                ['lusange', 'Strogonvo'],
+                ['Pizza', 'Lasange', 'Strogonvo'],
+            ],
         ];
     }
 
     /**
      * @test
-     * @dataProvider validArrayProvider
+     * @dataProvider validArrayForStringConfigurationProvider
      *
      * @param string $value
      * @param string $allowedOptionsString
      */
-    public function validateForValidInputReturnsNoErrors($value, $allowedOptionsString)
+    public function validateForValidInputOnStringConfigurationReturnsNoErrors($value, $allowedOptionsString)
+    {
+        $options = [
+            'element' => uniqid('test'),
+            'errorMessage' => uniqid('error'),
+        ];
+
+        $options['array'] = $allowedOptionsString;
+        $subject = $this->createSubject($options);
+
+        $this->assertFalse($subject->validate($value)->hasErrors());
+    }
+
+    /**
+     * @test
+     * @dataProvider validArrayForArrayConfigurationProvider
+     *
+     * @param string $value
+     * @param string $allowedOptionsString
+     */
+    public function validateForValidInputOnArrayConfigurationReturnsNoErrors($value, $allowedOptionsString)
+    {
+        $options = [
+            'element' => uniqid('test'),
+            'errorMessage' => uniqid('error'),
+        ];
+        $options['array.'] = $allowedOptionsString;
+        $subject = $this->createSubject($options);
+
+        $this->assertFalse($subject->validate($value)->hasErrors());
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidArrayForStringConfigurationProvider
+     *
+     * @param string $value
+     * @param string $allowedOptionsString
+     */
+    public function validateForInvalidInputOnStringConfigurationReturnsErrors($value, $allowedOptionsString)
     {
         $options = [
             'element' => uniqid('test'),
@@ -171,23 +508,23 @@ class InArrayValidatorTest extends AbstractValidatorTest
         $options['array'] = $allowedOptionsString;
         $subject = $this->createSubject($options);
 
-        $this->assertFalse($subject->validate($value)->hasErrors());
+        $this->assertTrue($subject->validate($value)->hasErrors());
     }
 
     /**
      * @test
-     * @dataProvider invalidArrayProvider
+     * @dataProvider invalidArrayForArrayConfigurationProvider
      *
      * @param string $value
      * @param string $allowedOptionsString
      */
-    public function validateForInvalidInputReturnsErrors($value, $allowedOptionsString)
+    public function validateForInvalidInputOnArrayConfigurationReturnsErrors($value, $allowedOptionsString)
     {
         $options = [
             'element' => uniqid('test'),
             'errorMessage' => uniqid('error'),
         ];
-        $options['array'] = $allowedOptionsString;
+        $options['array.'] = $allowedOptionsString;
         $subject = $this->createSubject($options);
 
         $this->assertTrue($subject->validate($value)->hasErrors());
@@ -195,12 +532,12 @@ class InArrayValidatorTest extends AbstractValidatorTest
 
     /**
      * @test
-     * @dataProvider validArrayProvider
+     * @dataProvider validArrayForStringConfigurationProvider
      *
      * @param string $value
      * @param string $allowedOptionsString
      */
-    public function validateForValidInputWithStrictComparisonReturnsNoErrors(
+    public function validateForValidInputOnStringConfigurationWithStrictComparisonReturnsNoErrors(
         $value,
         $allowedOptionsString
     ) {
@@ -217,12 +554,34 @@ class InArrayValidatorTest extends AbstractValidatorTest
 
     /**
      * @test
-     * @dataProvider invalidArrayProvider
+     * @dataProvider validArrayForArrayConfigurationProvider
      *
      * @param string $value
      * @param string $allowedOptionsString
      */
-    public function validateForInvalidInputWithStrictComparisonReturnsErrors(
+    public function validateForValidInputOnArrayConfigurationWithStrictComparisonReturnsNoErrors(
+        $value,
+        $allowedOptionsString
+    ) {
+        $options = [
+            'element' => uniqid('test'),
+            'errorMessage' => uniqid('error'),
+        ];
+        $options['array.'] = $allowedOptionsString;
+        $options['strict'] = true;
+        $subject = $this->createSubject($options);
+
+        $this->assertFalse($subject->validate($value)->hasErrors());
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidArrayForStringConfigurationProvider
+     *
+     * @param string $value
+     * @param string $allowedOptionsString
+     */
+    public function validateForInvalidInputOnStringConfigurationWithStrictComparisonReturnsErrors(
         $value,
         $allowedOptionsString
     ) {
@@ -239,12 +598,34 @@ class InArrayValidatorTest extends AbstractValidatorTest
 
     /**
      * @test
-     * @dataProvider validArrayIgnoreCaseProvider
+     * @dataProvider invalidArrayForArrayConfigurationProvider
      *
      * @param string $value
      * @param string $allowedOptionsString
      */
-    public function validateForValidInputWithIgnoreCaseReturnsNoErrors(
+    public function validateForInvalidInputOnArrayConfigurationWithStrictComparisonReturnsErrors(
+        $value,
+        $allowedOptionsString
+    ) {
+        $options = [
+            'element' => uniqid('test'),
+            'errorMessage' => uniqid('error'),
+        ];
+        $options['array.'] = $allowedOptionsString;
+        $options['strict'] = true;
+        $subject = $this->createSubject($options);
+
+        $this->assertTrue($subject->validate($value)->hasErrors());
+    }
+
+    /**
+     * @test
+     * @dataProvider validArrayForStringConfigurationIgnoreCaseProvider
+     *
+     * @param string $value
+     * @param string $allowedOptionsString
+     */
+    public function validateForValidInputOnStringConfigurationWithIgnoreCaseReturnsNoErrors(
         $value,
         $allowedOptionsString
     ) {
@@ -261,12 +642,34 @@ class InArrayValidatorTest extends AbstractValidatorTest
 
     /**
      * @test
-     * @dataProvider invalidArrayIgnoreCaseProvider
+     * @dataProvider validArrayForArrayConfigurationIgnoreCaseProvider
      *
      * @param string $value
      * @param string $allowedOptionsString
      */
-    public function validateForInvalidInputWithIgnoreCaseReturnsErrors(
+    public function validateForValidInputOnArrayConfigurationWithIgnoreCaseReturnsNoErrors(
+        $value,
+        $allowedOptionsString
+    ) {
+        $options = [
+            'element' => uniqid('test'),
+            'errorMessage' => uniqid('error'),
+        ];
+        $options['array.'] = $allowedOptionsString;
+        $options['ignorecase'] = true;
+        $subject = $this->createSubject($options);
+
+        $this->assertFalse($subject->validate($value)->hasErrors());
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidArrayForStringConfigurationIgnoreCaseProvider
+     *
+     * @param string $value
+     * @param string $allowedOptionsString
+     */
+    public function validateForInvalidInputOnStringConfigurationWithIgnoreCaseReturnsErrors(
         $value,
         $allowedOptionsString
     ) {
@@ -283,12 +686,34 @@ class InArrayValidatorTest extends AbstractValidatorTest
 
     /**
      * @test
-     * @dataProvider validArrayIgnoreCaseProvider
+     * @dataProvider invalidArrayForArrayConfigurationIgnoreCaseProvider
      *
      * @param string $value
      * @param string $allowedOptionsString
      */
-    public function validateForValidInputWithIgnoreCaseAndStrictReturnsNoErrors(
+    public function validateForInvalidInputOnArrayConfigurationWithIgnoreCaseReturnsErrors(
+        $value,
+        $allowedOptionsString
+    ) {
+        $options = [
+            'element' => uniqid('test'),
+            'errorMessage' => uniqid('error'),
+        ];
+        $options['array.'] = $allowedOptionsString;
+        $options['ignorecase'] = true;
+        $subject = $this->createSubject($options);
+
+        $this->assertTrue($subject->validate($value)->hasErrors());
+    }
+
+    /**
+     * @test
+     * @dataProvider validArrayForStringConfigurationIgnoreCaseProvider
+     *
+     * @param string $value
+     * @param string $allowedOptionsString
+     */
+    public function validateForValidInputOnStringConfigurationWithIgnoreCaseAndStrictReturnsNoErrors(
         $value,
         $allowedOptionsString
     ) {
@@ -306,12 +731,35 @@ class InArrayValidatorTest extends AbstractValidatorTest
 
     /**
      * @test
-     * @dataProvider invalidArrayIgnoreCaseProvider
+     * @dataProvider validArrayForArrayConfigurationIgnoreCaseProvider
      *
      * @param string $value
      * @param string $allowedOptionsString
      */
-    public function validateForInvalidInputWithIgnoreCaseAndStrictReturnsErrors(
+    public function validateForValidInputOnArrayConfigurationWithIgnoreCaseAndStrictReturnsNoErrors(
+        $value,
+        $allowedOptionsString
+    ) {
+        $options = [
+            'element' => uniqid('test'),
+            'errorMessage' => uniqid('error'),
+        ];
+        $options['array.'] = $allowedOptionsString;
+        $options['ignorecase'] = true;
+        $options['strict'] = true;
+        $subject = $this->createSubject($options);
+
+        $this->assertFalse($subject->validate($value)->hasErrors());
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidArrayForStringConfigurationIgnoreCaseProvider
+     *
+     * @param string $value
+     * @param string $allowedOptionsString
+     */
+    public function validateForInvalidInputOnStringConfigurationWithIgnoreCaseAndStrictReturnsErrors(
         $value,
         $allowedOptionsString
     ) {
@@ -320,6 +768,29 @@ class InArrayValidatorTest extends AbstractValidatorTest
             'errorMessage' => uniqid('error'),
         ];
         $options['array'] = $allowedOptionsString;
+        $options['ignorecase'] = true;
+        $options['strict'] = true;
+        $subject = $this->createSubject($options);
+
+        $this->assertTrue($subject->validate($value)->hasErrors());
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidArrayForArrayConfigurationIgnoreCaseProvider
+     *
+     * @param string $value
+     * @param string $allowedOptionsString
+     */
+    public function validateForInvalidInputOnArrayConfigurationWithIgnoreCaseAndStrictReturnsErrors(
+        $value,
+        $allowedOptionsString
+    ) {
+        $options = [
+            'element' => uniqid('test'),
+            'errorMessage' => uniqid('error'),
+        ];
+        $options['array.'] = $allowedOptionsString;
         $options['ignorecase'] = true;
         $options['strict'] = true;
         $subject = $this->createSubject($options);

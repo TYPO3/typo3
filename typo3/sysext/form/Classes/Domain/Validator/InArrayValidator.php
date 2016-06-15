@@ -25,7 +25,8 @@ class InArrayValidator extends AbstractValidator
     protected $supportedOptions = array(
         'element' => array('', 'The name of the element', 'string', true),
         'errorMessage' => array('', 'The error message', 'array', true),
-        'array' => array('', 'The array value', 'array', true),
+        'array' => array('', 'The array values from the wizard configuration (array = test1,test2)', 'string', false),
+        'array.' => array('', 'The array values from the documented configuration', 'array', false),
         'strict' => array('', 'Compare types', 'boolean', false),
         'ignorecase' => array('', 'Ignore cases', 'boolean', false)
     );
@@ -36,9 +37,9 @@ class InArrayValidator extends AbstractValidator
     protected $charsetConverter;
 
     /**
-     * constructor
+     * Constructor
      *
-     * creates charsetConverter object if option ignorecase is set
+     * Creates charsetConverter object if option ignorecase is set
      *
      * @param array $options
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException
@@ -59,34 +60,65 @@ class InArrayValidator extends AbstractValidator
     const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_inarray';
 
     /**
-     * Check if $value is valid. If it is not valid, needs to add an error
-     * to result.
+     * Check if $value is valid. If it is not valid, add an error to result.
      *
      * @param mixed $value
      * @return void
      */
     public function isValid($value)
     {
-        if (empty($value) || !is_string($value)) {
+        if (empty($value)) {
             return;
         }
-        $allowedOptionsArray = GeneralUtility::trimExplode(',', $this->options['array'], true);
+
+        /**
+         * A single select results in a string,
+         * a multiselect in an array.
+         * In both cases, the operations will be processed on an array.
+         */
+        if (is_string($value)) {
+            $value = array($value);
+        }
+
+        /**
+         * The form wizard generates the following configuration:
+         *   array = test1,test2
+         * In this case the string has to be exploded.
+         * The following configuration was documented:
+         *   array {
+         *     1 = TYPO3 4.5 LTS
+         *     2 = TYPO3 6.2 LTS
+         *     3 = TYPO3 7 LTS
+         *   }
+         * In this case there is already an array but the "options" key differs.
+         */
+        $allowedOptionsArray = array();
+        if (!empty($this->options['array']) && is_string($this->options['array'])) {
+            $allowedOptionsArray = GeneralUtility::trimExplode(',', $this->options['array'], true);
+        } elseif (!empty($this->options['array.']) && is_array($this->options['array.'])) {
+            $allowedOptionsArray = $this->options['array.'];
+        }
+
         if (!empty($this->options['ignorecase'])) {
-            $value = $this->charsetConverter->conv_case('utf-8', $value, 'toLower');
+            foreach ($value as &$incomingArrayValue) {
+                $incomingArrayValue = $this->charsetConverter->conv_case('utf-8', $incomingArrayValue, 'toLower');
+            }
             foreach ($allowedOptionsArray as &$option) {
                 $option = $this->charsetConverter->conv_case('utf-8', $option, 'toLower');
             }
         }
 
-        if (!in_array($value, $allowedOptionsArray, !empty($this->options['strict']))) {
-            $this->addError(
-                $this->renderMessage(
-                    $this->options['errorMessage'][0],
-                    $this->options['errorMessage'][1],
-                    'error'
-                ),
-                1442002594
-            );
+        foreach ($value as $incomingArrayValue) {
+            if (!in_array($incomingArrayValue, $allowedOptionsArray, !empty($this->options['strict']))) {
+                $this->addError(
+                    $this->renderMessage(
+                        $this->options['errorMessage'][0],
+                        $this->options['errorMessage'][1],
+                        'error'
+                    ),
+                    1442002594
+                );
+            }
         }
     }
 }
