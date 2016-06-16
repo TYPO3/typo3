@@ -974,6 +974,62 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_data.
+     *
+     * @return array [$expect, $data, $alt]
+     */
+    public function stdWrap_dataDataProvider()
+    {
+        $data = [$this->getUniqueId('data')];
+        $alt = [$this->getUniqueId('alternativeData')];
+        return [
+            'default' => [$data, $data, ''],
+            'alt is array' => [$alt, $data, $alt],
+            'alt is empty array' => [[], $data, []],
+            'alt null' => [$data, $data, null],
+            'alt string' => [$data, $data, 'xxx'],
+            'alt int' => [$data, $data, 1],
+            'alt bool' => [$data, $data, true],
+        ];
+    }
+
+    /**
+     * Checks that stdWrap_data works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method getData.
+     * - Parameter 1 is $conf['data'].
+     * - Parameter 2 is property data by default.
+     * - Parameter 2 is property alternativeData, if set as array.
+     * - Property alternativeData is always unset to ''.
+     * - Returns the return value.
+     *
+     * @test
+     * @dataProvider stdWrap_dataDataProvider
+     * @param mixed $expect Expect either $data or $alternativeData.
+     * @param array $data The data.
+     * @param mixed $alt The alternativeData.
+     * @return void
+     */
+    public function stdWrap_data($expect, $data, $alt)
+    {
+        $conf = ['data' => $this->getUniqueId('conf.data')];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getAccessibleMock(
+            ContentObjectRenderer::class, ['getData']);
+        $subject->_set('data', $data);
+        $subject->_set('alternativeData', $alt);
+        $subject
+            ->expects($this->once())
+            ->method('getData')
+            ->with($conf['data'], $expect)
+            ->willReturn($return);
+        $this->assertSame($return, $subject->stdWrap_data('discard', $conf));
+        $this->assertSame('', $subject->_get('alternativeData'));
+    }
+
+    /**
      * Check if stdWrap_preIfEmptyListNum works properly.
      *
      * Show:
