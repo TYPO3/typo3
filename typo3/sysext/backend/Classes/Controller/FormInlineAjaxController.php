@@ -104,6 +104,14 @@ class FormInlineAjaxController
             // Else inline first Pid is the storage pid of new inline records
             $childVanillaUid = (int)$inlineFirstPid;
         }
+        
+        // XIMA-MEDIA: resolve https://forge.typo3.org/issues/71436 - resolved by patch in note #35
+        if (isset($ajaxArguments['context'])) {
+            $context = json_decode($ajaxArguments['context'], true);
+            if (GeneralUtility::hmac(serialize($context['config'])) === $context['hmac']) {
+                $parentConfig = $context['config'];
+            }
+        }
 
         if ($parentConfig['type'] === 'flex') {
             $parentConfig = $this->getParentConfigFromFlexForm($parentConfig, $domObjectId);
