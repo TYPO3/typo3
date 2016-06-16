@@ -125,12 +125,16 @@ TYPO3.Form.Wizard.Elements.Predefined.RadioGroup = Ext.extend(TYPO3.Form.Wizard.
 					isEditable: false,
 					cls: ''
 				});
+				var optionValue = '';
+				if (option.attributes && option.attributes.value) {
+					optionValue = option.attributes.value;
+				}
 				var radioConfiguration = {
 					label: {
 						value: option.text
 					},
 					attributes: {
-						value: option.attributes.value
+						value: optionValue
 					}
 				};
 				if (
