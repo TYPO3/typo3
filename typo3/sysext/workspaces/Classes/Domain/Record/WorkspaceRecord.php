@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Workspaces\Domain\Record;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 
 /**
@@ -108,16 +110,21 @@ class WorkspaceRecord extends AbstractRecord
             $this->stages = array();
             $this->addStage($this->createInternalStage(StagesService::STAGE_EDIT_ID));
 
-            $records = self::getDatabaseConnection()->exec_SELECTgetRows(
-                '*', 'sys_workspace_stage',
-                'deleted=0 AND parentid=' . $this->getUid() . ' AND parenttable='
-                    . self::getDatabaseConnection()->fullQuoteStr('sys_workspace', 'sys_workspace_stage'),
-                '', 'sorting'
-            );
-            if (!empty($records)) {
-                foreach ($records as $record) {
-                    $this->addStage(StageRecord::build($this, $record['uid'], $record));
-                }
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('sys_workspace_stage');
+
+            $result = $queryBuilder
+                ->select('*')
+                ->from('sys_workspace_stage')
+                ->where(
+                    $queryBuilder->expr()->eq('parentid', $this->getUid()),
+                    $queryBuilder->expr()->eq('parenttable', $queryBuilder->quote('sys_workspace'))
+                )
+                ->orderBy('sorting')
+                ->execute();
+
+            while ($record = $result->fetch()) {
+                $this->addStage(StageRecord::build($this, $record['uid'], $record));
             }
 
             $this->addStage($this->createInternalStage(StagesService::STAGE_PUBLISH_ID));

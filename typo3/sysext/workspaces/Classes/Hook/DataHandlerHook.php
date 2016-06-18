@@ -15,6 +15,11 @@ namespace TYPO3\CMS\Workspaces\Hook;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Workspaces\Service\StagesService;
 
 /**
  * Tcemain service
@@ -36,7 +41,7 @@ class DataHandlerHook
     public function processCmdmap_postProcess($command, $table, $id, $value, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemain)
     {
         if ($command === 'delete') {
-            if ($table === \TYPO3\CMS\Workspaces\Service\StagesService::TABLE_STAGE) {
+            if ($table === StagesService::TABLE_STAGE) {
                 $this->resetStageOfElements($id);
             } elseif ($table === \TYPO3\CMS\Workspaces\Service\WorkspaceService::TABLE_WORKSPACE) {
                 $this->flushWorkspaceElements($id);
@@ -66,13 +71,20 @@ class DataHandlerHook
      */
     protected function resetStageOfElements($stageId)
     {
-        $fields = array('t3ver_stage' => \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_EDIT_ID);
         foreach ($this->getTcaTables() as $tcaTable) {
             if (BackendUtility::isTableWorkspaceEnabled($tcaTable)) {
-                $where = 't3ver_stage = ' . (int)$stageId;
-                $where .= ' AND t3ver_wsid > 0 AND pid=-1';
-                $where .= BackendUtility::deleteClause($tcaTable);
-                $GLOBALS['TYPO3_DB']->exec_UPDATEquery($tcaTable, $where, $fields);
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($tcaTable);
+
+                $queryBuilder
+                    ->update($tcaTable)
+                    ->set('t3ver_stage', StagesService::STAGE_EDIT_ID)
+                    ->where(
+                        $queryBuilder->expr()->eq('t3ver_stage', (int)$stageId),
+                        $queryBuilder->expr()->eq('pid', -1),
+                        $queryBuilder->expr()->gt('t3ver_wsid', 0)
+                    )
+                    ->execute();
             }
         }
     }
@@ -88,14 +100,21 @@ class DataHandlerHook
         $command = array();
         foreach ($this->getTcaTables() as $tcaTable) {
             if (BackendUtility::isTableWorkspaceEnabled($tcaTable)) {
-                $where = '1=1';
-                $where .= BackendUtility::getWorkspaceWhereClause($tcaTable, $workspaceId);
-                $where .= BackendUtility::deleteClause($tcaTable);
-                $records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $tcaTable, $where, '', '', '', 'uid');
-                if (is_array($records)) {
-                    foreach ($records as $recordId => $_) {
-                        $command[$tcaTable][$recordId]['version']['action'] = 'flush';
-                    }
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($tcaTable);
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                    ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+                $result = $queryBuilder
+                    ->select('uid')
+                    ->from($tcaTable)
+                    ->orderBy('uid')
+                    ->execute();
+
+                while (($recordId = $result->fetchColumn()) !== false) {
+                    $command[$tcaTable][$recordId]['version']['action'] = 'flush';
                 }
             }
         }

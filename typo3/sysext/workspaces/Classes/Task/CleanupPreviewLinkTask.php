@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Workspaces\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class provides a task to cleanup ol preview links.
@@ -27,7 +29,11 @@ class CleanupPreviewLinkTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     public function execute()
     {
-        $GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_preview', 'endtime < ' . (int)$GLOBALS['EXEC_TIME']);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_preview');
+        $queryBuilder
+            ->delete('sys_preview')
+            ->where($queryBuilder->expr()->lt('endtime', (int)$GLOBALS['EXEC_TIME']));
+
         return true;
     }
 }

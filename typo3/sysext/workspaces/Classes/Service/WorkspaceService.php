@@ -15,9 +15,12 @@ namespace TYPO3\CMS\Workspaces\Service;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -47,7 +50,7 @@ class WorkspaceService implements SingletonInterface
      * retrieves the available workspaces from the database and checks whether
      * they're available to the current BE user
      *
-     * @return 	array	array of worspaces available to the current user
+     * @return array array of worspaces available to the current user
      */
     public function getAvailableWorkspaces()
     {
@@ -57,12 +60,20 @@ class WorkspaceService implements SingletonInterface
             $availableWorkspaces[self::LIVE_WORKSPACE_ID] = self::getWorkspaceTitle(self::LIVE_WORKSPACE_ID);
         }
         // add custom workspaces (selecting all, filtering by BE_USER check):
-        $customWorkspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, title, adminusers, members', 'sys_workspace', 'pid = 0' . BackendUtility::deleteClause('sys_workspace'), '', 'title');
-        if (!empty($customWorkspaces)) {
-            foreach ($customWorkspaces as $workspace) {
-                if ($GLOBALS['BE_USER']->checkWorkspace($workspace)) {
-                    $availableWorkspaces[$workspace['uid']] = $workspace['title'];
-                }
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
+        $queryBuilder->getRestrictions()
+            ->add(GeneralUtility::makeInstance(Restriction\RootLevelRestriction::class));
+
+        $result = $queryBuilder
+            ->select('uid', 'title', 'adminusers', 'members')
+            ->from('sys_workspace')
+            ->orderBy('title')
+            ->execute();
+
+        while ($workspace = $result->fetch()) {
+            if ($GLOBALS['BE_USER']->checkWorkspace($workspace)) {
+                $availableWorkspaces[$workspace['uid']] = $workspace['title'];
             }
         }
         return $availableWorkspaces;
@@ -254,7 +265,8 @@ class WorkspaceService implements SingletonInterface
      */
     protected function selectAllVersionsFromPages($table, $pageList, $wsid, $filter, $stage, $language = null)
     {
-        // Include root level page as there might be some records with where root level restriction is ignored (e.g. FAL records)
+        // Include root level page as there might be some records with where root level
+        // restriction is ignored (e.g. FAL records)
         if ($pageList !== '' && BackendUtility::isRootLevelRestrictionIgnored($table)) {
             $pageList .= ',0';
         }
@@ -265,51 +277,79 @@ class WorkspaceService implements SingletonInterface
         if ($isTableLocalizable === false && $language > 0) {
             return array();
         } elseif ($isTableLocalizable) {
-            $languageParentField = 'A.' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . ', ';
+            $languageParentField = 'A.' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
         }
-        $fields = 'A.uid, A.t3ver_oid, A.t3ver_stage, ' . $languageParentField . 'B.pid AS wspid, B.pid AS livepid';
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $fields = ['A.uid', 'A.t3ver_oid', 'A.t3ver_stage', 'B.pid AS wspid', 'B.pid AS livepid'];
         if ($isTableLocalizable) {
-            $fields .= ', A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+            $fields[] = $languageParentField;
+            $fields[] = 'A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
         }
-        $from = $table . ' A,' . $table . ' B';
         // Table A is the offline version and pid=-1 defines offline
-        $where = 'A.pid=-1 AND A.t3ver_state!=' . new VersionState(VersionState::MOVE_POINTER);
+        // Table B (online) must have PID >= 0 to signify being online.
+        $constraints = [
+            $queryBuilder->expr()->eq('A.pid', -1),
+            $queryBuilder->expr()->gte('B.pid', 0),
+            $queryBuilder->expr()->neq('A.t3ver_state', new VersionState(VersionState::MOVE_POINTER))
+        ];
+
         if ($pageList) {
             $pidField = $table === 'pages' ? 'uid' : 'pid';
-            $pidConstraint = strstr($pageList, ',') ? ' IN (' . $pageList . ')' : '=' . $pageList;
-            $where .= ' AND B.' . $pidField . $pidConstraint;
+            $constraints[] = $queryBuilder->expr()->in(
+                'B.' . $pidField,
+                GeneralUtility::intExplode(',', $pageList, true)
+            );
         }
-        if ($isTableLocalizable && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($language)) {
-            $where .= ' AND A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . $language;
+
+        if ($isTableLocalizable && MathUtility::canBeInterpretedAsInteger($language)) {
+            $constraints[] = $queryBuilder->expr()->eq(
+                'A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'],
+                (int)$language
+            );
         }
+
         // For "real" workspace numbers, select by that.
         // If = -98, select all that are NOT online (zero).
         // Anything else below -1 will not select on the wsid and therefore select all!
         if ($wsid > self::SELECT_ALL_WORKSPACES) {
-            $where .= ' AND A.t3ver_wsid=' . $wsid;
+            $constraints[] = $queryBuilder->expr()->eq('A.t3ver_wsid', (int)$wsid);
         } elseif ($wsid === self::SELECT_ALL_WORKSPACES) {
-            $where .= ' AND A.t3ver_wsid!=0';
+            $constraints[] = $queryBuilder->expr()->neq('A.t3ver_wsid', 0);
         }
+
         // lifecycle filter:
         // 1 = select all drafts (never-published),
         // 2 = select all published one or more times (archive/multiple)
-        if ($filter === 1 || $filter === 2) {
-            $where .= ' AND A.t3ver_count ' . ($filter === 1 ? '= 0' : '> 0');
+        if ($filter === 1) {
+            $constraints[] = $queryBuilder->expr()->eq('A.t3ver_count', 0);
+        } elseif ($filter === 2) {
+            $constraints[] = $queryBuilder->expr()->gt('A.t3ver_count', 0);
         }
-        if ($stage != -99) {
-            $where .= ' AND A.t3ver_stage=' . (int)$stage;
+
+        if ((int)$stage !== -99) {
+            $constraints[] = $queryBuilder->expr()->eq('A.t3ver_stage', (int)$stage);
         }
-        // Table B (online) must have PID >= 0 to signify being online.
-        $where .= ' AND B.pid>=0';
+
         // ... and finally the join between the two tables.
-        $where .= ' AND A.t3ver_oid=B.uid';
-        $where .= BackendUtility::deleteClause($table, 'A');
-        $where .= BackendUtility::deleteClause($table, 'B');
+        $constraints[] = $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.uid'));
+
         // Select all records from this table in the database from the workspace
         // This joins the online version with the offline version as tables A and B
-        // Order by UID, mostly to have a sorting in the backend overview module which doesn't "jump around" when swapping.
-        $res = $this->getDatabaseConnection()->exec_SELECTgetRows($fields, $from, $where, '', 'B.uid');
-        return is_array($res) ? $res : array();
+        // Order by UID, mostly to have a sorting in the backend overview module which
+        // doesn't "jump around" when swapping.
+        $rows = $queryBuilder->select(...$fields)
+            ->from($table, 'A')
+            ->from($table, 'B')
+            ->where(...$constraints)
+            ->orderBy('B.uid')
+            ->execute()
+            ->fetchAll();
+
+        return $rows;
     }
 
     /**
@@ -324,40 +364,62 @@ class WorkspaceService implements SingletonInterface
      */
     protected function getMoveToPlaceHolderFromPages($table, $pageList, $wsid, $filter, $stage)
     {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
         // Aliases:
         // A - moveTo placeholder
         // B - online record
         // C - moveFrom placeholder
-        $fields = 'A.pid AS wspid, B.uid AS t3ver_oid, C.uid AS uid, B.pid AS livepid';
-        $from = $table . ' A, ' . $table . ' B,' . $table . ' C';
-        $where = 'A.t3ver_state=' . new VersionState(VersionState::MOVE_PLACEHOLDER) . ' AND B.pid>0 AND B.t3ver_state='
-            . new VersionState(VersionState::DEFAULT_STATE) . ' AND B.t3ver_wsid=0 AND C.pid=-1 AND C.t3ver_state='
-            . new VersionState(VersionState::MOVE_POINTER);
+        $constraints = [
+            $queryBuilder->expr()->eq('A.t3ver_state', new VersionState(VersionState::MOVE_PLACEHOLDER)),
+            $queryBuilder->expr()->gt('B.pid', 0),
+            $queryBuilder->expr()->eq('B.t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
+            $queryBuilder->expr()->eq('B.t3ver_wsid', 0),
+            $queryBuilder->expr()->eq('C.pid', -1),
+            $queryBuilder->expr()->eq('C.t3ver_state', new VersionState(VersionState::MOVE_POINTER)),
+            $queryBuilder->expr()->eq('A.t3ver_move_id', $queryBuilder->quoteIdentifier('B.uid')),
+            $queryBuilder->expr()->eq('B.uid', $queryBuilder->quoteIdentifier('C.t3ver_oid'))
+        ];
+
         if ($wsid > self::SELECT_ALL_WORKSPACES) {
-            $where .= ' AND A.t3ver_wsid=' . $wsid . ' AND C.t3ver_wsid=' . $wsid;
+            $constraints[] = $queryBuilder->expr()->eq('A.t3ver_wsid', (int)$wsid);
+            $constraints[] = $queryBuilder->expr()->eq('C.t3ver_wsid', (int)$wsid);
         } elseif ($wsid === self::SELECT_ALL_WORKSPACES) {
-            $where .= ' AND A.t3ver_wsid!=0 AND C.t3ver_wsid!=0 ';
+            $constraints[] = $queryBuilder->expr()->neq('A.t3ver_wsid', 0);
+            $constraints[] = $queryBuilder->expr()->neq('C.t3ver_wsid', 0);
         }
+
         // lifecycle filter:
         // 1 = select all drafts (never-published),
         // 2 = select all published one or more times (archive/multiple)
-        if ($filter === 1 || $filter === 2) {
-            $where .= ' AND C.t3ver_count ' . ($filter === 1 ? '= 0' : '> 0');
+        if ($filter === 1) {
+            $constraints[] = $queryBuilder->expr()->eq('C.t3ver_count', 0);
+        } elseif ($filter === 2) {
+            $constraints[] = $queryBuilder->expr()->gt('C.t3ver_count', 0);
         }
-        if ($stage != -99) {
-            $where .= ' AND C.t3ver_stage=' . (int)$stage;
+
+        if ((int)$stage != -99) {
+            $constraints[] = $queryBuilder->expr()->eq('C.t3ver_stage', (int)$stage);
         }
+
         if ($pageList) {
             $pidField = $table === 'pages' ? 'B.uid' : 'A.pid';
-            $pidConstraint = strstr($pageList, ',') ? ' IN (' . $pageList . ')' : '=' . $pageList;
-            $where .= ' AND ' . $pidField . $pidConstraint;
+            $constraints[] =  $queryBuilder->expr()->in($pidField, GeneralUtility::intExplode(',', $pageList, true));
         }
-        $where .= ' AND A.t3ver_move_id = B.uid AND B.uid = C.t3ver_oid';
-        $where .= BackendUtility::deleteClause($table, 'A');
-        $where .= BackendUtility::deleteClause($table, 'B');
-        $where .= BackendUtility::deleteClause($table, 'C');
-        $res = $this->getDatabaseConnection()->exec_SELECTgetRows($fields, $from, $where, '', 'A.uid');
-        return is_array($res) ? $res : array();
+
+        $rows = $queryBuilder
+            ->select('A.pid AS wspid', 'B.uid AS t3ver_oid', 'C.uid AS uid', 'B.pid AS livepid')
+            ->from($table, 'A')
+            ->from($table, 'B')
+            ->from($table, 'C')
+            ->where(...$constraints)
+            ->orderBy('A.uid')
+            ->execute()
+            ->fetchAll();
+
+        return $rows;
     }
 
     /**
@@ -390,10 +452,29 @@ class WorkspaceService implements SingletonInterface
             $pageList = implode(',', $newList);
         }
         unset($searchObj);
+
         if (BackendUtility::isTableWorkspaceEnabled('pages') && $pageList) {
             // Remove the "subbranch" if a page was moved away
-            $movedAwayPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, pid, t3ver_move_id', 'pages', 't3ver_move_id IN (' . $pageList . ') AND t3ver_wsid=' . (int)$wsid . BackendUtility::deleteClause('pages'), '', 'uid', '', 't3ver_move_id');
             $pageIds = GeneralUtility::intExplode(',', $pageList, true);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $result = $queryBuilder
+                ->select('uid', 'pid', 't3ver_move_id')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->in('t3ver_move_id', $pageIds),
+                    $queryBuilder->expr()->eq('t3ver_wsid', (int)$wsid)
+                )
+                ->orderBy('uid')
+                ->execute();
+
+            $movedAwayPages = [];
+            while ($row = $result->fetch()) {
+                $movedAwayPages[$row['t3ver_move_id']] = $row;
+            }
+
             // move all pages away
             $newList = array_diff($pageIds, array_keys($movedAwayPages));
             // keep current page in the list
@@ -408,14 +489,29 @@ class WorkspaceService implements SingletonInterface
                     }
                 }
             } while ($changed);
-            $pageList = implode(',', $newList);
+
             // In case moving pages is enabled we need to replace all move-to pointer with their origin
-            $pages = $this->getDatabaseConnection()->exec_SELECTgetRows('uid, t3ver_move_id', 'pages', 'uid IN (' . $pageList . ')' . BackendUtility::deleteClause('pages'), '', 'uid', '', 'uid');
-            $newList = array();
-            $pageIds = GeneralUtility::intExplode(',', $pageList, true);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $result = $queryBuilder->select('uid', 't3ver_move_id')
+                ->from('pages')
+                ->where($queryBuilder->expr()->in('uid', $newList))
+                ->orderBy('uid')
+                ->execute();
+
+            $pages = [];
+            while ($row = $result->fetch()) {
+                $pages[$row['uid']] = $row;
+            }
+
+            $pageIds = $newList;
             if (!in_array($pageId, $pageIds)) {
                 $pageIds[] = $pageId;
             }
+
+            $newList = [];
             foreach ($pageIds as $pageId) {
                 if ((int)$pages[$pageId]['t3ver_move_id'] > 0) {
                     $newList[] = (int)$pages[$pageId]['t3ver_move_id'];
@@ -425,6 +521,7 @@ class WorkspaceService implements SingletonInterface
             }
             $pageList = implode(',', $newList);
         }
+
         return $pageList;
     }
 
@@ -498,8 +595,26 @@ class WorkspaceService implements SingletonInterface
         $cacheKey = 'workspace-oldstyleworkspace-notused';
         $cacheResult = $GLOBALS['BE_USER']->getSessionData($cacheKey);
         if (!$cacheResult) {
-            $where = 'adminusers != \'\' AND adminusers NOT LIKE \'%be_users%\' AND adminusers NOT LIKE \'%be_groups%\' AND deleted=0';
-            $count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'sys_workspace', $where);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('sys_workspace');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $count = (int)$queryBuilder->count('uid')
+                ->from('sys_workspace')
+                ->where(
+                    $queryBuilder->expr()->neq('adminusers', $queryBuilder->quote('')),
+                    $queryBuilder->expr()->notLike(
+                        'adminusers',
+                        $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards('be_users') . '%')
+                    ),
+                    $queryBuilder->expr()->notLike(
+                        'adminusers',
+                        $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards('be_groups') . '%')
+                    )
+                )
+                ->execute()
+                ->fetchColumn(0);
             $oldStyleWorkspaceIsUsed = $count > 0;
             $GLOBALS['BE_USER']->setAndSaveSessionData($cacheKey, !$oldStyleWorkspaceIsUsed);
         } else {
@@ -520,12 +635,26 @@ class WorkspaceService implements SingletonInterface
         $isNewPage = false;
         // If the language is not default, check state of overlay
         if ($language > 0) {
-            $whereClause = 'pid = ' . (int)$id;
-            $whereClause .= ' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . ' = ' . (int)$language;
-            $whereClause .= ' AND t3ver_wsid = ' . (int)$GLOBALS['BE_USER']->workspace;
-            $whereClause .= BackendUtility::deleteClause('pages_language_overlay');
-            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('t3ver_state', 'pages_language_overlay', $whereClause);
-            if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages_language_overlay');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $row = $queryBuilder->select('t3ver_state')
+                ->from('pages_language_overlay')
+                ->where(
+                    $queryBuilder->expr()->eq('pid', (int)$id),
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'],
+                        (int)$language
+                    ),
+                    $queryBuilder->expr()->eq('t3ver_wsid', (int)$GLOBALS['BE_USER']->workspace)
+                )
+                ->setMaxResults(1)
+                ->execute()
+                ->fetch();
+
+            if ($row !== false) {
                 $isNewPage = VersionState::cast($row['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER);
             }
         } else {
@@ -834,17 +963,38 @@ class WorkspaceService implements SingletonInterface
 
             // Consider records that are moved to a different page
             $movePointer = new VersionState(VersionState::MOVE_POINTER);
-            $joinStatement = '(A.t3ver_oid=B.uid AND A.t3ver_state<>' . $movePointer
-                . ' OR A.t3ver_oid=B.t3ver_move_id AND A.t3ver_state=' . $movePointer . ')';
 
-            $pageIds = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                'B.pid AS pageId',
-                $tableName . ' A,' . $tableName . ' B',
-                'A.pid=-1 AND A.t3ver_wsid=' . (int)$workspaceId . ' AND ' . $joinStatement
-                    . BackendUtility::deleteClause($tableName, 'A') . BackendUtility::deleteClause($tableName, 'B'),
-                'pageId', '', '',
-                'pageId'
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+            $result = $queryBuilder
+                ->select('B.pid AS pageId')
+                ->from($tableName, 'A')
+                ->from($tableName, 'B')
+                ->where(
+                    $queryBuilder->expr()->eq('A.pid', -1),
+                    $queryBuilder->expr()->eq('A.t3ver_wsid', (int)$workspaceId),
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.uid')),
+                            $queryBuilder->expr()->neq('A.t3ver_state', $movePointer)
+
+                        ),
+                        $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.t3ver_move_id')),
+                            $queryBuilder->expr()->eq('A.t3ver_state', $movePointer)
+                        )
+                    )
+                )
+                ->groupBy('pageId')
+                ->execute();
+
+            $pageIds = [];
+            while ($row = $result->fetch()) {
+                $pageIds[$row['uid']] = $row;
+            }
 
             $this->pagesWithVersionsInTable[$workspaceId][$tableName] = $pageIds;
 
@@ -862,14 +1012,6 @@ class WorkspaceService implements SingletonInterface
         }
 
         return $this->pagesWithVersionsInTable[$workspaceId][$tableName];
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**

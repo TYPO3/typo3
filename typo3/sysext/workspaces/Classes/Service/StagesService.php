@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Workspaces\Service;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Workspaces\Domain\Record\StageRecord;
@@ -575,13 +576,18 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
      */
     private function fetchGroupsFromDB(array $groups)
     {
-        $whereSQL = 'deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($groups)) . ') ';
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'be_groups', $whereSQL);
         // The userGroups array is filled
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_groups');
+
+        $result = $queryBuilder
+            ->select('*')
+            ->from('be_groups')
+            ->where($queryBuilder->expr()->in('uid', array_map('intval', $groups)))
+            ->execute();
+
+        while ($row = $result->fetch()) {
             $this->userGroups[$row['uid']] = $row;
         }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
     }
 
     /**

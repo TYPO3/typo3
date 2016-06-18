@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Workspaces\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord;
 
 /**
@@ -57,31 +59,30 @@ class RecordService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getCreateUserIds()
     {
-        $createUserIds = array();
+        $createUserIds = [];
         foreach ($this->getIdsPerTable() as $tableName => $ids) {
             if (empty($GLOBALS['TCA'][$tableName]['ctrl']['cruser_id'])) {
                 continue;
             }
             $createUserIdFieldName = $GLOBALS['TCA'][$tableName]['ctrl']['cruser_id'];
-            $records = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                $createUserIdFieldName, $tableName,
-                'uid IN (' . implode(',', $ids) . ')',
-                $createUserIdFieldName,
-                '', '',
-                $createUserIdFieldName
-            );
+
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+            $queryBuilder->getRestrictions()->removeAll();
+
+            $records = $queryBuilder
+                ->select($createUserIdFieldName)
+                ->from($tableName)
+                ->where($queryBuilder->expr()->in('uid', $ids))
+                ->groupBy($createUserIdFieldName)
+                ->execute()
+                ->fetchAll();
+
+            $records = array_column($records, $createUserIdFieldName);
+
             if (!empty($records)) {
-                $createUserIds = array_merge($createUserIds, array_keys($records));
+                $createUserIds = array_merge($createUserIds, $records);
             }
         }
         return array_unique($createUserIds);
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Workspaces\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Automatic publishing of workspaces.
  */
@@ -33,25 +37,52 @@ class AutoPublishService
         // @todo once workspaces are cleaned up a better solution should be implemented
         $currentAdminStatus = $GLOBALS['BE_USER']->user['admin'];
         $GLOBALS['BE_USER']->user['admin'] = 1;
+
         // Select all workspaces that needs to be published / unpublished:
-        $workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-            'uid,swap_modes,publish_time,unpublish_time',
-            'sys_workspace',
-            'pid=0
-				AND
-				((publish_time!=0 AND publish_time<=' . (int)$GLOBALS['EXEC_TIME'] . ')
-				OR (publish_time=0 AND unpublish_time!=0 AND unpublish_time<=' . (int)$GLOBALS['EXEC_TIME'] . '))' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace')
-        );
-        $workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
-        foreach ($workspaces as $rec) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $result = $queryBuilder
+            ->select('uid', 'swap_modes', 'publish_time', 'unpublish_time')
+            ->from('sys_workspace')
+            ->where(
+                $queryBuilder->expr()->eq('pid', 0),
+                $queryBuilder->orWhere(
+                    $queryBuilder->andWhere(
+                        $queryBuilder->expr()->neq('publish_time', 0),
+                        $queryBuilder->expr()->lte('publish_time', (int)$GLOBALS['EXEC_TIME'])
+                    ),
+                    $queryBuilder->andWhere(
+                        $queryBuilder->expr()->eq('publish_time', 0),
+                        $queryBuilder->expr()->neq('unpublish_time', 0),
+                        $queryBuilder->expr()->lte('unpublish_time', (int)$GLOBALS['EXEC_TIME'])
+                    )
+                )
+            )
+            ->execute();
+
+        $workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
+        while ($rec = $result->fetch()) {
             // First, clear start/end time so it doesn't get select once again:
-            $fieldArray = $rec['publish_time'] != 0 ? array('publish_time' => 0) : array('unpublish_time' => 0);
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_workspace', 'uid=' . (int)$rec['uid'], $fieldArray);
+            $fieldArray = $rec['publish_time'] != 0
+                ? ['publish_time' => 0]
+                : ['unpublish_time' => 0];
+
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('sys_workspace')
+                ->update(
+                    'sys_workspace',
+                    $fieldArray,
+                    ['uid' => (int)$rec['uid']]
+                );
+
             // Get CMD array:
             $cmd = $workspaceService->getCmdArrayForPublishWS($rec['uid'], $rec['swap_modes'] == 1);
             // $rec['swap_modes']==1 means that auto-publishing will swap versions, not just publish and empty the workspace.
             // Execute CMD array:
-            $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+            $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
             $tce->start(array(), $cmd);
             $tce->process_cmdmap();
         }

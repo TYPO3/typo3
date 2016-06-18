@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -375,19 +376,24 @@ class ExtDirectServer extends AbstractHandler
     public function getCommentsForRecord($uid, $table)
     {
         $sysLogReturnArray = array();
-        $sysLogRows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'log_data,tstamp,userid',
-            'sys_log',
-            'action=6 and details_nr=30 AND tablename=' . $this->getDatabaseConnection()->fullQuoteStr($table, 'sys_log')
-                . ' AND recuid=' . (int)$uid,
-            '',
-            'tstamp DESC'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
+
+        $result = $queryBuilder
+            ->select('log_data', 'tstamp,userid')
+            ->from('sys_log')
+            ->where(
+                $queryBuilder->expr()->eq('action', 6),
+                $queryBuilder->expr()->eq('details_nr', 30),
+                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
+                $queryBuilder->expr()->eq('recuid', (int)$uid)
+            )
+            ->orderBy('tstamp', 'DESC')
+            ->execute();
 
         /** @var Avatar $avatar */
         $avatar = GeneralUtility::makeInstance(Avatar::class);
 
-        foreach ($sysLogRows as $sysLogRow) {
+        while ($sysLogRow = $result->fetch()) {
             $sysLogEntry = array();
             $data = unserialize($sysLogRow['log_data']);
             $beUserRecord = BackendUtility::getRecord('be_users', $sysLogRow['userid']);
