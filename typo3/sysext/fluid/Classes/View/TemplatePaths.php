@@ -101,18 +101,6 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
     }
 
     /**
-     * @return array
-     */
-    public function toArray()
-    {
-        return array(
-            self::CONFIG_TEMPLATEROOTPATHS => $this->sanitizePath($this->getTemplateRootPaths()),
-            self::CONFIG_LAYOUTROOTPATHS => $this->sanitizePath($this->getLayoutRootPaths()),
-            self::CONFIG_PARTIALROOTPATHS => $this->sanitizePath($this->getPartialRootPaths())
-        );
-    }
-
-    /**
      * @param string|array $path
      * @return string
      */
