@@ -217,7 +217,11 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 		);
 		LoginRefresh.$loginForm.find('.modal-footer').append(
 			$('<a />', {href: LoginRefresh.logoutUrl, class: 'btn btn-default'}).text(TYPO3.LLL.core.refresh_exit_button),
-			$('<button />', {type: 'submit', form: 'beLoginRefresh', class: 'btn btn-primary', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_button)
+			$('<button />', {type: 'button', class: 'btn btn-primary', 'data-action': 'refreshSession'})
+				.text(TYPO3.LLL.core.refresh_login_button)
+				.on('click', function(e) {
+					LoginRefresh.$loginForm.find('form').submit();
+				})
 		);
 
 		LoginRefresh.registerDefaultModalEvents(LoginRefresh.$loginForm).on('submit', LoginRefresh.submitForm);
