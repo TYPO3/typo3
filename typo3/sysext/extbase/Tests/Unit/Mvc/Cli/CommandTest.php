@@ -59,9 +59,9 @@ class CommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function commandIdentifiers()
     {
         return array(
-            array('Tx_ExtensionKey_Command_CacheCommandController', 'flush', 'extension_key:cache:flush'),
-            array('Tx_Ext_Command_CookieCommandController', 'bake', 'ext:cookie:bake'),
-            array('Tx_OtherExtensionKey_Foo_Faa_Fuuum_Command_CoffeeCommandController', 'brew', 'other_extension_key:coffee:brew'),
+            array('Tx_ExtensionKey_Command_CacheCommandController', 'flush', 'extension_key:Cache:flush'),
+            array('Tx_Ext_Command_CookieCommandController', 'bake', 'ext:Cookie:bake'),
+            array('Tx_OtherExtensionKey_Foo_Faa_Fuuum_Command_CoffeeCommandController', 'brew', 'other_extension_key:Coffee:brew'),
         );
     }
 

@@ -108,7 +108,7 @@ class Command
 
         $this->extensionName = $classNameParts[1];
         $extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($this->extensionName);
-        $this->commandIdentifier = strtolower($extensionKey . ':' . substr($classNameParts[$numberOfClassNameParts - 1], 0, -17) . ':' . $controllerCommandName);
+        $this->commandIdentifier = ($extensionKey . ':' . substr($classNameParts[$numberOfClassNameParts - 1], 0, -17) . ':' . $controllerCommandName);
     }
 
     /**

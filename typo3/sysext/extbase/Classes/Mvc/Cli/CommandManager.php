@@ -162,8 +162,8 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function commandMatchesIdentifier(Command $command, $commandIdentifier)
     {
-        $commandIdentifierParts = explode(':', $command->getCommandIdentifier());
-        $searchedCommandIdentifierParts = explode(':', $commandIdentifier);
+        $commandIdentifierParts = explode(':', strtolower($command->getCommandIdentifier()));
+        $searchedCommandIdentifierParts = explode(':', strtolower($commandIdentifier));
         $extensionKey = array_shift($commandIdentifierParts);
         if (count($searchedCommandIdentifierParts) === 3) {
             $searchedExtensionKey = array_shift($searchedCommandIdentifierParts);
