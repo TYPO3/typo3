@@ -690,6 +690,18 @@ TYPO3.Components.PageTree.Actions = {
 	},
 
 	/**
+	 * Clear cache of a page
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
+	clearCacheOfPage: function(node) {
+		TYPO3.Components.PageTree.Commands.clearCacheOfPage(
+			node.attributes.nodeData
+		);
+	},
+
+	/**
 	 * Reloads the content frame with the current module and node id
 	 *
 	 * @param {Ext.tree.TreeNode} node

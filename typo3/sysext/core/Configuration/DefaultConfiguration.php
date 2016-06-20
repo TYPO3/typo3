@@ -964,6 +964,16 @@ return array(
 									displayCondition = canBeRemoved != 0 && isMountPoint != 1
 									callbackAction = removeNode
 								}
+
+								1100 = DIVIDER
+
+								1200 = ITEM
+								1200 {
+									name = clearCache
+									label = LLL:EXT:lang/locallang_core.xlf:labels.clear_cache
+									iconName = actions-system-cache-clear
+									callbackAction = clearCacheOfPage
+								}
 							}
 
 							1000 = SUBMENU

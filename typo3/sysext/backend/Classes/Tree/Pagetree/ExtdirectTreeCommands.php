@@ -157,6 +157,20 @@ class ExtdirectTreeCommands
     }
 
     /**
+     * Clear cache of the page
+     *
+     * @param \stdClass $nodeData
+     * @return void
+     */
+    public static function clearCacheOfPage($nodeData)
+    {
+        $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
+        $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+        $tce->start(array(), array());
+        $tce->clear_cacheCmd($node->getId());
+    }
+
+    /**
      * Sets a temporary mount point
      *
      * @param \stdClass $nodeData
