@@ -27,6 +27,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\PageRepositoryFixture;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
@@ -897,6 +898,70 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->willReturn($will);
         $this->assertSame($expect,
             $subject->stdWrap_cacheRead($input, $conf));
+    }
+
+    /**
+     * Data provider for fourTypesOfStdWrapHookObjectProcessors
+     *
+     * @return array Order: stdWrap, hookObjectCall
+     */
+    public function fourTypesOfStdWrapHookObjectProcessorsDataProvider()
+    {
+        return [
+            'preProcess' => [
+                'stdWrap_stdWrapPreProcess', 'stdWrapPreProcess'
+            ],
+            'override' => [
+                'stdWrap_stdWrapOverride', 'stdWrapOverride'
+            ],
+            'process' => [
+                'stdWrap_stdWrapProcess', 'stdWrapProcess'
+            ],
+            'postProcess' => [
+                'stdWrap_stdWrapPostProcess', 'stdWrapPostProcess'
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrapHookObject processors work properly.
+     *
+     * Checks:
+     *
+     * - stdWrap_stdWrapPreProcess
+     * - stdWrap_stdWrapOverride
+     * - stdWrap_stdWrapProcess
+     * - stdWrap_stdWrapPostProcess
+     *
+     * @test
+     * @dataProvider fourTypesOfStdWrapHookObjectProcessorsDataProvider
+     * @param string $stdWrapMethod: The method to cover.
+     * @param string $hookObjectCall: The expected hook object call.
+     * @return void
+     */
+    public function fourTypesOfStdWrapHookObjectProcessors(
+        $stdWrapMethod, $hookObjectCall)
+    {
+        $conf = [$this->getUniqueId('conf')];
+        $content = $this->getUniqueId('content');
+        $processed1 = $this->getUniqueId('processed1');
+        $processed2 = $this->getUniqueId('processed2');
+        $hookObject1 = $this->createMock(
+            ContentObjectStdWrapHookInterface::class);
+        $hookObject1->expects($this->once())
+            ->method($hookObjectCall)
+            ->with($content, $conf)
+            ->willReturn($processed1);
+        $hookObject2 = $this->createMock(
+            ContentObjectStdWrapHookInterface::class);
+        $hookObject2->expects($this->once())
+            ->method($hookObjectCall)
+            ->with($processed1, $conf)
+            ->willReturn($processed2);
+        $this->subject->_set('stdWrapHookObjects',
+            [$hookObject1, $hookObject2]);
+        $result = $this->subject->$stdWrapMethod($content, $conf);
+        $this->assertSame($processed2, $result);
     }
 
     /**
