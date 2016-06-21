@@ -6472,6 +6472,84 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertSame(1, $pageRepo::$storeHashCallCount);
     }
 
+
+    /**
+     * Check if calculateCacheKey works properly.
+     *
+     * @return array Order: expect, conf, times, with, withWrap, will
+     */
+    public function calculateCacheKeyDataProvider()
+    {
+        $value = $this->getUniqueId('value');
+        $wrap = [$this->getUniqueId('wrap')];
+        $valueConf = ['key' => $value];
+        $wrapConf = ['key.' => $wrap];
+        $conf = array_merge($valueConf, $wrapConf);
+        $will = $this->getUniqueId('stdWrap');
+
+        return [
+            'no conf' => [
+                '',
+                [],
+                0,
+                null,
+                null,
+                null
+            ],
+            'value conf only' => [
+                $value,
+                $valueConf,
+                0,
+                null,
+                null,
+                null
+            ],
+            'wrap conf only' => [
+                $will,
+                $wrapConf,
+                1,
+                '',
+                $wrap,
+                $will
+            ],
+            'full conf' => [
+                $will,
+                $conf,
+                1,
+                $value,
+                $wrap,
+                $will
+            ],
+        ];
+    }
+
+    /**
+     * Check if calculateCacheKey works properly.
+     *
+     * - takes key from $conf['key']
+     * - processes key with stdWrap based on $conf['key.']
+     *
+     * @test
+     * @dataProvider calculateCacheKeyDataProvider
+     * @param string $expect Expected result.
+     * @param array $conf Properties 'key', 'key.'
+     * @param integer $times Times called mocked method.
+     * @param array $with Parameter passed to mocked method.
+     * @param string $will Return value of mocked method.
+     * @return void
+     */
+    public function calculateCacheKey($expect, $conf, $times, $with, $withWrap, $will)
+    {
+        $subject = $this->getAccessibleMock(ContentObjectRenderer::class, ['stdWrap']);
+        $subject->expects($this->exactly($times))
+            ->method('stdWrap')
+            ->with($with, $withWrap)
+            ->willReturn($will);
+
+        $result = $subject->_call('calculateCacheKey', $conf);
+        $this->assertSame($expect, $result);
+    }
+
     /**
      * Data provider for getFromCache
      *
