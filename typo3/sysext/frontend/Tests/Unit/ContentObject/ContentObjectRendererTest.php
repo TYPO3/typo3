@@ -838,6 +838,66 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_cacheRead
+     *
+     * @return array Order: expect, input, conf, times, with, will
+     */
+    public function stdWrap_cacheReadDataProvider()
+    {
+        $cacheConf = [$this->getUniqueId('cache.')];
+        $conf = ['cache.' => $cacheConf];
+        return [
+            'no conf' => [
+                'content', 'content', [],
+                0, null, null,
+            ],
+            'no cache. conf' => [
+                'content', 'content', ['otherConf' => 1],
+                0, null, null,
+            ],
+            'non-cached simulation' => [
+                'content', 'content', $conf,
+                1, $cacheConf, false,
+            ],
+            'cached simulation' => [
+                'cachedContent', 'content', $conf,
+                1, $cacheConf, 'cachedContent',
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_cacheRead works properly.
+     *
+     * - the method branches correctly
+     * - getFromCache is called to fetch from cache
+     * - $conf['cache.'] is passed on as parameter
+     *
+     * @test
+     * @dataProvider stdWrap_cacheReadDataProvider
+     * @param string $expect Expected result.
+     * @param string $input Given input string.
+     * @param array $conf Property 'cache.'
+     * @param integer $times Times called mocked method.
+     * @param array $with Parameter passed to mocked method.
+     * @param string|false $will Return value of mocked method.
+     * @return void
+     */
+    public function stdWrap_cacheRead(
+        $expect, $input, $conf, $times, $with, $will)
+    {
+        $subject = $this->getAccessibleMock(
+            ContentObjectRenderer::class, ['getFromCache']);
+        $subject
+            ->expects($this->exactly($times))
+            ->method('getFromCache')
+            ->with($with)
+            ->willReturn($will);
+        $this->assertSame($expect,
+            $subject->stdWrap_cacheRead($input, $conf));
+    }
+
+    /**
      * Check if stdWrap_setContentToCurrent works properly.
      *
      * @test
