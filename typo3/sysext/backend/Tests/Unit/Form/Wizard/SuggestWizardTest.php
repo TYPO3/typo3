@@ -148,4 +148,23 @@ class SuggestWizardTest extends UnitTestCase
 
         $subject->_call('getFieldConfiguration', $parts, $dataStructure);
     }
+
+    /**
+     * @test
+     * @dataProvider isTableHiddenIsProperlyRetrievedDataProvider
+     */
+    public function isTableHiddenIsProperlyRetrieved($expected, $array) {
+        $subject = $this->getAccessibleMock(SuggestWizard::class, array('dummy'), array(), '', false);
+        $this->assertEquals($expected, $subject->_call('isTableHidden', $array));
+    }
+
+    public function isTableHiddenIsProperlyRetrievedDataProvider() {
+        return [
+          'notSetValue' => [false, array('ctrl' => array('hideTable' => null))],
+          'true' => [true, array('ctrl' => array('hideTable' => true))],
+          'false' => [false, array('ctrl' => array('hideTable' => false))],
+          'string with true' => [true, array('ctrl' => array('hideTable' => '1'))],
+          'string with false' => [false, array('ctrl' => array('hideTable' => '0'))],
+        ];
+    }
 }

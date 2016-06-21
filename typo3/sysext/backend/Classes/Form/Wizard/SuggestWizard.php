@@ -209,7 +209,7 @@ class SuggestWizard
      */
     protected function isTableHidden(array $tableConfig)
     {
-        return !$tableConfig['ctrl']['hideTable'];
+        return (bool)$tableConfig['ctrl']['hideTable'];
     }
 
     /**
