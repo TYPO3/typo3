@@ -159,11 +159,6 @@ class InfoModuleController extends BaseScriptClass
     protected function getButtons()
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        // CSH
-        $cshButton = $buttonBar->makeHelpButton()
-            ->setModuleName('_MOD_web_info')
-            ->setFieldName('');
-        $buttonBar->addButton($cshButton, ButtonBar::BUTTON_POSITION_LEFT, 0);
         // View page
         $viewButton = $buttonBar->makeLinkButton()
             ->setHref('#')
