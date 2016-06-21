@@ -25,6 +25,8 @@ use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\PageRepositoryFixture;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
@@ -6224,6 +6226,65 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertSame('Please tell me this foo.', $resultContent);
         $this->assertSame($storeArr, $this->subject->substMarkerCache[$storeKey]);
         $this->assertSame(1, $pageRepo::$storeHashCallCount);
+    }
+
+    /**
+     * Data provider for getFromCache
+     *
+     * @return array Order: expect, conf, cacheKey, times, cached.
+     */
+    public function getFromCacheDtataProvider()
+    {
+        $conf = [$this->getUniqueId('conf')];
+        return [
+            'empty cache key' => [
+                false, $conf, '', 0, null,
+            ],
+            'non-empty cache key' => [
+                'value', $conf, 'non-empty-key', 1, 'value',
+            ],
+        ];
+    }
+
+    /**
+     * Check if getFromCache works properly.
+     *
+     * - CalculateCacheKey is called to calc the cache key.
+     * - $conf is passed on as parameter
+     * - CacheFrontend is created and called if $cacheKey is not empty.
+     * - Else false is returned.
+     *
+     * @test
+     * @dataProvider getFromCacheDtataProvider
+     * @param string $expect Expected result.
+     * @param array $conf Configuration to pass to calculateCacheKey mock.
+     * @param string $cacheKey Return from calculateCacheKey mock.
+     * @param integer $times Times the cache is expected to be called (0 or 1).
+     * @param string $cached Return from cacheFrontend mock.
+     * @return void
+     */
+    public function getFromCache($expect, $conf, $cacheKey, $times, $cached)
+    {
+        $subject = $this->getAccessibleMock(
+            ContentObjectRenderer::class, ['calculateCacheKey']);
+        $subject
+            ->expects($this->exactly(1))
+            ->method('calculateCacheKey')
+            ->with($conf)
+            ->willReturn($cacheKey);
+        $cacheFrontend = $this->createMock(CacheFrontendInterface::class);
+        $cacheFrontend
+            ->expects($this->exactly($times))
+            ->method('get')
+            ->with($cacheKey)
+            ->willReturn($cached);
+        $cacheManager = $this->createMock(CacheManager::class);
+        $cacheManager
+            ->method('getCache')
+            ->willReturn($cacheFrontend);
+        GeneralUtility::setSingletonInstance(
+            CacheManager::class, $cacheManager);
+        $this->assertSame($expect, $subject->_call('getFromCache', $conf));
     }
 
     /**
