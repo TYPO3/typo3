@@ -82,12 +82,4 @@ abstract class AbstractLinktype implements LinktypeInterface
     {
         return $GLOBALS['LANG'];
     }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
 }

@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -61,7 +63,7 @@ class LinkHandler extends AbstractLinktype
         // for hidden records is enabled.
         if ($reportHiddenRecords) {
             $row = $this->getRecordRow($tableName, $rowid, 'disabled');
-            if ($row === null) {
+            if ($row === false) {
                 $response = false;
                 $errorType = self::DISABLED;
             }
@@ -71,7 +73,7 @@ class LinkHandler extends AbstractLinktype
         // if we can find a non deleted record.
         if ($row === null) {
             $row = $this->getRecordRow($tableName, $rowid, 'deleted');
-            if ($row === null) {
+            if ($row === false) {
                 $response = false;
                 $errorType = self::DELETED;
             }
@@ -81,7 +83,7 @@ class LinkHandler extends AbstractLinktype
         // deleted one.
         if ($row === null) {
             $row = $this->getRecordRow($tableName, $rowid, 'all');
-            if ($row === null) {
+            if ($row === false) {
                 $response = false;
                 $errorType = '';
             }
@@ -171,32 +173,31 @@ class LinkHandler extends AbstractLinktype
      * @param string $tableName The name of the table from which the record should be fetched.
      * @param int $uid The UID of the record that should be fetched.
      * @param string $filter A filter setting, can be empty or "disabled" or "deleted".
-     * @return array|NULL The result row as associative array or NULL if nothing is found.
+     * @return array|bool The result row as associative array or false if nothing is found.
      */
     protected function getRecordRow($tableName, $uid, $filter = '')
     {
-        $whereStatement = 'uid = ' . (int)$uid;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
 
         switch ($filter) {
             case self::DISABLED:
-                $whereStatement .= BackendUtility::BEenableFields($tableName) . BackendUtility::deleteClause($tableName);
+                // All default restrictions for the QueryBuilder stay active
                 break;
             case self::DELETED:
-                $whereStatement .= BackendUtility::deleteClause($tableName);
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                 break;
+            default:
+                $queryBuilder->getRestrictions()->removeAll();
         }
 
-        $row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-            '*',
-            $tableName,
-            $whereStatement
-        );
-
-        // Since exec_SELECTgetSingleRow can return NULL or FALSE we
-        // make sure we always return NULL if no row was found.
-        if ($row === false) {
-            $row = null;
-        }
+        $row = $queryBuilder
+            ->select('*')
+            ->from($tableName)
+            ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+            ->execute()
+            ->fetch();
 
         return $row;
     }

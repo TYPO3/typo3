@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -108,7 +109,15 @@ class InternalLinktype extends AbstractLinktype
      */
     protected function checkPage($page)
     {
-        $row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid, title, deleted, hidden, starttime, endtime', 'pages', 'uid = ' . (int)$page);
+        // Get page ID on which the content element in fact is located
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+        $row = $queryBuilder
+            ->select('uid', 'title', 'deleted', 'hidden', 'starttime', 'endtime')
+            ->from('pages')
+            ->where($queryBuilder->expr()->eq('uid', (int)$page))
+            ->execute()
+            ->fetch();
         $this->responsePage = true;
         if ($row) {
             if ($row['deleted'] == '1') {
@@ -116,7 +125,10 @@ class InternalLinktype extends AbstractLinktype
                 $this->errorParams['page']['title'] = $row['title'];
                 $this->errorParams['page']['uid'] = $row['uid'];
                 $this->responsePage = false;
-            } elseif ($row['hidden'] == '1' || $GLOBALS['EXEC_TIME'] < (int)$row['starttime'] || $row['endtime'] && (int)$row['endtime'] < $GLOBALS['EXEC_TIME']) {
+            } elseif ($row['hidden'] == '1'
+                || $GLOBALS['EXEC_TIME'] < (int)$row['starttime']
+                || $row['endtime'] && (int)$row['endtime'] < $GLOBALS['EXEC_TIME']
+            ) {
                 $this->errorParams['errorType']['page'] = self::HIDDEN;
                 $this->errorParams['page']['title'] = $row['title'];
                 $this->errorParams['page']['uid'] = $row['uid'];
@@ -140,16 +152,19 @@ class InternalLinktype extends AbstractLinktype
     protected function checkContent($page, $anchor)
     {
         // Get page ID on which the content element in fact is located
-        $res = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-            'uid, pid, header, deleted, hidden, starttime, endtime',
-            'tt_content',
-            'uid = ' . (int)$anchor
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll();
+        $row = $queryBuilder
+            ->select('uid', 'pid', 'header', 'deleted', 'hidden', 'starttime', 'endtime')
+            ->from('tt_content')
+            ->where($queryBuilder->expr()->eq('uid', (int)$anchor))
+            ->execute()
+            ->fetch();
         $this->responseContent = true;
         // this content element exists
-        if ($res) {
+        if ($row) {
             // page ID on which this CE is in fact located.
-            $correctPageID = $res['pid'];
+            $correctPageID = $row['pid'];
             // Check if the element is on the linked page
             // (The element might have been moved to another page)
             if (!($correctPageID === $page)) {
@@ -160,15 +175,15 @@ class InternalLinktype extends AbstractLinktype
                 $this->responseContent = false;
             } else {
                 // The element is located on the page to which the link is pointing
-                if ($res['deleted'] == '1') {
+                if ($row['deleted'] == '1') {
                     $this->errorParams['errorType']['content'] = self::DELETED;
-                    $this->errorParams['content']['title'] = $res['header'];
-                    $this->errorParams['content']['uid'] = $res['uid'];
+                    $this->errorParams['content']['title'] = $row['header'];
+                    $this->errorParams['content']['uid'] = $row['uid'];
                     $this->responseContent = false;
-                } elseif ($res['hidden'] == '1' || $GLOBALS['EXEC_TIME'] < (int)$res['starttime'] || $res['endtime'] && (int)$res['endtime'] < $GLOBALS['EXEC_TIME']) {
+                } elseif ($row['hidden'] == '1' || $GLOBALS['EXEC_TIME'] < (int)$row['starttime'] || $row['endtime'] && (int)$row['endtime'] < $GLOBALS['EXEC_TIME']) {
                     $this->errorParams['errorType']['content'] = self::HIDDEN;
-                    $this->errorParams['content']['title'] = $res['header'];
-                    $this->errorParams['content']['uid'] = $res['uid'];
+                    $this->errorParams['content']['title'] = $row['header'];
+                    $this->errorParams['content']['uid'] = $row['uid'];
                     $this->responseContent = false;
                 }
             }
