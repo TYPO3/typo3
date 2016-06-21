@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Linkvalidator;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
@@ -24,6 +27,7 @@ use TYPO3\CMS\Lang\LanguageService;
  */
 class LinkAnalyzer
 {
+
     /**
      * Array of tables and fields to search for broken links
      *
@@ -132,50 +136,66 @@ class LinkAnalyzer
      */
     public function getLinkStatistics($checkOptions = array(), $considerHidden = false)
     {
-        $results = array();
+        $results = [];
         if (!empty($checkOptions)) {
             $checkKeys = array_keys($checkOptions);
-            $checkLinkTypeCondition = ' AND link_type IN (\'' . implode('\',\'', $checkKeys) . '\')';
-            $this->getDatabaseConnection()->exec_DELETEquery(
-                'tx_linkvalidator_link',
-                '(record_pid IN (' . $this->pidList . ')' .
-                    ' OR ( record_uid IN (' . $this->pidList . ') AND table_name like \'pages\'))' .
-                    $checkLinkTypeCondition
-            );
+            $pidList = GeneralUtility::intExplode(',', $this->pidList, true);
+
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('tx_linkvalidator_link');
+
+            $queryBuilder->delete('tx_linkvalidator_link')
+                ->where(
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->in('record_pid', $pidList),
+                        $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->in('record_uid', $pidList),
+                            $queryBuilder->expr()->eq('table_name', $queryBuilder->quote('pages'))
+                        )
+                    ),
+                    $queryBuilder->expr()->in(
+                        'link_type',
+                        array_map([$queryBuilder, 'createNamedParameter'], $checkKeys)
+                    )
+                )
+                ->execute();
+
             // Traverse all configured tables
             foreach ($this->searchFields as $table => $fields) {
-                if ($table === 'pages') {
-                    $where = 'uid IN (' . $this->pidList . ')';
-                } else {
-                    $where = 'pid IN (' . $this->pidList . ')';
-                }
-                $where .= BackendUtility::deleteClause($table);
-                if (!$considerHidden) {
-                    $where .= BackendUtility::BEenableFields($table);
-                }
                 // If table is not configured, assume the extension is not installed
                 // and therefore no need to check it
                 if (!is_array($GLOBALS['TCA'][$table])) {
                     continue;
                 }
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($table);
+
+                if ($considerHidden) {
+                    $queryBuilder->getRestrictions()
+                        ->removeAll()
+                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                }
+
                 // Re-init selectFields for table
-                $selectFields = 'uid, pid';
-                $selectFields .= ', ' . $GLOBALS['TCA'][$table]['ctrl']['label'] . ', ' . implode(', ', $fields);
+                $selectFields = array_merge(['uid', 'pid', $GLOBALS['TCA'][$table]['ctrl']['label']], $fields);
+
+                $result = $queryBuilder->select(...$selectFields)
+                    ->from($table)
+                    ->where($queryBuilder->expr()->in(($table === 'pages' ? 'uid' : 'pid'), $pidList))
+                    ->execute();
 
                 // @todo #64091: only select rows that have content in at least one of the relevant fields (via OR)
-                $rows = $this->getDatabaseConnection()->exec_SELECTgetRows($selectFields, $table, $where);
-                if (!empty($rows)) {
-                    foreach ($rows as $row) {
-                        $this->analyzeRecord($results, $table, $fields, $row);
-                    }
+                while ($row = $result->fetch()) {
+                    $this->analyzeRecord($results, $table, $fields, $row);
                 }
             }
+
             foreach ($this->hookObjectsArr as $key => $hookObj) {
                 if (is_array($results[$key]) && empty($checkOptions) || is_array($results[$key]) && $checkOptions[$key]) {
                     //  Check them
                     foreach ($results[$key] as $entryKey => $entryValue) {
                         $table = $entryValue['table'];
-                        $record = array();
+                        $record = [];
                         $record['headline'] = BackendUtility::getRecordTitle($table, $entryValue['row']);
                         $record['record_pid'] = $entryValue['row']['pid'];
                         $record['record_uid'] = $entryValue['uid'];
@@ -195,22 +215,26 @@ class LinkAnalyzer
                         $checkUrl = $hookObj->checkLink($url, $entryValue, $this);
                         // Broken link found
                         if (!$checkUrl) {
-                            $response = array();
+                            $response = [];
                             $response['valid'] = false;
                             $response['errorParams'] = $hookObj->getErrorParams();
                             $this->brokenLinkCounts[$table]++;
                             $record['link_type'] = $key;
                             $record['url'] = $url;
                             $record['url_response'] = serialize($response);
-                            $this->getDatabaseConnection()->exec_INSERTquery('tx_linkvalidator_link', $record);
+                            GeneralUtility::makeInstance(ConnectionPool::class)
+                                ->getConnectionForTable('tx_linkvalidator_link')
+                                ->insert('tx_linkvalidator_link', $record);
                         } elseif (GeneralUtility::_GP('showalllinks')) {
-                            $response = array();
+                            $response = [];
                             $response['valid'] = true;
                             $this->brokenLinkCounts[$table]++;
                             $record['url'] = $url;
                             $record['link_type'] = $key;
                             $record['url_response'] = serialize($response);
-                            $this->getDatabaseConnection()->exec_INSERTquery('tx_linkvalidator_link', $record);
+                            GeneralUtility::makeInstance(ConnectionPool::class)
+                                ->getConnectionForTable('tx_linkvalidator_link')
+                                ->insert('tx_linkvalidator_link', $record);
                         }
                     }
                 }
@@ -385,23 +409,23 @@ class LinkAnalyzer
      */
     public function getLinkCounts($curPage)
     {
-        $markerArray = array();
-        if (empty($this->pidList)) {
-            $this->pidList = $curPage;
-        }
-        $this->pidList = rtrim($this->pidList, ',');
+        $markerArray = [];
+        $this->pidList = GeneralUtility::intExplode(',', ($this->pidList ?: $curPage), true);
 
-        $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'count(uid) as nbBrokenLinks,link_type',
-            'tx_linkvalidator_link',
-            'record_pid in (' . $this->pidList . ')',
-            'link_type'
-        );
-        if (!empty($rows)) {
-            foreach ($rows as $row) {
-                $markerArray[$row['link_type']] = $row['nbBrokenLinks'];
-                $markerArray['brokenlinkCount'] += $row['nbBrokenLinks'];
-            }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_linkvalidator_link');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $result = $queryBuilder->select('link_type')
+            ->addSelectLiteral($queryBuilder->expr()->count('uid', 'nbBrokenLinks'))
+            ->from('tx_linkvalidator_link')
+            ->where($queryBuilder->expr()->in('record_pid', $this->pidList))
+            ->groupBy('link_type')
+            ->execute();
+
+        while ($row = $result->fetch()) {
+            $markerArray[$row['link_type']] = $row['nbBrokenLinks'];
+            $markerArray['brokenlinkCount'] += $row['nbBrokenLinks'];
         }
         return $markerArray;
     }
@@ -428,20 +452,33 @@ class LinkAnalyzer
         $id = (int)$id;
         $theList = '';
         if ($depth > 0) {
-            $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                'uid,title,hidden,extendToSubpages',
-                'pages',
-                'pid=' . $id . ' AND deleted=0 AND ' . $permsClause
-            );
-            if (!empty($rows)) {
-                foreach ($rows as $row) {
-                    if ($begin <= 0 && ($row['hidden'] == 0 || $considerHidden)) {
-                        $theList .= $row['uid'] . ',';
-                        $this->extPageInTreeInfo[] = array($row['uid'], htmlspecialchars($row['title'], $depth));
-                    }
-                    if ($depth > 1 && (!($row['hidden'] == 1 && $row['extendToSubpages'] == 1) || $considerHidden)) {
-                        $theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $permsClause, $considerHidden);
-                    }
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+            $result = $queryBuilder
+                ->select('uid', 'title', 'hidden', 'extendToSubpages')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('pid', $id),
+                    QueryHelper::stripLogicalOperatorPrefix($permsClause)
+                )
+                ->execute();
+
+            while ($row = $result->fetch()) {
+                if ($begin <= 0 && ($row['hidden'] == 0 || $considerHidden)) {
+                    $theList .= $row['uid'] . ',';
+                    $this->extPageInTreeInfo[] = [$row['uid'], htmlspecialchars($row['title'], $depth)];
+                }
+                if ($depth > 1 && (!($row['hidden'] == 1 && $row['extendToSubpages'] == 1) || $considerHidden)) {
+                    $theList .= $this->extGetTreeList(
+                        $row['uid'],
+                        $depth - 1,
+                        $begin - 1,
+                        $permsClause,
+                        $considerHidden
+                    );
                 }
             }
         }
@@ -461,18 +498,22 @@ class LinkAnalyzer
             $hidden = true;
         } else {
             if ($pageInfo['pid'] > 0) {
-                $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                    'uid,title,hidden,extendToSubpages',
-                    'pages',
-                    'uid=' . $pageInfo['pid']
-                );
-                if (!empty($rows)) {
-                    foreach ($rows as $row) {
-                        $hidden = $this->getRootLineIsHidden($row);
-                    }
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+                $queryBuilder->getRestrictions()->removeAll();
+
+                $row = $queryBuilder
+                    ->select('uid', 'title', 'hidden', 'extendToSubpages')
+                    ->from('pages')
+                    ->where($queryBuilder->expr()->eq('uid', $pageInfo['pid']))
+                    ->execute()
+                    ->fetch();
+
+                if ($row !== false) {
+                    $hidden = $this->getRootLineIsHidden($row);
                 }
             }
         }
+
         return $hidden;
     }
 
@@ -508,14 +549,6 @@ class LinkAnalyzer
     protected function getObjectManager()
     {
         return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
