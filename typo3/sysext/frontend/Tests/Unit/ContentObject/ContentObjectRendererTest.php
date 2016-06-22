@@ -1312,6 +1312,32 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Check if stdWrap_filelist works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method filelist.
+     * - Parameter is $conf['filelist'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_filelist()
+    {
+        $conf = [
+            'filelist' => $this->getUniqueId('filelist'),
+            'filelist.' => [$this->getUniqueId('not used')],
+        ];
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['filelist'])->getMock();
+        $subject->expects($this->once())->method('filelist')
+            ->with($conf['filelist'])->willReturn('return');
+        $this->assertSame('return',
+            $subject->stdWrap_filelist('discard', $conf));
+    }
+
+    /**
      * Data provider for stdWrap_csConv
      *
      * @return array Order expected, input, conf
