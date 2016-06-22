@@ -7005,6 +7005,98 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for getFieldVal
+     *
+     * @return array [$expect, $fields]
+     */
+    public function getFieldValDataProvider()
+    {
+        return [
+            'invalid single key' => [null, 'invalid'],
+            'single key of null' => [null, 'null'],
+            'single key of empty string' => ['', 'empty'],
+            'single key of non-empty string' => ['string 1', 'string1'],
+            'single key of boolean false' => [false, 'false'],
+            'single key of boolean true' => [true, 'true'],
+            'single key of integer 0' => [0, 'zero'],
+            'single key of integer 1' => [1, 'one'],
+            'single key to be trimmed' => ['string 1', ' string1 '],
+
+            'split nothing' => ['', '//'],
+            'split one before' => ['string 1', 'string1//'],
+            'split one after' => ['string 1', '//string1'],
+            'split two ' => ['string 1', 'string1//string2'],
+            'split three ' => ['string 1', 'string1//string2//string3'],
+            'split to be trimmed' => ['string 1', ' string1 // string2 '],
+            '0 is not empty' => [0, '// zero'],
+            '1 is not empty' => [1, '// one'],
+            'true is not empty' => [true, '// true'],
+            'false is empty' => ['', '// false'],
+            'null is empty' => ['', '// null'],
+            'empty string is empty' => ['', '// empty'],
+            'string is not empty' => ['string 1', '// string1'],
+            'first non-empty winns' => [ 0, 'false//empty//null//zero//one'],
+            'empty string is fallback' => ['', 'false // empty // null'],
+        ];
+    }
+
+    /**
+     * Check that getFieldVal works properly.
+     *
+     * Show:
+     *
+     * - Returns the field from $this->data.
+     * - The keys are trimmed.
+     *
+     * - For a single key (no //) returns the field as is:
+     *
+     *   - '' => ''
+     *   - null => null
+     *   - false => false
+     *   - true => true
+     *   -  0 => 0
+     *   -  1 => 1
+     *   - 'string' => 'string'
+     *
+     * - If '//' is present, explodes key candidates.
+     * - Returns the first field, that is not "empty".
+     * - "Empty" is checked after type cast to string by comparing to ''.
+     * - The winning non-empty value is returned as is.
+     * - The fallback, if all evals to empty, is the empty string ''.
+     * - '//' with single elements and empty string fallback results in:
+     *
+     *   - '' => ''
+     *   - null => ''
+     *   - false => ''
+     *   - true => true
+     *   -  0 => 0
+     *   -  1 => 1
+     *   - 'string' => 'string'
+     *
+     * @test
+     * @dataProvider getFieldValDataProvider
+     * @param string $expect The expected string.
+     * @param string $fields Field names divides by //.
+     * @return void
+     */
+    public function getFieldVal($expect, $fields)
+    {
+        $data = [
+            'string1' => 'string 1',
+            'string2' => 'string 2',
+            'string3' => 'string 3',
+            'empty' => '',
+            'null' => null,
+            'false' => false,
+            'true' => true,
+            'zero' => 0,
+            'one' => 1,
+        ];
+        $this->subject->_set('data', $data);
+        $this->assertSame($expect, $this->subject->getFieldVal($fields));
+    }
+
+    /**
      * @return TypoScriptFrontendController
      */
     protected function getFrontendController()
