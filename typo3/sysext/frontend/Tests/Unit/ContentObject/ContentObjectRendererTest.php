@@ -1286,6 +1286,32 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Check if stdWrap_numRows works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method numRows.
+     * - Parameter is $conf['numRows.'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_numRows()
+    {
+        $conf = [
+            'numRows' => $this->getUniqueId('numRows'),
+            'numRows.' => [$this->getUniqueId('numRows')],
+        ];
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['numRows'])->getMock();
+        $subject->expects($this->once())->method('numRows')
+            ->with($conf['numRows.'])->willReturn('return');
+        $this->assertSame('return',
+            $subject->stdWrap_numRows('discard', $conf));
+    }
+
+    /**
      * Data provider for stdWrap_csConv
      *
      * @return array Order expected, input, conf
