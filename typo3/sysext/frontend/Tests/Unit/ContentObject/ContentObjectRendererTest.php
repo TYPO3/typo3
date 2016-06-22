@@ -912,6 +912,45 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Check if stdWrap_preIfEmptyListNum works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method listNum.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['preIfEmptyListNum'].
+     * - Parameter 3 is $conf['preIfEmptyListNum.']['splitChar'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_preIfEmptyListNum()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'preIfEmptyListNum' => $this->getUniqueId('preIfEmptyListNum'),
+            'preIfEmptyListNum.' => [
+                'splitChar' => $this->getUniqueId('splitChar')
+            ],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['listNum'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('listNum')
+            ->with(
+                $content,
+                $conf['preIfEmptyListNum'],
+                $conf['preIfEmptyListNum.']['splitChar']
+            )
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_preIfEmptyListNum($content, $conf));
+    }
+
+    /**
      * Data provider for stdWrap_csConv
      *
      * @return array Order expected, input, conf
