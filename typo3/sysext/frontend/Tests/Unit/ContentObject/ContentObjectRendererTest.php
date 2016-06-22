@@ -1228,6 +1228,32 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Check if stdWrap_field works properly.
+     *
+     * Show:
+     *
+     * - calls getFieldVal
+     * - passes conf['field'] as parameter
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_field()
+    {
+        $expect = $this->getUniqueId('expect');
+        $conf = ['field' => $this->getUniqueId('field')];
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['getFieldVal'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('getFieldVal')
+            ->with($conf['field'])
+            ->willReturn($expect);
+        $this->assertSame($expect,
+            $subject->stdWrap_field('discarded', $conf));
+    }
+
+    /**
      * Data provider for stdWrap_csConv
      *
      * @return array Order expected, input, conf
