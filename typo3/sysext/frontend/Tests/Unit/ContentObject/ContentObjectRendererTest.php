@@ -1254,6 +1254,38 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Check if stdWrap_cObject works properly.
+     *
+     * Show:
+     *
+     * - Delegates to the method cObjGetSingle().
+     * - First parameter is $conf['cObject'].
+     * - Second parameter is $conf['cObject.'].
+     * - Third parameter is '/stdWrap/.cObject'.
+     * - Returns the return.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_cObject()
+    {
+        $debugKey =  '/stdWrap/.cObject';
+        $conf = [
+            'cObject' => $this->getUniqueId('cObject'),
+            'cObject.' => [$this->getUniqueId('cObject.')],
+        ];
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['cObjGetSingle'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('cObjGetSingle')
+            ->with($conf['cObject'], $conf['cObject.'], $debugKey)
+            ->willReturn('return');
+        $this->assertSame('return',
+            $subject->stdWrap_cObject('discard', $conf));
+    }
+
+    /**
      * Data provider for stdWrap_csConv
      *
      * @return array Order expected, input, conf
