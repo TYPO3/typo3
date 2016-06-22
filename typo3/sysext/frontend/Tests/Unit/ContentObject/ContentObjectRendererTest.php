@@ -1017,6 +1017,68 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      *
      * @return array Order expected, input, conf
      */
+    public function stdWrap_overrideDataProvider()
+    {
+        return [
+            'standard case' => [
+                'override', 'content', ['override' => 'override']
+            ],
+            'empty conf does not override' => [
+                'content', 'content', []
+            ],
+            'empty string does not override' => [
+                'content', 'content', ['override' => '']
+            ],
+            'whitespace does not override' => [
+                'content', 'content', ['override' => ' ' . TAB]
+            ],
+            'zero does not override' => [
+                'content', 'content', ['override' => 0]
+            ],
+            'false does not override' => [
+                'content', 'content', ['override' => false]
+            ],
+            'null does not override' => [
+                'content', 'content', ['override' => null]
+            ],
+            'one does override' => [
+                1, 'content', ['override' => 1]
+            ],
+            'minus one does override' => [
+                -1, 'content', ['override' => -1]
+            ],
+            'float does override' => [
+                -0.1, 'content', ['override' => -0.1]
+            ],
+            'true does override' => [
+                true, 'content', ['override' => true]
+            ],
+            'the value is not trimmed' => [
+                TAB . 'override', 'content', ['override' => TAB . 'override']
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_override works properly.
+     *
+     * @test
+     * @dataProvider stdWrap_overrideDataProvider
+     * @param string $input The input value.
+     * @param array $conf Property: setCurrent
+     * @return void
+     */
+    public function stdWrap_override($expect, $content, $conf)
+    {
+        $this->assertSame($expect,
+            $this->subject->stdWrap_override($content, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_csConv
+     *
+     * @return array Order expected, input, conf
+     */
     public function stdWrap_csConvDataProvider()
     {
         return [
