@@ -1013,6 +1013,34 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Check if stdWrap_current works properly.
+     *
+     * Show:
+     *
+     * - current is returned from $this->data
+     * - the key is stored in $this->currentValKey
+     * - the key defaults to 'currentValue_kidjls9dksoje'
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_current()
+    {
+        $data = [
+            'currentValue_kidjls9dksoje' => 'default',
+            'currentValue_new' => 'new',
+        ];
+        $this->subject->_set('data', $data);
+        $this->assertSame('currentValue_kidjls9dksoje',
+            $this->subject->_get('currentValKey'));
+        $this->assertSame('default',
+            $this->subject->stdWrap_current('discarded', ['discarded']));
+        $this->subject->_set('currentValKey', 'currentValue_new');
+        $this->assertSame('new',
+            $this->subject->stdWrap_current('discarded', ['discarded']));
+    }
+
+    /**
      * Check if stdWrap_preUserFunc works properly.
      *
      * Show:
