@@ -1013,6 +1013,36 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Check if stdWrap_preUserFunc works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method callUserFunction.
+     * - Parameter 1 is $conf['preUserFunc'].
+     * - Parameter 2 is $conf['preUserFunc.'].
+     * - Parameter 3 is $content.
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_preUserFunc()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'preUserFunc' => $this->getUniqueId('preUserFunc'),
+            'preUserFunc.' => [$this->getUniqueId('preUserFunc.')],
+        ];
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['callUserFunction'])->getMock();
+        $subject->expects($this->once())->method('callUserFunction')
+            ->with($conf['preUserFunc'], $conf['preUserFunc.'], $content)
+            ->willReturn('return');
+        $this->assertSame('return',
+            $subject->stdWrap_preUserFunc($content, $conf));
+    }
+
+    /**
      * Data provider for stdWrap_csConv
      *
      * @return array Order expected, input, conf
