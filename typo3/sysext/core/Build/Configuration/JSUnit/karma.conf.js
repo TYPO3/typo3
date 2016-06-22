@@ -29,12 +29,25 @@ module.exports = function(config) {
 		// preprocess matching files before serving them to the browser
 		// available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
 		preprocessors: {
+			'typo3/sysext/**/Resources/Public/JavaScript/**/*.js': ['coverage']
 		},
 
 		// test results reporter to use
-		// possible values: 'dots', 'progress'
+		// possible values: 'dots', 'progress', 'coverage', 'junit'
 		// available reporters: https://npmjs.org/browse/keyword/karma-reporter
-		reporters: ['progress'],
+		reporters: ['progress', 'junit', 'coverage'],
+
+		junitReporter: {
+			outputDir: 'typo3temp/var/tests/',
+			useBrowserName: false,
+			outputFile: 'karma.junit.xml'
+		},
+
+		coverageReporter: {
+			reporters: [
+				{type: 'clover', dir: 'typo3temp', subdir: 'var/tests', file: 'karma.clover.xml'}
+			]
+		},
 
 		// web server port
 		port: 9876,
