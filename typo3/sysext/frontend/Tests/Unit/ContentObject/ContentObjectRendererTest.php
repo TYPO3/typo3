@@ -1075,6 +1075,45 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Check if stdWrap_listNum works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method listNum.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['listNum'].
+     * - Parameter 3 is $conf['listNum.']['splitChar'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_listNum()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'listNum' => $this->getUniqueId('listNum'),
+            'listNum.' => [
+                'splitChar' => $this->getUniqueId('splitChar')
+            ],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['listNum'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('listNum')
+            ->with(
+                $content,
+                $conf['listNum'],
+                $conf['listNum.']['splitChar']
+            )
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_listNum($content, $conf));
+    }
+
+    /**
      * Data provider for stdWrap_csConv
      *
      * @return array Order expected, input, conf
