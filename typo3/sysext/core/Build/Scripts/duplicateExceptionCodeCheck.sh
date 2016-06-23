@@ -28,7 +28,7 @@ IGNORE=("1270853884")
 ACK=${ACK:-ack-grep}
 
 # Respect only php files and ignore files within a "Tests" directory
-EXCEPTIONS=$(${ACK} --type php --ignore-dir Tests 'throw new' -A5 | grep '[[:digit:]]\{10\}')
+EXCEPTIONS=$(${ACK} --type php --ignore-dir Tests 'throw new' -A5 0>&- | grep '[[:digit:]]\{10\}')
 
 DUPLICATES=$(echo ${EXCEPTIONS} | awk '{
     for(i=1; i<=NF; i++) {
