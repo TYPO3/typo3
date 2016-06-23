@@ -2660,6 +2660,53 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_ifBlank.
+     *
+     * @return array [$expect, $content, $conf]
+     */
+    public function stdWrap_ifBlankDataProvider()
+    {
+        $alt = $this->getUniqueId('alternative content');
+        $conf = ['ifBlank' => $alt];
+        return [
+            // blank cases
+            'null is blank' => [$alt, null, $conf],
+            'false is blank' => [$alt, false, $conf],
+            'empty string is blank' => [$alt, '', $conf],
+            'whitespace is blank' => [$alt, TAB . '', $conf],
+            // non-blank cases
+            'string is not blank' => ['string', 'string', $conf],
+            'zero is not blank' => [0, 0, $conf],
+            'zero string is not blank' => ['0', '0', $conf],
+            'zero float is not blank' => [0.0, 0.0, $conf],
+            'true is not blank' => [true, true, $conf],
+        ];
+    }
+
+    /**
+     * Check that stdWrap_ifBlank works properly.
+     *
+     * Show:
+     *
+     * - The content is returned if not blank.
+     * - Otherwise $conf['ifBlank'] is returned.
+     * - The check for blank is done by comparing the trimmed content
+     *   with the empty string for equality.
+     *
+     * @test
+     * @dataProvider stdWrap_ifBlankDataProvider
+     * @param mixed $expected The expected output.
+     * @param mixed $content The given input.
+     * @param array $conf The given configuration.
+     * @return void
+     */
+    public function stdWrap_ifBlank($expect, $content, $conf)
+    {
+        $result = $this->subject->stdWrap_ifBlank($content, $conf);
+        $this->assertSame($expect, $result);
+    }
+
+    /**
      * @param $content
      * @param array $configuration
      * @param $expected
