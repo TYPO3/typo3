@@ -1202,39 +1202,68 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * @return array
+     * Data provider for stdWrap_trim.
+     *
+     * @return array [$expect, $content]
      */
     public function stdWrap_trimDataProvider()
     {
-        return array(
-            'trimstring' => array(
-                'trimstring',
-                'trimstring',
-            ),
-            'trim string with space inside' => array(
-                'trim string',
-                'trim string',
-            ),
-            'trim string with space at the begin and end' => array(
-                ' trim string ',
-                'trim string',
-            ),
-        );
+        return [
+            // string not trimmed
+            'empty string' => ['', ''],
+            'string without whitespace' => ['xxx', 'xxx'],
+            'string with whitespace inside' => [
+                'xx ' . TAB . ' xx',
+                'xx ' . TAB . ' xx',
+            ],
+            'string with newlines inside' => [
+                'xx ' . PHP_EOL . ' xx',
+                'xx ' . PHP_EOL . ' xx',
+            ],
+            // string trimmed
+            'blanks around' => ['xxx', '  xxx  '],
+            'tabs around' => ['xxx', TAB . 'xxx' . TAB],
+            'newlines around' => ['xxx', PHP_EOL . 'xxx' . PHP_EOL],
+            'mixed case' => ['xxx', TAB . ' xxx ' . PHP_EOL],
+            // non strings
+            'null' => ['', null],
+            'false' => ['', false],
+            'true' => ['1', true],
+            'zero' => ['0', 0],
+            'one' => ['1', 1],
+            '-1' => ['-1', -1],
+            '0.0' => ['0', 0.0],
+            '1.0' => ['1', 1.0],
+            '-1.0' => ['-1', -1.0],
+            '1.1' => ['1.1', 1.1],
+        ];
     }
 
     /**
-     * Test for the stdWrap function "trim"
+     * Check that stdWrap_trim works properly.
      *
-     * @param string $content
-     * @param string $expected
+     * Show:
      *
-     * @dataProvider stdWrap_trimDataProvider
+     *  - the given string is trimmed like PHP trim
+     *  - non-strings are casted to strings:
+     *    - null => 'null'
+     *    - false => ''
+     *    - true => '1'
+     *    - 0 => '0'
+     *    - -1 => '-1'
+     *    - 1.0 => '1'
+     *    - 1.1 => '1.1'
+     *
      * @test
+     * @dataProvider stdWrap_trimDataProvider
+     * @param string $expected The expected output.
+     * @param mixed $content The given content.
+     * @return void
      */
-    public function stdWrap_trim($content, $expected)
+    public function stdWrap_trim($expect, $content)
     {
         $result = $this->subject->stdWrap_trim($content);
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expect, $result);
     }
 
     /**
@@ -3195,7 +3224,6 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertSame($expected, $this->subject->stdWrap_wrap2($input, $conf));
     }
 
-
     /**
      * Data provider for stdWrap_wrap3
      *
@@ -3461,7 +3489,6 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertSame($expected,
             $this->subject->stdWrap_innerWrap($input, $conf));
     }
-
 
     /**
      * Data provider for stdWrap_br
