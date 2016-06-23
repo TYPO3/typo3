@@ -1432,6 +1432,36 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Check that stdWrap_stdWrap works properly.
+     *
+     * Show:
+     *  - Delegates to method stdWrap.
+     *  - Parameter 1 is $content.
+     *  - Parameter 2 is $conf['stdWrap.'].
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void.
+     */
+    public function stdWrap_stdWrap()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'stdWrap' => $this->getUniqueId('not used'),
+            'stdWrap.' => [$this->getUniqueId('stdWrap.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['stdWrap'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('stdWrap')
+            ->with($content, $conf['stdWrap.'])
+            ->willReturn($return);
+        $this->assertSame($return, $subject->stdWrap_stdWrap($content, $conf));
+    }
+
+    /**
      * Data provider for the hash test
      *
      * @return array multi-dimensional array with the second level like this:
