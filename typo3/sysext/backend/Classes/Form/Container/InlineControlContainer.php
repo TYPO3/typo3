@@ -432,6 +432,7 @@ class InlineControlContainer extends AbstractContainer
         $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
         $mode = 'db';
         $showUpload = false;
+        $elementBrowserEnabled = true;
         if (!empty($inlineConfiguration['appearance']['createNewRelationLinkTitle'])) {
             $createNewRelationText = htmlspecialchars($languageService->sL($inlineConfiguration['appearance']['createNewRelationLinkTitle']));
         } else {
@@ -450,6 +451,9 @@ class InlineControlContainer extends AbstractContainer
             if (isset($groupFieldConfiguration['appearance']['elementBrowserAllowed'])) {
                 $allowed = $groupFieldConfiguration['appearance']['elementBrowserAllowed'];
             }
+            if (isset($inlineConfiguration['appearance']['elementBrowserEnabled'])) {
+                $elementBrowserEnabled = (bool)$inlineConfiguration['appearance']['elementBrowserEnabled'];
+            }
         }
         $browserParams = '|||' . $allowed . '|' . $objectPrefix . '|inline.checkUniqueElement||inline.importElement';
         $onClick = 'setFormValueOpenBrowser(' . GeneralUtility::quoteJSvalue($mode) . ', ' . GeneralUtility::quoteJSvalue($browserParams) . '); return false;';
@@ -458,14 +462,17 @@ class InlineControlContainer extends AbstractContainer
         if (isset($inlineConfiguration['inline']['inlineNewRelationButtonStyle'])) {
             $buttonStyle = ' style="' . $inlineConfiguration['inline']['inlineNewRelationButtonStyle'] . '"';
         }
-
-        $item = '
+        $item = '';
+        if ($elementBrowserEnabled) {
+            $item .= '
 			<a href="#" class="btn btn-default inlineNewRelationButton ' . $this->inlineData['config'][$nameObject]['md5'] . '"
 				' . $buttonStyle . ' onclick="' . htmlspecialchars($onClick) . '" title="' . $createNewRelationText . '">
 				' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)->render() . '
 				' . $createNewRelationText . '
 			</a>';
-        $isDirectFileUploadEnabled = (bool)$this->getBackendUserAuthentication()->uc['edit_docModuleUpload'];
+        }
+
+        $isDirectFileUploadEnabled = (bool)$backendUser->uc['edit_docModuleUpload'];
         $allowedArray = GeneralUtility::trimExplode(',', $allowed, true);
         $onlineMediaAllowed = OnlineMediaHelperRegistry::getInstance()->getSupportedFileExtensions();
         if (!empty($allowedArray)) {
