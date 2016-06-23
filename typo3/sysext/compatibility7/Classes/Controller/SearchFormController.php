@@ -689,14 +689,14 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 // Browsing nav, bottom.
                 $content = $browseBox1 . $rowcontent . $browseBox2;
             } else {
-                $content = '<p' . $this->pi_classParam('noresults') . '>' . $this->pi_getLL('noResults', '', true) . '</p>';
+                $content = '<p' . $this->pi_classParam('noresults') . '>' . htmlspecialchars($this->pi_getLL('noResults')) . '</p>';
             }
             $this->timeTracker->pull();
         } else {
-            $content .= '<p' . $this->pi_classParam('noresults') . '>' . $this->pi_getLL('noResults', '', true) . '</p>';
+            $content .= '<p' . $this->pi_classParam('noresults') . '>' . htmlspecialchars($this->pi_getLL('noResults')) . '</p>';
         }
         // Print a message telling which words we searched for, and in which sections etc.
-        $what = $this->tellUsWhatIsSeachedFor($sWArr) . (substr($this->piVars['sections'], 0, 2) == 'rl' ? ' ' . $this->pi_getLL('inSection', '', true) . ' "' . $this->getPathFromPageId(substr($this->piVars['sections'], 4)) . '"' : '');
+        $what = $this->tellUsWhatIsSeachedFor($sWArr) . (substr($this->piVars['sections'], 0, 2) == 'rl' ? ' ' . htmlspecialchars($this->pi_getLL('inSection')) . ' "' . $this->getPathFromPageId(substr($this->piVars['sections'], 4)) . '"' : '');
         $what = '<div' . $this->pi_classParam('whatis') . '>' . $this->cObj->stdWrap($what, $this->conf['whatis_stdWrap.']) . '</div>';
         $content = $what . $content;
         // Return content:
@@ -756,7 +756,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                             $sectionName = substr($sectionName, 1);
                         }
                         if (!trim($sectionName)) {
-                            $sectionTitleLinked = $this->pi_getLL('unnamedSection', '', true) . ':';
+                            $sectionTitleLinked = htmlspecialchars($this->pi_getLL('unnamedSection')) . ':';
                         } elseif ($this->conf['linkSectionTitles']) {
                             $quotedPrefix = GeneralUtility::quoteJSvalue($this->prefixId);
                             $onclick = 'document.forms[' . $quotedPrefix . '][' . GeneralUtility::quoteJSvalue($this->prefixId . '[_sections]') . '].value=' . GeneralUtility::quoteJSvalue($theRLid) . ';document.forms[' . $quotedPrefix . '].submit();return false;';
@@ -1334,9 +1334,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // Multilangual text
         $substituteArray = array('legend', 'searchFor', 'extResume', 'atATime', 'orderBy', 'fromSection', 'searchIn', 'match', 'style', 'freeIndexUid');
         foreach ($substituteArray as $marker) {
-            $markerArray['###FORM_' . GeneralUtility::strtoupper($marker) . '###'] = $this->pi_getLL('form_' . $marker, '', true);
+            $markerArray['###FORM_' . GeneralUtility::strtoupper($marker) . '###'] = htmlspecialchars($this->pi_getLL('form_' . $marker));
         }
-        $markerArray['###FORM_SUBMIT###'] = $this->pi_getLL('submit_button_label', '', true);
+        $markerArray['###FORM_SUBMIT###'] = htmlspecialchars($this->pi_getLL('submit_button_label'));
         // Adding search field value
         $markerArray['###SWORD_VALUE###'] = '';
         $markerArray['###PLACEHOLDER###'] = '';
@@ -1354,7 +1354,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if ($this->conf['show.']['clearSearchBox'] && $this->conf['show.']['clearSearchBox.']['enableSubSearchCheckBox']) {
             $markerArray['###SWORD_PREV_VALUE###'] = htmlspecialchars($this->conf['show.']['clearSearchBox'] ? '' : $this->piVars['sword']);
             $markerArray['###SWORD_PREV_INCLUDE_CHECKED###'] = $this->piVars['sword_prev_include'] ? ' checked="checked"' : '';
-            $markerArray['###ADD_TO_CURRENT_SEARCH###'] = $this->pi_getLL('makerating_addToCurrentSearch', '', true);
+            $markerArray['###ADD_TO_CURRENT_SEARCH###'] = htmlspecialchars($this->pi_getLL('makerating_addToCurrentSearch'));
         } else {
             $html = $this->cObj->substituteSubpart($html, '###ADDITONAL_KEYWORD###', '');
         }
@@ -1451,7 +1451,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
         if ($this->conf['show.']['advancedSearchLink']) {
             $linkToOtherMode = $this->piVars['ext'] ? $this->pi_getPageLink($this->frontendController->id, $this->frontendController->sPre) : $this->pi_getPageLink($this->frontendController->id, $this->frontendController->sPre, array($this->prefixId . '[ext]' => 1));
-            $markerArray['###LINKTOOTHERMODE###'] = '<a href="' . htmlspecialchars($linkToOtherMode) . '">' . $this->pi_getLL(($this->piVars['ext'] ? 'link_regularSearch' : 'link_advancedSearch'), '', true) . '</a>';
+            $markerArray['###LINKTOOTHERMODE###'] = '<a href="' . htmlspecialchars($linkToOtherMode) . '">' . htmlspecialchars($this->pi_getLL(($this->piVars['ext'] ? 'link_regularSearch' : 'link_advancedSearch'))) . '</a>';
         } else {
             $markerArray['###LINKTOOTHERMODE###'] = '';
         }
@@ -1496,8 +1496,8 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             return '';
         }
         $html = $this->cObj->getSubpart($this->templateCode, '###RULES###');
-        $markerArray['###RULES_HEADER###'] = $this->pi_getLL('rules_header', '', true);
-        $markerArray['###RULES_TEXT###'] = nl2br(trim($this->pi_getLL('rules_text', '', true)));
+        $markerArray['###RULES_HEADER###'] = htmlspecialchars($this->pi_getLL('rules_header'));
+        $markerArray['###RULES_TEXT###'] = nl2br(trim(htmlspecialchars($this->pi_getLL('rules_text'))));
         $substitutedContent = $this->cObj->substituteMarkerArrayCached($html, $markerArray, array(), array());
         return $this->cObj->stdWrap($substitutedContent, $this->conf['rules_stdWrap.']);
     }
@@ -1519,7 +1519,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         foreach ($this->resultSections as $id => $dat) {
             $markerArray = array();
             $aBegin = '<a href="' . htmlspecialchars($anchorPrefix . '#anchor_' . md5($id)) . '">';
-            $aContent = (trim($dat[0]) ? trim($dat[0]) : htmlspecialchars($this->pi_getLL('unnamedSection'))) . ' (' . $dat[1] . ' ' . $this->pi_getLL(($dat[1] > 1 ? 'word_pages' : 'word_page'), '', true) . ')';
+            $aContent = (trim($dat[0]) ? trim($dat[0]) : htmlspecialchars($this->pi_getLL('unnamedSection'))) . ' (' . $dat[1] . ' ' . htmlspecialchars($this->pi_getLL(($dat[1] > 1 ? 'word_pages' : 'word_page'))) . ')';
             $aEnd = '</a>';
             $markerArray['###LINK###'] = $aBegin . $aContent . $aEnd;
             $links[] = $this->cObj->substituteMarkerArrayCached($item, $markerArray, array(), array());
@@ -1579,21 +1579,21 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 }
             }
             // Description text
-            $markerArray['###TEXT_ITEM_SIZE###'] = $this->pi_getLL('res_size', '', true);
-            $markerArray['###TEXT_ITEM_CRDATE###'] = $this->pi_getLL('res_created', '', true);
-            $markerArray['###TEXT_ITEM_MTIME###'] = $this->pi_getLL('res_modified', '', true);
-            $markerArray['###TEXT_ITEM_PATH###'] = $this->pi_getLL('res_path', '', true);
+            $markerArray['###TEXT_ITEM_SIZE###'] = htmlspecialchars($this->pi_getLL('res_size'));
+            $markerArray['###TEXT_ITEM_CRDATE###'] = htmlspecialchars($this->pi_getLL('res_created'));
+            $markerArray['###TEXT_ITEM_MTIME###'] = htmlspecialchars($this->pi_getLL('res_modified'));
+            $markerArray['###TEXT_ITEM_PATH###'] = htmlspecialchars($this->pi_getLL('res_path'));
             $html = $this->cObj->substituteMarkerArrayCached($html, $markerArray, array(), array());
             // If there are subrows (eg. subpages in a PDF-file or if a duplicate page is selected due to user-login (phash_grouping))
             if (is_array($row['_sub'])) {
                 if ($this->multiplePagesType($row['item_type'])) {
-                    $html = str_replace('###TEXT_ROW_SUB###', $this->pi_getLL('res_otherMatching', '', true), $html);
+                    $html = str_replace('###TEXT_ROW_SUB###', htmlspecialchars($this->pi_getLL('res_otherMatching')), $html);
                     foreach ($row['_sub'] as $subRow) {
                         $html .= $this->printResultRow($subRow, 1);
                     }
                 } else {
-                    $markerArray['###TEXT_ROW_SUB###'] = $this->pi_getLL('res_otherMatching', '', true);
-                    $html = str_replace('###TEXT_ROW_SUB###', $this->pi_getLL('res_otherPageAsWell', '', true), $html);
+                    $markerArray['###TEXT_ROW_SUB###'] = htmlspecialchars($this->pi_getLL('res_otherMatching'));
+                    $html = str_replace('###TEXT_ROW_SUB###', htmlspecialchars($this->pi_getLL('res_otherPageAsWell')), $html);
                 }
             }
             return $html;
@@ -1625,7 +1625,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             // Make browse-table/links:
             if ($pointer > 0) {
                 // all pages after the 1st one
-                $links[] = '<li>' . $this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_prev', '< Previous', true), $pointer - 1, $freeIndexUid) . '</li>';
+                $links[] = '<li>' . $this->makePointerSelector_link(htmlspecialchars($this->pi_getLL('pi_list_browseresults_prev', '< Previous')), $pointer - 1, $freeIndexUid) . '</li>';
             }
             $minPage = $pointer - (int)floor($maxPages / 2);
             $maxPage = $minPage + $maxPages - 1;
@@ -1637,7 +1637,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $minPage -= $maxPage - $pageCount + 1;
                 $maxPage = $pageCount - 1;
             }
-            $pageLabel = $this->pi_getLL('pi_list_browseresults_page', 'Page', true);
+            $pageLabel = htmlspecialchars($this->pi_getLL('pi_list_browseresults_page', 'Page'));
             for ($a = $minPage; $a <= $maxPage; $a++) {
                 $label = trim($pageLabel . ' ' . ($a + 1));
                 $link = $this->makePointerSelector_link($label, $a, $freeIndexUid);
@@ -1648,7 +1648,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 }
             }
             if ($pointer + 1 < $pageCount) {
-                $links[] = '<li>' . $this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_next', 'Next >', true), $pointer + 1, $freeIndexUid) . '</li>';
+                $links[] = '<li>' . $this->makePointerSelector_link(htmlspecialchars($this->pi_getLL('pi_list_browseresults_next', 'Next >')), $pointer + 1, $freeIndexUid) . '</li>';
             }
         }
         if (!empty($links)) {
@@ -1761,17 +1761,17 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             if ($c) {
                 switch ($v['oper']) {
                     case 'OR':
-                        $searchingFor .= ' ' . $this->pi_getLL('searchFor_or', '', true) . ' ' . $this->wrapSW($v['sword']);
+                        $searchingFor .= ' ' . htmlspecialchars($this->pi_getLL('searchFor_or')) . ' ' . $this->wrapSW($v['sword']);
                         break;
                     case 'AND NOT':
-                        $searchingFor .= ' ' . $this->pi_getLL('searchFor_butNot', '', true) . ' ' . $this->wrapSW($v['sword']);
+                        $searchingFor .= ' ' . htmlspecialchars($this->pi_getLL('searchFor_butNot')) . ' ' . $this->wrapSW($v['sword']);
                         break;
                     default:
                         // AND...
-                        $searchingFor .= ' ' . $this->pi_getLL('searchFor_and', '', true) . ' ' . $this->wrapSW($v['sword']);
+                        $searchingFor .= ' ' . htmlspecialchars($this->pi_getLL('searchFor_and')) . ' ' . $this->wrapSW($v['sword']);
                 }
             } else {
-                $searchingFor = $this->pi_getLL('searchFor', '', true) . ' ' . $this->wrapSW($v['sword']);
+                $searchingFor = htmlspecialchars($this->pi_getLL('searchFor')) . ' ' . $this->wrapSW($v['sword']);
             }
             $c++;
         }
@@ -1956,7 +1956,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
             $output = $outputStr ?: $markedSW;
         } else {
-            $output = '<span class="noResume">' . $this->pi_getLL('res_noResume', '', true) . '</span>';
+            $output = '<span class="noResume">' . htmlspecialchars($this->pi_getLL('res_noResume')) . '</span>';
         }
         return $output;
     }
@@ -2140,7 +2140,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public function makeAccessIndication($id)
     {
         if (is_array($this->fe_groups_required[$id]) && !empty($this->fe_groups_required[$id])) {
-            return '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('indexed_search') . 'Resources/Public/Icons/FileTypes/locked.gif" width="12" height="15" vspace="5" title="' . sprintf($this->pi_getLL('res_memberGroups', '', true), implode(',', array_unique($this->fe_groups_required[$id]))) . '" alt="" />';
+            return '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('indexed_search') . 'Resources/Public/Icons/FileTypes/locked.gif" width="12" height="15" vspace="5" title="' . sprintf(htmlspecialchars($this->pi_getLL('res_memberGroups')), implode(',', array_unique($this->fe_groups_required[$id]))) . '" alt="" />';
         }
 
         return '';

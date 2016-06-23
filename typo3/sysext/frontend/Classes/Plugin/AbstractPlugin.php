@@ -504,7 +504,7 @@ class AbstractPlugin
      * @param string $tableParams Attributes for the table tag which is wrapped around the table cells containing the browse links
      * @param array $wrapArr Array with elements to overwrite the default $wrapper-array.
      * @param string $pointerName varname for the pointer.
-     * @param bool $hscText Enable htmlspecialchars() for the pi_getLL function (set this to FALSE if you want f.e use images instead of text for links like 'previous' and 'next').
+     * @param bool $hscText Enable htmlspecialchars() on language labels
      * @param bool $forceOutput Forces the output of the page browser if you set this option to "TRUE" (otherwise it's only drawn if enough entries are available)
      * @return string Output HTML-Table, wrapped in <div>-tags with a class attribute (if $wrapArr is not passed,
      */
@@ -579,17 +579,21 @@ class AbstractPlugin
             // Link to first page
             if ($showFirstLast) {
                 if ($pointer > 0) {
-                    $links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_first', '<< First', $hscText), array($pointerName => null), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
+                    $label = $this->pi_getLL('pi_list_browseresults_first', '<< First');
+                    $links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($hscText ? htmlspecialchars($label) : $label, array($pointerName => null), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
                 } else {
-                    $links[] = $this->cObj->wrap($this->pi_getLL('pi_list_browseresults_first', '<< First', $hscText), $wrapper['disabledLinkWrap']);
+                    $label = $this->pi_getLL('pi_list_browseresults_first', '<< First');
+                    $links[] = $this->cObj->wrap(hscText ? htmlspecialchars($label) : $label, $wrapper['disabledLinkWrap']);
                 }
             }
             // Link to previous page
             if ($alwaysPrev >= 0) {
                 if ($pointer > 0) {
-                    $links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_prev', '< Previous', $hscText), array($pointerName => ($pointer - 1) ?: ''), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
+                    $label = $this->pi_getLL('pi_list_browseresults_prev', '< Previous');
+                    $links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($hscText ? htmlspecialchars($label) : $label, array($pointerName => ($pointer - 1) ?: ''), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
                 } elseif ($alwaysPrev) {
-                    $links[] = $this->cObj->wrap($this->pi_getLL('pi_list_browseresults_prev', '< Previous', $hscText), $wrapper['disabledLinkWrap']);
+                    $label = $this->pi_getLL('pi_list_browseresults_prev', '< Previous');
+                    $links[] = $this->cObj->wrap($hscText ? htmlspecialchars($label) : $label, $wrapper['disabledLinkWrap']);
                 }
             }
             // Links to pages
@@ -597,7 +601,8 @@ class AbstractPlugin
                 if ($this->internal['showRange']) {
                     $pageText = ($a * $results_at_a_time + 1) . '-' . min($count, ($a + 1) * $results_at_a_time);
                 } else {
-                    $pageText = trim($this->pi_getLL('pi_list_browseresults_page', 'Page', $hscText) . ' ' . ($a + 1));
+                    $label = $this->pi_getLL('pi_list_browseresults_page', 'Page');
+                    $pageText = trim($hscText ? htmlspecialchars($label) : $label . ' ' . ($a + 1));
                 }
                 // Current page
                 if ($pointer == $a) {
@@ -613,17 +618,21 @@ class AbstractPlugin
             if ($pointer < $totalPages - 1 || $showFirstLast) {
                 // Link to next page
                 if ($pointer >= $totalPages - 1) {
-                    $links[] = $this->cObj->wrap($this->pi_getLL('pi_list_browseresults_next', 'Next >', $hscText), $wrapper['disabledLinkWrap']);
+                    $label = $this->pi_getLL('pi_list_browseresults_next', 'Next >');
+                    $links[] = $this->cObj->wrap($hscText ? htmlspecialchars($label) : $label, $wrapper['disabledLinkWrap']);
                 } else {
-                    $links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_next', 'Next >', $hscText), array($pointerName => $pointer + 1), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
+                    $label = $this->pi_getLL('pi_list_browseresults_next', 'Next >');
+                    $links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($hscText ? htmlspecialchars($label) : $label, array($pointerName => $pointer + 1), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
                 }
             }
             // Link to last page
             if ($showFirstLast) {
                 if ($pointer < $totalPages - 1) {
-                    $links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_last', 'Last >>', $hscText), array($pointerName => $totalPages - 1), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
+                    $label = $this->pi_getLL('pi_list_browseresults_last', 'Last >>');
+                    $links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($hscText ? htmlspecialchars($label) : $label, array($pointerName => $totalPages - 1), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
                 } else {
-                    $links[] = $this->cObj->wrap($this->pi_getLL('pi_list_browseresults_last', 'Last >>', $hscText), $wrapper['disabledLinkWrap']);
+                    $label = $this->pi_getLL('pi_list_browseresults_last', 'Last >>');
+                    $links[] = $this->cObj->wrap($hscText ? htmlspecialchars($label) : $label, $wrapper['disabledLinkWrap']);
                 }
             }
             $theLinks = $this->cObj->wrap(implode(LF, $links), $wrapper['browseLinksWrap']);
@@ -938,6 +947,9 @@ class AbstractPlugin
         }
         $output = isset($this->LLtestPrefix) ? $this->LLtestPrefix . $word : $word;
         if ($hsc) {
+            GeneralUtility::deprecationLog(
+                'Calling pi_getLL() with argument \'hsc\' has been deprecated.'
+            );
             $output = htmlspecialchars($output);
         }
         return $output;

@@ -1,6 +1,6 @@
-===========================================================================
-Deprecation: #71917 - Deprecate the argument 'hsc' for getLL, getLLL and sL
-===========================================================================
+=====================================================================================
+Deprecation: #71917 - Deprecate the argument 'hsc' for getLL, getLLL, sL and pi_getLL
+=====================================================================================
 
 Description
 ===========
@@ -11,11 +11,15 @@ The parameter :php:`$hsc` within the following methods of :php:`TYPO3\CMS\Lang\L
 * :php:`getLLL()`
 * :php:`sL()`
 
+The parameter :php:`$hsc` within the following method of :php:`TYPO3\CMS\Frontend\Plugin\AbstractPlugin` has been marked as deprecated:
+
+* :php:`pi_getLL()`
+
 
 Impact
 ======
 
-Directly or indirectly using any of the methods :php:`getLL()`, :php:`getLLL()` or :php:`sL()` with the parameter :php:`$hsc` will trigger a deprecation log entry.
+Directly or indirectly using any of the methods :php:`getLL()`, :php:`getLLL()`, :php:`sL()` or :php:`pi_getLL()` with the parameter :php:`$hsc` will trigger a deprecation log entry.
 
 
 Affected Installations
