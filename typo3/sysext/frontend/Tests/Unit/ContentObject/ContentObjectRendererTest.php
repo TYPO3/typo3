@@ -1294,112 +1294,112 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * @return array
+     * Data provider for stdWrap_strPad.
+     *
+     * @return array [$expect, $content, $conf]
      */
     public function stdWrap_strPadDataProvider()
     {
-        return array(
-            'pad string with default settings and length 10' => array(
-                'Alien',
-                array(
-                    'length' => '10',
-                ),
+        return [
+            'pad string with default settings and length 10' => [
                 'Alien     ',
-            ),
-            'pad string with padWith -= and type left and length 10' => array(
                 'Alien',
-                array(
+                [
+                    'length' => '10',
+                ],
+            ],
+            'pad string with padWith -= and type left and length 10' => [
+                '-=-=-Alien',
+                'Alien',
+                [
                     'length' => '10',
                     'padWith' => '-=',
                     'type' => 'left',
-                ),
-                '-=-=-Alien',
-            ),
-            'pad string with padWith _ and type both and length 10' => array(
+                ],
+            ],
+            'pad string with padWith _ and type both and length 10' => [
+                '__Alien___',
                 'Alien',
-                array(
+                [
                     'length' => '10',
                     'padWith' => '_',
                     'type' => 'both',
-                ),
-                '__Alien___',
-            ),
-            'pad string with padWith 0 and type both and length 10' => array(
+                ],
+            ],
+            'pad string with padWith 0 and type both and length 10' => [
+                '00Alien000',
                 'Alien',
-                array(
+                [
                     'length' => '10',
                     'padWith' => '0',
                     'type' => 'both',
-                ),
-                '00Alien000',
-            ),
-            'pad string with padWith ___ and type both and length 6' => array(
+                ],
+            ],
+            'pad string with padWith ___ and type both and length 6' => [
+                'Alien_',
                 'Alien',
-                array(
+                [
                     'length' => '6',
                     'padWith' => '___',
                     'type' => 'both',
-                ),
-                'Alien_',
-            ),
-            'pad string with padWith _ and type both and length 12, using stdWrap for length' => array(
+                ],
+            ],
+            'pad string with padWith _ and type both and length 12, using stdWrap for length' => [
+                '___Alien____',
                 'Alien',
-                array(
+                [
                     'length' => '1',
-                    'length.' => array(
+                    'length.' => [
                         'wrap' => '|2',
-                    ),
+                    ],
                     'padWith' => '_',
                     'type' => 'both',
-                ),
-                '___Alien____',
-            ),
-            'pad string with padWith _ and type both and length 12, using stdWrap for padWidth' => array(
+                ],
+            ],
+            'pad string with padWith _ and type both and length 12, using stdWrap for padWidth' => [
+                '-_=Alien-_=-',
                 'Alien',
-                array(
+                [
                     'length' => '12',
                     'padWith' => '_',
-                    'padWith.' => array(
+                    'padWith.' => [
                         'wrap' => '-|=',
-                    ),
+                    ],
                     'type' => 'both',
-                ),
-                '-_=Alien-_=-',
-            ),
-            'pad string with padWith _ and type both and length 12, using stdWrap for type' => array(
+                ],
+            ],
+            'pad string with padWith _ and type both and length 12, using stdWrap for type' => [
+                '_______Alien',
                 'Alien',
-                array(
+                [
                     'length' => '12',
                     'padWith' => '_',
                     'type' => 'both',
                     // make type become "left"
-                    'type.' => array(
+                    'type.' => [
                         'substring' => '2,1',
                         'wrap' => 'lef|',
-                    ),
-                ),
-                '_______Alien',
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
     }
 
     /**
-     * Test for the stdWrap function "strPad"
+     * Check if stdWrap_strPad works properly.
      *
-     * @param string $content
-     * @param array $conf
-     * @param string $expected
-     *
-     * @dataProvider stdWrap_strPadDataProvider
      * @test
+     * @dataProvider stdWrap_strPadDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given input.
+     * @param array $conf The configuration of 'strPad.'.
+     * @return void
      */
-    public function stdWrap_strPad($content, $conf, $expected)
+    public function stdWrap_strPad($expect, $content, $conf)
     {
-        $conf = array(
-            'strPad.' => $conf
-        );
+        $conf = ['strPad.' => $conf];
         $result = $this->subject->stdWrap_strPad($content, $conf);
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expect, $result);
     }
 
     /**
