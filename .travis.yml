@@ -76,7 +76,8 @@ script:
 
   - >
     if [[ "$FUNCTIONAL_TESTS" == "yes" ]]; then
-      find . -wholename '*typo3/sysext/*/Tests/Functional/*Test.php' | parallel --jobs 6 --gnu 'echo; echo "Running functional test suite {}"; ./bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml {}'
+      ./typo3/sysext/core/Build/Scripts/splitFunctionalTests.sh 6
+      parallel -a <(seq 0 5) --gnu './bin/phpunit -c typo3/sysext/core/Build/FunctionalTests-Job-{}.xml'
     fi
 
   - >
