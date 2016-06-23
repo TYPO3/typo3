@@ -304,7 +304,12 @@ class ExtensionManagementUtility
                 continue;
             }
             // skip if fields were already added
-            if (!isset($typeDetails['showitem']) || strpos($typeDetails['showitem'], $newFieldsString) !== false) {
+            if (!isset($typeDetails['showitem'])) {
+                continue;
+            }
+
+            $fieldArray = GeneralUtility::trimExplode(',', $typeDetails['showitem'], true);
+            if (in_array($newFieldsString, $fieldArray, true)) {
                 continue;
             }
 
