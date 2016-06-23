@@ -1943,6 +1943,55 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_required.
+     *
+     * @return array [$expect, $stop, $content]
+     */
+    public function stdWrap_requiredDataProvider()
+    {
+        return [
+            // empty content
+            'empty string is empty' => ['', true, ''],
+            'null is empty' => ['', true, null],
+            'false is empty' => ['', true, false],
+
+            // non-empty content
+            'blank is not empty' => [' ', false, ' '],
+            'tab is not empty' => [TAB, false, TAB],
+            'linebreak is not empty' => [PHP_EOL, false, PHP_EOL],
+            '"0" is not empty' => ['0', false, '0'],
+            '0 is not empty' => [0, false, 0],
+            '1 is not empty' => [1, false, 1],
+            'true is not empty' => [true, false, true],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_required works properly.
+     *
+     * Show:
+     *
+     *  - Content is empty if it equals '' after cast to string.
+     *  - Empty content triggers a stop of further rendering.
+     *  - Returns the content as is or '' for empty content.
+     *
+     * @test
+     * @dataProvider stdWrap_requiredDataProvider
+     * @param mixed $expect The expected output.
+     * @param bool $stop Expect stop further rendering.
+     * @param mixed $content The given input.
+     * @return void
+     */
+    public function stdWrap_required($expect, $stop, $content)
+    {
+        $subject = $this->subject;
+        $subject->_set('stdWrapRecursionLevel', 1);
+        $subject->_set('stopRendering', [1 => false]);
+        $this->assertSame($expect, $subject->stdWrap_required($content));
+        $this->assertSame($stop, $subject->_get('stopRendering')[1]);
+    }
+
+    /**
      * Data provider for stdWrap_intval
      *
      * @return array [$expect, $content]
