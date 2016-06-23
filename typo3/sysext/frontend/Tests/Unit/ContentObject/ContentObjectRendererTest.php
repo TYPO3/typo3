@@ -2535,41 +2535,46 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * @param string|NULL $content
-     * @param array $configuration
-     * @param string $expected
-     * @dataProvider stdWrap_ifNullDeterminesNullValuesDataProvider
-     * @test
+     * Data provider for stdWrap_ifNull.
+     *
+     * @return array [$expect, $content, $conf]
      */
-    public function stdWrap_ifNullDeterminesNullValues($content, array $configuration, $expected)
+    public function stdWrap_ifNullDataProvider()
     {
-        $result = $this->subject->stdWrap_ifNull($content, $configuration);
-        $this->assertEquals($expected, $result);
+        $alt = $this->getUniqueId('alternative content');
+        $conf = ['ifNull' => $alt];
+        return [
+            'only null is null' => [$alt, null, $conf],
+            'zero is not null' => [0, 0, $conf],
+            'float zero is not null' => [0.0, 0.0, $conf],
+            'false is not null' => [false, false, $conf],
+            'zero is not null' => [0, 0, $conf],
+            'zero string is not null' => ['0', '0', $conf],
+            'empty string is not null' => ['', '', $conf],
+            'whitespace is not null' => [TAB . '', TAB . '', $conf],
+        ];
     }
 
     /**
-     * Data provider for stdWrap_ifNullDeterminesNullValues test
+     * Check that stdWrap_ifNull works properly.
      *
-     * @return array
+     * Show:
+     *
+     * - Returns the content, if not null.
+     * - Otherwise returns $conf['ifNull'].
+     * - Null is strictly checked by identiy with null.
+     *
+     * @test
+     * @dataProvider stdWrap_ifNullDataProvider
+     * @param mixed $expected The expected output.
+     * @param mixed $content The given input.
+     * @param array $conf The given configuration.
+     * @return void
      */
-    public function stdWrap_ifNullDeterminesNullValuesDataProvider()
+    public function stdWrap_ifNull($expect, $content, $conf)
     {
-        return array(
-            'null value' => array(
-                null,
-                array(
-                    'ifNull' => '1',
-                ),
-                '1',
-            ),
-            'zero value' => array(
-                '0',
-                array(
-                    'ifNull' => '1',
-                ),
-                '0',
-            ),
-        );
+        $result = $this->subject->stdWrap_ifNull($content, $conf);
+        $this->assertSame($expect, $result);
     }
 
     /**
