@@ -414,6 +414,18 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     }
 
     /**
+     * @test
+     */
+    public function canAddFieldWithPartOfAlreadyExistingFieldname()
+    {
+        $table = $this->getUniqueId('tx_coretest_table');
+        $GLOBALS['TCA'] = $this->generateTCAForTable($table);
+        ExtensionManagementUtility::addToAllTCAtypes($table, 'field', 'typeA', 'after:fieldD1');
+
+        $this->assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1, field', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
+    }
+
+    /**
      * Test wheter replacing other TCA fields works as promissed
      *
      * @test
