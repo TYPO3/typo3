@@ -2578,55 +2578,56 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * Data provider for stdWrap_ifEmptyDeterminesEmptyValues test
+     * Data provider for stdWrap_ifEmpty.
      *
-     * @return array
+     * @return array [$expect, $content, $conf]
      */
-    public function stdWrap_ifEmptyDeterminesEmptyValuesDataProvider()
+    public function stdWrap_ifEmptyDataProvider()
     {
-        return array(
-            'null value' => array(
-                null,
-                array(
-                    'ifEmpty' => '1',
-                ),
-                '1',
-            ),
-            'empty value' => array(
-                '',
-                array(
-                    'ifEmpty' => '1',
-                ),
-                '1',
-            ),
-            'string value' => array(
-                'string',
-                array(
-                    'ifEmpty' => '1',
-                ),
-                'string',
-            ),
-            'empty string value' => array(
-                '        ',
-                array(
-                    'ifEmpty' => '1',
-                ),
-                '1',
-            ),
-        );
+        $alt = $this->getUniqueId('alternative content');
+        $conf = ['ifEmpty' => $alt];
+        return [
+            // empty cases
+            'null is empty' => [ $alt, null, $conf ],
+            'false is empty' => [ $alt, false, $conf ],
+            'zero is empty' => [ $alt, 0, $conf ],
+            'float zero is empty' => [ $alt, 0.0, $conf ],
+            'whitespace is empty' => [ $alt, TAB . ' ', $conf ],
+            'empty string is empty' => [ $alt, '', $conf ],
+            'zero string is empty' => [ $alt, '0', $conf ],
+            'zero string is empty with whitespace' => [
+                $alt, TAB . ' 0 ' . TAB, $conf
+            ],
+            // non-empty cases
+            'string is not empty' => [ 'string', 'string', $conf ],
+            '1 is not empty' => [ 1, 1, $conf ],
+            '-1 is not empty' => [ -1, -1, $conf ],
+            '0.1 is not empty' => [ 0.1, 0.1, $conf ],
+            '-0.1 is not empty' => [ -0.1, -0.1, $conf ],
+            'true is not empty' => [ true, true, $conf ],
+        ];
     }
 
     /**
-     * @param string|NULL $content
-     * @param array $configuration
-     * @param string $expected
-     * @dataProvider stdWrap_ifEmptyDeterminesEmptyValuesDataProvider
+     * Check that stdWrap_ifEmpty works properly.
+     *
+     * Show:
+     *
+     * - Returns the content, if not empty.
+     * - Otherwise returns $conf['ifEmpty'].
+     * - Empty is checked by cast to boolean after trimming.
+     *
      * @test
+     * @dataProvider stdWrap_ifEmptyDataProvider
+     * @param mixed $expect The expected output.
+     * @param mixed $content The given content.
+     * @param array $conf The given configuration.
+     * @return void
      */
-    public function stdWrap_ifEmptyDeterminesEmptyValues($content, array $configuration, $expected)
+    public function stdWrap_ifEmpty($expect, $content, $conf)
     {
-        $result = $this->subject->stdWrap_ifEmpty($content, $configuration);
-        $this->assertEquals($expected, $result);
+        $result = $this->subject->stdWrap_ifEmpty($content, $conf);
+        $this->assertSame($expect, $result);
     }
 
     /**
