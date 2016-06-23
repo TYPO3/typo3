@@ -1597,6 +1597,81 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_if.
+     *
+     * @return array [$expect, $stop, $content, $conf, $times, $will]
+     */
+    public function stdWrap_ifDataProvider()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = ['if.' => [$this->getUniqueId('if.')]];
+        return [
+            // evals to true
+            'empty config' => [
+                $content, false, $content, [], 0, null
+            ],
+            'if. is empty array' => [
+                $content, false, $content, ['if.' => []], 0, null
+            ],
+            'if. is null' => [
+                $content, false, $content, ['if.' => null], 0, null
+            ],
+            'if. is false' => [
+                $content, false, $content, ['if.' => false], 0, null
+            ],
+            'if. is 0' => [
+                $content, false, $content, ['if.' => false], 0, null
+            ],
+            'if. is "0"' => [
+                $content, false, $content, ['if.' => '0'], 0, null
+            ],
+            'checkIf returning true' => [
+                $content, false, $content, $conf, 1, true
+            ],
+            // evals to false
+            'checkIf returning false' => [
+                '', true, $content, $conf, 1, false
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_if works properly.
+     *
+     * Show:
+     *
+     *  - Delegates to the method checkIf to check for 'true'.
+     *  - The parameter to checkIf is $conf['if.'].
+     *  - Is also 'true' if $conf['if.'] is empty (PHP method empty).
+     *  - 'False' triggers a stop of further rendering.
+     *  - Returns the content as is or '' if false.
+     *
+     * @test
+     * @dataProvider stdWrap_ifDataProvider
+     * @param mixed $expect The expected output.
+     * @param bool $stop Expect stop further rendering.
+     * @param mixed $content The given content.
+     * @param mixed $config The given configuration.
+     * @param int $times Times checkIf is called (0 or 1).
+     * @param bool|null $will Return of checkIf (null if not called).
+     * @return void
+     */
+    public function stdWrap_if($expect, $stop, $content, $conf, $times, $will)
+    {
+        $subject = $this->getAccessibleMock(
+            ContentObjectRenderer::class, ['checkIf']);
+        $subject->_set('stdWrapRecursionLevel', 1);
+        $subject->_set('stopRendering', [1 => false]);
+        $subject
+            ->expects($this->exactly($times))
+            ->method('checkIf')
+            ->with($conf['if.'])
+            ->willReturn($will);
+        $this->assertSame($expect, $subject->stdWrap_if($content, $conf));
+        $this->assertSame($stop, $subject->_get('stopRendering')[1]);
+    }
+
+    /**
      * @return array
      */
     public function stdWrap_intvalDataProvider()
