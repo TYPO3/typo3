@@ -1338,6 +1338,94 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_fieldRequired.
+     *
+     * @return array [$expect, $stop, $content, $conf]
+     */
+    public function stdWrap_fieldRequiredDataProvider()
+    {
+        $content = $this->getUniqueId('content');
+        return [
+            // resulting in boolean false
+            'false is false' => [
+                '', true, $content, ['fieldRequired' => 'false']
+            ],
+            'null is false' => [
+                '', true, $content, ['fieldRequired' => 'null']
+            ],
+            'empty string is false' => [
+                '', true, $content, ['fieldRequired' => 'empty']
+            ],
+            'whitespace is false' => [
+                '', true, $content, ['fieldRequired' => 'whitespace']
+            ],
+            'string zero is false' => [
+                '', true, $content, ['fieldRequired' => 'stringZero']
+            ],
+            'string zero with whitespace is false' => [
+                '', true, $content,
+                ['fieldRequired' => 'stringZeroWithWhiteSpace']
+            ],
+            'zero is false' => [
+                '', true, $content, ['fieldRequired' => 'zero']
+            ],
+            // resulting in boolean true
+            'true is true' => [
+                $content, false, $content, ['fieldRequired' => 'true']
+            ],
+            'string is true' => [
+                $content, false, $content, ['fieldRequired' => 'string']
+            ],
+            'one is true' => [
+                $content, false, $content, ['fieldRequired' => 'one']
+            ]
+        ];
+    }
+
+    /**
+     * Check if stdWrap_fieldRequired works properly.
+     *
+     * Show:
+     *
+     *  - The value is taken from property array data.
+     *  - The key is taken from $conf['fieldRequired'].
+     *  - The value is casted to string by trim() and trimmed.
+     *  - It is further casted to boolean by if().
+     *  - False triggers a stop of further rendering.
+     *  - False returns '', true the given content as is.
+     *
+     * @test
+     * @dataProvider stdWrap_fieldRequiredDataProvider
+     * @param mixed $expect The expected output.
+     * @param bool $stop Expect stop further rendering.
+     * @param mixed $content The given input.
+     * @param array $conf The given configuration.
+     * @return void
+     */
+    public function stdWrap_fieldRequired($expect, $stop, $content, $conf)
+    {
+        $data = [
+            'null' => null,
+            'false' => false,
+            'empty' => '',
+            'whitespace' => TAB . ' ',
+            'stringZero' => '0',
+            'stringZeroWithWhiteSpace' => TAB . ' 0 ' . TAB,
+            'zero' => 0,
+            'string' => 'string',
+            'true' => true,
+            'one' => 1
+        ];
+        $subject = $this->subject;
+        $subject->_set('data', $data);
+        $subject->_set('stdWrapRecursionLevel', 1);
+        $subject->_set('stopRendering', [1 => false]);
+        $this->assertSame($expect,
+            $subject->stdWrap_fieldRequired($content, $conf));
+        $this->assertSame($stop, $subject->_get('stopRendering')[1]);
+    }
+
+    /**
      * Data provider for stdWrap_csConv
      *
      * @return array Order expected, input, conf
