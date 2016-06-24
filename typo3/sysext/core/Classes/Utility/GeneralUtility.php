@@ -92,7 +92,7 @@ class GeneralUtility
     /**
      * IDNA converter
      *
-     * @var \idna_convert
+     * @var \Mso\IdnaConvert\IdnaConvert
      */
     protected static $idnaConverter = null;
 
@@ -1311,7 +1311,7 @@ class GeneralUtility
             return self::$idnaStringCache[$value];
         } else {
             if (!self::$idnaConverter) {
-                self::$idnaConverter = new \idna_convert(array('idn_version' => 2008));
+                self::$idnaConverter = new \Mso\IdnaConvert\IdnaConvert(array('idn_version' => 2008));
             }
             self::$idnaStringCache[$value] = self::$idnaConverter->encode($value);
             return self::$idnaStringCache[$value];
