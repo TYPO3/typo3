@@ -5509,6 +5509,39 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Check if stdWrap_parseFunc works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method parseFunc.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['parseFunc.'].
+     * - Parameter 3 is $conf['parseFunc'].
+     * - Returns the return.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_parseFunc()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'parseFunc' => $this->getUniqueId('parseFunc'),
+            'parseFunc.' => [$this->getUniqueId('parseFunc.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['parseFunc'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('parseFunc')
+            ->with($content, $conf['parseFunc.'], $conf['parseFunc'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_parseFunc($content, $conf));
+    }
+
+    /**
      * @test
      * @dataProvider _parseFuncReturnsCorrectHtmlDataProvider
      * @param string $value
