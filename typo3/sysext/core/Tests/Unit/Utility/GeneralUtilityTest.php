@@ -4618,4 +4618,64 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	<el type="array"></el>
 </phparray>', $output);
     }
+
+    /**
+     * @test
+     * @dataProvider idnaEncodeDataProvider
+     * @param $actual
+     * @param $expected
+     */
+    public function idnaEncodeConvertsUnicodeCharsToASCIIString($actual, $expected)
+    {
+        $result = GeneralUtility::idnaEncode($actual);
+        $this->assertSame($expected, $result);
+    }
+
+    /**
+     * Data provider for method idnaEncode in GeneralUtility class.
+     * IDNA converter has to convert special chars (UTF-8) to ASCII compatible chars.
+     *
+     * @returns array
+     */
+    public function idnaEncodeDataProvider()
+    {
+        return [
+            'empty string' => [
+                '',
+                ''
+            ],
+            'null value' => [
+                null,
+                ''
+            ],
+            'string with ascii chars' => [
+                'example',
+                'example'
+            ],
+            'domain (1) with utf8 chars' => [
+                'dömäin.example',
+                'xn--dmin-moa0i.example'
+            ],
+            'domain (2) with utf8 chars' => [
+                'äaaa.example',
+                'xn--aaa-pla.example'
+            ],
+            'domain (3) with utf8 chars' => [
+                'déjà.vu.example',
+                'xn--dj-kia8a.vu.example'
+            ],
+            'domain (4) with utf8 chars' => [
+                'foo.âbcdéf.example',
+                'foo.xn--bcdf-9na9b.example'
+            ],
+            'domain with utf8 char (german umlaut)' => [
+                'exömple.com',
+                'xn--exmple-xxa.com'
+            ],
+            'email with utf8 char (german umlaut)' => [
+                'joe.doe@dömäin.de',
+                'joe.doe@xn--dmin-moa0i.de'
+            ]
+        ];
+    }
 }
