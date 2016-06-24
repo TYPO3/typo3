@@ -2212,61 +2212,59 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * Data provider for the stdWrap_date test
      *
-     * @return array multi-dimensional array with the second level like this:
-     * @see stdWrap_date
+     * @return array [$expect, $content, $conf, $now]
      */
     public function stdWrap_dateDataProvider()
     {
-        return array(
-            'given timestamp' => array(
-                1443780000, // This is 2015-10-02 12:00
-                array(
-                    'date' => 'd.m.Y',
-                ),
+        // Fictive execution time: 2015-10-02 12:00
+        $now =  1443780000;
+        return [
+            'given timestamp' => [
                 '02.10.2015',
-            ),
-            'empty string' => array(
+                $now,
+                ['date' => 'd.m.Y'],
+                $now
+            ],
+            'empty string' => [
+                '02.10.2015',
                 '',
-                array(
-                    'date' => 'd.m.Y',
-                ),
+                ['date' => 'd.m.Y'],
+                $now
+            ],
+            'testing null' => [
                 '02.10.2015',
-            ),
-            'testing null' => array(
                 null,
-                array(
-                    'date' => 'd.m.Y',
-                ),
-                '02.10.2015',
-            ),
-            'given timestamp return GMT' => array(
-                1443780000, // This is 2015-10-02 12:00
-                array(
-                    'date' => 'd.m.Y H:i:s',
-                    'date.' => array(
-                        'GMT' => true,
-                    )
-                ),
+                ['date' => 'd.m.Y'],
+                $now
+            ],
+            'given timestamp return GMT' => [
                 '02.10.2015 10:00:00',
-            ),
-        );
+                $now,
+                [
+                    'date' => 'd.m.Y H:i:s',
+                    'date.' => ['GMT' => true],
+                ],
+                $now
+            ]
+        ];
     }
 
     /**
+     * Check if stdWrap_date works properly.
+     *
      * @test
      * @dataProvider stdWrap_dateDataProvider
-     * @param string|int|NULL $content
-     * @param array $conf
-     * @param string $expected
+     * @param string $expected The expected output.
+     * @param mixed $content The given input.
+     * @param array $conf The given configuration.
+     * @param int $now Fictive execution time.
+     * @return void
      */
-    public function stdWrap_date($content, $conf, $expected)
+    public function stdWrap_date($expected, $content, $conf, $now)
     {
-        // Set exec_time to a hard timestamp
-        $GLOBALS['EXEC_TIME'] = 1443780000;
-
-        $result = $this->subject->stdWrap_date($content, $conf);
-
-        $this->assertEquals($expected, $result);
+        $GLOBALS['EXEC_TIME'] = $now;
+        $this->assertEquals($expected,
+            $this->subject->stdWrap_date($content, $conf));
     }
 
     /**
