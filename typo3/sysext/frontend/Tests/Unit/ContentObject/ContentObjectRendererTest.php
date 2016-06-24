@@ -2348,79 +2348,63 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * Data provider for the stdWrap_strtotime test
      *
-     * @return array
-     * @see stdWrap_strtotime
+     * @return array [$expect, $content, $conf]
      */
-    public function stdWrap_strtotimeReturnsTimestampDataProvider()
+    public function stdWrap_strtotimeDataProvider()
     {
-        return array(
-            'date from content' => array(
-                '2014-12-04',
-                array(
-                    'strtotime' => '1',
-                ),
-                1417651200,
-            ),
-            'manipulation of date from content' => array(
-                '2014-12-04',
-                array(
-                    'strtotime' => '+ 2 weekdays',
-                ),
-                1417996800,
-            ),
-            'date from configuration' => array(
-                '',
-                array(
-                    'strtotime' => '2014-12-04',
-                ),
-                1417651200,
-            ),
-            'manipulation of date from configuration' => array(
-                '',
-                array(
-                    'strtotime' => '2014-12-04 + 2 weekdays',
-                ),
-                1417996800,
-            ),
-            'empty input' => array(
-                '',
-                array(
-                    'strtotime' => '1',
-                ),
-                false,
-            ),
-            'date from content and configuration' => array(
-                '2014-12-04',
-                array(
-                    'strtotime' => '2014-12-05',
-                ),
-                false,
-            ),
-        );
+        return [
+            'date from content' => [
+                1417651200, '2014-12-04',
+                ['strtotime' => '1']
+            ],
+            'manipulation of date from content' => [
+                1417996800, '2014-12-04',
+                ['strtotime' => '+ 2 weekdays']
+            ],
+            'date from configuration' => [
+                1417651200, '',
+                ['strtotime' => '2014-12-04']
+            ],
+            'manipulation of date from configuration' => [
+                1417996800, '',
+                ['strtotime' => '2014-12-04 + 2 weekdays']
+            ],
+            'empty input' => [
+                false, '',
+                ['strtotime' => '1']
+            ],
+            'date from content and configuration' => [
+                false, '2014-12-04',
+                ['strtotime' => '2014-12-05']
+            ]
+        ];
     }
 
     /**
-     * @param string|NULL $content
-     * @param array $configuration
-     * @param int $expected
-     * @dataProvider stdWrap_strtotimeReturnsTimestampDataProvider
+     * Check if stdWrap_strtotime works properly.
+     *
      * @test
+     * @dataProvider stdWrap_strtotimeDataProvider
+     * @param int $expect The expected output.
+     * @param mixed $content The given input.
+     * @param array $conf The given configuration.
+     * @return void
      */
-    public function stdWrap_strtotimeReturnsTimestamp($content, $configuration, $expected)
+    public function stdWrap_strtotime($expect, $content, $conf)
     {
         // Set exec_time to a hard timestamp
         $GLOBALS['EXEC_TIME'] = 1417392000;
-        // Save current timezone and set to UTC to make the system under test behave
-        // the same in all server timezone settings
+        // Save current timezone and set to UTC to make the system under test
+        // behave the same in all server timezone settings
         $timezoneBackup = date_default_timezone_get();
         date_default_timezone_set('UTC');
 
-        $result = $this->subject->stdWrap_strtotime($content, $configuration);
+        $result = $this->subject->stdWrap_strtotime($content, $conf);
 
         // Reset timezone
         date_default_timezone_set($timezoneBackup);
 
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expect, $result);
     }
 
     /**
