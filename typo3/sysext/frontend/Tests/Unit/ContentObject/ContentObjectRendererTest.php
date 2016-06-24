@@ -1737,83 +1737,35 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * @return array
-     */
-    public function stdWrap_numberFormatDataProvider()
-    {
-        return array(
-            'testing decimals' => array(
-                0.8,
-                array(
-                    'numberFormat.' => array(
-                        'decimals' => 2
-                    ),
-                ),
-                '0.80'
-            ),
-            'testing decimals with input as string' => array(
-                '0.8',
-                array(
-                    'numberFormat.' => array(
-                        'decimals' => 2
-                    ),
-                ),
-                '0.80'
-            ),
-            'testing dec_point' => array(
-                0.8,
-                array(
-                    'numberFormat.' => array(
-                        'decimals' => 1,
-                        'dec_point' => ','
-                    ),
-                ),
-                '0,8'
-            ),
-            'testing thousands_sep' => array(
-                999.99,
-                array(
-                    'numberFormat.' => array(
-                        'decimals' => 0,
-                        'thousands_sep.' => array(
-                            'char' => 46
-                        ),
-                    ),
-                ),
-                '1.000'
-            ),
-            'testing mixture' => array(
-                1281731.45,
-                array(
-                    'numberFormat.' => array(
-                        'decimals' => 1,
-                        'dec_point.' => array(
-                            'char' => 44
-                        ),
-                        'thousands_sep.' => array(
-                            'char' => 46
-                        ),
-                    ),
-                ),
-                '1.281.731,5'
-            )
-        );
-    }
-
-    /**
-     * Test for the stdWrap function "stdWrap_numberFormat"
+     * Check if stdWrap_numberFormat works properly.
      *
-     * @param float $float
-     * @param array $conf
-     * @param string $expected
-     * @return void
-     * @dataProvider stdWrap_numberFormatDataProvider
+     * Show:
+     *
+     * - Delegates to the method numberFormat.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['numberFormat.'].
+     * - Returns the return value.
+     *
      * @test
+     * @return void
      */
-    public function stdWrap_numberFormat($float, $conf, $expected)
+    public function stdWrap_numberFormat()
     {
-        $result = $this->subject->stdWrap_numberFormat($float, $conf);
-        $this->assertEquals($expected, $result);
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'numberFormat' => $this->getUniqueId('not used'),
+            'numberFormat.' => [$this->getUniqueId('numberFormat.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['numberFormat'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('numberFormat')
+            ->with($content, $conf['numberFormat.'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_numberFormat($content, $conf));
     }
 
     /**
@@ -2288,73 +2240,53 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * Data provider for the numberFormat test
+     * Data provider for numberFormat.
      *
-     * @return array multi-dimensional array with the second level like this:
-     * @see numberFormat
+     * @return array [$expect, $content, $conf]
      */
     public function numberFormatDataProvider()
     {
-        $data = array(
-            'testing decimals' => array(
-                0.8,
-                array(
-                    'decimals' => 2
-                ),
-                '0.80'
-            ),
-            'testing decimals with input as string' => array(
-                '0.8',
-                array(
-                    'decimals' => 2
-                ),
-                '0.80'
-            ),
-            'testing dec_point' => array(
-                0.8,
-                array(
-                    'decimals' => 1,
-                    'dec_point' => ','
-                ),
-                '0,8'
-            ),
-            'testing thousands_sep' => array(
-                999.99,
-                array(
+        return [
+            'testing decimals' => [
+                '0.80', 0.8,
+                ['decimals' => 2]
+            ],
+            'testing decimals with input as string' => [
+                '0.80', '0.8',
+                ['decimals' => 2]
+            ],
+            'testing dec_point' => [
+                '0,8', 0.8,
+                ['decimals' => 1, 'dec_point' => ',']
+            ],
+            'testing thousands_sep' => [
+                '1.000', 999.99,
+                [
                     'decimals' => 0,
-                    'thousands_sep.' => array(
-                        'char' => 46
-                    )
-                ),
-                '1.000'
-            ),
-            'testing mixture' => array(
-                1281731.45,
-                array(
+                    'thousands_sep.' => ['char' => 46]
+                ]
+            ],
+            'testing mixture' => [
+                '1.281.731,5', 1281731.45,
+                [
                     'decimals' => 1,
-                    'dec_point.' => array(
-                        'char' => 44
-                    ),
-                    'thousands_sep.' => array(
-                        'char' => 46
-                    )
-                ),
-                '1.281.731,5'
-            )
-        );
-        return $data;
+                    'dec_point.' => ['char' => 44],
+                    'thousands_sep.' => ['char' => 46]
+                ]
+            ]
+        ];
     }
 
     /**
-     * Check if stdWrap.numberFormat and all of its properties work properly
+     * Check if numberFormat works properly.
      *
      * @dataProvider numberFormatDataProvider
      * @test
      */
-    public function numberFormat($float, $formatConf, $expected)
+    public function numberFormat($expects, $content, $conf)
     {
-        $result = $this->subject->numberFormat($float, $formatConf);
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expects,
+            $this->subject->numberFormat($content, $conf));
     }
 
     /**
