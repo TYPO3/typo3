@@ -483,17 +483,12 @@ class InlineRecordContainer extends AbstractContainer
                     ->fetch();
                 if ($backendUser->check('tables_modify', 'sys_file_metadata')) {
                     $url = BackendUtility::getModuleUrl('record_edit', array(
-                        'edit[sys_file_metadata][' . (int)$recordInDatabase['uid'] . ']' => 'edit'
+                        'edit[sys_file_metadata][' . (int)$recordInDatabase['uid'] . ']' => 'edit',
+                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                     ));
-                    $editOnClick = 'if (top.content.list_frame) {' .
-                        'top.content.list_frame.location.href=' .
-                        GeneralUtility::quoteJSvalue($url . '&returnUrl=') .
-                        '+top.rawurlencode(top.content.list_frame.document.location.pathname+top.content.list_frame.document.location.search)' .
-                        ';' .
-                    '}';
                     $title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.editMetadata');
                     $cells['editmetadata'] = '
-						<a class="btn btn-default" href="#" class="btn" onclick="' . htmlspecialchars($editOnClick) . '" title="' . htmlspecialchars($title) . '">
+						<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($title) . '">
 							' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '
 						</a>';
                 }
