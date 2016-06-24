@@ -72,7 +72,21 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBased
     public function render($action = null, array $arguments = array(), $controller = null, $extensionName = null, $pluginName = null, $pageUid = null, $pageType = 0, $noCache = false, $noCacheHash = false, $section = '', $format = '', $linkAccessRestrictedPages = false, array $additionalParams = array(), $absolute = false, $addQueryString = false, array $argumentsToBeExcludedFromQueryString = array(), $addQueryStringMethod = null)
     {
         $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
-        $uri = $uriBuilder->reset()->setTargetPageUid($pageUid)->setTargetPageType($pageType)->setNoCache($noCache)->setUseCacheHash(!$noCacheHash)->setSection($section)->setFormat($format)->setLinkAccessRestrictedPages($linkAccessRestrictedPages)->setArguments($additionalParams)->setCreateAbsoluteUri($absolute)->setAddQueryString($addQueryString)->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)->setAddQueryStringMethod($addQueryStringMethod)->uriFor($action, $arguments, $controller, $extensionName, $pluginName);
+        $uri = $uriBuilder
+            ->reset()
+            ->setTargetPageUid($pageUid)
+            ->setTargetPageType($pageType)
+            ->setNoCache($noCache)
+            ->setUseCacheHash(!$noCacheHash)
+            ->setSection($section)
+            ->setFormat($format)
+            ->setLinkAccessRestrictedPages($linkAccessRestrictedPages)
+            ->setArguments($additionalParams)
+            ->setCreateAbsoluteUri($absolute)
+            ->setAddQueryString($addQueryString)
+            ->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
+            ->setAddQueryStringMethod($addQueryStringMethod)
+            ->uriFor($action, $arguments, $controller, $extensionName, $pluginName);
         $this->tag->addAttribute('href', $uri);
         $this->tag->setContent($this->renderChildren());
         $this->tag->forceClosingTag(true);
