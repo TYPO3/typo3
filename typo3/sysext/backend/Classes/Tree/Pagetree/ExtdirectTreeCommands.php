@@ -165,9 +165,14 @@ class ExtdirectTreeCommands
     public static function clearCacheOfPage($nodeData)
     {
         $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
-        $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-        $tce->start(array(), array());
-        $tce->clear_cacheCmd($node->getId());
+
+        $permissionClause = static::getBackendUser()->getPagePermsClause(1);
+        $access = BackendUtility::readPageAccess($node->getId(), $permissionClause);
+        if ($access) {
+            $dataHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+            $dataHandler->start(array(), array());
+            $dataHandler->clear_cacheCmd($node->getId());
+        }
     }
 
     /**

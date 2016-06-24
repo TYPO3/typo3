@@ -479,10 +479,10 @@ class PageLayoutController
      */
     public function clearCache()
     {
-        if ($this->clear_cache) {
-            $tce = GeneralUtility::makeInstance(DataHandler::class);
-            $tce->start(array(), array());
-            $tce->clear_cacheCmd($this->id);
+        if ($this->clear_cache && !empty($this->pageinfo)) {
+            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+            $dataHandler->start(array(), array());
+            $dataHandler->clear_cacheCmd($this->id);
         }
     }
 
