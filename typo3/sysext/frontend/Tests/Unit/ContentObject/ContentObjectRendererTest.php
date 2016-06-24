@@ -1171,6 +1171,38 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Check if stdWrap_split works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method splitObj.
+     * - Parameter 1 is $content.
+     * - Prameter 2 is $conf['split.'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+     public function stdWrap_split()
+     {
+         $content = $this->getUniqueId('content');
+         $conf = [
+             'split' => $this->getUniqueId('not used'),
+             'split.' => [$this->getUniqueId('split.')],
+         ];
+         $return = $this->getUniqueId('return');
+         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+             ->setMethods(['splitObj'])->getMock();
+         $subject
+             ->expects($this->once())
+             ->method('splitObj')
+             ->with($content, $conf['split.'])
+             ->willReturn($return);
+         $this->assertSame($return,
+             $subject->stdWrap_split($content, $conf));
+     }
+
+    /**
      * Test for the stdWrap_stripHtml
      *
      * @test
