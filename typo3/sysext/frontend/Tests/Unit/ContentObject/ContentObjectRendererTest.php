@@ -1738,63 +1738,57 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * Data provider for the hash test
      *
-     * @return array multi-dimensional array with the second level like this:
-     * @see hash
+     * @return array [$expect, $content, $conf]
      */
     public function hashDataProvider()
     {
-        $data = array(
-            'testing md5' => array(
+        return [
+            'md5' => [
+                'bacb98acf97e0b6112b1d1b650b84971',
                 'joh316',
-                array(
-                    'hash' => 'md5'
-                ),
-                'bacb98acf97e0b6112b1d1b650b84971'
-            ),
-            'testing sha1' => array(
+                ['hash' => 'md5']
+            ],
+            'sha1' => [
+                '063b3d108bed9f88fa618c6046de0dccadcf3158',
                 'joh316',
-                array(
-                    'hash' => 'sha1'
-                ),
-                '063b3d108bed9f88fa618c6046de0dccadcf3158'
-            ),
-            'testing non-existing hashing algorithm' => array(
+                ['hash' => 'sha1']
+            ],
+            'stdWrap capability' => [
+                'bacb98acf97e0b6112b1d1b650b84971',
                 'joh316',
-                array(
-                    'hash' => 'non-existing'
-                ),
-                ''
-            ),
-            'testing stdWrap capability' => array(
+                [
+                    'hash' => '5',
+                    'hash.' => ['wrap' => 'md|']
+                ]
+            ],
+            'non-existing hashing algorithm' => [
+                '',
                 'joh316',
-                array(
-                    'hash.' => array(
-                        'cObject' => 'TEXT',
-                        'cObject.' => array(
-                            'value' => 'md5'
-                        )
-                    )
-                ),
-                'bacb98acf97e0b6112b1d1b650b84971'
-            )
-        );
-        return $data;
+                ['hash' => 'non-existing']
+            ]
+        ];
     }
 
     /**
-     * Test for the stdWrap function "hash"
+     * Check if stdWrap_hash works properly.
      *
-     * @param string $text
-     * @param array $conf
-     * @param string $expected
-     * @return void
-     * @dataProvider hashDataProvider
+     * Show:
+     *
+     *  - Algorithms: sha1, md5
+     *  - Returns '' for invalid algorithm.
+     *  - Value can be processed by stdWrap.
+     *
      * @test
+     * @dataProvider hashDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given content.
+     * @param array $conf The given configuration.
+     * @return void
      */
-    public function stdWrap_hash($text, array $conf, $expected)
+    public function stdWrap_hash($expect, $content, $conf)
     {
-        $result = $this->subject->stdWrap_hash($text, $conf);
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expect,
+            $this->subject->stdWrap_hash($content, $conf));
     }
 
     /**
