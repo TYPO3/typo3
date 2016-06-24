@@ -1596,6 +1596,68 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_HTMLparser
+     *
+     * @return array [$expect, $content, $conf, $times, $will].
+     */
+    public function stdWrap_HTMLparserDataProvider()
+    {
+        $content = $this->getUniqueId('content');
+        $parsed = $this->getUniqueId('parsed');
+        return [
+            'no config' => [
+                $content, $content, [], 0, $parsed
+            ],
+            'no array' => [
+                $content, $content, ['HTMLparser.' => 1], 0, $parsed
+            ],
+            'empty array' => [
+                $parsed, $content, ['HTMLparser.' => []], 1, $parsed
+            ],
+            'non-empty array' => [
+                $parsed, $content, ['HTMLparser.' => [true]], 1, $parsed
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_HTMLparser works properly
+     *
+     * Show:
+     *
+     * - Checks if $conf['HTMLparser.'] is an array.
+     * - No:
+     *   - Returns $content as is.
+     * - Yes:
+     *   - Delegates to method HTMLparser_TSbridge.
+     *   - Parameter 1 is $content.
+     *   - Parameter 2 is $conf['HTMLparser'].
+     *   - Returns the return value.
+     *
+     * @test
+     * @dataProvider stdWrap_HTMLparserDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given content.
+     * @param array $conf The given configuration.
+     * @param int $times Times HTMLparser_TSbridge is called (0 or 1).
+     * @param string $will Return of HTMLparser_TSbridge.
+     * @return void.
+     */
+    public function stdWrap_HTMLparser(
+        $expect, $content, $conf, $times, $will)
+    {
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['HTMLparser_TSbridge'])->getMock();
+        $subject
+            ->expects($this->exactly($times))
+            ->method('HTMLparser_TSbridge')
+            ->with($content, $conf['HTMLparser.'])
+            ->willReturn($will);
+        $this->assertSame($expect,
+            $subject->stdWrap_HTMLparser($content, $conf));
+    }
+
+    /**
      * Check if stdWrap_prioriCalc works properly.
      *
      * Show:
