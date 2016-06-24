@@ -1258,69 +1258,105 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * @return array
+     * Data provider for round
+     *
+     * @return array [$expect, $contet, $conf]
      */
-    public function stdWrap_roundDataProvider()
+    public function roundDataProvider()
     {
-        return array(
-            'rounding off without any configuration' => array(
-                1.123456789,
-                array(),
-                1
-            ),
-            'rounding up without any configuration' => array(
-                1.523456789,
-                array(),
-                2
-            ),
-            'regular rounding (off) to two decimals' => array(
-                0.123456789,
-                array(
-                    'decimals' => 2
-                ),
-                0.12
-            ),
-            'regular rounding (up) to two decimals' => array(
-                0.1256789,
-                array(
-                    'decimals' => 2
-                ),
-                0.13
-            ),
-            'rounding up to integer with type ceil' => array(
-                0.123456789,
-                array(
-                    'roundType' => 'ceil'
-                ),
-                1
-            ),
-            'rounding down to integer with type floor' => array(
-                2.3481,
-                array(
-                    'roundType' => 'floor'
-                ),
-                2
-            )
-        );
+        return [
+            // floats
+            'down' => [1.0, 1.11, []],
+            'up' => [2.0, 1.51, []],
+            'rounds up from x.50' => [2.0, 1.50, []],
+            'down with decimals' => [0.12, 0.1231, ['decimals' => 2]],
+            'up with decimals' => [0.13, 0.1251, ['decimals' => 2]],
+            'ceil' => [1.0, 0.11, ['roundType' => 'ceil']],
+            'ceil does not accept decimals' => [
+                1.0, 0.111, [
+                    'roundType' => 'ceil',
+                    'decimals' => 2,
+                ],
+            ],
+            'floor' => [2.0, 2.99, ['roundType' => 'floor']],
+            'floor does not accept decimals' => [
+                2.0, 2.999, [
+                    'roundType' => 'floor',
+                    'decimals' => 2,
+                ],
+            ],
+            'round, down' => [1.0, 1.11, ['roundType' => 'round']],
+            'round, up' => [2.0, 1.55, ['roundType' => 'round']],
+            'round does accept decimals' => [
+                5.56, 5.5555, [
+                    'roundType' => 'round',
+                    'decimals' => 2,
+                ],
+            ],
+            // strings
+            'emtpy string' => [0.0, '', []],
+            'word string' => [0.0, 'word', []],
+            'float string' => [1.0, '1.123456789', []],
+            // other types
+            'null' => [0.0, null, []],
+            'false' => [0.0, false, []],
+            'true' => [1.0, true, []]
+        ];
     }
 
     /**
-     * Test for the stdWrap function "round"
+     * Check if round works properly
      *
-     * @param float $float
-     * @param array $conf
-     * @param float $expected
+     * Show:
+     *
+     *  - Different types of input are casted to float.
+     *  - Configuration ceil rounds like ceil().
+     *  - Configuration floor rounds like floor().
+     *  - Otherwise rounds like round() and decimals can be applied.
+     *  - Always returns float.
+     *
+     * @param float $expected The expected output.
+     * @param mixed $content The given content.
+     * @param array $conf The given configuration of 'round.'.
      * @return void
-     * @dataProvider stdWrap_roundDataProvider
+     * @dataProvider roundDataProvider
      * @test
      */
-    public function stdWrap_round($float, $conf, $expected)
+    public function round($expect, $content, $conf)
     {
-        $conf = array(
-            'round.' => $conf
-        );
-        $result = $this->subject->stdWrap_round($float, $conf);
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expect,
+            $this->subject->_call('round', $content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_round works properly
+     *
+     * Show:
+     *
+     * - Delegates to method round.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['round.'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_round()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'round' => $this->getUniqueId('not used'),
+            'round.' => [$this->getUniqueId('round.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['round'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('round')
+            ->with($content, $conf['round.'])
+            ->willReturn($return);
+        $this->assertSame($return, $subject->stdWrap_round($content, $conf));
     }
 
     /**
@@ -1388,7 +1424,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * Test for the stdWrap function "round"
+     * Test for the stdWrap function "stdWrap_numberFormat"
      *
      * @param float $float
      * @param array $conf
