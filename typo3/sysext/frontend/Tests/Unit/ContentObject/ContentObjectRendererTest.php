@@ -1440,39 +1440,37 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * @return array
+     * Data provider for expandList
+     *
+     * @return array [$expect, $content]
      */
     public function stdWrap_expandListDataProvider()
     {
-        return array(
-            'numbers' => array(
-                '1,2,3',
-                '1,2,3',
-            ),
-            'range' => array(
-                '3-5',
-                '3,4,5',
-            ),
-            'numbers and range' => array(
-                '1,3-5,7',
-                '1,3,4,5,7',
-            ),
-        );
+        return [
+            'numbers' => ['1,2,3', '1,2,3'],
+            'range' => ['3,4,5', '3-5'],
+            'numbers and range' => ['1,3,4,5,7', '1,3-5,7']
+        ];
     }
 
     /**
      * Test for the stdWrap function "expandList"
      *
-     * @param string $content
-     * @param string $expected
+     * The method simply delegates to GeneralUtility::expandList. There is no
+     * need to repeat the full set of tests of this method here. As PHPUnit
+     * can't mock static methods, to prove they are called, all we do here
+     * is to provide a few smoke tests.
      *
-     * @dataProvider stdWrap_expandListDataProvider
      * @test
+     * @dataProvider stdWrap_expandListDataProvider
+     * @param string $expected The expeced output.
+     * @param string $content The given content.
+     * @return void
      */
-    public function stdWrap_expandList($content, $expected)
+    public function stdWrap_expandList($expected, $content)
     {
-        $result = $this->subject->stdWrap_expandList($content);
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected,
+            $this->subject->stdWrap_expandList($content));
     }
 
     /**
