@@ -2427,55 +2427,61 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * Data provider for the stdWrap_strftime test
+     * Data provider for stdWrap_strftime
      *
-     * @return array multi-dimensional array with the second level like this:
-     * @see stdWrap_strftime
+     * @return array [$expect, $content, $conf, $now]
      */
-    public function stdWrap_strftimeReturnsFormattedStringDataProvider()
+    public function stdWrap_strftimeDataProvider()
     {
-        $data = array(
-            'given timestamp' => array(
-                1346500800, // This is 2012-09-01 12:00 in UTC/GMT
-                array(
-                    'strftime' => '%d-%m-%Y',
-                ),
-            ),
-            'empty string' => array(
+        // Fictive execution time is 2012-09-01 12:00 in UTC/GMT.
+        $now = 1346500800;
+        return [
+            'given timestamp' => [
+                '01-09-2012',
+                $now,
+                ['strftime' => '%d-%m-%Y'],
+                $now
+            ],
+            'empty string' => [
+                '01-09-2012',
                 '',
-                array(
-                    'strftime' => '%d-%m-%Y',
-                ),
-            ),
-            'testing null' => array(
+                ['strftime' => '%d-%m-%Y'],
+                $now
+            ],
+            'testing null' => [
+                '01-09-2012',
                 null,
-                array(
-                    'strftime' => '%d-%m-%Y',
-                ),
-            ),
-        );
-        return $data;
+                ['strftime' => '%d-%m-%Y'],
+                $now
+            ]
+        ];
     }
 
     /**
+     * Check if stdWrap_strftime works properly.
+     *
      * @test
-     * @dataProvider stdWrap_strftimeReturnsFormattedStringDataProvider
+     * @dataProvider stdWrap_strftimeDataProvider
+     * @param string $expect The expected output.
+     * @param mixed $content The given input.
+     * @param array $conf The given configuration.
+     * @param int $now Fictive execution time.
+     * @return void
      */
-    public function stdWrap_strftimeReturnsFormattedString($content, $conf)
+    public function stdWrap_strftime($expect, $content, $conf, $now)
     {
-        // Set exec_time to a hard timestamp
-        $GLOBALS['EXEC_TIME'] = 1346500800;
-            // Save current timezone and set to UTC to make the system under test behave
-            // the same in all server timezone settings
+        // Save current timezone and set to UTC to make the system under test
+        // behave the same in all server timezone settings
         $timezoneBackup = date_default_timezone_get();
         date_default_timezone_set('UTC');
 
+        $GLOBALS['EXEC_TIME'] = $now;
         $result = $this->subject->stdWrap_strftime($content, $conf);
 
-            // Reset timezone
+        // Reset timezone
         date_default_timezone_set($timezoneBackup);
 
-        $this->assertEquals('01-09-2012', $result);
+        $this->assertSame($expect, $result);
     }
 
     /**
