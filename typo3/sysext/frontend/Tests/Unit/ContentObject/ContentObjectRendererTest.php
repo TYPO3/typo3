@@ -1907,76 +1907,104 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * Data provider for the replacement test
+     * Check if stdWrap_replacement works properly.
      *
-     * @return array multi-dimensional array with the second level like this:
-     * @see replacement
+     * Show:
+     *
+     * - Delegates to method replacement.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['replacement.'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_replacement()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'replacement' => $this->getUniqueId('not used'),
+            'replacement.' => [$this->getUniqueId('replacement.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['replacement'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('replacement')
+            ->with( $content, $conf['replacement.'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_replacement($content, $conf));
+    }
+
+    /**
+     * Data provider replacement
+     *
+     * @return array [$expect, $content, $conf]
      */
     public function replacementDataProvider()
     {
-        $data = array(
-            'multiple replacements, including regex' => array(
+        return [
+            'multiple replacements, including regex' => [
+                'There is an animal, an animal and an animal around the block! Yeah!',
                 'There_is_a_cat,_a_dog_and_a_tiger_in_da_hood!_Yeah!',
-                array(
-                    'replacement.' => array(
-                        '120.' => array(
-                            'search' => 'in da hood',
-                            'replace' => 'around the block'
-                        ),
-                        '20.' => array(
-                            'search' => '_',
-                            'replace.' => array('char' => '32')
-                        ),
-                        '130.' => array(
-                            'search' => '#a (Cat|Dog|Tiger)#i',
-                            'replace' => 'an animal',
-                            'useRegExp' => '1'
-                        )
-                    )
-                ),
-                'There is an animal, an animal and an animal around the block! Yeah!'
-            ),
-            'replacement with optionSplit, normal pattern' => array(
+                [
+                    '20.' => [
+                        'search' => '_',
+                        'replace.' => ['char' => '32']
+                    ],
+                    '120.' => [
+                        'search' => 'in da hood',
+                        'replace' => 'around the block'
+                    ],
+                    '130.' => [
+                        'search' => '#a (Cat|Dog|Tiger)#i',
+                        'replace' => 'an animal',
+                        'useRegExp' => '1'
+                    ]
+                ]
+            ],
+            'replacement with optionSplit, normal pattern' => [
+                'There1is2a3cat,3a3dog3and3a3tiger3in3da3hood!3Yeah!',
                 'There_is_a_cat,_a_dog_and_a_tiger_in_da_hood!_Yeah!',
-                array(
-                    'replacement.' => array(
-                        '10.' => array(
-                            'search' => '_',
-                            'replace' => '1 || 2 || 3',
-                            'useOptionSplitReplace' => '1'
-                        ),
-                    )
-                ),
-                'There1is2a3cat,3a3dog3and3a3tiger3in3da3hood!3Yeah!'
-            ),
-            'replacement with optionSplit, using regex' => array(
+                [
+                    '10.' => [
+                        'search' => '_',
+                        'replace' => '1 || 2 || 3',
+                        'useOptionSplitReplace' => '1'
+                    ]
+                ]
+            ],
+            'replacement with optionSplit, using regex' => [
+                'There is a tiny cat, a midsized dog and a big tiger in da hood! Yeah!',
                 'There is a cat, a dog and a tiger in da hood! Yeah!',
-                array(
-                    'replacement.' => array(
-                        '10.' => array(
-                            'search' => '#(a) (Cat|Dog|Tiger)#i',
-                            'replace' => '${1} tiny ${2} || ${1} midsized ${2} || ${1} big ${2}',
-                            'useOptionSplitReplace' => '1',
-                            'useRegExp' => '1'
-                        )
-                    )
-                ),
-                'There is a tiny cat, a midsized dog and a big tiger in da hood! Yeah!'
-            ),
-        );
-        return $data;
+                [
+                    '10.' => [
+                        'search' => '#(a) (Cat|Dog|Tiger)#i',
+                        'replace' => '${1} tiny ${2} || ${1} midsized ${2} || ${1} big ${2}',
+                        'useOptionSplitReplace' => '1',
+                        'useRegExp' => '1'
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**
      * Check if stdWrap.replacement and all of its properties work properly
      *
-     * @dataProvider replacementDataProvider
      * @test
+     * @dataProvider replacementDataProvider
+     * @param string $content The given input.
+     * @param string $expects The expected result.
+     * @param array $conf The given configuration.
+     * @return void
      */
-    public function replacement($input, $conf, $expected)
+    public function replacement($expects, $content, $conf)
     {
-        $result = $this->subject->stdWrap_replacement($input, $conf);
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expects,
+            $this->subject->_call('replacement', $content, $conf));
     }
 
     /**
