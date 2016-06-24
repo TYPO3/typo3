@@ -1672,59 +1672,58 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * @return array
+     * Data provider for stdWrap_intval
+     *
+     * @return array [$expect, $content]
      */
     public function stdWrap_intvalDataProvider()
     {
-        return array(
-            'number' => array(
-                '123',
-                123,
-            ),
-            'float' => array(
-                '123.45',
-                123,
-            ),
-            'string' => array(
-                'string',
-                0,
-            ),
-            'zero' => array(
-                '0',
-                0,
-            ),
-            'empty' => array(
-                '',
-                0,
-            ),
-            'NULL' => array(
-                null,
-                0,
-            ),
-            'bool TRUE' => array(
-                true,
-                1,
-            ),
-            'bool FALSE' => array(
-                false,
-                0,
-            ),
-        );
+        return [
+            // numbers
+            'int' => [123, 123],
+            'float' => [123, 123.45],
+            'float does not round up' => [123, 123.55],
+            // negative numbers
+            'negative int' => [-123, -123],
+            'negative float' => [-123, -123.45],
+            'negative float does not round down' => [ -123, -123.55],
+            // strings
+            'word string' => [0, 'string'],
+            'empty string' => [0, ''],
+            'zero string' => [0, '0'],
+            'int string' => [123, '123'],
+            'float string' => [123, '123.55'],
+            'negative float string' => [-123, '-123.55'],
+            // other types
+            'null' => [0, null],
+            'true' => [1, true],
+            'false' => [0, false]
+        ];
     }
 
     /**
-     * Test for the stdWrap function "intval"
+     * Check that stdWrap_intval works properly.
      *
-     * @param string $content
-     * @param int $expected
+     * Show:
      *
-     * @dataProvider stdWrap_intvalDataProvider
+     * - It does not round up.
+     * - All types of input is casted to int:
+     *   - null: 0
+     *   - false: 0
+     *   - true: 1
+     *   -
+     *
+     *
+     *
      * @test
+     * @dataProvider stdWrap_intvalDataProvider
+     * @param int $expect The expected output.
+     * @param string $content The given input.
+     * @return void
      */
-    public function stdWrap_intval($content, $expected)
+    public function stdWrap_intval($expect, $content)
     {
-        $result = $this->subject->stdWrap_intval($content);
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expect, $this->subject->stdWrap_intval($content));
     }
 
     /**
