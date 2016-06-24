@@ -19,36 +19,29 @@ if (TYPO3_MODE === 'BE') {
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1440772316] = array(
         'nodeName' => 'formwizard',
         'priority' => 40,
-        'class' => \TYPO3\CMS\Form\View\Wizard\Element\FormWizardElement::class,
-    );
-} else {
-    // Handling of cObjects "FORM" and "FORM_INT"
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = array(
-        'FORM',
-        \TYPO3\CMS\Form\Hooks\ContentObjectHook::class
-    );
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = array(
-        'FORM_INT',
-        \TYPO3\CMS\Form\Hooks\ContentObjectHook::class
-    );
-
-    // Extbase handling
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(
-        \TYPO3\CMS\Form\Domain\Property\TypeConverter\ArrayToValidationElementConverter::class
-    );
-
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-        'TYPO3.CMS.Form',
-        'Form',
-        array('Frontend' => 'show, confirmation, dispatchConfirmationButtonClick, process, afterProcess'),
-        array('Frontend' => 'show, confirmation, dispatchConfirmationButtonClick, process, afterProcess')
-    );
-
-    $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-    $signalSlotDispatcher->connect(
-        \TYPO3\CMS\Form\Domain\Builder\FormBuilder::class,
-        'txFormHandleIncomingValues',
-        \TYPO3\CMS\Form\Hooks\HandleIncomingFormValues::class,
-        'handleIncomingFormValues'
+        'class'    => \TYPO3\CMS\Form\View\Wizard\Element\FormWizardElement::class,
     );
 }
+
+// Extbase handling
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(
+    \TYPO3\CMS\Form\Domain\Property\TypeConverter\ArrayToValidationElementConverter::class
+);
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'TYPO3.CMS.Form',
+    'Form',
+    array('Frontend' => 'show, confirmation, dispatchConfirmationButtonClick, process, afterProcess'),
+    array('Frontend' => 'show, confirmation, dispatchConfirmationButtonClick, process, afterProcess')
+);
+
+$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+$signalSlotDispatcher->connect(
+    \TYPO3\CMS\Form\Domain\Builder\FormBuilder::class,
+    'txFormHandleIncomingValues',
+    \TYPO3\CMS\Form\Hooks\HandleIncomingFormValues::class,
+    'handleIncomingFormValues'
+);
+
+// Register the extbase plugin as shorthand for typoscript 10 = FORM
+$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['FORM'] = \TYPO3\CMS\Form\ContentObject\FormContentObject::class;
