@@ -54,11 +54,11 @@
 	"require-dev": {
 		"phpunit/phpunit": "^5.4",
 		"mikey179/vfsStream": "~1.6.0",
-		"codeception/codeception": "^2.1",
+		"codeception/codeception": "^2.2",
 		"se/selenium-server-standalone": "~2.53",
 		"7elix/styleguide": "~8.0.0",
 		"site5/phantoman": "^1.0",
-		"jakoch/phantomjs-installer": "2.1.1-p01"
+		"jakoch/phantomjs-installer": "2.1.1-p03"
 	},
 	"suggest": {
 		"ext-gd": "GDlib/Freetype is required for building images with text (GIFBUILDER) and can also be used to scale images",
