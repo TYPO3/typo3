@@ -1203,6 +1203,49 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      }
 
     /**
+     * Data provider for stdWrap_prioriCalc
+     *
+     * @return array [$expect, $content, $conf]
+     */
+    public function stdWrap_prioriCalcDataProvider()
+    {
+        return [
+            'priority of *' => ['7', '1 + 2 * 3', []],
+            'priority of parentheses' => ['9', '(1 + 2) * 3', []],
+            'float' => ['1.5', '3/2', []],
+            'intval casts to int' => [1, '3/2', ['prioriCalc' => 'intval']],
+            'intval does not round' => [2, '2.7', ['prioriCalc' => 'intval']],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_prioriCalc works properly.
+     *
+     * Show:
+     *
+     * - If $conf['prioriCalc'] is 'intval' the return is casted to int.
+     * - Delegates to MathUtility::calculateWithParentheses.
+     *
+     * Note: As PHPUnit can't mock static methods, the call to
+     *       MathUtility::calculateWithParentheses can't be easily intercepted.
+     *       The test is done by testing input/output pairs instead. To not
+     *       duplicate the testing of calculateWithParentheses just a few
+     *       smoke tests are done here.
+     *
+     * @test
+     * @dataProvider stdWrap_prioriCalcDataProvider
+     * @param mixed $expect The expected output.
+     * @param string $content The given content.
+     * @param array $conf The given configuration.
+     * @return void
+     */
+    public function stdWrap_prioriCalc($expect, $content, $conf)
+    {
+        $result = $this->subject->stdWrap_prioriCalc($content, $conf);
+        $this->assertSame($expect, $result);
+    }
+
+    /**
      * Test for the stdWrap_stripHtml
      *
      * @test
