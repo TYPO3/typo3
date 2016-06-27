@@ -15,24 +15,49 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  */
 
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\ApplicationContext;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
+use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
+use TYPO3\CMS\Frontend\ContentObject\ContentContentObject;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayInternalContentObject;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectOneSourceCollectionHookInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\PageRepositoryFixture;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface;
+use TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject;
+use TYPO3\CMS\Frontend\ContentObject\FileContentObject;
+use TYPO3\CMS\Frontend\ContentObject\FilesContentObject;
+use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
+use TYPO3\CMS\Frontend\ContentObject\HierarchicalMenuContentObject;
+use TYPO3\CMS\Frontend\ContentObject\ImageContentObject;
+use TYPO3\CMS\Frontend\ContentObject\ImageResourceContentObject;
+use TYPO3\CMS\Frontend\ContentObject\LoadRegisterContentObject;
+use TYPO3\CMS\Frontend\ContentObject\RecordsContentObject;
+use TYPO3\CMS\Frontend\ContentObject\RestoreRegisterContentObject;
+use TYPO3\CMS\Frontend\ContentObject\ScalableVectorGraphicsContentObject;
+use TYPO3\CMS\Frontend\ContentObject\TemplateContentObject;
+use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
+use TYPO3\CMS\Frontend\ContentObject\UserContentObject;
+use TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\PageRepositoryFixture;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
  */
-class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class ContentObjectRendererTest extends UnitTestCase
 {
     /**
      * @var string
@@ -52,7 +77,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
      */
-    protected $typoScriptFrontendControllerMock = null;
+    protected $frontendControllerMock = null;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|TemplateService
@@ -64,29 +89,29 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      *
      * @var array
      */
-    protected $contentObjectMap = array(
-        'TEXT'             => \TYPO3\CMS\Frontend\ContentObject\TextContentObject::class,
-        'CASE'             => \TYPO3\CMS\Frontend\ContentObject\CaseContentObject::class,
-        'COBJ_ARRAY'       => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject::class,
-        'COA'              => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject::class,
-        'COA_INT'          => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayInternalContentObject::class,
-        'USER'             => \TYPO3\CMS\Frontend\ContentObject\UserContentObject::class,
-        'USER_INT'         => \TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject::class,
-        'FILE'             => \TYPO3\CMS\Frontend\ContentObject\FileContentObject::class,
-        'FILES'            => \TYPO3\CMS\Frontend\ContentObject\FilesContentObject::class,
-        'IMAGE'            => \TYPO3\CMS\Frontend\ContentObject\ImageContentObject::class,
-        'IMG_RESOURCE'     => \TYPO3\CMS\Frontend\ContentObject\ImageResourceContentObject::class,
-        'CONTENT'          => \TYPO3\CMS\Frontend\ContentObject\ContentContentObject::class,
-        'RECORDS'          => \TYPO3\CMS\Frontend\ContentObject\RecordsContentObject::class,
-        'HMENU'            => \TYPO3\CMS\Frontend\ContentObject\HierarchicalMenuContentObject::class,
-        'CASEFUNC'         => \TYPO3\CMS\Frontend\ContentObject\CaseContentObject::class,
-        'LOAD_REGISTER'    => \TYPO3\CMS\Frontend\ContentObject\LoadRegisterContentObject::class,
-        'RESTORE_REGISTER' => \TYPO3\CMS\Frontend\ContentObject\RestoreRegisterContentObject::class,
-        'TEMPLATE'         => \TYPO3\CMS\Frontend\ContentObject\TemplateContentObject::class,
-        'FLUIDTEMPLATE'    => \TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject::class,
-        'SVG'              => \TYPO3\CMS\Frontend\ContentObject\ScalableVectorGraphicsContentObject::class,
-        'EDITPANEL'        => \TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject::class
-    );
+    protected $contentObjectMap = [
+        'TEXT'             => TextContentObject::class,
+        'CASE'             => CaseContentObject::class,
+        'COBJ_ARRAY'       => ContentObjectArrayContentObject::class,
+        'COA'              => ContentObjectArrayContentObject::class,
+        'COA_INT'          => ContentObjectArrayInternalContentObject::class,
+        'USER'             => UserContentObject::class,
+        'USER_INT'         => UserInternalContentObject::class,
+        'FILE'             => FileContentObject::class,
+        'FILES'            => FilesContentObject::class,
+        'IMAGE'            => ImageContentObject::class,
+        'IMG_RESOURCE'     => ImageResourceContentObject::class,
+        'CONTENT'          => ContentContentObject::class,
+        'RECORDS'          => RecordsContentObject::class,
+        'HMENU'            => HierarchicalMenuContentObject::class,
+        'CASEFUNC'         => CaseContentObject::class,
+        'LOAD_REGISTER'    => LoadRegisterContentObject::class,
+        'RESTORE_REGISTER' => RestoreRegisterContentObject::class,
+        'TEMPLATE'         => TemplateContentObject::class,
+        'FLUIDTEMPLATE'    => FluidTemplateContentObject::class,
+        'SVG'              => ScalableVectorGraphicsContentObject::class,
+        'EDITPANEL'        => EditPanelContentObject::class
+    ];
 
     /**
      * Set up
@@ -94,32 +119,33 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $this->currentLocale = setlocale(LC_NUMERIC, 0);
-
-        $this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
+        $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $this->createMockedLoggerAndLogManager();
 
-        $this->templateServiceMock = $this->getMockBuilder(TemplateService::class)
-            ->setMethods(array('getFileName', 'linkData'))
-            ->getMock();
-        $pageRepositoryMock = $this->getMockBuilder(PageRepositoryFixture::class)
-            ->setMethods(array('getRawRecord', 'getMountPointInfo'))
-            ->getMock();
-
-        $this->typoScriptFrontendControllerMock = $this->getAccessibleMock(TypoScriptFrontendController::class, array('dummy'), array(), '', false);
-        $this->typoScriptFrontendControllerMock->tmpl = $this->templateServiceMock;
-        $this->typoScriptFrontendControllerMock->config = array();
-        $this->typoScriptFrontendControllerMock->page = array();
-        $this->typoScriptFrontendControllerMock->sys_page = $pageRepositoryMock;
-        $GLOBALS['TSFE'] = $this->typoScriptFrontendControllerMock;
-        $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)->getMock();
+        $this->templateServiceMock =
+            $this->getMockBuilder(TemplateService::class)
+            ->setMethods(['getFileName', 'linkData'])->getMock();
+        $pageRepositoryMock =
+            $this->getMockBuilder(PageRepositoryFixture::class)
+            ->setMethods(['getRawRecord', 'getMountPointInfo'])->getMock();
+        $this->frontendControllerMock =
+            $this->getAccessibleMock(TypoScriptFrontendController::class,
+            ['dummy'], [], '', false);
+        $this->frontendControllerMock->tmpl = $this->templateServiceMock;
+        $this->frontendControllerMock->config = [];
+        $this->frontendControllerMock->page =  [];
+        $this->frontendControllerMock->sys_page = $pageRepositoryMock;
+        $GLOBALS['TSFE'] = $this->frontendControllerMock;
+        $GLOBALS['TYPO3_DB'] =
+            $this->getMockBuilder(DatabaseConnection::class)->getMock();
 
         $this->subject = $this->getAccessibleMock(
-            \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class,
-            array('getResourceFactory', 'getEnvironmentVariable'),
-            array($this->typoScriptFrontendControllerMock)
+            ContentObjectRenderer::class,
+            ['getResourceFactory', 'getEnvironmentVariable'],
+            [$this->frontendControllerMock]
         );
         $this->subject->setContentObjectClassMap($this->contentObjectMap);
-        $this->subject->start(array(), 'tt_content');
+        $this->subject->start([], 'tt_content');
     }
 
     protected function tearDown()
@@ -173,7 +199,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->with('typo3/clear.gif')
             ->will($this->returnValue('typo3/clear.gif'));
 
-        $resourceFactory = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+        $resourceFactory = $this->createMock(ResourceFactory::class);
         $this->subject->expects($this->any())->method('getResourceFactory')->will($this->returnValue($resourceFactory));
 
         $className = $this->getUniqueId('tx_coretest');
@@ -205,7 +231,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertEquals('typo3/clear.gif', $file);
         $this->assertEquals('typo3/clear.gif', $imageResource['origFile']);
         $this->assertTrue(is_array($fileArray));
-        $this->assertTrue($parent instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer);
+        $this->assertTrue($parent instanceof ContentObjectRenderer);
         return $imageResource;
     }
 
@@ -231,7 +257,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getContentObjectCallsMakeInstanceForNewContentObjectInstance($name, $fullClassName)
     {
         $contentObjectInstance = $this->createMock($fullClassName);
-        \TYPO3\CMS\Core\Utility\GeneralUtility::addInstance($fullClassName, $contentObjectInstance);
+        GeneralUtility::addInstance($fullClassName, $contentObjectInstance);
         $this->assertSame($contentObjectInstance, $this->subject->getContentObject($name));
     }
 
@@ -2677,7 +2703,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 )
             ),
         );
-        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array('getTreeList'));
+        $this->subject = $this->getAccessibleMock(ContentObjectRenderer::class, array('getTreeList'));
         $this->subject->start(array(), 'tt_content');
         $conf = array(
             'recursive' => '15',
@@ -2715,7 +2741,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 )
             ),
         );
-        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array('getTreeList'));
+        $this->subject = $this->getAccessibleMock(ContentObjectRenderer::class, array('getTreeList'));
         $GLOBALS['TSFE']->id = 27;
         $this->subject->start(array(), 'tt_content');
         $conf = array(
@@ -2912,7 +2938,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_ageCallsCalcAgeWithSubtractedTimestampAndSubPartOfArray()
     {
-        $subject = $this->getMockBuilder(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class)
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(array('calcAge'))
             ->getMock();
         // Set exec_time to a hard timestamp
@@ -3596,7 +3622,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function stdWrap_addPageCacheTagsAddsPageTags(array $expectedTags, array $configuration)
     {
         $this->subject->stdWrap_addPageCacheTags('', $configuration);
-        $this->assertEquals($expectedTags, $this->typoScriptFrontendControllerMock->_get('pageCacheTags'));
+        $this->assertEquals($expectedTags, $this->frontendControllerMock->_get('pageCacheTags'));
     }
 
     /**
@@ -4281,7 +4307,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function stdWrap_lang($expected, $input, $conf, $language)
     {
         if ($language) {
-            $this->typoScriptFrontendControllerMock
+            $this->frontendControllerMock
                 ->config['config']['language'] = $language;
         }
         $this->assertSame($expected,
@@ -4509,7 +4535,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getDataWithTypeFileReturnsUidOfFileObject()
     {
         $uid = $this->getUniqueId();
-        $file = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
+        $file = $this->createMock(File::class);
         $file->expects($this->once())->method('getUid')->will($this->returnValue($uid));
         $this->subject->setCurrentFile($file);
         $this->assertEquals($uid, $this->subject->getData('file:current:uid'));
@@ -5091,7 +5117,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getImageSourceCollectionRendersDefinedSources()
     {
         /** @var $cObj \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-        $cObj = $this->getMockBuilder(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class)
+        $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(array('stdWrap', 'getImgResource'))
             ->getMock();
 
@@ -5189,7 +5215,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getImageSourceCollectionRendersDefinedLayoutKeyDefault($layoutKey, $configuration)
     {
         /** @var $cObj \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-        $cObj = $this->getMockBuilder(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class)
+        $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(array('stdWrap', 'getImgResource'))
             ->getMock();
 
@@ -5312,7 +5338,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getImageSourceCollectionRendersDefinedLayoutKeyData($layoutKey, $configuration, $xhtmlDoctype, $expectedHtml)
     {
         /** @var $cObj \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-        $cObj = $this->getMockBuilder(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class)
+        $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(array('stdWrap', 'getImgResource'))
             ->getMock();
 
@@ -5347,8 +5373,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getImageSourceCollectionHookCalled()
     {
-        $this->subject = $this->getAccessibleMock(
-            \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class,
+        $this->subject = $this->getAccessibleMock(ContentObjectRenderer::class,
             array('getResourceFactory', 'stdWrap', 'getImgResource')
         );
         $this->subject->start(array(), 'tt_content');
@@ -5362,11 +5387,12 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('getImgResource')
             ->will($this->returnValue(array(100, 100, null, 'bar-file.jpg')));
 
-        $resourceFactory = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+        $resourceFactory = $this->createMock(ResourceFactory::class);
         $this->subject->expects($this->any())->method('getResourceFactory')->will($this->returnValue($resourceFactory));
 
         $className = $this->getUniqueId('tx_coretest_getImageSourceCollectionHookCalled');
-        $getImageSourceCollectionHookMock = $this->getMockBuilder(\TYPO3\CMS\Frontend\ContentObject\ContentObjectOneSourceCollectionHookInterface::class)
+        $getImageSourceCollectionHookMock = $this->getMockBuilder(
+            ContentObjectOneSourceCollectionHookInterface::class)
             ->setMethods(array('getOneSourceCollection'))
             ->setMockClassName($className)
             ->getMock();
@@ -5570,7 +5596,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
 
-        $this->typoScriptFrontendControllerMock->config['config']['contentObjectExceptionHandler'] = '1';
+        $this->frontendControllerMock->config['config']['contentObjectExceptionHandler'] = '1';
         $this->subject->render($contentObjectFixture, array());
     }
 
@@ -5582,7 +5608,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1414513947);
-        $this->typoScriptFrontendControllerMock->config['config']['contentObjectExceptionHandler'] = '1';
+        $this->frontendControllerMock->config['config']['contentObjectExceptionHandler'] = '1';
         $configuration = array(
             'exceptionHandler' => '0'
         );
@@ -5613,7 +5639,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
 
-        $this->typoScriptFrontendControllerMock
+        $this->frontendControllerMock
             ->config['config']['contentObjectExceptionHandler.'] = array(
                 'errorMessage' => 'Global message for testing',
             );
@@ -6371,7 +6397,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function typolinkReturnsCorrectLinksForPages($linkText, $configuration, $pageArray, $expectedResult)
     {
-        $pageRepositoryMockObject = $this->getMockBuilder(\TYPO3\CMS\Frontend\Page\PageRepository::class)
+        $pageRepositoryMockObject = $this->getMockBuilder(PageRepository::class)
             ->setMethods(array('getPage'))
             ->getMock();
         $pageRepositoryMockObject->expects($this->any())->method('getPage')->willReturn($pageArray);
@@ -6754,7 +6780,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $result = $this->subject->filelink($fileName, array('path' => 'typo3temp/var/tests/'));
         $this->assertEquals('<a href="' . $expectedLink . '">' . $fileName . '</a>', $result);
 
-        \TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($fileNameAndPath);
+        GeneralUtility::unlink_tempfile($fileNameAndPath);
     }
 
     /**
@@ -6875,7 +6901,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function substituteMarkerArrayCachedReturnsExpectedContent($content, array $markContentArray, array $subpartContentArray, array $wrappedSubpartContentArray, $expectedContent, $shouldQueryCache = true, $shouldStoreCache = true)
     {
         /** @var PageRepositoryFixture|\PHPUnit_Framework_MockObject_MockObject $pageRepo */
-        $pageRepo = $this->typoScriptFrontendControllerMock->sys_page;
+        $pageRepo = $this->frontendControllerMock->sys_page;
         $pageRepo->resetCallCount();
 
         $resultContent = $this->subject->substituteMarkerArrayCached($content, $markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
@@ -6891,7 +6917,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function substituteMarkerArrayCachedRetrievesCachedValueFromRuntimeCache()
     {
         /** @var PageRepositoryFixture|\PHPUnit_Framework_MockObject_MockObject $pageRepo */
-        $pageRepo = $this->typoScriptFrontendControllerMock->sys_page;
+        $pageRepo = $this->frontendControllerMock->sys_page;
         $pageRepo->resetCallCount();
 
         $content = 'Please tell me this ###FOO###.';
@@ -6920,7 +6946,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function substituteMarkerArrayCachedRetrievesCachedValueFromDbCache()
     {
         /** @var PageRepositoryFixture|\PHPUnit_Framework_MockObject_MockObject $pageRepo */
-        $pageRepo = $this->typoScriptFrontendControllerMock->sys_page;
+        $pageRepo = $this->frontendControllerMock->sys_page;
         $pageRepo->resetCallCount();
 
         $content = 'Please tell me this ###FOO###.';
@@ -6949,7 +6975,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function substituteMarkerArrayCachedStoresResultInCaches()
     {
         /** @var PageRepositoryFixture|\PHPUnit_Framework_MockObject_MockObject $pageRepo */
-        $pageRepo = $this->typoScriptFrontendControllerMock->sys_page;
+        $pageRepo = $this->frontendControllerMock->sys_page;
         $pageRepo->resetCallCount();
 
         $content = 'Please tell me this ###FOO###.';
