@@ -31,35 +31,29 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 	};
 
 	RteLinkBrowser.changeClassSelector = function() {
-		// @todo totally non-working code. just copied that over as a first step
-
-		if (document.ltargetform.anchor_class) {
-			document.ltargetform.anchor_class.value = document.ltargetform.anchor_class.options[document.ltargetform.anchor_class.selectedIndex].value;
-			if (document.ltargetform.anchor_class.value && RteLinkBrowser.HTMLArea.classesAnchorSetup) {
+		if (document.lclassform.lclass) {
+			document.lclassform.lclass.value = document.lclassform.lclass.options[document.lclassform.lclass.selectedIndex].value;
+			if (document.lclassform.lclass.value && RteLinkBrowser.HTMLArea.classesAnchorSetup) {
 				for (var i = RteLinkBrowser.HTMLArea.classesAnchorSetup.length; --i >= 0;) {
 					var anchorClass = RteLinkBrowser.HTMLArea.classesAnchorSetup[i];
-					if (anchorClass['name'] === document.ltargetform.anchor_class.value) {
-						if (anchorClass['titleText'] && document.ltargetform.ltitle) {
-							document.ltargetform.anchor_title.value = anchorClass['titleText'];
+					if (anchorClass['name'] === document.lclassform.lclass.value) {
+						if (anchorClass['titleText'] && document.ltitleform.ltitle) {
+							document.ltitleform.ltitle.value = anchorClass['titleText'];
 							document.getElementById('rtehtmlarea-browse-links-title-readonly').innerHTML = anchorClass['titleText'];
-							browse_links_setTitle(anchorClass['titleText']);
 						}
 						if (typeof anchorClass['target'] !== 'undefined') {
 							if (document.ltargetform.ltarget) {
 								document.ltargetform.ltarget.value = anchorClass['target'];
 							}
-							browse_links_setTarget(anchorClass['target']);
 						} else if (document.ltargetform.ltarget && document.getElementById('ltargetrow').style.display === 'none') {
 							// Reset target to default if field is not displayed and class has no configured target
 							document.ltargetform.ltarget.value = RteLinkBrowser.defaultLinkTarget;
-							browse_links_setTarget(document.ltargetform.ltarget.value);
 						}
 						break;
 					}
 
 				}
 			}
-			browse_links_setClass(document.ltargetform.anchor_class.value);
 		}
 	};
 
