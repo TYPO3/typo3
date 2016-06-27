@@ -1,9 +1,4 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
-.. include:: ../Includes.txt
+﻿.. include:: ../Includes.txt
 
 
 
@@ -20,5 +15,6 @@ Administration
 
    Versioning/Index
    Workspaces/Index
+   CustomWorkspace/Index
    Configuration/Index
-
+   Scheduler/Index
