@@ -3,16 +3,19 @@
 
 .. _wizard-settings-defaults-elements-tab:
 
-============
-Elements tab
-============
+==============
+Tab "Elements"
+==============
 
 The elements tab contains an accordion with buttons, grouped by their
 type. These buttons identify a form element, like a text field, password
 field or submit button. When dragging a button to the form on the right
 and dropping it at a certain point in the form, the element will be added
-to the form at that point. A user can also double click a button. When
-doing so, the element will be added at the bottom of the form.
+to the form at that point. An editor can also double click a button. When
+doing so, the element will be added at the end of the form.
+
+.. figure:: ../../../../Images/FormCreationWizardElementsTab.png
+    :alt: The form wizard with the tab "Elements".
 
 .. contents::
     :local:
@@ -35,8 +38,8 @@ showAccordions
 :aspect:`Description:`
     Comma-separated list of the accordions that will be shown in the
     wizard. Each of the three accordions contain a single showButton
-    property which defines which form elements will be shown in a
-    given accordion.
+    property which defines which form elements will be shown in a given
+    accordion.
 
 :aspect:`Default:`
     basic, predefined, content
@@ -56,35 +59,34 @@ showButtons
     string
 
 :aspect:`Description:`
-    Comma-separated list of the buttons that will be shown in the
-    accordion. Please note, in the shown path has [NameOfAccordion]
-    to be replaced with the name of the specific accordion.
+    Comma-separated list of the buttons that will be shown in the accordion.
+    Please note, in the shown path has [NameOfAccordion] to be replaced with
+    the name of the specific accordion.
 
 :aspect:`Default:`
     **"basic" elements**
 
+    - textline (Text Field)
+    - textarea (Textarea)
     - checkbox (Checkbox)
-    - fieldset (Fieldset)
+    - radio (Radio Button)
+    - select (Drop Down)
     - fileupload (Upload Field)
     - hidden (Hidden Field)
     - password (Password Field)
-    - radio (Radio Button)
-    - reset (Reset Button)
-    - select (Drop Down)
+    - fieldset (Fieldset)
     - submit (Submit Button)
-    - textarea (Textarea)
-    - textline (Text Field)
-
-    Additionally, there is the element "button" available which is not visible by default.
+    - reset (Reset Button)
+    - button (Button)
 
     |
 
     **"predefined" elements**
 
-    - email (Email)
-    - radiogroup (Radio Button Group)
-    - checkboxgroup (Checkbox Group)
     - name (Full Name)
+    - email (Email)
+    - checkboxgroup (Checkbox Group)
+    - radiogroup (Radio Button Group)
 
     |
 
@@ -106,15 +108,16 @@ The default configuration of the elements tab is as follows.
   mod.wizards {
     form {
       defaults {
+        showTabs = elements, options, form
         tabs {
           elements {
             showAccordions = basic, predefined, content
             accordions {
               basic {
-                showButtons = checkbox, fieldset, fileupload, hidden, password, radio, reset, select, submit, textarea, textline
+                showButtons = textline, textarea, checkbox, radio, select, fileupload, hidden, password, fieldset, submit, reset, button
               }
               predefined {
-                showButtons = email, radiogroup, checkboxgroup, name
+                showButtons = name, email, checkboxgroup, radiogroup
               }
               content {
                 showButtons = header, textblock

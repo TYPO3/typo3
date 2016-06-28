@@ -30,8 +30,12 @@ The processing will be done in the order of the postProcessors.
 Custom postProcessors
 =====================
 
-It is also possible to configure a custom class as a postProcessor. Just use the class name as the postProcessor name.
+It is also possible to configure a custom class as a postProcessor. Just use
+the class name as the postProcessor name.
 The postProcessor class should implement `TYPO3\CMS\Form\PostProcess\PostProcessorInterface`
+
+The custom postProcessor is not available within the form wizard. Currently,
+there is no possibility to extend the wizard.
 
 **Example:**
 
@@ -44,11 +48,14 @@ The postProcessor class should implement `TYPO3\CMS\Form\PostProcess\PostProcess
       senderEmail = foo@bar.com
       subject = Baz
     }
+
     2 = redirect
     2 {
       destination = 5
     }
+
     3 = Vendor\ExtensionName\Folder\ClassName
     3 {
     }
   }
+

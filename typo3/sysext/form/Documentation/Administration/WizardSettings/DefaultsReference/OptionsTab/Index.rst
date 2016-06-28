@@ -1,18 +1,21 @@
-﻿.. include:: ../../../../Includes.txt
+.. include:: ../../../../Includes.txt
 
 
 .. _wizard-settings-defaults-options-tab:
 
-===========
-Options tab
-===========
+=============
+Tab "Options"
+=============
 
 The options tab will show the configuration of a particular element in
 the form. When no element has been selected, it will show a message that
-you have to select an element in the form.
+the editor has to select an element in the form.
 
-The content of this tab depends on the type of element you've chosen in
-the form.
+The content of this tab depends on the type of element the editor has chosen
+in the form.
+
+.. figure:: ../../../../Images/FormCreationWizardOptionsTab.png
+    :alt: The form wizard with the tab "Options".
 
 .. contents::
     :local:
@@ -44,11 +47,11 @@ showAccordions
     The following accordions are available:
 
     - *legend*: Legend Properties
-    - *label*: Label Properties :ref:`to section <wizard-settings-defaults-options-label>`
-    - *attributes*: Attributes Properties :ref:`> to section <wizard-settings-defaults-options-attributes>`
+    - *label*: :ref:`Label Properties <wizard-settings-defaults-options-label>`
+    - *attributes*: :ref:`Attributes Properties <wizard-settings-defaults-options-attributes>`
     - *options*: Field Options
-    - *validation*: Validation :ref:`> to section <wizard-settings-defaults-validation-label>`
-    - *filters*: Filters :ref:`> to section <wizard-settings-defaults-filters-label>`
+    - *validation*: :ref:`Validation <wizard-settings-defaults-validation-label>`
+    - *filters*: :ref:`Filters <wizard-settings-defaults-filters-label>`
     - *various*: Various Properties
 
 :aspect:`Example:`
@@ -63,6 +66,7 @@ showAccordions
               }
             }
           }
+
         }
       }
 
@@ -88,13 +92,13 @@ showProperties
     string
 
 :aspect:`Description:`
-    Comma-separated list of the label options that are allowed to be
-    shown in the accordion. The appearance of an option depends on
-    the chosen element type. If an element type does not support an
-    option, it will not be shown.
+    Comma-separated list of the label options that are allowed to be shown
+    in the accordion. The appearance of an option depends on the chosen
+    element type. If an element type does not support an option, it will not
+    be shown.
 
 :aspect:`Default:`
-    label, layout
+    label
 
 
 .. _wizard-settings-defaults-options-attributes:
@@ -118,17 +122,20 @@ showProperties
     string
 
 :aspect:`Description:`
-    Comma-separated list of attributes that are allowed to be shown in
-    the accordion. The appearance of an attribute depends on the chosen
-    element type. If an element type does not support an attribute, it
-    will not be shown.
+    Comma-separated list of attributes that are allowed to be shown in the
+    accordion. The appearance of an attribute depends on the chosen element
+    type. If an element type does not support an attribute, it will not be
+    shown.
 
 
 :aspect:`Default:`
-    accept, accept-charset, accesskey, action, alt, checked, class,
-    cols, dir, disabled, enctype, id, label, lang, maxlength,
-    method, multiple, name, readonly, rows, selected, size, src,
-    style, tabindex, title, type, value
+    accept, accept-charset, accesskey, action, alt, autocomplete, autofocus,
+    checked, class, cols, contenteditable, contextmenu, dir, draggable,
+    dropzone, disabled, enctype, hidden, height, id, inputmode, label, lang,
+    list, max, maxlength, method, min, minlength, multiple, name,
+    novalidate, pattern, placeholder, readonly, required, rows, selected,
+    selectionDirection, selectionEnd, selectionStart, size, spellcheck, src,
+    step, style, tabindex, text, title, translate, type, value, width, wrap
 
 
 .. _wizard-settings-defaults-validation-label:
@@ -157,8 +164,8 @@ showRules
 
 :aspect:`Default:`
     alphabetic, alphanumeric, between, date, digit, email, equals,
-    float, greaterthan, inarray, integer, ip, length, lessthan,
-    regexp, required, uri
+    fileallowedtypes, filemaximumsize, fileminimumsize, float, greaterthan,
+    inarray, integer, ip, length, lessthan, regexp, required, uri
 
 
 .. _wizard-settings-defaults-options-validation-rules:
@@ -182,30 +189,30 @@ rules.[rule].showProperties
 :aspect:`Default:`
     The following element properties are available:
 
-    =================== ======================================================================
+    =================== ========================================================
     Element             Properties
-    =================== ======================================================================
-    alphabetic          message, error, breakOnError, showMessage, allowWhiteSpace
-    alphanumeric        message, error, breakOnError, showMessage, allowWhiteSpace
-    between             message, error, breakOnError, showMessage, minimum, maximum, inclusive
-    date                message, error, breakOnError, showMessage, format
-    digit               message, error, breakOnError, showMessage
-    email               message, error, breakOnError, showMessage
-    equals              message, error, breakOnError, showMessage, field
-    fileallowedtypes    message, error, breakOnError, showMessage, types
-    filemaximumsize     message, error, breakOnError, showMessage, maximum
-    fileminimumsize     message, error, breakOnError, showMessage, minimum
-    float               message, error, breakOnError, showMessage
-    greaterthan         message, error, breakOnError, showMessage, minimum
-    inarray             message, error, breakOnError, showMessage, array, strict
-    integer             message, error, breakOnError, showMessage
-    ip                  message, error, breakOnError, showMessage
-    length              message, error, breakOnError, showMessage, minimum, maximum
-    lessthan            message, error, breakOnError, showMessage, maximum
-    regexp              message, error, breakOnError, showMessage, expression
-    required            message, error, breakOnError, showMessage
-    uri                 message, error, breakOnError, showMessage
-    =================== ======================================================================
+    =================== ========================================================
+    alphabetic          message, error, showMessage, allowWhiteSpace
+    alphanumeric        message, error, showMessage, allowWhiteSpace
+    between             message, error, showMessage, minimum, maximum, inclusive
+    date                message, error, showMessage, format
+    digit               message, error, showMessage
+    email               message, error, showMessage
+    equals              message, error, showMessage, field
+    fileallowedtypes    message, error, showMessage, types
+    filemaximumsize     message, error, showMessage, maximum
+    fileminimumsize     message, error, showMessage, minimum
+    float               message, error, showMessage
+    greaterthan         message, error, showMessage, minimum
+    inarray             message, error, showMessage, array, strict
+    integer             message, error, showMessage
+    ip                  message, error, showMessage
+    length              message, error, showMessage, minimum, maximum
+    lessthan            message, error, showMessage, maximum
+    regexp              message, error, showMessage, expression
+    required            message, error, showMessage
+    uri                 message, error, showMessage
+    =================== ========================================================
 
 
 .. _wizard-settings-defaults-filters-label:
@@ -235,8 +242,8 @@ showFilters
     For each filter a list of properties to be shown can be defined.
 
 :aspect:`Default:`
-    alphabetic, alphanumeric, currency, digit, integer, lowercase,
-    regexp, removexss, titlecase, trim, uppercase
+    alphabetic, alphanumeric, currency, digit, integer, lowercase, regexp,
+    stripnewlines, titlecase, trim, uppercase
 
 
 .. _wizard-settings-defaults-options-filtering-filters:
@@ -286,79 +293,79 @@ The default configuration of the options tab looks like this:
   options {
      showAccordions = legend, label, attributes, options, validation, filters, various
      accordions {
-         attributes {
-            showProperties = accept, acceptcharset, accesskey, action, alt, checked, class, cols, dir, disabled, enctype, id, label, lang, maxlength, method, multiple, name, readonly, rows, selected, size, src, style, tabindex, title, type, value
-         }
          label {
             showProperties = label
+         }
+         attributes {
+            showProperties = accept, accept-charset, accesskey, action, alt, autocomplete, autofocus, checked, class, cols, contenteditable, contextmenu, dir, draggable, dropzone, disabled, enctype, hidden, height, id, inputmode, label, lang, list, max, maxlength, method, min, minlength, multiple, name, novalidate, pattern, placeholder, readonly, required, rows, selected, selectionDirection, selectionEnd, selectionStart, size, spellcheck, src, step, style, tabindex, text, title, translate, type, value, width, wrap
          }
          validation {
             showRules = alphabetic, alphanumeric, between, date, digit, email, equals, fileallowedtypes, filemaximumsize, fileminimumsize, float, greaterthan, inarray, integer, ip, length, lessthan, regexp, required, uri
             rules {
                alphabetic {
-                  showProperties = message, error, breakOnError, showMessage, allowWhiteSpace
+                  showProperties = message, error, showMessage, allowWhiteSpace
                }
                alphanumeric {
-                  showProperties = message, error, breakOnError, showMessage, allowWhiteSpace
+                  showProperties = message, error, showMessage, allowWhiteSpace
                }
                between {
-                  showProperties = message, error, breakOnError, showMessage, minimum, maximum, inclusive
+                  showProperties = message, error, showMessage, minimum, maximum, inclusive
                }
                date {
-                  showProperties = message, error, breakOnError, showMessage, format
+                  showProperties = message, error, showMessage, format
                }
                digit {
-                  showProperties = message, error, breakOnError, showMessage
+                  showProperties = message, error, showMessage
                }
                email {
-                  showProperties = message, error, breakOnError, showMessage
+                  showProperties = message, error, showMessage
                }
                equals {
-                  showProperties = message, error, breakOnError, showMessage, field
+                  showProperties = message, error, showMessage, field
                }
                fileallowedtypes {
-                  showProperties = message, error, breakOnError, showMessage, types
+                  showProperties = message, error, showMessage, types
                }
                filemaximumsize {
-                  showProperties = message, error, breakOnError, showMessage, maximum
+                  showProperties = message, error, showMessage, maximum
                }
                fileminimumsize {
-                  showProperties = message, error, breakOnError, showMessage, minimum
+                  showProperties = message, error, showMessage, minimum
                }
                float {
-                  showProperties = message, error, breakOnError, showMessage
+                  showProperties = message, error, showMessage
                }
                greaterthan {
-                  showProperties = message, error, breakOnError, showMessage, minimum
+                  showProperties = message, error, showMessage, minimum
                }
                inarray {
-                  showProperties = message, error, breakOnError, showMessage, array, strict
+                  showProperties = message, error, showMessage, array, strict
                }
                integer {
-                  showProperties = message, error, breakOnError, showMessage
+                  showProperties = message, error, showMessage
                }
                ip {
-                  showProperties = message, error, breakOnError, showMessage
+                  showProperties = message, error, showMessage
                }
                length {
-                  showProperties = message, error, breakOnError, showMessage, minimum, maximum
+                  showProperties = message, error, showMessage, minimum, maximum
                }
                lessthan {
-                  showProperties = message, error, breakOnError, showMessage, maximum
+                  showProperties = message, error, showMessage, maximum
                }
                regexp {
-                  showProperties = message, error, breakOnError, showMessage, expression
+                  showProperties = message, error, showMessage, expression
                }
                required {
-                  showProperties = message, error, breakOnError, showMessage
+                  showProperties = message, error, showMessage
                }
                uri {
-                  showProperties = message, error, breakOnError, showMessage
+                  showProperties = message, error, showMessage
                }
             }
          }
          filtering {
-            showFilters = alphabetic, alphanumeric, currency, digit, integer, lowercase, regexp, removexss, titlecase, trim, uppercase
+            showFilters = alphabetic, alphanumeric, currency, digit, integer, lowercase, regexp, stripnewlines, titlecase, trim, uppercase
             filters {
                alphabetic {
                   showProperties = allowWhiteSpace
@@ -397,4 +404,3 @@ The default configuration of the options tab looks like this:
          }
       }
   }
-

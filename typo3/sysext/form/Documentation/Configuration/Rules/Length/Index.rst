@@ -11,15 +11,6 @@ Checks if the submitted value is of a certain length. A minimum length can
 be used or a minimum and a maximum length.
 
 
-.. _reference-rules-length-breakonerror:
-
-breakOnError
-============
-
-:aspect:`Description:`
-    See general information for :ref:`reference-validation-attributes-breakonerror`.
-
-
 .. _reference-rules-length-element:
 
 element

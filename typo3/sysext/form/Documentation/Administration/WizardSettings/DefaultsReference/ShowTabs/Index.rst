@@ -9,6 +9,12 @@ showTabs
 
 (:ts:`mod.wizards.form.defaults.showTabs`)
 
+The configuration "showTabs" defines the outermost tabs on the left
+side of the form wizard.
+
+.. figure:: ../../../../Images/FormCreationWizardShowTabs.png
+    :alt: The form wizard with the main tabs.
+
 :aspect:`Property:`
    showTabs
 
@@ -28,6 +34,8 @@ tabs
 ====
 
 (:ts:`mod.wizards.form.defaults.tabs`)
+
+Each of the 3 tabs can be further customized.
 
 :aspect:`Property:`
     tabs

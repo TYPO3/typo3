@@ -12,15 +12,6 @@ Checks if the submitted value exists and is not empty.
 0 or "0" are allowed and the rule will return true.
 
 
-.. _reference-rules-required-breakonerror:
-
-breakOnError
-============
-
-:aspect:`Description:`
-    See general information for :ref:`reference-validation-attributes-breakonerror`.
-
-
 .. _reference-rules-required-element:
 
 element

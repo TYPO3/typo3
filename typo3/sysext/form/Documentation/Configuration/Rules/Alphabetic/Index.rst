@@ -19,15 +19,6 @@ allowWhiteSpace
     See general information for  :ref:`reference-validation-attributes-allowwhitespace`.
 
 
-.. _reference-rules-alphabetic-breakonerror:
-
-breakOnError
-============
-
-:aspect:`Description:`
-    See general information for :ref:`reference-validation-attributes-breakonerror`.
-
-
 .. _reference-rules-alphabetic-element:
 
 element

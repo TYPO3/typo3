@@ -15,15 +15,6 @@ requirements into account. Allows domain name and IP addresses, and ensures
 that the IP address entered is valid.
 
 
-.. _reference-rules-email-breakonerror:
-
-breakOnError
-============
-
-:aspect:`Description:`
-    See general information for :ref:`reference-validation-attributes-breakonerror`.
-
-
 .. _reference-rules-email-element:
 
 element

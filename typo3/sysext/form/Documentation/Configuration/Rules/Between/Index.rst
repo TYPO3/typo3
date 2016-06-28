@@ -12,15 +12,6 @@ value. By default, minimum and maximum are excluded, but can be included in
 the validation.
 
 
-.. _reference-rules-between-breakonerror:
-
-breakOnError
-============
-
-:aspect:`Description:`
-    See general information for :ref:`reference-validation-attributes-breakonerror`.
-
-
 .. _reference-rules-between-element:
 
 element

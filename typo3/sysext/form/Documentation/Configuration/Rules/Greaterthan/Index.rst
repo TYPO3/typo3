@@ -10,15 +10,6 @@ greaterthan
 Checks if the submitted value is greater than the integer set in TypoScript.
 
 
-.. _reference-rules-greaterthan-breakonerror:
-
-breakOnError
-============
-
-:aspect:`Description:`
-    See general information for :ref:`reference-validation-attributes-breakonerror`.
-
-
 .. _reference-rules-greaterthan-element:
 
 element

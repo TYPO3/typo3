@@ -36,15 +36,6 @@ array
       }
 
 
-.. _reference-rules-inarray-breakonerror:
-
-breakOnError
-============
-
-:aspect:`Description:`
-    See general information for :ref:`reference-validation-attributes-breakonerror`.
-
-
 .. _reference-rules-inarray-element:
 
 element

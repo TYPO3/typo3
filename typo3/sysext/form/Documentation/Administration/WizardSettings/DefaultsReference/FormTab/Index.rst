@@ -3,12 +3,15 @@
 
 .. _wizard-settings-defaults-form-tab:
 
-========
-Form tab
-========
+==========
+Tab "Form"
+==========
 
-The form tab shows the configuration of the outer form, like the
-attributes of the form or the prefix.
+The form tab shows the configuration of the outer form, like the attributes
+of the form or the prefix as well as the post-processor configuration.
+
+.. figure:: ../../../../Images/FormCreationWizardFormTab.png
+    :alt: The form wizard with the tab "Form".
 
 .. contents::
     :local:
@@ -40,8 +43,8 @@ showAccordions
 
     * behaviour
     * prefix
-    * attributes :ref:`> to section <wizard-settings-defaults-form-attributes>`
-    * postProcessor :ref:`> to section <wizard-settings-defaults-form-postprocessor>`
+    * :ref:`attributes <wizard-settings-defaults-form-attributes>`
+    * :ref:`postProcessor <wizard-settings-defaults-form-postprocessor>`
 
 
 .. _wizard-settings-defaults-form-attributes:
@@ -52,14 +55,14 @@ Attributes accordion
 
 .. _wizard-settings-defaults-form-attributes-showproperties:
 
-.. attention::
-
-    The whole configuration of the attributes accordion is not working
-    correctly and has to be fixed in a coming version of TYPO3. There is a
-    workaround which can be found :ref:`below <wizard-settings-defaults-form-workaround>`.
-
 showProperties
 --------------
+
+.. attention::
+
+    The configuration of the attributes accordion is not working as
+    expected and has to be fixed in a coming version of TYPO3. There is
+    a workaround which is shown below.
 
 (:ts:`mod.wizards.form.defaults.tabs.form.accordions.attributes.showProperties`)
 
@@ -74,8 +77,11 @@ showProperties
     in the accordion.
 
 :aspect:`Default:`
-    accept, accept-charset, action, class, dir, enctype, id, lang, method,
-    name, style, title
+    accept, action, dir, enctype, lang, method, novalidate, class, id, style, title
+
+Since the above shown configuration is not working, the following workaround can
+be applied. To configure the attribute accordion of the form element, address the
+object directly via :ts:`mod.wizards.form.elements.form.accordions.attributes.showProperties`.
 
 
 .. _wizard-settings-defaults-form-postprocessor:
@@ -154,45 +160,24 @@ The default configuration of the form tab looks as follows:
 
 .. code-block:: typoscript
 
-  ...
-  form {
-    showAccordions = behaviour, prefix, attributes, postProcessor
-    accordions {
-      attributes {
-        showProperties = accept, accept-charset, action, class, dir, enctype, id, lang, method, name, style, title
-      }
-      postProcessor {
-        showPostProcessors = mail
-        postProcessors {
-          mail {
-            showProperties = recipientEmail, senderEmail, subject
-          }
-        }
-      }
-    }
-  }
-  ...
-
-
-.. _wizard-settings-defaults-form-workaround:
-
-Workaround for configuration of the attributes accordion
-========================================================
-
-Since the above mentioned configuration of the attributes accordion is not
-working as expected the following workaround is possible. Addressing (:ts:`mod.wizards.form.elements.form.accordions.attributes`)
-allows to modify the attributes accordion. The example below illustrates
-the procedure.
-
-.. code-block:: typoscript
-
   mod.wizards {
     form {
-      elements {
-        form {
-          accordions {
-            attributes {
-              showProperties = accept, accept-charset, action, class, dir, enctype, id, lang, method, name, style, title
+      defaults {
+        tabs {
+          form {
+            showAccordions = behaviour, prefix, attributes, postProcessor
+            accordions {
+              postProcessor {
+                showPostProcessors = mail, redirect
+                postProcessors {
+                  mail {
+                    showProperties = recipientEmail, senderEmail, subject
+                  }
+                  redirect {
+                    showProperties = destination
+                  }
+                }
+              }
             }
           }
         }

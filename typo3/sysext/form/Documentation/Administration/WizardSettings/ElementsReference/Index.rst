@@ -7,12 +7,12 @@
 Elements reference
 ==================
 
-Overrule the default settings of the :ref:`Option <wizard-settings-defaults-options-tab>`
+Overrule the default settings of the :ref:`option <wizard-settings-defaults-options-tab>`
 tab for specific element types.
 
-In the left "settings" part there is a tab called "options". The contents
+In the left "settings" part there is a tab called "Options". The contents
 of this tab will adapt itself to the selected element type in the form.
-If no elements configuration is used, the default settings will be used.
+If no elements configuration exists, the default settings will be used.
 
 
 .. _overriding-element-settings:

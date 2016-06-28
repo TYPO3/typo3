@@ -10,15 +10,6 @@ ip
 Checks if the submitted value is an IP address.
 
 
-.. _reference-rules-ip-breakonerror:
-
-breakOnError
-============
-
-:aspect:`Description:`
-    See general information for :ref:`reference-validation-attributes-breakonerror`.
-
-
 .. _reference-rules-ip-element:
 
 element

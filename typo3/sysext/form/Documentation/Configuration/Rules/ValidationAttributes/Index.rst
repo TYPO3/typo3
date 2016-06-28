@@ -31,25 +31,6 @@ allowWhiteSpace
     0
 
 
-.. _reference-validation-attributes-breakonerror:
-
-breakOnError
-============
-
-:aspect:`Property:`
-    breakOnError
-
-:aspect:`Data type:`
-    boolean
-
-:aspect:`Description:`
-    If breakOnError = 1 and the rule does not validate, all remaining rules
-    will not be processed.
-
-:aspect:`Default:`
-    0
-
-
 .. _reference-validation-attributes-element:
 
 element
