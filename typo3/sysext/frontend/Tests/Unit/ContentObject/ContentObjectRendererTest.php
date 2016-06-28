@@ -3685,62 +3685,50 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * Data provider for stdWrap_encodeForJavaScriptValue test
+     * Data provider for stdWrap_encodeForJavaScriptValue.
      *
-     * @return array multi-dimensional array with the second level like this:
-     * @see encodeForJavaScriptValue
+     * @return array []
      */
     public function stdWrap_encodeForJavaScriptValueDataProvider()
     {
-        return array(
-            'double quote in string' => array(
-                'double quote"',
-                array(),
-                '\'double\u0020quote\u0022\''
-            ),
-            'backslash in string' => array(
-                'backslash \\',
-                array(),
-                '\'backslash\u0020\u005C\''
-            ),
-            'exclamation mark' => array(
-                'exclamation!',
-                array(),
-                '\'exclamation\u0021\''
-            ),
-            'whitespace tab, newline and carriage return' => array(
-                "white\tspace\ns\r",
-                array(),
-                '\'white\u0009space\u000As\u000D\''
-            ),
-            'single quote in string' => array(
-                'single quote \'',
-                array(),
-                '\'single\u0020quote\u0020\u0027\''
-            ),
-            'tag' => array(
-                '<tag>',
-                array(),
-                '\'\u003Ctag\u003E\''
-            ),
-            'ampersand in string' => array(
-                'amper&sand',
-                array(),
-                '\'amper\u0026sand\''
-            ),
-        );
+        return [
+            'double quote in string' => [
+                '\'double\u0020quote\u0022\'', 'double quote"'
+            ],
+            'backslash in string' => [
+                '\'backslash\u0020\u005C\'', 'backslash \\'
+            ],
+            'exclamation mark' => [
+                '\'exclamation\u0021\'', 'exclamation!'
+            ],
+            'whitespace tab, newline and carriage return' => [
+                '\'white\u0009space\u000As\u000D\'', "white\tspace\ns\r"
+            ],
+            'single quote in string' => [
+                '\'single\u0020quote\u0020\u0027\'', 'single quote \''
+            ],
+            'tag' => [
+                '\'\u003Ctag\u003E\'', '<tag>'
+            ],
+            'ampersand in string' => [
+                '\'amper\u0026sand\'', 'amper&sand'
+            ]
+        ];
     }
 
     /**
-     * Check if encodeForJavaScriptValue works properly
+     * Check if encodeForJavaScriptValue works properly.
      *
-     * @dataProvider stdWrap_encodeForJavaScriptValueDataProvider
      * @test
+     * @dataProvider stdWrap_encodeForJavaScriptValueDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given input.
+     * @return void
      */
-    public function stdWrap_encodeForJavaScriptValue($input, $conf, $expected)
+    public function stdWrap_encodeForJavaScriptValue($expect, $content)
     {
-        $result = $this->subject->stdWrap_encodeForJavaScriptValue($input, $conf);
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expect,
+            $this->subject->stdWrap_encodeForJavaScriptValue($content));
     }
 
     /**
