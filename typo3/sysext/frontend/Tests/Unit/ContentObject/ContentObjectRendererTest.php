@@ -1651,6 +1651,40 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->assertSame($expected, $this->subject->stdWrap_stripHtml($content));
     }
 
+
+    /**
+     * Check if stdWrap_crop works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method listNum.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['crop'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_crop()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'crop' => $this->getUniqueId('crop'),
+            'crop.' => $this->getUniqueId('not used'),
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['crop'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('crop')
+            ->with( $content, $conf['crop'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_crop($content, $conf));
+    }
+
+
     /**
      * Data provider for round
      *
