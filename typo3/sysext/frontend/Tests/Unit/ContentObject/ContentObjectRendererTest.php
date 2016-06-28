@@ -3847,6 +3847,38 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Check if stdWrap_encapsLines works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method encaps_lineSplit.
+     * - Parameter 1 is $content.
+     * - Prameter 2 is $conf['encapsLines'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+     public function stdWrap_encapsLines()
+     {
+         $content = $this->getUniqueId('content');
+         $conf = [
+             'encapsLines' => [$this->getUniqueId('not used')],
+             'encapsLines.' => [$this->getUniqueId('encapsLines.')],
+         ];
+         $return = $this->getUniqueId('return');
+         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+             ->setMethods(['encaps_lineSplit'])->getMock();
+         $subject
+             ->expects($this->once())
+             ->method('encaps_lineSplit')
+             ->with($content, $conf['encapsLines.'])
+             ->willReturn($return);
+         $this->assertSame($return,
+             $subject->stdWrap_encapsLines($content, $conf));
+     }
+
+    /**
      * Data provider for stdWrap_keywords
      *
      * @return string[][] Order expected, input
