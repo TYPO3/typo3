@@ -2934,87 +2934,88 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * @test
-     */
-    public function stdWrap_ageCallsCalcAgeWithSubtractedTimestampAndSubPartOfArray()
-    {
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(array('calcAge'))
-            ->getMock();
-        // Set exec_time to a hard timestamp
-        $GLOBALS['EXEC_TIME'] = 10;
-        $subject->expects($this->once())->method('calcAge')->with(1, 'Min| Hrs| Days| Yrs');
-        $subject->stdWrap_age(9, array('age' => 'Min| Hrs| Days| Yrs'));
-    }
-
-    /**
-     * Data provider for calcAgeCalculatesAgeOfTimestamp
+     * Check if stdWrap_age works properly.
      *
-     * @return array
-     * @see calcAge
+     * Show:
+     *
+     * - Delegates to calcAge.
+     * - Parameter 1 is the difference between $content and EXEC_TIME.
+     * - Parameter 2 is $conf['age'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
      */
-    public function calcAgeCalculatesAgeOfTimestampDataProvider()
+    public function stdWrap_age()
     {
-        return array(
-            'minutes' => array(
-                120,
-                ' min| hrs| days| yrs',
-                '2 min',
-            ),
-            'hours' => array(
-                7200,
-                ' min| hrs| days| yrs',
-                '2 hrs',
-            ),
-            'days' => array(
-                604800,
-                ' min| hrs| days| yrs',
-                '7 days',
-            ),
-            'day with provided singular labels' => array(
-                86400,
-                ' min| hrs| days| yrs| min| hour| day| year',
-                '1 day',
-            ),
-            'years' => array(
-                1417997800,
-                ' min| hrs| days| yrs',
-                '45 yrs',
-            ),
-            'different labels' => array(
-                120,
-                ' Minutes| Hrs| Days| Yrs',
-                '2 Minutes',
-            ),
-            'negative values' => array(
-                -604800,
-                ' min| hrs| days| yrs',
-                '-7 days',
-            ),
-            'default label values for wrong label input' => array(
-                121,
-                10,
-                '2 min',
-            ),
-            'default singular label values for wrong label input' => array(
-                31536000,
-                10,
-                '1 year',
-            )
-        );
+        $now = 10;
+        $content = '9';
+        $conf = ['age' => $this->getUniqueId('age')];
+        $return = $this->getUniqueId('return');
+        $difference = $now - (int)$content;
+        $GLOBALS['EXEC_TIME'] = $now;
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['calcAge'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('calcAge')
+            ->with($difference, $conf['age'])
+            ->willReturn($return);
+        $this->assertSame($return, $subject->stdWrap_age($content, $conf));
     }
 
     /**
+     * Data provider for calcAge.
+     *
+     * @return array [$expect, $timestamp, $labels]
+     */
+    public function calcAgeDataProvider()
+    {
+        return [
+            'minutes' => [
+                '2 min', 120, ' min| hrs| days| yrs',
+            ],
+            'hours' => [
+                '2 hrs', 7200, ' min| hrs| days| yrs',
+            ],
+            'days' => [
+                '7 days', 604800, ' min| hrs| days| yrs',
+            ],
+            'day with provided singular labels' => [
+                '1 day', 86400, ' min| hrs| days| yrs| min| hour| day| year',
+            ],
+            'years' => [
+                '45 yrs', 1417997800, ' min| hrs| days| yrs',
+            ],
+            'different labels' => [
+                '2 Minutes', 120, ' Minutes| Hrs| Days| Yrs',
+            ],
+            'negative values' => [
+                '-7 days', -604800, ' min| hrs| days| yrs',
+            ],
+            'default label values for wrong label input' => [
+                '2 min', 121, 10,
+            ],
+            'default singular label values for wrong label input' => [
+                '1 year', 31536000, 10,
+            ]
+        ];
+    }
+
+    /**
+     * Check if calcAge works properly.
+     *
+     * @test
+     * @dataProvider calcAgeDataProvider
+     * @param int $expect
      * @param int $timestamp
      * @param string $labels
-     * @param int $expectation
-     * @dataProvider calcAgeCalculatesAgeOfTimestampDataProvider
-     * @test
+     * @return void
      */
-    public function calcAgeCalculatesAgeOfTimestamp($timestamp, $labels, $expectation)
+    public function calcAge($expect, $timestamp, $labels)
     {
-        $result = $this->subject->calcAge($timestamp, $labels);
-        $this->assertEquals($result, $expectation);
+        $this->assertSame($expect,
+            $this->subject->calcAge($timestamp, $labels));
     }
 
     /**
