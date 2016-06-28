@@ -67,5 +67,3 @@ There are 3 ways to modify the layout:
     LayoutViewSpecific/Index
     LayoutObjectSpecific/Index
 
-
-

@@ -7,7 +7,7 @@
 FORM objects
 ============
 
-The editor is not bound to the following FORM objects. Whenever FORM will be
+The editor is not bound to FORM objects shown below. Whenever FORM will be
 put in TypoScript, the contents of this property will be sent to the
 FORM plugin. However, one can use regular TYPO3 content objects (cObjects)
 as well. This means the integrator has the possibility to add COA, TEXT or

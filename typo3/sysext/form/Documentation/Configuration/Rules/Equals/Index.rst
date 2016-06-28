@@ -14,15 +14,6 @@ The rule and error messages will be put in the label of the object the rule
 is attached with by the property "element".
 
 
-.. _reference-rules-equals-breakonerror:
-
-breakOnError
-============
-
-:aspect:`Description:`
-    See general information for :ref:`reference-validation-attributes-breakonerror`.
-
-
 .. _reference-rules-equals-element:
 
 element

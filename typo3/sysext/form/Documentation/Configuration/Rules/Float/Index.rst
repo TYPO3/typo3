@@ -24,15 +24,6 @@ points are replaced by a dot to get a proper float which PHP can handle
 properly.
 
 
-.. _reference-rules-float-breakonerror:
-
-breakOnError
-============
-
-:aspect:`Description:`
-    See general information for :ref:`reference-validation-attributes-breakonerror`.
-
-
 .. _reference-rules-float-element:
 
 element

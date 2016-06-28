@@ -10,15 +10,6 @@ digit
 Checks if the submitted value only has the characters 0-9.
 
 
-.. _reference-rules-digit-breakonerror:
-
-breakOnError
-============
-
-:aspect:`Description:`
-    See general information for :ref:`reference-validation-attributes-breakonerror`.
-
-
 .. _reference-rules-digit-element:
 
 element

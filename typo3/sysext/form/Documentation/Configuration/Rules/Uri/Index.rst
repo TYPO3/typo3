@@ -13,15 +13,6 @@ following:
 - scheme://usern:passw@domain:port/path/file.ext?querystring#fragment
 
 
-.. _reference-rules-uri-breakonerror:
-
-breakOnError
-============
-
-:aspect:`Description:`
-    See general information for :ref:`reference-validation-attributes-breakonerror`.
-
-
 .. _reference-rules-uri-element:
 
 element

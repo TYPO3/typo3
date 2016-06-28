@@ -10,15 +10,6 @@ lessthan
 Checks if the submitted value is less than the integer set in TypoScript.
 
 
-.. _reference-rules-lessthan-breakonerror:
-
-breakOnError
-============
-
-:aspect:`Description:`
-    See general information for :ref:`reference-validation-attributes-breakonerror`.
-
-
 .. _reference-rules-lessthan-element:
 
 element

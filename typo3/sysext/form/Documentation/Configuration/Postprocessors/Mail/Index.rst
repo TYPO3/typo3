@@ -319,4 +319,3 @@ messages.success
 :aspect:`Default:`
     *Local language:*"The form has been sent successfully by mail"
 
-

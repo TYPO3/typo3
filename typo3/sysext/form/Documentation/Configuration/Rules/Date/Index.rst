@@ -16,15 +16,6 @@ shown to the visitor in a human readable way.
 %e-%m-%Y becomes d-mm-yyyy in English.
 
 
-.. _reference-rules-date-breakonerror:
-
-breakOnError
-============
-
-:aspect:`Description:`
-    See general information for :ref:`reference-validation-attributes-breakonerror`.
-
-
 .. _reference-rules-date-element:
 
 element

@@ -11,15 +11,6 @@ Checks if the submitted value matches your own regular expression, using PHP
 function preg\_match().
 
 
-.. _reference-rules-regexp-breakonerror:
-
-breakOnError
-============
-
-:aspect:`Description:`
-    See general information for :ref:`reference-validation-attributes-breakonerror`.
-
-
 .. _reference-rules-regexp-element:
 
 element
