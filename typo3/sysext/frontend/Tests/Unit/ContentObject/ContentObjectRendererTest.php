@@ -3202,118 +3202,74 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * Data provider for stdWrap_substring test
+     * Data provider for substring
      *
-     * @return array
+     * @return array [$expect, $content, $conf]
      */
-    public function stdWrap_substringDataProvider()
+    public function substringDataProvider()
     {
-        return array(
-            'sub -1' => array(
-                'substring',
-                array(
-                    'substring' => '-1',
-                ),
-                'g',
-            ),
-            'sub -1,0' => array(
-                'substring',
-                array(
-                    'substring' => '-1,0',
-                ),
-                'g',
-            ),
-            'sub -1,-1' => array(
-                'substring',
-                array(
-                    'substring' => '-1,-1',
-                ),
-                '',
-            ),
-            'sub -1,1' => array(
-                'substring',
-                array(
-                    'substring' => '-1,1',
-                ),
-                'g',
-            ),
-            'sub 0' => array(
-                'substring',
-                array(
-                    'substring' => '0',
-                ),
-                'substring',
-            ),
-            'sub 0,0' => array(
-                'substring',
-                array(
-                    'substring' => '0,0',
-                ),
-                'substring',
-            ),
-            'sub 0,-1' => array(
-                'substring',
-                array(
-                    'substring' => '0,-1',
-                ),
-                'substrin',
-            ),
-            'sub 0,1' => array(
-                'substring',
-                array(
-                    'substring' => '0,1',
-                ),
-                's',
-            ),
-            'sub 1' => array(
-                'substring',
-                array(
-                    'substring' => '1',
-                ),
-                'ubstring',
-            ),
-            'sub 1,0' => array(
-                'substring',
-                array(
-                    'substring' => '1,0',
-                ),
-                'ubstring',
-            ),
-            'sub 1,-1' => array(
-                'substring',
-                array(
-                    'substring' => '1,-1',
-                ),
-                'ubstrin',
-            ),
-            'sub 1,1' => array(
-                'substring',
-                array(
-                    'substring' => '1,1',
-                ),
-                'u',
-            ),
-            'sub' => array(
-                'substring',
-                array(
-                    'substring' => '',
-                ),
-                'substring',
-            ),
-        );
+        return [
+            'sub -1'    => [ 'g', 'substring', '-1', ],
+            'sub -1,0'  => [ 'g', 'substring', '-1,0', ],
+            'sub -1,-1' => [ '', 'substring', '-1,-1', ],
+            'sub -1,1'  => [ 'g', 'substring', '-1,1', ],
+            'sub 0'     => [ 'substring', 'substring', '0', ],
+            'sub 0,0'   => [ 'substring', 'substring', '0,0', ],
+            'sub 0,-1'  => [ 'substrin', 'substring', '0,-1', ],
+            'sub 0,1'   => [ 's', 'substring', '0,1', ],
+            'sub 1'     => [ 'ubstring', 'substring', '1', ],
+            'sub 1,0'   => [ 'ubstring', 'substring', '1,0', ],
+            'sub 1,-1'  => [ 'ubstrin', 'substring', '1,-1', ],
+            'sub 1,1'   => [ 'u', 'substring', '1,1', ],
+            'sub'       => [ 'substring', 'substring', '', ],
+        ];
     }
 
     /**
-     * @param string $content
-     * @param array $configuration
-     * @param string $expected
-     * @dataProvider stdWrap_substringDataProvider
+     * Check if substring works properly.
+     *
      * @test
+     * @dataProvider substringDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given input.
+     * @param array $conf The given configutation.
+     * @return void
      */
-    public function stdWrap_substring($content, array $configuration, $expected)
+    public function substring($expect, $content, $conf)
     {
-        $result = $this->subject->stdWrap_substring($content, $configuration);
-        $this->assertSame($expected, $result);
+        $this->assertSame($expect, $this->subject->substring($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_substring works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method substring.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['substring'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_substring()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'substring' => $this->getUniqueId('substring'),
+            'substring.' => $this->getUniqueId('not used'),
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['substring'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('substring')
+            ->with( $content, $conf['substring'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_substring($content, $conf));
     }
 
     /**
