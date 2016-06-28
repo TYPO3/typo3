@@ -46,7 +46,7 @@ class DocCommentParser
             if ($line !== '' && strpos($line, '@') !== false) {
                 $this->parseTag(substr($line, strpos($line, '@')));
             } elseif (empty($this->tags)) {
-                $this->description .= preg_replace('/\\s*\\/?[\\\\*]*(.*)$/', '$1', $line) . LF;
+                $this->description .= preg_replace('#\\s*/?[*/]*(.*)$#', '$1', $line) . LF;
             }
         }
         $this->description = trim($this->description);
