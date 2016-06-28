@@ -50,10 +50,9 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend = new ApcBackend('Testing');
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');
-        $backend->set($identifier, $data);
-
         $this->expectException(\TYPO3\CMS\Core\Cache\Exception::class);
-        $this->expectExceptionCode(1232986877);
+        $this->expectExceptionCode(1232986818);
+        $backend->set($identifier, $data);
     }
 
     /**
