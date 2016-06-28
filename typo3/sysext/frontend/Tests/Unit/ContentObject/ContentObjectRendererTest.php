@@ -3122,96 +3122,71 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * Data provider for stdWrap_bytes test
+     * Data provider for stdWrap_bytes.
      *
-     * @return array
+     * @return array [$expect, $content, $conf]
      */
     public function stdWrap_bytesDataProvider()
     {
-        return array(
-            'value 1234 default' => array(
-                '1234',
-                array(
-                    'bytes.' => array(
-                        'labels' => '',
-                        'base' => 0,
-                    ),
-                ),
-                '1.21 Ki',
-                'en_US.UTF-8'
-            ),
-            'value 1234 si' => array(
-                '1234',
-                array(
-                    'bytes.' => array(
-                        'labels' => 'si',
-                        'base' => 0,
-                    ),
-                ),
-                '1.23 k',
-                'en_US.UTF-8'
-            ),
-            'value 1234 iec' => array(
-                '1234',
-                array(
-                    'bytes.' => array(
-                        'labels' => 'iec',
-                        'base' => 0,
-                    ),
-                ),
-                '1.21 Ki',
-                'en_US.UTF-8'
-            ),
-            'value 1234 a-i' => array(
-                '1234',
-                array(
-                    'bytes.' => array(
-                        'labels' => 'a|b|c|d|e|f|g|h|i',
-                        'base' => 1000,
-                    ),
-                ),
-                '1.23b',
-                'en_US.UTF-8'
-            ),
-            'value 1234 a-i invalid base' => array(
-                '1234',
-                array(
-                    'bytes.' => array(
-                        'labels' => 'a|b|c|d|e|f|g|h|i',
-                        'base' => 54,
-                    ),
-                ),
-                '1.21b',
-                'en_US.UTF-8'
-            ),
-            'value 1234567890 default' => array(
-                '1234567890',
-                array(
-                    'bytes.' => array(
-                        'labels' => '',
-                        'base' => 0,
-                    ),
-                ),
-                '1.15 Gi',
-                'en_US.UTF-8'
-            ),
-        );
+        return [
+            'value 1234 default' => [
+                '1.21 Ki', '1234',
+                ['labels' => '', 'base' => 0],
+            ],
+            'value 1234 si' => [
+                '1.23 k', '1234',
+                ['labels' => 'si', 'base' => 0],
+            ],
+            'value 1234 iec' => [
+                '1.21 Ki', '1234',
+                ['labels' => 'iec', 'base' => 0],
+            ],
+            'value 1234 a-i' => [
+                '1.23b', '1234',
+                ['labels' => 'a|b|c|d|e|f|g|h|i', 'base' => 1000],
+            ],
+            'value 1234 a-i invalid base' => [
+                '1.21b', '1234',
+                ['labels' => 'a|b|c|d|e|f|g|h|i', 'base' => 54],
+            ],
+            'value 1234567890 default' => [
+                '1.15 Gi', '1234567890',
+                ['labels' => '', 'base' => 0],
+            ]
+        ];
     }
 
     /**
-     * @param string|NULL $content
-     * @param array $configuration
-     * @param string $expected
-     * @dataProvider stdWrap_bytesDataProvider
+     * Check if stdWrap_bytes works properly.
+     *
+     * Show:
+     *
+     * - Delegates to GeneralUtility::formatSize
+     * - Parameter 1 is $conf['bytes.'][labels'].
+     * - Parameter 2 is $conf['bytes.'][base'].
+     * - Returns the return value.
+     *
+     * Note: As PHPUnit can't mock static methods, the call to
+     *       GeneralUtility::formatSize can't be easily intercepted. The test
+     *       is done by testing input/output pairs instead. To not duplicate
+     *       the testing of formatSize just a few smoke tests are done here.
+     *
      * @test
+     * @dataProvider stdWrap_bytesDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given input.
+     * @param array $conf The given configuration for 'bytes.'.
+     * @return void
      */
-    public function stdWrap_bytes($content, array $configuration, $expected, $locale)
+    public function stdWrap_bytes($expect, $content, $conf)
     {
+        $locale = 'en_US.UTF-8';
         if (!setlocale(LC_NUMERIC, $locale)) {
             $this->markTestSkipped('Locale ' . $locale . ' is not available.');
         }
-        $result = $this->subject->stdWrap_bytes($content, $configuration);
-        $this->assertSame($expected, $result);
+        $conf = ['bytes.' => $conf];
+        $this->assertSame($expect,
+            $this->subject->stdWrap_bytes($content, $conf));
     }
 
     /**
