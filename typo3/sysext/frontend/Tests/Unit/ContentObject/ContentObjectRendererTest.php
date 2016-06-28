@@ -2528,25 +2528,37 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * Data provider for stdWrap_rawUrlEncode
+     *
+     * @return array [$expect, $content].
      */
-    public function stdWrapRawUrlEncodeDataProvider()
+    public function stdWrap_rawUrlEncodeDataProvider()
     {
         return [
-            'https://typo3.org?id=10' => ['https://typo3.org?id=10', 'https%3A%2F%2Ftypo3.org%3Fid%3D10'],
-            'https://typo3.org?id=10&foo=bar' => ['https://typo3.org?id=10&foo=bar', 'https%3A%2F%2Ftypo3.org%3Fid%3D10%26foo%3Dbar'],
+            'https://typo3.org?id=10' => [
+                'https%3A%2F%2Ftypo3.org%3Fid%3D10',
+                'https://typo3.org?id=10',
+            ],
+            'https://typo3.org?id=10&foo=bar' => [
+                'https%3A%2F%2Ftypo3.org%3Fid%3D10%26foo%3Dbar',
+                'https://typo3.org?id=10&foo=bar',
+            ],
         ];
     }
 
     /**
-     * Check if rawUrlEncode works properly
+     * Check if rawUrlEncode works properly.
      *
      * @test
-     * @dataProvider stdWrapRawUrlEncodeDataProvider
+     * @dataProvider stdWrap_rawUrlEncodeDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given input.
+     * @return void
      */
-    public function stdWrap_rawUrlEncode($input, $expected)
+    public function stdWrap_rawUrlEncode($expect, $content)
     {
-        $this->assertEquals($expected, $this->subject->stdWrap_rawUrlEncode($input));
+        $this->assertSame($expect,
+            $this->subject->stdWrap_rawUrlEncode($content));
     }
 
     /**
