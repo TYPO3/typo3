@@ -1299,6 +1299,40 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Check if stdWrap_prepend works properly.
+     *
+     * Show:
+     *
+     * - Delegates to the method cObjGetSingle().
+     * - First parameter is $conf['prepend'].
+     * - Second parameter is $conf['prepend.'].
+     * - Third parameter is '/stdWrap/.prepend'.
+     * - Returns the return value prepended to $content.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_prepend()
+    {
+        $debugKey =  '/stdWrap/.prepend';
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'prepend' => $this->getUniqueId('prepend'),
+            'prepend.' => [$this->getUniqueId('prepend.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['cObjGetSingle'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('cObjGetSingle')
+            ->with($conf['prepend'], $conf['prepend.'], $debugKey)
+            ->willReturn($return);
+        $this->assertSame($return . $content,
+            $subject->stdWrap_prepend($content, $conf));
+    }
+
+    /**
      * Check if stdWrap_cObject works properly.
      *
      * Show:
