@@ -2265,6 +2265,38 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Check that stdWrap_dataWrap works properly.
+     *
+     * Show:
+     *
+     *  - Delegates to method dataWrap.
+     *  - Parameter 1 is $content.
+     *  - Parameter 2 is $conf['dataWrap'].
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void.
+     */
+    public function stdWrap_dataWrap()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'dataWrap' => $this->getUniqueId('dataWrap'),
+            'dataWrap.' => [$this->getUniqueId('not used')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['dataWrap'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('dataWrap')
+            ->with($content, $conf['dataWrap'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_dataWrap($content, $conf));
+    }
+
+    /**
      * Data provider for the hash test
      *
      * @return array [$expect, $content, $conf]
