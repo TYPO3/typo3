@@ -4238,6 +4238,69 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Data provider ofr stdWrap_TCAselectItem.
+     *
+     * @return array [$expect, $content, $conf, $times, $will]
+     */
+    public function stdWrap_TCAselectItemDataProvider()
+    {
+        $content = $this->getUniqueId('content');
+        $array = [$this->getUniqueId('TCAselectItem.')];
+        $will = $this->getUniqueId('will');
+        return [
+            'empty conf' => [
+                $content, $content, [], 0, $will
+            ],
+            'no array' => [
+                $content, $content, ['TCAselectItem.' => true], 0, $will
+            ],
+            'empty array' => [
+                $will, $content, ['TCAselectItem.' => []], 1, $will
+            ],
+            'array' => [
+                $will, $content, ['TCAselectItem.' => $array], 1, $will
+            ]
+        ];
+    }
+
+    /**
+     * Check that stdWrap_TCAselectItem works properly.
+     *
+     * Show:
+     *
+     * - Checks if $conf['TCAselectItem'] is an array.
+     * - If NO:
+     *   - Returns $content as is.
+     * - If YES:
+     *   - Delegates to method TCAlookup.
+     *   - Parameter 1 is $content.
+     *   - Parameter 2 is $conf['TCAselectItem.'].
+     *   - Returns the return value.
+     *
+     *  @test
+     *  @dataProvider stdWrap_TCAselectItemDataProvider
+     *  @param mixed $expect The expected output.
+     *  @param mixed $content The the given input.
+     *  @param mixed $conf The the given configuration.
+     *  @param int $times Times TCAlookup is called.
+     *  @param string $will Return value of TCAlookup.
+     *  @return void.
+     */
+    public function stdWrap_TCAselectItem(
+        $expect, $content, $conf, $times, $will)
+    {
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['TCAlookup'])->getMock();
+        $subject
+            ->expects($this->exactly($times))
+            ->method('TCAlookup')
+            ->with($content, $conf['TCAselectItem.'])
+            ->willReturn($will);
+        $this->assertSame($expect,
+            $subject->stdWrap_TCAselectItem($content, $conf));
+    }
+
+    /**
      * @return array
      */
     public function stdWrap_addPageCacheTagsAddsPageTagsDataProvider()
