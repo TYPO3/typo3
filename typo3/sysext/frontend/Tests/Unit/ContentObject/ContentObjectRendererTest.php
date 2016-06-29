@@ -4667,9 +4667,10 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * Check if char works properly
+     * Check if stdWrap_char works properly.
      *
      * @test
+     * @return void
      */
     public function stdWrap_char()
     {
@@ -4737,6 +4738,20 @@ class ContentObjectRendererTest extends UnitTestCase
             ->willReturn($return);
         $this->assertSame($return,
             $subject->stdWrap_postUserFunc($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_debug works properly.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_debug()
+    {
+        $expect = '<pre>&lt;p class=&quot;class&quot;&gt;&lt;br/&gt;'
+            . '&lt;/p&gt;</pre>';
+        $content = '<p class="class"><br/></p>';
+        $this->assertSame($expect, $this->subject->stdWrap_debug($content));
     }
 
     ///////////////////////////////
