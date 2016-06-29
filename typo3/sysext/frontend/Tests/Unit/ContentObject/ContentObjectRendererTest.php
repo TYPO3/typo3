@@ -4337,6 +4337,38 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Check that stdWrap_addParams works properly.
+     *
+     * Show:
+     *
+     *  - Delegates to method addParams.
+     *  - Parameter 1 is $content.
+     *  - Parameter 2 is $conf['addParams.'].
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void.
+     */
+    public function stdWrap_addParams()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'addParams' => $this->getUniqueId('not used'),
+            'addParams.' => [$this->getUniqueId('addParams.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['addParams'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('addParams')
+            ->with($content, $conf['addParams.'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_addParams($content, $conf));
+    }
+
+    /**
      * Check if stdWrap_age works properly.
      *
      * Show:
