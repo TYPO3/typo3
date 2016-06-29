@@ -1319,15 +1319,50 @@ class ContentObjectRendererTest extends UnitTestCase
             'cObject' => $this->getUniqueId('cObject'),
             'cObject.' => [$this->getUniqueId('cObject.')],
         ];
+        $return = $this->getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['cObjGetSingle'])->getMock();
         $subject
             ->expects($this->once())
             ->method('cObjGetSingle')
             ->with($conf['cObject'], $conf['cObject.'], $debugKey)
-            ->willReturn('return');
-        $this->assertSame('return',
+            ->willReturn($return);
+        $this->assertSame($return,
             $subject->stdWrap_cObject('discard', $conf));
+    }
+
+    /**
+     * Check if stdWrap_append works properly.
+     *
+     * Show:
+     *
+     * - Delegates to the method cObjGetSingle().
+     * - First parameter is $conf['append'].
+     * - Second parameter is $conf['append.'].
+     * - Third parameter is '/stdWrap/.append'.
+     * - Returns the return value appended to $content.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_append()
+    {
+        $debugKey =  '/stdWrap/.append';
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'append' => $this->getUniqueId('append'),
+            'append.' => [$this->getUniqueId('append.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['cObjGetSingle'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('cObjGetSingle')
+            ->with($conf['append'], $conf['append.'], $debugKey)
+            ->willReturn($return);
+        $this->assertSame($content . $return,
+            $subject->stdWrap_append($content, $conf));
     }
 
     /**
