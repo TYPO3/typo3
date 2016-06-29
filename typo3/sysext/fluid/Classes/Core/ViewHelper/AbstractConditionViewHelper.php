@@ -34,7 +34,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\ThenViewHelper;
  *
  * @api
  */
-abstract class AbstractConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface, \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface
+abstract class AbstractConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface
 {
     /**
      * An array containing child nodes

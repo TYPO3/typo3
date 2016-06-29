@@ -60,7 +60,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Security;
  *
  * @api
  */
-class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper
+class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface
 {
     /**
      * Initializes the "role" argument.

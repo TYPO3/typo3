@@ -51,7 +51,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Security;
  *
  * @api
  */
-class IfAuthenticatedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper
+class IfAuthenticatedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface
 {
     /**
      * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
