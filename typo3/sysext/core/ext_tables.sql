@@ -148,7 +148,7 @@ CREATE TABLE pages (
 	no_search tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	SYS_LASTCHANGED int(10) unsigned DEFAULT '0' NOT NULL,
 	abstract text,
-	module varchar(10) DEFAULT '' NOT NULL,
+	module varchar(255) DEFAULT '' NOT NULL,
 	extendToSubpages tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	author varchar(255) DEFAULT '' NOT NULL,
 	author_email varchar(80) DEFAULT '' NOT NULL,
