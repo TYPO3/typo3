@@ -4529,6 +4529,37 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->assertSame($return, $subject->stdWrap_typolink($content, $conf));
     }
 
+    /**
+     * Check that stdWrap_postUserFunc works properly.
+     *
+     * Show:
+     *  - Delegates to method callUserFunction.
+     *  - Parameter 1 is $conf['postUserFunc'].
+     *  - Parameter 2 is $conf['postUserFunc.'].
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void.
+     */
+    public function stdWrap_postUserFunc()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'postUserFunc' => $this->getUniqueId('postUserFunc'),
+            'postUserFunc.' => [$this->getUniqueId('postUserFunc.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['callUserFunction'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('callUserFunction')
+            ->with($conf['postUserFunc'], $conf['postUserFunc.'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_postUserFunc($content, $conf));
+    }
+
     ///////////////////////////////
     // Tests concerning getData()
     ///////////////////////////////
