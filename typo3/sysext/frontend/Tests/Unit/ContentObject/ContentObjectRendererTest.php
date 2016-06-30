@@ -1358,6 +1358,34 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Check if stdWrap_filelink works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method filelink.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['filelink.'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_filelink()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'filelink' => $this->getUniqueId('not used'),
+            'filelink.' => [$this->getUniqueId('filelink.')],
+        ];
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['filelink'])->getMock();
+        $subject->expects($this->once())->method('filelink')
+            ->with($content, $conf['filelink.'])->willReturn('return');
+        $this->assertSame('return',
+            $subject->stdWrap_filelink($content, $conf));
+    }
+
+    /**
      * Data provider for stdWrap_fieldRequired.
      *
      * @return array [$expect, $stop, $content, $conf]
