@@ -4344,6 +4344,112 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Check if stdWrap_space works properly.
+     *
+     * Show:
+     *
+     *  - Delegates to method wrapSpace.
+     *  - Parameter 1 is $content.
+     *  - Parameter 2 is $conf['space'],
+     *  - trimmed.
+     *  - Parameter 3 is $conf['space.'].
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void.
+     */
+    public function stdWrap_space()
+    {
+        $content = $this->getUniqueId('content');
+        $trimmed = $this->getUniqueId('space trimmed');
+        $conf = [
+            'space' => TAB . ' ' . $trimmed . ' ' . TAB,
+            'space.' => [$this->getUniqueId('space.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['wrapSpace'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('wrapSpace')
+            ->with($content, $trimmed, $conf['space.'])
+            ->willReturn($return);
+        $this->assertSame($return, $subject->stdWrap_space($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_spaceBefore works properly.
+     *
+     * Show:
+     *
+     *  - Delegates to method wrapSpace.
+     *  - Parameter 1 is $content.
+     *  - Parameter 2 is $conf['spaceBefore'],
+     *  - trimmed,
+     *  - appended with '|'.
+     *  - Parameter 3 is $conf['space.'] !!!
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void.
+     */
+    public function stdWrap_spaceBefore()
+    {
+        $content = $this->getUniqueId('content');
+        $trimmed = $this->getUniqueId('spaceBefore trimmed');
+        $conf = [
+            'spaceBefore' => TAB . ' ' . $trimmed . ' ' . TAB,
+            'space.' => [$this->getUniqueId('space.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['wrapSpace'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('wrapSpace')
+            ->with($content, $trimmed . '|', $conf['space.'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_spaceBefore($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_spaceAfter works properly.
+     *
+     * Show:
+     *
+     *  - Delegates to method wrapSpace.
+     *  - Parameter 1 is $content.
+     *  - Parameter 2 is $conf['spaceAfter'],
+     *  - trimmed,
+     *  - prepended with '|'.
+     *  - Parameter 3 is $conf['space.'] !!!
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void.
+     */
+    public function stdWrap_spaceAfter()
+    {
+        $content = $this->getUniqueId('content');
+        $trimmed = $this->getUniqueId('spaceAfter trimmed');
+        $conf = [
+            'spaceAfter' => TAB . ' ' . $trimmed . ' ' . TAB,
+            'space.' => [$this->getUniqueId('space.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['wrapSpace'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('wrapSpace')
+            ->with($content, '|' . $trimmed, $conf['space.'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_spaceAfter($content, $conf));
+    }
+
+    /**
      * Check if char works properly
      *
      * @test
