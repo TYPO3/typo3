@@ -649,7 +649,6 @@ var typoscriptWords = {
 	'mod': 'keyword3',
 	'mode': 'reserved',
 	'module': 'keyword2',
-	'moduleMenuCollapsable': 'reserved',
 	'month': 'keyword2',
 	'move_wizard': 'keyword2',
 	'MP_defaults': 'reserved',
