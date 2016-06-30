@@ -4461,6 +4461,36 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->assertEquals($expected, $this->subject->stdWrap_char($input, ['char' => '67']));
     }
 
+    /**
+     * Check that stdWrap_typolink works properly.
+     *
+     * Show:
+     *  - Delegates to method typolink.
+     *  - Parameter 1 is $content.
+     *  - Parameter 2 is $conf['typolink.'].
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void.
+     */
+    public function stdWrap_typolink()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'typolink' => $this->getUniqueId('not used'),
+            'typolink.' => [$this->getUniqueId('typolink.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['typolink'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('typolink')
+            ->with($content, $conf['typolink.'])
+            ->willReturn($return);
+        $this->assertSame($return, $subject->stdWrap_typolink($content, $conf));
+    }
+
     ///////////////////////////////
     // Tests concerning getData()
     ///////////////////////////////
