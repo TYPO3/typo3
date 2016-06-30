@@ -962,6 +962,7 @@ abstract class AbstractItemProvider
     {
         $database = $this->getDatabaseConnection();
         $localTable = $result['tableName'];
+        $effectivePid = $result['effectivePid'];
 
         $foreignTableClause = '';
         if (!empty($result['processedTca']['columns'][$localFieldName]['config']['foreign_table_where'])
@@ -992,6 +993,12 @@ abstract class AbstractItemProvider
                     }
                 }
                 $foreignTableClause = implode('', $whereClauseParts);
+            }
+            // Use pid from parent page clause if in flex flom context
+            if (strpos($foreignTableClause, '###CURRENT_PID###') !== false
+                && !empty($result['flexParentDatabaseRow']['pid'])
+            ) {
+                $effectivePid = $result['flexParentDatabaseRow']['pid'];
             }
 
             $siteRootUid = 0;
@@ -1048,7 +1055,7 @@ abstract class AbstractItemProvider
                     '###PAGE_TSCONFIG_STR###'
                 ],
                 [
-                    (int)$result['effectivePid'],
+                    (int)$effectivePid,
                     (int)$result['databaseRow']['uid'],
                     $siteRootUid,
                     $pageTsConfigId,

@@ -1319,6 +1319,15 @@ class TcaSelectItemsTest extends UnitTestCase
                 'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.uid=43',
                 [],
             ],
+            'replace CURRENT_PID within FlexForm' => [
+                'AND fTable.uid=###CURRENT_PID###',
+                'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.uid=77',
+                [
+                    'flexParentDatabaseRow' => [
+                        'pid' => '77',
+                    ],
+                ],
+            ],
             'replace CURRENT_PID integer cast' => [
                 'AND fTable.uid=###CURRENT_PID###',
                 'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.uid=431',
