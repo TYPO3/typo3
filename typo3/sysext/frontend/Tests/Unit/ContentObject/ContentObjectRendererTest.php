@@ -4791,10 +4791,10 @@ class ContentObjectRendererTest extends UnitTestCase
      * Show:
      *
      * - Delegates to the method cObjGetSingle().
-     * - First parameter is $conf['cObject'].
-     * - Second parameter is $conf['cObject.'].
-     * - Third parameter is '/stdWrap/.cObject'.
-     * - Returns the return.
+     * - Parameter 1 is $conf['cObject'].
+     * - Parameter 2 is $conf['cObject.'].
+     * - Parameter 3 is '/stdWrap/.cObject'.
+     * - Returns the return value.
      *
      * @test
      * @return void
@@ -4802,6 +4802,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_cObject()
     {
         $debugKey =  '/stdWrap/.cObject';
+        $content = $this->getUniqueId('content');
         $conf = [
             'cObject' => $this->getUniqueId('cObject'),
             'cObject.' => [$this->getUniqueId('cObject.')],
@@ -4815,7 +4816,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ->with($conf['cObject'], $conf['cObject.'], $debugKey)
             ->willReturn($return);
         $this->assertSame($return,
-            $subject->stdWrap_cObject('discard', $conf));
+            $subject->stdWrap_cObject($content, $conf));
     }
 
     /**
@@ -6920,6 +6921,40 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Check if stdWrap_postCObject works properly.
+     *
+     * Show:
+     *
+     * - Delegates to the method cObjGetSingle().
+     * - Parameter 1 is $conf['postCObject'].
+     * - Parameter 2 is $conf['postCObject.'].
+     * - Parameter 3 is '/stdWrap/.postCObject'.
+     * - Returns the return value appended by $content.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_postCObject()
+    {
+        $debugKey =  '/stdWrap/.postCObject';
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'postCObject' => $this->getUniqueId('postCObject'),
+            'postCObject.' => [$this->getUniqueId('postCObject.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['cObjGetSingle'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('cObjGetSingle')
+            ->with($conf['postCObject'], $conf['postCObject.'], $debugKey)
+            ->willReturn($return);
+        $this->assertSame($content . $return,
+            $subject->stdWrap_postCObject($content, $conf));
+    }
+
+    /**
      * Check that stdWrap_postUserFunc works properly.
      *
      * Show:
@@ -6998,6 +7033,40 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $this->assertSame($array,
             $frontend->config['INTincScript'][$substKey]);
+    }
+
+    /**
+     * Check if stdWrap_preCObject works properly.
+     *
+     * Show:
+     *
+     * - Delegates to the method cObjGetSingle().
+     * - Parameter 1 is $conf['preCObject'].
+     * - Parameter 2 is $conf['preCObject.'].
+     * - Parameter 3 is '/stdWrap/.preCObject'.
+     * - Returns the return value appended by $content.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_preCObject()
+    {
+        $debugKey =  '/stdWrap/.preCObject';
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'preCObject' => $this->getUniqueId('preCObject'),
+            'preCObject.' => [$this->getUniqueId('preCObject.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['cObjGetSingle'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('cObjGetSingle')
+            ->with($conf['preCObject'], $conf['preCObject.'], $debugKey)
+            ->willReturn($return);
+        $this->assertSame($return . $content,
+            $subject->stdWrap_preCObject($content, $conf));
     }
 
     /**
