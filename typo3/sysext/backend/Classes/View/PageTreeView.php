@@ -31,16 +31,6 @@ class PageTreeView extends BrowseTreeView
     public $ext_showPageId = false;
 
     /**
-     * @var string
-     */
-    public $ext_separateNotinmenuPages;
-
-    /**
-     * @var string
-     */
-    public $ext_alphasortNotinmenuPages;
-
-    /**
      * Indicates, whether the ajax call was successful, i.e. the requested page has been found
      *
      * @var bool
