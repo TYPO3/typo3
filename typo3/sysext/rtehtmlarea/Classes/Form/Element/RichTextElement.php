@@ -612,7 +612,7 @@ class RichTextElement extends AbstractFormElement
 			if (typeof RTEarea === "undefined") {
 				RTEarea = new Object();
 				RTEarea[0] = new Object();
-				RTEarea[0].version = "' . $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['version'] . '";
+				RTEarea[0].version = "' . TYPO3_version . '";
 				RTEarea[0].editorUrl = "' . ExtensionManagementUtility::extRelPath('rtehtmlarea') . '";
 				RTEarea[0].editorSkin = "' . $skinDirectory . '/";
 				RTEarea[0].editedContentCSS = "' . $editedContentCSS . '";

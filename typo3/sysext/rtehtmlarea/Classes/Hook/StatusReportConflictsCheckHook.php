@@ -45,11 +45,15 @@ class StatusReportConflictsCheckHook implements StatusProviderInterface
      */
     protected function checkIfNoConflictingExtensionIsInstalled()
     {
+        // Take note of conflicting extensions
+        $conf = $this->getEmConf();
+        $conflicts = $conf['rtehtmlarea']['constraints']['conflicts'];
+
         $languageService = $this->getLanguageService();
         $title = $languageService->sL('LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_statusreport.xlf:title');
         $conflictingExtensions = array();
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['conflicts'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['conflicts'] as $extensionKey => $version) {
+        if (is_array($conflicts)) {
+            foreach ($conflicts as $extensionKey => $version) {
                 if (ExtensionManagementUtility::isLoaded($extensionKey)) {
                     $conflictingExtensions[] = $extensionKey;
                 }
@@ -74,5 +78,15 @@ class StatusReportConflictsCheckHook implements StatusProviderInterface
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getEmConf()
+    {
+        $_EXTKEY = 'rtehtmlarea';
+        require_once ExtensionManagementUtility::extPath('rtehtmlarea') . 'ext_emconf.php';
+        return $EM_CONF;
     }
 }
