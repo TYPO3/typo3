@@ -157,8 +157,8 @@ class FileRepository extends AbstractRepository {
 	/**
 	 * Find FileReference objects by relation to other records
 	 *
-	 * @param integer $tableName Table name of the related record
-	 * @param integer $fieldName Field name of the related record
+	 * @param string $tableName Table name of the related record
+	 * @param string $fieldName Field name of the related record
 	 * @param integer $uid The UID of the related record (needs to be the localized uid, as translated IRRE elements relate to them)
 	 * @return array An array of objects, empty if no objects found
 	 * @throws \InvalidArgumentException
