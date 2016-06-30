@@ -45,7 +45,6 @@ define(['jquery',
 		,openedPopupWindow: null
 		,legacyFieldChangedCb: function() { !$.isFunction(TYPO3.settings.FormEngine.legacyFieldChangedCb) || TYPO3.settings.FormEngine.legacyFieldChangedCb(); }
 		,browserUrl: ''
-		,isDirty: false
 	};
 
 	/**
@@ -590,10 +589,7 @@ define(['jquery',
 		FormEngine.initializeRemainingCharacterViews();
 		FormEngine.initializeSelectCheckboxes();
 
-		$(document).on('change', 'input,textarea,select', function() {
-			// Keep track of input fields to set the dirty state
-			FormEngine.isDirty = $(document).find('.has-change').length > 0;
-		}).on('click', '.t3js-btn-moveoption-top, .t3js-btn-moveoption-up, .t3js-btn-moveoption-down, .t3js-btn-moveoption-bottom, .t3js-btn-removeoption', function(evt) {
+		$(document).on('click', '.t3js-btn-moveoption-top, .t3js-btn-moveoption-up, .t3js-btn-moveoption-down, .t3js-btn-moveoption-bottom, .t3js-btn-removeoption', function(evt) {
 			evt.preventDefault();
 
 			// track the arrows "Up", "Down", "Clear" etc in multi-select boxes
@@ -927,7 +923,7 @@ define(['jquery',
 	 * Show modal to confirm closing the document without saving
 	 */
 	FormEngine.preventExitIfNotSaved = function() {
-		if (FormEngine.isDirty) {
+		if ($('form[name="' + FormEngine.formName + '"] .has-change').length > 0) {
 			var title = TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to quit without saving?';
 			var content = TYPO3.lang['label.confirm.close_without_save.content'] || 'You have currently unsaved changes. Are you sure that you want to discard all changes?';
 			var $modal = Modal.confirm(title, content, Severity.warning, [
