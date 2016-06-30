@@ -1050,6 +1050,31 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Check if stdWrap_insertData works properly.
+     *
+     * Show:
+     *
+     *  - Delegates to method insertData.
+     *  - Parameter 1 is $content.
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void
+     */
+    public function stdWrap_insertData()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [$this->getUniqueId('conf not used')];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['insertData'])->getMock();
+        $subject->expects($this->once())->method('insertData')
+            ->with($content)->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_insertData($content, $conf));
+    }
+
+    /**
      * Check if stdWrap_preIfEmptyListNum works properly.
      *
      * Show:
