@@ -4107,9 +4107,97 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->assertSame($expect, $this->subject->getFieldVal($fields));
     }
 
-  /***************************************************************************
-   * Tests for stdWrap_ in alphabetical order (all uppercase before lowercase)
-   ***************************************************************************/
+    /***************************************************************************
+    * General tests for stdWrap_
+    ***************************************************************************/
+
+    /**
+     * Check that all registered stdWrap processors are callable.
+     *
+     * Show:
+     *
+     * - The given invalidProcessor is counted as not callable.
+     * - All stdWrap processors are counted as callable.
+     * - Their amount is 91.
+     *
+     * @test
+     * @return void
+     */
+    public function allStdWrapProcessorsAreCallable()
+    {
+        $callable = 0;
+        $notCallable = 0;
+        $processors = ['invalidProcessor'];
+        foreach (array_keys($this->subject->_get('stdWrapOrder')) as $key) {
+            $processors[] = strtr($key, ['.' => '']);
+        }
+        foreach (array_unique($processors) as $processor) {
+            $method = [$this->subject, 'stdWrap_' . $processor];
+            if (is_callable($method)) {
+                $callable += 1;
+            } else {
+                $notCallable += 1;
+            }
+        }
+        $this->assertSame(1, $notCallable);
+        $this->assertSame(91, $callable);
+    }
+
+    /**
+     * Check which stdWrap functions are callable with empty parameters.
+     *
+     * Show:
+     *
+     * - Almost all stdWrap_[type] are callable if called with 2 parameters:
+     *   - string $content Empty string.
+     *   - array $conf ['type' => '', 'type.' => []].
+     * - Exeptions: stdWrap_numRows, stdWrap_split
+     * - The overall count is 91.
+     *
+     *  Note:
+     *
+     *  The two exceptions break, if the configuration is empty. This test just
+     *  tracks the different behaviour to gain information. It doesn't mean
+     *  that it is an issue.
+     *
+     * @test
+     * @return void
+     */
+    public function notAllStdWrapProcessorsAreCallableWithEmptyConfiguration()
+    {
+        $expectExceptions = ['numRows', 'split'];
+        if (!version_compare(PHP_VERSION, '7.1', '<')) {
+            // PHP >= 7.1 throws "A non-numeric value encountered" in GeneralUtility::formatSize()
+            // @todo: If that is sanitized in a better way in formatSize(), this call needs adaption
+            $expectExceptions[] = 'bytes';
+        }
+        $count = 0;
+        $processors = [];
+        $exceptions = [];
+        foreach (array_keys($this->subject->_get('stdWrapOrder')) as $key) {
+            $processors[] = strtr($key, ['.' => '']);
+        }
+        foreach (array_unique($processors) as $processor) {
+            $count += 1;
+            try {
+                $conf = [$processor => '', $processor . '.' => []];
+                $method = 'stdWrap_' . $processor;
+                $this->subject->$method('', $conf);
+            } catch (\Exception $e) {
+                $exceptions[] = $processor;
+            }
+        }
+        $this->assertSame($expectExceptions, $exceptions);
+        $this->assertSame(91, $count);
+    }
+
+    /***************************************************************************
+    * End general tests for stdWrap_
+    ***************************************************************************/
+
+    /***************************************************************************
+    * Tests for stdWrap_ in alphabetical order (all uppercase before lowercase)
+    ***************************************************************************/
 
     /**
      * Data provider for fourTypesOfStdWrapHookObjectProcessors
@@ -7710,7 +7798,7 @@ class ContentObjectRendererTest extends UnitTestCase
             $this->subject->stdWrap_wrapAlign($content, $conf));
     }
 
-  /***************************************************************************
-   * End of tests of stdWrap
-   ***************************************************************************/
+    /***************************************************************************
+    * End of tests of stdWrap in alphabetical order
+    ***************************************************************************/
 }
