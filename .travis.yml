@@ -24,10 +24,6 @@ cache:
   directories:
     - $HOME/.composer/cache
 
-env:
-  global:
-    secure: NGVAI0ayw2h9pB2bi2u9AkfV1OKa2LCrGXNtxAvQhFxKW28qmeOUehFuacxpvCI5fA8Ae7oVo2Ba0vcpb5a3uJry1lMpxcn9Ic+voB7SwlCuL6Rx/vntPkYUH+58cC3t40yHKArCUE9KCJA6znNCaZ7MyG6dWHgry0cvAjVOQzE=
-
 services:
   - memcached
   - redis-server
@@ -55,7 +51,6 @@ before_script:
   - phpenv config-rm xdebug.ini
   - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - if [ "$GITHUB_COMPOSER_AUTH" ]; then composer config -g github-oauth.github.com $GITHUB_COMPOSER_AUTH; fi
   - composer install
   - typo3/sysext/core/Build/Configuration/TravisNginxFpm/ConfigureStartNginxFpm.sh
   - mkdir -p typo3temp/var/tests
