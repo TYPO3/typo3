@@ -3420,7 +3420,7 @@ class DataHandler
         }
         if ($this->isRecordCopied($table, $uid)) {
             if (!empty($overrideValues)) {
-                $this->log($table, $uid, 5, 0, 1, 'Repeated attempt to copy record "' . $table . ':' . $uid . '" with override values');
+                $this->log($table, $uid, 1, 0, 1, 'Repeated attempt to copy record "%s:%s" with override values', -1, array($table, $uid));
             }
             return null;
         }
@@ -3428,7 +3428,7 @@ class DataHandler
         // This checks if the record can be selected which is all that a copy action requires.
         if (!$this->doesRecordExist($table, $uid, 'show')) {
             if ($this->enableLogging) {
-                $this->log($table, $uid, 3, 0, 1, 'Attempt to copy record without permission');
+                $this->log($table, $uid, 1, 0, 1, 'Attempt to copy record "%s:%s" without permission', -1, array($table, $uid));
             }
             return null;
         }
@@ -3436,7 +3436,7 @@ class DataHandler
         // Check if table is allowed on destination page
         if ($destPid >= 0 && !$this->isTableAllowedForThisPage($destPid, $table)) {
             if ($this->enableLogging) {
-                $this->log($table, $uid, 3, 0, 1, 'Attempt to insert record on a page that can\'t store record type.');
+                $this->log($table, $uid, 1, 0, 1, 'Attempt to insert record "%s:%s" on a page (%s) that can\'t store record type.', -1, array($table, $uid, $destPid));
             }
             return null;
         }
@@ -3445,7 +3445,7 @@ class DataHandler
         //Used to check language and general editing rights
         if (!$ignoreLocalization && ($language <= 0 || !$this->BE_USER->checkLanguageAccess($language)) && !$this->BE_USER->recordEditAccessInternals($table, $uid, false, false, $fullLanguageCheckNeeded)) {
             if ($this->enableLogging) {
-                $this->log($table, $uid, 3, 0, 1, 'Attempt to copy record without having permissions to do so. [' . $this->BE_USER->errorMsg . '].');
+                $this->log($table, $uid, 1, 0, 1, 'Attempt to copy record "%s:%s" without having permissions to do so. [' . $this->BE_USER->errorMsg . '].', -1, array($table, $uid));
             }
             return null;
         }
@@ -3456,7 +3456,7 @@ class DataHandler
         $row = BackendUtility::getRecordWSOL($table, $uid);
         if (!is_array($row)) {
             if ($this->enableLogging) {
-                $this->log($table, $uid, 3, 0, 1, 'Attempt to copy record that did not exist!');
+                $this->log($table, $uid, 1, 0, 1, 'Attempt to copy record that did not exist!');
             }
             return null;
         }
