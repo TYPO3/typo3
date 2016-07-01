@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Documentation\ViewHelpers;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -37,17 +38,25 @@ class FormatsViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
+     * Initializes the arguments
+     *
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('documentTranslation', DocumentTranslation::class, '', true);
+    }
+
+    /**
      * Renders all format download links.
      *
-     * @param \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation
      * @return string
      */
-    public function render(\TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'documentTranslation' => $documentTranslation,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

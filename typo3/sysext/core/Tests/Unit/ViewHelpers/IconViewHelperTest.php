@@ -52,7 +52,12 @@ class IconViewHelperTest extends ViewHelperBaseTestcase
         $iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_SMALL, null, IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
         $iconProphecy->render(null)->shouldBeCalled()->willReturn('htmlFoo');
 
-        $this->assertSame('htmlFoo', $this->viewHelper->render('myIdentifier'));
+        $this->viewHelper->setArguments([
+            'identifier' => 'myIdentifier',
+            'size' => Icon::SIZE_SMALL
+        ]);
+
+        $this->assertSame('htmlFoo', $this->viewHelper->render());
     }
 
     /**
@@ -67,7 +72,12 @@ class IconViewHelperTest extends ViewHelperBaseTestcase
         $iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_LARGE, null, IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
         $iconProphecy->render(null)->shouldBeCalled()->willReturn('htmlFoo');
 
-        $this->assertSame('htmlFoo', $this->viewHelper->render('myIdentifier', Icon::SIZE_LARGE));
+        $this->viewHelper->setArguments([
+            'identifier' => 'myIdentifier',
+            'size' => Icon::SIZE_LARGE
+        ]);
+
+        $this->assertSame('htmlFoo', $this->viewHelper->render());
     }
 
     /**
@@ -82,7 +92,14 @@ class IconViewHelperTest extends ViewHelperBaseTestcase
         $iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_SMALL, null, IconState::cast(IconState::STATE_DISABLED))->shouldBeCalled()->willReturn($iconProphecy->reveal());
         $iconProphecy->render(null)->shouldBeCalled()->willReturn('htmlFoo');
 
-        $this->assertSame('htmlFoo', $this->viewHelper->render('myIdentifier', Icon::SIZE_SMALL, null, IconState::cast(IconState::STATE_DISABLED)));
+        $this->viewHelper->setArguments([
+            'identifier' => 'myIdentifier',
+            'size' => Icon::SIZE_SMALL,
+            'overlay' => null,
+            'state' => IconState::cast(IconState::STATE_DISABLED)
+        ]);
+
+        $this->assertSame('htmlFoo', $this->viewHelper->render());
     }
 
     /**
@@ -97,6 +114,11 @@ class IconViewHelperTest extends ViewHelperBaseTestcase
         $iconFactoryProphecy->getIcon('myIdentifier', Argument::any(), 'overlayString', IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
         $iconProphecy->render(null)->shouldBeCalled()->willReturn('htmlFoo');
 
-        $this->assertSame('htmlFoo', $this->viewHelper->render('myIdentifier', Icon::SIZE_LARGE, 'overlayString'));
+        $this->viewHelper->setArguments([
+            'identifier' => 'myIdentifier',
+            'size' => Icon::SIZE_LARGE,
+            'overlay' => 'overlayString'
+        ]);
+        $this->assertSame('htmlFoo', $this->viewHelper->render());
     }
 }

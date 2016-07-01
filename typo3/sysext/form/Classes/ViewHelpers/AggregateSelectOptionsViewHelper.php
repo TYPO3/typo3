@@ -33,21 +33,28 @@ class AggregateSelectOptionsViewHelper extends AbstractViewHelper
     protected $selectedValues = array();
 
     /**
-     * @param Element $model
-     * @param bool $returnSelectedValues
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('model', Element::class, '', true);
+        $this->registerArgument('returnSelectedValues', 'bool', '', false, false);
+    }
+
+    /**
      * @return array
      */
-    public function render(Element $model, $returnSelectedValues = false)
+    public function render()
     {
+        /** @var Element $model */
+        $model = $this->arguments['model'];
+        /** @var Element $element */
         foreach ($model->getChildElements() as $element) {
             $this->createElement($element);
         }
 
-        if ($returnSelectedValues === true) {
-            return $this->selectedValues;
-        }
-
-        return $this->options;
+        return $this->arguments['returnSelectedValues'] ? $this->selectedValues : $this->options;
     }
 
     /**
@@ -70,7 +77,7 @@ class AggregateSelectOptionsViewHelper extends AbstractViewHelper
         if ($model->getElementType() === 'OPTGROUP') {
             $optGroupData = array(
                 'label' => $model->getAdditionalArgument('label'),
-                'disabled' => $model->getAdditionalArgument('disabled')
+                'disabled' => $model->getAdditionalArgument('disabled'),
             );
             $this->getChildElements($model, $optGroupData);
         } else {
@@ -101,6 +108,7 @@ class AggregateSelectOptionsViewHelper extends AbstractViewHelper
      */
     protected function getChildElements(Element $model, array $optGroupData = array())
     {
+        /** @var Element $element */
         foreach ($model->getChildElements() as $element) {
             $this->createElement($element, $optGroupData);
         }

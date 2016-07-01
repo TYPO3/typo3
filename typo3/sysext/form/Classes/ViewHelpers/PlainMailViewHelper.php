@@ -14,77 +14,75 @@ namespace TYPO3\CMS\Form\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Form\Domain\Model\Element;
+
 /**
  * A viewhelper for the plain mail view
  */
-class PlainMailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class PlainMailViewHelper extends AbstractViewHelper
 {
+    /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('labelContent', 'mixed', '');
+        $this->registerArgument('content', 'mixed', '');
+        $this->registerArgument('newLineAfterLabel', 'bool', '', false, false);
+        $this->registerArgument('indent', 'int', '', false, 0);
+    }
+
     /**
      * Render the plain mail view
      *
-     * @param mixed $labelContent
-     * @param mixed $content
-     * @param bool $newLineAfterLabel
-     * @param int $indent
      * @return string
      */
-    public function render($labelContent = null, $content = null, $newLineAfterLabel = false, $indent = 0)
+    public function render()
     {
         $templateVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
-        if (!$templateVariableContainer->exists(\TYPO3\CMS\Form\ViewHelpers\PlainMailViewHelper::class, 'spaces')) {
-            $templateVariableContainer->add(\TYPO3\CMS\Form\ViewHelpers\PlainMailViewHelper::class, 'spaces', 0);
+        if (!$templateVariableContainer->exists(__CLASS__, 'spaces')) {
+            $templateVariableContainer->add(__CLASS__, 'spaces', 0);
         }
 
-        $spaces = $templateVariableContainer->get(\TYPO3\CMS\Form\ViewHelpers\PlainMailViewHelper::class, 'spaces');
+        $spaces = $templateVariableContainer->get(__CLASS__, 'spaces');
         $output = '';
-        if ($labelContent) {
-            if ($labelContent instanceof \TYPO3\CMS\Form\Domain\Model\Element) {
-                $output = $this->getLabel($labelContent);
+        if ($this->arguments['labelContent']) {
+            if ($this->arguments['labelContent'] instanceof Element) {
+                $output = $this->getLabel($this->arguments['labelContent']);
             } else {
-                $output = $labelContent;
+                $output = $this->arguments['labelContent'];
             }
-            if ($newLineAfterLabel) {
+            if ($this->arguments['newLineAfterLabel']) {
                 if ($output !== '') {
                     $output = str_repeat(chr(32), $spaces) . $output . LF;
                 }
-                $this->setIndent($indent);
+                $this->setIndent($this->arguments['indent']);
             }
         }
 
-        if ($content) {
-            if (!$newLineAfterLabel) {
-                $this->setIndent($indent);
+        if ($this->arguments['content']) {
+            if (!$this->arguments['newLineAfterLabel']) {
+                $this->setIndent($this->arguments['indent']);
             }
-            if (
-                $labelContent
-                && !$newLineAfterLabel
-            ) {
-                $output = $output . ': ' . $this->getValue($content);
-            } elseif (
-                $labelContent
-                && $newLineAfterLabel
-            ) {
-                $output =
-                    $output .
-                    str_repeat(chr(32), ($spaces + 4)) .
-                    str_replace(LF, LF . str_repeat(chr(32), ($spaces + 4)), $this->getValue($content));
+            if ($this->arguments['labelContent'] && !$this->arguments['newLineAfterLabel']) {
+                $output = $output . ': ' . $this->getValue($this->arguments['content']);
+            } elseif ($this->arguments['labelContent'] && $this->arguments['newLineAfterLabel']) {
+                $output = $output
+                    . str_repeat(chr(32), ($spaces + 4))
+                    . str_replace(LF, LF . str_repeat(chr(32), ($spaces + 4)), $this->getValue($this->arguments['content']));
             } else {
-                $output = $this->getValue($content);
+                $output = $this->getValue($this->arguments['content']);
             }
         }
 
-        if (
-            $labelContent
-            || $content
-        ) {
-            if (
-                $output !== ''
-                && !$newLineAfterLabel
-            ) {
+        if ($this->arguments['labelContent'] || $this->arguments['content']) {
+            if ($output !== '' && !$this->arguments['newLineAfterLabel']) {
                 $output = str_repeat(chr(32), $spaces) . $output;
             }
         } else {
-            $this->setIndent($indent);
+            $this->setIndent($this->arguments['indent']);
         }
 
         return $output;
@@ -92,10 +90,10 @@ class PlainMailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
 
     /**
      * Get the label
-     * @param \TYPO3\CMS\Form\Domain\Model\Element $model
+     * @param Element $model
      * @return string
      */
-    protected function getLabel(\TYPO3\CMS\Form\Domain\Model\Element $model)
+    protected function getLabel(Element $model)
     {
         $label = '';
         if ($model->getAdditionalArgument('legend')) {
@@ -108,18 +106,13 @@ class PlainMailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
 
     /**
      * Get the label
-     * @param mixed $model
+     *
+     * @param string $content
      * @return string
      */
     protected function getValue($content)
     {
-        $value = '';
-        if ($content instanceof \TYPO3\CMS\Form\Domain\Model\Element) {
-            $value = $content->getAdditionalArgument('value');
-        } else {
-            $value = $content;
-        }
-        return $value;
+        return $content instanceof Element ? $content->getAdditionalArgument('value') : $content;
     }
 
     /**
@@ -131,9 +124,9 @@ class PlainMailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
     public function setIndent($indent = 0)
     {
         $templateVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
-        $spaces = $templateVariableContainer->get(\TYPO3\CMS\Form\ViewHelpers\PlainMailViewHelper::class, 'spaces');
+        $spaces = $templateVariableContainer->get(__CLASS__, 'spaces');
         $spaces += (int)$indent;
-        $templateVariableContainer->addOrUpdate(\TYPO3\CMS\Form\ViewHelpers\PlainMailViewHelper::class, 'indent', $indent);
-        $templateVariableContainer->addOrUpdate(\TYPO3\CMS\Form\ViewHelpers\PlainMailViewHelper::class, 'spaces', $spaces);
+        $templateVariableContainer->addOrUpdate(__CLASS__, 'indent', $indent);
+        $templateVariableContainer->addOrUpdate(__CLASS__, 'spaces', $spaces);
     }
 }

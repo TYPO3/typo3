@@ -34,25 +34,27 @@ class IconViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('identifier', 'string', 'the table for the record icon', true);
+        $this->registerArgument('size', 'string', 'the icon size', false, Icon::SIZE_SMALL);
+        $this->registerArgument('overlay', 'string', '', false, null);
+        $this->registerArgument('state', 'string', '', false, IconState::STATE_DEFAULT);
+        $this->registerArgument('alternativeMarkupIdentifier', 'string', '', false, null);
+    }
+
+    /**
      * Prints icon html for $identifier key
      *
-     * @param string $identifier
-     * @param string $size
-     * @param string $overlay
-     * @param string $state
-     * @param string $alternativeMarkupIdentifier
      * @return string
      */
-    public function render($identifier, $size = Icon::SIZE_SMALL, $overlay = null, $state = IconState::STATE_DEFAULT, $alternativeMarkupIdentifier = null)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'identifier' => $identifier,
-                'size' => $size,
-                'overlay' => $overlay,
-                'state' => $state,
-                'alternativeMarkupIdentifier' => $alternativeMarkupIdentifier
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

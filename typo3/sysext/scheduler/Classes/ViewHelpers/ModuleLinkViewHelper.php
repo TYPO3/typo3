@@ -25,21 +25,25 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class ModuleLinkViewHelper extends AbstractViewHelper
 {
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('controller', 'string', 'The "controller" of scheduler. Possible values are "scheduler", "check", "info"', true);
+        $this->registerArgument('action', 'string', 'The action to be called within each controller', true);
+        $this->registerArgument('arguments', 'array', '', false, []);
+    }
+
+    /**
      * Render module link with command and arguments
      *
-     * @param string $controller The "controller" of scheduler. Possible values are "scheduler", "check", "info"
-     * @param string $action The action to be called within each controller
-     * @param array $arguments Arguments for the action
      * @return string
      */
-    public function render($controller, $action, array $arguments = array())
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'controller' => $controller,
-                'action' => $action,
-                'arguments' => $arguments,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

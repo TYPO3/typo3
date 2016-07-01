@@ -31,21 +31,25 @@ class AvatarViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('backendUser', 'int', 'Uid of the user', false, 0);
+        $this->registerArgument('size', 'int', 'width and height of the image', false, 32);
+        $this->registerArgument('showIcon', 'bool', 'show the record icon', false, false);
+    }
+
+    /**
      * Resolve user avatar from backend user id.
      *
-     * @param int $backendUser Uid of the user
-     * @param int $size width and height of the image
-     * @param bool $showIcon show the record icon
      * @return string html image tag
      */
-    public function render($backendUser = 0, $size = 32, $showIcon = false)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'backendUser' => $backendUser,
-                'size' => $size,
-                'showIcon' => $showIcon
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

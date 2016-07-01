@@ -47,18 +47,18 @@ class SectionViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
+        $this->registerArgument('name', 'string', 'The section name to be used', true);
         $this->registerUniversalTagAttributes();
     }
 
     /**
      * Render the view helper
      *
-     * @param string $name The section name to be used
      * @return string
      */
-    public function render($name)
+    public function render()
     {
-        $fragment = '#' . $name;
+        $fragment = '#' . $this->arguments['name'];
 
         // Prefix with current URL path if baseUrl is used
         if (!empty($this->getTypoScriptFrontendController()->baseUrl)) {

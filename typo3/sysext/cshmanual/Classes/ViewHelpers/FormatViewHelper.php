@@ -39,17 +39,23 @@ class FormatViewHelper extends AbstractViewHelper
     protected $escapeChildren = false;
 
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('content', 'string', '', false, '');
+    }
+
+    /**
      * Format the content
      *
-     * @param string $content
      * @return string
      */
-    public function render($content = '')
+    public function render()
     {
         return self::renderStatic(
-            array(
-                'content' => $content,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

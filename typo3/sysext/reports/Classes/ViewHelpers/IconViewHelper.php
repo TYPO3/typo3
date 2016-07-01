@@ -34,19 +34,24 @@ class IconViewHelper extends AbstractBackendViewHelper
     protected $escapeOutput = false;
 
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('icon', 'string', 'Icon to be used', true);
+        $this->registerArgument('title', 'string', 'Optional title', false, '');
+    }
+
+    /**
      * Renders the icon
      *
-     * @param string $icon Icon to be used
-     * @param string $title Optional title
      * @return string Content rendered image
      */
-    public function render($icon, $title = '')
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'icon' => $icon,
-                'title' => $title,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -65,6 +70,8 @@ class IconViewHelper extends AbstractBackendViewHelper
         $title = $arguments['title'];
 
         $icon = GeneralUtility::getFileAbsFileName($icon ?: 'EXT:reports/ext_icon.png');
-        return '<img src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($icon)) . '" width="16" height="16" title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" />';
+        return '<img src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($icon))
+               . '" width="16" height="16" title="' . htmlspecialchars($title)
+               . '" alt="' . htmlspecialchars($title) . '" />';
     }
 }

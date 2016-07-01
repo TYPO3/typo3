@@ -26,15 +26,21 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class EditLinkViewHelper extends AbstractViewHelper
 {
     /**
-     * @param int $id
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('id', 'int', '', true);
+    }
+
+    /**
      * @return string
      */
-    public function render($id)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'id' => $id
-            ),
+          $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

@@ -27,17 +27,23 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class DeleteLinkViewHelper extends AbstractViewHelper
 {
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('id', 'int', 'uid of the note', true);
+    }
+
+    /**
      * Create link to delete a note
      *
-     * @param int $id uid of the note
      * @return string link
      */
-    public function render($id)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'id' => $id
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
