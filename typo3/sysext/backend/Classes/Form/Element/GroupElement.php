@@ -34,6 +34,7 @@ class GroupElement extends AbstractFormElement
      * the file system or database can be inserted. Relations.
      *
      * @return array As defined in initializeResultArray() of AbstractNode
+     * @throws \RuntimeException
      */
     public function render()
     {
@@ -273,8 +274,17 @@ class GroupElement extends AbstractFormElement
                 foreach ($temp_itemArray as $dbRead) {
                     $recordParts = explode('|', $dbRead);
                     list($this_table, $this_uid) = BackendUtility::splitTable_Uid($recordParts[0]);
+
                     $itemArray[] = array('table' => $this_table, 'id' => $this_uid);
                     if (!$disabled && $show_thumbs) {
+                        if (empty($this_table)) {
+                            throw new \RuntimeException(
+                                'Table name could not been determined for field "' . $fieldName . '" in table "' . $table . '". ' .
+                                'This should never happen since the table name should have been already prepared in the DataProvider TcaGroup. ' .
+                                'Maybe the prepared values have been set to an invalid value by a user defined data provider.',
+                                1468149217
+                            );
+                        }
                         $rr = BackendUtility::getRecordWSOL($this_table, $this_uid);
                         $thumbnails[] = array(
                             'name' => BackendUtility::getRecordTitle($this_table, $rr, true),
