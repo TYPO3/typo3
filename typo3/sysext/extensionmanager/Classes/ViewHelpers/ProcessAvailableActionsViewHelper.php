@@ -37,13 +37,22 @@ class ProcessAvailableActionsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
     }
 
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('extension', 'string', '', true);
+    }
+
+    /**
      * Processes the list of actions.
      *
-     * @param string $extension
      * @return string the rendered list of actions
      */
-    public function render($extension)
+    public function render()
     {
+        $extension = $this->arguments['extension'];
         $html = $this->renderChildren();
         $actions = preg_split('#\\n\\s*#s', trim($html));
 

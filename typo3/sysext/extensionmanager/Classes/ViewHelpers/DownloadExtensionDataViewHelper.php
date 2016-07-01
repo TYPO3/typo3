@@ -25,13 +25,24 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DownloadExtensionDataViewHelper extends Link\ActionViewHelper
 {
     /**
+     * Initialize arguments
+     *
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('extension', 'array', '', true);
+    }
+
+    /**
      * Renders an install link
      *
-     * @param array $extension
      * @return string the rendered a tag
      */
-    public function render($extension)
+    public function render()
     {
+        $extension = $this->arguments['extension'];
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 

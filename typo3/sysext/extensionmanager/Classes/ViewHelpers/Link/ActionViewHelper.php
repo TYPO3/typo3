@@ -28,8 +28,6 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBased
 
     /**
      * Arguments initialization
-     *
-     * @return void
      */
     public function initializeArguments()
     {

@@ -38,13 +38,22 @@ class UpdateScriptViewHelper extends Link\ActionViewHelper
     }
 
     /**
+     * initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('extensionKey', 'string', 'Extension key', true);
+    }
+
+    /**
      * Renders a link to the update script screen if the extension has one
      *
-     * @param string $extensionKey Extension key
      * @return string The rendered a tag
      */
-    public function render($extensionKey)
+    public function render()
     {
+        $extensionKey = $this->arguments['extensionKey'];
         $tag = '';
 
         // If the "class.ext_update.php" file exists, build link to the update script screen

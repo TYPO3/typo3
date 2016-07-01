@@ -36,17 +36,25 @@ class Typo3DependencyViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
+     * Initialize arguments
+     *
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('extension', Extension::class, '', true);
+    }
+
+    /**
      * Finds and returns the suitable TYPO3 versions of an extension
      *
-     * @param Extension $extension
      * @return string
      */
-    public function render(Extension $extension)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'extension' => $extension,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

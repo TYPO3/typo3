@@ -32,13 +32,22 @@ class ToggleExtensionInstallationStateViewHelper extends Link\ActionViewHelper
     protected $tagName = 'a';
 
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('extension', 'array', '', true);
+    }
+
+    /**
      * Renders an install link
      *
-     * @param array $extension
      * @return string the rendered a tag
      */
-    public function render($extension)
+    public function render()
     {
+        $extension = $this->arguments['extension'];
         // Early return if package is protected or is a runtime actived package and can not be unloaded
         /** @var $packageManager \TYPO3\CMS\Core\Package\PackageManager */
         $packageManager = $this->objectManager->get(PackageManager::class);

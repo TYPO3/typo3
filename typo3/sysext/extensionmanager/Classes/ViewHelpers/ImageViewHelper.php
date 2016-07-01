@@ -48,12 +48,14 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 
     /**
      * Initialize arguments.
-     *
-     * @return void
      */
     public function initializeArguments()
     {
         parent::initializeArguments();
+        $this->registerArgument('src', 'string', '', true);
+        $this->registerArgument('width', 'int', 'width of the image');
+        $this->registerArgument('height', 'int', 'height of the image');
+        $this->registerArgument('fallbackImage', 'string', 'an optional fallback image if the $src image cannot be loaded', false, '');
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('alt', 'string', 'Specifies an alternate text for an image', false);
     }
@@ -61,14 +63,15 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
     /**
      * Resizes a given image (if required) and renders the respective img tag
      *
-     * @param string $src
-     * @param int $width width of the image
-     * @param int $height height of the image
-     * @param string $fallbackImage an optional fallback image if the $src image cannot be loaded
      * @return string rendered tag.
      */
-    public function render($src, $width = null, $height = null, $fallbackImage = '')
+    public function render()
     {
+        $src = $this->arguments['src'];
+        $width = $this->arguments['width'];
+        $height = $this->arguments['height'];
+        $fallbackImage = $this->arguments['fallbackImage'];
+
         $content = '';
         $uri = $this->getImageUri($src);
 

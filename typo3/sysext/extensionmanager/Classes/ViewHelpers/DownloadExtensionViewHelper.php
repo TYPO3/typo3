@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  */
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
 /**
  * view helper
@@ -55,12 +56,11 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\Abst
 
     /**
      * Initialize arguments.
-     *
-     * @return void
      */
     public function initializeArguments()
     {
         parent::initializeArguments();
+        $this->registerArgument('extension', Extension::class, '', true);
         $this->registerTagAttribute('enctype', 'string', 'MIME type with which the form is submitted');
         $this->registerTagAttribute('method', 'string', 'Transfer type (GET or POST)');
         $this->registerTagAttribute('name', 'string', 'Name of form');
@@ -72,12 +72,13 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\Abst
     /**
      * Renders a download link
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
      * @return string the rendered a tag
      */
-    public function render(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension)
+    public function render()
     {
-        $installPaths = \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnAllowedInstallPaths();
+        /** @var Extension $extension */
+        $extension = $this->arguments['extension'];
+        $installPaths = Extension::returnAllowedInstallPaths();
         if (empty($installPaths)) {
             return '';
         }

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+
 /**
  * Display a link to show all versions of an extension
  * @internal
@@ -26,13 +28,24 @@ class ShowExtensionVersionsViewHelper extends Link\ActionViewHelper
     protected $tagName = 'a';
 
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('extension', Extension::class, '', true);
+    }
+
+    /**
      * Renders an install link
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
      * @return string the rendered a tag
      */
-    public function render($extension)
+    public function render()
     {
+        /** @var Extension $extension */
+        $extension = $this->arguments['extension'];
+
         $uriBuilder = $this->controllerContext->getUriBuilder();
         $action = 'showAllVersions';
         $uri = $uriBuilder->reset()->uriFor($action, array(

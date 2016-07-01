@@ -25,22 +25,27 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class InstallationStateCssClassViewHelper extends AbstractViewHelper
 {
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('needle', 'string', '', true);
+        $this->registerArgument('haystack', 'array', '', true);
+    }
+
+    /**
      * Returns string meant to be used as css class
      * 'installed' => if an extension is installed
      * 'available' => if an extension is available in the system
      * '' (empty string) => if neither installed nor available
      *
-     * @param string $needle
-     * @param array $haystack
      * @return string the rendered a tag
      */
-    public function render($needle, array $haystack)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'needle' => $needle,
-                'haystack' => $haystack,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

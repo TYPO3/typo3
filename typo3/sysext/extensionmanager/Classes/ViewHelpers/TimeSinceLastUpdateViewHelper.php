@@ -26,17 +26,23 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class TimeSinceLastUpdateViewHelper extends AbstractViewHelper
 {
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('lastUpdateTime', \DateTime::class, 'The date of the last update.', true);
+    }
+
+    /**
      * Render method
      *
-     * @param \DateTime $lastUpdateTime The date of the last update.
      * @return string
      */
-    public function render($lastUpdateTime)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'lastUpdateTime' => $lastUpdateTime,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

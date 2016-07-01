@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 
 /**
@@ -48,26 +49,25 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 
     /**
      * Initialize arguments of this view helper
-     *
-     * @return void
      */
     public function initializeArguments()
     {
         parent::initializeArguments();
         $this->registerArgument('name', 'string', 'Name of input tag');
         $this->registerArgument('value', 'mixed', 'Value of input tag');
+        $this->registerArgument('configuration', ConfigurationItem::class, '', true);
         $this->registerUniversalTagAttributes();
     }
 
     /**
      * Render
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration
      * @return string the rendered tag
      */
-    public function render(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration)
+    public function render()
     {
-        $input = '';
+        /** @var ConfigurationItem $configuration */
+        $configuration = $this->arguments['configuration'];
         if (isset($this->viewHelperMapping[$configuration->getType()]) && method_exists($this, $this->viewHelperMapping[$configuration->getType()])) {
             $input = $this->{$this->viewHelperMapping[$configuration->getType()]}($configuration);
         } else {
@@ -80,10 +80,10 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type color picker
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration
+     * @param ConfigurationItem $configuration
      * @return string
      */
-    protected function renderColorPicker(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration)
+    protected function renderColorPicker(ConfigurationItem $configuration)
     {
         $elementId = 'em-' . $configuration->getName();
         $elementName = $this->getName($configuration);
@@ -114,10 +114,10 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "offset"
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration
+     * @param ConfigurationItem $configuration
      * @return string
      */
-    protected function renderOffsetField(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration)
+    protected function renderOffsetField(ConfigurationItem $configuration)
     {
         $this->tag->setTagName('input');
         $this->tag->addAttribute('type', 'text');
@@ -133,10 +133,10 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "wrap"
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration
+     * @param ConfigurationItem $configuration
      * @return string
      */
-    protected function renderWrapField(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration)
+    protected function renderWrapField(ConfigurationItem $configuration)
     {
         $this->tag->setTagName('input');
         $this->tag->addAttribute('type', 'text');
@@ -152,10 +152,10 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "option"
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration
+     * @param ConfigurationItem $configuration
      * @return string
      */
-    protected function renderOptionSelect(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration)
+    protected function renderOptionSelect(ConfigurationItem $configuration)
     {
         $this->tag->setTagName('select');
         $this->tag->addAttribute('id', 'em-' . $configuration->getName());
@@ -177,10 +177,10 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "int+"
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration
+     * @param ConfigurationItem $configuration
      * @return string
      */
-    protected function renderPositiveIntegerField(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration)
+    protected function renderPositiveIntegerField(ConfigurationItem $configuration)
     {
         $this->tag->setTagName('input');
         $this->tag->addAttribute('type', 'number');
@@ -197,10 +197,10 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "integer"
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration
+     * @param ConfigurationItem $configuration
      * @return string
      */
-    protected function renderIntegerField(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration)
+    protected function renderIntegerField(ConfigurationItem $configuration)
     {
         $this->tag->setTagName('input');
         $this->tag->addAttribute('type', 'number');
@@ -216,10 +216,10 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "text"
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration
+     * @param ConfigurationItem $configuration
      * @return string
      */
-    protected function renderTextField(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration)
+    protected function renderTextField(ConfigurationItem $configuration)
     {
         $this->tag->setTagName('input');
         $this->tag->addAttribute('type', 'text');
@@ -235,10 +235,10 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "small text"
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration
+     * @param ConfigurationItem $configuration
      * @return string
      */
-    protected function renderSmallTextField(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration)
+    protected function renderSmallTextField(ConfigurationItem $configuration)
     {
         return $this->renderTextField($configuration);
     }
@@ -246,10 +246,10 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "checkbox"
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration
+     * @param ConfigurationItem $configuration
      * @return string
      */
-    public function renderCheckbox(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration)
+    public function renderCheckbox(ConfigurationItem $configuration)
     {
         $this->tag->addAttribute('type', 'checkbox');
         $this->tag->addAttribute('name', $this->getName($configuration));
@@ -265,10 +265,10 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "userFunc"
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration
+     * @param ConfigurationItem $configuration
      * @return string
      */
-    protected function renderUserFunction(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration)
+    protected function renderUserFunction(ConfigurationItem $configuration)
     {
         $userFunction = $configuration->getGeneric();
         $userFunctionParams = array(
@@ -282,10 +282,10 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Get Field Name
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration
+     * @param ConfigurationItem $configuration
      * @return string
      */
-    protected function getName(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration)
+    protected function getName(ConfigurationItem $configuration)
     {
         return 'tx_extensionmanager_tools_extensionmanagerextensionmanager[config][' . $configuration->getName() . '][value]';
     }
@@ -293,7 +293,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render a hidden field for empty values
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration
+     * @param ConfigurationItem $configuration
      * @return string
      */
     protected function renderHiddenFieldForEmptyValue($configuration)

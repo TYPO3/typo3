@@ -33,12 +33,11 @@ class JsonEncodeViewHelper extends AbstractViewHelper
     protected $escapeChildren = false;
 
     /**
-     * Constructor
-     *
-     * @api
+     * Initialize arguments
      */
-    public function __construct()
+    public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerArgument('additionalAttributes', 'array', 'Additional tag attributes. They will be added directly to the resulting HTML tag.', false);
     }
 
@@ -46,7 +45,6 @@ class JsonEncodeViewHelper extends AbstractViewHelper
      * Replaces newline characters by HTML line breaks.
      *
      * @return string the altered string.
-     * @api
      */
     public function render()
     {

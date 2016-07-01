@@ -26,15 +26,27 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class ConfigureExtensionViewHelper extends Link\ActionViewHelper
 {
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('extension', 'array', 'Extension configuration array with extension information', true);
+        $this->registerArgument('forceConfiguration', 'bool', 'If TRUE the content is only returned if a link could be generated', false, true);
+        $this->registerArgument('showDescription', 'bool', 'If TRUE the extension description is also shown in the title attribute', false, false);
+    }
+
+    /**
      * Renders a configure extension link if the extension has configuration options
      *
-     * @param array $extension Extension configuration array with extension information
-     * @param bool $forceConfiguration If TRUE the content is only returned if a link could be generated
-     * @param bool $showDescription If TRUE the extension description is also shown in the title attribute
      * @return string the rendered tag or child nodes content
      */
-    public function render($extension, $forceConfiguration = true, $showDescription = false)
+    public function render()
     {
+        $extension = $this->arguments['extension'];
+        $forceConfiguration = $this->arguments['forceConfiguration'];
+        $showDescription = $this->arguments['showDescription'];
+
         $content = (string)$this->renderChildren();
         if ($extension['installed'] && file_exists(PATH_site . $extension['siteRelPath'] . 'ext_conf_template.txt')) {
             $uriBuilder = $this->controllerContext->getUriBuilder();

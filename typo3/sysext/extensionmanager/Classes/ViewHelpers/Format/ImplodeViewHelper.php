@@ -24,20 +24,24 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class ImplodeViewHelper extends AbstractViewHelper
 {
     /**
+     * Initialize arguments of this view helper
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('implode', 'array', '', true);
+        $this->registerArgument('delimiter', 'string', '', false, ', ');
+    }
+
+    /**
      * Implodes a string
      *
-     * @param array $implode
-     * @param string $delimiter
      * @return string the altered string.
-     * @api
      */
-    public function render(array $implode, $delimiter = ', ')
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'implode' => $implode,
-                'delimiter' => $delimiter,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
