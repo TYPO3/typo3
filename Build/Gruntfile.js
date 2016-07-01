@@ -38,6 +38,7 @@ module.exports = function(grunt) {
 			install   : '<%= paths.sysext %>install/Resources/',
 			linkvalidator : '<%= paths.sysext %>linkvalidator/Resources/',
 			backend   : '<%= paths.sysext %>backend/Resources/',
+			t3editor  : '<%= paths.sysext %>t3editor/Resources/',
 			workspaces: '<%= paths.sysext %>workspaces/Resources/',
 			core      : '<%= paths.sysext %>core/Resources/',
 			flags     : 'bower_components/region-flags/svg/',
@@ -82,6 +83,13 @@ module.exports = function(grunt) {
 				files: {
 					"<%= paths.workspaces %>Public/Css/preview.css": "<%= paths.workspaces %>Private/Less/preview.less"
 				}
+			},
+			t3editor: {
+				files: {
+					'<%= paths.t3editor %>Public/Css/t3editor.css': '<%= paths.t3editor %>Private/Less/t3editor.less',
+					'<%= paths.t3editor %>Public/Css/t3editor_inner.css': '<%= paths.t3editor %>Private/Less/t3editor_inner.less',
+					'<%= paths.t3editor %>Public/Css/t3editor_typoscript_colors.css': '<%= paths.t3editor %>Private/Less/t3editor_typoscript_colors.less'
+				}
 			}
 		},
 		postcss: {
@@ -114,6 +122,9 @@ module.exports = function(grunt) {
 			},
 			linkvalidator: {
 				src: '<%= paths.linkvalidator %>Public/Css/*.css'
+			},
+			t3editor: {
+				src: '<%= paths.t3editor %>Public/Css/*.css'
 			},
 			workspaces: {
 				src: '<%= paths.workspaces %>Public/Css/*.css'

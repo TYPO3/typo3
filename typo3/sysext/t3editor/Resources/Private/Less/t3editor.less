@@ -1,0 +1,245 @@
+//
+// T3editor Styles
+// ---------------
+// Description: Global styles for t3editor wrapper.
+// Requires:    ../Less/Configuration/Variables/_colors.less
+// Usage:       This file is compiled to the standalone CSS file:
+//              ../typo3_src/typo3/sysext/t3editor/Resources/Public/Css/t3editor.css
+//
+
+
+// Include Color Variables
+@import '../../../../../../Build/Resources/Public/Less/Configuration/Variables/_colors.less';
+
+
+// T3editor styles
+.CodeMirror-wrapping {
+  position: relative;
+  min-width: 100%;
+
+  div {
+    line-height: 13px !important;
+  }
+}
+
+div.CodeMirror-line-numbers {
+  margin-right: 2px;
+  padding-right: 3px;
+  padding-left: 3px;
+  font-size: 10px;
+  text-align: right;
+  line-height: 13px !important;
+}
+
+.TSREF_type_label,
+.TSREF_description_label {
+  font-weight: bold;
+}
+
+#TSREF_description {
+  margin-bottom: 5px;
+}
+
+
+// Code complete box
+.t3e_codeCompleteBox {
+  border: 1px solid @color-t3-gray-light;
+  padding: 0;
+  background-color: @color-t3-gray-superlight;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+
+    li {
+      padding-left: 2px;
+      padding-right: 2px;
+      cursor: pointer;
+
+      &.active{
+        padding-left: 2px;
+        padding-right: 2px;
+        background-color: @color-white;
+      }
+
+      span {
+        &.word_undefined,
+        &.word_definedTSREFProperty,
+        &.word_undefinedTSREFProperty {
+          font-family: monospace;
+        }
+
+        &.word_undefined,
+        &.word_definedTSREFProperty {
+          color: @color-t3-red;
+        }
+
+        &.word_undefinedTSREFProperty {
+          color: @color-t3-blue;
+        }
+
+        &.word_userProperty {
+          font-size: 12px;
+          color: @gray;
+        }
+      }
+    }
+  }
+}
+
+
+// Code description box
+.t3e_descriptionBox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 190;
+  border: 1px solid @color-t3-gray-light;
+  padding: 2px 5px;
+  height: 220px;
+  width: 260px;
+  background-color: @color-t3-gray-superlight;
+}
+
+.t3e_toolbar {
+  position: absolute;
+  top: 0;
+  right: 50px;
+  width: 200px;
+}
+
+.t3e_toolbar_icon {
+  border: 1px solid @color-t3-gray-light;
+  float: left;
+  width: 20px;
+  height: 20px;
+}
+
+.t3e_codeCompleteWrap {
+  position: absolute;
+  top: 0; left: 0;
+  z-index:190;
+}
+
+
+// Around the editor
+.t3e_wrap {
+  position: relative;
+  border: 1px solid @color-t3-gray-light;
+  min-width: 100%;
+  background-color: @color-t3-gray-superlight;
+}
+
+.t3e_modalOverlay {
+  position: absolute;
+  top: 0; left: 0;
+  background-color: @color-t3-gray-superlight;
+  z-index:200;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.t3e_fullscreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index:999;
+}
+
+.t3e_iframe_wrap {
+  margin: 0 0 0 3px;
+}
+
+.t3e_iframe {
+  display: block;
+  padding: 0;
+}
+
+.t3e_toolbar_wrap {
+  clear: both;
+  padding-right: 20px;
+  width: 100%;
+  font-size: 11px;
+}
+
+.t3e_statusbar_wrap {
+  position: absolute;
+  left: -1px;
+  bottom: -1px;
+  padding: 5px;
+  height: auto;
+  width: calc(~'100% + 2px');
+  font-size: 11px;
+  background-color: @color-t3-gray;
+}
+
+.t3e_statusbar_wrap {
+  span {
+    margin: 3px;
+    color: @color-white;
+  }
+}
+
+.t3e_statusbar_item {
+  float: right;
+  height: 16px;
+  border-left: 1px solid gray;
+  padding: 4px 14px 0 14px;
+}
+
+.t3e_clickable {
+  cursor: hand;
+}
+
+.t3e_statusbar_overlay {
+  position: absolute; bottom: 20px; right: 17px;
+  z-index: 100;
+  opacity: 0.85;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  border-top: 1px solid gray;
+  padding: 5px 0 10px 0;
+  width: 180px;
+  height: 70%;
+  background-color: @color-t3-gray-superlight;
+
+  &#t3e_statusbar_overlay_options {
+    height: 8em;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+
+    li {
+      cursor: hand;
+      padding: 2px 6px 2px 6px;
+      color: @text-color;
+
+      &:hover {
+        background-color: @color-t3-gray-superlight;
+      }
+
+      label {
+        cursor:pointer;
+      }
+    }
+  }
+}
+
+#t3e_modalOverlay_help {
+  top: 10%;
+  left: 5%;
+  height: 80%;
+  width: 90%;
+  border: 1px solid @gray;
+  padding: 10px;
+  background-image: none;
+}
+
+.t3e_footeritem_active {
+  background-color: @color-t3-gray-superlight;
+}

@@ -252,7 +252,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
     {
         switch ($mode) {
             case self::MODE_TYPOSCRIPT:
-                $stylesheet = array($this->relExtPath . 'Resources/Public/Css/typoscriptcolors.css');
+                $stylesheet = array($this->relExtPath . 'Resources/Public/Css/t3editor_typoscript_colors.css');
                 break;
             case self::MODE_JAVASCRIPT:
                 $stylesheet = array($this->codemirrorPath . '../css/jscolors.css');

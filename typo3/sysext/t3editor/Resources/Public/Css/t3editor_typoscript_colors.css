@@ -1,0 +1,63 @@
+/*!
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+.other {
+  color: #000000;
+}
+.ts-value {
+  color: #dd123d;
+}
+.ts-operator,
+.ts-objstr,
+.keyword,
+.keyword2,
+.keyword3,
+.reserved {
+  color: #0080ff;
+}
+.ts-operator {
+  font-weight: bold;
+}
+.ts-value_copy {
+  color: darkgreen;
+}
+.ts-value_unset,
+.ts-ignored,
+.ts-default {
+  background-color: #5abc55;
+}
+.ts-comment {
+  font-style: italic;
+  color: #737373;
+}
+.ts-condition {
+  font-weight: bold;
+  color: #ffffff;
+  background-color: maroon;
+}
+.ts-error {
+  border: 1px #dd123d dashed;
+  font-weight: bold;
+  background-color: #ffc800;
+}
+.highlight-bracket {
+  color: #ffffff;
+  background-color: #5abc55;
+}
+.error-bracket {
+  color: #ffffff;
+  background-color: #dd123d;
+}
+pre.code,
+.editbox {
+  color: #737373;
+}
