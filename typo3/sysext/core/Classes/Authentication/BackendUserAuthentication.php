@@ -1385,7 +1385,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
                         $this->getPagePermsClause(1),
                         $queryBuilder->expr()->in(
                             'uid',
-                            $queryBuilder->createNamedParameter($this->groupData['webmounts'])
+                            GeneralUtility::intExplode(',', $this->groupData['webmounts'])
                         )
                     )
                     ->execute()
