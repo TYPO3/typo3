@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Beuser\Exception;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -23,24 +24,24 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class ArrayElementViewHelper extends AbstractViewHelper
 {
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('array', 'array', 'Array to search in', true);
+        $this->registerArgument('key', 'string', 'Key to return its value', true);
+        $this->registerArgument('subKey', 'string', 'If result of key access is an array, subkey can be used to fetch an element from this again', false, '');
+    }
+
+    /**
      * Return array element by key. Accessed values must be scalar (string, int, float or double)
      *
-     * @param array $array Array to search in
-     * @param string $key Key to return its value
-     * @param string $subKey If result of key access is an array, subkey can be used to fetch an element from this again
      * @return string
      */
-    public function render(array $array, $key, $subKey = '')
+    public function render()
     {
-        return static::renderStatic(
-            array(
-                'array' => $array,
-                'key' => $key,
-                'subKey' => $subKey
-            ),
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
     /**
@@ -49,7 +50,7 @@ class ArrayElementViewHelper extends AbstractViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
-     * @throws \TYPO3\CMS\Beuser\Exception
+     * @throws Exception
      * @return string
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
@@ -65,10 +66,7 @@ class ArrayElementViewHelper extends AbstractViewHelper
             }
         }
         if (!is_scalar($result)) {
-            throw new \TYPO3\CMS\Beuser\Exception(
-                'Only scalar return values (string, int, float or double) are supported.',
-                1382284105
-            );
+            throw new Exception('Only scalar return values (string, int, float or double) are supported.', 1382284105);
         }
         return $result;
     }

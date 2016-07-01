@@ -35,23 +35,24 @@ class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
     protected $escapeOutput = false;
 
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('table', 'string', '', true);
+        $this->registerArgument('object', 'object', '', true);
+    }
+
+    /**
      * Displays spriteIcon for database table and object
      *
-     * @param string $table
-     * @param object $object
      * @return string
      * @see IconFactory::getIconForRecord()
      */
-    public function render($table, $object)
+    public function render()
     {
-        return static::renderStatic(
-            array(
-                'table' => $table,
-                'object' => $object
-            ),
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
     /**

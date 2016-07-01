@@ -39,20 +39,22 @@ class RemoveUserViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('backendUser', BackendUser::class, 'Target backendUser to switch active session to', true);
+    }
+
+    /**
      * Render link with sprite icon to remove user
      *
-     * @param \TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser Target backendUser to switch active session to
      * @return string
      */
-    public function render(BackendUser $backendUser)
+    public function render()
     {
-        return static::renderStatic(
-            array(
-                'backendUser' => $backendUser
-            ),
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
     /**

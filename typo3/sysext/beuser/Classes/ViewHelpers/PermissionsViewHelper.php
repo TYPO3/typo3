@@ -39,14 +39,22 @@ class PermissionsViewHelper extends AbstractViewHelper
     protected static $permissionLabels = array();
 
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('permission', 'int', 'Current permission', true);
+        $this->registerArgument('scope', 'string', '"user" / "group" / "everybody"', true);
+        $this->registerArgument('pageId', 'int', '', true);
+    }
+
+    /**
      * Return permissions.
      *
-     * @param int $permission Current permission
-     * @param string $scope "user" / "group" / "everybody"
-     * @param int $pageId
      * @return string
      */
-    public function render($permission, $scope, $pageId)
+    public function render()
     {
         return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }

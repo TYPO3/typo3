@@ -27,21 +27,23 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class EditRecordViewHelper extends AbstractViewHelper
 {
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('parameters', 'string', 'Is a set of GET params to send to FormEngine', true);
+    }
+
+    /**
      * Returns a URL to link to FormEngine
      *
-     * @param string $parameters Is a set of GET params to send to FormEngine
      * @return string URL to FormEngine module + parameters
      * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl()
      */
-    public function render($parameters)
+    public function render()
     {
-        return static::renderStatic(
-            array(
-                'parameters' => $parameters
-            ),
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
     /**

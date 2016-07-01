@@ -27,24 +27,24 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class IssueCommandViewHelper extends AbstractViewHelper
 {
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('parameters', 'string', 'Is a set of GET params to send to tce_db.php. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World', true);
+        $this->registerArgument('redirectUrl', 'string', 'Redirect URL if any other that \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv(\'REQUEST_URI\') is preferred', false, '');
+    }
+
+    /**
      * Returns a URL with a command to TYPO3 Core Engine (tce_db.php)
-     *
-     * @param string $parameters Is a set of GET params to send to tce_db.php. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World
-     * @param string $redirectUrl Redirect URL if any other that \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') is wished
      *
      * @return string URL to tce_db.php + parameters
      * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction()
      */
-    public function render($parameters, $redirectUrl = '')
+    public function render()
     {
-        return static::renderStatic(
-            array(
-                'parameters' => $parameters,
-                'redirectUrl' => $redirectUrl
-            ),
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
     /**

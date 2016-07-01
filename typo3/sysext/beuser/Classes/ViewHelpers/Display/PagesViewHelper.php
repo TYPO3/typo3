@@ -33,20 +33,22 @@ class PagesViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('uids', 'string', '', false, '');
+    }
+
+    /**
      * Render unordered list for pages
      *
-     * @param string $uids
      * @return string
      */
-    public function render($uids = '')
+    public function render()
     {
-        return static::renderStatic(
-            array(
-                'uids' => $uids,
-            ),
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
     /**
