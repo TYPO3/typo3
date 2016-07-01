@@ -18,6 +18,8 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Fluid\Core\Exception;
 use TYPO3\CMS\Fluid\Tests\Unit\Core\Fixtures\TestViewHelper;
 use TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture;
+use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**
  * Test case
@@ -363,8 +365,8 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setRenderingContextShouldSetInnerVariables()
     {
-        $templateVariableContainer = $this->createMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer::class);
-        $viewHelperVariableContainer = $this->createMock(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer::class);
+        $templateVariableContainer = $this->createMock(StandardVariableProvider::class);
+        $viewHelperVariableContainer = $this->createMock(ViewHelperVariableContainer::class);
         $controllerContext = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class)
             ->setMethods(array('getRequest'))
             ->disableOriginalConstructor()

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Test for \TYPO3\CMS\Fluid\ViewHelpers\Link\EmailViewHelper
@@ -37,7 +38,7 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
      */
     public function renderCorrectlySetsTagNameAndAttributesAndContent()
     {
-        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(array('setTagName', 'addAttribute', 'setContent'))
             ->getMock();
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('a');
@@ -56,7 +57,7 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
      */
     public function renderAddsHttpPrefixIfSpecifiedUriDoesNotContainScheme()
     {
-        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(array('setTagName', 'addAttribute', 'setContent'))
             ->getMock();
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('a');
@@ -75,7 +76,7 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
      */
     public function renderAddsSpecifiedSchemeIfUriDoesNotContainScheme()
     {
-        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(array('setTagName', 'addAttribute', 'setContent'))
             ->getMock();
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('a');
@@ -94,7 +95,7 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
      */
     public function renderDoesNotAddEmptyScheme()
     {
-        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(array('setTagName', 'addAttribute', 'setContent'))
             ->getMock();
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('a');

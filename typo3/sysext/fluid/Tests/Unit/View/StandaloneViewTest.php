@@ -50,7 +50,7 @@ class StandaloneViewTest extends UnitTestCase
     protected $mockRenderingContext;
 
     /**
-     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer|\PHPUnit_Framework_MockObject_MockObject
+     * @var ViewHelperVariableContainer|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $mockViewHelperVariableContainer;
 

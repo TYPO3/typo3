@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Test for the "Password" Form view helper
@@ -38,7 +39,7 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
      */
     public function renderCorrectlySetsTagName()
     {
-        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(array('setTagName'))
             ->disableOriginalConstructor()
             ->getMock();
@@ -54,7 +55,7 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
      */
     public function renderCorrectlySetsTypeNameAndValueAttributes()
     {
-        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(array('addAttribute', 'setContent', 'render'))
             ->disableOriginalConstructor()
             ->getMock();

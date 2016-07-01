@@ -17,6 +17,7 @@ use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
 use TYPO3\CMS\Fluid\Core\Widget\Exception\MissingControllerException;
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**
  * Test case
@@ -107,7 +108,7 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function callViewHelper()
     {
-        $mockViewHelperVariableContainer = $this->createMock(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer::class);
+        $mockViewHelperVariableContainer = $this->createMock(ViewHelperVariableContainer::class);
         $mockViewHelperVariableContainer->expects($this->any())->method('get')->willReturnArgument(2);
         $mockRenderingContext = $this->createMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
         $mockRenderingContext->expects($this->atLeastOnce())->method('getViewHelperVariableContainer')->will($this->returnValue($mockViewHelperVariableContainer));

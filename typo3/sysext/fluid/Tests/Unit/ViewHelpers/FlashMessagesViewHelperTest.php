@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
+
 /**
  * Testcase for FlashMessagesViewHelper
  */
@@ -25,7 +27,7 @@ class FlashMessagesViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelper
     protected $viewHelper;
 
     /**
-     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
+     * @var TagBuilder
      */
     protected $mockTagBuilder;
 
@@ -52,7 +54,7 @@ class FlashMessagesViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelper
 
         $this->controllerContext->expects($this->any())->method('getFlashMessageQueue')->will($this->returnValue($mockFlashMessagingQueue));
 
-        $this->mockTagBuilder = $this->createMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class);
+        $this->mockTagBuilder = $this->createMock(TagBuilder::class);
         $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\FlashMessagesViewHelper::class, array('dummy'));
         $this->viewHelper->_set('tag', $this->mockTagBuilder);
         $this->viewHelper->setRenderingContext($this->renderingContext);

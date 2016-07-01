@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Test case
@@ -46,7 +47,7 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
      */
     public function renderCorrectlySetsTagNameAndAttributesAndContent()
     {
-        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(array('setTagName', 'addAttribute', 'setContent'))
             ->getMock();
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('a');
@@ -63,7 +64,7 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
      */
     public function renderSetsTagContentToEmailIfRenderChildrenReturnNull()
     {
-        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(array('setTagName', 'addAttribute', 'setContent'))
             ->getMock();
         $mockTagBuilder->expects($this->once())->method('setContent')->with('some@email.tld');

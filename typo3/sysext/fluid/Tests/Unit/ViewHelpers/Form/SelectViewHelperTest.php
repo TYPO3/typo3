@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Test for the "Select" Form view helper
@@ -307,7 +308,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
      */
     public function multipleSelectCreatesExpectedOptions()
     {
-        $this->tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder();
+        $this->tagBuilder = new TagBuilder();
 
         $this->arguments['options'] = array(
             'value1' => 'label1',
@@ -367,7 +368,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
      */
     public function multipleSelectOnDomainObjectsCreatesExpectedOptions()
     {
-        $this->tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder();
+        $this->tagBuilder = new TagBuilder();
         $this->viewHelper->expects($this->exactly(3))->method('registerFieldNameForFormTokenGeneration')->with('myName[]');
 
         $user_is = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass(1, 'Ingmar', 'Schlecht');
@@ -411,7 +412,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
         ));
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
-        $this->tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder();
+        $this->tagBuilder = new TagBuilder();
         $this->viewHelper->expects($this->exactly(3))->method('registerFieldNameForFormTokenGeneration')->with('myName[]');
 
         $user_is = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass(1, 'Ingmar', 'Schlecht');

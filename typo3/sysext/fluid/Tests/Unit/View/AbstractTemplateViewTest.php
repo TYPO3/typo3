@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View;
 use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
-use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 use TYPO3\CMS\Fluid\View\AbstractTemplateView;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**
  * Test case

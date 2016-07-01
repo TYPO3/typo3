@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
+
 /**
  * Test for the "Textfield" Form view helper
  */
@@ -38,7 +40,7 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
      */
     public function renderCorrectlySetsTagName()
     {
-        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(array('setTagName'))
             ->disableOriginalConstructor()
             ->getMock();
@@ -54,7 +56,7 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
      */
     public function renderCorrectlySetsTypeNameAndValueAttributes()
     {
-        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(array('addAttribute', 'setContent', 'render'))
             ->disableOriginalConstructor()
             ->getMock();
@@ -90,7 +92,7 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
      */
     public function renderAddsPlaceholder()
     {
-        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(array('addAttribute', 'setContent', 'render'))
             ->disableOriginalConstructor()
             ->getMock();
@@ -116,7 +118,7 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
      */
     public function renderCorrectlySetsRequiredAttribute()
     {
-        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(array('addAttribute', 'setContent', 'render'))
             ->disableOriginalConstructor()
             ->getMock();

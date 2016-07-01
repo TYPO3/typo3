@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Fluid\ViewHelpers\Form\HiddenViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Test for the "Hidden" Form view helper
@@ -38,7 +39,7 @@ class HiddenViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
      */
     public function renderCorrectlySetsTagNameAndDefaultAttributes()
     {
-        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(array('setTagName', 'addAttribute'))
             ->getMock();
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('input');

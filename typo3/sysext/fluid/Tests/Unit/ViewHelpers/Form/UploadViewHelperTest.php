@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Test for the "Upload" Form view helper
@@ -49,7 +50,7 @@ class UploadViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
      */
     public function renderCorrectlySetsTypeNameAndValueAttributes()
     {
-        $mockTagBuilder = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class)
+        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(array('addAttribute', 'setContent', 'render'))
             ->disableOriginalConstructor()
             ->getMock();
@@ -85,8 +86,8 @@ class UploadViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
      */
     public function renderSetsAttributeNameAsArrayIfMultipleIsGiven()
     {
-        /** @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder */
-        $tagBuilder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class);
+        /** @var TagBuilder $tagBuilder */
+        $tagBuilder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TagBuilder::class);
         $tagBuilder->addAttribute('multiple', 'multiple');
         $this->viewHelper->_set('tag', $tagBuilder);
         $arguments = array(

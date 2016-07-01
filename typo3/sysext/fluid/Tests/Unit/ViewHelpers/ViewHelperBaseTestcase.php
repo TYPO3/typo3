@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 use TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**
  * Base test class for testing view helpers
@@ -23,12 +25,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
 abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
+     * @var ViewHelperVariableContainer
      */
     protected $viewHelperVariableContainer;
 
     /**
-     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
+     * @var CmsVariableProvider
      */
     protected $templateVariableContainer;
 
@@ -43,7 +45,7 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected $controllerContext;
 
     /**
-     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
+     * @var TagBuilder
      */
     protected $tagBuilder;
 
@@ -72,7 +74,7 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->viewHelperVariableContainer = $this->createMock(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer::class);
+        $this->viewHelperVariableContainer = $this->createMock(ViewHelperVariableContainer::class);
         $this->templateVariableContainer = $this->createMock(CmsVariableProvider::class);
         $this->uriBuilder = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
         $this->uriBuilder->expects($this->any())->method('reset')->will($this->returnValue($this->uriBuilder));
