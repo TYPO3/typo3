@@ -42,6 +42,8 @@ class LivePreset extends Configuration\AbstractPreset
         'SYS/enableDeprecationLog' => false,
         'SYS/sqlDebug' => 0,
         'SYS/systemLogLevel' => 2,
+        // E_RECOVERABLE_ERROR | E_USER_DEPRECATED
+        'SYS/exceptionalErrors' => 20480,
     );
 
     /**
