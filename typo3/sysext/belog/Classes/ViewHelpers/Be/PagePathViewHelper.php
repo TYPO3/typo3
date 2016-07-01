@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers\Be;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -24,19 +25,24 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class PagePathViewHelper extends AbstractBackendViewHelper
 {
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('pid', 'int', 'Pid of the page', true);
+        $this->registerArgument('titleLimit', 'int', 'Limit of the page title', false, 20);
+    }
+
+    /**
      * Resolve page id to page path string (with automatic cropping to maximum given length).
      *
-     * @param int $pid Pid of the page
-     * @param int $titleLimit Limit of the page title
      * @return string Page path string
      */
-    public function render($pid, $titleLimit = 20)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'pid' => $pid,
-                'titleLimit' => $titleLimit
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -51,6 +57,6 @@ class PagePathViewHelper extends AbstractBackendViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($arguments['pid'], '', $arguments['titleLimit']);
+        return BackendUtility::getRecordPath($arguments['pid'], '', $arguments['titleLimit']);
     }
 }

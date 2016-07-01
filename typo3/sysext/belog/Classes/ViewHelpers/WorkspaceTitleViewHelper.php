@@ -14,6 +14,12 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -31,17 +37,23 @@ class WorkspaceTitleViewHelper extends AbstractViewHelper
     protected static $workspaceTitleRuntimeCache = array();
 
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('uid', 'int', 'UID of the workspace', true);
+    }
+
+    /**
      * Resolve workspace title from UID.
      *
-     * @param int $uid UID of the workspace
      * @return string workspace title or UID
      */
-    public function render($uid)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'uid' => $uid
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -53,26 +65,33 @@ class WorkspaceTitleViewHelper extends AbstractViewHelper
      * @param RenderingContextInterface $renderingContext
      *
      * @return string
+     * @throws \InvalidArgumentException
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $uid = $arguments['uid'];
+        if (!$renderingContext instanceof RenderingContext) {
+            throw new \InvalidArgumentException('The given rendering context is not of type "TYPO3\CMS\Fluid\Core\Rendering\RenderingContext"', 1468363946);
+        }
 
+        $uid = $arguments['uid'];
         if (isset(static::$workspaceTitleRuntimeCache[$uid])) {
             return static::$workspaceTitleRuntimeCache[$uid];
         }
 
         if ($uid === 0) {
-            static::$workspaceTitleRuntimeCache[$uid] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('live', $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName());
-        } elseif (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
+            static::$workspaceTitleRuntimeCache[$uid] = LocalizationUtility::translate(
+                'live',
+                $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName()
+            );
+        } elseif (!ExtensionManagementUtility::isLoaded('workspaces')) {
             static::$workspaceTitleRuntimeCache[$uid] = '';
         } else {
-            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-            $workspaceRepository = $objectManager->get(\TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository::class);
-            /** @var $workspace \TYPO3\CMS\Belog\Domain\Model\Workspace */
+            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+            $workspaceRepository = $objectManager->get(WorkspaceRepository::class);
+            /** @var \TYPO3\CMS\Belog\Domain\Model\Workspace $workspace */
             $workspace = $workspaceRepository->findByUid($uid);
             // $workspace may be null, force empty string in this case
-            static::$workspaceTitleRuntimeCache[$uid] = ($workspace === null) ? '' : $workspace->getTitle();
+            static::$workspaceTitleRuntimeCache[$uid] = $workspace === null ? '' : $workspace->getTitle();
         }
 
         return static::$workspaceTitleRuntimeCache[$uid];

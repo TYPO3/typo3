@@ -25,6 +25,15 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class FormatDetailsViewHelper extends AbstractViewHelper
 {
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('logEntry', LogEntry::class, '', true);
+    }
+
+    /**
      * Create formatted detail string from log row.
      *
      * The method handles two properties of the model: details and logData
@@ -33,15 +42,12 @@ class FormatDetailsViewHelper extends AbstractViewHelper
      * Furthermore, possible files in logData are stripped to their basename if
      * the action logged was a file action
      *
-     * @param LogEntry $logEntry
      * @return string Formatted details
      */
-    public function render(LogEntry $logEntry)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'logEntry' => $logEntry
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -53,10 +59,10 @@ class FormatDetailsViewHelper extends AbstractViewHelper
      * @param RenderingContextInterface $renderingContext
      *
      * @return string
-     * @throws Exception
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
+        /** @var LogEntry $logEntry */
         $logEntry = $arguments['logEntry'];
         $detailString = $logEntry->getDetails();
         $substitutes = $logEntry->getLogData();

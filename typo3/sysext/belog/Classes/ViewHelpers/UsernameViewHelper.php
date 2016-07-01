@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -31,17 +34,23 @@ class UsernameViewHelper extends AbstractViewHelper
     protected static $usernameRuntimeCache = array();
 
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('uid', 'int', 'Uid of the user', true);
+    }
+
+    /**
      * Resolve user name from backend user id.
      *
-     * @param int $uid Uid of the user
      * @return string Username or an empty string if there is no user with that UID
      */
-    public function render($uid)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'uid' => $uid
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -57,17 +66,16 @@ class UsernameViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $uid = $arguments['uid'];
-
         if (isset(static::$usernameRuntimeCache[$uid])) {
             return static::$usernameRuntimeCache[$uid];
         }
 
-        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $backendUserRepository = $objectManager->get(\TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository::class);
-        /** @var $user \TYPO3\CMS\Extbase\Domain\Model\BackendUser */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $backendUserRepository = $objectManager->get(BackendUserRepository::class);
+        /** @var \TYPO3\CMS\Extbase\Domain\Model\BackendUser $user */
         $user = $backendUserRepository->findByUid($uid);
         // $user may be NULL if user was deleted from DB, set it to empty string to always return a string
-        static::$usernameRuntimeCache[$uid] = ($user === null) ? '' : $user->getUserName();
+        static::$usernameRuntimeCache[$uid] = $user === null ? '' : $user->getUserName();
         return static::$usernameRuntimeCache[$uid];
     }
 }

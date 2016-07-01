@@ -25,17 +25,23 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class IsExtensionLoadedViewHelper extends AbstractViewHelper
 {
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('extensionKey', 'string', 'The extension\'s key', true);
+    }
+
+    /**
      * Checks whether an extension is loaded.
      *
-     * @param string $extensionKey The extension's key
      * @return bool TRUE if extension is loaded, FALSE otherwise
      */
-    public function render($extensionKey)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'extensionKey' => $extensionKey
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -46,7 +52,7 @@ class IsExtensionLoadedViewHelper extends AbstractViewHelper
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      *
-     * @return string
+     * @return bool
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {

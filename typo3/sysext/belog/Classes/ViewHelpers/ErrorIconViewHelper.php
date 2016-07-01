@@ -34,18 +34,24 @@ class ErrorIconViewHelper extends AbstractBackendViewHelper
     protected $escapeOutput = false;
 
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('errorNumber', 'int', 'The error number (0 ... 3)', false, 0);
+    }
+
+    /**
      * Renders an error icon link as known from the TYPO3 backend.
      * Error codes 2 and three are mapped to "error" and 1 is mapped to "warning".
      *
-     * @param int $errorNumber The error number (0 ... 3)
      * @return string the rendered error icon link
      */
-    public function render($errorNumber = 0)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'errorNumber' => $errorNumber
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

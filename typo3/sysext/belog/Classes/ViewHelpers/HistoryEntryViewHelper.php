@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -39,17 +40,23 @@ class HistoryEntryViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
+     * Initializes the arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('uid', 'int', 'Uid of the log entry', true);
+    }
+
+    /**
      * Get system history record
      *
-     * @param int $uid Uid of the log entry
      * @return string Formatted history entry if one exists, else empty string
      */
-    public function render($uid)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'uid' => $uid
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -61,16 +68,19 @@ class HistoryEntryViewHelper extends AbstractViewHelper
      * @param RenderingContextInterface $renderingContext
      *
      * @return string
+     * @throws \InvalidArgumentException
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
+        if (!$renderingContext instanceof RenderingContext) {
+            throw new \InvalidArgumentException('The given rendering context is not of type "TYPO3\CMS\Fluid\Core\Rendering\RenderingContext"', 1468363945);
+        }
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var \TYPO3\CMS\Belog\Domain\Repository\HistoryEntryRepository $historyEntryRepository */
         $historyEntryRepository = $objectManager->get(HistoryEntryRepository::class);
         /** @var \TYPO3\CMS\Belog\Domain\Model\HistoryEntry $historyEntry */
         $historyEntry = $historyEntryRepository->findOneBySysLogUid($arguments['uid']);
-        /** @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext */
         $controllerContext = $renderingContext->getControllerContext();
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
