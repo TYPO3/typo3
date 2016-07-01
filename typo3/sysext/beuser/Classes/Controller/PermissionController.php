@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -120,8 +120,9 @@ class PermissionController extends ActionController
         $view->assign(
             'previewUrl',
             BackendUtility::viewOnClick(
-                $this->pageInfo['uid'], '',
-                BackendUtility::BEgetRootLine($this->pageInfo['uid'])
+                (int)$this->pageInfo['uid'],
+                '',
+                BackendUtility::BEgetRootLine((int)$this->pageInfo['uid'])
             )
         );
 
@@ -333,18 +334,20 @@ class PermissionController extends ActionController
                 if ((int)$properties['perms_groupid'] === -1) {
                     unset($properties['perms_groupid']);
                 }
-                $this->getDatabaseConnection()->exec_UPDATEquery(
+                $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
+                $connection->update(
                     'pages',
-                    'uid = ' . (int)$pageUid,
-                    $properties
+                    $properties,
+                    ['uid' => (int)$pageUid]
                 );
+
                 if (!empty($mirror['pages'][$pageUid])) {
                     $mirrorPages = GeneralUtility::trimExplode(',', $mirror['pages'][$pageUid]);
                     foreach ($mirrorPages as $mirrorPageUid) {
-                        $this->getDatabaseConnection()->exec_UPDATEquery(
+                        $connection->update(
                             'pages',
-                            'uid = ' . (int)$mirrorPageUid,
-                            $properties
+                            $properties,
+                            ['uid' => (int)$mirrorPageUid]
                         );
                     }
                 }
@@ -359,14 +362,6 @@ class PermissionController extends ActionController
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
