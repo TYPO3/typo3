@@ -93,7 +93,7 @@ Ext.override(Ext.ux.state.TreePanel, {
 						var contentId = TYPO3.Backend.ContentContainer.getIdFromUrl() ||
 							String(fsMod.recentIds['web']) || '-1';
 
-						var hasContentFrameValidPageId = (contentId !== '-1' && contentId !== '0');
+						var hasContentFrameValidPageId = contentId !== '-1';
 						var isCurrentSelectedNode = (
 							String(node.attributes.nodeData.id) === contentId ||
 							contentId.indexOf('pages' + String(node.attributes.nodeData.id)) !== -1
