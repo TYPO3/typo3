@@ -8,7 +8,7 @@ return [
         'cruser_id' => 'cruser_id',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l18n_parent',
-        'transOrigDiffSourceField' => 'l18n_diffsource',
+        'transOrigDiffSourceField' => 'l10n_diffsource',
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden',
@@ -51,7 +51,7 @@ return [
                     AND tx_styleguide_inline_mnsymmetric_mm.sys_language_uid IN (-1,0)',
             ]
         ],
-        'l18n_diffsource' => [
+        'l10n_diffsource' => [
             'config' => [
                 'type' => 'passthrough'
             ]
@@ -103,7 +103,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;General, title, hotelid, branchid,
-                --div--;Visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden, hotelsort, branchsort'
+                --div--;Visibility, sys_language_uid, l18n_parent, l10n_diffsource, hidden, hotelsort, branchsort'
         ]
     ],
 
