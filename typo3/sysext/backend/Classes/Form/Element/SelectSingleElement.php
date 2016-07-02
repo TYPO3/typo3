@@ -106,7 +106,6 @@ class SelectSingleElement extends AbstractFormElement
                 );
             } else {
                 // IS ITEM
-                $title = htmlspecialchars($item['0'], ENT_COMPAT, 'UTF-8', false);
                 $icon = !empty($item[2]) ? FormEngineUtility::getIconHtml($item[2], $title, $title) : '';
                 $selected = $selectedValue === (string)$item[1];
 
@@ -115,7 +114,7 @@ class SelectSingleElement extends AbstractFormElement
                 }
 
                 $selectItemGroups[$selectItemGroupCount]['items'][] = array(
-                    'title' => $title,
+                    'title' => $item[0],
                     'value' => $item[1],
                     'icon' => $icon,
                     'selected' => $selected,
@@ -125,7 +124,7 @@ class SelectSingleElement extends AbstractFormElement
                 // ICON
                 if ($icon) {
                     $selectIcons[] = array(
-                        'title' => $title,
+                        'title' => $item[0],
                         'icon' => $icon,
                         'index' => $selectItemCounter,
                     );
@@ -155,7 +154,7 @@ class SelectSingleElement extends AbstractFormElement
                 foreach ($selectItemGroup['items'] as $item) {
                     $options .= '<option value="' . htmlspecialchars($item['value']) . '" data-icon="' .
                         htmlspecialchars($item['icon']) . '"'
-                        . ($item['selected'] ? ' selected="selected"' : '') . '>' . $item['title'] . '</option>';
+                        . ($item['selected'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($item['title'], ENT_COMPAT, 'UTF-8', false) . '</option>';
                 }
                 $hasIcons = !empty($item['icon']);
             }
@@ -216,7 +215,7 @@ class SelectSingleElement extends AbstractFormElement
                 $html[] =            '<td>';
 
                 if (is_array($selectIcon)) {
-                    $html[] = '<a href="#" title="' . $selectIcon['title'] . '" data-select-index="' . $selectIcon['index'] . '">';
+                    $html[] = '<a href="#" title="' . htmlspecialchars($selectIcon['title'], ENT_COMPAT, 'UTF-8', false) . '" data-select-index="' . htmlspecialchars($selectIcon['index']) . '">';
                     $html[] = $selectIcon['icon'];
                     $html[] = '</a>';
                 }

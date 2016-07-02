@@ -272,13 +272,6 @@ class TcaRecordTitleTest extends UnitTestCase
                 'aValue',
                 'aValue',
             ],
-            'html is escaped' => [
-                [
-                    'type' => 'input',
-                ],
-                '<foo>',
-                '&lt;foo&gt;',
-            ],
             'date input' => [
                 [
                     'type' => 'input',

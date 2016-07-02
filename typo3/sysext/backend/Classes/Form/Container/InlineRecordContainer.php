@@ -305,7 +305,9 @@ class InlineRecordContainer extends AbstractContainer
         $objectId = $domObjectId . '-' . $foreignTable . '-' . $rec['uid'];
 
         $recordTitle = $data['recordTitle'];
-        if (empty($recordTitle)) {
+        if (!empty($recordTitle)) {
+            $recordTitle = BackendUtility::getRecordTitlePrep($recordTitle);
+        } else {
             $recordTitle = '<em>[' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title')) . ']</em>';
         }
 

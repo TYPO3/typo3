@@ -69,10 +69,7 @@ class TcaRecordTitle implements FormDataProviderInterface
             $fieldName = $result['isOnSymmetricSide']
                 ? $result['inlineParentConfig']['symmetric_label']
                 : $result['inlineParentConfig']['foreign_label'];
-            // @todo: this is a mixup here. problem is the prep method cuts the string, but also hsc's the thing.
-            // @todo: this is uncool for the userfuncs, so it is applied only here. however, the OuterWrapContainer
-            // @todo: also prep()'s the title created by the else patch below ... find a better separation and clean this up!
-            $result['recordTitle'] = BackendUtility::getRecordTitlePrep($this->getRecordTitleForField($fieldName, $result));
+            $result['recordTitle'] = $this->getRecordTitleForField($fieldName, $result);
         } elseif (isset($result['processedTca']['ctrl']['label_userFunc'])) {
             // userFunc takes precedence over everything else
             $parameters = [
@@ -127,7 +124,7 @@ class TcaRecordTitle implements FormDataProviderInterface
             }
         }
 
-        $result['recordTitle'] = htmlspecialchars(implode(', ', $titles));
+        $result['recordTitle'] = implode(', ', $titles);
         return $result;
     }
 
