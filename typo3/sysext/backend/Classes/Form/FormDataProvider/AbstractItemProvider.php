@@ -477,7 +477,7 @@ abstract class AbstractItemProvider
                 }
                 // Add the item
                 $items[] = [
-                    $labelPrefix . htmlspecialchars(BackendUtility::getRecordTitle($foreignTable, $foreignRow)),
+                    $labelPrefix . BackendUtility::getRecordTitle($foreignTable, $foreignRow),
                     $foreignRow['uid'],
                     $icon
                 ];

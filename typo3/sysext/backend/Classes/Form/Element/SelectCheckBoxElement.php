@@ -63,7 +63,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                         $currentGroup++;
                         $groups[$currentGroup]['header'] = array(
                             'icon' => $selIcon,
-                            'title' => htmlspecialchars($p[0])
+                            'title' => $p[0]
                         );
                     } else {
                         // Check if some help text is available
@@ -103,7 +103,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                             'disabled' => false,
                             'class' => '',
                             'icon' => (!empty($p[2]) ? FormEngineUtility::getIconHtml($p[2]) : $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render()),
-                            'title' => htmlspecialchars($p[0], ENT_COMPAT, 'UTF-8', false),
+                            'title' => $p[0],
                             'help' => $help
                         );
                         $c++;
@@ -121,7 +121,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                     $html[] = '<div class="panel-heading">';
                     $html[] = '<a data-toggle="collapse" href="#' . $groupId . '" aria-expanded="false" aria-controls="' . $groupId . '">';
                     $html[] = $group['header']['icon'];
-                    $html[] = $group['header']['title'];
+                    $html[] = htmlspecialchars($group['header']['title']);
                     $html[] = '</a>';
                     $html[] = '</div>';
                 }
@@ -146,7 +146,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                         $tableRows[] =        '<label class="label-block" for="' . $item['id'] . '">' . $item['icon'] . '</label>';
                         $tableRows[] =    '</td>';
                         $tableRows[] =    '<td class="col-title">';
-                        $tableRows[] =        '<label class="label-block" for="' . $item['id'] . '">' . $item['title'] . '</label>';
+                        $tableRows[] =        '<label class="label-block" for="' . $item['id'] . '">' . htmlspecialchars($item['title'], ENT_COMPAT, 'UTF-8', false) . '</label>';
                         $tableRows[] =    '</td>';
                         $tableRows[] =    '<td>' . $item['help'] . '</td>';
                         $tableRows[] = '</tr>';

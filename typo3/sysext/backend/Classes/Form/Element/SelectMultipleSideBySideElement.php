@@ -104,7 +104,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
                     $disabledAttr = ' disabled="disabled"';
                     $classAttr = ' class="hidden"';
                 }
-                $opt[] = '<option value="' . htmlspecialchars($p[1]) . '" title="' . $p[0] . '"' . $classAttr . $disabledAttr . '>' . $p[0] . '</option>';
+                $opt[] = '<option value="' . htmlspecialchars($p[1]) . '" title="' . htmlspecialchars($p[0]) . '"' . $classAttr . $disabledAttr . '>' . htmlspecialchars($p[0]) . '</option>';
             }
             // Put together the selector box:
             $selector_itemListStyle = isset($config['itemListStyle'])
