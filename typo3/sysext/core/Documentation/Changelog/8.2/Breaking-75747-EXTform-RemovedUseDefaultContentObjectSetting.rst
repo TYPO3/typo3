@@ -5,7 +5,8 @@ Breaking: #75747 - EXT:form - Removed useDefaultContentObject setting
 Description
 ===========
 
-The TypoScript option :ts:``useDefaultContentObject`` of the FORM cObject has been removed. Setting this value to 0 allowed the usage of the prehistoric content type ``mailform``.
+The TypoScript option :ts:``useDefaultContentObject`` of the FORM cObject has been removed.
+Setting this value to 0 allowed the usage of the prehistoric content type `mailform`.
 
 
 Impact

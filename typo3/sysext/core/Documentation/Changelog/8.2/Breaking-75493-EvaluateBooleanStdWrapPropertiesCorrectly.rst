@@ -5,7 +5,8 @@ Breaking: #75493 - Evaluate "boolean /stdWrap" properties correctly
 Description
 ===========
 
-stdWrap sub-properties on boolean properties were not evaluated correctly unless the property itself was explicitly set.
+stdWrap sub-properties on boolean properties were not evaluated correctly unless the
+property itself was explicitly set.
 
 Example: ``page.10.value.prioriCalc.wrap = `` without ``page.10.value.prioriCalc = ``
 

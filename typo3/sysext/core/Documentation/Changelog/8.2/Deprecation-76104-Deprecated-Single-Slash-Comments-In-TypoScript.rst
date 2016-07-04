@@ -23,5 +23,17 @@ Deprecated::
 Impact
 ======
 
-The TypoScript devoloper receives a deprecation warning
+The TypoScript developer receives a deprecation warning
 with line number.
+
+
+Affected Installations
+======================
+
+Installations using a single slash to indicate a comment.
+
+
+Migration
+=========
+
+Use double slashes (//) or hash (#) for comments in Typoscript.

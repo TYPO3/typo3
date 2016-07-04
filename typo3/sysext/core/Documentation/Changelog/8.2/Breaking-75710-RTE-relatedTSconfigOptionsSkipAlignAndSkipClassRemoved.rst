@@ -27,5 +27,5 @@ Migration
 In order to allow class and align attributes in paragraph tags, the option :ts:`keepPDIVattribs`
 needs to be extended to also include "class" and "align" as values, which is done by default.
 
-If an installation has custom TSconfig settings using :ts:`keepPDIVattribs`, the two attributes needs to be added
+If an installation has custom TSconfig settings using :ts:`keepPDIVattribs`, the two attributes need to be added
 accordingly to still allow class and align attributes to be kept when transforming from the RTE to the database.

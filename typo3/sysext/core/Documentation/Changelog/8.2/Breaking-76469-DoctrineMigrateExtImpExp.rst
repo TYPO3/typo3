@@ -5,8 +5,8 @@ Breaking: #76469 - Doctrine: migrate ext:ImpExp
 Description
 ===========
 
-The return type of the :php:``ImportExportController::exec_listQueryPid()``
-has been changed. Instead of returning either :php:``bool``, :php:``\mysqli_result``
+The return type of :php:``ImportExportController::exec_listQueryPid()``
+has changed. Instead of returning either :php:``bool``, :php:``\mysqli_result``
 or :php:``object`` the return value always is a :php:``\Doctrine\DBAL\Driver\Statement``.
 
 

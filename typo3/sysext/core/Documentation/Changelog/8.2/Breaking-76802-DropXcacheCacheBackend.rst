@@ -5,7 +5,7 @@ Breaking: #76802 - Drop xcache cache backend
 Description
 ===========
 
-The ``xcache`` core cache backend has been dropped.
+The ``xcache`` core cache backend has been dropped because PHP7 does no longer support xcache.
 
 
 Impact

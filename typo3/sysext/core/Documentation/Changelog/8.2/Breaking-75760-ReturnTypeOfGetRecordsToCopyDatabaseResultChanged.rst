@@ -5,8 +5,8 @@ Breaking: #75760 - Return type of LocalizationRepository::getRecordsToCopyDataba
 Description
 ===========
 
-The return type of the :php:``LocalizationRepository::getRecordsToCopyDatabaseResult``
-has been changed. Instead of returning either :php:``bool``, :php:``\mysqli_result``
+The return type of :php:``LocalizationRepository::getRecordsToCopyDatabaseResult()``
+has changed. Instead of returning either :php:``bool``, :php:``\mysqli_result``
 or :php:``object`` the return value always is a :php:``\Doctrine\DBAL\Driver\Statement``.
 
 
