@@ -16,13 +16,13 @@ promise. The following methods have been marked as deprecated:
 Impact
 ======
 
-Using the mentioned methods will trigger a deprecation log entry
+Using the mentioned methods will trigger a deprecation log entry.
 
 
 Affected Installations
 ======================
 
-Instances that use any of these methods
+Instances that use any of these methods.
 
 
 Migration

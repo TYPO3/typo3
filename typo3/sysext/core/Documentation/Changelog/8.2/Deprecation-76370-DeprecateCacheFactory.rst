@@ -5,13 +5,14 @@ Deprecation: #76370 - Deprecate CacheFactory
 Description
 ===========
 
-Class :php:`CacheFactory` has been deprecated.
+Class :php:``CacheFactory`` has been deprecated.
 
 
 Impact
 ======
 
 The class is no longer used or instantiated by the core.
+Instantiating the class will trigger a deprecation log entry.
 
 
 Affected Installations

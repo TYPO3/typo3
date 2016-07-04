@@ -18,7 +18,7 @@ Using the methods of the ``MenuViewHelperTrait`` will trigger a deprecation log 
 Affected Installations
 ======================
 
-Instances with custom extensions that use the ``MenuViewHelperTrait`.
+Instances with custom extensions that use the ``MenuViewHelperTrait``.
 
 
 Migration

@@ -31,15 +31,15 @@ Calling any of the methods above will trigger a deprecation log entry.
 Affected Installations
 ======================
 
-Any installation with a third-party extension calling one of the methods in its PHP code.
+Any installation with a 3rd party extension calling one of the methods in its PHP code.
 
 
 Migration
 =========
 
-Instead of ``wrapScriptTags()`` use ``GeneralUtility::wrapJS``.
+Instead of :php:``wrapScriptTags()`` use :php:``GeneralUtility::wrapJS``.
 
-Instead of ``getContextMenuCode()`` use:
+Instead of :php:``getContextMenuCode()`` use:
 
 .. code-block:: php
 

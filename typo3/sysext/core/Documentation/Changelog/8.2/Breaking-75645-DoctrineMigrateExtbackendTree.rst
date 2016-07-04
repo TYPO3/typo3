@@ -8,11 +8,12 @@ Description
 This patch changes all database related functions to use the new Doctrine database API.
 The method :php:``getDatabaseConnection()`` has been removed.
 
+
 Impact
 ======
 
 Calls to the method :php:``AbstractTreeView::getDataInit()`` will now return :php:``Statement`` objects.
-All other :php:``AbstractTreeView::getData*`` methods now expect such a ::php:``Statement`` object
+All other :php:``AbstractTreeView::getData*`` methods now expect such a :php:``Statement`` object
 instead of a SQL resource.
 
 

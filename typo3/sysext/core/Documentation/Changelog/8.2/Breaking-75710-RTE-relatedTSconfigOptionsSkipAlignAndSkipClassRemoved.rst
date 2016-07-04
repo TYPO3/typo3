@@ -21,6 +21,7 @@ Affected Installations
 Any installation setting custom TSconfig options for :ts:`skipAlign`, :ts:`skipClass` or setting
 :ts:`keepPDIVattribs` without :ts:`class` and :ts:`align` as values are affected.
 
+
 Migration
 =========
 

@@ -5,10 +5,10 @@ Deprecation: #76345 - Path prefixes in callUserFunction and getUserObj
 Description
 ===========
 
-The two methods ``GeneralUtility::callUserFunc()`` and ``GeneralUtility::getUserObj()`` allow the first parameter to
+The two methods :php:``GeneralUtility::callUserFunc()`` and :php:``GeneralUtility::getUserObj()`` allow the first parameter to
 contain a file reference to the function/class to be called if prefixed with a colon.
 
-An example would be ``EXT:myext/Classes/MyClass.php:Benni\Myext\MyClass`` for including the class.
+An example would be :php:``EXT:myext/Classes/MyClass.php:Benni\Myext\MyClass`` for including the class.
 
 Having the reference to the actual file is not needed since the composer autoloading mechanism takes care
 of loading everything properly already since TYPO3 6.2.9.
