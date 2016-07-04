@@ -161,6 +161,17 @@ return [
                 'autoSizeMax' => 40,
             ],
         ],
+        'group_db_7' => [
+            'exclude' => 1,
+            'label' => 'group_db_7 allowed=be_users, show_thumbs=true, prepend_tname=false',
+            'config' => [
+                'type' => 'group',
+                'internal_type' => 'db',
+                'allowed' => 'be_users',
+                'maxitems' => 999,
+                'show_thumbs' => true,
+            ],
+        ],
 
 
         'group_file_1' => [
@@ -363,7 +374,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;internal_type=db,
-                    group_db_1, group_db_2, group_db_3, group_db_4, group_db_5, group_db_6,
+                    group_db_1, group_db_2, group_db_3, group_db_4, group_db_5, group_db_6, group_db_7,
                 --div--;internal_type=file,
                     group_file_1, group_file_2, group_file_3, group_file_4,
                 --div--;internal_type=folder,
