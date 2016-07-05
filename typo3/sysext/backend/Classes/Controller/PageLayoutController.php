@@ -1495,14 +1495,14 @@ class PageLayoutController
                         ->setHref('#');
                     $quickEditMenu->addMenuItem($menuItem);
                     $menuItem = $quickEditMenu->makeMenuItem()
-                        ->setTitle('__' . $lang->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $colPos), true) . ':__')
+                        ->setTitle('__' . $lang->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $colPos)) . ':__')
                         ->setHref(BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id . '&edit_record=_EDIT_COL:' . $colPos . $retUrlStr);
                     $quickEditMenu->addMenuItem($menuItem);
                 }
                 $inValue = 'tt_content:' . $cRow['uid'];
                 $isSelected += (int)$edit_record == $inValue;
                 $menuItem = $quickEditMenu->makeMenuItem()
-                    ->setTitle(htmlspecialchars(GeneralUtility::fixed_lgd_cs(($cRow['header'] ? $cRow['header'] : '[' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title') . '] ' . strip_tags($cRow['bodytext'])), $beUser->uc['titleLen'])))
+                    ->setTitle(GeneralUtility::fixed_lgd_cs(($cRow['header'] ? $cRow['header'] : '[' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title') . '] ' . strip_tags($cRow['bodytext'])), $beUser->uc['titleLen']))
                     ->setHref(BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id . '&edit_record=' . $inValue . $retUrlStr)
                     ->setActive($edit_record == $inValue);
                 $quickEditMenu->addMenuItem($menuItem);
