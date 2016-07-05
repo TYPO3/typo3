@@ -163,9 +163,9 @@ abstract class AbstractMenuContentObject
      * Is filled with an array of page uid numbers + RL parameters which are in the current
      * root line (used to evaluate whether a menu item is in active state)
      *
-     * @var string
+     * @var array
      */
-    public $rL_uidRegister = '';
+    public $rL_uidRegister;
 
     /**
      * @var string
@@ -328,7 +328,8 @@ abstract class AbstractMenuContentObject
             }
             // Gather list of page uids in root line (for "isActive" evaluation). Also adds the MP params in the path so Mount Points are respected.
             // (List is specific for this rootline, so it may be supplied from parent menus for speed...)
-            if (!is_array($this->rL_uidRegister)) {
+            if ($this->rL_uidRegister === null) {
+                $this->rL_uidRegister = [];
                 $rl_MParray = array();
                 foreach ($this->tmpl->rootLine as $v_rl) {
                     // For overlaid mount points, set the variable right now:
