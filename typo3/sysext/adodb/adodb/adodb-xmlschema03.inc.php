@@ -175,7 +175,6 @@ class dbObject {
 	* Destroys the object
 	*/
 	function destroy() {
-		unset( $this );
 	}
 
 	/**
@@ -2384,7 +2383,6 @@ class adoSchema {
 	function Destroy() {
 		ini_set("magic_quotes_runtime", $this->mgq );
 		#set_magic_quotes_runtime( $this->mgq );
-		unset( $this );
 	}
 }
 
