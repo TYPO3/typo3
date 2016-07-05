@@ -58,6 +58,7 @@ Old changes
 	:maxdepth: 1
 	:titlesonly:
 
+   	Changelog/8.2/Index
    	Changelog/8.1/Index
    	Changelog/8.0/Index
 
