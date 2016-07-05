@@ -4769,6 +4769,102 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_cacheStore.
+     *
+     * @return array [$confCache, $timesCCK, $key, $times]
+     */
+    public function stdWrap_cacheStoreDataProvider()
+    {
+        $confCache = [$this->getUniqueId('cache.')];
+        $key = [$this->getUniqueId('key')];
+        return [
+            'Return immediate with no conf' => [
+                null, 0, null, 0,
+            ],
+            'Return immediate with empty key' => [
+                $confCache, 1, '0', 0,
+            ],
+            'Call all methods' => [
+                $confCache, 1, $key, 1,
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_cacheStore works properly.
+     *
+     * Show:
+     *
+     * - Returns $content as is.
+     * - Returns immediate if $conf['cache.'] is not set.
+     * - Returns immediate if calculateCacheKey returns an empty value.
+     * - Calls calculateCacheKey with $conf['cache.'].
+     * - Calls calculateCacheTags with $conf['cache.'].
+     * - Calls calculateCacheLifetime with $conf['cache.'].
+     * - Calls all configured user functions with $params, $this.
+     * - Calls set on the cache frontent with $key, $content, $tags, $lifetime.
+     *
+     * @test
+     * @dataProvider stdWrap_cacheStoreDataProvider
+     * @param array $confCache Configuration of 'cache.'
+     * @param int $timesCCK Times calculateCacheKey is called.
+     * @param string  $key The return value of calculateCacheKey.
+     * @param int $times Times the other methods are called.
+     * @return void
+     */
+    public function stdWrap_cacheStore(
+        $confCache, $timesCCK, $key, $times)
+    {
+        $content = $this->getUniqueId('content');
+        $conf['cache.'] = $confCache;
+        $tags = [$this->getUniqueId('tags')];
+        $lifetime = $this->getUniqueId('lifetime');
+        $params = ['key' => $key, 'content' => $content,
+            'lifetime' => $lifetime, 'tags' => $tags];
+        $subject = $this->getAccessibleMock(
+            ContentObjectRenderer::class, ['calculateCacheKey',
+            'calculateCacheTags', 'calculateCacheLifetime']);
+        $subject
+            ->expects($this->exactly($timesCCK))
+            ->method('calculateCacheKey')
+            ->with($confCache)
+            ->willReturn($key);
+        $subject
+            ->expects($this->exactly($times))
+            ->method('calculateCacheTags')
+            ->with($confCache)
+            ->willReturn($tags);
+        $subject
+            ->expects($this->exactly($times))
+            ->method('calculateCacheLifetime')
+            ->with($confCache)
+            ->willReturn($lifetime);
+        $cacheFrontend = $this->createMock(CacheFrontendInterface::class);
+        $cacheFrontend
+            ->expects($this->exactly($times))
+            ->method('set')
+            ->with($key, $content, $tags, $lifetime)
+            ->willReturn($cached);
+        $cacheManager = $this->createMock(CacheManager::class);
+        $cacheManager
+            ->method('getCache')
+            ->willReturn($cacheFrontend);
+        GeneralUtility::setSingletonInstance(
+            CacheManager::class, $cacheManager);
+        list($countCalls, $test) = [0, $this];
+        $closure = function ($par1, $par2) use (
+            $test, $subject, $params, &$countCalls) {
+                $test->assertSame($params, $par1);
+                $test->assertSame($subject, $par2);
+                $countCalls++;
+            };
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore'] = [$closure, $closure, $closure];
+        $this->assertSame($content,
+            $subject->stdWrap_cacheStore($content, $conf));
+        $this->assertSame($times * 3, $countCalls);
+    }
+
+    /**
      * Data provider for stdWrap_case test
      *
      * @return array
