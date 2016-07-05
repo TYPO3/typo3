@@ -177,6 +177,7 @@ var inline = {
 	synchronizeLocalizeRecords: function (objectId, type) {
 		var context = this.getContext(objectId);
 		this.makeAjaxCall('synchronizelocalize', [objectId, type], true, context);
+		return false;
 	},
 
 	setExpandedCollapsedState: function (objectId, expand, collapse) {
