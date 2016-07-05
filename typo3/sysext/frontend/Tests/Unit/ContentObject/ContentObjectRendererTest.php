@@ -3474,78 +3474,88 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * @param $content
-     * @param array $configuration
-     * @param $expected
-     * @dataProvider stdWrap_noTrimWrapAcceptsSplitCharDataProvider
-     * @test
+     * Data provider for stdWrap_noTrimWrap.
+     *
+     * @return array [$expect, $content, $conf]
      */
-    public function stdWrap_noTrimWrapAcceptsSplitChar($content, array $configuration, $expected)
+    public function stdWrap_noTrimWrapDataProvider()
     {
-        $result = $this->subject->stdWrap_noTrimWrap($content, $configuration);
-        $this->assertEquals($expected, $result);
+        return [
+            'Standard case' => [
+                ' left middle right ',
+                'middle',
+                [
+                    'noTrimWrap' => '| left | right |',
+                ],
+            ],
+            'Tabs as whitespace' => [
+                TAB . 'left' . TAB . 'middle' . TAB . 'right' . TAB,
+                'middle',
+                [
+                    'noTrimWrap' =>
+                    '|' . TAB . 'left' . TAB . '|' . TAB . 'right' . TAB . '|',
+                ],
+            ],
+            'Split char is 0' => [
+                ' left middle right ',
+                'middle',
+                [
+                    'noTrimWrap' => '0 left 0 right 0',
+                    'noTrimWrap.' => ['splitChar' => '0'],
+                ],
+            ],
+            'Split char is pipe (default)' => [
+                ' left middle right ',
+                'middle',
+                [
+                    'noTrimWrap' => '| left | right |',
+                    'noTrimWrap.' => ['splitChar' => '|'],
+                ],
+            ],
+            'Split char is a' => [
+                ' left middle right ',
+                'middle',
+                [
+                    'noTrimWrap' => 'a left a right a',
+                    'noTrimWrap.' => ['splitChar' => 'a'],
+                ],
+            ],
+            'Split char is a word (ab)' => [
+                ' left middle right ',
+                'middle',
+                [
+                    'noTrimWrap' => 'ab left ab right ab',
+                    'noTrimWrap.' => ['splitChar' => 'ab'],
+                ],
+            ],
+            'Split char accepts stdWrap' => [
+                ' left middle right ',
+                'middle',
+                [
+                    'noTrimWrap' => 'abc left abc right abc',
+                    'noTrimWrap.' => [
+                        'splitChar' => 'b',
+                        'splitChar.' => ['wrap' => 'a|c'],
+                    ],
+                ],
+            ],
+        ];
     }
 
     /**
-     * Data provider for stdWrap_noTrimWrapAcceptsSplitChar test
+     * Check if stdWrap_noTrimWrap works properly.
      *
-     * @return array
+     * @test
+     * @dataProvider stdWrap_noTrimWrapDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given input.
+     * @param array $conf The given configuration.
+     * @return void
      */
-    public function stdWrap_noTrimWrapAcceptsSplitCharDataProvider()
+    public function stdWrap_noTrimWrap($expect, $content, $conf)
     {
-        return array(
-            'No char given' => array(
-                'middle',
-                array(
-                    'noTrimWrap' => '| left | right |',
-                ),
-                ' left middle right '
-            ),
-            'Zero char given' => array(
-                'middle',
-                array(
-                    'noTrimWrap' => '0 left 0 right 0',
-                    'noTrimWrap.' => array('splitChar' => '0'),
-
-                ),
-                ' left middle right '
-            ),
-            'Default char given' => array(
-                'middle',
-                array(
-                    'noTrimWrap' => '| left | right |',
-                    'noTrimWrap.' => array('splitChar' => '|'),
-                ),
-                ' left middle right '
-            ),
-            'Split char is a' => array(
-                'middle',
-                array(
-                    'noTrimWrap' => 'a left a right a',
-                    'noTrimWrap.' => array('splitChar' => 'a'),
-                ),
-                ' left middle right '
-            ),
-            'Split char is multi-char (ab)' => array(
-                'middle',
-                array(
-                    'noTrimWrap' => 'ab left ab right ab',
-                    'noTrimWrap.' => array('splitChar' => 'ab'),
-                ),
-                ' left middle right '
-            ),
-            'Split char accepts stdWrap' => array(
-                'middle',
-                array(
-                    'noTrimWrap' => 'abc left abc right abc',
-                    'noTrimWrap.' => array(
-                        'splitChar' => 'b',
-                        'splitChar.' => array('wrap' => 'a|c'),
-                    ),
-                ),
-                ' left middle right '
-            ),
-        );
+        $this->assertSame($expect,
+            $this->subject->stdWrap_noTrimWrap($content, $conf));
     }
 
     /**
