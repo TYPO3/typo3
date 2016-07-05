@@ -10,10 +10,10 @@ $EM_CONF[$_EXTKEY] = array(
     'author' => 'Rene Fritz',
     'author_email' => 'r.fritz@colorcube.de',
     'author_company' => 'Colorcube',
-    'version' => '8.2.0',
+    'version' => '8.3.0',
     'constraints' => array(
         'depends' => array(
-            'typo3' => '8.2.0-8.2.99',
+            'typo3' => '8.3.0-8.3.99',
         ),
         'conflicts' => array(),
         'suggests' => array(),
