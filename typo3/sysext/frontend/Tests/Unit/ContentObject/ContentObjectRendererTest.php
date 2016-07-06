@@ -4820,6 +4820,74 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_orderedStdWrap.
+     *
+     * @return array [$firstConf, $secondConf, $conf]
+     */
+    public function stdWrap_orderedStdWrapDataProvider()
+    {
+        $confA = [$this->getUniqueId('conf A')];
+        $confB = [$this->getUniqueId('conf B')];
+        return [
+            'standard case: order 1, 2' => [
+                $confA, $confB, ['1.' => $confA, '2.' => $confB]
+            ],
+            'inverted: order 2, 1' => [
+                $confB, $confA, ['2.' => $confA, '1.' => $confB]
+            ],
+            '0 as integer: order 0, 2' => [
+                $confA, $confB, ['0.' => $confA, '2.' => $confB]
+            ],
+            'negative integers: order 2, -2' => [
+                $confB, $confA, ['2.' => $confA, '-2.' => $confB]
+            ],
+            'chars are casted to key 0, that is not in the array' => [
+                null, $confB, ['2.' => $confB, 'xxx.' => $confA]
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_orderedStdWrap works properly.
+     *
+     * Show:
+     *
+     * - For each entry of $conf['orderedStdWrap.'] stdWrap is applied
+     *   to $content.
+     * - The order is defined by the keys, after they have been casted
+     *   to integers.
+     * - Returns the processed $content after all entries have been applied.
+     *
+     * Each test calls stdWrap two times. First $content is processed to
+     * $between, second $between is processed to $expect, the final return
+     * value. It is checked, if the expected parameters are given in the right
+     * consecutive order to stdWrap.
+     *
+     * @test
+     * @dataProvider stdWrap_orderedStdWrapDataProvider
+     * @param array $firstConf Parameter 2 expected by first call to stdWrap.
+     * @param array $secondConf Parameter 2 expected by second call to stdWrap.
+     * @param array $conf The given configuration.
+     * @return void
+     */
+    public function stdWrap_orderedStdWrap($firstConf, $secondConf, $conf)
+    {
+        $content = $this->getUniqueId('content');
+        $between = $this->getUniqueId('between');
+        $expect = $this->getUniqueId('expect');
+        $conf['orderedStdWrap.'] = $conf;
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['stdWrap'])->getMock();
+        $subject
+            ->expects($this->exactly(2))
+            ->method('stdWrap')
+            ->withConsecutive([$content, $firstConf], [$between, $secondConf])
+            ->will($this->onConsecutiveCalls($between, $expect));
+        $this->assertSame($expect,
+            $subject->stdWrap_orderedStdWrap($content, $conf));
+    }
+
+    /**
      * Data provider for stdWrap_cacheRead
      *
      * @return array Order: expect, input, conf, times, with, will
