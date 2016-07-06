@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Dbal\Database\SqlCompilers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dbal\Database\Specifics;
 use TYPO3\CMS\Dbal\Database\SqlParser;
@@ -505,10 +506,11 @@ class Adodb extends AbstractCompiler
                                         $output .= '(instr(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . ', ' . $compareValue . ',1,1) > 0)';
                                     }
                                 } else {
+                                    $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
                                     if ($isLob) {
-                                        $output .= '(dbms_lob.instr(LOWER(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . '), ' . GeneralUtility::strtolower($compareValue) . ',1,1) > 0)';
+                                        $output .= '(dbms_lob.instr(LOWER(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . '), ' . $charsetConverter->conv_case('utf-8', $compareValue, 'toLower') . ',1,1) > 0)';
                                     } else {
-                                        $output .= '(instr(LOWER(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . '), ' . GeneralUtility::strtolower($compareValue) . ',1,1) > 0)';
+                                        $output .= '(instr(LOWER(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . '), ' . $charsetConverter->conv_case('utf-8', $compareValue, 'toLower') . ',1,1) > 0)';
                                     }
                                 }
                                 break;

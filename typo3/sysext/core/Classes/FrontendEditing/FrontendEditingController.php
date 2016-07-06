@@ -488,7 +488,7 @@ class FrontendEditingController
             }
             if (!$conf['onlyCurrentPid'] || $dataArray['pid'] == $GLOBALS['TSFE']->id) {
                 // Permissions:
-                $types = GeneralUtility::trimExplode(',', GeneralUtility::strtolower($conf['allow']), true);
+                $types = GeneralUtility::trimExplode(',', strtolower($conf['allow']), true);
                 $allow = array_flip($types);
                 $perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
                 if ($table == 'pages') {
@@ -517,12 +517,12 @@ class FrontendEditingController
     protected function getAllowedEditActions($table, array $conf, $pid, $allow = '')
     {
         if (!$allow) {
-            $types = GeneralUtility::trimExplode(',', GeneralUtility::strtolower($conf['allow']), true);
+            $types = GeneralUtility::trimExplode(',', strtolower($conf['allow']), true);
             $allow = array_flip($types);
         }
         if (!$conf['onlyCurrentPid'] || $pid == $GLOBALS['TSFE']->id) {
             // Permissions
-            $types = GeneralUtility::trimExplode(',', GeneralUtility::strtolower($conf['allow']), true);
+            $types = GeneralUtility::trimExplode(',', strtolower($conf['allow']), true);
             $allow = array_flip($types);
             $perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
             if ($table == 'pages') {

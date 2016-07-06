@@ -38,7 +38,7 @@ class TerService extends TerUtility implements SingletonInterface
     public function fetchTranslationStatus($extensionKey, $mirrorUrl)
     {
         $result = false;
-        $extPath = GeneralUtility::strtolower($extensionKey);
+        $extPath = strtolower($extensionKey);
         $mirrorUrl .= $extPath[0] . '/' . $extPath[1] . '/' . $extPath . '-l10n/' . $extPath . '-l10n.xml';
         $remote = GeneralUtility::getUrl($mirrorUrl);
         if ($remote !== false) {
@@ -170,7 +170,7 @@ class TerService extends TerUtility implements SingletonInterface
      */
     protected function fetchTranslation($extensionKey, $language, $mirrorUrl)
     {
-        $extensionPath = GeneralUtility::strtolower($extensionKey);
+        $extensionPath = strtolower($extensionKey);
         // Typical non sysext path, Hungarian:
         // http://my.mirror/ter/a/n/anextension-l10n/anextension-l10n-hu.zip
         $packageUrl = $extensionPath[0] . '/' . $extensionPath[1] . '/' . $extensionPath .

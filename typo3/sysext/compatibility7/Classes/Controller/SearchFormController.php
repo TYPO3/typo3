@@ -1334,7 +1334,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // Multilangual text
         $substituteArray = array('legend', 'searchFor', 'extResume', 'atATime', 'orderBy', 'fromSection', 'searchIn', 'match', 'style', 'freeIndexUid');
         foreach ($substituteArray as $marker) {
-            $markerArray['###FORM_' . GeneralUtility::strtoupper($marker) . '###'] = htmlspecialchars($this->pi_getLL('form_' . $marker));
+            $markerArray['###FORM_' . strtoupper($marker) . '###'] = htmlspecialchars($this->pi_getLL('form_' . $marker));
         }
         $markerArray['###FORM_SUBMIT###'] = htmlspecialchars($this->pi_getLL('submit_button_label'));
         // Adding search field value
@@ -1575,7 +1575,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
             if (is_array($tmplContent)) {
                 foreach ($tmplContent as $k => $v) {
-                    $markerArray['###' . GeneralUtility::strtoupper($k) . '###'] = $v;
+                    $markerArray['###' . strtoupper($k) . '###'] = $v;
                 }
             }
             // Description text

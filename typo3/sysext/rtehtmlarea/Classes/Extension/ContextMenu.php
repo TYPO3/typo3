@@ -52,10 +52,10 @@ class ContextMenu extends RteHtmlAreaApi
         if (is_array($this->configuration['thisConfig']['contextMenu.'])) {
             $jsArray[] = 'RTEarea[editornumber].contextMenu =  ' . $this->buildNestedJSArray($this->configuration['thisConfig']['contextMenu.']) . ';';
             if ($this->configuration['thisConfig']['contextMenu.']['showButtons']) {
-                $jsArray[] = 'RTEarea[editornumber].contextMenu.showButtons = ' . json_encode(GeneralUtility::trimExplode(',', $this->cleanList(GeneralUtility::strtolower($this->configuration['thisConfig']['contextMenu.']['showButtons'])), true)) . ';';
+                $jsArray[] = 'RTEarea[editornumber].contextMenu.showButtons = ' . json_encode(GeneralUtility::trimExplode(',', $this->cleanList(strtolower($this->configuration['thisConfig']['contextMenu.']['showButtons'])), true)) . ';';
             }
             if ($this->configuration['thisConfig']['contextMenu.']['hideButtons']) {
-                $jsArray[] = 'RTEarea[editornumber].contextMenu.hideButtons = ' . json_encode(GeneralUtility::trimExplode(',', $this->cleanList(GeneralUtility::strtolower($this->configuration['thisConfig']['contextMenu.']['hideButtons'])), true)) . ';';
+                $jsArray[] = 'RTEarea[editornumber].contextMenu.hideButtons = ' . json_encode(GeneralUtility::trimExplode(',', $this->cleanList(strtolower($this->configuration['thisConfig']['contextMenu.']['hideButtons'])), true)) . ';';
             }
         }
         return implode(LF, $jsArray);

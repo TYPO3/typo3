@@ -60,7 +60,7 @@ class TerUtility
         ) {
             throw new ExtensionManagerException('Extension Manager is in offline mode. No TER connection available.', 1437078620);
         }
-        $extensionPath = \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($extensionKey);
+        $extensionPath = strtolower($extensionKey);
         $mirrorUrl .= $extensionPath[0] . '/' . $extensionPath[1] . '/' . $extensionPath . '_' . $version . '.t3x';
         $t3x = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($mirrorUrl);
         $md5 = md5($t3x);

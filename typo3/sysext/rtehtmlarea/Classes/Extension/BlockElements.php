@@ -113,19 +113,19 @@ class BlockElements extends RteHtmlAreaApi
             if (is_array($this->configuration['thisConfig']['buttons.']) && is_array($this->configuration['thisConfig']['buttons.']['formatblock.'])) {
                 // Removing elements
                 if ($this->configuration['thisConfig']['buttons.']['formatblock.']['removeItems']) {
-                    $hideItems = GeneralUtility::trimExplode(',', $this->cleanList(GeneralUtility::strtolower($this->configuration['thisConfig']['buttons.']['formatblock.']['removeItems'])), true);
+                    $hideItems = GeneralUtility::trimExplode(',', $this->cleanList(strtolower($this->configuration['thisConfig']['buttons.']['formatblock.']['removeItems'])), true);
                 }
                 // Adding elements
                 if ($this->configuration['thisConfig']['buttons.']['formatblock.']['addItems']) {
-                    $addItems = GeneralUtility::trimExplode(',', $this->cleanList(GeneralUtility::strtolower($this->configuration['thisConfig']['buttons.']['formatblock.']['addItems'])), true);
+                    $addItems = GeneralUtility::trimExplode(',', $this->cleanList(strtolower($this->configuration['thisConfig']['buttons.']['formatblock.']['addItems'])), true);
                 }
                 // Restriction clause
                 if ($this->configuration['thisConfig']['buttons.']['formatblock.']['restrictToItems']) {
-                    $restrictTo = GeneralUtility::trimExplode(',', $this->cleanList('none,' . GeneralUtility::strtolower($this->configuration['thisConfig']['buttons.']['formatblock.']['restrictToItems'])), true);
+                    $restrictTo = GeneralUtility::trimExplode(',', $this->cleanList('none,' . strtolower($this->configuration['thisConfig']['buttons.']['formatblock.']['restrictToItems'])), true);
                 }
                 // Elements order
                 if ($this->configuration['thisConfig']['buttons.']['formatblock.']['orderItems']) {
-                    $blockElementsOrder = 'none,' . GeneralUtility::strtolower($this->configuration['thisConfig']['buttons.']['formatblock.']['orderItems']);
+                    $blockElementsOrder = 'none,' . strtolower($this->configuration['thisConfig']['buttons.']['formatblock.']['orderItems']);
                 }
                 $prefixLabelWithTag = $this->configuration['thisConfig']['buttons.']['formatblock.']['prefixLabelWithTag'] ? true : $prefixLabelWithTag;
                 $postfixLabelWithTag = $this->configuration['thisConfig']['buttons.']['formatblock.']['postfixLabelWithTag'] ? true : $postfixLabelWithTag;
