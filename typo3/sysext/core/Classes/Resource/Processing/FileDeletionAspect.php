@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -61,16 +62,6 @@ class FileDeletionAspect
     }
 
     /**
-     * Wrapper method for getting DatabaseConnection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
-    /**
      * Cleanup database record for a deleted file
      *
      * @param FileInterface $fileObject
@@ -86,12 +77,22 @@ class FileDeletionAspect
             $this->getMetaDataRepository()->removeByFileUid($fileObject->getUid());
 
             // remove all references
-            $this->getDatabaseConnection()->exec_DELETEquery(
-                'sys_file_reference',
-                'uid_local=' . (int)$fileObject->getUid() . ' AND table_local = \'sys_file\''
-            );
+            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_reference')
+                ->delete(
+                    'sys_file_reference',
+                    [
+                        'uid_local' => (int)$fileObject->getUid(),
+                        'table_local' => 'sys_file'
+                    ]
+                );
         } elseif ($fileObject instanceof ProcessedFile) {
-            $this->getDatabaseConnection()->exec_DELETEquery('sys_file_processedfile', 'uid=' . (int)$fileObject->getUid());
+            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_processedfile')
+                ->delete(
+                    'sys_file_processedfile',
+                    [
+                        'uid' => (int)$fileObject->getUid()
+                    ]
+                );
         }
     }
 
@@ -125,15 +126,18 @@ class FileDeletionAspect
      */
     protected function cleanupCategoryReferences(File $fileObject)
     {
-
         // Retrieve the file metadata uid which is different from the file uid.
         $metadataProperties = $fileObject->_getMetaData();
-
         $metaDataUid = isset($metadataProperties['_ORIG_uid']) ? $metadataProperties['_ORIG_uid'] : $metadataProperties['uid'];
-        $this->getDatabaseConnection()->exec_DELETEquery(
-            'sys_category_record_mm',
-            'uid_foreign=' . (int)$metaDataUid . ' AND tablenames = \'sys_file_metadata\''
-        );
+
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_category_record_mm')
+            ->delete(
+                'sys_category_record_mm',
+                [
+                    'uid_foreign' => (int)$metaDataUid,
+                    'tablenames' => 'sys_file_metadata'
+                ]
+            );
     }
 
     /**
@@ -144,7 +148,6 @@ class FileDeletionAspect
      */
     protected function cleanupProcessedFiles(FileInterface $fileObject)
     {
-
         // only delete processed files of File objects
         if (!$fileObject instanceof File) {
             return;
