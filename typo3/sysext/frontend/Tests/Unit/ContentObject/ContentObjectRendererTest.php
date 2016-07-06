@@ -7664,6 +7664,52 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->assertSame($expected, $this->subject->stdWrap_wrap3($input, $conf));
     }
 
+    /**
+     * Data provider for stdWrap_wrapAlign.
+     *
+     * @return array [$expect, $content, $conf]
+     */
+    public function stdWrap_wrapAlignDataProvider()
+    {
+        $format = '<div style="text-align:%s;">%s</div>';
+        $content = $this->getUniqueId('content');
+        $wrapAlign = $this->getUniqueId('wrapAlign');
+        $expect = sprintf($format, $wrapAlign, $content);
+        return [
+            'standard case' => [$expect, $content, $wrapAlign],
+            'empty conf' => [$content, $content, null],
+            'empty string' => [$content, $content, ''],
+            'whitespaced zero string' => [$content, $content, ' 0 '],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_wrapAlign works properly.
+     *
+     * Show:
+     *
+     * - Wraps $content with div and style attribute.
+     * - The style attribute is taken from $conf['wrapAlign'].
+     * - Returns the content as is,
+     * - if $conf['wrapAlign'] evals to false after being trimmed.
+     *
+     * @test
+     * @dataProvider stdWrap_wrapAlignDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given content.
+     * @param mixed $wrapAlignConf The given input.
+     * @return void
+     */
+    public function stdWrap_wrapAlign($expect, $content, $wrapAlignConf)
+    {
+        $conf = [];
+        if ($wrapAlignConf !== null) {
+            $conf['wrapAlign'] = $wrapAlignConf;
+        }
+        $this->assertSame($expect,
+            $this->subject->stdWrap_wrapAlign($content, $conf));
+    }
+
   /***************************************************************************
    * End of tests of stdWrap
    ***************************************************************************/
