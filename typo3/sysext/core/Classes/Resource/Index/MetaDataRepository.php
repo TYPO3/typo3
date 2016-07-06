@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Resource\Index;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Resource\Exception\InvalidUidException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -99,25 +101,29 @@ class MetaDataRepository implements SingletonInterface
         if ($uid <= 0) {
             throw new InvalidUidException('Metadata can only be retrieved for indexed files. UID: "' . $uid . '"', 1381590731);
         }
-        $record = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', $this->tableName, 'file = ' . $uid . $this->getGeneralWhereClause());
 
-        if ($record === false) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->tableName);
+
+        $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
+
+        $record = $queryBuilder
+            ->select('*')
+            ->from($this->tableName)
+            ->where(
+                $queryBuilder->expr()->eq('file', $uid),
+                $queryBuilder->expr()->in('sys_language_uid', [0, -1])
+            )
+            ->execute()
+            ->fetch();
+
+        if (empty($record)) {
             $record = $this->createMetaDataRecord($uid);
         }
 
         $passedData = new \ArrayObject($record);
+
         $this->emitRecordPostRetrievalSignal($passedData);
         return $passedData->getArrayCopy();
-    }
-
-    /**
-     * General Where-Clause which is needed to fetch only language 0 and live record.
-     *
-     * @return string
-     */
-    protected function getGeneralWhereClause()
-    {
-        return ' AND sys_language_uid IN (0,-1) AND pid=0';
     }
 
     /**
@@ -138,9 +144,15 @@ class MetaDataRepository implements SingletonInterface
             'l10n_diffsource' => ''
         );
         $emptyRecord = array_merge($emptyRecord, $additionalFields);
-        $this->getDatabaseConnection()->exec_INSERTquery($this->tableName, $emptyRecord);
+
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->tableName);
+        $connection->insert(
+            $this->tableName,
+            $emptyRecord
+        );
+
         $record = $emptyRecord;
-        $record['uid'] = $this->getDatabaseConnection()->sql_insert_id();
+        $record['uid'] = $connection->lastInsertId();
         $record['newlyCreated']  = true;
 
         $this->emitRecordCreatedSignal($record);
@@ -168,7 +180,15 @@ class MetaDataRepository implements SingletonInterface
         $row = $this->findByFileUid($fileUid);
         if (!empty($updateRow)) {
             $updateRow['tstamp'] = time();
-            $this->getDatabaseConnection()->exec_UPDATEquery($this->tableName, 'uid = ' . (int)$row['uid'], $updateRow);
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($this->tableName)
+                ->update(
+                    $this->tableName,
+                    $updateRow,
+                    [
+                        'uid' => (int)$row['uid']
+                    ]
+                );
 
             $this->emitRecordUpdatedSignal(array_merge($row, $updateRow));
         }
@@ -182,7 +202,14 @@ class MetaDataRepository implements SingletonInterface
      */
     public function removeByFileUid($fileUid)
     {
-        $this->getDatabaseConnection()->exec_DELETEquery($this->tableName, 'file=' . (int)$fileUid);
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($this->tableName)
+            ->delete(
+                $this->tableName,
+                [
+                    'file' => (int)$fileUid
+                ]
+            );
         $this->emitRecordDeletedSignal($fileUid);
     }
 

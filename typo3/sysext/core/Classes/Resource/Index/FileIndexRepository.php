@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource\Index;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -49,16 +50,6 @@ class FileIndexRepository implements SingletonInterface
         'uid', 'pid', 'missing', 'type', 'storage', 'identifier', 'identifier_hash', 'extension',
         'mime_type', 'name', 'sha1', 'size', 'creation_date', 'modification_date', 'folder_hash'
     );
-
-    /**
-     * Gets database instance
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
 
     /**
      * Gets the Resource Factory
@@ -100,11 +91,18 @@ class FileIndexRepository implements SingletonInterface
      */
     public function findOneByUid($fileUid)
     {
-        $row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-            implode(',', $this->fields),
-            $this->table,
-            'uid=' . (int)$fileUid
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->table);
+
+        $row = $queryBuilder
+            ->select(...$this->fields)
+            ->from($this->table)
+            ->where(
+                $queryBuilder->expr()->eq('uid', (int)$fileUid)
+            )
+            ->execute()
+            ->fetch();
+
         return is_array($row) ? $row : false;
     }
 
@@ -134,11 +132,19 @@ class FileIndexRepository implements SingletonInterface
      */
     public function findOneByStorageUidAndIdentifierHash($storageUid, $identifierHash)
     {
-        $row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-            implode(',', $this->fields),
-            $this->table,
-            sprintf('storage=%u AND identifier_hash=%s', (int)$storageUid, $this->getDatabaseConnection()->fullQuoteStr($identifierHash, $this->table))
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->table);
+
+        $row = $queryBuilder
+            ->select(...$this->fields)
+            ->from($this->table)
+            ->where(
+                $queryBuilder->expr()->eq('storage', (int)$storageUid),
+                $queryBuilder->expr()->eq('identifier_hash', $queryBuilder->createNamedParameter($identifierHash))
+            )
+            ->execute()
+            ->fetch();
+
         return is_array($row) ? $row : false;
     }
 
@@ -169,11 +175,19 @@ class FileIndexRepository implements SingletonInterface
         if (!preg_match('/^[0-9a-f]{40}$/i', $hash)) {
             return array();
         }
-        $resultRows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            implode(',', $this->fields),
-            $this->table,
-            'sha1=' . $this->getDatabaseConnection()->fullQuoteStr($hash, $this->table)
-        );
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->table);
+
+        $resultRows = $queryBuilder
+            ->select(...$this->fields)
+            ->from($this->table)
+            ->where(
+                $queryBuilder->expr()->eq('sha1', $queryBuilder->createNamedParameter($hash))
+            )
+            ->execute()
+            ->fetchAll();
+
         return $resultRows;
     }
 
@@ -185,16 +199,26 @@ class FileIndexRepository implements SingletonInterface
      */
     public function findByFolder(Folder $folder)
     {
-        $resultRows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            implode(',', $this->fields),
-            $this->table,
-            'folder_hash = ' . $this->getDatabaseConnection()->fullQuoteStr($folder->getHashedIdentifier(), $this->table) .
-                ' AND storage  = ' . (int)$folder->getStorage()->getUid(),
-            '',
-            '',
-            '',
-            'identifier'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->table);
+
+        $result = $queryBuilder
+            ->select(...$this->fields)
+            ->from($this->table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'folder_hash',
+                    $queryBuilder->createNamedParameter($folder->getHashedIdentifier())
+                ),
+                $queryBuilder->expr()->eq('storage', (int)$folder->getStorage()->getUid())
+            )
+            ->execute();
+
+        $resultRows = [];
+        while ($row = $result->fetch()) {
+            $resultRows[$row['identifier']] = $row;
+        }
+
         return $resultRows;
     }
 
@@ -219,21 +243,42 @@ class FileIndexRepository implements SingletonInterface
             $storageUids[] = (int)$folder->getStorage()->getUid();
             $folderIdentifiers[] = $folder->getHashedIdentifier();
         }
+
         $storageUids = array_unique($storageUids);
         $folderIdentifiers = array_unique($folderIdentifiers);
 
-        $fileRecords = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            implode(',', $this->fields),
-            $this->table,
-            'folder_hash IN ( ' . implode(',', $this->getDatabaseConnection()->fullQuoteArray($folderIdentifiers, $this->table)) . ')' .
-            ' AND storage IN (' . implode(',', $storageUids) . ')' .
-            (isset($fileName) ? ' AND name LIKE "%' . $this->getDatabaseConnection()->escapeStrForLike($this->getDatabaseConnection()->quoteStr($fileName, $this->table), $this->table) . '%"' : '') .
-            ($includeMissing ? '' : ' AND missing = 0'),
-            '',
-            '',
-            '',
-            'identifier'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+
+        $queryBuilder
+            ->select(...$this->fields)
+            ->from($this->table)
+            ->where(
+                $queryBuilder->expr()->in(
+                    'folder_hash',
+                    array_map([$queryBuilder, 'createNamedParameter'], $folderIdentifiers)
+                ),
+                $queryBuilder->expr()->in('storage', $storageUids)
+            );
+
+        if (isset($fileName)) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->like(
+                    'name',
+                    $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards($fileName) . '%"')
+                )
+            );
+        }
+
+        if (!$includeMissing) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('missing', 0));
+        }
+
+        $result = $queryBuilder->execute();
+
+        $fileRecords = [];
+        while ($fileRecord = $result->fetch()) {
+            $fileRecords[$fileRecord['identifier']] = $fileRecord;
+        }
 
         return $fileRecords;
     }
@@ -279,12 +324,17 @@ class FileIndexRepository implements SingletonInterface
     {
         $data = array_intersect_key($data, array_flip($this->fields));
         $data['tstamp'] = time();
-        $this->getDatabaseConnection()->exec_INSERTquery($this->table, $data);
-        $data['uid'] = $this->getDatabaseConnection()->sql_insert_id();
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
+        $connection->insert(
+            $this->table,
+            $data
+        );
+        $data['uid'] = $connection->lastInsertId();
         $this->updateRefIndex($data['uid']);
         $this->emitRecordCreatedSignal($data);
         return $data['uid'];
     }
+
     /**
      * Checks if a file is indexed
      *
@@ -293,7 +343,30 @@ class FileIndexRepository implements SingletonInterface
      */
     public function hasIndexRecord(File $file)
     {
-        return $this->getDatabaseConnection()->exec_SELECTcountRows('uid', $this->table, $this->getWhereClauseForFile($file)) >= 1;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+
+        if ((int)$file->_getPropertyRaw('uid') > 0) {
+            $constraints = [
+                $queryBuilder->expr()->eq('uid', (int)$file->getUid())
+            ];
+        } else {
+            $constraints = [
+                $queryBuilder->expr()->eq('storage', (int)$file->getStorage()->getUid()),
+                $queryBuilder->expr()->eq(
+                    'identifier',
+                    $queryBuilder->createNamedParameter($file->_getPropertyRaw('identifier'))
+                )
+            ];
+        }
+
+        $count = $queryBuilder
+            ->count('uid')
+            ->from($this->table)
+            ->where(...$constraints)
+            ->execute()
+            ->fetchColumn(0);
+
+        return (bool)$count;
     }
 
     /**
@@ -310,8 +383,24 @@ class FileIndexRepository implements SingletonInterface
             $updateRow[$key] = $file->getProperty($key);
         }
         if (!empty($updateRow)) {
+            if ((int)$file->_getPropertyRaw('uid') > 0) {
+                $constraints = ['uid' => (int)$file->getUid()];
+            } else {
+                $constraints = [
+                    'storage' => (int)$file->getStorage()->getUid(),
+                    'identifier' => $file->_getPropertyRaw('identifier')
+                ];
+            }
+
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
             $updateRow['tstamp'] = time();
-            $this->getDatabaseConnection()->exec_UPDATEquery($this->table, $this->getWhereClauseForFile($file), $updateRow);
+
+            $connection->update(
+                $this->table,
+                $updateRow,
+                $constraints
+            );
+
             $this->updateRefIndex($file->getUid());
             $this->emitRecordUpdatedSignal(array_intersect_key($file->getProperties(), array_flip($this->fields)));
         }
@@ -326,14 +415,24 @@ class FileIndexRepository implements SingletonInterface
      */
     public function findInStorageWithIndexOutstanding(ResourceStorage $storage, $limit = -1)
     {
-        return $this->getDatabaseConnection()->exec_SELECTgetRows(
-            implode(',', $this->fields),
-            $this->table,
-            'tstamp > last_indexed AND storage = ' . (int)$storage->getUid(),
-            '',
-            'tstamp ASC',
-            (int)$limit > 0 ? (int)$limit : ''
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+
+        if ((int)$limit > 0) {
+            $queryBuilder->setMaxResults((int)$limit);
+        }
+
+        $rows = $queryBuilder
+            ->select(...$this->fields)
+            ->from($this->table)
+            ->where(
+                $queryBuilder->expr()->gt('tstamp', $queryBuilder->quoteIdentifier('last_indexed')),
+                $queryBuilder->expr()->eq('storage', (int)$storage->getUid())
+            )
+            ->orderBy('tstamp', 'ASC')
+            ->execute()
+            ->fetchAll();
+
+        return $rows;
     }
 
     /**
@@ -345,11 +444,22 @@ class FileIndexRepository implements SingletonInterface
      */
     public function findInStorageAndNotInUidList(ResourceStorage $storage, array $uidList)
     {
-        $where = 'storage = ' . (int)$storage->getUid();
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+
+        $queryBuilder
+            ->select(...$this->fields)
+            ->from($this->table)
+            ->where(
+                $queryBuilder->expr()->eq('storage', (int)$storage->getUid())
+            );
+
         if (!empty($uidList)) {
-            $where .= ' AND uid NOT IN (' . implode(',', $this->getDatabaseConnection()->cleanIntArray($uidList)) . ')';
+            $queryBuilder->andWhere($queryBuilder->expr()->notIn('uid', array_map('intval', $uidList)));
         }
-        return $this->getDatabaseConnection()->exec_SELECTgetRows(implode(',', $this->fields), $this->table, $where);
+
+        $rows = $queryBuilder->execute()->fetchAll();
+
+        return $rows;
     }
 
     /**
@@ -360,7 +470,16 @@ class FileIndexRepository implements SingletonInterface
      */
     public function updateIndexingTime($fileUid)
     {
-        $this->getDatabaseConnection()->exec_UPDATEquery($this->table, 'uid = ' . (int)$fileUid, array('last_indexed' => time()));
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
+        $connection->update(
+            $this->table,
+            [
+                'last_indexed' => time()
+            ],
+            [
+                'uid' => (int)$fileUid
+            ]
+        );
     }
 
     /**
@@ -371,29 +490,17 @@ class FileIndexRepository implements SingletonInterface
      */
     public function markFileAsMissing($fileUid)
     {
-        $this->getDatabaseConnection()->exec_UPDATEquery($this->table, 'uid = ' . (int)$fileUid, array('missing' => 1));
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
+        $connection->update(
+            $this->table,
+            [
+                'missing' => 1
+            ],
+            [
+                'uid' => (int)$fileUid
+            ]
+        );
         $this->emitRecordMarkedAsMissingSignal($fileUid);
-    }
-
-    /**
-     * Returns a where clause to find a file in database
-     *
-     * @param File $file
-     *
-     * @return string
-     */
-    protected function getWhereClauseForFile(File $file)
-    {
-        if ((int)$file->_getPropertyRaw('uid') > 0) {
-            $where = 'uid=' . (int)$file->getUid();
-        } else {
-            $where = sprintf(
-                'storage=%u AND identifier LIKE %s',
-                (int)$file->getStorage()->getUid(),
-                $this->getDatabaseConnection()->fullQuoteStr($file->_getPropertyRaw('identifier'), $this->table)
-            );
-        }
-        return $where;
     }
 
     /**
@@ -404,7 +511,13 @@ class FileIndexRepository implements SingletonInterface
      */
     public function remove($fileUid)
     {
-        $this->getDatabaseConnection()->exec_DELETEquery($this->table, 'uid=' . (int)$fileUid);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
+        $connection->delete(
+            $this->table,
+            [
+                'uid' => (int)$fileUid
+            ]
+        );
         $this->updateRefIndex($fileUid);
         $this->emitRecordDeletedSignal($fileUid);
     }
