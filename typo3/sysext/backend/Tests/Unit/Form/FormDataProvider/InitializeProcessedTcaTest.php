@@ -35,24 +35,6 @@ class InitializeProcessedTcaTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfTcaColumnsHasNoTypeSet()
-    {
-        $this->markTestIncomplete('skipped for now, this is not save');
-        $input = [
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [],
-                ],
-            ],
-        ];
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1438594044);
-        $this->subject->addData($input);
-    }
-
-    /**
-     * @test
-     */
     public function addDataSetsTableTcaFromGlobalsInResult()
     {
         $input = [

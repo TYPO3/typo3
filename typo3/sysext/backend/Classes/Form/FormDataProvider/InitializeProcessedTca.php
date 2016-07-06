@@ -48,17 +48,11 @@ class InitializeProcessedTca implements FormDataProviderInterface
             );
         }
 
-        /**
-         * @todo: This does not work for "default" fields like "hidden", those don't have a type set - fix in bootstrap??
-        foreach ($result['processedTca']['columns'] as $fieldName => $fieldConfig) {
-            if (!isset($fieldConfig['type'])) {
-                throw new \UnexpectedValueException(
-                    'Field ' . $fieldName . ' of TCA table ' . $result['tableName'] . ' has no type set',
-                    1438594044
-                );
-            }
-        }
-         */
+        // Usually, all columns fields have a 'type'. This position would be a good place to
+        // loop and throw an exception if a type is missing. Unfortunately, type is missing
+        // for some internal fields like "hidden". So a bootstrap migration needs to be
+        // created first to enforce this rule here. Some sanitation in data providers below
+        // could be saved this way.
 
         return $result;
     }
