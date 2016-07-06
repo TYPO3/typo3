@@ -103,12 +103,17 @@ class ProcessedFileRepository extends AbstractRepository
     {
         $processedFileObject = null;
         if ($storage->hasFile($identifier)) {
-            $databaseRow = $this->databaseConnection->exec_SELECTgetSingleRow(
-                '*',
-                $this->table,
-                'storage = ' . (int)$storage->getUid() .
-                ' AND identifier = ' . $this->databaseConnection->fullQuoteStr($identifier, $this->table)
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+            $databaseRow = $queryBuilder
+                ->select('*')
+                ->from($this->table)
+                ->where(
+                    $queryBuilder->expr()->eq('storage', (int)$storage->getUid()),
+                    $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($identifier))
+                )
+                ->execute()
+                ->fetch();
+
             if ($databaseRow) {
                 $processedFileObject = $this->createDomainObject($databaseRow);
             }
@@ -129,8 +134,15 @@ class ProcessedFileRepository extends AbstractRepository
             $insertFields = $processedFile->toArray();
             $insertFields['crdate'] = $insertFields['tstamp'] = time();
             $insertFields = $this->cleanUnavailableColumns($insertFields);
-            $this->databaseConnection->exec_INSERTquery($this->table, $insertFields);
-            $uid = $this->databaseConnection->sql_insert_id();
+
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
+
+            $connection->insert(
+                $this->table,
+                $insertFields
+            );
+
+            $uid = $connection->lastInsertId();
             $processedFile->updateProperties(array('uid' => $uid));
         }
     }
@@ -147,7 +159,15 @@ class ProcessedFileRepository extends AbstractRepository
             $uid = (int)$processedFile->getUid();
             $updateFields = $this->cleanUnavailableColumns($processedFile->toArray());
             $updateFields['tstamp'] = time();
-            $this->databaseConnection->exec_UPDATEquery($this->table, 'uid=' . (int)$uid, $updateFields);
+
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
+            $connection->update(
+                $this->table,
+                $updateFields,
+                [
+                    'uid' => (int)$uid
+                ]
+            );
         }
     }
 
@@ -160,13 +180,18 @@ class ProcessedFileRepository extends AbstractRepository
      */
     public function findOneByOriginalFileAndTaskTypeAndConfiguration(FileInterface $file, $taskType, array $configuration)
     {
-        $databaseRow = $this->databaseConnection->exec_SELECTgetSingleRow(
-            '*',
-            $this->table,
-            'original=' . (int)$file->getUid() .
-                ' AND task_type=' . $this->databaseConnection->fullQuoteStr($taskType, $this->table) .
-                ' AND configurationsha1=' . $this->databaseConnection->fullQuoteStr(sha1(serialize($configuration)), $this->table)
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+
+        $databaseRow = $queryBuilder
+            ->select('*')
+            ->from($this->table)
+            ->where(
+                $queryBuilder->expr()->eq('original', (int)$file->getUid()),
+                $queryBuilder->expr()->eq('task_type', $queryBuilder->createNamedParameter($taskType)),
+                $queryBuilder->expr()->eq('configurationsha1', $queryBuilder->createNamedParameter(sha1(serialize($configuration))))
+            )
+            ->execute()
+            ->fetch();
 
         if (is_array($databaseRow)) {
             $processedFile = $this->createDomainObject($databaseRow);
@@ -187,14 +212,19 @@ class ProcessedFileRepository extends AbstractRepository
             throw new \InvalidArgumentException('Parameter is no File object but got type "'
                 . (is_object($file) ? get_class($file) : gettype($file)) . '"', 1382006142);
         }
-        $whereClause = 'original=' . (int)$file->getUid();
-        $rows = $this->databaseConnection->exec_SELECTgetRows('*', $this->table, $whereClause);
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+        $result = $queryBuilder
+            ->select('*')
+            ->from($this->table)
+            ->where(
+                $queryBuilder->expr()->eq('original', (int)$file->getUid())
+            )
+            ->execute();
 
         $itemList = array();
-        if ($rows !== null) {
-            foreach ($rows as $row) {
-                $itemList[] = $this->createDomainObject($row);
-            }
+        while ($row = $result->fetch()) {
+            $itemList[] = $this->createDomainObject($row);
         }
         return $itemList;
     }
@@ -207,10 +237,19 @@ class ProcessedFileRepository extends AbstractRepository
      */
     public function removeAll($storageUid = null)
     {
-        $res = $this->databaseConnection->exec_SELECTquery('*', $this->table, 'identifier <> \'\'');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+        $result = $queryBuilder
+            ->select('*')
+            ->from($this->table)
+            ->where(
+                $queryBuilder->expr()->neq('identifier', $queryBuilder->quote(''))
+            )
+            ->execute();
+
         $logger = $this->getLogger();
         $errorCount = 0;
-        while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
+
+        while ($row = $result->fetch()) {
             if ($storageUid && (int)$storageUid !== (int)$row['storage']) {
                 continue;
             }
