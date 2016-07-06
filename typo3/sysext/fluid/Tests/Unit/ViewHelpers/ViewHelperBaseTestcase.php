@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  */
 use TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**

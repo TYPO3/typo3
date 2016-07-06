@@ -936,7 +936,7 @@ abstract class AbstractTreeView
         if (is_array($this->data)) {
             return count($this->dataLookup[$res][$this->subLevelID]);
         } else {
-            return $res->rowCount();;
+            return $res->rowCount();
         }
     }
 

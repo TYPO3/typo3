@@ -243,7 +243,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)
             ->setMethods(array('getControllerObjectName'))
             ->disableOriginalConstructor()
-            ->getMock(); 
+            ->getMock();
         $request->expects($this->once())->method('getControllerObjectName')->will($this->returnValue(''));
         $request->setControllerActionName('theAction');
         $this->assertEquals('theAction', $request->getControllerActionName());

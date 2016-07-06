@@ -537,7 +537,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject
             ->expects($this->once())
             ->method('cropHTML')
-            ->with( $content, $conf['cropHTML'])
+            ->with($content, $conf['cropHTML'])
             ->willReturn($return);
         $this->assertSame($return,
             $subject->stdWrap_cropHTML($content, $conf));
@@ -561,8 +561,8 @@ class ContentObjectRendererTest extends UnitTestCase
             . 'original ' . 'version of the crop function.';
         $textWithLinebreaks = "Lorem ipsum dolor sit amet,\n"
             . "consetetur sadipscing elitr,\n"
-            . "sed diam nonumy eirmod tempor invidunt ut labore e"
-            . "t dolore magna aliquyam";
+            . 'sed diam nonumy eirmod tempor invidunt ut labore e'
+            . 't dolore magna aliquyam';
 
         return [
             'plain text; 11|...' => [
@@ -771,8 +771,8 @@ class ContentObjectRendererTest extends UnitTestCase
             ],
             'text with linebreaks' => [
                 "Lorem ipsum dolor sit amet,\nconsetetur sadipscing elitr,\ns"
-                . "ed diam nonumy eirmod tempor invidunt ut labore e"
-                . "t dolore magna",
+                . 'ed diam nonumy eirmod tempor invidunt ut labore e'
+                . 't dolore magna',
                 $textWithLinebreaks, '121',
             ],
         ];
@@ -836,7 +836,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param string $expect Expected result.
      * @param string $input Given input string.
      * @param array $conf Property 'cache.'
-     * @param integer $times Times called mocked method.
+     * @param int $times Times called mocked method.
      * @param array $with Parameter passed to mocked method.
      * @param string|false $will Return value of mocked method.
      * @return void
@@ -1773,7 +1773,6 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->assertSame($expected, $this->subject->stdWrap_stripHtml($content));
     }
 
-
     /**
      * Check if stdWrap_crop works properly.
      *
@@ -1800,12 +1799,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject
             ->expects($this->once())
             ->method('crop')
-            ->with( $content, $conf['crop'])
+            ->with($content, $conf['crop'])
             ->willReturn($return);
         $this->assertSame($return,
             $subject->stdWrap_crop($content, $conf));
     }
-
 
     /**
      * Data provider for round
@@ -2624,7 +2622,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject
             ->expects($this->once())
             ->method('replacement')
-            ->with( $content, $conf['replacement.'])
+            ->with($content, $conf['replacement.'])
             ->willReturn($return);
         $this->assertSame($return,
             $subject->stdWrap_replacement($content, $conf));
@@ -3381,19 +3379,19 @@ class ContentObjectRendererTest extends UnitTestCase
     public function substringDataProvider()
     {
         return [
-            'sub -1'    => [ 'g', 'substring', '-1', ],
-            'sub -1,0'  => [ 'g', 'substring', '-1,0', ],
-            'sub -1,-1' => [ '', 'substring', '-1,-1', ],
-            'sub -1,1'  => [ 'g', 'substring', '-1,1', ],
-            'sub 0'     => [ 'substring', 'substring', '0', ],
-            'sub 0,0'   => [ 'substring', 'substring', '0,0', ],
-            'sub 0,-1'  => [ 'substrin', 'substring', '0,-1', ],
-            'sub 0,1'   => [ 's', 'substring', '0,1', ],
-            'sub 1'     => [ 'ubstring', 'substring', '1', ],
-            'sub 1,0'   => [ 'ubstring', 'substring', '1,0', ],
-            'sub 1,-1'  => [ 'ubstrin', 'substring', '1,-1', ],
-            'sub 1,1'   => [ 'u', 'substring', '1,1', ],
-            'sub'       => [ 'substring', 'substring', '', ],
+            'sub -1'    => [ 'g', 'substring', '-1'],
+            'sub -1,0'  => [ 'g', 'substring', '-1,0'],
+            'sub -1,-1' => [ '', 'substring', '-1,-1'],
+            'sub -1,1'  => [ 'g', 'substring', '-1,1'],
+            'sub 0'     => [ 'substring', 'substring', '0'],
+            'sub 0,0'   => [ 'substring', 'substring', '0,0'],
+            'sub 0,-1'  => [ 'substrin', 'substring', '0,-1'],
+            'sub 0,1'   => [ 's', 'substring', '0,1'],
+            'sub 1'     => [ 'ubstring', 'substring', '1'],
+            'sub 1,0'   => [ 'ubstring', 'substring', '1,0'],
+            'sub 1,-1'  => [ 'ubstrin', 'substring', '1,-1'],
+            'sub 1,1'   => [ 'u', 'substring', '1,1'],
+            'sub'       => [ 'substring', 'substring', ''],
         ];
     }
 
@@ -3438,7 +3436,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject
             ->expects($this->once())
             ->method('substring')
-            ->with( $content, $conf['substring'])
+            ->with($content, $conf['substring'])
             ->willReturn($return);
         $this->assertSame($return,
             $subject->stdWrap_substring($content, $conf));
@@ -7314,7 +7312,6 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->assertSame(1, $pageRepo::$storeHashCallCount);
     }
 
-
     /**
      * Check if calculateCacheKey works properly.
      *
@@ -7375,7 +7372,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @dataProvider calculateCacheKeyDataProvider
      * @param string $expect Expected result.
      * @param array $conf Properties 'key', 'key.'
-     * @param integer $times Times called mocked method.
+     * @param int $times Times called mocked method.
      * @param array $with Parameter passed to mocked method.
      * @param string $will Return value of mocked method.
      * @return void
@@ -7423,7 +7420,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param string $expect Expected result.
      * @param array $conf Configuration to pass to calculateCacheKey mock.
      * @param string $cacheKey Return from calculateCacheKey mock.
-     * @param integer $times Times the cache is expected to be called (0 or 1).
+     * @param int $times Times the cache is expected to be called (0 or 1).
      * @param string $cached Return from cacheFrontend mock.
      * @return void
      */

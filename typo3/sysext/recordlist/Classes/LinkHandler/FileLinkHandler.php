@@ -174,7 +174,6 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $this->view->assign('itemsInSelectedFolder', $itemsInSelectedFolder);
     }
 
-
     /**
      * @param Folder $folder
      * @param string $extensionList
@@ -269,7 +268,8 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      * @param string $folderIdentifier
      * @return mixed the folder object or false if nothing was found
      */
-    protected function getSelectedFolder($folderIdentifier = '') {
+    protected function getSelectedFolder($folderIdentifier = '')
+    {
         $selectedFolder = false;
         if ($folderIdentifier) {
             try {
@@ -288,7 +288,6 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             } catch (\Exception $e) {
                 // No path is selected
             }
-
         }
 
         // If no folder is selected, get the user's default upload folder

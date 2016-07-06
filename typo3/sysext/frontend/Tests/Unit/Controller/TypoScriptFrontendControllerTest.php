@@ -302,5 +302,4 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
         $this->subject->baseUrl = $baseUrl;
         $this->assertSame($expected, $this->subject->baseUrlWrap($url));
     }
-
 }

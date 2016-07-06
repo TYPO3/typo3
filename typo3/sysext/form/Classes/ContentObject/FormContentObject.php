@@ -90,7 +90,7 @@ class FormContentObject extends AbstractContentObject
      */
     protected function prepareNonCacheableUserFunction($typoScript)
     {
-        $configuration = array (
+        $configuration = array(
             'userFunc' => 'TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run',
             'pluginName' => 'Form',
             'extensionName' => 'Form',

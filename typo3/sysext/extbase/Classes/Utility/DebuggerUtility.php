@@ -391,7 +391,7 @@ class DebuggerUtility
                         } else {
                             $parameterDump .= '<span class="extbase-debug-string">'
                                 . htmlspecialchars(var_export($parameter->getDefaultValue(), true)) . '</span>';
-                         }
+                        }
                     }
                     $params[] = $parameterDump;
                 }
