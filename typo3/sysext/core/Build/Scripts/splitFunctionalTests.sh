@@ -1,7 +1,9 @@
 #!/bin/bash
 
+#########################
+#
 # This file is typically executed by travis and / or bamboo.
-# It expects to be run from the core document root.
+# It expects to be run from the core root.
 #
 # ./typo3/sysext/core/Build/Scripts/splitFunctionalTests.sh <numberOfConfigs>
 #
@@ -10,7 +12,8 @@
 # number of single functional tests.
 #
 # typo3/sysext/core/Build/FunctionalTests-Job-<counter>.xml
-
+#
+#########################
 
 numberOfFunctionalTestJobs=${1}
 numberOfFunctionalTestJobsMinusOne=$(( numberOfFunctionalTestJobs - 1 ))

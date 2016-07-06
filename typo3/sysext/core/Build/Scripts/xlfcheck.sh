@@ -6,10 +6,7 @@
 # t3:id numbers in XLF language files
 # and check their uniqueness.
 #
-# Use from within TYPO3 CMS source
-#
-# @author Markus Klein <klein.t3@reelworx.at>
-# @date 2014-11-14
+# It expects to be run from the core root.
 #
 ##########################
 

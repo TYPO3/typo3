@@ -2,20 +2,13 @@
 
 #########################
 #
-# Find duplicate exception timestamps and list them
-#
-# Use within TYPO3 CMS source
-#
+# Find duplicate exception timestamps and list them.
+# It expects to be run from the core root.
 #
 # The script searches for duplicate timestamps with
 # two exceptions:
 # 1. timestamps defined by the "IGNORE" array
 # 2. timestamps within Tests directories
-#
-#
-# @author  Christoph Kratz <ckr@rtp.ch>
-# @author  Christian Kuhn <lolli@schwarzbu.ch>
-# @date 2016-04-18
 #
 ##########################
 

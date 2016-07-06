@@ -55,6 +55,7 @@ $finder = Symfony\CS\Finder\DefaultFinder::create()
 return Symfony\CS\Config\Config::create()
     ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
     ->fixers([
+        // If changes to the fixers are done, please sync them with typo3/sysext/core/Build/Scripts/cglFixMyCommit.sh
         'remove_leading_slash_use',
         'single_array_no_trailing_comma',
         'spaces_before_semicolon',
