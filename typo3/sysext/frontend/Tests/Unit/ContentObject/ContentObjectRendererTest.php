@@ -2391,6 +2391,61 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_prefixComment.
+     *
+     * @retunr array [$expect, $content, $conf, $disable, $times, $will]
+     */
+    public function stdWrap_prefixCommentDataProvider()
+    {
+        $content = $this->getUniqueId('content');
+        $will = $this->getUniqueId('will');
+        $conf['prefixComment'] = $this->getUniqueId('prefixComment');
+        $emptyConf1 = [];
+        $emptyConf2['prefixComment'] = '';
+        return [
+            'standard case' => [$will, $content, $conf, false, 1, $will],
+            'emptyConf1' => [$content, $content, $emptyConf1, false, 0, $will],
+            'emptyConf2' => [$content, $content, $emptyConf2, false, 0, $will],
+            'disabled by bool' => [$content, $content, $conf, true, 0, $will],
+            'disabled by int' => [$content, $content, $conf, 1, 0, $will],
+        ];
+    }
+
+    /**
+     * Check that stdWrap_prefixComment works properly.
+     *
+     * Show:
+     *
+     *  - Delegates to method prefixComment.
+     *  - Parameter 1 is $conf['prefixComment'].
+     *  - Parameter 2 is [].
+     *  - Parameter 3 is $content.
+     *  - Returns the return value.
+     *  - Returns $content as is,
+     *    - if $conf['prefixComment'] is empty.
+     *    - if 'config.disablePrefixComment' is configured by the frontend.
+     *
+     *  @test
+     *  @dataProvider stdWrap_prefixCommentDataProvider
+     *  @return void
+     */
+    public function stdWrap_prefixComment(
+        $expect, $content, $conf, $disable, $times, $will)
+    {
+        $this->frontendControllerMock
+            ->config['config']['disablePrefixComment'] = $disable;
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['prefixComment'])->getMock();
+        $subject
+            ->expects($this->exactly($times))
+            ->method('prefixComment')
+            ->with($conf['prefixComment'], [], $content)
+            ->willReturn($will);
+        $this->assertSame($expect,
+            $subject->stdWrap_prefixComment($content, $conf));
+    }
+
+    /**
      * Data provider for the hash test
      *
      * @return array [$expect, $content, $conf]
