@@ -6795,6 +6795,56 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Check if stdWrap_postUserFuncInt works properly.
+     *
+     * Show:
+     *
+     * - Calls frontend controller method uniqueHash.
+     * - Concatenates "INT_SCRIPT." and the returned hash to $substKey.
+     * - Configures the frontend controller for 'INTincScript.$substKey'.
+     * - The configuration array contains:
+     *   - content: $content
+     *   - postUserFunc: $conf['postUserFuncInt']
+     *   - conf: $conf['postUserFuncInt.']
+     *   - type: 'POSTUSERFUNC'
+     *   - cObj: serialized content renderer object
+     * - Returns "<!-- $substKey -->".
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_postUserFuncInt()
+    {
+        $uniqueHash = $this->getUniqueId('uniqueHash');
+        $substKey = 'INT_SCRIPT.' . $uniqueHash;
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'postUserFuncInt' => $this->getUniqueId('function'),
+            'postUserFuncInt.' => [$this->getUniqueId('function array')],
+        ];
+        $expect = '<!--' . $substKey . '-->';
+        $frontend = $this->getMockBuilder(TypoScriptFrontendController::class)
+            ->disableOriginalConstructor()->setMethods(['uniqueHash'])
+            ->getMock();
+        $frontend->expects($this->once())->method('uniqueHash')
+            ->with()->willReturn($uniqueHash);
+        $frontend->config = [];
+        $subject = $this->getAccessibleMock(
+            ContentObjectRenderer::class, null, [$frontend]);
+        $this->assertSame($expect,
+            $subject->stdWrap_postUserFuncInt($content, $conf));
+        $array = [
+            'content' => $content,
+            'postUserFunc' => $conf['postUserFuncInt'],
+            'conf' => $conf['postUserFuncInt.'],
+            'type' => 'POSTUSERFUNC',
+            'cObj' => serialize($subject)
+        ];
+        $this->assertSame($array,
+            $frontend->config['INTincScript'][$substKey]);
+    }
+
+    /**
      * Check if stdWrap_preIfEmptyListNum works properly.
      *
      * Show:
