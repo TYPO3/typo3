@@ -148,7 +148,7 @@ class TableFlexFormToTtContentFieldsUpdate extends AbstractUpdate
         foreach ($mapping as $fieldName => $configuration) {
             $flexFormValue = $this->getFlexFormValue($flexForm, $configuration['fieldName'], $configuration['sheet']);
 
-            if ($flexFormValue !== '') {
+            if ((string)$flexFormValue !== '') {
                 if ($configuration['values'] === 'passthrough') {
                     $fields[$fieldName] = $flexFormValue;
                 } elseif (is_array($configuration['values'])) {
