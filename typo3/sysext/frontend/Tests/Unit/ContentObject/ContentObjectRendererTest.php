@@ -2177,7 +2177,7 @@ class ContentObjectRendererTest extends UnitTestCase
             // negative numbers
             'negative int' => [-123, -123],
             'negative float' => [-123, -123.45],
-            'negative float does not round down' => [ -123, -123.55],
+            'negative float does not round down' => [-123, -123.55],
             // strings
             'word string' => [0, 'string'],
             'empty string' => [0, ''],
@@ -3379,19 +3379,19 @@ class ContentObjectRendererTest extends UnitTestCase
     public function substringDataProvider()
     {
         return [
-            'sub -1'    => [ 'g', 'substring', '-1'],
-            'sub -1,0'  => [ 'g', 'substring', '-1,0'],
-            'sub -1,-1' => [ '', 'substring', '-1,-1'],
-            'sub -1,1'  => [ 'g', 'substring', '-1,1'],
-            'sub 0'     => [ 'substring', 'substring', '0'],
-            'sub 0,0'   => [ 'substring', 'substring', '0,0'],
-            'sub 0,-1'  => [ 'substrin', 'substring', '0,-1'],
-            'sub 0,1'   => [ 's', 'substring', '0,1'],
-            'sub 1'     => [ 'ubstring', 'substring', '1'],
-            'sub 1,0'   => [ 'ubstring', 'substring', '1,0'],
-            'sub 1,-1'  => [ 'ubstrin', 'substring', '1,-1'],
-            'sub 1,1'   => [ 'u', 'substring', '1,1'],
-            'sub'       => [ 'substring', 'substring', ''],
+            'sub -1'    => ['g', 'substring', '-1'],
+            'sub -1,0'  => ['g', 'substring', '-1,0'],
+            'sub -1,-1' => ['', 'substring', '-1,-1'],
+            'sub -1,1'  => ['g', 'substring', '-1,1'],
+            'sub 0'     => ['substring', 'substring', '0'],
+            'sub 0,0'   => ['substring', 'substring', '0,0'],
+            'sub 0,-1'  => ['substrin', 'substring', '0,-1'],
+            'sub 0,1'   => ['s', 'substring', '0,1'],
+            'sub 1'     => ['ubstring', 'substring', '1'],
+            'sub 1,0'   => ['ubstring', 'substring', '1,0'],
+            'sub 1,-1'  => ['ubstrin', 'substring', '1,-1'],
+            'sub 1,1'   => ['u', 'substring', '1,1'],
+            'sub'       => ['substring', 'substring', ''],
         ];
     }
 
@@ -3563,23 +3563,23 @@ class ContentObjectRendererTest extends UnitTestCase
         $conf = ['ifEmpty' => $alt];
         return [
             // empty cases
-            'null is empty' => [ $alt, null, $conf ],
-            'false is empty' => [ $alt, false, $conf ],
-            'zero is empty' => [ $alt, 0, $conf ],
-            'float zero is empty' => [ $alt, 0.0, $conf ],
-            'whitespace is empty' => [ $alt, TAB . ' ', $conf ],
-            'empty string is empty' => [ $alt, '', $conf ],
-            'zero string is empty' => [ $alt, '0', $conf ],
+            'null is empty' => [$alt, null, $conf ],
+            'false is empty' => [$alt, false, $conf ],
+            'zero is empty' => [$alt, 0, $conf ],
+            'float zero is empty' => [$alt, 0.0, $conf ],
+            'whitespace is empty' => [$alt, TAB . ' ', $conf ],
+            'empty string is empty' => [$alt, '', $conf ],
+            'zero string is empty' => [$alt, '0', $conf ],
             'zero string is empty with whitespace' => [
                 $alt, TAB . ' 0 ' . TAB, $conf
             ],
             // non-empty cases
-            'string is not empty' => [ 'string', 'string', $conf ],
-            '1 is not empty' => [ 1, 1, $conf ],
-            '-1 is not empty' => [ -1, -1, $conf ],
-            '0.1 is not empty' => [ 0.1, 0.1, $conf ],
-            '-0.1 is not empty' => [ -0.1, -0.1, $conf ],
-            'true is not empty' => [ true, true, $conf ],
+            'string is not empty' => ['string', 'string', $conf ],
+            '1 is not empty' => [1, 1, $conf ],
+            '-1 is not empty' => [-1, -1, $conf ],
+            '0.1 is not empty' => [0.1, 0.1, $conf ],
+            '-0.1 is not empty' => [-0.1, -0.1, $conf ],
+            'true is not empty' => [true, true, $conf ],
         ];
     }
 
@@ -7494,7 +7494,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'null is empty' => ['', '// null'],
             'empty string is empty' => ['', '// empty'],
             'string is not empty' => ['string 1', '// string1'],
-            'first non-empty winns' => [ 0, 'false//empty//null//zero//one'],
+            'first non-empty winns' => [0, 'false//empty//null//zero//one'],
             'empty string is fallback' => ['', 'false // empty // null'],
         ];
     }
