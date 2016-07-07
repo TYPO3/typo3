@@ -43,12 +43,10 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->will($this->returnCallback(function ($data) {
                 return $data;
             }));
-        $mysqliMock = $this->getMock('mysqli');
-        $mysqliMock
-            ->expects($this->once())
-            ->method('query')
-            ->with('INSERT INTO aTable (fieldblob) VALUES (' . $binaryString . ')');
-        $subject->_set('link', $mysqliMock);
+        $mysqliProphecy = $this->prophesize(\mysqli::class);
+        $mysqliProphecy->query('INSERT INTO aTable (fieldblob) VALUES (' . $binaryString . ')')
+            ->shouldBeCalled();
+        $subject->_set('link', $mysqliProphecy->reveal());
 
         $subject->exec_INSERTquery('aTable', array('fieldblob' => $binaryString));
     }
@@ -69,12 +67,10 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->will($this->returnCallback(function ($data) {
                 return $data;
             }));
-        $mysqliMock = $this->getMock('mysqli');
-        $mysqliMock
-            ->expects($this->once())
-            ->method('query')
-            ->with('INSERT INTO aTable (fieldblob) VALUES (' . $testStringWithBinary . ')');
-        $subject->_set('link', $mysqliMock);
+        $mysqliProphecy = $this->prophesize(\mysqli::class);
+        $mysqliProphecy->query('INSERT INTO aTable (fieldblob) VALUES (' . $testStringWithBinary . ')')
+            ->shouldBeCalled();
+        $subject->_set('link', $mysqliProphecy->reveal());
 
         $subject->exec_INSERTquery('aTable', array('fieldblob' => $testStringWithBinary));
     }
