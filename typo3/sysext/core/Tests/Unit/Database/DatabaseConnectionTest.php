@@ -79,12 +79,10 @@ class DatabaseConnectionTest extends UnitTestCase
             ->will($this->returnCallback(function ($data) {
                 return $data;
             }));
-        $mysqliMock = $this->createMock('mysqli');
-        $mysqliMock
-            ->expects($this->once())
-            ->method('query')
-            ->with("INSERT INTO {$this->testTable} ({$this->testField}) VALUES ({$binaryString})");
-        $subject->_set('link', $mysqliMock);
+        $mysqliProphecy = $this->prophesize(\mysqli::class);
+        $mysqliProphecy->query("INSERT INTO {$this->testTable} ({$this->testField}) VALUES ({$binaryString})")
+            ->shouldBeCalled();
+        $subject->_set('link', $mysqliProphecy->reveal());
 
         $subject->exec_INSERTquery($this->testTable, [$this->testField => $binaryString]);
     }
@@ -106,12 +104,10 @@ class DatabaseConnectionTest extends UnitTestCase
             ->will($this->returnCallback(function ($data) {
                 return $data;
             }));
-        $mysqliMock = $this->createMock('mysqli');
-        $mysqliMock
-            ->expects($this->once())
-            ->method('query')
-            ->with("INSERT INTO {$this->testTable} ({$this->testField}) VALUES ({$testStringWithBinary})");
-        $subject->_set('link', $mysqliMock);
+        $mysqliProphecy = $this->prophesize(\mysqli::class);
+        $mysqliProphecy->query("INSERT INTO {$this->testTable} ({$this->testField}) VALUES ({$testStringWithBinary})")
+            ->shouldBeCalled();
+        $subject->_set('link', $mysqliProphecy->reveal());
 
         $subject->exec_INSERTquery($this->testTable, [$this->testField => $testStringWithBinary]);
     }
@@ -577,12 +573,9 @@ class DatabaseConnectionTest extends UnitTestCase
         $subject->_set('isConnected', true);
         $subject->_set('databaseName', $this->testTable);
 
-        $mysqliMock = $this->getMockBuilder('mysqli')->getMock();
-        $mysqliMock
-            ->expects($this->once())
-            ->method('select_db')
-            ->with($this->equalTo($this->testTable))->will($this->returnValue(true));
-        $subject->_set('link', $mysqliMock);
+        $mysqliProphecy = $this->prophesize(\mysqli::class);
+        $mysqliProphecy->select_db($this->testTable)->shouldBeCalled()->willReturn(true);
+        $subject->_set('link', $mysqliProphecy->reveal());
 
         $this->assertTrue($subject->sql_select_db());
     }
@@ -595,16 +588,14 @@ class DatabaseConnectionTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] = GeneralUtility::SYSLOG_SEVERITY_WARNING;
 
         /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(DatabaseConnection::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(DatabaseConnection::class, ['sql_error'], [], '', false);
         $subject->_set('isConnected', true);
         $subject->_set('databaseName', $this->testTable);
+        $subject->expects($this->any())->method('sql_error')->will($this->returnValue(''));
 
-        $mysqliMock = $this->getMockBuilder('mysqli')->getMock();
-        $mysqliMock
-            ->expects($this->once())
-            ->method('select_db')
-            ->with($this->equalTo($this->testTable))->will($this->returnValue(false));
-        $subject->_set('link', $mysqliMock);
+        $mysqliProphecy = $this->prophesize(\mysqli::class);
+        $mysqliProphecy->select_db($this->testTable)->shouldBeCalled()->willReturn(false);
+        $subject->_set('link', $mysqliProphecy->reveal());
 
         $this->assertFalse($subject->sql_select_db());
     }

@@ -106,7 +106,12 @@ class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $absRefPrefix = '/' . $this->getUniqueId();
         $html = 'test <a href="' . $absRefPrefix . 'index.php">test</a> test';
         $GLOBALS['TSFE'] = $this->createMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
-        $GLOBALS['TSFE']->config['config']['absRefPrefix'] = $absRefPrefix;
+        $config = [
+            'config' => [
+                'absRefPrefix' => $absRefPrefix,
+            ],
+        ];
+        $GLOBALS['TSFE']->config = $config;
         $result = $this->subject->extractHyperLinks($html);
         $this->assertEquals(1, count($result));
         $this->assertEquals(PATH_site . 'index.php', $result[0]['localPath']);
