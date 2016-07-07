@@ -254,9 +254,7 @@ class MailMessage extends \Swift_Message
         }
         $domain = substr($email, $atPosition + 1);
         $local = substr($email, 0, $atPosition);
-        if (!mb_check_encoding($domain, 'ASCII')) {
-            $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::idnaEncode($domain);
-        }
+        $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::idnaEncode($domain);
 
         return $local . '@' . $domain;
     }

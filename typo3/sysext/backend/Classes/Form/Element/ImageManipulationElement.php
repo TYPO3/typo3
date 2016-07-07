@@ -88,7 +88,7 @@ class ImageManipulationElement extends AbstractFormElement
 
         $content = '';
         $preview = '';
-        if (GeneralUtility::inList(mb_strtolower($config['allowedExtensions']), mb_strtolower($file->getExtension()))) {
+        if (GeneralUtility::inList(strtolower($config['allowedExtensions']), strtolower($file->getExtension()))) {
 
             // Get preview
             $preview = $this->getPreview($file, $parameterArray['itemFormElValue']);
@@ -140,7 +140,7 @@ class ImageManipulationElement extends AbstractFormElement
         }
 
         $content .= '<p class="text-muted"><em>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_wizards.xlf:imwizard.supported-types-message')) . '<br />';
-        $content .= mb_strtoupper(implode(', ', GeneralUtility::trimExplode(',', $config['allowedExtensions'])));
+        $content .= strtoupper(implode(', ', GeneralUtility::trimExplode(',', $config['allowedExtensions'])));
         $content .= '</em></p>';
 
         $item = '<div class="media">';
