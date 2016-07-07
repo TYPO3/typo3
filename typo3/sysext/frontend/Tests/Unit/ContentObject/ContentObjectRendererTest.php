@@ -160,6 +160,14 @@ class ContentObjectRendererTest extends UnitTestCase
     //////////////////////
 
     /**
+     * @return TypoScriptFrontendController
+     */
+    protected function getFrontendController()
+    {
+        return $GLOBALS['TSFE'];
+    }
+
+    /**
      * Avoid logging to the file system (file writer is currently the only configured writer)
      */
     protected function createMockedLoggerAndLogManager()
@@ -508,40 +516,10 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     //////////////////////////////
+
+    //////////////////////////////
     // Tests concerning cropHTML
     //////////////////////////////
-
-    /**
-     * Check if stdWrap_cropHTML works properly.
-     *
-     * Show:
-     *
-     * - Delegates to method cropHTML.
-     * - Parameter 1 is $content.
-     * - Parameter 2 is $conf['cropHTML'].
-     * - Returns the return value.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_cropHTML()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'cropHTML' => $this->getUniqueId('cropHTML'),
-            'cropHTML.' => $this->getUniqueId('not used'),
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['cropHTML'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('cropHTML')
-            ->with($content, $conf['cropHTML'])
-            ->willReturn($return);
-        $this->assertSame($return,
-            $subject->stdWrap_cropHTML($content, $conf));
-    }
 
     /**
      * Data provider for cropHTML.
@@ -796,1016 +774,6 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * Data provider for stdWrap_cacheRead
-     *
-     * @return array Order: expect, input, conf, times, with, will
-     */
-    public function stdWrap_cacheReadDataProvider()
-    {
-        $cacheConf = [$this->getUniqueId('cache.')];
-        $conf = ['cache.' => $cacheConf];
-        return [
-            'no conf' => [
-                'content', 'content', [],
-                0, null, null,
-            ],
-            'no cache. conf' => [
-                'content', 'content', ['otherConf' => 1],
-                0, null, null,
-            ],
-            'non-cached simulation' => [
-                'content', 'content', $conf,
-                1, $cacheConf, false,
-            ],
-            'cached simulation' => [
-                'cachedContent', 'content', $conf,
-                1, $cacheConf, 'cachedContent',
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_cacheRead works properly.
-     *
-     * - the method branches correctly
-     * - getFromCache is called to fetch from cache
-     * - $conf['cache.'] is passed on as parameter
-     *
-     * @test
-     * @dataProvider stdWrap_cacheReadDataProvider
-     * @param string $expect Expected result.
-     * @param string $input Given input string.
-     * @param array $conf Property 'cache.'
-     * @param int $times Times called mocked method.
-     * @param array $with Parameter passed to mocked method.
-     * @param string|false $will Return value of mocked method.
-     * @return void
-     */
-    public function stdWrap_cacheRead(
-        $expect, $input, $conf, $times, $with, $will)
-    {
-        $subject = $this->getAccessibleMock(
-            ContentObjectRenderer::class, ['getFromCache']);
-        $subject
-            ->expects($this->exactly($times))
-            ->method('getFromCache')
-            ->with($with)
-            ->willReturn($will);
-        $this->assertSame($expect,
-            $subject->stdWrap_cacheRead($input, $conf));
-    }
-
-    /**
-     * Data provider for fourTypesOfStdWrapHookObjectProcessors
-     *
-     * @return array Order: stdWrap, hookObjectCall
-     */
-    public function fourTypesOfStdWrapHookObjectProcessorsDataProvider()
-    {
-        return [
-            'preProcess' => [
-                'stdWrap_stdWrapPreProcess', 'stdWrapPreProcess'
-            ],
-            'override' => [
-                'stdWrap_stdWrapOverride', 'stdWrapOverride'
-            ],
-            'process' => [
-                'stdWrap_stdWrapProcess', 'stdWrapProcess'
-            ],
-            'postProcess' => [
-                'stdWrap_stdWrapPostProcess', 'stdWrapPostProcess'
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrapHookObject processors work properly.
-     *
-     * Checks:
-     *
-     * - stdWrap_stdWrapPreProcess
-     * - stdWrap_stdWrapOverride
-     * - stdWrap_stdWrapProcess
-     * - stdWrap_stdWrapPostProcess
-     *
-     * @test
-     * @dataProvider fourTypesOfStdWrapHookObjectProcessorsDataProvider
-     * @param string $stdWrapMethod: The method to cover.
-     * @param string $hookObjectCall: The expected hook object call.
-     * @return void
-     */
-    public function fourTypesOfStdWrapHookObjectProcessors(
-        $stdWrapMethod, $hookObjectCall)
-    {
-        $conf = [$this->getUniqueId('conf')];
-        $content = $this->getUniqueId('content');
-        $processed1 = $this->getUniqueId('processed1');
-        $processed2 = $this->getUniqueId('processed2');
-        $hookObject1 = $this->createMock(
-            ContentObjectStdWrapHookInterface::class);
-        $hookObject1->expects($this->once())
-            ->method($hookObjectCall)
-            ->with($content, $conf)
-            ->willReturn($processed1);
-        $hookObject2 = $this->createMock(
-            ContentObjectStdWrapHookInterface::class);
-        $hookObject2->expects($this->once())
-            ->method($hookObjectCall)
-            ->with($processed1, $conf)
-            ->willReturn($processed2);
-        $this->subject->_set('stdWrapHookObjects',
-            [$hookObject1, $hookObject2]);
-        $result = $this->subject->$stdWrapMethod($content, $conf);
-        $this->assertSame($processed2, $result);
-    }
-
-    /**
-     * Check if stdWrap_setContentToCurrent works properly.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_setContentToCurrent()
-    {
-        $content = $this->getUniqueId('content');
-        $this->assertNotSame($content, $this->subject->getData('current'));
-        $this->assertSame($content,
-            $this->subject->stdWrap_setContentToCurrent($content));
-        $this->assertSame($content, $this->subject->getData('current'));
-    }
-
-    /**
-     * Data provider for stdWrap_setCurrent
-     *
-     * @return array Order input, conf
-     */
-    public function stdWrap_setCurrentDataProvider()
-    {
-        return [
-            'no conf' => [
-                'content',
-                [],
-            ],
-            'empty string' => [
-                'content',
-                ['setCurrent' => ''],
-            ],
-            'non-empty string' => [
-                'content',
-                ['setCurrent' => 'xxx'],
-            ],
-            'integer null' => [
-                'content',
-                ['setCurrent' => 0],
-            ],
-            'integer not null' => [
-                'content',
-                ['setCurrent' => 1],
-            ],
-            'boolean true' => [
-                'content',
-                ['setCurrent' => true],
-            ],
-            'boolean false' => [
-                'content',
-                ['setCurrent' => false],
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_setCurrent works properly.
-     *
-     * @test
-     * @dataProvider stdWrap_setCurrentDataProvider
-     * @param string $input The input value.
-     * @param array $conf Property: setCurrent
-     * @return void
-     */
-    public function stdWrap_setCurrent($input, $conf)
-    {
-        if (isset($conf['setCurrent'])) {
-            $this->assertNotSame($conf['setCurrent'], $this->subject->getData('current'));
-        }
-        $this->assertSame($input, $this->subject->stdWrap_setCurrent($input, $conf));
-        if (isset($conf['setCurrent'])) {
-            $this->assertSame($conf['setCurrent'], $this->subject->getData('current'));
-        }
-    }
-
-    /**
-     * Data provider for stdWrap_data.
-     *
-     * @return array [$expect, $data, $alt]
-     */
-    public function stdWrap_dataDataProvider()
-    {
-        $data = [$this->getUniqueId('data')];
-        $alt = [$this->getUniqueId('alternativeData')];
-        return [
-            'default' => [$data, $data, ''],
-            'alt is array' => [$alt, $data, $alt],
-            'alt is empty array' => [[], $data, []],
-            'alt null' => [$data, $data, null],
-            'alt string' => [$data, $data, 'xxx'],
-            'alt int' => [$data, $data, 1],
-            'alt bool' => [$data, $data, true],
-        ];
-    }
-
-    /**
-     * Checks that stdWrap_data works properly.
-     *
-     * Show:
-     *
-     * - Delegates to method getData.
-     * - Parameter 1 is $conf['data'].
-     * - Parameter 2 is property data by default.
-     * - Parameter 2 is property alternativeData, if set as array.
-     * - Property alternativeData is always unset to ''.
-     * - Returns the return value.
-     *
-     * @test
-     * @dataProvider stdWrap_dataDataProvider
-     * @param mixed $expect Expect either $data or $alternativeData.
-     * @param array $data The data.
-     * @param mixed $alt The alternativeData.
-     * @return void
-     */
-    public function stdWrap_data($expect, $data, $alt)
-    {
-        $conf = ['data' => $this->getUniqueId('conf.data')];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getAccessibleMock(
-            ContentObjectRenderer::class, ['getData']);
-        $subject->_set('data', $data);
-        $subject->_set('alternativeData', $alt);
-        $subject
-            ->expects($this->once())
-            ->method('getData')
-            ->with($conf['data'], $expect)
-            ->willReturn($return);
-        $this->assertSame($return, $subject->stdWrap_data('discard', $conf));
-        $this->assertSame('', $subject->_get('alternativeData'));
-    }
-
-    /**
-     * Check if stdWrap_insertData works properly.
-     *
-     * Show:
-     *
-     *  - Delegates to method insertData.
-     *  - Parameter 1 is $content.
-     *  - Returns the return value.
-     *
-     *  @test
-     *  @return void
-     */
-    public function stdWrap_insertData()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [$this->getUniqueId('conf not used')];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['insertData'])->getMock();
-        $subject->expects($this->once())->method('insertData')
-            ->with($content)->willReturn($return);
-        $this->assertSame($return,
-            $subject->stdWrap_insertData($content, $conf));
-    }
-
-    /**
-     * Check if stdWrap_preIfEmptyListNum works properly.
-     *
-     * Show:
-     *
-     * - Delegates to method listNum.
-     * - Parameter 1 is $content.
-     * - Parameter 2 is $conf['preIfEmptyListNum'].
-     * - Parameter 3 is $conf['preIfEmptyListNum.']['splitChar'].
-     * - Returns the return value.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_preIfEmptyListNum()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'preIfEmptyListNum' => $this->getUniqueId('preIfEmptyListNum'),
-            'preIfEmptyListNum.' => [
-                'splitChar' => $this->getUniqueId('splitChar')
-            ],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['listNum'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('listNum')
-            ->with(
-                $content,
-                $conf['preIfEmptyListNum'],
-                $conf['preIfEmptyListNum.']['splitChar']
-            )
-            ->willReturn($return);
-        $this->assertSame($return,
-            $subject->stdWrap_preIfEmptyListNum($content, $conf));
-    }
-
-    /**
-     * Check if stdWrap_current works properly.
-     *
-     * Show:
-     *
-     * - current is returned from $this->data
-     * - the key is stored in $this->currentValKey
-     * - the key defaults to 'currentValue_kidjls9dksoje'
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_current()
-    {
-        $data = [
-            'currentValue_kidjls9dksoje' => 'default',
-            'currentValue_new' => 'new',
-        ];
-        $this->subject->_set('data', $data);
-        $this->assertSame('currentValue_kidjls9dksoje',
-            $this->subject->_get('currentValKey'));
-        $this->assertSame('default',
-            $this->subject->stdWrap_current('discarded', ['discarded']));
-        $this->subject->_set('currentValKey', 'currentValue_new');
-        $this->assertSame('new',
-            $this->subject->stdWrap_current('discarded', ['discarded']));
-    }
-
-    /**
-     * Check if stdWrap_preUserFunc works properly.
-     *
-     * Show:
-     *
-     * - Delegates to method callUserFunction.
-     * - Parameter 1 is $conf['preUserFunc'].
-     * - Parameter 2 is $conf['preUserFunc.'].
-     * - Parameter 3 is $content.
-     * - Returns the return value.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_preUserFunc()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'preUserFunc' => $this->getUniqueId('preUserFunc'),
-            'preUserFunc.' => [$this->getUniqueId('preUserFunc.')],
-        ];
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['callUserFunction'])->getMock();
-        $subject->expects($this->once())->method('callUserFunction')
-            ->with($conf['preUserFunc'], $conf['preUserFunc.'], $content)
-            ->willReturn('return');
-        $this->assertSame('return',
-            $subject->stdWrap_preUserFunc($content, $conf));
-    }
-
-    /**
-     * Data provider for stdWrap_csConv
-     *
-     * @return array Order expected, input, conf
-     */
-    public function stdWrap_overrideDataProvider()
-    {
-        return [
-            'standard case' => [
-                'override', 'content', ['override' => 'override']
-            ],
-            'empty conf does not override' => [
-                'content', 'content', []
-            ],
-            'empty string does not override' => [
-                'content', 'content', ['override' => '']
-            ],
-            'whitespace does not override' => [
-                'content', 'content', ['override' => ' ' . TAB]
-            ],
-            'zero does not override' => [
-                'content', 'content', ['override' => 0]
-            ],
-            'false does not override' => [
-                'content', 'content', ['override' => false]
-            ],
-            'null does not override' => [
-                'content', 'content', ['override' => null]
-            ],
-            'one does override' => [
-                1, 'content', ['override' => 1]
-            ],
-            'minus one does override' => [
-                -1, 'content', ['override' => -1]
-            ],
-            'float does override' => [
-                -0.1, 'content', ['override' => -0.1]
-            ],
-            'true does override' => [
-                true, 'content', ['override' => true]
-            ],
-            'the value is not trimmed' => [
-                TAB . 'override', 'content', ['override' => TAB . 'override']
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_override works properly.
-     *
-     * @test
-     * @dataProvider stdWrap_overrideDataProvider
-     * @param string $input The input value.
-     * @param array $conf Property: setCurrent
-     * @return void
-     */
-    public function stdWrap_override($expect, $content, $conf)
-    {
-        $this->assertSame($expect,
-            $this->subject->stdWrap_override($content, $conf));
-    }
-
-    /**
-     * Check if stdWrap_listNum works properly.
-     *
-     * Show:
-     *
-     * - Delegates to method listNum.
-     * - Parameter 1 is $content.
-     * - Parameter 2 is $conf['listNum'].
-     * - Parameter 3 is $conf['listNum.']['splitChar'].
-     * - Returns the return value.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_listNum()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'listNum' => $this->getUniqueId('listNum'),
-            'listNum.' => [
-                'splitChar' => $this->getUniqueId('splitChar')
-            ],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['listNum'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('listNum')
-            ->with(
-                $content,
-                $conf['listNum'],
-                $conf['listNum.']['splitChar']
-            )
-            ->willReturn($return);
-        $this->assertSame($return,
-            $subject->stdWrap_listNum($content, $conf));
-    }
-
-    /**
-     * Check if stdWrap_field works properly.
-     *
-     * Show:
-     *
-     * - calls getFieldVal
-     * - passes conf['field'] as parameter
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_field()
-    {
-        $expect = $this->getUniqueId('expect');
-        $conf = ['field' => $this->getUniqueId('field')];
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['getFieldVal'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('getFieldVal')
-            ->with($conf['field'])
-            ->willReturn($expect);
-        $this->assertSame($expect,
-            $subject->stdWrap_field('discarded', $conf));
-    }
-
-    /**
-     * Check if stdWrap_prepend works properly.
-     *
-     * Show:
-     *
-     * - Delegates to the method cObjGetSingle().
-     * - First parameter is $conf['prepend'].
-     * - Second parameter is $conf['prepend.'].
-     * - Third parameter is '/stdWrap/.prepend'.
-     * - Returns the return value prepended to $content.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_prepend()
-    {
-        $debugKey =  '/stdWrap/.prepend';
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'prepend' => $this->getUniqueId('prepend'),
-            'prepend.' => [$this->getUniqueId('prepend.')],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['cObjGetSingle'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('cObjGetSingle')
-            ->with($conf['prepend'], $conf['prepend.'], $debugKey)
-            ->willReturn($return);
-        $this->assertSame($return . $content,
-            $subject->stdWrap_prepend($content, $conf));
-    }
-
-    /**
-     * Check if stdWrap_cObject works properly.
-     *
-     * Show:
-     *
-     * - Delegates to the method cObjGetSingle().
-     * - First parameter is $conf['cObject'].
-     * - Second parameter is $conf['cObject.'].
-     * - Third parameter is '/stdWrap/.cObject'.
-     * - Returns the return.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_cObject()
-    {
-        $debugKey =  '/stdWrap/.cObject';
-        $conf = [
-            'cObject' => $this->getUniqueId('cObject'),
-            'cObject.' => [$this->getUniqueId('cObject.')],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['cObjGetSingle'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('cObjGetSingle')
-            ->with($conf['cObject'], $conf['cObject.'], $debugKey)
-            ->willReturn($return);
-        $this->assertSame($return,
-            $subject->stdWrap_cObject('discard', $conf));
-    }
-
-    /**
-     * Check if stdWrap_append works properly.
-     *
-     * Show:
-     *
-     * - Delegates to the method cObjGetSingle().
-     * - First parameter is $conf['append'].
-     * - Second parameter is $conf['append.'].
-     * - Third parameter is '/stdWrap/.append'.
-     * - Returns the return value appended to $content.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_append()
-    {
-        $debugKey =  '/stdWrap/.append';
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'append' => $this->getUniqueId('append'),
-            'append.' => [$this->getUniqueId('append.')],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['cObjGetSingle'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('cObjGetSingle')
-            ->with($conf['append'], $conf['append.'], $debugKey)
-            ->willReturn($return);
-        $this->assertSame($content . $return,
-            $subject->stdWrap_append($content, $conf));
-    }
-
-    /**
-     * Check if stdWrap_numRows works properly.
-     *
-     * Show:
-     *
-     * - Delegates to method numRows.
-     * - Parameter is $conf['numRows.'].
-     * - Returns the return value.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_numRows()
-    {
-        $conf = [
-            'numRows' => $this->getUniqueId('numRows'),
-            'numRows.' => [$this->getUniqueId('numRows')],
-        ];
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['numRows'])->getMock();
-        $subject->expects($this->once())->method('numRows')
-            ->with($conf['numRows.'])->willReturn('return');
-        $this->assertSame('return',
-            $subject->stdWrap_numRows('discard', $conf));
-    }
-
-    /**
-     * Check if stdWrap_filelist works properly.
-     *
-     * Show:
-     *
-     * - Delegates to method filelist.
-     * - Parameter is $conf['filelist'].
-     * - Returns the return value.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_filelist()
-    {
-        $conf = [
-            'filelist' => $this->getUniqueId('filelist'),
-            'filelist.' => [$this->getUniqueId('not used')],
-        ];
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['filelist'])->getMock();
-        $subject->expects($this->once())->method('filelist')
-            ->with($conf['filelist'])->willReturn('return');
-        $this->assertSame('return',
-            $subject->stdWrap_filelist('discard', $conf));
-    }
-
-    /**
-     * Check if stdWrap_filelink works properly.
-     *
-     * Show:
-     *
-     * - Delegates to method filelink.
-     * - Parameter 1 is $content.
-     * - Parameter 2 is $conf['filelink.'].
-     * - Returns the return value.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_filelink()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'filelink' => $this->getUniqueId('not used'),
-            'filelink.' => [$this->getUniqueId('filelink.')],
-        ];
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['filelink'])->getMock();
-        $subject->expects($this->once())->method('filelink')
-            ->with($content, $conf['filelink.'])->willReturn('return');
-        $this->assertSame('return',
-            $subject->stdWrap_filelink($content, $conf));
-    }
-
-    /**
-     * Data provider for stdWrap_fieldRequired.
-     *
-     * @return array [$expect, $stop, $content, $conf]
-     */
-    public function stdWrap_fieldRequiredDataProvider()
-    {
-        $content = $this->getUniqueId('content');
-        return [
-            // resulting in boolean false
-            'false is false' => [
-                '', true, $content, ['fieldRequired' => 'false']
-            ],
-            'null is false' => [
-                '', true, $content, ['fieldRequired' => 'null']
-            ],
-            'empty string is false' => [
-                '', true, $content, ['fieldRequired' => 'empty']
-            ],
-            'whitespace is false' => [
-                '', true, $content, ['fieldRequired' => 'whitespace']
-            ],
-            'string zero is false' => [
-                '', true, $content, ['fieldRequired' => 'stringZero']
-            ],
-            'string zero with whitespace is false' => [
-                '', true, $content,
-                ['fieldRequired' => 'stringZeroWithWhiteSpace']
-            ],
-            'zero is false' => [
-                '', true, $content, ['fieldRequired' => 'zero']
-            ],
-            // resulting in boolean true
-            'true is true' => [
-                $content, false, $content, ['fieldRequired' => 'true']
-            ],
-            'string is true' => [
-                $content, false, $content, ['fieldRequired' => 'string']
-            ],
-            'one is true' => [
-                $content, false, $content, ['fieldRequired' => 'one']
-            ]
-        ];
-    }
-
-    /**
-     * Check if stdWrap_fieldRequired works properly.
-     *
-     * Show:
-     *
-     *  - The value is taken from property array data.
-     *  - The key is taken from $conf['fieldRequired'].
-     *  - The value is casted to string by trim() and trimmed.
-     *  - It is further casted to boolean by if().
-     *  - False triggers a stop of further rendering.
-     *  - False returns '', true the given content as is.
-     *
-     * @test
-     * @dataProvider stdWrap_fieldRequiredDataProvider
-     * @param mixed $expect The expected output.
-     * @param bool $stop Expect stop further rendering.
-     * @param mixed $content The given input.
-     * @param array $conf The given configuration.
-     * @return void
-     */
-    public function stdWrap_fieldRequired($expect, $stop, $content, $conf)
-    {
-        $data = [
-            'null' => null,
-            'false' => false,
-            'empty' => '',
-            'whitespace' => TAB . ' ',
-            'stringZero' => '0',
-            'stringZeroWithWhiteSpace' => TAB . ' 0 ' . TAB,
-            'zero' => 0,
-            'string' => 'string',
-            'true' => true,
-            'one' => 1
-        ];
-        $subject = $this->subject;
-        $subject->_set('data', $data);
-        $subject->_set('stdWrapRecursionLevel', 1);
-        $subject->_set('stopRendering', [1 => false]);
-        $this->assertSame($expect,
-            $subject->stdWrap_fieldRequired($content, $conf));
-        $this->assertSame($stop, $subject->_get('stopRendering')[1]);
-    }
-
-    /**
-     * Data provider for stdWrap_csConv
-     *
-     * @return array Order expected, input, conf
-     */
-    public function stdWrap_csConvDataProvider()
-    {
-        return [
-            'empty string from ISO-8859-15' => [
-                '',
-                iconv('UTF-8', 'ISO-8859-15', ''),
-                ['csConv' => 'ISO-8859-15']
-            ],
-            'empty string from BIG-5' => [
-                '',
-                mb_convert_encoding('', 'BIG-5'),
-                ['csConv' => 'BIG-5']
-            ],
-            '"0" from ISO-8859-15' => [
-                '0',
-                iconv('UTF-8', 'ISO-8859-15', '0'),
-                ['csConv' => 'ISO-8859-15']
-            ],
-            '"0" from BIG-5' => [
-                '0',
-                mb_convert_encoding('0', 'BIG-5'),
-                ['csConv' => 'BIG-5']
-            ],
-            'euro symbol from ISO-88859-15' => [
-                '€',
-                iconv('UTF-8', 'ISO-8859-15', '€'),
-                ['csConv' => 'ISO-8859-15']
-            ],
-            'good morning from BIG-5' => [
-                '早安',
-                mb_convert_encoding('早安', 'BIG-5'),
-                ['csConv' => 'BIG-5']
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_csConv works properly.
-     *
-     * @test
-     * @dataProvider stdWrap_csConvDataProvider
-     * @param string $expected The expected value.
-     * @param string $value The input value.
-     * @param array $conf Property: csConv
-     * @return void
-     */
-    public function stdWrap_csConv($expected, $input, $conf)
-    {
-        $this->assertSame($expected,
-            $this->subject->stdWrap_csConv($input, $conf));
-    }
-
-    /**
-     * Check if stdWrap_split works properly.
-     *
-     * Show:
-     *
-     * - Delegates to method splitObj.
-     * - Parameter 1 is $content.
-     * - Prameter 2 is $conf['split.'].
-     * - Returns the return value.
-     *
-     * @test
-     * @return void
-     */
-     public function stdWrap_split()
-     {
-         $content = $this->getUniqueId('content');
-         $conf = [
-             'split' => $this->getUniqueId('not used'),
-             'split.' => [$this->getUniqueId('split.')],
-         ];
-         $return = $this->getUniqueId('return');
-         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-             ->setMethods(['splitObj'])->getMock();
-         $subject
-             ->expects($this->once())
-             ->method('splitObj')
-             ->with($content, $conf['split.'])
-             ->willReturn($return);
-         $this->assertSame($return,
-             $subject->stdWrap_split($content, $conf));
-     }
-
-    /**
-     * Data provider for stdWrap_prioriCalc
-     *
-     * @return array [$expect, $content, $conf]
-     */
-    public function stdWrap_prioriCalcDataProvider()
-    {
-        return [
-            'priority of *' => ['7', '1 + 2 * 3', []],
-            'priority of parentheses' => ['9', '(1 + 2) * 3', []],
-            'float' => ['1.5', '3/2', []],
-            'intval casts to int' => [1, '3/2', ['prioriCalc' => 'intval']],
-            'intval does not round' => [2, '2.7', ['prioriCalc' => 'intval']],
-        ];
-    }
-
-    /**
-     * Data provider for stdWrap_HTMLparser
-     *
-     * @return array [$expect, $content, $conf, $times, $will].
-     */
-    public function stdWrap_HTMLparserDataProvider()
-    {
-        $content = $this->getUniqueId('content');
-        $parsed = $this->getUniqueId('parsed');
-        return [
-            'no config' => [
-                $content, $content, [], 0, $parsed
-            ],
-            'no array' => [
-                $content, $content, ['HTMLparser.' => 1], 0, $parsed
-            ],
-            'empty array' => [
-                $parsed, $content, ['HTMLparser.' => []], 1, $parsed
-            ],
-            'non-empty array' => [
-                $parsed, $content, ['HTMLparser.' => [true]], 1, $parsed
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_HTMLparser works properly
-     *
-     * Show:
-     *
-     * - Checks if $conf['HTMLparser.'] is an array.
-     * - No:
-     *   - Returns $content as is.
-     * - Yes:
-     *   - Delegates to method HTMLparser_TSbridge.
-     *   - Parameter 1 is $content.
-     *   - Parameter 2 is $conf['HTMLparser'].
-     *   - Returns the return value.
-     *
-     * @test
-     * @dataProvider stdWrap_HTMLparserDataProvider
-     * @param string $expect The expected output.
-     * @param string $content The given content.
-     * @param array $conf The given configuration.
-     * @param int $times Times HTMLparser_TSbridge is called (0 or 1).
-     * @param string $will Return of HTMLparser_TSbridge.
-     * @return void.
-     */
-    public function stdWrap_HTMLparser(
-        $expect, $content, $conf, $times, $will)
-    {
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['HTMLparser_TSbridge'])->getMock();
-        $subject
-            ->expects($this->exactly($times))
-            ->method('HTMLparser_TSbridge')
-            ->with($content, $conf['HTMLparser.'])
-            ->willReturn($will);
-        $this->assertSame($expect,
-            $subject->stdWrap_HTMLparser($content, $conf));
-    }
-
-    /**
-     * Check if stdWrap_prioriCalc works properly.
-     *
-     * Show:
-     *
-     * - If $conf['prioriCalc'] is 'intval' the return is casted to int.
-     * - Delegates to MathUtility::calculateWithParentheses.
-     *
-     * Note: As PHPUnit can't mock static methods, the call to
-     *       MathUtility::calculateWithParentheses can't be easily intercepted.
-     *       The test is done by testing input/output pairs instead. To not
-     *       duplicate the testing of calculateWithParentheses just a few
-     *       smoke tests are done here.
-     *
-     * @test
-     * @dataProvider stdWrap_prioriCalcDataProvider
-     * @param mixed $expect The expected output.
-     * @param string $content The given content.
-     * @param array $conf The given configuration.
-     * @return void
-     */
-    public function stdWrap_prioriCalc($expect, $content, $conf)
-    {
-        $result = $this->subject->stdWrap_prioriCalc($content, $conf);
-        $this->assertSame($expect, $result);
-    }
-
-    /**
-     * Test for the stdWrap_stripHtml
-     *
-     * @test
-     */
-    public function stdWrap_stripHtml()
-    {
-        $content = '<html><p>Hello <span class="inline">inline tag<span>!</p><p>Hello!</p></html>';
-        $expected = 'Hello inline tag!Hello!';
-        $this->assertSame($expected, $this->subject->stdWrap_stripHtml($content));
-    }
-
-    /**
-     * Check if stdWrap_crop works properly.
-     *
-     * Show:
-     *
-     * - Delegates to method listNum.
-     * - Parameter 1 is $content.
-     * - Parameter 2 is $conf['crop'].
-     * - Returns the return value.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_crop()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'crop' => $this->getUniqueId('crop'),
-            'crop.' => $this->getUniqueId('not used'),
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['crop'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('crop')
-            ->with($content, $conf['crop'])
-            ->willReturn($return);
-        $this->assertSame($return,
-            $subject->stdWrap_crop($content, $conf));
-    }
-
-    /**
      * Data provider for round
      *
      * @return array [$expect, $contet, $conf]
@@ -1874,629 +842,6 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $this->assertSame($expect,
             $this->subject->_call('round', $content, $conf));
-    }
-
-    /**
-     * Check if stdWrap_round works properly
-     *
-     * Show:
-     *
-     * - Delegates to method round.
-     * - Parameter 1 is $content.
-     * - Parameter 2 is $conf['round.'].
-     * - Returns the return value.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_round()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'round' => $this->getUniqueId('not used'),
-            'round.' => [$this->getUniqueId('round.')],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['round'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('round')
-            ->with($content, $conf['round.'])
-            ->willReturn($return);
-        $this->assertSame($return, $subject->stdWrap_round($content, $conf));
-    }
-
-    /**
-     * Check if stdWrap_numberFormat works properly.
-     *
-     * Show:
-     *
-     * - Delegates to the method numberFormat.
-     * - Parameter 1 is $content.
-     * - Parameter 2 is $conf['numberFormat.'].
-     * - Returns the return value.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_numberFormat()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'numberFormat' => $this->getUniqueId('not used'),
-            'numberFormat.' => [$this->getUniqueId('numberFormat.')],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['numberFormat'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('numberFormat')
-            ->with($content, $conf['numberFormat.'])
-            ->willReturn($return);
-        $this->assertSame($return,
-            $subject->stdWrap_numberFormat($content, $conf));
-    }
-
-    /**
-     * Data provider for expandList
-     *
-     * @return array [$expect, $content]
-     */
-    public function stdWrap_expandListDataProvider()
-    {
-        return [
-            'numbers' => ['1,2,3', '1,2,3'],
-            'range' => ['3,4,5', '3-5'],
-            'numbers and range' => ['1,3,4,5,7', '1,3-5,7']
-        ];
-    }
-
-    /**
-     * Test for the stdWrap function "expandList"
-     *
-     * The method simply delegates to GeneralUtility::expandList. There is no
-     * need to repeat the full set of tests of this method here. As PHPUnit
-     * can't mock static methods, to prove they are called, all we do here
-     * is to provide a few smoke tests.
-     *
-     * @test
-     * @dataProvider stdWrap_expandListDataProvider
-     * @param string $expected The expeced output.
-     * @param string $content The given content.
-     * @return void
-     */
-    public function stdWrap_expandList($expected, $content)
-    {
-        $this->assertEquals($expected,
-            $this->subject->stdWrap_expandList($content));
-    }
-
-    /**
-     * Data provider for stdWrap_trim.
-     *
-     * @return array [$expect, $content]
-     */
-    public function stdWrap_trimDataProvider()
-    {
-        return [
-            // string not trimmed
-            'empty string' => ['', ''],
-            'string without whitespace' => ['xxx', 'xxx'],
-            'string with whitespace inside' => [
-                'xx ' . TAB . ' xx',
-                'xx ' . TAB . ' xx',
-            ],
-            'string with newlines inside' => [
-                'xx ' . PHP_EOL . ' xx',
-                'xx ' . PHP_EOL . ' xx',
-            ],
-            // string trimmed
-            'blanks around' => ['xxx', '  xxx  '],
-            'tabs around' => ['xxx', TAB . 'xxx' . TAB],
-            'newlines around' => ['xxx', PHP_EOL . 'xxx' . PHP_EOL],
-            'mixed case' => ['xxx', TAB . ' xxx ' . PHP_EOL],
-            // non strings
-            'null' => ['', null],
-            'false' => ['', false],
-            'true' => ['1', true],
-            'zero' => ['0', 0],
-            'one' => ['1', 1],
-            '-1' => ['-1', -1],
-            '0.0' => ['0', 0.0],
-            '1.0' => ['1', 1.0],
-            '-1.0' => ['-1', -1.0],
-            '1.1' => ['1.1', 1.1],
-        ];
-    }
-
-    /**
-     * Check that stdWrap_trim works properly.
-     *
-     * Show:
-     *
-     *  - the given string is trimmed like PHP trim
-     *  - non-strings are casted to strings:
-     *    - null => 'null'
-     *    - false => ''
-     *    - true => '1'
-     *    - 0 => '0'
-     *    - -1 => '-1'
-     *    - 1.0 => '1'
-     *    - 1.1 => '1.1'
-     *
-     * @test
-     * @dataProvider stdWrap_trimDataProvider
-     * @param string $expected The expected output.
-     * @param mixed $content The given content.
-     * @return void
-     */
-    public function stdWrap_trim($expect, $content)
-    {
-        $result = $this->subject->stdWrap_trim($content);
-        $this->assertSame($expect, $result);
-    }
-
-    /**
-     * Data provider for stdWrap_if.
-     *
-     * @return array [$expect, $stop, $content, $conf, $times, $will]
-     */
-    public function stdWrap_ifDataProvider()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = ['if.' => [$this->getUniqueId('if.')]];
-        return [
-            // evals to true
-            'empty config' => [
-                $content, false, $content, [], 0, null
-            ],
-            'if. is empty array' => [
-                $content, false, $content, ['if.' => []], 0, null
-            ],
-            'if. is null' => [
-                $content, false, $content, ['if.' => null], 0, null
-            ],
-            'if. is false' => [
-                $content, false, $content, ['if.' => false], 0, null
-            ],
-            'if. is 0' => [
-                $content, false, $content, ['if.' => false], 0, null
-            ],
-            'if. is "0"' => [
-                $content, false, $content, ['if.' => '0'], 0, null
-            ],
-            'checkIf returning true' => [
-                $content, false, $content, $conf, 1, true
-            ],
-            // evals to false
-            'checkIf returning false' => [
-                '', true, $content, $conf, 1, false
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_if works properly.
-     *
-     * Show:
-     *
-     *  - Delegates to the method checkIf to check for 'true'.
-     *  - The parameter to checkIf is $conf['if.'].
-     *  - Is also 'true' if $conf['if.'] is empty (PHP method empty).
-     *  - 'False' triggers a stop of further rendering.
-     *  - Returns the content as is or '' if false.
-     *
-     * @test
-     * @dataProvider stdWrap_ifDataProvider
-     * @param mixed $expect The expected output.
-     * @param bool $stop Expect stop further rendering.
-     * @param mixed $content The given content.
-     * @param mixed $config The given configuration.
-     * @param int $times Times checkIf is called (0 or 1).
-     * @param bool|null $will Return of checkIf (null if not called).
-     * @return void
-     */
-    public function stdWrap_if($expect, $stop, $content, $conf, $times, $will)
-    {
-        $subject = $this->getAccessibleMock(
-            ContentObjectRenderer::class, ['checkIf']);
-        $subject->_set('stdWrapRecursionLevel', 1);
-        $subject->_set('stopRendering', [1 => false]);
-        $subject
-            ->expects($this->exactly($times))
-            ->method('checkIf')
-            ->with($conf['if.'])
-            ->willReturn($will);
-        $this->assertSame($expect, $subject->stdWrap_if($content, $conf));
-        $this->assertSame($stop, $subject->_get('stopRendering')[1]);
-    }
-
-    /**
-     * Data provider for stdWrap_required.
-     *
-     * @return array [$expect, $stop, $content]
-     */
-    public function stdWrap_requiredDataProvider()
-    {
-        return [
-            // empty content
-            'empty string is empty' => ['', true, ''],
-            'null is empty' => ['', true, null],
-            'false is empty' => ['', true, false],
-
-            // non-empty content
-            'blank is not empty' => [' ', false, ' '],
-            'tab is not empty' => [TAB, false, TAB],
-            'linebreak is not empty' => [PHP_EOL, false, PHP_EOL],
-            '"0" is not empty' => ['0', false, '0'],
-            '0 is not empty' => [0, false, 0],
-            '1 is not empty' => [1, false, 1],
-            'true is not empty' => [true, false, true],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_required works properly.
-     *
-     * Show:
-     *
-     *  - Content is empty if it equals '' after cast to string.
-     *  - Empty content triggers a stop of further rendering.
-     *  - Returns the content as is or '' for empty content.
-     *
-     * @test
-     * @dataProvider stdWrap_requiredDataProvider
-     * @param mixed $expect The expected output.
-     * @param bool $stop Expect stop further rendering.
-     * @param mixed $content The given input.
-     * @return void
-     */
-    public function stdWrap_required($expect, $stop, $content)
-    {
-        $subject = $this->subject;
-        $subject->_set('stdWrapRecursionLevel', 1);
-        $subject->_set('stopRendering', [1 => false]);
-        $this->assertSame($expect, $subject->stdWrap_required($content));
-        $this->assertSame($stop, $subject->_get('stopRendering')[1]);
-    }
-
-    /**
-     * Data provider for stdWrap_intval
-     *
-     * @return array [$expect, $content]
-     */
-    public function stdWrap_intvalDataProvider()
-    {
-        return [
-            // numbers
-            'int' => [123, 123],
-            'float' => [123, 123.45],
-            'float does not round up' => [123, 123.55],
-            // negative numbers
-            'negative int' => [-123, -123],
-            'negative float' => [-123, -123.45],
-            'negative float does not round down' => [-123, -123.55],
-            // strings
-            'word string' => [0, 'string'],
-            'empty string' => [0, ''],
-            'zero string' => [0, '0'],
-            'int string' => [123, '123'],
-            'float string' => [123, '123.55'],
-            'negative float string' => [-123, '-123.55'],
-            // other types
-            'null' => [0, null],
-            'true' => [1, true],
-            'false' => [0, false]
-        ];
-    }
-
-    /**
-     * Check that stdWrap_intval works properly.
-     *
-     * Show:
-     *
-     * - It does not round up.
-     * - All types of input is casted to int:
-     *   - null: 0
-     *   - false: 0
-     *   - true: 1
-     *   -
-     *
-     *
-     *
-     * @test
-     * @dataProvider stdWrap_intvalDataProvider
-     * @param int $expect The expected output.
-     * @param string $content The given input.
-     * @return void
-     */
-    public function stdWrap_intval($expect, $content)
-    {
-        $this->assertSame($expect, $this->subject->stdWrap_intval($content));
-    }
-
-    /**
-     * Data provider for stdWrap_strPad.
-     *
-     * @return array [$expect, $content, $conf]
-     */
-    public function stdWrap_strPadDataProvider()
-    {
-        return [
-            'pad string with default settings and length 10' => [
-                'Alien     ',
-                'Alien',
-                [
-                    'length' => '10',
-                ],
-            ],
-            'pad string with padWith -= and type left and length 10' => [
-                '-=-=-Alien',
-                'Alien',
-                [
-                    'length' => '10',
-                    'padWith' => '-=',
-                    'type' => 'left',
-                ],
-            ],
-            'pad string with padWith _ and type both and length 10' => [
-                '__Alien___',
-                'Alien',
-                [
-                    'length' => '10',
-                    'padWith' => '_',
-                    'type' => 'both',
-                ],
-            ],
-            'pad string with padWith 0 and type both and length 10' => [
-                '00Alien000',
-                'Alien',
-                [
-                    'length' => '10',
-                    'padWith' => '0',
-                    'type' => 'both',
-                ],
-            ],
-            'pad string with padWith ___ and type both and length 6' => [
-                'Alien_',
-                'Alien',
-                [
-                    'length' => '6',
-                    'padWith' => '___',
-                    'type' => 'both',
-                ],
-            ],
-            'pad string with padWith _ and type both and length 12, using stdWrap for length' => [
-                '___Alien____',
-                'Alien',
-                [
-                    'length' => '1',
-                    'length.' => [
-                        'wrap' => '|2',
-                    ],
-                    'padWith' => '_',
-                    'type' => 'both',
-                ],
-            ],
-            'pad string with padWith _ and type both and length 12, using stdWrap for padWidth' => [
-                '-_=Alien-_=-',
-                'Alien',
-                [
-                    'length' => '12',
-                    'padWith' => '_',
-                    'padWith.' => [
-                        'wrap' => '-|=',
-                    ],
-                    'type' => 'both',
-                ],
-            ],
-            'pad string with padWith _ and type both and length 12, using stdWrap for type' => [
-                '_______Alien',
-                'Alien',
-                [
-                    'length' => '12',
-                    'padWith' => '_',
-                    'type' => 'both',
-                    // make type become "left"
-                    'type.' => [
-                        'substring' => '2,1',
-                        'wrap' => 'lef|',
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_strPad works properly.
-     *
-     * @test
-     * @dataProvider stdWrap_strPadDataProvider
-     * @param string $expect The expected output.
-     * @param string $content The given input.
-     * @param array $conf The configuration of 'strPad.'.
-     * @return void
-     */
-    public function stdWrap_strPad($expect, $content, $conf)
-    {
-        $conf = ['strPad.' => $conf];
-        $result = $this->subject->stdWrap_strPad($content, $conf);
-        $this->assertSame($expect, $result);
-    }
-
-    /**
-     * Check that stdWrap_stdWrap works properly.
-     *
-     * Show:
-     *  - Delegates to method stdWrap.
-     *  - Parameter 1 is $content.
-     *  - Parameter 2 is $conf['stdWrap.'].
-     *  - Returns the return value.
-     *
-     *  @test
-     *  @return void.
-     */
-    public function stdWrap_stdWrap()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'stdWrap' => $this->getUniqueId('not used'),
-            'stdWrap.' => [$this->getUniqueId('stdWrap.')],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['stdWrap'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('stdWrap')
-            ->with($content, $conf['stdWrap.'])
-            ->willReturn($return);
-        $this->assertSame($return, $subject->stdWrap_stdWrap($content, $conf));
-    }
-
-    /**
-     * Check that stdWrap_dataWrap works properly.
-     *
-     * Show:
-     *
-     *  - Delegates to method dataWrap.
-     *  - Parameter 1 is $content.
-     *  - Parameter 2 is $conf['dataWrap'].
-     *  - Returns the return value.
-     *
-     *  @test
-     *  @return void.
-     */
-    public function stdWrap_dataWrap()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'dataWrap' => $this->getUniqueId('dataWrap'),
-            'dataWrap.' => [$this->getUniqueId('not used')],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['dataWrap'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('dataWrap')
-            ->with($content, $conf['dataWrap'])
-            ->willReturn($return);
-        $this->assertSame($return,
-            $subject->stdWrap_dataWrap($content, $conf));
-    }
-
-    /**
-     * Data provider for stdWrap_prefixComment.
-     *
-     * @retunr array [$expect, $content, $conf, $disable, $times, $will]
-     */
-    public function stdWrap_prefixCommentDataProvider()
-    {
-        $content = $this->getUniqueId('content');
-        $will = $this->getUniqueId('will');
-        $conf['prefixComment'] = $this->getUniqueId('prefixComment');
-        $emptyConf1 = [];
-        $emptyConf2['prefixComment'] = '';
-        return [
-            'standard case' => [$will, $content, $conf, false, 1, $will],
-            'emptyConf1' => [$content, $content, $emptyConf1, false, 0, $will],
-            'emptyConf2' => [$content, $content, $emptyConf2, false, 0, $will],
-            'disabled by bool' => [$content, $content, $conf, true, 0, $will],
-            'disabled by int' => [$content, $content, $conf, 1, 0, $will],
-        ];
-    }
-
-    /**
-     * Check that stdWrap_prefixComment works properly.
-     *
-     * Show:
-     *
-     *  - Delegates to method prefixComment.
-     *  - Parameter 1 is $conf['prefixComment'].
-     *  - Parameter 2 is [].
-     *  - Parameter 3 is $content.
-     *  - Returns the return value.
-     *  - Returns $content as is,
-     *    - if $conf['prefixComment'] is empty.
-     *    - if 'config.disablePrefixComment' is configured by the frontend.
-     *
-     *  @test
-     *  @dataProvider stdWrap_prefixCommentDataProvider
-     *  @return void
-     */
-    public function stdWrap_prefixComment(
-        $expect, $content, $conf, $disable, $times, $will)
-    {
-        $this->frontendControllerMock
-            ->config['config']['disablePrefixComment'] = $disable;
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['prefixComment'])->getMock();
-        $subject
-            ->expects($this->exactly($times))
-            ->method('prefixComment')
-            ->with($conf['prefixComment'], [], $content)
-            ->willReturn($will);
-        $this->assertSame($expect,
-            $subject->stdWrap_prefixComment($content, $conf));
-    }
-
-    /**
-     * Data provider for the hash test
-     *
-     * @return array [$expect, $content, $conf]
-     */
-    public function hashDataProvider()
-    {
-        return [
-            'md5' => [
-                'bacb98acf97e0b6112b1d1b650b84971',
-                'joh316',
-                ['hash' => 'md5']
-            ],
-            'sha1' => [
-                '063b3d108bed9f88fa618c6046de0dccadcf3158',
-                'joh316',
-                ['hash' => 'sha1']
-            ],
-            'stdWrap capability' => [
-                'bacb98acf97e0b6112b1d1b650b84971',
-                'joh316',
-                [
-                    'hash' => '5',
-                    'hash.' => ['wrap' => 'md|']
-                ]
-            ],
-            'non-existing hashing algorithm' => [
-                '',
-                'joh316',
-                ['hash' => 'non-existing']
-            ]
-        ];
-    }
-
-    /**
-     * Check if stdWrap_hash works properly.
-     *
-     * Show:
-     *
-     *  - Algorithms: sha1, md5
-     *  - Returns '' for invalid algorithm.
-     *  - Value can be processed by stdWrap.
-     *
-     * @test
-     * @dataProvider hashDataProvider
-     * @param string $expect The expected output.
-     * @param string $content The given content.
-     * @param array $conf The given configuration.
-     * @return void
-     */
-    public function stdWrap_hash($expect, $content, $conf)
-    {
-        $this->assertSame($expect,
-            $this->subject->stdWrap_hash($content, $conf));
     }
 
     /**
@@ -2597,38 +942,6 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * Check if stdWrap_replacement works properly.
-     *
-     * Show:
-     *
-     * - Delegates to method replacement.
-     * - Parameter 1 is $content.
-     * - Parameter 2 is $conf['replacement.'].
-     * - Returns the return value.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_replacement()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'replacement' => $this->getUniqueId('not used'),
-            'replacement.' => [$this->getUniqueId('replacement.')],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['replacement'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('replacement')
-            ->with($content, $conf['replacement.'])
-            ->willReturn($return);
-        $this->assertSame($return,
-            $subject->stdWrap_replacement($content, $conf));
-    }
-
-    /**
      * Data provider replacement
      *
      * @return array [$expect, $content, $conf]
@@ -2695,40 +1008,6 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $this->assertSame($expects,
             $this->subject->_call('replacement', $content, $conf));
-    }
-
-    /**
-     * Data provider for stdWrap_rawUrlEncode
-     *
-     * @return array [$expect, $content].
-     */
-    public function stdWrap_rawUrlEncodeDataProvider()
-    {
-        return [
-            'https://typo3.org?id=10' => [
-                'https%3A%2F%2Ftypo3.org%3Fid%3D10',
-                'https://typo3.org?id=10',
-            ],
-            'https://typo3.org?id=10&foo=bar' => [
-                'https%3A%2F%2Ftypo3.org%3Fid%3D10%26foo%3Dbar',
-                'https://typo3.org?id=10&foo=bar',
-            ],
-        ];
-    }
-
-    /**
-     * Check if rawUrlEncode works properly.
-     *
-     * @test
-     * @dataProvider stdWrap_rawUrlEncodeDataProvider
-     * @param string $expect The expected output.
-     * @param string $content The given input.
-     * @return void
-     */
-    public function stdWrap_rawUrlEncode($expect, $content)
-    {
-        $this->assertSame($expect,
-            $this->subject->stdWrap_rawUrlEncode($content));
     }
 
     /**
@@ -2938,215 +1217,6 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * Data provider for the stdWrap_date test
-     *
-     * @return array [$expect, $content, $conf, $now]
-     */
-    public function stdWrap_dateDataProvider()
-    {
-        // Fictive execution time: 2015-10-02 12:00
-        $now =  1443780000;
-        return [
-            'given timestamp' => [
-                '02.10.2015',
-                $now,
-                ['date' => 'd.m.Y'],
-                $now
-            ],
-            'empty string' => [
-                '02.10.2015',
-                '',
-                ['date' => 'd.m.Y'],
-                $now
-            ],
-            'testing null' => [
-                '02.10.2015',
-                null,
-                ['date' => 'd.m.Y'],
-                $now
-            ],
-            'given timestamp return GMT' => [
-                '02.10.2015 10:00:00',
-                $now,
-                [
-                    'date' => 'd.m.Y H:i:s',
-                    'date.' => ['GMT' => true],
-                ],
-                $now
-            ]
-        ];
-    }
-
-    /**
-     * Check if stdWrap_date works properly.
-     *
-     * @test
-     * @dataProvider stdWrap_dateDataProvider
-     * @param string $expected The expected output.
-     * @param mixed $content The given input.
-     * @param array $conf The given configuration.
-     * @param int $now Fictive execution time.
-     * @return void
-     */
-    public function stdWrap_date($expected, $content, $conf, $now)
-    {
-        $GLOBALS['EXEC_TIME'] = $now;
-        $this->assertEquals($expected,
-            $this->subject->stdWrap_date($content, $conf));
-    }
-
-    /**
-     * Data provider for stdWrap_strftime
-     *
-     * @return array [$expect, $content, $conf, $now]
-     */
-    public function stdWrap_strftimeDataProvider()
-    {
-        // Fictive execution time is 2012-09-01 12:00 in UTC/GMT.
-        $now = 1346500800;
-        return [
-            'given timestamp' => [
-                '01-09-2012',
-                $now,
-                ['strftime' => '%d-%m-%Y'],
-                $now
-            ],
-            'empty string' => [
-                '01-09-2012',
-                '',
-                ['strftime' => '%d-%m-%Y'],
-                $now
-            ],
-            'testing null' => [
-                '01-09-2012',
-                null,
-                ['strftime' => '%d-%m-%Y'],
-                $now
-            ]
-        ];
-    }
-
-    /**
-     * Check if stdWrap_strftime works properly.
-     *
-     * @test
-     * @dataProvider stdWrap_strftimeDataProvider
-     * @param string $expect The expected output.
-     * @param mixed $content The given input.
-     * @param array $conf The given configuration.
-     * @param int $now Fictive execution time.
-     * @return void
-     */
-    public function stdWrap_strftime($expect, $content, $conf, $now)
-    {
-        // Save current timezone and set to UTC to make the system under test
-        // behave the same in all server timezone settings
-        $timezoneBackup = date_default_timezone_get();
-        date_default_timezone_set('UTC');
-
-        $GLOBALS['EXEC_TIME'] = $now;
-        $result = $this->subject->stdWrap_strftime($content, $conf);
-
-        // Reset timezone
-        date_default_timezone_set($timezoneBackup);
-
-        $this->assertSame($expect, $result);
-    }
-
-    /**
-     * Data provider for the stdWrap_strtotime test
-     *
-     * @return array [$expect, $content, $conf]
-     */
-    public function stdWrap_strtotimeDataProvider()
-    {
-        return [
-            'date from content' => [
-                1417651200, '2014-12-04',
-                ['strtotime' => '1']
-            ],
-            'manipulation of date from content' => [
-                1417996800, '2014-12-04',
-                ['strtotime' => '+ 2 weekdays']
-            ],
-            'date from configuration' => [
-                1417651200, '',
-                ['strtotime' => '2014-12-04']
-            ],
-            'manipulation of date from configuration' => [
-                1417996800, '',
-                ['strtotime' => '2014-12-04 + 2 weekdays']
-            ],
-            'empty input' => [
-                false, '',
-                ['strtotime' => '1']
-            ],
-            'date from content and configuration' => [
-                false, '2014-12-04',
-                ['strtotime' => '2014-12-05']
-            ]
-        ];
-    }
-
-    /**
-     * Check if stdWrap_strtotime works properly.
-     *
-     * @test
-     * @dataProvider stdWrap_strtotimeDataProvider
-     * @param int $expect The expected output.
-     * @param mixed $content The given input.
-     * @param array $conf The given configuration.
-     * @return void
-     */
-    public function stdWrap_strtotime($expect, $content, $conf)
-    {
-        // Set exec_time to a hard timestamp
-        $GLOBALS['EXEC_TIME'] = 1417392000;
-        // Save current timezone and set to UTC to make the system under test
-        // behave the same in all server timezone settings
-        $timezoneBackup = date_default_timezone_get();
-        date_default_timezone_set('UTC');
-
-        $result = $this->subject->stdWrap_strtotime($content, $conf);
-
-        // Reset timezone
-        date_default_timezone_set($timezoneBackup);
-
-        $this->assertEquals($expect, $result);
-    }
-
-    /**
-     * Check if stdWrap_age works properly.
-     *
-     * Show:
-     *
-     * - Delegates to calcAge.
-     * - Parameter 1 is the difference between $content and EXEC_TIME.
-     * - Parameter 2 is $conf['age'].
-     * - Returns the return value.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_age()
-    {
-        $now = 10;
-        $content = '9';
-        $conf = ['age' => $this->getUniqueId('age')];
-        $return = $this->getUniqueId('return');
-        $difference = $now - (int)$content;
-        $GLOBALS['EXEC_TIME'] = $now;
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['calcAge'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('calcAge')
-            ->with($difference, $conf['age'])
-            ->willReturn($return);
-        $this->assertSame($return, $subject->stdWrap_age($content, $conf));
-    }
-
-    /**
      * Data provider for calcAge.
      *
      * @return array [$expect, $timestamp, $labels]
@@ -3231,147 +1301,6 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * Data provider for stdWrap_case test
-     *
-     * @return array
-     */
-    public function stdWrap_caseDataProvider()
-    {
-        return array(
-            'lower case text to upper' => array(
-                '<span>text</span>',
-                array(
-                    'case' => 'upper',
-                ),
-                '<span>TEXT</span>',
-            ),
-            'upper case text to lower' => array(
-                '<span>TEXT</span>',
-                array(
-                    'case' => 'lower',
-                ),
-                '<span>text</span>',
-            ),
-            'capitalize text' => array(
-                '<span>this is a text</span>',
-                array(
-                    'case' => 'capitalize',
-                ),
-                '<span>This Is A Text</span>',
-            ),
-            'ucfirst text' => array(
-                '<span>this is a text</span>',
-                array(
-                    'case' => 'ucfirst',
-                ),
-                '<span>This is a text</span>',
-            ),
-            'lcfirst text' => array(
-                '<span>This is a Text</span>',
-                array(
-                    'case' => 'lcfirst',
-                ),
-                '<span>this is a Text</span>',
-            ),
-            'uppercamelcase text' => array(
-                '<span>this_is_a_text</span>',
-                array(
-                    'case' => 'uppercamelcase',
-                ),
-                '<span>ThisIsAText</span>',
-            ),
-            'lowercamelcase text' => array(
-                '<span>this_is_a_text</span>',
-                array(
-                    'case' => 'lowercamelcase',
-                ),
-                '<span>thisIsAText</span>',
-            ),
-        );
-    }
-
-    /**
-     * @param string|NULL $content
-     * @param array $configuration
-     * @param string $expected
-     * @dataProvider stdWrap_caseDataProvider
-     * @test
-     */
-    public function stdWrap_case($content, array $configuration, $expected)
-    {
-        $result = $this->subject->stdWrap_case($content, $configuration);
-        $this->assertEquals($expected, $result);
-    }
-
-    /**
-     * Data provider for stdWrap_bytes.
-     *
-     * @return array [$expect, $content, $conf]
-     */
-    public function stdWrap_bytesDataProvider()
-    {
-        return [
-            'value 1234 default' => [
-                '1.21 Ki', '1234',
-                ['labels' => '', 'base' => 0],
-            ],
-            'value 1234 si' => [
-                '1.23 k', '1234',
-                ['labels' => 'si', 'base' => 0],
-            ],
-            'value 1234 iec' => [
-                '1.21 Ki', '1234',
-                ['labels' => 'iec', 'base' => 0],
-            ],
-            'value 1234 a-i' => [
-                '1.23b', '1234',
-                ['labels' => 'a|b|c|d|e|f|g|h|i', 'base' => 1000],
-            ],
-            'value 1234 a-i invalid base' => [
-                '1.21b', '1234',
-                ['labels' => 'a|b|c|d|e|f|g|h|i', 'base' => 54],
-            ],
-            'value 1234567890 default' => [
-                '1.15 Gi', '1234567890',
-                ['labels' => '', 'base' => 0],
-            ]
-        ];
-    }
-
-    /**
-     * Check if stdWrap_bytes works properly.
-     *
-     * Show:
-     *
-     * - Delegates to GeneralUtility::formatSize
-     * - Parameter 1 is $conf['bytes.'][labels'].
-     * - Parameter 2 is $conf['bytes.'][base'].
-     * - Returns the return value.
-     *
-     * Note: As PHPUnit can't mock static methods, the call to
-     *       GeneralUtility::formatSize can't be easily intercepted. The test
-     *       is done by testing input/output pairs instead. To not duplicate
-     *       the testing of formatSize just a few smoke tests are done here.
-     *
-     * @test
-     * @dataProvider stdWrap_bytesDataProvider
-     * @param string $expect The expected output.
-     * @param string $content The given input.
-     * @param array $conf The given configuration for 'bytes.'.
-     * @return void
-     */
-    public function stdWrap_bytes($expect, $content, $conf)
-    {
-        $locale = 'en_US.UTF-8';
-        if (!setlocale(LC_NUMERIC, $locale)) {
-            $this->markTestSkipped('Locale ' . $locale . ' is not available.');
-        }
-        $conf = ['bytes.' => $conf];
-        $this->assertSame($expect,
-            $this->subject->stdWrap_bytes($content, $conf));
-    }
-
-    /**
      * Data provider for substring
      *
      * @return array [$expect, $content, $conf]
@@ -3408,1350 +1337,6 @@ class ContentObjectRendererTest extends UnitTestCase
     public function substring($expect, $content, $conf)
     {
         $this->assertSame($expect, $this->subject->substring($content, $conf));
-    }
-
-    /**
-     * Check if stdWrap_substring works properly.
-     *
-     * Show:
-     *
-     * - Delegates to method substring.
-     * - Parameter 1 is $content.
-     * - Parameter 2 is $conf['substring'].
-     * - Returns the return value.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_substring()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'substring' => $this->getUniqueId('substring'),
-            'substring.' => $this->getUniqueId('not used'),
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['substring'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('substring')
-            ->with($content, $conf['substring'])
-            ->willReturn($return);
-        $this->assertSame($return,
-            $subject->stdWrap_substring($content, $conf));
-    }
-
-    /**
-     * Data provider for stdWrap_stdWrapValue test
-     *
-     * @return array
-     */
-    public function stdWrap_stdWrapValueDataProvider()
-    {
-        return array(
-            'only key returns value' => array(
-                'ifNull',
-                array(
-                    'ifNull' => '1',
-                ),
-                '',
-                '1',
-            ),
-            'array without key returns empty string' => array(
-                'ifNull',
-                array(
-                    'ifNull.' => '1',
-                ),
-                '',
-                '',
-            ),
-            'array without key returns default' => array(
-                'ifNull',
-                array(
-                    'ifNull.' => '1',
-                ),
-                'default',
-                'default',
-            ),
-            'non existing key returns default' => array(
-                'ifNull',
-                array(
-                    'noTrimWrap' => 'test',
-                    'noTrimWrap.' => '1',
-                ),
-                'default',
-                'default',
-            ),
-            'existing key and array returns stdWrap' => array(
-                'test',
-                array(
-                    'test' => 'value',
-                    'test.' => array('case' => 'upper'),
-                ),
-                'default',
-                'VALUE'
-            ),
-        );
-    }
-
-    /**
-     * @param string $key
-     * @param array $configuration
-     * @param string $defaultValue
-     * @param string $expected
-     * @dataProvider stdWrap_stdWrapValueDataProvider
-     * @test
-     */
-    public function stdWrap_stdWrapValue($key, array $configuration, $defaultValue, $expected)
-    {
-        $result = $this->subject->stdWrapValue($key, $configuration, $defaultValue);
-        $this->assertEquals($expected, $result);
-    }
-
-    /**
-     * Data provider for stdWrap_ifNull.
-     *
-     * @return array [$expect, $content, $conf]
-     */
-    public function stdWrap_ifNullDataProvider()
-    {
-        $alt = $this->getUniqueId('alternative content');
-        $conf = ['ifNull' => $alt];
-        return [
-            'only null is null' => [$alt, null, $conf],
-            'zero is not null' => [0, 0, $conf],
-            'float zero is not null' => [0.0, 0.0, $conf],
-            'false is not null' => [false, false, $conf],
-            'zero is not null' => [0, 0, $conf],
-            'zero string is not null' => ['0', '0', $conf],
-            'empty string is not null' => ['', '', $conf],
-            'whitespace is not null' => [TAB . '', TAB . '', $conf],
-        ];
-    }
-
-    /**
-     * Check that stdWrap_ifNull works properly.
-     *
-     * Show:
-     *
-     * - Returns the content, if not null.
-     * - Otherwise returns $conf['ifNull'].
-     * - Null is strictly checked by identiy with null.
-     *
-     * @test
-     * @dataProvider stdWrap_ifNullDataProvider
-     * @param mixed $expected The expected output.
-     * @param mixed $content The given input.
-     * @param array $conf The given configuration.
-     * @return void
-     */
-    public function stdWrap_ifNull($expect, $content, $conf)
-    {
-        $result = $this->subject->stdWrap_ifNull($content, $conf);
-        $this->assertSame($expect, $result);
-    }
-
-    /**
-     * Data provider for stdWrap_ifEmpty.
-     *
-     * @return array [$expect, $content, $conf]
-     */
-    public function stdWrap_ifEmptyDataProvider()
-    {
-        $alt = $this->getUniqueId('alternative content');
-        $conf = ['ifEmpty' => $alt];
-        return [
-            // empty cases
-            'null is empty' => [$alt, null, $conf ],
-            'false is empty' => [$alt, false, $conf ],
-            'zero is empty' => [$alt, 0, $conf ],
-            'float zero is empty' => [$alt, 0.0, $conf ],
-            'whitespace is empty' => [$alt, TAB . ' ', $conf ],
-            'empty string is empty' => [$alt, '', $conf ],
-            'zero string is empty' => [$alt, '0', $conf ],
-            'zero string is empty with whitespace' => [
-                $alt, TAB . ' 0 ' . TAB, $conf
-            ],
-            // non-empty cases
-            'string is not empty' => ['string', 'string', $conf ],
-            '1 is not empty' => [1, 1, $conf ],
-            '-1 is not empty' => [-1, -1, $conf ],
-            '0.1 is not empty' => [0.1, 0.1, $conf ],
-            '-0.1 is not empty' => [-0.1, -0.1, $conf ],
-            'true is not empty' => [true, true, $conf ],
-        ];
-    }
-
-    /**
-     * Check that stdWrap_ifEmpty works properly.
-     *
-     * Show:
-     *
-     * - Returns the content, if not empty.
-     * - Otherwise returns $conf['ifEmpty'].
-     * - Empty is checked by cast to boolean after trimming.
-     *
-     * @test
-     * @dataProvider stdWrap_ifEmptyDataProvider
-     * @param mixed $expect The expected output.
-     * @param mixed $content The given content.
-     * @param array $conf The given configuration.
-     * @return void
-     */
-    public function stdWrap_ifEmpty($expect, $content, $conf)
-    {
-        $result = $this->subject->stdWrap_ifEmpty($content, $conf);
-        $this->assertSame($expect, $result);
-    }
-
-    /**
-     * Data provider for stdWrap_ifBlank.
-     *
-     * @return array [$expect, $content, $conf]
-     */
-    public function stdWrap_ifBlankDataProvider()
-    {
-        $alt = $this->getUniqueId('alternative content');
-        $conf = ['ifBlank' => $alt];
-        return [
-            // blank cases
-            'null is blank' => [$alt, null, $conf],
-            'false is blank' => [$alt, false, $conf],
-            'empty string is blank' => [$alt, '', $conf],
-            'whitespace is blank' => [$alt, TAB . '', $conf],
-            // non-blank cases
-            'string is not blank' => ['string', 'string', $conf],
-            'zero is not blank' => [0, 0, $conf],
-            'zero string is not blank' => ['0', '0', $conf],
-            'zero float is not blank' => [0.0, 0.0, $conf],
-            'true is not blank' => [true, true, $conf],
-        ];
-    }
-
-    /**
-     * Check that stdWrap_ifBlank works properly.
-     *
-     * Show:
-     *
-     * - The content is returned if not blank.
-     * - Otherwise $conf['ifBlank'] is returned.
-     * - The check for blank is done by comparing the trimmed content
-     *   with the empty string for equality.
-     *
-     * @test
-     * @dataProvider stdWrap_ifBlankDataProvider
-     * @param mixed $expected The expected output.
-     * @param mixed $content The given input.
-     * @param array $conf The given configuration.
-     * @return void
-     */
-    public function stdWrap_ifBlank($expect, $content, $conf)
-    {
-        $result = $this->subject->stdWrap_ifBlank($content, $conf);
-        $this->assertSame($expect, $result);
-    }
-
-    /**
-     * Data provider for stdWrap_noTrimWrap.
-     *
-     * @return array [$expect, $content, $conf]
-     */
-    public function stdWrap_noTrimWrapDataProvider()
-    {
-        return [
-            'Standard case' => [
-                ' left middle right ',
-                'middle',
-                [
-                    'noTrimWrap' => '| left | right |',
-                ],
-            ],
-            'Tabs as whitespace' => [
-                TAB . 'left' . TAB . 'middle' . TAB . 'right' . TAB,
-                'middle',
-                [
-                    'noTrimWrap' =>
-                    '|' . TAB . 'left' . TAB . '|' . TAB . 'right' . TAB . '|',
-                ],
-            ],
-            'Split char is 0' => [
-                ' left middle right ',
-                'middle',
-                [
-                    'noTrimWrap' => '0 left 0 right 0',
-                    'noTrimWrap.' => ['splitChar' => '0'],
-                ],
-            ],
-            'Split char is pipe (default)' => [
-                ' left middle right ',
-                'middle',
-                [
-                    'noTrimWrap' => '| left | right |',
-                    'noTrimWrap.' => ['splitChar' => '|'],
-                ],
-            ],
-            'Split char is a' => [
-                ' left middle right ',
-                'middle',
-                [
-                    'noTrimWrap' => 'a left a right a',
-                    'noTrimWrap.' => ['splitChar' => 'a'],
-                ],
-            ],
-            'Split char is a word (ab)' => [
-                ' left middle right ',
-                'middle',
-                [
-                    'noTrimWrap' => 'ab left ab right ab',
-                    'noTrimWrap.' => ['splitChar' => 'ab'],
-                ],
-            ],
-            'Split char accepts stdWrap' => [
-                ' left middle right ',
-                'middle',
-                [
-                    'noTrimWrap' => 'abc left abc right abc',
-                    'noTrimWrap.' => [
-                        'splitChar' => 'b',
-                        'splitChar.' => ['wrap' => 'a|c'],
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_noTrimWrap works properly.
-     *
-     * @test
-     * @dataProvider stdWrap_noTrimWrapDataProvider
-     * @param string $expect The expected output.
-     * @param string $content The given input.
-     * @param array $conf The given configuration.
-     * @return void
-     */
-    public function stdWrap_noTrimWrap($expect, $content, $conf)
-    {
-        $this->assertSame($expect,
-            $this->subject->stdWrap_noTrimWrap($content, $conf));
-    }
-
-    /**
-     * @param array $expectedTags
-     * @param array $configuration
-     * @test
-     * @dataProvider stdWrap_addPageCacheTagsAddsPageTagsDataProvider
-     */
-    public function stdWrap_addPageCacheTagsAddsPageTags(array $expectedTags, array $configuration)
-    {
-        $this->subject->stdWrap_addPageCacheTags('', $configuration);
-        $this->assertEquals($expectedTags, $this->frontendControllerMock->_get('pageCacheTags'));
-    }
-
-    /**
-     * @return array
-     */
-    public function stdWrap_addPageCacheTagsAddsPageTagsDataProvider()
-    {
-        return array(
-            'No Tag' => array(
-                array(),
-                array('addPageCacheTags' => ''),
-            ),
-            'Two expectedTags' => array(
-                array('tag1', 'tag2'),
-                array('addPageCacheTags' => 'tag1,tag2'),
-            ),
-            'Two expectedTags plus one with stdWrap' => array(
-                array('tag1', 'tag2', 'tag3'),
-                array(
-                    'addPageCacheTags' => 'tag1,tag2',
-                    'addPageCacheTags.' => array('wrap' => '|,tag3')
-                ),
-            ),
-        );
-    }
-
-    /**
-     * Data provider for stdWrap_htmlSpecialChars
-     *
-     * @return array Order: expected, input, conf
-     */
-    public function stdWrap_htmlSpecialCharsDataProvider()
-    {
-        return [
-            'void conf' => [
-                '&lt;span&gt;1 &amp;lt; 2&lt;/span&gt;',
-                '<span>1 &lt; 2</span>',
-                [],
-            ],
-            'void preserveEntities' => [
-                '&lt;span&gt;1 &amp;lt; 2&lt;/span&gt;',
-                '<span>1 &lt; 2</span>',
-                ['htmlSpecialChars.' => []],
-            ],
-            'false preserveEntities' => [
-                '&lt;span&gt;1 &amp;lt; 2&lt;/span&gt;',
-                '<span>1 &lt; 2</span>',
-                ['htmlSpecialChars.' => ['preserveEntities' => 0]],
-            ],
-            'true preserveEntities' => [
-                '&lt;span&gt;1 &lt; 2&lt;/span&gt;',
-                '<span>1 &lt; 2</span>',
-                ['htmlSpecialChars.' => ['preserveEntities' => 1]],
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_htmlSpecialChars works properly
-     *
-     * @test
-     * @dataProvider stdWrap_htmlSpecialCharsDataProvider
-     * @param string $expected The expected value.
-     * @param string $input The input value.
-     * @param array $conf htmlSpecialChars.preserveEntities
-     * @return void
-     */
-    public function stdWrap_htmlSpecialChars($expected, $input, $conf)
-    {
-        $this->assertSame($expected,
-            $this->subject->stdWrap_htmlSpecialChars($input, $conf));
-    }
-
-    /**
-     * Data provider for stdWrap_encodeForJavaScriptValue.
-     *
-     * @return array []
-     */
-    public function stdWrap_encodeForJavaScriptValueDataProvider()
-    {
-        return [
-            'double quote in string' => [
-                '\'double\u0020quote\u0022\'', 'double quote"'
-            ],
-            'backslash in string' => [
-                '\'backslash\u0020\u005C\'', 'backslash \\'
-            ],
-            'exclamation mark' => [
-                '\'exclamation\u0021\'', 'exclamation!'
-            ],
-            'whitespace tab, newline and carriage return' => [
-                '\'white\u0009space\u000As\u000D\'', "white\tspace\ns\r"
-            ],
-            'single quote in string' => [
-                '\'single\u0020quote\u0020\u0027\'', 'single quote \''
-            ],
-            'tag' => [
-                '\'\u003Ctag\u003E\'', '<tag>'
-            ],
-            'ampersand in string' => [
-                '\'amper\u0026sand\'', 'amper&sand'
-            ]
-        ];
-    }
-
-    /**
-     * Check if encodeForJavaScriptValue works properly.
-     *
-     * @test
-     * @dataProvider stdWrap_encodeForJavaScriptValueDataProvider
-     * @param string $expect The expected output.
-     * @param string $content The given input.
-     * @return void
-     */
-    public function stdWrap_encodeForJavaScriptValue($expect, $content)
-    {
-        $this->assertSame($expect,
-            $this->subject->stdWrap_encodeForJavaScriptValue($content));
-    }
-
-    /**
-     * Data provider for stdWrap_doubleBrTag
-     *
-     * @return array Order expected, input, config
-     */
-    public function stdWrapDoubleBrTagDataProvider()
-    {
-        return [
-            'no config: void input' => [
-                '',
-                '',
-                [],
-            ],
-            'no config: single break' => [
-                'one' . LF . 'two',
-                'one' . LF . 'two',
-                [],
-            ],
-            'no config: double break' => [
-                'onetwo',
-                'one' . LF . LF . 'two',
-                [],
-            ],
-            'no config: double break with whitespace' => [
-                'onetwo',
-                'one' . LF . TAB . ' ' . TAB . ' ' . LF . 'two',
-                [],
-            ],
-            'no config: single break around' => [
-                LF . 'one' . LF,
-                LF . 'one' . LF,
-                [],
-            ],
-            'no config: double break around' => [
-                'one',
-                LF . LF . 'one' . LF . LF,
-                [],
-            ],
-            'empty string: double break around' => [
-                'one',
-                LF . LF . 'one' . LF . LF,
-                ['doubleBrTag' => ''],
-            ],
-            'br tag: double break' => [
-                'one<br/>two',
-                'one' . LF . LF . 'two',
-                ['doubleBrTag' => '<br/>'],
-            ],
-            'br tag: double break around' => [
-                '<br/>one<br/>',
-                LF . LF . 'one' . LF . LF,
-                ['doubleBrTag' => '<br/>'],
-            ],
-            'double br tag: double break around' => [
-                '<br/><br/>one<br/><br/>',
-                LF . LF . 'one' . LF . LF,
-                ['doubleBrTag' => '<br/><br/>'],
-            ],
-        ];
-    }
-
-    /**
-     * Check if doubleBrTag works properly
-     *
-     * @test
-     * @dataProvider stdWrapDoubleBrTagDataProvider
-     * @param string $expected The expected value.
-     * @param string $input The input value.
-     * @param array $config The property 'doubleBrTag'.
-     * @return void
-     */
-    public function stdWrap_doubleBrTag($expected, $input, $config)
-    {
-        $this->assertEquals($expected, $this->subject->stdWrap_doubleBrTag($input, $config));
-    }
-
-    /**
-     * Data provider for stdWrap_brTag
-     *
-     * @return array
-     */
-    public function stdWrapBrTagDataProvider()
-    {
-        $noConfig = [];
-        $config1 = ['brTag' => '<br/>'];
-        $config2 = ['brTag' => '<br>'];
-        return [
-            'no config: one break at the beginning' => [LF . 'one' . LF . 'two', 'onetwo', $noConfig],
-            'no config: multiple breaks at the beginning' => [LF . LF . 'one' . LF . 'two', 'onetwo', $noConfig],
-            'no config: one break at the end' => ['one' . LF . 'two' . LF, 'onetwo', $noConfig],
-            'no config: multiple breaks at the end' => ['one' . LF . 'two' . LF . LF, 'onetwo', $noConfig],
-
-            'config1: one break at the beginning' => [LF . 'one' . LF . 'two', '<br/>one<br/>two', $config1],
-            'config1: multiple breaks at the beginning' => [LF . LF . 'one' . LF . 'two', '<br/><br/>one<br/>two', $config1],
-            'config1: one break at the end' => ['one' . LF . 'two' . LF, 'one<br/>two<br/>', $config1],
-            'config1: multiple breaks at the end' => ['one' . LF . 'two' . LF . LF, 'one<br/>two<br/><br/>', $config1],
-
-            'config2: one break at the beginning' => [LF . 'one' . LF . 'two', '<br>one<br>two', $config2],
-            'config2: multiple breaks at the beginning' => [LF . LF . 'one' . LF . 'two', '<br><br>one<br>two', $config2],
-            'config2: one break at the end' => ['one' . LF . 'two' . LF, 'one<br>two<br>', $config2],
-            'config2: multiple breaks at the end' => ['one' . LF . 'two' . LF . LF, 'one<br>two<br><br>', $config2],
-        ];
-    }
-
-    /**
-     * Check if brTag works properly
-     *
-     * @test
-     * @dataProvider stdWrapBrTagDataProvider
-     */
-    public function stdWrap_brTag($input, $expected, $config)
-    {
-        $this->assertEquals($expected, $this->subject->stdWrap_brTag($input, $config));
-    }
-
-    /**
-     * Check if stdWrap_encapsLines works properly.
-     *
-     * Show:
-     *
-     * - Delegates to method encaps_lineSplit.
-     * - Parameter 1 is $content.
-     * - Prameter 2 is $conf['encapsLines'].
-     * - Returns the return value.
-     *
-     * @test
-     * @return void
-     */
-     public function stdWrap_encapsLines()
-     {
-         $content = $this->getUniqueId('content');
-         $conf = [
-             'encapsLines' => [$this->getUniqueId('not used')],
-             'encapsLines.' => [$this->getUniqueId('encapsLines.')],
-         ];
-         $return = $this->getUniqueId('return');
-         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-             ->setMethods(['encaps_lineSplit'])->getMock();
-         $subject
-             ->expects($this->once())
-             ->method('encaps_lineSplit')
-             ->with($content, $conf['encapsLines.'])
-             ->willReturn($return);
-         $this->assertSame($return,
-             $subject->stdWrap_encapsLines($content, $conf));
-     }
-
-    /**
-     * Data provider for stdWrap_keywords
-     *
-     * @return string[][] Order expected, input
-     */
-    public function stdWrapKeywordsDataProvider()
-    {
-        return [
-            'empty string' => ['', ''],
-            'blank' => ['', ' '],
-            'tab' => ['', "\t"],
-            'single semicolon' => [',', ' ; '],
-            'single comma' => [',', ' , '],
-            'single nl' => [',', ' ' . PHP_EOL . ' '],
-            'double semicolon' => [',,', ' ; ; '],
-            'double comma' => [',,', ' , , '],
-            'double nl' => [',,', ' ' . PHP_EOL . ' ' . PHP_EOL . ' '],
-            'simple word' => ['one', ' one '],
-            'simple word trimmed' => ['one', 'one'],
-            ', separated' => ['one,two', ' one , two '],
-            '; separated' => ['one,two', ' one ; two '],
-            'nl separated' => ['one,two', ' one ' . PHP_EOL . ' two '],
-            ', typical' => ['one,two,three', 'one, two, three'],
-            '; typical' => ['one,two,three', ' one; two; three'],
-            'nl typical' => [
-                'one,two,three',
-                'one' . PHP_EOL . 'two' . PHP_EOL . 'three'
-            ],
-            ', sourounded' => [',one,two,', ' , one , two , '],
-            '; sourounded' => [',one,two,', ' ; one ; two ; '],
-            'nl sourounded' => [
-                ',one,two,',
-                ' ' . PHP_EOL . ' one ' . PHP_EOL . ' two ' . PHP_EOL . ' '
-            ],
-            'mixed' => [
-                'one,two,three,four',
-                ' one, two; three' . PHP_EOL . 'four'
-            ],
-            'keywods with blanks in words' => [
-                'one plus,two minus',
-                ' one plus , two minus ',
-            ]
-        ];
-    }
-
-    /**
-     * Check if stdWrap_keywords works properly.
-     *
-     * @param string $expected The expected value.
-     * @param string $input The input value.
-     * @return void
-     * @test
-     * @dataProvider stdWrapKeywordsDataProvider
-     */
-    public function stdWrap_keywords($expected, $input)
-    {
-        $this->assertSame($expected, $this->subject->stdWrap_keywords($input));
-    }
-
-    /**
-     * Data provider for stdWrap_outerWrap
-     *
-     * @return array Order expected, input, conf
-     */
-    public function stdWrap_outerWrapDataProvider()
-    {
-        return [
-            'no conf' => [
-                'XXX',
-                'XXX',
-                [],
-            ],
-            'simple' => [
-                '<wrap>XXX</wrap>',
-                'XXX',
-                ['outerWrap' => '<wrap>|</wrap>'],
-            ],
-            'missing pipe puts wrap before' => [
-                '<pre>XXX',
-                'XXX',
-                ['outerWrap' => '<pre>'],
-            ],
-            'trims whitespace' => [
-                '<wrap>XXX</wrap>',
-                'XXX',
-                ['outerWrap' => '<wrap>' . TAB . ' | ' . TAB . '</wrap>'],
-            ],
-            'split char change is not possible' => [
-                '<wrap> # </wrap>XXX',
-                'XXX',
-                [
-                    'outerWrap' => '<wrap> # </wrap>',
-                    'outerWrap.' => ['splitChar' => '#'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_outerWrap works properly.
-     *
-     * @param string $expected The expected value.
-     * @param string $input The input value.
-     * @param array $conf Property: outerWrap
-     * @return void
-     * @test
-     * @dataProvider stdWrap_outerWrapDataProvider
-     */
-    public function stdWrap_outerWrap($expected, $input, $conf)
-    {
-        $this->assertSame($expected,
-            $this->subject->stdWrap_outerWrap($input, $conf));
-    }
-
-    /**
-     * Data provider for stdWrap_innerWrap2
-     *
-     * @return array Order expected, input, conf
-     */
-    public function stdWrap_innerWrap2DataProvider()
-    {
-        return [
-            'no conf' => [
-                'XXX',
-                'XXX',
-                [],
-            ],
-            'simple' => [
-                '<wrap>XXX</wrap>',
-                'XXX',
-                ['innerWrap2' => '<wrap>|</wrap>'],
-            ],
-            'missing pipe puts wrap before' => [
-                '<pre>XXX',
-                'XXX',
-                ['innerWrap2' => '<pre>'],
-            ],
-            'trims whitespace' => [
-                '<wrap>XXX</wrap>',
-                'XXX',
-                ['innerWrap2' => '<wrap>' . TAB . ' | ' . TAB . '</wrap>'],
-            ],
-            'split char change is not possible' => [
-                '<wrap> # </wrap>XXX',
-                'XXX',
-                [
-                    'innerWrap2' => '<wrap> # </wrap>',
-                    'innerWrap2.' => ['splitChar' => '#'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_innerWrap2 works properly.
-     *
-     * @param string $expected The expected value.
-     * @param string $input The input value.
-     * @param array $conf Property: innerWrap2
-     * @return void
-     * @test
-     * @dataProvider stdWrap_innerWrap2DataProvider
-     */
-    public function stdWrap_innerWrap2($expected, $input, $conf)
-    {
-        $this->assertSame($expected,
-            $this->subject->stdWrap_innerWrap2($input, $conf));
-    }
-
-    /**
-     * Data provider for stdWrap_wrap2
-     *
-     * @return array Order expected, input, conf
-     */
-    public function stdWrap_wrap2DataProvider()
-    {
-        return [
-            'no conf' => [
-                'XXX',
-                'XXX',
-                [],
-            ],
-            'simple' => [
-                '<wrapper>XXX</wrapper>',
-                'XXX',
-                ['wrap2' => '<wrapper>|</wrapper>'],
-            ],
-            'trims whitespace' => [
-                '<wrapper>XXX</wrapper>',
-                'XXX',
-                ['wrap2' => '<wrapper>' . TAB . ' | ' . TAB . '</wrapper>'],
-            ],
-            'missing pipe puts wrap2 before' => [
-                '<pre>XXX',
-                'XXX',
-                [
-                    'wrap2' => '<pre>',
-                ],
-            ],
-            'split char change' => [
-                '<wrapper>XXX</wrapper>',
-                'XXX',
-                [
-                    'wrap2' => '<wrapper> # </wrapper>',
-                    'wrap2.' => ['splitChar' => '#'],
-                ],
-            ],
-            'split by pattern' => [
-                '<wrapper>XXX</wrapper>',
-                'XXX',
-                [
-                    'wrap2' => '<wrapper> ###splitter### </wrapper>',
-                    'wrap2.' => ['splitChar' => '###splitter###'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_wrap2 works properly.
-     *
-     * @param string $expected The expected value.
-     * @param string $input The input value.
-     * @param array $conf Properties: wrap2, wrap2.splitChar
-     * @return void
-     * @test
-     * @dataProvider stdWrap_wrap2DataProvider
-     */
-    public function stdWrap_wrap2($expected, $input, $conf)
-    {
-        $this->assertSame($expected, $this->subject->stdWrap_wrap2($input, $conf));
-    }
-
-    /**
-     * Data provider for stdWrap_wrap3
-     *
-     * @return array Order expected, input, conf
-     */
-    public function stdWrap_wrap3DataProvider()
-    {
-        return [
-            'no conf' => [
-                'XXX',
-                'XXX',
-                [],
-            ],
-            'simple' => [
-                '<wrapper>XXX</wrapper>',
-                'XXX',
-                ['wrap3' => '<wrapper>|</wrapper>'],
-            ],
-            'trims whitespace' => [
-                '<wrapper>XXX</wrapper>',
-                'XXX',
-                ['wrap3' => '<wrapper>' . TAB . ' | ' . TAB . '</wrapper>'],
-            ],
-            'missing pipe puts wrap3 before' => [
-                '<pre>XXX',
-                'XXX',
-                [
-                    'wrap3' => '<pre>',
-                ],
-            ],
-            'split char change' => [
-                '<wrapper>XXX</wrapper>',
-                'XXX',
-                [
-                    'wrap3' => '<wrapper> # </wrapper>',
-                    'wrap3.' => ['splitChar' => '#'],
-                ],
-            ],
-            'split by pattern' => [
-                '<wrapper>XXX</wrapper>',
-                'XXX',
-                [
-                    'wrap3' => '<wrapper> ###splitter### </wrapper>',
-                    'wrap3.' => ['splitChar' => '###splitter###'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_wrap3 works properly.
-     *
-     * @param string $expected The expected value.
-     * @param string $input The input value.
-     * @param array $conf Properties: wrap3, wrap3.splitChar
-     * @return void
-     * @test
-     * @dataProvider stdWrap_wrap3DataProvider
-     */
-    public function stdWrap_wrap3($expected, $input, $conf)
-    {
-        $this->assertSame($expected, $this->subject->stdWrap_wrap3($input, $conf));
-    }
-
-    /**
-     * Data provider for stdWrap_wrap
-     *
-     * @return array Order expected, input, conf
-     */
-    public function stdWrap_wrapDataProvider()
-    {
-        return [
-            'no conf' => [
-                'XXX',
-                'XXX',
-                [],
-            ],
-            'simple' => [
-                '<wrapper>XXX</wrapper>',
-                'XXX',
-                ['wrap' => '<wrapper>|</wrapper>'],
-            ],
-            'trims whitespace' => [
-                '<wrapper>XXX</wrapper>',
-                'XXX',
-                ['wrap' => '<wrapper>' . TAB . ' | ' . TAB . '</wrapper>'],
-            ],
-            'missing pipe puts wrap before' => [
-                '<pre>XXX',
-                'XXX',
-                [
-                    'wrap' => '<pre>',
-                ],
-            ],
-            'split char change' => [
-                '<wrapper>XXX</wrapper>',
-                'XXX',
-                [
-                    'wrap' => '<wrapper> # </wrapper>',
-                    'wrap.' => ['splitChar' => '#'],
-                ],
-            ],
-            'split by pattern' => [
-                '<wrapper>XXX</wrapper>',
-                'XXX',
-                [
-                    'wrap' => '<wrapper> ###splitter### </wrapper>',
-                    'wrap.' => ['splitChar' => '###splitter###'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_wrap works properly.
-     *
-     * @param string $expected The expected value.
-     * @param string $input The input value.
-     * @param array $conf Properties: wrap, wrap.splitChar
-     * @return void
-     * @test
-     * @dataProvider stdWrap_wrapDataProvider
-     */
-    public function stdWrap_wrap($expected, $input, $conf)
-    {
-        $this->assertSame($expected,
-            $this->subject->stdWrap_wrap($input, $conf));
-    }
-
-    /**
-     * Data provider for stdWrap_lang
-     *
-     * @return array Order expected, input, conf, language
-     */
-    public function stdWrap_langDataProvider()
-    {
-        return [
-            'empty conf' => [
-                'original',
-                'original',
-                [],
-                'de',
-            ],
-            'translation de' => [
-                'Übersetzung',
-                'original',
-                [
-                    'lang.' => [
-                        'de' => 'Übersetzung',
-                        'it' => 'traduzione',
-                    ]
-                ],
-                'de',
-            ],
-            'translation it' => [
-                'traduzione',
-                'original',
-                [
-                    'lang.' => [
-                        'de' => 'Übersetzung',
-                        'it' => 'traduzione',
-                    ]
-                ],
-                'it',
-            ],
-            'no translation' => [
-                'original',
-                'original',
-                [
-                    'lang.' => [
-                        'de' => 'Übersetzung',
-                        'it' => 'traduzione',
-                    ]
-                ],
-                '',
-            ],
-            'missing label' => [
-                'original',
-                'original',
-                [
-                    'lang.' => [
-                        'de' => 'Übersetzung',
-                        'it' => 'traduzione',
-                    ]
-                ],
-                'fr',
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_lang works properly.
-     *
-     * @param string $expected The expected value.
-     * @param string $input The input value.
-     * @param array $conf Properties: lang.xy.
-     * @param string $language For $TSFE->config[config][language].
-     * @return void
-     * @test
-     * @dataProvider stdWrap_langDataProvider
-     */
-    public function stdWrap_lang($expected, $input, $conf, $language)
-    {
-        if ($language) {
-            $this->frontendControllerMock
-                ->config['config']['language'] = $language;
-        }
-        $this->assertSame($expected,
-            $this->subject->stdWrap_lang($input, $conf));
-    }
-
-    /**
-     * Data provider for stdWrap_innerWrap
-     *
-     * @return array Order expected, input, conf
-     */
-    public function stdWrap_innerWrapDataProvider()
-    {
-        return [
-            'no conf' => [
-                'XXX',
-                'XXX',
-                [],
-            ],
-            'simple' => [
-                '<wrap>XXX</wrap>',
-                'XXX',
-                ['innerWrap' => '<wrap>|</wrap>'],
-            ],
-            'missing pipe puts wrap before' => [
-                '<pre>XXX',
-                'XXX',
-                ['innerWrap' => '<pre>'],
-            ],
-            'trims whitespace' => [
-                '<wrap>XXX</wrap>',
-                'XXX',
-                ['innerWrap' => '<wrap>' . TAB . ' | ' . TAB . '</wrap>'],
-            ],
-            'split char change is not possible' => [
-                '<wrap> # </wrap>XXX',
-                'XXX',
-                [
-                    'innerWrap' => '<wrap> # </wrap>',
-                    'innerWrap.' => ['splitChar' => '#'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_innerWrap works properly.
-     *
-     * @param string $expected The expected value.
-     * @param string $input The input value.
-     * @param array $conf Property: innerWrap
-     * @return void
-     * @test
-     * @dataProvider stdWrap_innerWrapDataProvider
-     */
-    public function stdWrap_innerWrap($expected, $input, $conf)
-    {
-        $this->assertSame($expected,
-            $this->subject->stdWrap_innerWrap($input, $conf));
-    }
-
-    /**
-     * Data provider for stdWrap_br
-     *
-     * @return string[][] Order expected, given, xhtmlDoctype
-     */
-    public function stdWrapBrDataProvider()
-    {
-        return [
-            'no xhtml with LF in between' => [
-                'one<br>' . LF . 'two',
-                'one' . LF . 'two',
-                null
-            ],
-            'no xhtml with LF in between and around' => [
-                '<br>' . LF . 'one<br>' . LF . 'two<br>' . LF,
-                LF . 'one' . LF . 'two' . LF,
-                null
-            ],
-            'xhtml with LF in between' => [
-                'one<br />' . LF . 'two',
-                'one' . LF . 'two',
-                'xhtml_strict'
-            ],
-            'xhtml with LF in between and around' => [
-                '<br />' . LF . 'one<br />' . LF . 'two<br />' . LF,
-                LF . 'one' . LF . 'two' . LF,
-                'xhtml_strict'
-            ],
-        ];
-    }
-
-    /**
-     * Test that stdWrap_br works as expected.
-     *
-     * @param string $expected The expected value.
-     * @param string $input The input value.
-     * @param string $xhtmlDoctype Xhtml document type.
-     * @return void
-     * @test
-     * @dataProvider stdWrapBrDataProvider
-     */
-    public function stdWrap_br($expected, $input, $xhtmlDoctype)
-    {
-        $GLOBALS['TSFE']->xhtmlDoctype = $xhtmlDoctype;
-        $this->assertSame($expected, $this->subject->stdWrap_br($input));
-    }
-
-    /**
-     * Check if stdWrap_space works properly.
-     *
-     * Show:
-     *
-     *  - Delegates to method wrapSpace.
-     *  - Parameter 1 is $content.
-     *  - Parameter 2 is $conf['space'],
-     *  - trimmed.
-     *  - Parameter 3 is $conf['space.'].
-     *  - Returns the return value.
-     *
-     *  @test
-     *  @return void.
-     */
-    public function stdWrap_space()
-    {
-        $content = $this->getUniqueId('content');
-        $trimmed = $this->getUniqueId('space trimmed');
-        $conf = [
-            'space' => TAB . ' ' . $trimmed . ' ' . TAB,
-            'space.' => [$this->getUniqueId('space.')],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['wrapSpace'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('wrapSpace')
-            ->with($content, $trimmed, $conf['space.'])
-            ->willReturn($return);
-        $this->assertSame($return, $subject->stdWrap_space($content, $conf));
-    }
-
-    /**
-     * Check if stdWrap_spaceBefore works properly.
-     *
-     * Show:
-     *
-     *  - Delegates to method wrapSpace.
-     *  - Parameter 1 is $content.
-     *  - Parameter 2 is $conf['spaceBefore'],
-     *  - trimmed,
-     *  - appended with '|'.
-     *  - Parameter 3 is $conf['space.'] !!!
-     *  - Returns the return value.
-     *
-     *  @test
-     *  @return void.
-     */
-    public function stdWrap_spaceBefore()
-    {
-        $content = $this->getUniqueId('content');
-        $trimmed = $this->getUniqueId('spaceBefore trimmed');
-        $conf = [
-            'spaceBefore' => TAB . ' ' . $trimmed . ' ' . TAB,
-            'space.' => [$this->getUniqueId('space.')],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['wrapSpace'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('wrapSpace')
-            ->with($content, $trimmed . '|', $conf['space.'])
-            ->willReturn($return);
-        $this->assertSame($return,
-            $subject->stdWrap_spaceBefore($content, $conf));
-    }
-
-    /**
-     * Check if stdWrap_spaceAfter works properly.
-     *
-     * Show:
-     *
-     *  - Delegates to method wrapSpace.
-     *  - Parameter 1 is $content.
-     *  - Parameter 2 is $conf['spaceAfter'],
-     *  - trimmed,
-     *  - prepended with '|'.
-     *  - Parameter 3 is $conf['space.'] !!!
-     *  - Returns the return value.
-     *
-     *  @test
-     *  @return void.
-     */
-    public function stdWrap_spaceAfter()
-    {
-        $content = $this->getUniqueId('content');
-        $trimmed = $this->getUniqueId('spaceAfter trimmed');
-        $conf = [
-            'spaceAfter' => TAB . ' ' . $trimmed . ' ' . TAB,
-            'space.' => [$this->getUniqueId('space.')],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['wrapSpace'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('wrapSpace')
-            ->with($content, '|' . $trimmed, $conf['space.'])
-            ->willReturn($return);
-        $this->assertSame($return,
-            $subject->stdWrap_spaceAfter($content, $conf));
-    }
-
-    /**
-     * Check if stdWrap_char works properly.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_char()
-    {
-        $input = 'discarded';
-        $expected = 'C';
-        $this->assertEquals($expected, $this->subject->stdWrap_char($input, ['char' => '67']));
-    }
-
-    /**
-     * Check that stdWrap_typolink works properly.
-     *
-     * Show:
-     *  - Delegates to method typolink.
-     *  - Parameter 1 is $content.
-     *  - Parameter 2 is $conf['typolink.'].
-     *  - Returns the return value.
-     *
-     *  @test
-     *  @return void.
-     */
-    public function stdWrap_typolink()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'typolink' => $this->getUniqueId('not used'),
-            'typolink.' => [$this->getUniqueId('typolink.')],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['typolink'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('typolink')
-            ->with($content, $conf['typolink.'])
-            ->willReturn($return);
-        $this->assertSame($return, $subject->stdWrap_typolink($content, $conf));
-    }
-
-    /**
-     * Check that stdWrap_postUserFunc works properly.
-     *
-     * Show:
-     *  - Delegates to method callUserFunction.
-     *  - Parameter 1 is $conf['postUserFunc'].
-     *  - Parameter 2 is $conf['postUserFunc.'].
-     *  - Returns the return value.
-     *
-     *  @test
-     *  @return void.
-     */
-    public function stdWrap_postUserFunc()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'postUserFunc' => $this->getUniqueId('postUserFunc'),
-            'postUserFunc.' => [$this->getUniqueId('postUserFunc.')],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['callUserFunction'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('callUserFunction')
-            ->with($conf['postUserFunc'], $conf['postUserFunc.'])
-            ->willReturn($return);
-        $this->assertSame($return,
-            $subject->stdWrap_postUserFunc($content, $conf));
-    }
-
-    /**
-     * Check if stdWrap_debug works properly.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_debug()
-    {
-        $expect = '<pre>&lt;p class=&quot;class&quot;&gt;&lt;br/&gt;'
-            . '&lt;/p&gt;</pre>';
-        $content = '<p class="class"><br/></p>';
-        $this->assertSame($expect, $this->subject->stdWrap_debug($content));
     }
 
     ///////////////////////////////
@@ -6303,39 +2888,6 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * Check if stdWrap_parseFunc works properly.
-     *
-     * Show:
-     *
-     * - Delegates to method parseFunc.
-     * - Parameter 1 is $content.
-     * - Parameter 2 is $conf['parseFunc.'].
-     * - Parameter 3 is $conf['parseFunc'].
-     * - Returns the return.
-     *
-     * @test
-     * @return void
-     */
-    public function stdWrap_parseFunc()
-    {
-        $content = $this->getUniqueId('content');
-        $conf = [
-            'parseFunc' => $this->getUniqueId('parseFunc'),
-            'parseFunc.' => [$this->getUniqueId('parseFunc.')],
-        ];
-        $return = $this->getUniqueId('return');
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['parseFunc'])->getMock();
-        $subject
-            ->expects($this->once())
-            ->method('parseFunc')
-            ->with($content, $conf['parseFunc.'], $conf['parseFunc'])
-            ->willReturn($return);
-        $this->assertSame($return,
-            $subject->stdWrap_parseFunc($content, $conf));
-    }
-
-    /**
      * @test
      * @dataProvider _parseFuncReturnsCorrectHtmlDataProvider
      * @param string $value
@@ -7555,11 +4107,3469 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->assertSame($expect, $this->subject->getFieldVal($fields));
     }
 
+  /***************************************************************************
+   * Tests for stdWrap_ in alphabetical order (all uppercase before lowercase)
+   ***************************************************************************/
+
     /**
-     * @return TypoScriptFrontendController
+     * Data provider for fourTypesOfStdWrapHookObjectProcessors
+     *
+     * @return array Order: stdWrap, hookObjectCall
      */
-    protected function getFrontendController()
+    public function fourTypesOfStdWrapHookObjectProcessorsDataProvider()
     {
-        return $GLOBALS['TSFE'];
+        return [
+            'preProcess' => [
+                'stdWrap_stdWrapPreProcess', 'stdWrapPreProcess'
+            ],
+            'override' => [
+                'stdWrap_stdWrapOverride', 'stdWrapOverride'
+            ],
+            'process' => [
+                'stdWrap_stdWrapProcess', 'stdWrapProcess'
+            ],
+            'postProcess' => [
+                'stdWrap_stdWrapPostProcess', 'stdWrapPostProcess'
+            ],
+        ];
     }
+
+    /**
+     * Check if stdWrapHookObject processors work properly.
+     *
+     * Checks:
+     *
+     * - stdWrap_stdWrapPreProcess
+     * - stdWrap_stdWrapOverride
+     * - stdWrap_stdWrapProcess
+     * - stdWrap_stdWrapPostProcess
+     *
+     * @test
+     * @dataProvider fourTypesOfStdWrapHookObjectProcessorsDataProvider
+     * @param string $stdWrapMethod: The method to cover.
+     * @param string $hookObjectCall: The expected hook object call.
+     * @return void
+     */
+    public function fourTypesOfStdWrapHookObjectProcessors(
+        $stdWrapMethod, $hookObjectCall)
+    {
+        $conf = [$this->getUniqueId('conf')];
+        $content = $this->getUniqueId('content');
+        $processed1 = $this->getUniqueId('processed1');
+        $processed2 = $this->getUniqueId('processed2');
+        $hookObject1 = $this->createMock(
+            ContentObjectStdWrapHookInterface::class);
+        $hookObject1->expects($this->once())
+            ->method($hookObjectCall)
+            ->with($content, $conf)
+            ->willReturn($processed1);
+        $hookObject2 = $this->createMock(
+            ContentObjectStdWrapHookInterface::class);
+        $hookObject2->expects($this->once())
+            ->method($hookObjectCall)
+            ->with($processed1, $conf)
+            ->willReturn($processed2);
+        $this->subject->_set('stdWrapHookObjects',
+            [$hookObject1, $hookObject2]);
+        $result = $this->subject->$stdWrapMethod($content, $conf);
+        $this->assertSame($processed2, $result);
+    }
+
+    /**
+     * Data provider for stdWrap_HTMLparser
+     *
+     * @return array [$expect, $content, $conf, $times, $will].
+     */
+    public function stdWrap_HTMLparserDataProvider()
+    {
+        $content = $this->getUniqueId('content');
+        $parsed = $this->getUniqueId('parsed');
+        return [
+            'no config' => [
+                $content, $content, [], 0, $parsed
+            ],
+            'no array' => [
+                $content, $content, ['HTMLparser.' => 1], 0, $parsed
+            ],
+            'empty array' => [
+                $parsed, $content, ['HTMLparser.' => []], 1, $parsed
+            ],
+            'non-empty array' => [
+                $parsed, $content, ['HTMLparser.' => [true]], 1, $parsed
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_HTMLparser works properly
+     *
+     * Show:
+     *
+     * - Checks if $conf['HTMLparser.'] is an array.
+     * - No:
+     *   - Returns $content as is.
+     * - Yes:
+     *   - Delegates to method HTMLparser_TSbridge.
+     *   - Parameter 1 is $content.
+     *   - Parameter 2 is $conf['HTMLparser'].
+     *   - Returns the return value.
+     *
+     * @test
+     * @dataProvider stdWrap_HTMLparserDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given content.
+     * @param array $conf The given configuration.
+     * @param int $times Times HTMLparser_TSbridge is called (0 or 1).
+     * @param string $will Return of HTMLparser_TSbridge.
+     * @return void.
+     */
+    public function stdWrap_HTMLparser(
+        $expect, $content, $conf, $times, $will)
+    {
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['HTMLparser_TSbridge'])->getMock();
+        $subject
+            ->expects($this->exactly($times))
+            ->method('HTMLparser_TSbridge')
+            ->with($content, $conf['HTMLparser.'])
+            ->willReturn($will);
+        $this->assertSame($expect,
+            $subject->stdWrap_HTMLparser($content, $conf));
+    }
+
+    /**
+     * @return array
+     */
+    public function stdWrap_addPageCacheTagsAddsPageTagsDataProvider()
+    {
+        return array(
+            'No Tag' => array(
+                array(),
+                array('addPageCacheTags' => ''),
+            ),
+            'Two expectedTags' => array(
+                array('tag1', 'tag2'),
+                array('addPageCacheTags' => 'tag1,tag2'),
+            ),
+            'Two expectedTags plus one with stdWrap' => array(
+                array('tag1', 'tag2', 'tag3'),
+                array(
+                    'addPageCacheTags' => 'tag1,tag2',
+                    'addPageCacheTags.' => array('wrap' => '|,tag3')
+                ),
+            ),
+        );
+    }
+
+    /**
+     * @param array $expectedTags
+     * @param array $configuration
+     * @test
+     * @dataProvider stdWrap_addPageCacheTagsAddsPageTagsDataProvider
+     */
+    public function stdWrap_addPageCacheTagsAddsPageTags(array $expectedTags, array $configuration)
+    {
+        $this->subject->stdWrap_addPageCacheTags('', $configuration);
+        $this->assertEquals($expectedTags, $this->frontendControllerMock->_get('pageCacheTags'));
+    }
+
+    /**
+     * Check if stdWrap_age works properly.
+     *
+     * Show:
+     *
+     * - Delegates to calcAge.
+     * - Parameter 1 is the difference between $content and EXEC_TIME.
+     * - Parameter 2 is $conf['age'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_age()
+    {
+        $now = 10;
+        $content = '9';
+        $conf = ['age' => $this->getUniqueId('age')];
+        $return = $this->getUniqueId('return');
+        $difference = $now - (int)$content;
+        $GLOBALS['EXEC_TIME'] = $now;
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['calcAge'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('calcAge')
+            ->with($difference, $conf['age'])
+            ->willReturn($return);
+        $this->assertSame($return, $subject->stdWrap_age($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_append works properly.
+     *
+     * Show:
+     *
+     * - Delegates to the method cObjGetSingle().
+     * - First parameter is $conf['append'].
+     * - Second parameter is $conf['append.'].
+     * - Third parameter is '/stdWrap/.append'.
+     * - Returns the return value appended to $content.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_append()
+    {
+        $debugKey =  '/stdWrap/.append';
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'append' => $this->getUniqueId('append'),
+            'append.' => [$this->getUniqueId('append.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['cObjGetSingle'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('cObjGetSingle')
+            ->with($conf['append'], $conf['append.'], $debugKey)
+            ->willReturn($return);
+        $this->assertSame($content . $return,
+            $subject->stdWrap_append($content, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_br
+     *
+     * @return string[][] Order expected, given, xhtmlDoctype
+     */
+    public function stdWrapBrDataProvider()
+    {
+        return [
+            'no xhtml with LF in between' => [
+                'one<br>' . LF . 'two',
+                'one' . LF . 'two',
+                null
+            ],
+            'no xhtml with LF in between and around' => [
+                '<br>' . LF . 'one<br>' . LF . 'two<br>' . LF,
+                LF . 'one' . LF . 'two' . LF,
+                null
+            ],
+            'xhtml with LF in between' => [
+                'one<br />' . LF . 'two',
+                'one' . LF . 'two',
+                'xhtml_strict'
+            ],
+            'xhtml with LF in between and around' => [
+                '<br />' . LF . 'one<br />' . LF . 'two<br />' . LF,
+                LF . 'one' . LF . 'two' . LF,
+                'xhtml_strict'
+            ],
+        ];
+    }
+
+    /**
+     * Test that stdWrap_br works as expected.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param string $xhtmlDoctype Xhtml document type.
+     * @return void
+     * @test
+     * @dataProvider stdWrapBrDataProvider
+     */
+    public function stdWrap_br($expected, $input, $xhtmlDoctype)
+    {
+        $GLOBALS['TSFE']->xhtmlDoctype = $xhtmlDoctype;
+        $this->assertSame($expected, $this->subject->stdWrap_br($input));
+    }
+
+    /**
+     * Data provider for stdWrap_brTag
+     *
+     * @return array
+     */
+    public function stdWrapBrTagDataProvider()
+    {
+        $noConfig = [];
+        $config1 = ['brTag' => '<br/>'];
+        $config2 = ['brTag' => '<br>'];
+        return [
+            'no config: one break at the beginning' => [LF . 'one' . LF . 'two', 'onetwo', $noConfig],
+            'no config: multiple breaks at the beginning' => [LF . LF . 'one' . LF . 'two', 'onetwo', $noConfig],
+            'no config: one break at the end' => ['one' . LF . 'two' . LF, 'onetwo', $noConfig],
+            'no config: multiple breaks at the end' => ['one' . LF . 'two' . LF . LF, 'onetwo', $noConfig],
+
+            'config1: one break at the beginning' => [LF . 'one' . LF . 'two', '<br/>one<br/>two', $config1],
+            'config1: multiple breaks at the beginning' => [LF . LF . 'one' . LF . 'two', '<br/><br/>one<br/>two', $config1],
+            'config1: one break at the end' => ['one' . LF . 'two' . LF, 'one<br/>two<br/>', $config1],
+            'config1: multiple breaks at the end' => ['one' . LF . 'two' . LF . LF, 'one<br/>two<br/><br/>', $config1],
+
+            'config2: one break at the beginning' => [LF . 'one' . LF . 'two', '<br>one<br>two', $config2],
+            'config2: multiple breaks at the beginning' => [LF . LF . 'one' . LF . 'two', '<br><br>one<br>two', $config2],
+            'config2: one break at the end' => ['one' . LF . 'two' . LF, 'one<br>two<br>', $config2],
+            'config2: multiple breaks at the end' => ['one' . LF . 'two' . LF . LF, 'one<br>two<br><br>', $config2],
+        ];
+    }
+
+    /**
+     * Check if brTag works properly
+     *
+     * @test
+     * @dataProvider stdWrapBrTagDataProvider
+     */
+    public function stdWrap_brTag($input, $expected, $config)
+    {
+        $this->assertEquals($expected, $this->subject->stdWrap_brTag($input, $config));
+    }
+
+    /**
+     * Data provider for stdWrap_bytes.
+     *
+     * @return array [$expect, $content, $conf]
+     */
+    public function stdWrap_bytesDataProvider()
+    {
+        return [
+            'value 1234 default' => [
+                '1.21 Ki', '1234',
+                ['labels' => '', 'base' => 0],
+            ],
+            'value 1234 si' => [
+                '1.23 k', '1234',
+                ['labels' => 'si', 'base' => 0],
+            ],
+            'value 1234 iec' => [
+                '1.21 Ki', '1234',
+                ['labels' => 'iec', 'base' => 0],
+            ],
+            'value 1234 a-i' => [
+                '1.23b', '1234',
+                ['labels' => 'a|b|c|d|e|f|g|h|i', 'base' => 1000],
+            ],
+            'value 1234 a-i invalid base' => [
+                '1.21b', '1234',
+                ['labels' => 'a|b|c|d|e|f|g|h|i', 'base' => 54],
+            ],
+            'value 1234567890 default' => [
+                '1.15 Gi', '1234567890',
+                ['labels' => '', 'base' => 0],
+            ]
+        ];
+    }
+
+    /**
+     * Check if stdWrap_bytes works properly.
+     *
+     * Show:
+     *
+     * - Delegates to GeneralUtility::formatSize
+     * - Parameter 1 is $conf['bytes.'][labels'].
+     * - Parameter 2 is $conf['bytes.'][base'].
+     * - Returns the return value.
+     *
+     * Note: As PHPUnit can't mock static methods, the call to
+     *       GeneralUtility::formatSize can't be easily intercepted. The test
+     *       is done by testing input/output pairs instead. To not duplicate
+     *       the testing of formatSize just a few smoke tests are done here.
+     *
+     * @test
+     * @dataProvider stdWrap_bytesDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given input.
+     * @param array $conf The given configuration for 'bytes.'.
+     * @return void
+     */
+    public function stdWrap_bytes($expect, $content, $conf)
+    {
+        $locale = 'en_US.UTF-8';
+        if (!setlocale(LC_NUMERIC, $locale)) {
+            $this->markTestSkipped('Locale ' . $locale . ' is not available.');
+        }
+        $conf = ['bytes.' => $conf];
+        $this->assertSame($expect,
+            $this->subject->stdWrap_bytes($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_cObject works properly.
+     *
+     * Show:
+     *
+     * - Delegates to the method cObjGetSingle().
+     * - First parameter is $conf['cObject'].
+     * - Second parameter is $conf['cObject.'].
+     * - Third parameter is '/stdWrap/.cObject'.
+     * - Returns the return.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_cObject()
+    {
+        $debugKey =  '/stdWrap/.cObject';
+        $conf = [
+            'cObject' => $this->getUniqueId('cObject'),
+            'cObject.' => [$this->getUniqueId('cObject.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['cObjGetSingle'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('cObjGetSingle')
+            ->with($conf['cObject'], $conf['cObject.'], $debugKey)
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_cObject('discard', $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_cacheRead
+     *
+     * @return array Order: expect, input, conf, times, with, will
+     */
+    public function stdWrap_cacheReadDataProvider()
+    {
+        $cacheConf = [$this->getUniqueId('cache.')];
+        $conf = ['cache.' => $cacheConf];
+        return [
+            'no conf' => [
+                'content', 'content', [],
+                0, null, null,
+            ],
+            'no cache. conf' => [
+                'content', 'content', ['otherConf' => 1],
+                0, null, null,
+            ],
+            'non-cached simulation' => [
+                'content', 'content', $conf,
+                1, $cacheConf, false,
+            ],
+            'cached simulation' => [
+                'cachedContent', 'content', $conf,
+                1, $cacheConf, 'cachedContent',
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_cacheRead works properly.
+     *
+     * - the method branches correctly
+     * - getFromCache is called to fetch from cache
+     * - $conf['cache.'] is passed on as parameter
+     *
+     * @test
+     * @dataProvider stdWrap_cacheReadDataProvider
+     * @param string $expect Expected result.
+     * @param string $input Given input string.
+     * @param array $conf Property 'cache.'
+     * @param int $times Times called mocked method.
+     * @param array $with Parameter passed to mocked method.
+     * @param string|false $will Return value of mocked method.
+     * @return void
+     */
+    public function stdWrap_cacheRead(
+        $expect, $input, $conf, $times, $with, $will)
+    {
+        $subject = $this->getAccessibleMock(
+            ContentObjectRenderer::class, ['getFromCache']);
+        $subject
+            ->expects($this->exactly($times))
+            ->method('getFromCache')
+            ->with($with)
+            ->willReturn($will);
+        $this->assertSame($expect,
+            $subject->stdWrap_cacheRead($input, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_case test
+     *
+     * @return array
+     */
+    public function stdWrap_caseDataProvider()
+    {
+        return array(
+            'lower case text to upper' => array(
+                '<span>text</span>',
+                array(
+                    'case' => 'upper',
+                ),
+                '<span>TEXT</span>',
+            ),
+            'upper case text to lower' => array(
+                '<span>TEXT</span>',
+                array(
+                    'case' => 'lower',
+                ),
+                '<span>text</span>',
+            ),
+            'capitalize text' => array(
+                '<span>this is a text</span>',
+                array(
+                    'case' => 'capitalize',
+                ),
+                '<span>This Is A Text</span>',
+            ),
+            'ucfirst text' => array(
+                '<span>this is a text</span>',
+                array(
+                    'case' => 'ucfirst',
+                ),
+                '<span>This is a text</span>',
+            ),
+            'lcfirst text' => array(
+                '<span>This is a Text</span>',
+                array(
+                    'case' => 'lcfirst',
+                ),
+                '<span>this is a Text</span>',
+            ),
+            'uppercamelcase text' => array(
+                '<span>this_is_a_text</span>',
+                array(
+                    'case' => 'uppercamelcase',
+                ),
+                '<span>ThisIsAText</span>',
+            ),
+            'lowercamelcase text' => array(
+                '<span>this_is_a_text</span>',
+                array(
+                    'case' => 'lowercamelcase',
+                ),
+                '<span>thisIsAText</span>',
+            ),
+        );
+    }
+
+    /**
+     * @param string|NULL $content
+     * @param array $configuration
+     * @param string $expected
+     * @dataProvider stdWrap_caseDataProvider
+     * @test
+     */
+    public function stdWrap_case($content, array $configuration, $expected)
+    {
+        $result = $this->subject->stdWrap_case($content, $configuration);
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * Check if stdWrap_char works properly.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_char()
+    {
+        $input = 'discarded';
+        $expected = 'C';
+        $this->assertEquals($expected, $this->subject->stdWrap_char($input, ['char' => '67']));
+    }
+
+    /**
+     * Check if stdWrap_crop works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method listNum.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['crop'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_crop()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'crop' => $this->getUniqueId('crop'),
+            'crop.' => $this->getUniqueId('not used'),
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['crop'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('crop')
+            ->with($content, $conf['crop'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_crop($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_cropHTML works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method cropHTML.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['cropHTML'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_cropHTML()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'cropHTML' => $this->getUniqueId('cropHTML'),
+            'cropHTML.' => $this->getUniqueId('not used'),
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['cropHTML'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('cropHTML')
+            ->with($content, $conf['cropHTML'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_cropHTML($content, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_csConv
+     *
+     * @return array Order expected, input, conf
+     */
+    public function stdWrap_csConvDataProvider()
+    {
+        return [
+            'empty string from ISO-8859-15' => [
+                '',
+                iconv('UTF-8', 'ISO-8859-15', ''),
+                ['csConv' => 'ISO-8859-15']
+            ],
+            'empty string from BIG-5' => [
+                '',
+                mb_convert_encoding('', 'BIG-5'),
+                ['csConv' => 'BIG-5']
+            ],
+            '"0" from ISO-8859-15' => [
+                '0',
+                iconv('UTF-8', 'ISO-8859-15', '0'),
+                ['csConv' => 'ISO-8859-15']
+            ],
+            '"0" from BIG-5' => [
+                '0',
+                mb_convert_encoding('0', 'BIG-5'),
+                ['csConv' => 'BIG-5']
+            ],
+            'euro symbol from ISO-88859-15' => [
+                '€',
+                iconv('UTF-8', 'ISO-8859-15', '€'),
+                ['csConv' => 'ISO-8859-15']
+            ],
+            'good morning from BIG-5' => [
+                '早安',
+                mb_convert_encoding('早安', 'BIG-5'),
+                ['csConv' => 'BIG-5']
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_csConv works properly.
+     *
+     * @test
+     * @dataProvider stdWrap_csConvDataProvider
+     * @param string $expected The expected value.
+     * @param string $value The input value.
+     * @param array $conf Property: csConv
+     * @return void
+     */
+    public function stdWrap_csConv($expected, $input, $conf)
+    {
+        $this->assertSame($expected,
+            $this->subject->stdWrap_csConv($input, $conf));
+    }
+
+    /**
+     * Check if stdWrap_current works properly.
+     *
+     * Show:
+     *
+     * - current is returned from $this->data
+     * - the key is stored in $this->currentValKey
+     * - the key defaults to 'currentValue_kidjls9dksoje'
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_current()
+    {
+        $data = [
+            'currentValue_kidjls9dksoje' => 'default',
+            'currentValue_new' => 'new',
+        ];
+        $this->subject->_set('data', $data);
+        $this->assertSame('currentValue_kidjls9dksoje',
+            $this->subject->_get('currentValKey'));
+        $this->assertSame('default',
+            $this->subject->stdWrap_current('discarded', ['discarded']));
+        $this->subject->_set('currentValKey', 'currentValue_new');
+        $this->assertSame('new',
+            $this->subject->stdWrap_current('discarded', ['discarded']));
+    }
+
+    /**
+     * Data provider for stdWrap_data.
+     *
+     * @return array [$expect, $data, $alt]
+     */
+    public function stdWrap_dataDataProvider()
+    {
+        $data = [$this->getUniqueId('data')];
+        $alt = [$this->getUniqueId('alternativeData')];
+        return [
+            'default' => [$data, $data, ''],
+            'alt is array' => [$alt, $data, $alt],
+            'alt is empty array' => [[], $data, []],
+            'alt null' => [$data, $data, null],
+            'alt string' => [$data, $data, 'xxx'],
+            'alt int' => [$data, $data, 1],
+            'alt bool' => [$data, $data, true],
+        ];
+    }
+
+    /**
+     * Checks that stdWrap_data works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method getData.
+     * - Parameter 1 is $conf['data'].
+     * - Parameter 2 is property data by default.
+     * - Parameter 2 is property alternativeData, if set as array.
+     * - Property alternativeData is always unset to ''.
+     * - Returns the return value.
+     *
+     * @test
+     * @dataProvider stdWrap_dataDataProvider
+     * @param mixed $expect Expect either $data or $alternativeData.
+     * @param array $data The data.
+     * @param mixed $alt The alternativeData.
+     * @return void
+     */
+    public function stdWrap_data($expect, $data, $alt)
+    {
+        $conf = ['data' => $this->getUniqueId('conf.data')];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getAccessibleMock(
+            ContentObjectRenderer::class, ['getData']);
+        $subject->_set('data', $data);
+        $subject->_set('alternativeData', $alt);
+        $subject
+            ->expects($this->once())
+            ->method('getData')
+            ->with($conf['data'], $expect)
+            ->willReturn($return);
+        $this->assertSame($return, $subject->stdWrap_data('discard', $conf));
+        $this->assertSame('', $subject->_get('alternativeData'));
+    }
+
+    /**
+     * Check that stdWrap_dataWrap works properly.
+     *
+     * Show:
+     *
+     *  - Delegates to method dataWrap.
+     *  - Parameter 1 is $content.
+     *  - Parameter 2 is $conf['dataWrap'].
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void.
+     */
+    public function stdWrap_dataWrap()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'dataWrap' => $this->getUniqueId('dataWrap'),
+            'dataWrap.' => [$this->getUniqueId('not used')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['dataWrap'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('dataWrap')
+            ->with($content, $conf['dataWrap'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_dataWrap($content, $conf));
+    }
+
+    /**
+     * Data provider for the stdWrap_date test
+     *
+     * @return array [$expect, $content, $conf, $now]
+     */
+    public function stdWrap_dateDataProvider()
+    {
+        // Fictive execution time: 2015-10-02 12:00
+        $now =  1443780000;
+        return [
+            'given timestamp' => [
+                '02.10.2015',
+                $now,
+                ['date' => 'd.m.Y'],
+                $now
+            ],
+            'empty string' => [
+                '02.10.2015',
+                '',
+                ['date' => 'd.m.Y'],
+                $now
+            ],
+            'testing null' => [
+                '02.10.2015',
+                null,
+                ['date' => 'd.m.Y'],
+                $now
+            ],
+            'given timestamp return GMT' => [
+                '02.10.2015 10:00:00',
+                $now,
+                [
+                    'date' => 'd.m.Y H:i:s',
+                    'date.' => ['GMT' => true],
+                ],
+                $now
+            ]
+        ];
+    }
+
+    /**
+     * Check if stdWrap_date works properly.
+     *
+     * @test
+     * @dataProvider stdWrap_dateDataProvider
+     * @param string $expected The expected output.
+     * @param mixed $content The given input.
+     * @param array $conf The given configuration.
+     * @param int $now Fictive execution time.
+     * @return void
+     */
+    public function stdWrap_date($expected, $content, $conf, $now)
+    {
+        $GLOBALS['EXEC_TIME'] = $now;
+        $this->assertEquals($expected,
+            $this->subject->stdWrap_date($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_debug works properly.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_debug()
+    {
+        $expect = '<pre>&lt;p class=&quot;class&quot;&gt;&lt;br/&gt;'
+            . '&lt;/p&gt;</pre>';
+        $content = '<p class="class"><br/></p>';
+        $this->assertSame($expect, $this->subject->stdWrap_debug($content));
+    }
+
+    /**
+     * Data provider for stdWrap_doubleBrTag
+     *
+     * @return array Order expected, input, config
+     */
+    public function stdWrapDoubleBrTagDataProvider()
+    {
+        return [
+            'no config: void input' => [
+                '',
+                '',
+                [],
+            ],
+            'no config: single break' => [
+                'one' . LF . 'two',
+                'one' . LF . 'two',
+                [],
+            ],
+            'no config: double break' => [
+                'onetwo',
+                'one' . LF . LF . 'two',
+                [],
+            ],
+            'no config: double break with whitespace' => [
+                'onetwo',
+                'one' . LF . TAB . ' ' . TAB . ' ' . LF . 'two',
+                [],
+            ],
+            'no config: single break around' => [
+                LF . 'one' . LF,
+                LF . 'one' . LF,
+                [],
+            ],
+            'no config: double break around' => [
+                'one',
+                LF . LF . 'one' . LF . LF,
+                [],
+            ],
+            'empty string: double break around' => [
+                'one',
+                LF . LF . 'one' . LF . LF,
+                ['doubleBrTag' => ''],
+            ],
+            'br tag: double break' => [
+                'one<br/>two',
+                'one' . LF . LF . 'two',
+                ['doubleBrTag' => '<br/>'],
+            ],
+            'br tag: double break around' => [
+                '<br/>one<br/>',
+                LF . LF . 'one' . LF . LF,
+                ['doubleBrTag' => '<br/>'],
+            ],
+            'double br tag: double break around' => [
+                '<br/><br/>one<br/><br/>',
+                LF . LF . 'one' . LF . LF,
+                ['doubleBrTag' => '<br/><br/>'],
+            ],
+        ];
+    }
+
+    /**
+     * Check if doubleBrTag works properly
+     *
+     * @test
+     * @dataProvider stdWrapDoubleBrTagDataProvider
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $config The property 'doubleBrTag'.
+     * @return void
+     */
+    public function stdWrap_doubleBrTag($expected, $input, $config)
+    {
+        $this->assertEquals($expected, $this->subject->stdWrap_doubleBrTag($input, $config));
+    }
+
+    /**
+     * Check if stdWrap_encapsLines works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method encaps_lineSplit.
+     * - Parameter 1 is $content.
+     * - Prameter 2 is $conf['encapsLines'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+     public function stdWrap_encapsLines()
+     {
+         $content = $this->getUniqueId('content');
+         $conf = [
+             'encapsLines' => [$this->getUniqueId('not used')],
+             'encapsLines.' => [$this->getUniqueId('encapsLines.')],
+         ];
+         $return = $this->getUniqueId('return');
+         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+             ->setMethods(['encaps_lineSplit'])->getMock();
+         $subject
+             ->expects($this->once())
+             ->method('encaps_lineSplit')
+             ->with($content, $conf['encapsLines.'])
+             ->willReturn($return);
+         $this->assertSame($return,
+             $subject->stdWrap_encapsLines($content, $conf));
+     }
+
+    /**
+     * Data provider for stdWrap_encodeForJavaScriptValue.
+     *
+     * @return array []
+     */
+    public function stdWrap_encodeForJavaScriptValueDataProvider()
+    {
+        return [
+            'double quote in string' => [
+                '\'double\u0020quote\u0022\'', 'double quote"'
+            ],
+            'backslash in string' => [
+                '\'backslash\u0020\u005C\'', 'backslash \\'
+            ],
+            'exclamation mark' => [
+                '\'exclamation\u0021\'', 'exclamation!'
+            ],
+            'whitespace tab, newline and carriage return' => [
+                '\'white\u0009space\u000As\u000D\'', "white\tspace\ns\r"
+            ],
+            'single quote in string' => [
+                '\'single\u0020quote\u0020\u0027\'', 'single quote \''
+            ],
+            'tag' => [
+                '\'\u003Ctag\u003E\'', '<tag>'
+            ],
+            'ampersand in string' => [
+                '\'amper\u0026sand\'', 'amper&sand'
+            ]
+        ];
+    }
+
+    /**
+     * Check if encodeForJavaScriptValue works properly.
+     *
+     * @test
+     * @dataProvider stdWrap_encodeForJavaScriptValueDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given input.
+     * @return void
+     */
+    public function stdWrap_encodeForJavaScriptValue($expect, $content)
+    {
+        $this->assertSame($expect,
+            $this->subject->stdWrap_encodeForJavaScriptValue($content));
+    }
+
+    /**
+     * Data provider for expandList
+     *
+     * @return array [$expect, $content]
+     */
+    public function stdWrap_expandListDataProvider()
+    {
+        return [
+            'numbers' => ['1,2,3', '1,2,3'],
+            'range' => ['3,4,5', '3-5'],
+            'numbers and range' => ['1,3,4,5,7', '1,3-5,7']
+        ];
+    }
+
+    /**
+     * Test for the stdWrap function "expandList"
+     *
+     * The method simply delegates to GeneralUtility::expandList. There is no
+     * need to repeat the full set of tests of this method here. As PHPUnit
+     * can't mock static methods, to prove they are called, all we do here
+     * is to provide a few smoke tests.
+     *
+     * @test
+     * @dataProvider stdWrap_expandListDataProvider
+     * @param string $expected The expeced output.
+     * @param string $content The given content.
+     * @return void
+     */
+    public function stdWrap_expandList($expected, $content)
+    {
+        $this->assertEquals($expected,
+            $this->subject->stdWrap_expandList($content));
+    }
+
+    /**
+     * Check if stdWrap_field works properly.
+     *
+     * Show:
+     *
+     * - calls getFieldVal
+     * - passes conf['field'] as parameter
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_field()
+    {
+        $expect = $this->getUniqueId('expect');
+        $conf = ['field' => $this->getUniqueId('field')];
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['getFieldVal'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('getFieldVal')
+            ->with($conf['field'])
+            ->willReturn($expect);
+        $this->assertSame($expect,
+            $subject->stdWrap_field('discarded', $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_fieldRequired.
+     *
+     * @return array [$expect, $stop, $content, $conf]
+     */
+    public function stdWrap_fieldRequiredDataProvider()
+    {
+        $content = $this->getUniqueId('content');
+        return [
+            // resulting in boolean false
+            'false is false' => [
+                '', true, $content, ['fieldRequired' => 'false']
+            ],
+            'null is false' => [
+                '', true, $content, ['fieldRequired' => 'null']
+            ],
+            'empty string is false' => [
+                '', true, $content, ['fieldRequired' => 'empty']
+            ],
+            'whitespace is false' => [
+                '', true, $content, ['fieldRequired' => 'whitespace']
+            ],
+            'string zero is false' => [
+                '', true, $content, ['fieldRequired' => 'stringZero']
+            ],
+            'string zero with whitespace is false' => [
+                '', true, $content,
+                ['fieldRequired' => 'stringZeroWithWhiteSpace']
+            ],
+            'zero is false' => [
+                '', true, $content, ['fieldRequired' => 'zero']
+            ],
+            // resulting in boolean true
+            'true is true' => [
+                $content, false, $content, ['fieldRequired' => 'true']
+            ],
+            'string is true' => [
+                $content, false, $content, ['fieldRequired' => 'string']
+            ],
+            'one is true' => [
+                $content, false, $content, ['fieldRequired' => 'one']
+            ]
+        ];
+    }
+
+    /**
+     * Check if stdWrap_fieldRequired works properly.
+     *
+     * Show:
+     *
+     *  - The value is taken from property array data.
+     *  - The key is taken from $conf['fieldRequired'].
+     *  - The value is casted to string by trim() and trimmed.
+     *  - It is further casted to boolean by if().
+     *  - False triggers a stop of further rendering.
+     *  - False returns '', true the given content as is.
+     *
+     * @test
+     * @dataProvider stdWrap_fieldRequiredDataProvider
+     * @param mixed $expect The expected output.
+     * @param bool $stop Expect stop further rendering.
+     * @param mixed $content The given input.
+     * @param array $conf The given configuration.
+     * @return void
+     */
+    public function stdWrap_fieldRequired($expect, $stop, $content, $conf)
+    {
+        $data = [
+            'null' => null,
+            'false' => false,
+            'empty' => '',
+            'whitespace' => TAB . ' ',
+            'stringZero' => '0',
+            'stringZeroWithWhiteSpace' => TAB . ' 0 ' . TAB,
+            'zero' => 0,
+            'string' => 'string',
+            'true' => true,
+            'one' => 1
+        ];
+        $subject = $this->subject;
+        $subject->_set('data', $data);
+        $subject->_set('stdWrapRecursionLevel', 1);
+        $subject->_set('stopRendering', [1 => false]);
+        $this->assertSame($expect,
+            $subject->stdWrap_fieldRequired($content, $conf));
+        $this->assertSame($stop, $subject->_get('stopRendering')[1]);
+    }
+
+    /**
+     * Check if stdWrap_filelink works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method filelink.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['filelink.'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_filelink()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'filelink' => $this->getUniqueId('not used'),
+            'filelink.' => [$this->getUniqueId('filelink.')],
+        ];
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['filelink'])->getMock();
+        $subject->expects($this->once())->method('filelink')
+            ->with($content, $conf['filelink.'])->willReturn('return');
+        $this->assertSame('return',
+            $subject->stdWrap_filelink($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_filelist works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method filelist.
+     * - Parameter is $conf['filelist'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_filelist()
+    {
+        $conf = [
+            'filelist' => $this->getUniqueId('filelist'),
+            'filelist.' => [$this->getUniqueId('not used')],
+        ];
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['filelist'])->getMock();
+        $subject->expects($this->once())->method('filelist')
+            ->with($conf['filelist'])->willReturn('return');
+        $this->assertSame('return',
+            $subject->stdWrap_filelist('discard', $conf));
+    }
+
+    /**
+     * Data provider for the hash test
+     *
+     * @return array [$expect, $content, $conf]
+     */
+    public function hashDataProvider()
+    {
+        return [
+            'md5' => [
+                'bacb98acf97e0b6112b1d1b650b84971',
+                'joh316',
+                ['hash' => 'md5']
+            ],
+            'sha1' => [
+                '063b3d108bed9f88fa618c6046de0dccadcf3158',
+                'joh316',
+                ['hash' => 'sha1']
+            ],
+            'stdWrap capability' => [
+                'bacb98acf97e0b6112b1d1b650b84971',
+                'joh316',
+                [
+                    'hash' => '5',
+                    'hash.' => ['wrap' => 'md|']
+                ]
+            ],
+            'non-existing hashing algorithm' => [
+                '',
+                'joh316',
+                ['hash' => 'non-existing']
+            ]
+        ];
+    }
+
+    /**
+     * Check if stdWrap_hash works properly.
+     *
+     * Show:
+     *
+     *  - Algorithms: sha1, md5
+     *  - Returns '' for invalid algorithm.
+     *  - Value can be processed by stdWrap.
+     *
+     * @test
+     * @dataProvider hashDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given content.
+     * @param array $conf The given configuration.
+     * @return void
+     */
+    public function stdWrap_hash($expect, $content, $conf)
+    {
+        $this->assertSame($expect,
+            $this->subject->stdWrap_hash($content, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_htmlSpecialChars
+     *
+     * @return array Order: expected, input, conf
+     */
+    public function stdWrap_htmlSpecialCharsDataProvider()
+    {
+        return [
+            'void conf' => [
+                '&lt;span&gt;1 &amp;lt; 2&lt;/span&gt;',
+                '<span>1 &lt; 2</span>',
+                [],
+            ],
+            'void preserveEntities' => [
+                '&lt;span&gt;1 &amp;lt; 2&lt;/span&gt;',
+                '<span>1 &lt; 2</span>',
+                ['htmlSpecialChars.' => []],
+            ],
+            'false preserveEntities' => [
+                '&lt;span&gt;1 &amp;lt; 2&lt;/span&gt;',
+                '<span>1 &lt; 2</span>',
+                ['htmlSpecialChars.' => ['preserveEntities' => 0]],
+            ],
+            'true preserveEntities' => [
+                '&lt;span&gt;1 &lt; 2&lt;/span&gt;',
+                '<span>1 &lt; 2</span>',
+                ['htmlSpecialChars.' => ['preserveEntities' => 1]],
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_htmlSpecialChars works properly
+     *
+     * @test
+     * @dataProvider stdWrap_htmlSpecialCharsDataProvider
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $conf htmlSpecialChars.preserveEntities
+     * @return void
+     */
+    public function stdWrap_htmlSpecialChars($expected, $input, $conf)
+    {
+        $this->assertSame($expected,
+            $this->subject->stdWrap_htmlSpecialChars($input, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_if.
+     *
+     * @return array [$expect, $stop, $content, $conf, $times, $will]
+     */
+    public function stdWrap_ifDataProvider()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = ['if.' => [$this->getUniqueId('if.')]];
+        return [
+            // evals to true
+            'empty config' => [
+                $content, false, $content, [], 0, null
+            ],
+            'if. is empty array' => [
+                $content, false, $content, ['if.' => []], 0, null
+            ],
+            'if. is null' => [
+                $content, false, $content, ['if.' => null], 0, null
+            ],
+            'if. is false' => [
+                $content, false, $content, ['if.' => false], 0, null
+            ],
+            'if. is 0' => [
+                $content, false, $content, ['if.' => false], 0, null
+            ],
+            'if. is "0"' => [
+                $content, false, $content, ['if.' => '0'], 0, null
+            ],
+            'checkIf returning true' => [
+                $content, false, $content, $conf, 1, true
+            ],
+            // evals to false
+            'checkIf returning false' => [
+                '', true, $content, $conf, 1, false
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_if works properly.
+     *
+     * Show:
+     *
+     *  - Delegates to the method checkIf to check for 'true'.
+     *  - The parameter to checkIf is $conf['if.'].
+     *  - Is also 'true' if $conf['if.'] is empty (PHP method empty).
+     *  - 'False' triggers a stop of further rendering.
+     *  - Returns the content as is or '' if false.
+     *
+     * @test
+     * @dataProvider stdWrap_ifDataProvider
+     * @param mixed $expect The expected output.
+     * @param bool $stop Expect stop further rendering.
+     * @param mixed $content The given content.
+     * @param mixed $config The given configuration.
+     * @param int $times Times checkIf is called (0 or 1).
+     * @param bool|null $will Return of checkIf (null if not called).
+     * @return void
+     */
+    public function stdWrap_if($expect, $stop, $content, $conf, $times, $will)
+    {
+        $subject = $this->getAccessibleMock(
+            ContentObjectRenderer::class, ['checkIf']);
+        $subject->_set('stdWrapRecursionLevel', 1);
+        $subject->_set('stopRendering', [1 => false]);
+        $subject
+            ->expects($this->exactly($times))
+            ->method('checkIf')
+            ->with($conf['if.'])
+            ->willReturn($will);
+        $this->assertSame($expect, $subject->stdWrap_if($content, $conf));
+        $this->assertSame($stop, $subject->_get('stopRendering')[1]);
+    }
+
+    /**
+     * Data provider for stdWrap_ifBlank.
+     *
+     * @return array [$expect, $content, $conf]
+     */
+    public function stdWrap_ifBlankDataProvider()
+    {
+        $alt = $this->getUniqueId('alternative content');
+        $conf = ['ifBlank' => $alt];
+        return [
+            // blank cases
+            'null is blank' => [$alt, null, $conf],
+            'false is blank' => [$alt, false, $conf],
+            'empty string is blank' => [$alt, '', $conf],
+            'whitespace is blank' => [$alt, TAB . '', $conf],
+            // non-blank cases
+            'string is not blank' => ['string', 'string', $conf],
+            'zero is not blank' => [0, 0, $conf],
+            'zero string is not blank' => ['0', '0', $conf],
+            'zero float is not blank' => [0.0, 0.0, $conf],
+            'true is not blank' => [true, true, $conf],
+        ];
+    }
+
+    /**
+     * Check that stdWrap_ifBlank works properly.
+     *
+     * Show:
+     *
+     * - The content is returned if not blank.
+     * - Otherwise $conf['ifBlank'] is returned.
+     * - The check for blank is done by comparing the trimmed content
+     *   with the empty string for equality.
+     *
+     * @test
+     * @dataProvider stdWrap_ifBlankDataProvider
+     * @param mixed $expected The expected output.
+     * @param mixed $content The given input.
+     * @param array $conf The given configuration.
+     * @return void
+     */
+    public function stdWrap_ifBlank($expect, $content, $conf)
+    {
+        $result = $this->subject->stdWrap_ifBlank($content, $conf);
+        $this->assertSame($expect, $result);
+    }
+
+    /**
+     * Data provider for stdWrap_ifEmpty.
+     *
+     * @return array [$expect, $content, $conf]
+     */
+    public function stdWrap_ifEmptyDataProvider()
+    {
+        $alt = $this->getUniqueId('alternative content');
+        $conf = ['ifEmpty' => $alt];
+        return [
+            // empty cases
+            'null is empty' => [$alt, null, $conf ],
+            'false is empty' => [$alt, false, $conf ],
+            'zero is empty' => [$alt, 0, $conf ],
+            'float zero is empty' => [$alt, 0.0, $conf ],
+            'whitespace is empty' => [$alt, TAB . ' ', $conf ],
+            'empty string is empty' => [$alt, '', $conf ],
+            'zero string is empty' => [$alt, '0', $conf ],
+            'zero string is empty with whitespace' => [
+                $alt, TAB . ' 0 ' . TAB, $conf
+            ],
+            // non-empty cases
+            'string is not empty' => ['string', 'string', $conf ],
+            '1 is not empty' => [1, 1, $conf ],
+            '-1 is not empty' => [-1, -1, $conf ],
+            '0.1 is not empty' => [0.1, 0.1, $conf ],
+            '-0.1 is not empty' => [-0.1, -0.1, $conf ],
+            'true is not empty' => [true, true, $conf ],
+        ];
+    }
+
+    /**
+     * Check that stdWrap_ifEmpty works properly.
+     *
+     * Show:
+     *
+     * - Returns the content, if not empty.
+     * - Otherwise returns $conf['ifEmpty'].
+     * - Empty is checked by cast to boolean after trimming.
+     *
+     * @test
+     * @dataProvider stdWrap_ifEmptyDataProvider
+     * @param mixed $expect The expected output.
+     * @param mixed $content The given content.
+     * @param array $conf The given configuration.
+     * @return void
+     */
+    public function stdWrap_ifEmpty($expect, $content, $conf)
+    {
+        $result = $this->subject->stdWrap_ifEmpty($content, $conf);
+        $this->assertSame($expect, $result);
+    }
+
+    /**
+     * Data provider for stdWrap_ifNull.
+     *
+     * @return array [$expect, $content, $conf]
+     */
+    public function stdWrap_ifNullDataProvider()
+    {
+        $alt = $this->getUniqueId('alternative content');
+        $conf = ['ifNull' => $alt];
+        return [
+            'only null is null' => [$alt, null, $conf],
+            'zero is not null' => [0, 0, $conf],
+            'float zero is not null' => [0.0, 0.0, $conf],
+            'false is not null' => [false, false, $conf],
+            'zero is not null' => [0, 0, $conf],
+            'zero string is not null' => ['0', '0', $conf],
+            'empty string is not null' => ['', '', $conf],
+            'whitespace is not null' => [TAB . '', TAB . '', $conf],
+        ];
+    }
+
+    /**
+     * Check that stdWrap_ifNull works properly.
+     *
+     * Show:
+     *
+     * - Returns the content, if not null.
+     * - Otherwise returns $conf['ifNull'].
+     * - Null is strictly checked by identiy with null.
+     *
+     * @test
+     * @dataProvider stdWrap_ifNullDataProvider
+     * @param mixed $expected The expected output.
+     * @param mixed $content The given input.
+     * @param array $conf The given configuration.
+     * @return void
+     */
+    public function stdWrap_ifNull($expect, $content, $conf)
+    {
+        $result = $this->subject->stdWrap_ifNull($content, $conf);
+        $this->assertSame($expect, $result);
+    }
+
+    /**
+     * Data provider for stdWrap_innerWrap
+     *
+     * @return array Order expected, input, conf
+     */
+    public function stdWrap_innerWrapDataProvider()
+    {
+        return [
+            'no conf' => [
+                'XXX',
+                'XXX',
+                [],
+            ],
+            'simple' => [
+                '<wrap>XXX</wrap>',
+                'XXX',
+                ['innerWrap' => '<wrap>|</wrap>'],
+            ],
+            'missing pipe puts wrap before' => [
+                '<pre>XXX',
+                'XXX',
+                ['innerWrap' => '<pre>'],
+            ],
+            'trims whitespace' => [
+                '<wrap>XXX</wrap>',
+                'XXX',
+                ['innerWrap' => '<wrap>' . TAB . ' | ' . TAB . '</wrap>'],
+            ],
+            'split char change is not possible' => [
+                '<wrap> # </wrap>XXX',
+                'XXX',
+                [
+                    'innerWrap' => '<wrap> # </wrap>',
+                    'innerWrap.' => ['splitChar' => '#'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_innerWrap works properly.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $conf Property: innerWrap
+     * @return void
+     * @test
+     * @dataProvider stdWrap_innerWrapDataProvider
+     */
+    public function stdWrap_innerWrap($expected, $input, $conf)
+    {
+        $this->assertSame($expected,
+            $this->subject->stdWrap_innerWrap($input, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_innerWrap2
+     *
+     * @return array Order expected, input, conf
+     */
+    public function stdWrap_innerWrap2DataProvider()
+    {
+        return [
+            'no conf' => [
+                'XXX',
+                'XXX',
+                [],
+            ],
+            'simple' => [
+                '<wrap>XXX</wrap>',
+                'XXX',
+                ['innerWrap2' => '<wrap>|</wrap>'],
+            ],
+            'missing pipe puts wrap before' => [
+                '<pre>XXX',
+                'XXX',
+                ['innerWrap2' => '<pre>'],
+            ],
+            'trims whitespace' => [
+                '<wrap>XXX</wrap>',
+                'XXX',
+                ['innerWrap2' => '<wrap>' . TAB . ' | ' . TAB . '</wrap>'],
+            ],
+            'split char change is not possible' => [
+                '<wrap> # </wrap>XXX',
+                'XXX',
+                [
+                    'innerWrap2' => '<wrap> # </wrap>',
+                    'innerWrap2.' => ['splitChar' => '#'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_innerWrap2 works properly.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $conf Property: innerWrap2
+     * @return void
+     * @test
+     * @dataProvider stdWrap_innerWrap2DataProvider
+     */
+    public function stdWrap_innerWrap2($expected, $input, $conf)
+    {
+        $this->assertSame($expected,
+            $this->subject->stdWrap_innerWrap2($input, $conf));
+    }
+
+    /**
+     * Check if stdWrap_insertData works properly.
+     *
+     * Show:
+     *
+     *  - Delegates to method insertData.
+     *  - Parameter 1 is $content.
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void
+     */
+    public function stdWrap_insertData()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [$this->getUniqueId('conf not used')];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['insertData'])->getMock();
+        $subject->expects($this->once())->method('insertData')
+            ->with($content)->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_insertData($content, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_intval
+     *
+     * @return array [$expect, $content]
+     */
+    public function stdWrap_intvalDataProvider()
+    {
+        return [
+            // numbers
+            'int' => [123, 123],
+            'float' => [123, 123.45],
+            'float does not round up' => [123, 123.55],
+            // negative numbers
+            'negative int' => [-123, -123],
+            'negative float' => [-123, -123.45],
+            'negative float does not round down' => [-123, -123.55],
+            // strings
+            'word string' => [0, 'string'],
+            'empty string' => [0, ''],
+            'zero string' => [0, '0'],
+            'int string' => [123, '123'],
+            'float string' => [123, '123.55'],
+            'negative float string' => [-123, '-123.55'],
+            // other types
+            'null' => [0, null],
+            'true' => [1, true],
+            'false' => [0, false]
+        ];
+    }
+
+    /**
+     * Check that stdWrap_intval works properly.
+     *
+     * Show:
+     *
+     * - It does not round up.
+     * - All types of input is casted to int:
+     *   - null: 0
+     *   - false: 0
+     *   - true: 1
+     *   -
+     *
+     *
+     *
+     * @test
+     * @dataProvider stdWrap_intvalDataProvider
+     * @param int $expect The expected output.
+     * @param string $content The given input.
+     * @return void
+     */
+    public function stdWrap_intval($expect, $content)
+    {
+        $this->assertSame($expect, $this->subject->stdWrap_intval($content));
+    }
+
+    /**
+     * Data provider for stdWrap_keywords
+     *
+     * @return string[][] Order expected, input
+     */
+    public function stdWrapKeywordsDataProvider()
+    {
+        return [
+            'empty string' => ['', ''],
+            'blank' => ['', ' '],
+            'tab' => ['', "\t"],
+            'single semicolon' => [',', ' ; '],
+            'single comma' => [',', ' , '],
+            'single nl' => [',', ' ' . PHP_EOL . ' '],
+            'double semicolon' => [',,', ' ; ; '],
+            'double comma' => [',,', ' , , '],
+            'double nl' => [',,', ' ' . PHP_EOL . ' ' . PHP_EOL . ' '],
+            'simple word' => ['one', ' one '],
+            'simple word trimmed' => ['one', 'one'],
+            ', separated' => ['one,two', ' one , two '],
+            '; separated' => ['one,two', ' one ; two '],
+            'nl separated' => ['one,two', ' one ' . PHP_EOL . ' two '],
+            ', typical' => ['one,two,three', 'one, two, three'],
+            '; typical' => ['one,two,three', ' one; two; three'],
+            'nl typical' => [
+                'one,two,three',
+                'one' . PHP_EOL . 'two' . PHP_EOL . 'three'
+            ],
+            ', sourounded' => [',one,two,', ' , one , two , '],
+            '; sourounded' => [',one,two,', ' ; one ; two ; '],
+            'nl sourounded' => [
+                ',one,two,',
+                ' ' . PHP_EOL . ' one ' . PHP_EOL . ' two ' . PHP_EOL . ' '
+            ],
+            'mixed' => [
+                'one,two,three,four',
+                ' one, two; three' . PHP_EOL . 'four'
+            ],
+            'keywods with blanks in words' => [
+                'one plus,two minus',
+                ' one plus , two minus ',
+            ]
+        ];
+    }
+
+    /**
+     * Check if stdWrap_keywords works properly.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @return void
+     * @test
+     * @dataProvider stdWrapKeywordsDataProvider
+     */
+    public function stdWrap_keywords($expected, $input)
+    {
+        $this->assertSame($expected, $this->subject->stdWrap_keywords($input));
+    }
+
+    /**
+     * Data provider for stdWrap_lang
+     *
+     * @return array Order expected, input, conf, language
+     */
+    public function stdWrap_langDataProvider()
+    {
+        return [
+            'empty conf' => [
+                'original',
+                'original',
+                [],
+                'de',
+            ],
+            'translation de' => [
+                'Übersetzung',
+                'original',
+                [
+                    'lang.' => [
+                        'de' => 'Übersetzung',
+                        'it' => 'traduzione',
+                    ]
+                ],
+                'de',
+            ],
+            'translation it' => [
+                'traduzione',
+                'original',
+                [
+                    'lang.' => [
+                        'de' => 'Übersetzung',
+                        'it' => 'traduzione',
+                    ]
+                ],
+                'it',
+            ],
+            'no translation' => [
+                'original',
+                'original',
+                [
+                    'lang.' => [
+                        'de' => 'Übersetzung',
+                        'it' => 'traduzione',
+                    ]
+                ],
+                '',
+            ],
+            'missing label' => [
+                'original',
+                'original',
+                [
+                    'lang.' => [
+                        'de' => 'Übersetzung',
+                        'it' => 'traduzione',
+                    ]
+                ],
+                'fr',
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_lang works properly.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $conf Properties: lang.xy.
+     * @param string $language For $TSFE->config[config][language].
+     * @return void
+     * @test
+     * @dataProvider stdWrap_langDataProvider
+     */
+    public function stdWrap_lang($expected, $input, $conf, $language)
+    {
+        if ($language) {
+            $this->frontendControllerMock
+                ->config['config']['language'] = $language;
+        }
+        $this->assertSame($expected,
+            $this->subject->stdWrap_lang($input, $conf));
+    }
+
+    /**
+     * Check if stdWrap_listNum works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method listNum.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['listNum'].
+     * - Parameter 3 is $conf['listNum.']['splitChar'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_listNum()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'listNum' => $this->getUniqueId('listNum'),
+            'listNum.' => [
+                'splitChar' => $this->getUniqueId('splitChar')
+            ],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['listNum'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('listNum')
+            ->with(
+                $content,
+                $conf['listNum'],
+                $conf['listNum.']['splitChar']
+            )
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_listNum($content, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_noTrimWrap.
+     *
+     * @return array [$expect, $content, $conf]
+     */
+    public function stdWrap_noTrimWrapDataProvider()
+    {
+        return [
+            'Standard case' => [
+                ' left middle right ',
+                'middle',
+                [
+                    'noTrimWrap' => '| left | right |',
+                ],
+            ],
+            'Tabs as whitespace' => [
+                TAB . 'left' . TAB . 'middle' . TAB . 'right' . TAB,
+                'middle',
+                [
+                    'noTrimWrap' =>
+                    '|' . TAB . 'left' . TAB . '|' . TAB . 'right' . TAB . '|',
+                ],
+            ],
+            'Split char is 0' => [
+                ' left middle right ',
+                'middle',
+                [
+                    'noTrimWrap' => '0 left 0 right 0',
+                    'noTrimWrap.' => ['splitChar' => '0'],
+                ],
+            ],
+            'Split char is pipe (default)' => [
+                ' left middle right ',
+                'middle',
+                [
+                    'noTrimWrap' => '| left | right |',
+                    'noTrimWrap.' => ['splitChar' => '|'],
+                ],
+            ],
+            'Split char is a' => [
+                ' left middle right ',
+                'middle',
+                [
+                    'noTrimWrap' => 'a left a right a',
+                    'noTrimWrap.' => ['splitChar' => 'a'],
+                ],
+            ],
+            'Split char is a word (ab)' => [
+                ' left middle right ',
+                'middle',
+                [
+                    'noTrimWrap' => 'ab left ab right ab',
+                    'noTrimWrap.' => ['splitChar' => 'ab'],
+                ],
+            ],
+            'Split char accepts stdWrap' => [
+                ' left middle right ',
+                'middle',
+                [
+                    'noTrimWrap' => 'abc left abc right abc',
+                    'noTrimWrap.' => [
+                        'splitChar' => 'b',
+                        'splitChar.' => ['wrap' => 'a|c'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_noTrimWrap works properly.
+     *
+     * @test
+     * @dataProvider stdWrap_noTrimWrapDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given input.
+     * @param array $conf The given configuration.
+     * @return void
+     */
+    public function stdWrap_noTrimWrap($expect, $content, $conf)
+    {
+        $this->assertSame($expect,
+            $this->subject->stdWrap_noTrimWrap($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_numRows works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method numRows.
+     * - Parameter is $conf['numRows.'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_numRows()
+    {
+        $conf = [
+            'numRows' => $this->getUniqueId('numRows'),
+            'numRows.' => [$this->getUniqueId('numRows')],
+        ];
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['numRows'])->getMock();
+        $subject->expects($this->once())->method('numRows')
+            ->with($conf['numRows.'])->willReturn('return');
+        $this->assertSame('return',
+            $subject->stdWrap_numRows('discard', $conf));
+    }
+
+    /**
+     * Check if stdWrap_numberFormat works properly.
+     *
+     * Show:
+     *
+     * - Delegates to the method numberFormat.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['numberFormat.'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_numberFormat()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'numberFormat' => $this->getUniqueId('not used'),
+            'numberFormat.' => [$this->getUniqueId('numberFormat.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['numberFormat'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('numberFormat')
+            ->with($content, $conf['numberFormat.'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_numberFormat($content, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_outerWrap
+     *
+     * @return array Order expected, input, conf
+     */
+    public function stdWrap_outerWrapDataProvider()
+    {
+        return [
+            'no conf' => [
+                'XXX',
+                'XXX',
+                [],
+            ],
+            'simple' => [
+                '<wrap>XXX</wrap>',
+                'XXX',
+                ['outerWrap' => '<wrap>|</wrap>'],
+            ],
+            'missing pipe puts wrap before' => [
+                '<pre>XXX',
+                'XXX',
+                ['outerWrap' => '<pre>'],
+            ],
+            'trims whitespace' => [
+                '<wrap>XXX</wrap>',
+                'XXX',
+                ['outerWrap' => '<wrap>' . TAB . ' | ' . TAB . '</wrap>'],
+            ],
+            'split char change is not possible' => [
+                '<wrap> # </wrap>XXX',
+                'XXX',
+                [
+                    'outerWrap' => '<wrap> # </wrap>',
+                    'outerWrap.' => ['splitChar' => '#'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_outerWrap works properly.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $conf Property: outerWrap
+     * @return void
+     * @test
+     * @dataProvider stdWrap_outerWrapDataProvider
+     */
+    public function stdWrap_outerWrap($expected, $input, $conf)
+    {
+        $this->assertSame($expected,
+            $this->subject->stdWrap_outerWrap($input, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_csConv
+     *
+     * @return array Order expected, input, conf
+     */
+    public function stdWrap_overrideDataProvider()
+    {
+        return [
+            'standard case' => [
+                'override', 'content', ['override' => 'override']
+            ],
+            'empty conf does not override' => [
+                'content', 'content', []
+            ],
+            'empty string does not override' => [
+                'content', 'content', ['override' => '']
+            ],
+            'whitespace does not override' => [
+                'content', 'content', ['override' => ' ' . TAB]
+            ],
+            'zero does not override' => [
+                'content', 'content', ['override' => 0]
+            ],
+            'false does not override' => [
+                'content', 'content', ['override' => false]
+            ],
+            'null does not override' => [
+                'content', 'content', ['override' => null]
+            ],
+            'one does override' => [
+                1, 'content', ['override' => 1]
+            ],
+            'minus one does override' => [
+                -1, 'content', ['override' => -1]
+            ],
+            'float does override' => [
+                -0.1, 'content', ['override' => -0.1]
+            ],
+            'true does override' => [
+                true, 'content', ['override' => true]
+            ],
+            'the value is not trimmed' => [
+                TAB . 'override', 'content', ['override' => TAB . 'override']
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_override works properly.
+     *
+     * @test
+     * @dataProvider stdWrap_overrideDataProvider
+     * @param string $input The input value.
+     * @param array $conf Property: setCurrent
+     * @return void
+     */
+    public function stdWrap_override($expect, $content, $conf)
+    {
+        $this->assertSame($expect,
+            $this->subject->stdWrap_override($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_parseFunc works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method parseFunc.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['parseFunc.'].
+     * - Parameter 3 is $conf['parseFunc'].
+     * - Returns the return.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_parseFunc()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'parseFunc' => $this->getUniqueId('parseFunc'),
+            'parseFunc.' => [$this->getUniqueId('parseFunc.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['parseFunc'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('parseFunc')
+            ->with($content, $conf['parseFunc.'], $conf['parseFunc'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_parseFunc($content, $conf));
+    }
+
+    /**
+     * Check that stdWrap_postUserFunc works properly.
+     *
+     * Show:
+     *  - Delegates to method callUserFunction.
+     *  - Parameter 1 is $conf['postUserFunc'].
+     *  - Parameter 2 is $conf['postUserFunc.'].
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void.
+     */
+    public function stdWrap_postUserFunc()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'postUserFunc' => $this->getUniqueId('postUserFunc'),
+            'postUserFunc.' => [$this->getUniqueId('postUserFunc.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['callUserFunction'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('callUserFunction')
+            ->with($conf['postUserFunc'], $conf['postUserFunc.'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_postUserFunc($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_preIfEmptyListNum works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method listNum.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['preIfEmptyListNum'].
+     * - Parameter 3 is $conf['preIfEmptyListNum.']['splitChar'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_preIfEmptyListNum()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'preIfEmptyListNum' => $this->getUniqueId('preIfEmptyListNum'),
+            'preIfEmptyListNum.' => [
+                'splitChar' => $this->getUniqueId('splitChar')
+            ],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['listNum'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('listNum')
+            ->with(
+                $content,
+                $conf['preIfEmptyListNum'],
+                $conf['preIfEmptyListNum.']['splitChar']
+            )
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_preIfEmptyListNum($content, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_prefixComment.
+     *
+     * @retunr array [$expect, $content, $conf, $disable, $times, $will]
+     */
+    public function stdWrap_prefixCommentDataProvider()
+    {
+        $content = $this->getUniqueId('content');
+        $will = $this->getUniqueId('will');
+        $conf['prefixComment'] = $this->getUniqueId('prefixComment');
+        $emptyConf1 = [];
+        $emptyConf2['prefixComment'] = '';
+        return [
+            'standard case' => [$will, $content, $conf, false, 1, $will],
+            'emptyConf1' => [$content, $content, $emptyConf1, false, 0, $will],
+            'emptyConf2' => [$content, $content, $emptyConf2, false, 0, $will],
+            'disabled by bool' => [$content, $content, $conf, true, 0, $will],
+            'disabled by int' => [$content, $content, $conf, 1, 0, $will],
+        ];
+    }
+
+    /**
+     * Check that stdWrap_prefixComment works properly.
+     *
+     * Show:
+     *
+     *  - Delegates to method prefixComment.
+     *  - Parameter 1 is $conf['prefixComment'].
+     *  - Parameter 2 is [].
+     *  - Parameter 3 is $content.
+     *  - Returns the return value.
+     *  - Returns $content as is,
+     *    - if $conf['prefixComment'] is empty.
+     *    - if 'config.disablePrefixComment' is configured by the frontend.
+     *
+     *  @test
+     *  @dataProvider stdWrap_prefixCommentDataProvider
+     *  @return void
+     */
+    public function stdWrap_prefixComment(
+        $expect, $content, $conf, $disable, $times, $will)
+    {
+        $this->frontendControllerMock
+            ->config['config']['disablePrefixComment'] = $disable;
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['prefixComment'])->getMock();
+        $subject
+            ->expects($this->exactly($times))
+            ->method('prefixComment')
+            ->with($conf['prefixComment'], [], $content)
+            ->willReturn($will);
+        $this->assertSame($expect,
+            $subject->stdWrap_prefixComment($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_prepend works properly.
+     *
+     * Show:
+     *
+     * - Delegates to the method cObjGetSingle().
+     * - First parameter is $conf['prepend'].
+     * - Second parameter is $conf['prepend.'].
+     * - Third parameter is '/stdWrap/.prepend'.
+     * - Returns the return value prepended to $content.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_prepend()
+    {
+        $debugKey =  '/stdWrap/.prepend';
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'prepend' => $this->getUniqueId('prepend'),
+            'prepend.' => [$this->getUniqueId('prepend.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['cObjGetSingle'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('cObjGetSingle')
+            ->with($conf['prepend'], $conf['prepend.'], $debugKey)
+            ->willReturn($return);
+        $this->assertSame($return . $content,
+            $subject->stdWrap_prepend($content, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_prioriCalc
+     *
+     * @return array [$expect, $content, $conf]
+     */
+    public function stdWrap_prioriCalcDataProvider()
+    {
+        return [
+            'priority of *' => ['7', '1 + 2 * 3', []],
+            'priority of parentheses' => ['9', '(1 + 2) * 3', []],
+            'float' => ['1.5', '3/2', []],
+            'intval casts to int' => [1, '3/2', ['prioriCalc' => 'intval']],
+            'intval does not round' => [2, '2.7', ['prioriCalc' => 'intval']],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_prioriCalc works properly.
+     *
+     * Show:
+     *
+     * - If $conf['prioriCalc'] is 'intval' the return is casted to int.
+     * - Delegates to MathUtility::calculateWithParentheses.
+     *
+     * Note: As PHPUnit can't mock static methods, the call to
+     *       MathUtility::calculateWithParentheses can't be easily intercepted.
+     *       The test is done by testing input/output pairs instead. To not
+     *       duplicate the testing of calculateWithParentheses just a few
+     *       smoke tests are done here.
+     *
+     * @test
+     * @dataProvider stdWrap_prioriCalcDataProvider
+     * @param mixed $expect The expected output.
+     * @param string $content The given content.
+     * @param array $conf The given configuration.
+     * @return void
+     */
+    public function stdWrap_prioriCalc($expect, $content, $conf)
+    {
+        $result = $this->subject->stdWrap_prioriCalc($content, $conf);
+        $this->assertSame($expect, $result);
+    }
+
+    /**
+     * Check if stdWrap_preUserFunc works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method callUserFunction.
+     * - Parameter 1 is $conf['preUserFunc'].
+     * - Parameter 2 is $conf['preUserFunc.'].
+     * - Parameter 3 is $content.
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_preUserFunc()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'preUserFunc' => $this->getUniqueId('preUserFunc'),
+            'preUserFunc.' => [$this->getUniqueId('preUserFunc.')],
+        ];
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['callUserFunction'])->getMock();
+        $subject->expects($this->once())->method('callUserFunction')
+            ->with($conf['preUserFunc'], $conf['preUserFunc.'], $content)
+            ->willReturn('return');
+        $this->assertSame('return',
+            $subject->stdWrap_preUserFunc($content, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_rawUrlEncode
+     *
+     * @return array [$expect, $content].
+     */
+    public function stdWrap_rawUrlEncodeDataProvider()
+    {
+        return [
+            'https://typo3.org?id=10' => [
+                'https%3A%2F%2Ftypo3.org%3Fid%3D10',
+                'https://typo3.org?id=10',
+            ],
+            'https://typo3.org?id=10&foo=bar' => [
+                'https%3A%2F%2Ftypo3.org%3Fid%3D10%26foo%3Dbar',
+                'https://typo3.org?id=10&foo=bar',
+            ],
+        ];
+    }
+
+    /**
+     * Check if rawUrlEncode works properly.
+     *
+     * @test
+     * @dataProvider stdWrap_rawUrlEncodeDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given input.
+     * @return void
+     */
+    public function stdWrap_rawUrlEncode($expect, $content)
+    {
+        $this->assertSame($expect,
+            $this->subject->stdWrap_rawUrlEncode($content));
+    }
+
+    /**
+     * Check if stdWrap_replacement works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method replacement.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['replacement.'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_replacement()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'replacement' => $this->getUniqueId('not used'),
+            'replacement.' => [$this->getUniqueId('replacement.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['replacement'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('replacement')
+            ->with($content, $conf['replacement.'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_replacement($content, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_required.
+     *
+     * @return array [$expect, $stop, $content]
+     */
+    public function stdWrap_requiredDataProvider()
+    {
+        return [
+            // empty content
+            'empty string is empty' => ['', true, ''],
+            'null is empty' => ['', true, null],
+            'false is empty' => ['', true, false],
+
+            // non-empty content
+            'blank is not empty' => [' ', false, ' '],
+            'tab is not empty' => [TAB, false, TAB],
+            'linebreak is not empty' => [PHP_EOL, false, PHP_EOL],
+            '"0" is not empty' => ['0', false, '0'],
+            '0 is not empty' => [0, false, 0],
+            '1 is not empty' => [1, false, 1],
+            'true is not empty' => [true, false, true],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_required works properly.
+     *
+     * Show:
+     *
+     *  - Content is empty if it equals '' after cast to string.
+     *  - Empty content triggers a stop of further rendering.
+     *  - Returns the content as is or '' for empty content.
+     *
+     * @test
+     * @dataProvider stdWrap_requiredDataProvider
+     * @param mixed $expect The expected output.
+     * @param bool $stop Expect stop further rendering.
+     * @param mixed $content The given input.
+     * @return void
+     */
+    public function stdWrap_required($expect, $stop, $content)
+    {
+        $subject = $this->subject;
+        $subject->_set('stdWrapRecursionLevel', 1);
+        $subject->_set('stopRendering', [1 => false]);
+        $this->assertSame($expect, $subject->stdWrap_required($content));
+        $this->assertSame($stop, $subject->_get('stopRendering')[1]);
+    }
+
+    /**
+     * Check if stdWrap_round works properly
+     *
+     * Show:
+     *
+     * - Delegates to method round.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['round.'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_round()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'round' => $this->getUniqueId('not used'),
+            'round.' => [$this->getUniqueId('round.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['round'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('round')
+            ->with($content, $conf['round.'])
+            ->willReturn($return);
+        $this->assertSame($return, $subject->stdWrap_round($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_setContentToCurrent works properly.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_setContentToCurrent()
+    {
+        $content = $this->getUniqueId('content');
+        $this->assertNotSame($content, $this->subject->getData('current'));
+        $this->assertSame($content,
+            $this->subject->stdWrap_setContentToCurrent($content));
+        $this->assertSame($content, $this->subject->getData('current'));
+    }
+
+    /**
+     * Data provider for stdWrap_setCurrent
+     *
+     * @return array Order input, conf
+     */
+    public function stdWrap_setCurrentDataProvider()
+    {
+        return [
+            'no conf' => [
+                'content',
+                [],
+            ],
+            'empty string' => [
+                'content',
+                ['setCurrent' => ''],
+            ],
+            'non-empty string' => [
+                'content',
+                ['setCurrent' => 'xxx'],
+            ],
+            'integer null' => [
+                'content',
+                ['setCurrent' => 0],
+            ],
+            'integer not null' => [
+                'content',
+                ['setCurrent' => 1],
+            ],
+            'boolean true' => [
+                'content',
+                ['setCurrent' => true],
+            ],
+            'boolean false' => [
+                'content',
+                ['setCurrent' => false],
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_setCurrent works properly.
+     *
+     * @test
+     * @dataProvider stdWrap_setCurrentDataProvider
+     * @param string $input The input value.
+     * @param array $conf Property: setCurrent
+     * @return void
+     */
+    public function stdWrap_setCurrent($input, $conf)
+    {
+        if (isset($conf['setCurrent'])) {
+            $this->assertNotSame($conf['setCurrent'], $this->subject->getData('current'));
+        }
+        $this->assertSame($input, $this->subject->stdWrap_setCurrent($input, $conf));
+        if (isset($conf['setCurrent'])) {
+            $this->assertSame($conf['setCurrent'], $this->subject->getData('current'));
+        }
+    }
+
+    /**
+     * Check if stdWrap_space works properly.
+     *
+     * Show:
+     *
+     *  - Delegates to method wrapSpace.
+     *  - Parameter 1 is $content.
+     *  - Parameter 2 is $conf['space'],
+     *  - trimmed.
+     *  - Parameter 3 is $conf['space.'].
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void.
+     */
+    public function stdWrap_space()
+    {
+        $content = $this->getUniqueId('content');
+        $trimmed = $this->getUniqueId('space trimmed');
+        $conf = [
+            'space' => TAB . ' ' . $trimmed . ' ' . TAB,
+            'space.' => [$this->getUniqueId('space.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['wrapSpace'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('wrapSpace')
+            ->with($content, $trimmed, $conf['space.'])
+            ->willReturn($return);
+        $this->assertSame($return, $subject->stdWrap_space($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_spaceAfter works properly.
+     *
+     * Show:
+     *
+     *  - Delegates to method wrapSpace.
+     *  - Parameter 1 is $content.
+     *  - Parameter 2 is $conf['spaceAfter'],
+     *  - trimmed,
+     *  - prepended with '|'.
+     *  - Parameter 3 is $conf['space.'] !!!
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void.
+     */
+    public function stdWrap_spaceAfter()
+    {
+        $content = $this->getUniqueId('content');
+        $trimmed = $this->getUniqueId('spaceAfter trimmed');
+        $conf = [
+            'spaceAfter' => TAB . ' ' . $trimmed . ' ' . TAB,
+            'space.' => [$this->getUniqueId('space.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['wrapSpace'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('wrapSpace')
+            ->with($content, '|' . $trimmed, $conf['space.'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_spaceAfter($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_spaceBefore works properly.
+     *
+     * Show:
+     *
+     *  - Delegates to method wrapSpace.
+     *  - Parameter 1 is $content.
+     *  - Parameter 2 is $conf['spaceBefore'],
+     *  - trimmed,
+     *  - appended with '|'.
+     *  - Parameter 3 is $conf['space.'] !!!
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void.
+     */
+    public function stdWrap_spaceBefore()
+    {
+        $content = $this->getUniqueId('content');
+        $trimmed = $this->getUniqueId('spaceBefore trimmed');
+        $conf = [
+            'spaceBefore' => TAB . ' ' . $trimmed . ' ' . TAB,
+            'space.' => [$this->getUniqueId('space.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['wrapSpace'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('wrapSpace')
+            ->with($content, $trimmed . '|', $conf['space.'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_spaceBefore($content, $conf));
+    }
+
+    /**
+     * Check if stdWrap_split works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method splitObj.
+     * - Parameter 1 is $content.
+     * - Prameter 2 is $conf['split.'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+     public function stdWrap_split()
+     {
+         $content = $this->getUniqueId('content');
+         $conf = [
+             'split' => $this->getUniqueId('not used'),
+             'split.' => [$this->getUniqueId('split.')],
+         ];
+         $return = $this->getUniqueId('return');
+         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+             ->setMethods(['splitObj'])->getMock();
+         $subject
+             ->expects($this->once())
+             ->method('splitObj')
+             ->with($content, $conf['split.'])
+             ->willReturn($return);
+         $this->assertSame($return,
+             $subject->stdWrap_split($content, $conf));
+     }
+
+    /**
+     * Check that stdWrap_stdWrap works properly.
+     *
+     * Show:
+     *  - Delegates to method stdWrap.
+     *  - Parameter 1 is $content.
+     *  - Parameter 2 is $conf['stdWrap.'].
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void.
+     */
+    public function stdWrap_stdWrap()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'stdWrap' => $this->getUniqueId('not used'),
+            'stdWrap.' => [$this->getUniqueId('stdWrap.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['stdWrap'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('stdWrap')
+            ->with($content, $conf['stdWrap.'])
+            ->willReturn($return);
+        $this->assertSame($return, $subject->stdWrap_stdWrap($content, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_stdWrapValue test
+     *
+     * @return array
+     */
+    public function stdWrap_stdWrapValueDataProvider()
+    {
+        return array(
+            'only key returns value' => array(
+                'ifNull',
+                array(
+                    'ifNull' => '1',
+                ),
+                '',
+                '1',
+            ),
+            'array without key returns empty string' => array(
+                'ifNull',
+                array(
+                    'ifNull.' => '1',
+                ),
+                '',
+                '',
+            ),
+            'array without key returns default' => array(
+                'ifNull',
+                array(
+                    'ifNull.' => '1',
+                ),
+                'default',
+                'default',
+            ),
+            'non existing key returns default' => array(
+                'ifNull',
+                array(
+                    'noTrimWrap' => 'test',
+                    'noTrimWrap.' => '1',
+                ),
+                'default',
+                'default',
+            ),
+            'existing key and array returns stdWrap' => array(
+                'test',
+                array(
+                    'test' => 'value',
+                    'test.' => array('case' => 'upper'),
+                ),
+                'default',
+                'VALUE'
+            ),
+        );
+    }
+
+    /**
+     * @param string $key
+     * @param array $configuration
+     * @param string $defaultValue
+     * @param string $expected
+     * @dataProvider stdWrap_stdWrapValueDataProvider
+     * @test
+     */
+    public function stdWrap_stdWrapValue($key, array $configuration, $defaultValue, $expected)
+    {
+        $result = $this->subject->stdWrapValue($key, $configuration, $defaultValue);
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * Data provider for stdWrap_strPad.
+     *
+     * @return array [$expect, $content, $conf]
+     */
+    public function stdWrap_strPadDataProvider()
+    {
+        return [
+            'pad string with default settings and length 10' => [
+                'Alien     ',
+                'Alien',
+                [
+                    'length' => '10',
+                ],
+            ],
+            'pad string with padWith -= and type left and length 10' => [
+                '-=-=-Alien',
+                'Alien',
+                [
+                    'length' => '10',
+                    'padWith' => '-=',
+                    'type' => 'left',
+                ],
+            ],
+            'pad string with padWith _ and type both and length 10' => [
+                '__Alien___',
+                'Alien',
+                [
+                    'length' => '10',
+                    'padWith' => '_',
+                    'type' => 'both',
+                ],
+            ],
+            'pad string with padWith 0 and type both and length 10' => [
+                '00Alien000',
+                'Alien',
+                [
+                    'length' => '10',
+                    'padWith' => '0',
+                    'type' => 'both',
+                ],
+            ],
+            'pad string with padWith ___ and type both and length 6' => [
+                'Alien_',
+                'Alien',
+                [
+                    'length' => '6',
+                    'padWith' => '___',
+                    'type' => 'both',
+                ],
+            ],
+            'pad string with padWith _ and type both and length 12, using stdWrap for length' => [
+                '___Alien____',
+                'Alien',
+                [
+                    'length' => '1',
+                    'length.' => [
+                        'wrap' => '|2',
+                    ],
+                    'padWith' => '_',
+                    'type' => 'both',
+                ],
+            ],
+            'pad string with padWith _ and type both and length 12, using stdWrap for padWidth' => [
+                '-_=Alien-_=-',
+                'Alien',
+                [
+                    'length' => '12',
+                    'padWith' => '_',
+                    'padWith.' => [
+                        'wrap' => '-|=',
+                    ],
+                    'type' => 'both',
+                ],
+            ],
+            'pad string with padWith _ and type both and length 12, using stdWrap for type' => [
+                '_______Alien',
+                'Alien',
+                [
+                    'length' => '12',
+                    'padWith' => '_',
+                    'type' => 'both',
+                    // make type become "left"
+                    'type.' => [
+                        'substring' => '2,1',
+                        'wrap' => 'lef|',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_strPad works properly.
+     *
+     * @test
+     * @dataProvider stdWrap_strPadDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given input.
+     * @param array $conf The configuration of 'strPad.'.
+     * @return void
+     */
+    public function stdWrap_strPad($expect, $content, $conf)
+    {
+        $conf = ['strPad.' => $conf];
+        $result = $this->subject->stdWrap_strPad($content, $conf);
+        $this->assertSame($expect, $result);
+    }
+
+    /**
+     * Data provider for stdWrap_strftime
+     *
+     * @return array [$expect, $content, $conf, $now]
+     */
+    public function stdWrap_strftimeDataProvider()
+    {
+        // Fictive execution time is 2012-09-01 12:00 in UTC/GMT.
+        $now = 1346500800;
+        return [
+            'given timestamp' => [
+                '01-09-2012',
+                $now,
+                ['strftime' => '%d-%m-%Y'],
+                $now
+            ],
+            'empty string' => [
+                '01-09-2012',
+                '',
+                ['strftime' => '%d-%m-%Y'],
+                $now
+            ],
+            'testing null' => [
+                '01-09-2012',
+                null,
+                ['strftime' => '%d-%m-%Y'],
+                $now
+            ]
+        ];
+    }
+
+    /**
+     * Check if stdWrap_strftime works properly.
+     *
+     * @test
+     * @dataProvider stdWrap_strftimeDataProvider
+     * @param string $expect The expected output.
+     * @param mixed $content The given input.
+     * @param array $conf The given configuration.
+     * @param int $now Fictive execution time.
+     * @return void
+     */
+    public function stdWrap_strftime($expect, $content, $conf, $now)
+    {
+        // Save current timezone and set to UTC to make the system under test
+        // behave the same in all server timezone settings
+        $timezoneBackup = date_default_timezone_get();
+        date_default_timezone_set('UTC');
+
+        $GLOBALS['EXEC_TIME'] = $now;
+        $result = $this->subject->stdWrap_strftime($content, $conf);
+
+        // Reset timezone
+        date_default_timezone_set($timezoneBackup);
+
+        $this->assertSame($expect, $result);
+    }
+
+    /**
+     * Test for the stdWrap_stripHtml
+     *
+     * @test
+     */
+    public function stdWrap_stripHtml()
+    {
+        $content = '<html><p>Hello <span class="inline">inline tag<span>!</p><p>Hello!</p></html>';
+        $expected = 'Hello inline tag!Hello!';
+        $this->assertSame($expected, $this->subject->stdWrap_stripHtml($content));
+    }
+
+    /**
+     * Data provider for the stdWrap_strtotime test
+     *
+     * @return array [$expect, $content, $conf]
+     */
+    public function stdWrap_strtotimeDataProvider()
+    {
+        return [
+            'date from content' => [
+                1417651200, '2014-12-04',
+                ['strtotime' => '1']
+            ],
+            'manipulation of date from content' => [
+                1417996800, '2014-12-04',
+                ['strtotime' => '+ 2 weekdays']
+            ],
+            'date from configuration' => [
+                1417651200, '',
+                ['strtotime' => '2014-12-04']
+            ],
+            'manipulation of date from configuration' => [
+                1417996800, '',
+                ['strtotime' => '2014-12-04 + 2 weekdays']
+            ],
+            'empty input' => [
+                false, '',
+                ['strtotime' => '1']
+            ],
+            'date from content and configuration' => [
+                false, '2014-12-04',
+                ['strtotime' => '2014-12-05']
+            ]
+        ];
+    }
+
+    /**
+     * Check if stdWrap_strtotime works properly.
+     *
+     * @test
+     * @dataProvider stdWrap_strtotimeDataProvider
+     * @param int $expect The expected output.
+     * @param mixed $content The given input.
+     * @param array $conf The given configuration.
+     * @return void
+     */
+    public function stdWrap_strtotime($expect, $content, $conf)
+    {
+        // Set exec_time to a hard timestamp
+        $GLOBALS['EXEC_TIME'] = 1417392000;
+        // Save current timezone and set to UTC to make the system under test
+        // behave the same in all server timezone settings
+        $timezoneBackup = date_default_timezone_get();
+        date_default_timezone_set('UTC');
+
+        $result = $this->subject->stdWrap_strtotime($content, $conf);
+
+        // Reset timezone
+        date_default_timezone_set($timezoneBackup);
+
+        $this->assertEquals($expect, $result);
+    }
+
+    /**
+     * Check if stdWrap_substring works properly.
+     *
+     * Show:
+     *
+     * - Delegates to method substring.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['substring'].
+     * - Returns the return value.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_substring()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'substring' => $this->getUniqueId('substring'),
+            'substring.' => $this->getUniqueId('not used'),
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['substring'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('substring')
+            ->with($content, $conf['substring'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_substring($content, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_trim.
+     *
+     * @return array [$expect, $content]
+     */
+    public function stdWrap_trimDataProvider()
+    {
+        return [
+            // string not trimmed
+            'empty string' => ['', ''],
+            'string without whitespace' => ['xxx', 'xxx'],
+            'string with whitespace inside' => [
+                'xx ' . TAB . ' xx',
+                'xx ' . TAB . ' xx',
+            ],
+            'string with newlines inside' => [
+                'xx ' . PHP_EOL . ' xx',
+                'xx ' . PHP_EOL . ' xx',
+            ],
+            // string trimmed
+            'blanks around' => ['xxx', '  xxx  '],
+            'tabs around' => ['xxx', TAB . 'xxx' . TAB],
+            'newlines around' => ['xxx', PHP_EOL . 'xxx' . PHP_EOL],
+            'mixed case' => ['xxx', TAB . ' xxx ' . PHP_EOL],
+            // non strings
+            'null' => ['', null],
+            'false' => ['', false],
+            'true' => ['1', true],
+            'zero' => ['0', 0],
+            'one' => ['1', 1],
+            '-1' => ['-1', -1],
+            '0.0' => ['0', 0.0],
+            '1.0' => ['1', 1.0],
+            '-1.0' => ['-1', -1.0],
+            '1.1' => ['1.1', 1.1],
+        ];
+    }
+
+    /**
+     * Check that stdWrap_trim works properly.
+     *
+     * Show:
+     *
+     *  - the given string is trimmed like PHP trim
+     *  - non-strings are casted to strings:
+     *    - null => 'null'
+     *    - false => ''
+     *    - true => '1'
+     *    - 0 => '0'
+     *    - -1 => '-1'
+     *    - 1.0 => '1'
+     *    - 1.1 => '1.1'
+     *
+     * @test
+     * @dataProvider stdWrap_trimDataProvider
+     * @param string $expected The expected output.
+     * @param mixed $content The given content.
+     * @return void
+     */
+    public function stdWrap_trim($expect, $content)
+    {
+        $result = $this->subject->stdWrap_trim($content);
+        $this->assertSame($expect, $result);
+    }
+
+    /**
+     * Check that stdWrap_typolink works properly.
+     *
+     * Show:
+     *  - Delegates to method typolink.
+     *  - Parameter 1 is $content.
+     *  - Parameter 2 is $conf['typolink.'].
+     *  - Returns the return value.
+     *
+     *  @test
+     *  @return void.
+     */
+    public function stdWrap_typolink()
+    {
+        $content = $this->getUniqueId('content');
+        $conf = [
+            'typolink' => $this->getUniqueId('not used'),
+            'typolink.' => [$this->getUniqueId('typolink.')],
+        ];
+        $return = $this->getUniqueId('return');
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['typolink'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('typolink')
+            ->with($content, $conf['typolink.'])
+            ->willReturn($return);
+        $this->assertSame($return, $subject->stdWrap_typolink($content, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_wrap
+     *
+     * @return array Order expected, input, conf
+     */
+    public function stdWrap_wrapDataProvider()
+    {
+        return [
+            'no conf' => [
+                'XXX',
+                'XXX',
+                [],
+            ],
+            'simple' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                ['wrap' => '<wrapper>|</wrapper>'],
+            ],
+            'trims whitespace' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                ['wrap' => '<wrapper>' . TAB . ' | ' . TAB . '</wrapper>'],
+            ],
+            'missing pipe puts wrap before' => [
+                '<pre>XXX',
+                'XXX',
+                [
+                    'wrap' => '<pre>',
+                ],
+            ],
+            'split char change' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                [
+                    'wrap' => '<wrapper> # </wrapper>',
+                    'wrap.' => ['splitChar' => '#'],
+                ],
+            ],
+            'split by pattern' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                [
+                    'wrap' => '<wrapper> ###splitter### </wrapper>',
+                    'wrap.' => ['splitChar' => '###splitter###'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_wrap works properly.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $conf Properties: wrap, wrap.splitChar
+     * @return void
+     * @test
+     * @dataProvider stdWrap_wrapDataProvider
+     */
+    public function stdWrap_wrap($expected, $input, $conf)
+    {
+        $this->assertSame($expected,
+            $this->subject->stdWrap_wrap($input, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_wrap2
+     *
+     * @return array Order expected, input, conf
+     */
+    public function stdWrap_wrap2DataProvider()
+    {
+        return [
+            'no conf' => [
+                'XXX',
+                'XXX',
+                [],
+            ],
+            'simple' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                ['wrap2' => '<wrapper>|</wrapper>'],
+            ],
+            'trims whitespace' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                ['wrap2' => '<wrapper>' . TAB . ' | ' . TAB . '</wrapper>'],
+            ],
+            'missing pipe puts wrap2 before' => [
+                '<pre>XXX',
+                'XXX',
+                [
+                    'wrap2' => '<pre>',
+                ],
+            ],
+            'split char change' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                [
+                    'wrap2' => '<wrapper> # </wrapper>',
+                    'wrap2.' => ['splitChar' => '#'],
+                ],
+            ],
+            'split by pattern' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                [
+                    'wrap2' => '<wrapper> ###splitter### </wrapper>',
+                    'wrap2.' => ['splitChar' => '###splitter###'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_wrap2 works properly.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $conf Properties: wrap2, wrap2.splitChar
+     * @return void
+     * @test
+     * @dataProvider stdWrap_wrap2DataProvider
+     */
+    public function stdWrap_wrap2($expected, $input, $conf)
+    {
+        $this->assertSame($expected, $this->subject->stdWrap_wrap2($input, $conf));
+    }
+
+    /**
+     * Data provider for stdWrap_wrap3
+     *
+     * @return array Order expected, input, conf
+     */
+    public function stdWrap_wrap3DataProvider()
+    {
+        return [
+            'no conf' => [
+                'XXX',
+                'XXX',
+                [],
+            ],
+            'simple' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                ['wrap3' => '<wrapper>|</wrapper>'],
+            ],
+            'trims whitespace' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                ['wrap3' => '<wrapper>' . TAB . ' | ' . TAB . '</wrapper>'],
+            ],
+            'missing pipe puts wrap3 before' => [
+                '<pre>XXX',
+                'XXX',
+                [
+                    'wrap3' => '<pre>',
+                ],
+            ],
+            'split char change' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                [
+                    'wrap3' => '<wrapper> # </wrapper>',
+                    'wrap3.' => ['splitChar' => '#'],
+                ],
+            ],
+            'split by pattern' => [
+                '<wrapper>XXX</wrapper>',
+                'XXX',
+                [
+                    'wrap3' => '<wrapper> ###splitter### </wrapper>',
+                    'wrap3.' => ['splitChar' => '###splitter###'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_wrap3 works properly.
+     *
+     * @param string $expected The expected value.
+     * @param string $input The input value.
+     * @param array $conf Properties: wrap3, wrap3.splitChar
+     * @return void
+     * @test
+     * @dataProvider stdWrap_wrap3DataProvider
+     */
+    public function stdWrap_wrap3($expected, $input, $conf)
+    {
+        $this->assertSame($expected, $this->subject->stdWrap_wrap3($input, $conf));
+    }
+
+  /***************************************************************************
+   * End of tests of stdWrap
+   ***************************************************************************/
 }
