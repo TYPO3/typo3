@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -180,7 +179,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
                 'flag' => 'fr',
             ],
         ];
-        $this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,static_lang_isocode,flag', 'sys_language', 'pid=0')->willReturn($dbRows);
+        $this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,flag', 'sys_language', 'pid=0')->willReturn($dbRows);
         $expected = [
             'systemLanguageRows' => [
                 -1 => [
@@ -209,52 +208,6 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataResolvesLanguageIsocodeFromStaticInfoTable()
-    {
-        if (ExtensionManagementUtility::isLoaded('static_info_tables') === false) {
-            $this->markTestSkipped('no ext:static_info_tables available');
-        }
-        $dbRows = [
-            [
-                'uid' => 3,
-                'title' => 'french',
-                'language_isocode' => '',
-                'static_lang_isocode' => 42,
-                'flag' => 'fr',
-            ],
-        ];
-        $this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,static_lang_isocode,flag', 'sys_language', 'pid=0')->shouldBeCalled()->willReturn($dbRows);
-        // Needed for backendUtility::getRecord()
-        $GLOBALS['TCA']['static_languages'] = [ 'foo' ];
-        $this->dbProphecy->exec_SELECTgetSingleRow('lg_iso_2', 'static_languages', 'uid=42')->shouldBeCalled()->willReturn([ 'lg_iso_2' => 'FR' ]);
-        $expected = [
-            'systemLanguageRows' => [
-                -1 => [
-                    'uid' => -1,
-                    'title' => 'LLL:EXT:lang/locallang_mod_web_list.xlf:multipleLanguages',
-                    'iso' => 'DEF',
-                    'flagIconIdentifier' => 'flags-multiple',
-                ],
-                0 => [
-                    'uid' => 0,
-                    'title' => 'LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage',
-                    'iso' => 'DEF',
-                    'flagIconIdentifier' => 'empty-empty',
-                ],
-                3 => [
-                    'uid' => 3,
-                    'title' => 'french',
-                    'flagIconIdentifier' => 'flags-fr',
-                    'iso' => 'FR',
-                ],
-            ],
-        ];
-        $this->assertSame($expected, $this->subject->addData([]));
-    }
-
-    /**
-     * @test
-     */
     public function addDataAddFlashMessageWithMissingIsoCode()
     {
         $dbRows = [
@@ -266,7 +219,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
                 'flag' => 'fr',
             ],
         ];
-        $this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,static_lang_isocode,flag', 'sys_language', 'pid=0')->shouldBeCalled()->willReturn($dbRows);
+        $this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,flag', 'sys_language', 'pid=0')->shouldBeCalled()->willReturn($dbRows);
         // Needed for backendUtility::getRecord()
         $GLOBALS['TCA']['static_languages'] = [ 'foo' ];
         $expected = [

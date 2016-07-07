@@ -15,11 +15,9 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -72,7 +70,7 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
         ];
 
         $dbRows = $database->exec_SELECTgetRows(
-            'uid,title,language_isocode,static_lang_isocode,flag',
+            'uid,title,language_isocode,flag',
             'sys_language',
             'pid=0'
         );
@@ -84,7 +82,6 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
             );
         }
 
-        $isStaticInfoTablesLoaded = ExtensionManagementUtility::isLoaded('static_info_tables');
         foreach ($dbRows as $dbRow) {
             $uid = $dbRow['uid'];
             $languageRows[$uid] = [
@@ -94,15 +91,6 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
             ];
             if (!empty($dbRow['language_isocode'])) {
                 $languageRows[$uid]['iso'] = $dbRow['language_isocode'];
-            } elseif ($isStaticInfoTablesLoaded && !empty($dbRow['static_lang_isocode'])) {
-                GeneralUtility::deprecationLog(
-                    'Usage of the field "static_lang_isocode" is discouraged, and will stop working with CMS 8. Use the built-in'
-                    . ' language field "language_isocode" in your sys_language records.'
-                );
-                $lg_iso_2 = BackendUtility::getRecord('static_languages', $dbRow['static_lang_isocode'], 'lg_iso_2');
-                if ($lg_iso_2['lg_iso_2']) {
-                    $languageRows[$uid]['iso'] = $lg_iso_2['lg_iso_2'];
-                }
             } else {
                 // No iso code could be found. This is currently possible in the system but discouraged.
                 // So, code within FormEngine has to be suited to work with an empty iso code. However,
