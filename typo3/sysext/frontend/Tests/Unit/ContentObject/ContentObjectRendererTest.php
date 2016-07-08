@@ -4107,6 +4107,116 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->assertSame($expect, $this->subject->getFieldVal($fields));
     }
 
+    /**
+     * Data provider for caseshift.
+     *
+     * @return array [$expect, $content, $case]
+     */
+    public function caseshiftDataProvider()
+    {
+        return [
+             'lower' => ['x y', 'X Y', 'lower'],
+             'upper' => ['X Y', 'x y', 'upper'],
+             'capitalize' => ['One Two', 'one two', 'capitalize'],
+             'ucfirst' => ['One two', 'one two', 'ucfirst'],
+             'lcfirst' => ['oNE TWO', 'ONE TWO', 'lcfirst'],
+             'uppercamelcase' => ['CamelCase', 'camel_case', 'uppercamelcase'],
+             'lowercamelcase' => ['camelCase', 'camel_case', 'lowercamelcase'],
+         ];
+    }
+
+     /**
+      * Check if caseshift works properly.
+      *
+      * @test
+      * @dataProvider caseshiftDataProvider
+      * @param string $expect The expected output.
+      * @param string $content The given input.
+      * @param string $case The given type of conversion.
+      */
+     public function caseshift($expect, $content, $case)
+     {
+         $this->assertSame($expect,
+             $this->subject->caseshift($content, $case));
+     }
+
+    /**
+     * Data provider for HTMLcaseshift.
+     *
+     * @return array [$expect, $content, $case, $with, $will]
+     */
+    public function HTMLcaseshiftDataProvider()
+    {
+        $case = $this->getUniqueId('case');
+        return [
+            'simple text' => [
+                'TEXT', 'text', $case,
+                [['text', $case]],
+                ['TEXT']
+            ],
+            'simple tag' => [
+                '<i>TEXT</i>', '<i>text</i>', $case,
+                [['', $case], ['text', $case]],
+                ['', 'TEXT']
+            ],
+            'multiple nested tags with classes' => [
+                NL . '<div class="typo3">' .
+                NL . '<p>A <b>BOLD<\b> WORD.</p>' .
+                NL . '<p>AN <i>ITALIC<\i> WORD.</p>' .
+                NL . '</div>',
+                NL . '<div class="typo3">' .
+                NL . '<p>A <b>bold<\b> word.</p>' .
+                NL . '<p>An <i>italic<\i> word.</p>' .
+                NL . '</div>',
+                $case,
+                [
+                    [NL, $case],
+                    [NL, $case],
+                    ['A ', $case],
+                    ['bold', $case],
+                    [' word.', $case],
+                    [NL, $case],
+                    ['An ', $case],
+                    ['italic', $case],
+                    [' word.', $case],
+                    [NL, $case],
+                ],
+                [NL, NL, 'A ', 'BOLD', ' WORD.',
+                NL, 'AN ', 'ITALIC', ' WORD.', NL]
+            ],
+        ];
+    }
+
+     /**
+      * Check if HTMLcaseshift works properly.
+      *
+      * Show:
+      *
+      * - Only shifts the case of characters not part of tags.
+      * - Delegates to the method caseshift.
+      *
+      * @test
+      * @dataProvider HTMLcaseshiftDataProvider
+      * @param string $expect The expected output.
+      * @param string $content The given input.
+      * @param string $case The given type of conversion.
+      * @param array $with Consecutive args expected by caseshift.
+      * @param array $will Consecutive return values of caseshfit.
+      * @return void
+      */
+    public function HTMLcaseshift($expect, $content, $case, $with, $will)
+    {
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['caseshift'])->getMock();
+        $subject
+            ->expects($this->exactly(count($with)))
+            ->method('caseshift')
+            ->withConsecutive(...$with)
+            ->will($this->onConsecutiveCalls(...$will));
+        $this->assertSame($expect,
+            $subject->HTMLcaseshift($content, $case));
+    }
+
     /***************************************************************************
     * General tests for stdWrap_
     ***************************************************************************/
@@ -4865,76 +4975,35 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * Data provider for stdWrap_case test
+     * Check if stdWrap_case works properly.
      *
-     * @return array
-     */
-    public function stdWrap_caseDataProvider()
-    {
-        return array(
-            'lower case text to upper' => array(
-                '<span>text</span>',
-                array(
-                    'case' => 'upper',
-                ),
-                '<span>TEXT</span>',
-            ),
-            'upper case text to lower' => array(
-                '<span>TEXT</span>',
-                array(
-                    'case' => 'lower',
-                ),
-                '<span>text</span>',
-            ),
-            'capitalize text' => array(
-                '<span>this is a text</span>',
-                array(
-                    'case' => 'capitalize',
-                ),
-                '<span>This Is A Text</span>',
-            ),
-            'ucfirst text' => array(
-                '<span>this is a text</span>',
-                array(
-                    'case' => 'ucfirst',
-                ),
-                '<span>This is a text</span>',
-            ),
-            'lcfirst text' => array(
-                '<span>This is a Text</span>',
-                array(
-                    'case' => 'lcfirst',
-                ),
-                '<span>this is a Text</span>',
-            ),
-            'uppercamelcase text' => array(
-                '<span>this_is_a_text</span>',
-                array(
-                    'case' => 'uppercamelcase',
-                ),
-                '<span>ThisIsAText</span>',
-            ),
-            'lowercamelcase text' => array(
-                '<span>this_is_a_text</span>',
-                array(
-                    'case' => 'lowercamelcase',
-                ),
-                '<span>thisIsAText</span>',
-            ),
-        );
-    }
-
-    /**
-     * @param string|NULL $content
-     * @param array $configuration
-     * @param string $expected
-     * @dataProvider stdWrap_caseDataProvider
+     * Show:
+     *
+     * - Delegates to method HTMLcaseshift.
+     * - Parameter 1 is $content.
+     * - Parameter 2 is $conf['case'].
+     * - Returns the return value.
+     *
      * @test
+     * @return void
      */
-    public function stdWrap_case($content, array $configuration, $expected)
+    public function stdWrap_case()
     {
-        $result = $this->subject->stdWrap_case($content, $configuration);
-        $this->assertEquals($expected, $result);
+        $content = $this->getUniqueId();
+        $conf = [
+            'case' => $this->getUniqueId('used'),
+            'case.' => [$this->getUniqueId('discarded')],
+        ];
+        $return = $this->getUniqueId();
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['HTMLcaseshift'])->getMock();
+        $subject
+            ->expects($this->once())
+            ->method('HTMLcaseshift')
+            ->with($content, $conf['case'])
+            ->willReturn($return);
+        $this->assertSame($return,
+            $subject->stdWrap_case($content, $conf));
     }
 
     /**
