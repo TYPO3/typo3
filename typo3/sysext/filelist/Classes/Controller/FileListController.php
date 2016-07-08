@@ -663,7 +663,7 @@ class FileListController extends ActionController
                             'title' => $lang->getLL('clip_paste')
                         ])
                         ->setTitle($lang->getLL('clip_paste'))
-                        ->setIcon($iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL));
+                        ->setIcon($iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL));
                     $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
                 }
             }

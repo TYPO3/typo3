@@ -293,7 +293,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         . ' data-title="' . htmlspecialchars($lang->getLL('clip_paste')) . '"'
                         . ' data-content="' . htmlspecialchars($confirmText) . '"'
                         . '>'
-                        . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL)->render()
+                        . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render()
                         . '</a>';
                 }
             }
@@ -425,7 +425,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                             'content' => $confirmMessage,
                             'title' => $lang->getLL('clip_paste')
                         ])
-                        ->setIcon($this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL));
+                        ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL));
                     $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
                 }
             }
@@ -1092,7 +1092,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                             . ' data-title="' . htmlspecialchars($lang->getLL('clip_paste')) . '"'
                             . ' data-content="' . htmlspecialchars($confirmMessage) . '"'
                             . ' data-severity="warning">'
-                            . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL)->render()
+                            . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render()
                             . '</a>';
                     }
                     // If the numeric clipboard pads are enabled, display the control icons for that:

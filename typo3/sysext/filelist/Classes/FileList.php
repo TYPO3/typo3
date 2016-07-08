@@ -402,7 +402,7 @@ class FileList extends AbstractRecordList
                                 . ' data-severity="warning"'
                                 . ' data-title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_paste')) . '"'
                                 . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_paste')) . '">'
-                                . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL)
+                                . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)
                                     ->render()
                                 . '</a>';
                         }
