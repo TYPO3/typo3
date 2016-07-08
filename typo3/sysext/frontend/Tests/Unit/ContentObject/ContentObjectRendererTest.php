@@ -5260,6 +5260,59 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Check if stdWrap_debug works properly.
+     *
+     * Show:
+     *
+     * - Calls the function debug.
+     * - Parameter 1 is $this->data.
+     * - Parameter 2 is the string '$cObj->data:'.
+     * - If $this->alternativeData is an array the same is repeated with:
+     * - Parameter 1 is $this->alternativeData.
+     * - Parameter 2 is the string '$cObj->alternativeData:'.
+     * - Returns $content as is.
+     *
+     * Note 1:
+     *
+     *   As PHPUnit can't mock PHP function calls, the call to debug can't be
+     *   easily intercepted. The test is done indirectly by catching the
+     *   frontend output of debug.
+     *
+     * Note 2:
+     *
+     *   The second paramter to the debug function isn't used by the current
+     *   implementation at all. It can't even indirectly be tested.
+     *
+     * @test
+     * @return void
+     */
+    public function stdWrap_debugData()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
+        $content = $this->getUniqueId('content');
+        $key = $this->getUniqueId('key');
+        $value = $this->getUniqueId('value');
+        $altValue = $this->getUniqueId('value alt');
+        $this->subject->data = [$key => $value];
+        // Without alternative data only data is returned.
+        ob_start();
+        $result = $this->subject->stdWrap_debugData($content);
+        $out = ob_get_clean();
+        $this->assertSame($result, $content);
+        $this->assertNotContains('$cObj->data', $out);
+        $this->assertContains($value, $out);
+        $this->assertNotContains($altValue, $out);
+        // By adding alternative data both are returned together.
+        $this->subject->alternativeData = [$key => $altValue];
+        ob_start();
+        $this->subject->stdWrap_debugData($content);
+        $out = ob_get_clean();
+        $this->assertNotContains('$cObj->alternativeData', $out);
+        $this->assertContains($value, $out);
+        $this->assertContains($altValue, $out);
+    }
+
+    /**
      * Data provider for stdWrap_doubleBrTag
      *
      * @return array Order expected, input, config
