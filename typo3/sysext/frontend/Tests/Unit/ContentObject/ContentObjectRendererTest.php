@@ -5312,6 +5312,59 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->assertContains($altValue, $out);
     }
 
+    /*
+     * Data provider for stdWrap_debugFunc.
+     *
+     * @return array [$expectArray, $confDebugFunc]
+     */
+    public function stdWrap_debugFuncDataProvider()
+    {
+        return [
+            'expect array by string' => [ true, '2' ],
+            'expect array by integer' => [ true, 2 ],
+            'do not expect array' => [ false, '' ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_debugFunc works properly.
+     *
+     * Show:
+     *
+     * - Calls the function debug with one paramter.
+     * - The parameter is the given $content string.
+     * - The string is casted to array before, if (int)$conf['debugFunc'] is 2.
+     * - Returns $content as is.
+     *
+     * Note 1:
+     *
+     *   As PHPUnit can't mock PHP function calls, the call to debug can't be
+     *   easily intercepted. The test is done indirectly by catching the
+     *   frontend output of debug.
+     *
+     * @test
+     * @dataProvider stdWrap_debugFuncDataProvider
+     * @param bool $expectArray If cast to array is expected.
+     * @param mixed $confDebugFunc The configuration for $conf['debugFunc'].
+     * @return void
+     */
+    public function stdWrap_debugFunc($expectArray, $confDebugFunc)
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
+        $content = $this->getUniqueId('content');
+        $conf = ['debugFunc' => $confDebugFunc];
+        ob_start();
+        $result = $this->subject->stdWrap_debugFunc($content, $conf);
+        $out = ob_get_clean();
+        $this->assertSame($result, $content);
+        $this->assertContains($content, $out);
+        if ($expectArray) {
+            $this->assertContains('=>', $out);
+        } else {
+            $this->assertNotContains('=>', $out);
+        }
+    }
+
     /**
      * Data provider for stdWrap_doubleBrTag
      *
