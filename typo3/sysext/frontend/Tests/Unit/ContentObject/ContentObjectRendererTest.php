@@ -5368,6 +5368,63 @@ class ContentObjectRendererTest extends UnitTestCase
      }
 
     /**
+     * Data provider for stdWrap_editPanel.
+     *
+     * @return [$expect, $content, $login, $times, $will]
+     */
+    public function stdWrap_editPanelDataProvider()
+    {
+        $content = $this->getUniqueId('content');
+        $will = $this->getUniqueId('will');
+        return [
+            'standard case calls edit icons' => [
+                $will, $content, true, 1, $will
+            ],
+            'no user login disables call' => [
+                $content, $content, false, 0, $will
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_editPanel works properly.
+     *
+     * Show:
+     *
+     * - Returns $content as is if:
+     *   - beUserLogin is not set
+     * - Otherwise:
+     *   - Delegates to method editPanel.
+     *   - Parameter 1 is $content.
+     *   - Parameter 2 is $conf['editPanel'].
+     *   - Returns the return value.
+     *
+     * @test
+     * @dataProvider stdWrap_editPanelDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given content.
+     * @param bool $login Simulate backend user login.
+     * @param int $times Times editPanel is called (0 or 1).
+     * @param string $will Return value of editPanel.
+     * @return void
+     */
+    public function stdWrap_editPanel(
+        $expect, $content, $login, $times, $will)
+    {
+        $GLOBALS['TSFE']->beUserLogin = $login;
+        $conf = ['editPanel.' => [$this->getUniqueId('editPanel.')]];
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['editPanel'])->getMock();
+        $subject
+            ->expects($this->exactly($times))
+            ->method('editPanel')
+            ->with($content, $conf['editPanel.'])
+            ->willReturn($will);
+        $this->assertSame($expect,
+            $subject->stdWrap_editPanel($content, $conf));
+    }
+
+    /**
      * Data provider for stdWrap_encodeForJavaScriptValue.
      *
      * @return array []
