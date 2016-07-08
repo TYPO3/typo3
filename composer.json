@@ -44,7 +44,7 @@
 		"typo3/cms-composer-installers": "^1.2.8",
 		"psr/http-message": "~1.0",
 		"cogpowered/finediff": "~0.3.1",
-		"mso/idna-convert": "^1.1.0"
+		"mso/idna-convert": "^0.9.1"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.8.0",
