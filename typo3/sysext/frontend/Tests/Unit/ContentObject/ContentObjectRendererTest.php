@@ -5442,6 +5442,93 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_editIcons.
+     *
+     * @return [$expect, $content, $conf, $login, $times, $param3, $will]
+     */
+    public function stdWrap_editIconsDataProvider()
+    {
+        $content = $this->getUniqueId('content');
+        $editIcons = $this->getUniqueId('editIcons');
+        $editIconsArray = [$this->getUniqueId('editIcons.')];
+        $will = $this->getUniqueId('will');
+        return [
+            'standard case calls edit icons' => [
+                $will, $content,
+                ['editIcons' => $editIcons, 'editIcons.' => $editIconsArray],
+                true, 1, $editIconsArray, $will
+            ],
+            'null in editIcons. repalaced by []' => [
+                $will, $content,
+                ['editIcons' => $editIcons, 'editIcons.' => null],
+                true, 1, [], $will
+            ],
+            'missing editIcons. replaced by []' => [
+                $will, $content,
+                ['editIcons' => $editIcons],
+                true, 1, [], $will
+            ],
+            'no user login disables call' => [
+                $content, $content,
+                ['editIcons' => $editIcons, 'editIcons.' => $editIconsArray],
+                false, 0, $editIconsArray, $will
+            ],
+            'empty string in editIcons disables call' => [
+                $content, $content,
+                ['editIcons' => '', 'editIcons.' => $editIconsArray],
+                true, 0, $editIconsArray, $will
+            ],
+            'zero string in editIcons disables call' => [
+                $content, $content,
+                ['editIcons' => '0', 'editIcons.' => $editIconsArray],
+                true, 0, $editIconsArray, $will
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_editIcons works properly.
+     *
+     * Show:
+     *
+     * - Returns $content as is if:
+     *   - beUserLogin is not set
+     *   - (bool)$conf['editIcons'] is false
+     * - Otherwise:
+     *   - Delegates to method editIcons.
+     *   - Parameter 1 is $content.
+     *   - Parameter 2 is $conf['editIcons'].
+     *   - Parameter 3 is $conf['editIcons.'].
+     *   - If $conf['editIcons.'] is no array at all, the empty array is used.
+     *   - Returns the return value.
+     *
+     * @test
+     * @dataProvider stdWrap_editIconsDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given content.
+     * @param array $conf The given configuration.
+     * @param bool $login Simulate backend user login.
+     * @param int $times Times editIcons is called (0 or 1).
+     * @param array $param3 The expected third parameter.
+     * @param string $will Return value of editIcons.
+     * @return void
+     */
+    public function stdWrap_editIcons(
+        $expect, $content, $conf, $login, $times, $param3, $will)
+    {
+        $GLOBALS['TSFE']->beUserLogin = $login;
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->setMethods(['editIcons'])->getMock();
+        $subject
+            ->expects($this->exactly($times))
+            ->method('editIcons')
+            ->with($content, $conf['editIcons'], $param3)
+            ->willReturn($will);
+        $this->assertSame($expect,
+            $subject->stdWrap_editIcons($content, $conf));
+    }
+
+    /**
      * Check if stdWrap_encapsLines works properly.
      *
      * Show:
