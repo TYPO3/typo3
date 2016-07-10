@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Uri;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Fluid\ViewHelpers\Uri\ExternalViewHelper;
 
@@ -31,7 +32,11 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
         parent::setUp();
         $this->viewHelper = new ExternalViewHelper();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->initializeArguments();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return 'http://www.some-domain.tld';
+            }
+        );
     }
 
     /**
@@ -39,9 +44,13 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderReturnsSpecifiedUri()
     {
-        $this->viewHelper->initialize();
-        $actualResult = $this->viewHelper->render('http://www.some-domain.tld');
-
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'uri' => 'http://www.some-domain.tld'
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('http://www.some-domain.tld', $actualResult);
     }
 
@@ -50,9 +59,13 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderAddsHttpPrefixIfSpecifiedUriDoesNotContainScheme()
     {
-        $this->viewHelper->initialize();
-        $actualResult = $this->viewHelper->render('www.some-domain.tld');
-
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'uri' => 'www.some-domain.tld',
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('http://www.some-domain.tld', $actualResult);
     }
 
@@ -61,9 +74,14 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderAddsSpecifiedSchemeIfUriDoesNotContainScheme()
     {
-        $this->viewHelper->initialize();
-        $actualResult = $this->viewHelper->render('some-domain.tld', 'ftp');
-
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'uri' => 'some-domain.tld',
+                'defaultScheme' => 'ftp'
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('ftp://some-domain.tld', $actualResult);
     }
 
@@ -72,9 +90,14 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderDoesNotAddEmptyScheme()
     {
-        $this->viewHelper->initialize();
-        $actualResult = $this->viewHelper->render('some-domain.tld', '');
-
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'uri' => 'some-domain.tld',
+                'defaultScheme' => ''
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('some-domain.tld', $actualResult);
     }
 }

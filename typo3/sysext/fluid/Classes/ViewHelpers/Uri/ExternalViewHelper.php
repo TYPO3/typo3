@@ -41,18 +41,25 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class ExternalViewHelper extends AbstractViewHelper
 {
     /**
-     * @param string $uri target URI
-     * @param string $defaultScheme scheme the href attribute will be prefixed with if specified $uri does not contain a scheme already
+     * Initialize arguments
+     *
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('uri', 'string', 'target URI', true);
+        $this->registerArgument('defaultScheme', 'string', 'scheme the href attribute will be prefixed with if specified $uri does not contain a scheme already', false, 'http');
+    }
+
+    /**
      * @return string Rendered URI
      * @api
      */
-    public function render($uri, $defaultScheme = 'http')
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'uri' => $uri,
-                'defaultScheme' => $defaultScheme
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
