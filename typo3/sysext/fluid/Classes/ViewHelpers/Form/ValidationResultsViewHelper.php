@@ -71,15 +71,29 @@ class ValidationResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
     protected $escapeOutput = false;
 
     /**
+     * Initialize arguments
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('for', 'string', 'The name of the error name (e.g. argument name or property name). This can also be a property path (like blog.title), and will then only display the validation errors of that property.', false, '');
+        $this->registerArgument('as', 'string', 'The name of the variable to store the current error', false, 'validationResults');
+    }
+
+    /**
      * Iterates through selected errors of the request.
      *
-     * @param string $for The name of the error name (e.g. argument name or property name). This can also be a property path (like blog.title), and will then only display the validation errors of that property.
-     * @param string $as The name of the variable to store the current error
      * @return string Rendered string
      * @api
      */
-    public function render($for = '', $as = 'validationResults')
+    public function render()
     {
+        $for = $this->arguments['for'];
+        $as = $this->arguments['as'];
+
         $validationResults = $this->controllerContext->getRequest()->getOriginalRequestMappingResults();
         if ($validationResults !== null && $for !== '') {
             $validationResults = $validationResults->forProperty($for);
