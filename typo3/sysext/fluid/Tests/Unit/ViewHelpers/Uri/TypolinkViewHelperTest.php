@@ -78,11 +78,11 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
      * @param string $expected
      * @throws \InvalidArgumentException
      */
-    public function createTypolinkParameterArrayFromArgumentsReturnsExpectedArray($input, $additionalParametersFromFluid, $expected)
+    public function createTypolinkParameterFromArgumentsReturnsExpectedArray($input, $additionalParametersFromFluid, $expected)
     {
         /** @var \TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(TypolinkViewHelper::class, array('dummy'));
-        $result = $subject->_call('createTypolinkParameterArrayFromArguments', $input, $additionalParametersFromFluid);
+        $result = $subject->_call('createTypolinkParameterFromArguments', $input, $additionalParametersFromFluid);
         $this->assertSame($expected, $result);
     }
 }

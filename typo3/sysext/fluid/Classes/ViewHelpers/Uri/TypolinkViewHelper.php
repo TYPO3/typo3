@@ -47,19 +47,28 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class TypolinkViewHelper extends AbstractViewHelper
 {
     /**
-     * Render
+     * Initialize arguments
      *
-     * @param string $parameter stdWrap.typolink style parameter string
-     * @param string $additionalParams
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('parameter', 'string', 'stdWrap.typolink style parameter string', true);
+        $this->registerArgument('additionalParams', 'string', 'stdWrap.typolink additionalParams', false, '');
+    }
+
+    /**
+     * Render
      *
      * @return string
      */
-    public function render($parameter, $additionalParams = '')
+    public function render()
     {
         return static::renderStatic(
             array(
-                'parameter' => $parameter,
-                'additionalParams' => $additionalParams
+                'parameter' => $this->arguments['parameter'],
+                'additionalParams' => $this->arguments['additionalParams']
             ),
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
@@ -83,7 +92,7 @@ class TypolinkViewHelper extends AbstractViewHelper
             $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $content = $contentObject->typoLink_URL(
                 array(
-                    'parameter' => self::createTypolinkParameterArrayFromArguments($parameter, $additionalParams),
+                    'parameter' => self::createTypolinkParameterFromArguments($parameter, $additionalParams),
                 )
             );
         }
@@ -99,13 +108,10 @@ class TypolinkViewHelper extends AbstractViewHelper
      *
      * @return string The final TypoLink string
      */
-    protected static function createTypolinkParameterArrayFromArguments($parameter, $additionalParameters = '')
+    protected static function createTypolinkParameterFromArguments($parameter, $additionalParameters = '')
     {
         $typoLinkCodec = GeneralUtility::makeInstance(TypoLinkCodecService::class);
         $typolinkConfiguration = $typoLinkCodec->decode($parameter);
-        if (empty($typolinkConfiguration)) {
-            return $typolinkConfiguration;
-        }
 
         // Combine additionalParams
         if ($additionalParameters) {
