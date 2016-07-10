@@ -55,23 +55,26 @@ class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
     protected $escapeOutput = false;
 
     /**
+     * Initialize ViewHelper arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('value', 'string', 'string to format');
+        $this->registerArgument('keepQuotes', 'bool', 'If TRUE, single and double quotes won\'t be replaced (sets ENT_NOQUOTES flag).', false, false);
+        $this->registerArgument('encoding', 'string', '');
+    }
+
+    /**
      * Converts all HTML entities to their applicable characters as needed using PHPs html_entity_decode() function.
      *
-     * @param string $value string to format
-     * @param bool $keepQuotes if TRUE, single and double quotes won't be replaced (sets ENT_NOQUOTES flag)
-     * @param string $encoding
      * @return string the altered string
      * @see http://www.php.net/html_entity_decode
-     * @api
      */
-    public function render($value = null, $keepQuotes = false, $encoding = null)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'value' => $value,
-                'keepQuotes' => $keepQuotes,
-                'encoding' => $encoding
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

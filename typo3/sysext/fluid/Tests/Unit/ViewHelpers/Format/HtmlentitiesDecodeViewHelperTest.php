@@ -13,29 +13,40 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Tests\UnitTestCase;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlentitiesDecodeViewHelper;
 
 /**
  * Test case
  */
-class HtmlentitiesDecodeViewHelperTest extends UnitTestCase
+class HtmlentitiesDecodeViewHelperTest extends ViewHelperBaseTestcase
 {
+    /**
+     * @var ReflectionService|ObjectProphecy
+     */
+    protected $reflectionServiceProphecy;
+
     /**
      * @var HtmlentitiesDecodeViewHelper
      */
     protected $viewHelper;
 
+    /**
+     * shortcut for default Arguments which would be prepared by initializeArguments()
+     *
+     * @var array
+     */
+    protected $defaultArguments;
+
     protected function setUp()
     {
-        $this->viewHelper = $this->getMockBuilder(HtmlentitiesDecodeViewHelper::class)
-            ->setMethods(array('renderChildren'))
-            ->getMock();
-
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->createMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
-        $this->viewHelper->setRenderingContext($renderingContext);
+        parent::setUp();
+        $this->reflectionServiceProphecy = $this->prophesize(ReflectionService::class);
+        $this->viewHelper = new HtmlentitiesDecodeViewHelper();
+        $this->viewHelper->injectReflectionService($this->reflectionServiceProphecy->reveal());
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }
 
     /**
@@ -43,8 +54,13 @@ class HtmlentitiesDecodeViewHelperTest extends UnitTestCase
      */
     public function renderUsesValueAsSourceIfSpecified()
     {
-        $this->viewHelper->expects($this->never())->method('renderChildren');
-        $actualResult = $this->viewHelper->render('Some string');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'Some string'
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('Some string', $actualResult);
     }
 
@@ -53,8 +69,13 @@ class HtmlentitiesDecodeViewHelperTest extends UnitTestCase
      */
     public function renderUsesChildnodesAsSourceIfSpecified()
     {
-        $this->viewHelper->expects($this->atLeastOnce())->method('renderChildren')->will($this->returnValue('Some string'));
-        $actualResult = $this->viewHelper->render();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return 'Some string';
+            }
+        );
+        $this->setArgumentsUnderTest($this->viewHelper);
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('Some string', $actualResult);
     }
 
@@ -64,7 +85,13 @@ class HtmlentitiesDecodeViewHelperTest extends UnitTestCase
     public function renderDoesNotModifyValueIfItDoesNotContainSpecialCharacters()
     {
         $source = 'This is a sample text without special characters. <> &©"\'';
-        $actualResult = $this->viewHelper->render($source);
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => $source,
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertSame($source, $actualResult);
     }
 
@@ -75,7 +102,13 @@ class HtmlentitiesDecodeViewHelperTest extends UnitTestCase
     {
         $source = 'Some special characters: &amp; &quot; \' &lt; &gt; *';
         $expectedResult = 'Some special characters: & " \' < > *';
-        $actualResult = $this->viewHelper->render($source);
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => $source
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals($expectedResult, $actualResult);
     }
 
@@ -86,7 +119,14 @@ class HtmlentitiesDecodeViewHelperTest extends UnitTestCase
     {
         $source = 'Some special characters: &amp; &quot; \' &lt; &gt; *';
         $expectedResult = 'Some special characters: & &quot; \' < > *';
-        $actualResult = $this->viewHelper->render($source, true);
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => $source,
+                'keepQuotes' => true,
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals($expectedResult, $actualResult);
     }
 
@@ -97,7 +137,14 @@ class HtmlentitiesDecodeViewHelperTest extends UnitTestCase
     {
         $source = utf8_decode('Some special characters: &amp; &quot; \' &lt; &gt; *');
         $expectedResult = 'Some special characters: & " \' < > *';
-        $actualResult = $this->viewHelper->render($source, false, 'ISO-8859-1');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => $source,
+                'encoding' => 'ISO-8859-1',
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals($expectedResult, $actualResult);
     }
 
@@ -107,7 +154,13 @@ class HtmlentitiesDecodeViewHelperTest extends UnitTestCase
     public function renderReturnsUnmodifiedSourceIfItIsNoString()
     {
         $source = new \stdClass();
-        $actualResult = $this->viewHelper->render($source);
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => $source
+            ]
+        );
+        $actualResult = $this->viewHelper->render();
         $this->assertSame($source, $actualResult);
     }
 }
