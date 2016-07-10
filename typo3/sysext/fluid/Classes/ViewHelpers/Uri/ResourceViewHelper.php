@@ -32,16 +32,31 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
     /**
+     * Initialize arguments
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('path', 'string', 'The path and filename of the resource (relative to Public resource directory of the extension).', true);
+        $this->registerArgument('extensionName', 'string', 'Target extension name. If not set, the current extension name will be used');
+        $this->registerArgument('absolute', 'bool', 'If set, an absolute URI is rendered', false, false);
+    }
+
+    /**
      * Render the URI to the resource. The filename is used from child content.
      *
-     * @param string $path The path and filename of the resource (relative to Public resource directory of the extension).
-     * @param string $extensionName Target extension name. If not set, the current extension name will be used
-     * @param bool $absolute If set, an absolute URI is rendered
      * @return string The URI to the resource
      * @api
      */
-    public function render($path, $extensionName = null, $absolute = false)
+    public function render()
     {
+        $path = $this->arguments['path'];
+        $extensionName = $this->arguments['extensionName'];
+        $absolute = $this->arguments['absolute'];
+
         return static::renderStatic(
             array(
                 'path' => $path,
