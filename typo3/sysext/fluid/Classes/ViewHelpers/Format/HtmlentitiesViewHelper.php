@@ -55,18 +55,32 @@ class HtmlentitiesViewHelper extends AbstractEncodingViewHelper implements Singl
     protected $escapeChildren = false;
 
     /**
+     * Initialize ViewHelper arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('value', 'string', 'string to format', '', null);
+        $this->registerArgument('keepQuotes', 'bool', 'If TRUE, single and double quotes won\'t be replaced (sets ENT_NOQUOTES flag).', '', false);
+        $this->registerArgument('encoding', 'string', '', '', null);
+        $this->registerArgument('doubleEncode', 'bool', 'If FALSE existing html entities won\'t be encoded, the default is to convert everything.', '', true);
+    }
+
+    /**
      * Escapes special characters with their escaped counterparts as needed using PHPs htmlentities() function.
      *
-     * @param string $value string to format
-     * @param bool $keepQuotes if TRUE, single and double quotes won't be replaced (sets ENT_NOQUOTES flag)
-     * @param string $encoding
-     * @param bool $doubleEncode If FALSE existing html entities won't be encoded, the default is to convert everything.
      * @return string the altered string
      * @see http://www.php.net/manual/function.htmlentities.php
      * @api
      */
-    public function render($value = null, $keepQuotes = false, $encoding = null, $doubleEncode = true)
+    public function render()
     {
+        $value = $this->arguments['value'];
+        $encoding = $this->arguments['encoding'];
+        $keepQuotes = $this->arguments['keepQuotes'];
+        $doubleEncode = $this->arguments['doubleEncode'];
+
         if ($value === null) {
             $value = $this->renderChildren();
         }
