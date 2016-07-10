@@ -33,14 +33,28 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class EmailViewHelper extends AbstractViewHelper
 {
     /**
-     * @param string $email The email address to be turned into a URI
+     * Initialize arguments
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('email', 'string', 'The email address to be turned into a URI', true);
+    }
+
+    /**
+     *
      * @return string Rendered email link
      */
-    public function render($email)
+    public function render()
     {
+        $email = $this->arguments['email'];
+
         return static::renderStatic(
             array(
-                'email' => $email
+                'email' => $email,
             ),
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
