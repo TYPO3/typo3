@@ -64,39 +64,35 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class ImageViewHelper extends AbstractViewHelper
 {
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('src', 'string', 'src');
+        $this->registerArgument('image', 'object', 'image');
+        $this->registerArgument('width', 'string', 'width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
+        $this->registerArgument('height', 'string', 'height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
+        $this->registerArgument('minWidth', 'int', 'minimum width of the image');
+        $this->registerArgument('minHeight', 'int', 'minimum height of the image');
+        $this->registerArgument('maxWidth', 'int', 'maximum width of the image');
+        $this->registerArgument('maxHeight', 'int', 'maximum height of the image');
+        $this->registerArgument('treatIdAsReference', 'bool', 'given src argument is a sys_file_reference record', false, false);
+        $this->registerArgument('crop', 'string|bool', 'overrule cropping of image (setting to FALSE disables the cropping set in FileReference)');
+        $this->registerArgument('absolute', 'bool', 'Force absolute URL', false, false);
+    }
+
+    /**
      * Resizes the image (if required) and returns its path. If the image was not resized, the path will be equal to $src
      *
      * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/ImgResource/
-     * @param string $src
-     * @param object $image
-     * @param string $width width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.
-     * @param string $height height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.
-     * @param int $minWidth minimum width of the image
-     * @param int $minHeight minimum height of the image
-     * @param int $maxWidth maximum width of the image
-     * @param int $maxHeight maximum height of the image
-     * @param bool $treatIdAsReference given src argument is a sys_file_reference record
-     * @param string|bool $crop overrule cropping of image (setting to FALSE disables the cropping set in FileReference)
-     * @param bool $absolute Force absolute URL
      * @throws Exception
      * @return string path to the image
      */
-    public function render($src = null, $image = null, $width = null, $height = null, $minWidth = null, $minHeight = null, $maxWidth = null, $maxHeight = null, $treatIdAsReference = false, $crop = null, $absolute = false)
+    public function render()
     {
         return self::renderStatic(
-            array(
-                'src' => $src,
-                'image' => $image,
-                'width' => $width,
-                'height' => $height,
-                'minWidth' => $minWidth,
-                'minHeight' => $minHeight,
-                'maxWidth' => $maxWidth,
-                'maxHeight' => $maxHeight,
-                'treatIdAsReference' => $treatIdAsReference,
-                'crop' => $crop,
-                'absolute' => $absolute,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
