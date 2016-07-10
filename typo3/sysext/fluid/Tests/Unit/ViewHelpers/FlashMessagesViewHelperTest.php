@@ -14,27 +14,24 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Fluid\ViewHelpers\FlashMessagesViewHelper;
 
 /**
  * Testcase for FlashMessagesViewHelper
  */
-class FlashMessagesViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase
+class FlashMessagesViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * @var \TYPO3\CMS\Fluid\ViewHelpers\FlashMessagesViewHelper| \PHPUnit_Framework_MockObject_MockObject |\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Fluid\ViewHelpers\FlashMessagesViewHelper
      */
     protected $viewHelper;
 
     /**
-     * @var TagBuilder
+     * @var FlashMessageQueue
      */
-    protected $mockTagBuilder;
-
-    /**
-     * @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue|\PHPUnit_Framework_MockObject_MockObject $mockFlashMessagingQueue
-     */
-    protected $mockFlashMessagingQueue;
+    protected $flashMessageQueue;
 
     /**
      * Sets up this test case
@@ -44,21 +41,11 @@ class FlashMessagesViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelper
     protected function setUp()
     {
         parent::setUp();
-        /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue|\PHPUnit_Framework_MockObject_MockObject $mockFlashMessagingQueue */
-        $mockFlashMessagingQueue = $this->getMockBuilder(\TYPO3\CMS\Core\Messaging\FlashMessageQueue::class)
-            ->setMethods(array('getAllMessagesAndFlush'))
-            ->setConstructorArgs(array('foo'))
-            ->getMock();
-        $mockFlashMessagingQueue->expects($this->once())->method('getAllMessagesAndFlush')->will($this->returnValue(array()));
-        $this->mockFlashMessagingQueue = $mockFlashMessagingQueue;
+        $this->flashMessageQueue = $this->prophesize(FlashMessageQueue::class);
+        $this->controllerContext->expects($this->any())->method('getFlashMessageQueue')->will($this->returnValue($this->flashMessageQueue->reveal()));
 
-        $this->controllerContext->expects($this->any())->method('getFlashMessageQueue')->will($this->returnValue($mockFlashMessagingQueue));
-
-        $this->mockTagBuilder = $this->createMock(TagBuilder::class);
-        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\FlashMessagesViewHelper::class, array('dummy'));
-        $this->viewHelper->_set('tag', $this->mockTagBuilder);
-        $this->viewHelper->setRenderingContext($this->renderingContext);
-        $this->viewHelper->initialize();
+        $this->viewHelper = new FlashMessagesViewHelper();
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }
 
     /**
@@ -66,7 +53,8 @@ class FlashMessagesViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelper
      */
     public function renderReturnsEmptyStringIfNoFlashMessagesAreInQueue()
     {
-        $this->assertEmpty($this->viewHelper->render());
+        $this->flashMessageQueue->getAllMessagesAndFlush()->willReturn();
+        $this->assertEmpty($this->viewHelper->initializeArgumentsAndRender());
     }
 
     /**
@@ -76,10 +64,78 @@ class FlashMessagesViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelper
     {
         $queueIdentifier = 'myQueue';
 
-        $this->controllerContext->expects($this->once())->method('getFlashMessageQueue')->with($queueIdentifier)->will($this->returnValue($this->mockFlashMessagingQueue));
+        $this->flashMessageQueue->getAllMessagesAndFlush()->willReturn();
+        $this->controllerContext->expects($this->once())->method('getFlashMessageQueue')->with($queueIdentifier)->will($this->returnValue($this->flashMessageQueue->reveal()));
 
-        $this->viewHelper->setArguments(array('queueIdentifier' => $queueIdentifier));
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'queueIdentifier' => $queueIdentifier
+            ]
+        );
 
-        $this->assertEmpty($this->viewHelper->render());
+        $this->assertEmpty($this->viewHelper->initializeArgumentsAndRender());
+    }
+
+    /**
+     * @test
+     */
+    public function renderRespectsGivenCssClass()
+    {
+        $flashMessage = new FlashMessage('test message body', 'test message title');
+
+        $this->flashMessageQueue->getAllMessagesAndFlush()->willReturn([$flashMessage]);
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'class' => 'flashy',
+            ]
+        );
+        $expected = '<div class="flashy"><div class="alert alert-success">';
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertContains($expected, $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function renderReturnsDefaultTemplate()
+    {
+        $flashMessage = new FlashMessage('test message body', 'test message title');
+
+        $this->flashMessageQueue->getAllMessagesAndFlush()->willReturn([$flashMessage]);
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            []
+        );
+        $expectedTitle = '<h4 class="alert-title">test message title</h4>';
+        $expectedMessage = '<p class="alert-message">test message body</p>';
+
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertContains($expectedTitle, $actualResult);
+        $this->assertContains($expectedMessage, $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function parameterAsStartsRenderingOnTemplate()
+    {
+        $this->viewHelper->setRenderChildrenClosure(function () {
+            return 'a simple String';
+        });
+
+        $flashMessage = new FlashMessage('test message body', 'test message title');
+
+        $this->flashMessageQueue->getAllMessagesAndFlush()->willReturn([$flashMessage]);
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'as' => 'flashy',
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+
+        $this->assertEquals('a simple String', $actualResult);
     }
 }

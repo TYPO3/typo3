@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * View helper which renders the flash messages (if there are any) as an unsorted list.
@@ -82,7 +83,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * @api
  */
-class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class FlashMessagesViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string
@@ -99,7 +100,8 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
-        $this->registerArgument('queueIdentifier', 'string', 'Flash-message queue to use', false);
+        $this->registerArgument('queueIdentifier', 'string', 'Flash-message queue to use');
+        $this->registerArgument('as', 'string', 'The name of the current flashMessage variable for rendering inside');
     }
 
     /**
@@ -108,12 +110,12 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
      * from being cached.
      *
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::no_cache
-     * @param string $as The name of the current flashMessage variable for rendering inside
      * @return string rendered Flash Messages, if there are any.
      * @api
      */
-    public function render($as = null)
+    public function render()
     {
+        $as = $this->arguments['as'];
         $queueIdentifier = isset($this->arguments['queueIdentifier']) ? $this->arguments['queueIdentifier'] : null;
         $flashMessages = $this->renderingContext->getControllerContext()->getFlashMessageQueue($queueIdentifier)->getAllMessagesAndFlush();
         if ($flashMessages === null || count($flashMessages) === 0) {
