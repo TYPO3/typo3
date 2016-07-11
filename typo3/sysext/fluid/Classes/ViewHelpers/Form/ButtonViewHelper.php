@@ -35,7 +35,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  * @api
  */
-class ButtonViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
+class ButtonViewHelper extends AbstractFormFieldViewHelper
 {
     /**
      * @var string
@@ -46,6 +46,7 @@ class ButtonViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
      * Initialize the arguments.
      *
      * @return void
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      * @api
      */
     public function initializeArguments()
@@ -79,17 +80,18 @@ class ButtonViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
             'Specifies where to display the response after submitting the form. Only for type="submit" (e.g. "_blank", "_self", "_parent", "_top", "framename")'
         );
         $this->registerUniversalTagAttributes();
+        $this->registerArgument('type', 'string', 'Specifies the type of button (e.g. "button", "reset" or "submit")', false, 'submit');
     }
 
     /**
      * Renders the button.
      *
-     * @param string $type Specifies the type of button (e.g. "button", "reset" or "submit")
      * @return string
      * @api
      */
-    public function render($type = 'submit')
+    public function render()
     {
+        $type = $this->arguments['type'];
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);
 
