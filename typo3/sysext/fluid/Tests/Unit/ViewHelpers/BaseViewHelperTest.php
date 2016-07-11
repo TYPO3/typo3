@@ -13,10 +13,11 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Fluid\ViewHelpers\BaseViewHelper;
 
 /**
  */
-class BaseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase
+class BaseViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
      * @test
@@ -24,8 +25,8 @@ class BaseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
     public function renderTakesBaseUriFromControllerContext()
     {
         $baseUri = 'http://typo3.org/';
-        $this->request->expects($this->any())->method('getBaseUri')->will($this->returnValue($baseUri));
-        $viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\BaseViewHelper();
+        $this->request->getBaseUri()->willReturn($baseUri);
+        $viewHelper = new BaseViewHelper();
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $expectedResult = '<base href="' . $baseUri . '" />';
         $actualResult = $viewHelper->render();

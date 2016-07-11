@@ -1,39 +1,28 @@
 <?php
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use Prophecy\Argument;
+use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Test for the "Checkbox" Form view helper
  */
-class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase
+class CheckboxViewHelperTest extends ViewHelperBaseTestcase
 {
+
     /**
-     * @var CheckboxViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var CheckboxViewHelper
      */
     protected $viewHelper;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getAccessibleMock(CheckboxViewHelper::class, array('setErrorClassAttribute', 'getName', 'getValueAttribute', 'isObjectAccessorMode', 'getPropertyValue', 'registerFieldNameForFormTokenGeneration'));
-        $this->arguments['property'] = '';
+        $this->viewHelper = new CheckboxViewHelper();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->initializeArguments();
     }
 
     /**
@@ -41,21 +30,15 @@ class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
      */
     public function renderCorrectlySetsTagNameAndDefaultAttributes()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute'))
-            ->getMock();
-        $mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
-        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
-        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-
-        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-        $this->viewHelper->_set('tag', $mockTagBuilder);
-
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'name' => 'foo',
+            ]
+        );
+        $expectedResult = '<input type="hidden" name="foo" value="" /><input type="checkbox" name="foo" value="" />';
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -63,66 +46,74 @@ class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
      */
     public function renderSetsCheckedAttributeIfSpecified()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute'))
-            ->getMock();
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
-        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-        $mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
-
-        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-        $this->viewHelper->_set('tag', $mockTagBuilder);
-
-        $this->viewHelper->initialize();
-        $this->viewHelper->render(true);
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'name' => 'foo',
+                'checked' => true,
+            ]
+        );
+        $expectedResult = '<input type="hidden" name="foo" value="" /><input type="checkbox" name="foo" value="" checked="checked" />';
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
+     * Object property = false, argument "checked" set
+     *
      * @test
      */
     public function renderIgnoresValueOfBoundPropertyIfCheckedIsSet()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute'))
-            ->getMock();
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
-        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+                'checked' => true
+            ]
+        );
 
-        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-        $this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(true));
-        $this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue(true));
-        $this->viewHelper->_set('tag', $mockTagBuilder);
+        $formObject = new \stdClass();
+        $formObject->someProperty = false;
 
-        $this->viewHelper->initialize();
-        $this->viewHelper->render(true);
-        $this->viewHelper->render(false);
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithoutMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        self::assertContains('<input type="hidden" name="fieldPrefix[objectName][someProperty]" value="" />', $result);
+        self::assertContains('<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />', $result);
     }
 
     /**
+     * Object property = true, argument "checked" not set
+     *
      * @test
      */
-    public function renderCorrectlySetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeBoolean()
+    public function renderSetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeBoolean()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute'))
-            ->getMock();
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
-        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-        $mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+            ]
+        );
 
-        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-        $this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(true));
-        $this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue(true));
-        $this->viewHelper->_set('tag', $mockTagBuilder);
+        $formObject = new \stdClass();
+        $formObject->someProperty = true;
 
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithoutMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        self::assertContains('<input type="hidden" name="fieldPrefix[objectName][someProperty]" value="" />', $result);
+        self::assertContains(
+            '<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />',
+            $result
+        );
     }
 
     /**
@@ -130,68 +121,81 @@ class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
      */
     public function renderAppendsSquareBracketsToNameAttributeIfBoundToAPropertyOfTypeArray()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute'))
-            ->getMock();
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
-        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo[]');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo[]');
-        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+            ]
+        );
 
-        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-        $this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(true));
-        $this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue(array()));
-        $this->viewHelper->_set('tag', $mockTagBuilder);
+        $formObject = new \stdClass();
+        $formObject->someProperty = [];
 
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithoutMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        self::assertContains(
+            '<input type="checkbox" name="fieldPrefix[objectName][someProperty][]" value="foo" />',
+            $result
+        );
     }
 
     /**
      * @test
      */
-    public function renderCorrectlySetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeArray()
+    public function renderSetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeArray()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute'))
-            ->getMock();
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
-        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo[]');
-        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-        $mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+                'checked' => true
+            ]
+        );
 
-        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-        $this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(true));
-        $this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue(array('foo', 'bar', 'baz')));
-        $this->viewHelper->_set('tag', $mockTagBuilder);
+        $formObject = new \stdClass();
+        $formObject->someProperty = ['foo'];
 
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithoutMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        self::assertContains(
+            '<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />',
+            $result
+        );
     }
 
     /**
      * @test
      */
-    public function renderCorrectlySetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeArrayObject()
+    public function renderSetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeArrayObject()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute'))
-            ->getMock();
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
-        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo[]');
-        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-        $mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'bar',
+                'property' => 'someProperty',
+                'checked' => true
+            ]
+        );
 
-        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-        $this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(true));
-        $this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue(new \ArrayObject(array('foo', 'bar', 'baz'))));
-        $this->viewHelper->_set('tag', $mockTagBuilder);
+        $formObject = new \ArrayObject(['foo', 'bar', 'baz']);
 
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithoutMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        self::assertContains(
+            '<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="bar" checked="checked" />',
+            $result
+        );
     }
 
     /**
@@ -199,22 +203,53 @@ class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
      */
     public function renderSetsCheckedAttributeIfBoundPropertyIsNotNull()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute'))
-            ->getMock();
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
-        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-        $mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+            ]
+        );
 
-        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-        $this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(true));
-        $this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue(new \stdClass()));
-        $this->viewHelper->_set('tag', $mockTagBuilder);
+        $formObject = new \stdClass();
+        $formObject->someProperty = 'bar';
 
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithoutMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        self::assertContains(
+            '<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />',
+            $result
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderDoesNotSetsCheckedAttributeIfBoundPropertyIsNull()
+    {
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+            ]
+        );
+
+        $formObject = new \stdClass();
+        $formObject->someProperty = null;
+
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithoutMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        self::assertContains(
+            '<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" />',
+            $result
+        );
     }
 
     /**
@@ -222,42 +257,162 @@ class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
      */
     public function renderSetsCheckedAttributeForListOfObjects()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute'))
-            ->getMock();
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
-        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo[]');
-        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 2);
-        $mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 2,
+                'property' => 'someProperty',
+            ]
+        );
 
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
-        $object3 = new \stdClass();
+        $property1 = new \stdClass();
+        $property2 = new \stdClass();
+        $property3 = new \stdClass();
 
-        $this->viewHelper->expects($this->any())->method('getName')->willReturn('foo');
-        $this->viewHelper->expects($this->any())->method('getValueAttribute')->willReturn(2);
-        $this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->willReturn(true);
-        $this->viewHelper->expects($this->any())->method('getPropertyValue')->willReturn(array($object1, $object2, $object3));
-        $this->viewHelper->_set('tag', $mockTagBuilder);
+        $persistenceManager = $this->prophesize(PersistenceManager::class);
+        $persistenceManager->getIdentifierByObject($property1)->willReturn(1);
+        $persistenceManager->getIdentifierByObject($property2)->willReturn(2);
+        $persistenceManager->getIdentifierByObject($property3)->willReturn(3);
+        $this->viewHelper->injectPersistenceManager($persistenceManager->reveal());
 
-        $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValueMap(array(
-            array($object1, 1),
-            array($object2, 2),
-            array($object3, 3),
-        )));
-        $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
+        $formObject = new \stdClass();
+        $formObject->someProperty = [$property1, $property2, $property3];
 
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithoutMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        self::assertContains(
+            '<input type="checkbox" name="fieldPrefix[objectName][someProperty][]" value="2" />',
+            $result
+        );
     }
 
     /**
      * @test
      */
-    public function renderCallsSetErrorClassAttribute()
+    public function renderCallSetsErrorClassAttribute()
     {
-        $this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
-        $this->viewHelper->render();
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+                'errorClass' => 'error',
+            ]
+        );
+
+        $formObject = new \stdClass();
+        $formObject->someProperty = null;
+
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        self::assertContains(
+            '<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" class="error" />',
+            $result
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderCallSetsStandardErrorClassAttributeIfNonIsSpecified()
+    {
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+            ]
+        );
+
+        $formObject = new \stdClass();
+        $formObject->someProperty = null;
+
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        self::assertContains(
+            '<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" class="f3-form-error" />',
+            $result
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderCallExtendsClassAttributeWithErrorClass()
+    {
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+                'class' => 'css_class'
+            ]
+        );
+
+        $formObject = new \stdClass();
+        $formObject->someProperty = null;
+
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        self::assertContains(
+            '<input class="css_class f3-form-error" type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" />',
+            $result
+        );
+    }
+
+    /**
+     * Helper function for a valid mapping result
+     */
+    protected function stubRequestWithoutMappingErrors()
+    {
+        $this->request->getOriginalRequest()->willReturn(null);
+        $this->request->getArguments()->willReturn([]);
+        $result = $this->prophesize(Result::class);
+        $result->forProperty('objectName')->willReturn($result->reveal());
+        $result->forProperty('someProperty')->willReturn($result->reveal());
+        $result->hasErrors()->willReturn(false);
+        $this->request->getOriginalRequestMappingResults()->willReturn($result->reveal());
+    }
+
+    /**
+     * Helper function for a mapping result with errors
+     */
+    protected function stubRequestWithMappingErrors()
+    {
+        $this->request->getOriginalRequest()->willReturn(null);
+        $this->request->getArguments()->willReturn([]);
+        $result = $this->prophesize(Result::class);
+        $result->forProperty('objectName')->willReturn($result->reveal());
+        $result->forProperty('someProperty')->willReturn($result->reveal());
+        $result->hasErrors()->willReturn(true);
+        $this->request->getOriginalRequestMappingResults()->willReturn($result->reveal());
+    }
+
+    /**
+     * Helper function for the bound property
+     *
+     * @param $formObject
+     */
+    protected function stubVariableContainer($formObject)
+    {
+        $this->viewHelperVariableContainer->exists(Argument::cetera())->willReturn(true);
+        $this->viewHelperVariableContainer->get(Argument::any(), 'formObjectName')->willReturn('objectName');
+        $this->viewHelperVariableContainer->get(Argument::any(), 'fieldNamePrefix')->willReturn('fieldPrefix');
+        $this->viewHelperVariableContainer->get(Argument::any(), 'formFieldNames')->willReturn([]);
+        $this->viewHelperVariableContainer->get(Argument::any(), 'formObject')->willReturn($formObject);
+        $this->viewHelperVariableContainer->get(Argument::any(), 'renderedHiddenFields')->willReturn([]);
+        $this->viewHelperVariableContainer->addOrUpdate(Argument::cetera())->willReturn(null);
     }
 }

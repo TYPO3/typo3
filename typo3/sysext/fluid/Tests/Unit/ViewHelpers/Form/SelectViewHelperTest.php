@@ -13,12 +13,13 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Test for the "Select" Form view helper
  */
-class SelectViewHelperTest extends FormFieldViewHelperBaseTestcase
+class SelectViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
      * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper
@@ -43,6 +44,7 @@ class SelectViewHelperTest extends FormFieldViewHelperBaseTestcase
         $this->arguments['name'] = '';
         $this->arguments['sortByOptionLabel'] = false;
         $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper::class, array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
+        $this->tagBuilder = $this->createMock(\TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder::class);
         $this->viewHelper->_set('tag', $this->tagBuilder);
     }
 

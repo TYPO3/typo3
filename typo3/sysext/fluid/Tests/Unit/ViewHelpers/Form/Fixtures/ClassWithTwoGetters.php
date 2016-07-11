@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures;
  */
 class ClassWithTwoGetters
 {
+    protected $value = 17;
+
     /**
      * @return string
      */

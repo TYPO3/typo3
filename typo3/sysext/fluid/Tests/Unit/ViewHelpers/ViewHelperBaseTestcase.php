@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -26,7 +27,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
-     * @var ViewHelperVariableContainer
+     * @var ViewHelperVariableContainer|ObjectProphecy
      */
     protected $viewHelperVariableContainer;
 
@@ -75,7 +76,7 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->viewHelperVariableContainer = $this->createMock(ViewHelperVariableContainer::class);
+        $this->viewHelperVariableContainer = $this->prophesize(ViewHelperVariableContainer::class);
         $this->templateVariableContainer = $this->createMock(CmsVariableProvider::class);
         $this->uriBuilder = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
         $this->uriBuilder->expects($this->any())->method('reset')->will($this->returnValue($this->uriBuilder));
@@ -91,16 +92,15 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->uriBuilder->expects($this->any())->method('setNoCache')->will($this->returnValue($this->uriBuilder));
         $this->uriBuilder->expects($this->any())->method('setUseCacheHash')->will($this->returnValue($this->uriBuilder));
         $this->uriBuilder->expects($this->any())->method('setAddQueryStringMethod')->will($this->returnValue($this->uriBuilder));
-        $this->request = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Web\Request::class);
+        $this->request = $this->prophesize(\TYPO3\CMS\Extbase\Mvc\Web\Request::class);
         $this->controllerContext = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class);
         $this->controllerContext->expects($this->any())->method('getUriBuilder')->will($this->returnValue($this->uriBuilder));
-        $this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
-        $this->tagBuilder = $this->createMock(\TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder::class);
+        $this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request->reveal()));
         $this->arguments = array();
         $this->renderingContext = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class, array('getControllerContext'));
         $this->renderingContext->expects($this->any())->method('getControllerContext')->willReturn($this->controllerContext);
         $this->renderingContext->setVariableProvider($this->templateVariableContainer);
-        $this->renderingContext->_set('viewHelperVariableContainer', $this->viewHelperVariableContainer);
+        $this->renderingContext->_set('viewHelperVariableContainer', $this->viewHelperVariableContainer->reveal());
         $this->renderingContext->setControllerContext($this->controllerContext);
         $this->mvcPropertyMapperConfigurationService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class, array('dummy'));
     }
@@ -113,6 +113,8 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $viewHelper->setRenderingContext($this->renderingContext);
         $viewHelper->setArguments($this->arguments);
+        // this condition is needed, because the (Be)/Security\*ViewHelper don't extend the
+        // AbstractViewHelper and contain no method injectReflectionService()
         if ($viewHelper instanceof AbstractViewHelper) {
             $reflectionServiceProphecy = $this->prophesize(ReflectionService::class);
             $viewHelper->injectReflectionService($reflectionServiceProphecy->reveal());
