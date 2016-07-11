@@ -13,7 +13,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -137,5 +139,53 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Core\Tests\UnitTestCase
             }
         }
         $viewHelper->setArguments($arguments);
+    }
+
+    /**
+     * Helper function for a valid mapping result
+     */
+    protected function stubRequestWithoutMappingErrors()
+    {
+        $this->request->getOriginalRequest()->willReturn(null);
+        $this->request->getArguments()->willReturn([]);
+        $result = $this->prophesize(Result::class);
+        $result->forProperty('objectName')->willReturn($result->reveal());
+        $result->forProperty('someProperty')->willReturn($result->reveal());
+        $result->hasErrors()->willReturn(false);
+        $this->request->getOriginalRequestMappingResults()->willReturn($result->reveal());
+    }
+
+    /**
+     * Helper function for a mapping result with errors
+     */
+    protected function stubRequestWithMappingErrors()
+    {
+        $this->request->getOriginalRequest()->willReturn(null);
+        $this->request->getArguments()->willReturn([]);
+        $result = $this->prophesize(Result::class);
+        $result->forProperty('objectName')->willReturn($result->reveal());
+        $result->forProperty('someProperty')->willReturn($result->reveal());
+        $result->hasErrors()->willReturn(true);
+        $this->request->getOriginalRequestMappingResults()->willReturn($result->reveal());
+    }
+
+    /**
+     * Helper function for the bound property
+     *
+     * @param $formObject
+     */
+    protected function stubVariableContainer($formObject)
+    {
+        $this->viewHelperVariableContainer->exists(Argument::cetera())->willReturn(true);
+        $this->viewHelperVariableContainer->get(Argument::any(),
+            'formObjectName')->willReturn('objectName');
+        $this->viewHelperVariableContainer->get(Argument::any(),
+            'fieldNamePrefix')->willReturn('fieldPrefix');
+        $this->viewHelperVariableContainer->get(Argument::any(), 'formFieldNames')->willReturn([]);
+        $this->viewHelperVariableContainer->get(Argument::any(),
+            'formObject')->willReturn($formObject);
+        $this->viewHelperVariableContainer->get(Argument::any(),
+            'renderedHiddenFields')->willReturn([]);
+        $this->viewHelperVariableContainer->addOrUpdate(Argument::cetera())->willReturn(null);
     }
 }

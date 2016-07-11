@@ -62,25 +62,27 @@ class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFiel
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerTagAttribute(
-            'disabled', 'string', 'Specifies that the input element should be disabled when the page loads'
-        );
         $this->registerArgument(
             'errorClass', 'string', 'CSS class to set if there are errors for this view helper', false, 'f3-form-error'
         );
+        $this->registerArgument('checked', 'bool', 'Specifies that the input element should be preselected');
         $this->overrideArgument('value', 'string', 'Value of input tag. Required for radio buttons', true);
         $this->registerUniversalTagAttributes();
+        $this->registerTagAttribute(
+            'disabled', 'string', 'Specifies that the input element should be disabled when the page loads'
+        );
     }
 
     /**
      * Renders the checkbox.
      *
-     * @param bool $checked Specifies that the input element should be preselected
      * @return string
      * @api
      */
-    public function render($checked = null)
+    public function render()
     {
+        $checked = $this->arguments['checked'];
+
         $this->tag->addAttribute('type', 'radio');
 
         $nameAttribute = $this->getName();
@@ -96,7 +98,6 @@ class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFiel
         }
 
         if ($propertyValue !== null) {
-
             // no type-safe comparison by intention
             $checked = $propertyValue == $valueAttribute;
         }

@@ -13,13 +13,15 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\RadioViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Test for the "Radio" Form view helper
  */
-class RadioViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase
+class RadioViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
      * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\RadioViewHelper
@@ -29,31 +31,24 @@ class RadioViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\F
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getAccessibleMock(RadioViewHelper::class, array('setErrorClassAttribute', 'getName', 'getValueAttribute', 'isObjectAccessorMode', 'getPropertyValue', 'registerFieldNameForFormTokenGeneration'));
+        $this->viewHelper = new RadioViewHelper();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->initializeArguments();
     }
 
     /**
      * @test
      */
-    public function renderCorrectlySetsTagNameAndDefaultAttributes()
+    public function renderSetsTagNameAndDefaultAttributes()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute'))
-            ->getMock();
-        $mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
-        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
-        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-
-        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-        $this->viewHelper->_set('tag', $mockTagBuilder);
-
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'name' => 'foo',
+            ]
+        );
+        $expectedResult = '<input type="radio" name="foo" value="" />';
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -61,21 +56,16 @@ class RadioViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\F
      */
     public function renderSetsCheckedAttributeIfSpecified()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute'))
-            ->getMock();
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
-        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
-        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-        $mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
-
-        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-        $this->viewHelper->_set('tag', $mockTagBuilder);
-
-        $this->viewHelper->initialize();
-        $this->viewHelper->render(true);
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'name' => 'foo',
+                'checked' => true,
+            ]
+        );
+        $expectedResult = '<input type="radio" name="foo" value="" checked="checked" />';
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -83,22 +73,24 @@ class RadioViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\F
      */
     public function renderIgnoresBoundPropertyIfCheckedIsSet()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute'))
-            ->getMock();
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
-        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+                'checked' => true
+            ]
+        );
+        $formObject = new \stdClass();
+        $formObject->someProperty = false;
 
-        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-        $this->viewHelper->expects($this->never())->method('isObjectAccessorMode')->will($this->returnValue(true));
-        $this->viewHelper->expects($this->never())->method('getPropertyValue')->will($this->returnValue(true));
-        $this->viewHelper->_set('tag', $mockTagBuilder);
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithoutMappingErrors();
 
-        $this->viewHelper->initialize();
-        $this->viewHelper->render(true);
-        $this->viewHelper->render(false);
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        $this->assertContains('<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />',
+            $result);
     }
 
     /**
@@ -106,23 +98,26 @@ class RadioViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\F
      */
     public function renderCorrectlySetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeBoolean()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute'))
-            ->getMock();
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
-        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
-        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-        $mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+            ]
+        );
 
-        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-        $this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(true));
-        $this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue(true));
-        $this->viewHelper->_set('tag', $mockTagBuilder);
+        $formObject = new \stdClass();
+        $formObject->someProperty = true;
 
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithoutMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        $this->assertContains(
+            '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />',
+            $result
+        );
     }
 
     /**
@@ -130,54 +125,199 @@ class RadioViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\F
      */
     public function renderDoesNotAppendSquareBracketsToNameAttributeIfBoundToAPropertyOfTypeArray()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute'))
-            ->getMock();
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
-        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
-        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+            ]
+        );
 
-        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-        $this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(true));
-        $this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue(array()));
-        $this->viewHelper->_set('tag', $mockTagBuilder);
+        $formObject = new \stdClass();
+        $formObject->someProperty = [];
 
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithoutMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        $this->assertContains(
+            '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" />',
+            $result
+        );
     }
 
     /**
      * @test
      */
-    public function renderCorrectlySetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeString()
+    public function renderSetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeString()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(array('setTagName', 'addAttribute'))
-            ->getMock();
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
-        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
-        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-        $mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+            ]
+        );
 
-        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-        $this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(true));
-        $this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue('bar'));
-        $this->viewHelper->_set('tag', $mockTagBuilder);
+        $formObject = new \stdClass();
+        $formObject->someProperty = '';
 
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithoutMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        $this->assertContains(
+            '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" />',
+            $result
+        );
     }
 
     /**
      * @test
      */
-    public function renderCallsSetErrorClassAttribute()
+    public function renderDoesNotSetsCheckedAttributeIfBoundPropertyIsNull()
     {
-        $this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
-        $this->viewHelper->render();
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+            ]
+        );
+
+        $formObject = new \stdClass();
+        $formObject->someProperty = null;
+
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithoutMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        $this->assertContains(
+            '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" />',
+            $result
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderSetsCheckedAttributeForListOfObjects()
+    {
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 2,
+                'property' => 'someProperty',
+            ]
+        );
+
+        $property1 = new \stdClass();
+        $property2 = new \stdClass();
+        $property3 = new \stdClass();
+
+        $persistenceManager = $this->prophesize(PersistenceManager::class);
+        $persistenceManager->getIdentifierByObject($property1)->willReturn(1);
+        $persistenceManager->getIdentifierByObject($property2)->willReturn(2);
+        $persistenceManager->getIdentifierByObject($property3)->willReturn(3);
+        $this->viewHelper->injectPersistenceManager($persistenceManager->reveal());
+
+        $formObject = new \stdClass();
+        $formObject->someProperty = [$property1, $property2, $property3];
+
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithoutMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        $this->assertContains(
+            '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="2" />',
+            $result
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderCallSetsErrorClassAttribute()
+    {
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+                'errorClass' => 'error',
+            ]
+        );
+
+        $formObject = new \stdClass();
+        $formObject->someProperty = null;
+
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        $this->assertContains(
+            '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" class="error" />',
+            $result
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderCallSetsStandardErrorClassAttributeIfNonIsSpecified()
+    {
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+            ]
+        );
+
+        $formObject = new \stdClass();
+        $formObject->someProperty = null;
+
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        $this->assertContains(
+            '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" class="f3-form-error" />',
+            $result
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderCallExtendsClassAttributeWithErrorClass()
+    {
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+                'property' => 'someProperty',
+                'class' => 'css_class'
+            ]
+        );
+
+        $formObject = new \stdClass();
+        $formObject->someProperty = null;
+
+        $this->stubVariableContainer($formObject);
+        $this->stubRequestWithMappingErrors();
+
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+
+        $this->assertContains(
+            '<input class="css_class f3-form-error" type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" />',
+            $result
+        );
     }
 }
