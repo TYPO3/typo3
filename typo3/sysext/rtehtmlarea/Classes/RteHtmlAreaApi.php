@@ -113,7 +113,7 @@ abstract class RteHtmlAreaApi
         // Set the value of this boolean based on the initial value of $this->pluginButtons
         $this->pluginAddsButtons = !empty($this->pluginButtons);
         // Check if the plugin should be disabled in frontend
-        if ($this->isFrontend() && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins'][$this->pluginName]['disableInFE']) {
+        if ($this->isFrontend() && !empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins'][$this->pluginName]['disableInFE'])) {
             return false;
         }
         return true;
