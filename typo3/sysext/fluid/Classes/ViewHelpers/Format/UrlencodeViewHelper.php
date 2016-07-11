@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Encodes the given string according to http://www.faqs.org/rfcs/rfc3986.html (applying PHPs rawurlencode() function)
@@ -50,30 +51,29 @@ class UrlencodeViewHelper extends AbstractViewHelper
     protected $escapeChildren = false;
 
     /**
-     * Initialize arguments.
+     * Initialize ViewHelper arguments
      *
      * @api
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     * @return void
+     * @throws Exception
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerArgument('value', 'string', 'string to format');
     }
 
     /**
      * Escapes special characters with their escaped counterparts as needed using PHPs rawurlencode() function.
      *
-     * @return mixed
      * @see http://www.php.net/manual/function.rawurlencode.php
      * @api
+     * @return mixed
      */
     public function render()
     {
-        $value = $this->arguments['value'];
         return static::renderStatic(
-            array(
-                'value' => $value
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

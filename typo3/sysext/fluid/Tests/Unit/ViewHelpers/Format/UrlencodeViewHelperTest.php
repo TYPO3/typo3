@@ -22,7 +22,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\Format\UrlencodeViewHelper;
 class UrlencodeViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\UrlencodeViewHelper
+     * @var UrlencodeViewHelper
      */
     protected $viewHelper;
 
@@ -53,16 +53,13 @@ class UrlencodeViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderUsesChildnodesAsSourceIfSpecified()
     {
-        $this->viewHelper->setRenderChildrenClosure(
-            function () {
-                return 'Source';
-            }
-        );
         $this->setArgumentsUnderTest(
             $this->viewHelper,
             [
+                'value' => 'Source'
             ]
         );
+
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('Source', $actualResult);
     }
@@ -73,6 +70,7 @@ class UrlencodeViewHelperTest extends ViewHelperBaseTestcase
     public function renderDoesNotModifyValueIfItDoesNotContainSpecialCharacters()
     {
         $source = 'StringWithoutSpecialCharacters';
+
         $this->setArgumentsUnderTest(
             $this->viewHelper,
             [
@@ -90,13 +88,33 @@ class UrlencodeViewHelperTest extends ViewHelperBaseTestcase
     {
         $source = 'Foo @+%/ "';
         $expectedResult = 'Foo%20%40%2B%25%2F%20%22';
+
         $this->setArgumentsUnderTest(
             $this->viewHelper,
             [
                 'value' => $source
             ]
         );
+
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function renderReturnsUnmodifiedSourceIfItIsNoString()
+    {
+        $source = new \stdClass();
+
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => $source
+            ]
+        );
+
+        $actualResult = $this->viewHelper->render();
+        $this->assertSame($source, $actualResult);
     }
 }
