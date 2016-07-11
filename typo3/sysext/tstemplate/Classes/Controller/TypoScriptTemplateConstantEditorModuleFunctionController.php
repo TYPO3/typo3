@@ -48,10 +48,6 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
     {
         $templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
         $GLOBALS['tmpl'] = $templateService;
-
-        // Do not log time-performance information
-        $templateService->tt_track = false;
-
         $templateService->init();
         $templateService->ext_localGfxPrefix = ExtensionManagementUtility::extPath('tstemplate');
         $templateService->ext_localWebGfxPrefix = ExtensionManagementUtility::extRelPath('tstemplate') . 'Resources/Public/';

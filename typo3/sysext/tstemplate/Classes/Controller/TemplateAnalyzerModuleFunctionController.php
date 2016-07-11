@@ -79,9 +79,6 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
         // Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
         $templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
         $GLOBALS['tmpl'] = $templateService;
-
-        // Do not log time-performance information
-        $templateService->tt_track = false;
         $templateService->init();
 
         // Gets the rootLine

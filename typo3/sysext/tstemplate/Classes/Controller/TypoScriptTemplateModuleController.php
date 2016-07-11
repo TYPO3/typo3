@@ -441,9 +441,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         /** @var ExtendedTemplateService $tmpl */
         $tmpl = GeneralUtility::makeInstance(ExtendedTemplateService::class);
         $GLOBALS['tmpl'] = $tmpl;
-
-        // Do not log time-performance information
-        $tmpl->tt_track = false;
         $tmpl->init();
 
         $lang = $this->getLanguageService();
@@ -516,9 +513,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         /** @var ExtendedTemplateService $tmpl */
         $tmpl = GeneralUtility::makeInstance(ExtendedTemplateService::class);
         $GLOBALS['tmpl'] = $tmpl;
-
-        // Do not log time-performance information
-        $tmpl->tt_track = false;
         $tmpl->init();
 
         $all = $tmpl->ext_getAllTemplates($this->id, $this->perms_clause);

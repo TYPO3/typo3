@@ -43,6 +43,13 @@ class ExtendedTemplateService extends TemplateService
     public $edit_divider = '###MOD_TS:EDITABLE_CONSTANTS###';
 
     /**
+     * Disabled in backend context
+     *
+     * @var bool
+     */
+    public $tt_track = false;
+
+    /**
      * @var array
      */
     public $categories = array(
@@ -368,13 +375,13 @@ class ExtendedTemplateService extends TemplateService
                     $constants->parse($parts[0], $matchObj);
                 }
                 $this->flatSetup = array();
-                $this->flattenSetup($constants->setup, '', '');
+                $this->flattenSetup($constants->setup, '');
                 $defaultConstants = $this->flatSetup;
             }
             $constants->parse($str, $matchObj);
         }
         $this->flatSetup = array();
-        $this->flattenSetup($constants->setup, '', '');
+        $this->flattenSetup($constants->setup, '');
         $this->setup['constants'] = $constants->setup;
         return $this->ext_compareFlatSetups($defaultConstants);
     }
@@ -1368,14 +1375,12 @@ class ExtendedTemplateService extends TemplateService
                             '<div class="input-group defaultTS" id="' . $defaultTyposcriptID . '" ' . $defaultTyposcriptStyle . '>'
                                 . '<span class="input-group-btn">' . $editIconHTML . '</span>'
                                 . '<input class="form-control" type="text" placeholder="' . htmlspecialchars($params['default_value']) . '" readonly>'
-                                . $appendedGroupAddon
                             . '</div>';
                     }
                     $constantEditRow =
                         '<div class="input-group userTS" id="' . $userTyposcriptID . '" ' . $userTyposcriptStyle . '>'
                             . '<span class="input-group-btn">' . $deleteIconHTML . '</span>'
                             . $p_field
-                            . $appendedGroupAddon
                         . '</div>';
                     $constantLabel = '<label class="t3js-formengine-label"><span>' . htmlspecialchars($head) . '</span></label>';
                     $constantName = '<span class="help-block">[' . $params['name'] . ']</span>';
@@ -1573,7 +1578,7 @@ class ExtendedTemplateService extends TemplateService
                                 break;
                             case 'color':
                                 $col = array();
-                                if ($var && !GeneralUtility::inList($this->HTMLcolorList, strtolower($var))) {
+                                if ($var) {
                                     $var = preg_replace('/[^A-Fa-f0-9]*/', '', $var);
                                     $useFulHex = strlen($var) > 3;
                                     $col[] = hexdec($var[0]);

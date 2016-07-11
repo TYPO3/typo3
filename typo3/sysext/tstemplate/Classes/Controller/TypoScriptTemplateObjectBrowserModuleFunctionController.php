@@ -119,9 +119,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
         // Defined global here!
         $templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
         $GLOBALS['tmpl'] = $templateService;
-
-        // Do not log time-performance information
-        $templateService->tt_track = false;
         $templateService->init();
 
         // Gets the rootLine

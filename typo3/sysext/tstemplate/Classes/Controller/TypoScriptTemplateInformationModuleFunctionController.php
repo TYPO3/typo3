@@ -113,9 +113,6 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
         /** @var ExtendedTemplateService $tmpl */
         $tmpl = GeneralUtility::makeInstance(ExtendedTemplateService::class);
         $GLOBALS['tmpl'] = $tmpl;
-
-        // Do not log time-performance information
-        $tmpl->tt_track = false;
         $tmpl->init();
 
         // Get the row of the first VISIBLE template of the page. where clause like the frontend.

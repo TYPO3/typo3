@@ -100,8 +100,6 @@ class TypoScriptTemplateInfoHook
             $template_uid = $set['templatesOnPage'] ?: 0;
             // Defined global here!
             $tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
-            // Do not log time-performance information
-            $tmpl->tt_track = 0;
             $tmpl->init();
             // Get the first template record on the page, which might be hidden as well
             // (for instance the TypoScript constant editor is persisting to the first template)

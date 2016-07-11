@@ -87,10 +87,8 @@ class CodeCompletion
      */
     protected function getMergedTemplates($pageId, $templateId = 0)
     {
-        $result = array();
         /** @var $tsParser \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService */
         $tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
-        $tsParser->tt_track = 0;
         $tsParser->init();
         // Gets the rootLine
         $page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
@@ -103,7 +101,6 @@ class CodeCompletion
         array_pop($tsParser->constants);
         $tsParser->linkObjects = true;
         $tsParser->ext_regLinenumbers = false;
-        $tsParser->bType = $bType;
         $tsParser->generateConfig();
         $result = $this->treeWalkCleanup($tsParser->setup);
         return $result;

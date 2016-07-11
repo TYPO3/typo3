@@ -161,12 +161,6 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
                 $this->view->assign('tsconfParts99', 0);
                 // Defined global here!
                 $tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
-
-                // Do not log time-performance information
-                $tmpl->tt_track = 0;
-                $tmpl->fixedLgd = 0;
-                $tmpl->linkObjects = 0;
-                $tmpl->bType = '';
                 $tmpl->ext_expandAllNotes = 1;
                 $tmpl->ext_noPMicons = 1;
 
