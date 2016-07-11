@@ -34,7 +34,6 @@ class PageViewHelperTest extends ViewHelperBaseTestcase
         parent::setUp();
         $this->viewHelper = $this->getAccessibleMock(PageViewHelper::class, array('renderChildren'));
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->initializeArguments();
     }
 
     /**
@@ -42,8 +41,16 @@ class PageViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderProvidesUriForValidLinkTarget()
     {
-        $this->uriBuilder->expects($this->once())->method('build')->will($this->returnValue('index.php'));
-        $this->viewHelper->render();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return 'index.php';
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            []
+        );
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -51,7 +58,15 @@ class PageViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderWillNotProvideUriForNonValidLinkTarget()
     {
-        $this->uriBuilder->expects($this->once())->method('build')->will($this->returnValue(null));
-        $this->viewHelper->render();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return null;
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            []
+        );
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 }

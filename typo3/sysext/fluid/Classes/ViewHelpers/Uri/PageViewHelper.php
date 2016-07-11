@@ -47,35 +47,31 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
     /**
-     * @param int|NULL $pageUid target PID
-     * @param array $additionalParams query parameters to be attached to the resulting URI
-     * @param int $pageType type of the target page. See typolink.parameter
-     * @param bool $noCache set this to disable caching for the target page. You should not need this.
-     * @param bool $noCacheHash set this to suppress the cHash query parameter created by TypoLink. You should not need this.
-     * @param string $section the anchor to be added to the URI
-     * @param bool $linkAccessRestrictedPages If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.
-     * @param bool $absolute If set, the URI of the rendered link is absolute
-     * @param bool $addQueryString If set, the current query parameters will be kept in the URI
-     * @param array $argumentsToBeExcludedFromQueryString arguments to be removed from the URI. Only active if $addQueryString = TRUE
-     * @param string $addQueryStringMethod Set which parameters will be kept. Only active if $addQueryString = TRUE
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('pageUid', 'int', 'target PID');
+        $this->registerArgument('additionalParams', 'array', 'query parameters to be attached to the resulting URI', false, array());
+        $this->registerArgument('pageType', 'int', 'type of the target page. See typolink.parameter', false, 0);
+        $this->registerArgument('noCache', 'bool', 'set this to disable caching for the target page. You should not need this.', false, false);
+        $this->registerArgument('noCacheHash', 'bool', 'set this to suppress the cHash query parameter created by TypoLink. You should not need this.', false, false);
+        $this->registerArgument('section', 'string', 'the anchor to be added to the URI', false, '');
+        $this->registerArgument('linkAccessRestrictedPages', 'bool', 'If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.', false, false);
+        $this->registerArgument('absolute', 'bool', 'If set, the URI of the rendered link is absolute', false, false);
+        $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the URI', false, false);
+        $this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'arguments to be removed from the URI. Only active if $addQueryString = TRUE', false, array());
+        $this->registerArgument('addQueryStringMethod', 'string', 'Set which parameters will be kept. Only active if $addQueryString = TRUE');
+    }
+
+    /**
      * @return string Rendered page URI
      */
-    public function render($pageUid = null, array $additionalParams = array(), $pageType = 0, $noCache = false, $noCacheHash = false, $section = '', $linkAccessRestrictedPages = false, $absolute = false, $addQueryString = false, array $argumentsToBeExcludedFromQueryString = array(), $addQueryStringMethod = null)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'pageUid' => $pageUid,
-                'additionalParams' => $additionalParams,
-                'pageType' => $pageType,
-                'noCache' => $noCache,
-                'noCacheHash' => $noCacheHash,
-                'section' => $section,
-                'linkAccessRestrictedPages' => $linkAccessRestrictedPages,
-                'absolute' => $absolute,
-                'addQueryString' => $addQueryString,
-                'argumentsToBeExcludedFromQueryString' => $argumentsToBeExcludedFromQueryString,
-                'addQueryStringMethod' => $addQueryStringMethod
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
