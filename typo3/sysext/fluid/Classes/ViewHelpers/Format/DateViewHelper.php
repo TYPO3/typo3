@@ -92,18 +92,32 @@ class DateViewHelper extends AbstractViewHelper
     protected $escapeChildren = false;
 
     /**
-     * Render the supplied DateTime object as a formatted date.
+     * Initialize arguments
      *
-     * @param mixed $date either an object implementing DateTimeInterface or a string that is accepted by DateTime constructor
-     * @param string $format Format String which is taken to format the Date/Time
-     * @param mixed $base A base time (an object implementing DateTimeInterface or a string) used if $date is a relative date specification. Defaults to current time.
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('date', 'mixed', 'Either an object implementing DateTimeInterface or a string that is accepted by DateTime constructor');
+        $this->registerArgument('format', 'string', 'Format String which is taken to format the Date/Time', false, '');
+        $this->registerArgument('base', 'mixed', 'A base time (an object implementing DateTimeInterface or a string) used if $date is a relative date specification. Defaults to current time.');
+    }
+
+    /**
+     * Render the supplied DateTime object as a formatted date.
      *
      * @return string Formatted date
      * @throws Exception
      * @api
      */
-    public function render($date = null, $format = '', $base = null)
+    public function render()
     {
+        $date = $this->arguments['date'];
+        $format = $this->arguments['format'];
+        $base = $this->arguments['base'];
+
         return static::renderStatic(
             array(
                 'date' => $date,

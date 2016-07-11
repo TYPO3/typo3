@@ -13,14 +13,15 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper;
 
 /**
  * Test case
  */
-class DateViewHelperTest extends UnitTestCase
+class DateViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
      * @var array Backup of current locale, it is manipulated in tests
@@ -37,6 +38,11 @@ class DateViewHelperTest extends UnitTestCase
      */
     protected $timezone;
 
+    /**
+     * @var DateViewHelper
+     */
+    protected $viewHelper;
+
     protected function setUp()
     {
         parent::setUp();
@@ -49,10 +55,10 @@ class DateViewHelperTest extends UnitTestCase
         );
         $this->timezone = @date_default_timezone_get();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = 'Y-m-d';
-        $this->subject = $this->getAccessibleMock(DateViewHelper::class, array('renderChildren'));
+        $this->viewHelper = new DateViewHelper();
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
         /** @var RenderingContext $renderingContext */
         $renderingContext = $this->createMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
-        $this->subject->_set('renderingContext', $renderingContext);
     }
 
     protected function tearDown()
@@ -69,7 +75,13 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function viewHelperFormatsDateCorrectly()
     {
-        $actualResult = $this->subject->render(new \DateTime('1980-12-13'));
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'date' => new \DateTime('1980-12-13')
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('1980-12-13', $actualResult);
     }
 
@@ -78,7 +90,13 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function viewHelperFormatsDateStringCorrectly()
     {
-        $actualResult = $this->subject->render('1980-12-13');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'date' => '1980-12-13'
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('1980-12-13', $actualResult);
     }
 
@@ -87,7 +105,14 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function viewHelperRespectsCustomFormat()
     {
-        $actualResult = $this->subject->render(new \DateTime('1980-02-01'), 'd.m.Y');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'date' => new \DateTime('1980-02-01'),
+                'format' => 'd.m.Y'
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('01.02.1980', $actualResult);
     }
 
@@ -96,7 +121,14 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function viewHelperSupportsDateTimeImmutable()
     {
-        $actualResult = $this->subject->render(new \DateTimeImmutable('1980-02-01'), 'd.m.Y');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'date' => new \DateTimeImmutable('1980-02-01'),
+                'format' => 'd.m.Y'
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('01.02.1980', $actualResult);
     }
 
@@ -105,8 +137,17 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function viewHelperReturnsEmptyStringIfChildrenIsNULL()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(null));
-        $actualResult = $this->subject->render();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return null;
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('', $actualResult);
     }
 
@@ -115,7 +156,13 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function viewHelperReturnsCurrentDateIfEmptyStringIsGiven()
     {
-        $actualResult = $this->subject->render('');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'date' => ''
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $expectedResult = (new \DateTime())->format('Y-m-d');
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -125,8 +172,17 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function viewHelperReturnsCurrentDateIfChildrenIsEmptyString()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(''));
-        $actualResult = $this->subject->render();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return '';
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $expectedResult = (new \DateTime())->format('Y-m-d');
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -137,7 +193,13 @@ class DateViewHelperTest extends UnitTestCase
     public function viewHelperUsesDefaultIfNoSystemFormatIsAvailable()
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = '';
-        $actualResult = $this->subject->render('@1391876733');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'date' => '@1391876733'
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('2014-02-08', $actualResult);
     }
 
@@ -147,7 +209,13 @@ class DateViewHelperTest extends UnitTestCase
     public function viewHelperUsesSystemFormat()
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = 'l, j. M y';
-        $actualResult = $this->subject->render('@1391876733');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'date' => '@1391876733'
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('Saturday, 8. Feb 14', $actualResult);
     }
 
@@ -156,10 +224,16 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function viewHelperThrowsExceptionWithOriginalMessageIfDateStringCantBeParsed()
     {
-        $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1241722579);
 
-        $this->subject->render('foo');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'date' => 'foo'
+            ]
+        );
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -167,8 +241,17 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function viewHelperUsesChildNodesIfDateAttributeIsNotSpecified()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(new \DateTime('1980-12-13')));
-        $actualResult = $this->subject->render();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return new \DateTime('1980-12-13');
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('1980-12-13', $actualResult);
     }
 
@@ -177,8 +260,17 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function viewHelperUsesChildNodesWithTimestamp()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue('1359891658' . LF));
-        $actualResult = $this->subject->render();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return '1359891658' . LF;
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('2013-02-03', $actualResult);
     }
 
@@ -187,8 +279,13 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function dateArgumentHasPriorityOverChildNodes()
     {
-        $this->subject->expects($this->never())->method('renderChildren');
-        $actualResult = $this->subject->render('1980-12-12');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'date' => '1980-12-12'
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('1980-12-12', $actualResult);
     }
 
@@ -197,8 +294,14 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function relativeDateCalculationWorksWithoutBase()
     {
-        $this->subject->expects($this->never())->method('renderChildren');
-        $actualResult = $this->subject->render('now', 'Y');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'date' => 'now',
+                'format' => 'Y',
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals(date('Y'), $actualResult);
     }
 
@@ -207,8 +310,15 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function baseArgumentIsConsideredForRelativeDate()
     {
-        $this->subject->expects($this->never())->method('renderChildren');
-        $actualResult = $this->subject->render('-1 year', 'Y', '2017-01-01');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'date' => '-1 year',
+                'format' => 'Y',
+                'base' => '2017-01-01'
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('2016', $actualResult);
     }
 
@@ -217,8 +327,15 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function baseArgumentAsDateTimeIsConsideredForRelativeDate()
     {
-        $this->subject->expects($this->never())->method('renderChildren');
-        $actualResult = $this->subject->render('-1 year', 'Y', new \DateTime('2017-01-01'));
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'date' => '-1 year',
+                'format' => 'Y',
+                'base' => new \DateTime('2017-01-01')
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('2016', $actualResult);
     }
 
@@ -227,8 +344,15 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function baseArgumentDoesNotAffectAbsoluteTime()
     {
-        $this->subject->expects($this->never())->method('renderChildren');
-        $actualResult = $this->subject->render('@1435784732', 'Y', 1485907200); // somewhere in 2017
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'date' => '@1435784732',
+                'format' => 'Y',
+                'base' => 1485907200
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('2015', $actualResult);
     }
 
@@ -261,7 +385,15 @@ class DateViewHelperTest extends UnitTestCase
         $format = 'Y-m-d H:i';
 
         date_default_timezone_set($timezone);
-        $this->assertEquals($expected, $this->subject->render($date, $format));
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'date' => $date,
+                'format' => $format
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertEquals($expected, $actualResult);
     }
 
     /**
@@ -305,7 +437,15 @@ class DateViewHelperTest extends UnitTestCase
         $format = 'Y-m-d H:i';
 
         date_default_timezone_set($timeZone);
-        $this->assertEquals($expected, $this->subject->render($date, $format));
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'date' => $date,
+                'format' => $format
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertEquals($expected, $actualResult);
     }
 
     /**
@@ -342,7 +482,15 @@ class DateViewHelperTest extends UnitTestCase
             $this->markTestSkipped('Locale ' . $locale . ' is not available.');
         }
         $this->setCustomLocale($locale);
-        $this->assertEquals($expected, $this->subject->render($timestamp, $format));
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'date' => $timestamp,
+                'format' => $format
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertEquals($expected, $actualResult);
     }
 
     /**
