@@ -951,6 +951,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             $destinationFile = $recycleDirectory . '/' . $timeStamp . '_' . PathUtility::basename($filePath);
         }
         $result = rename($filePath, $destinationFile);
+        // Update the mtime for the file, so the recycler garbage collection task knows which files to delete
+        // Using ctime() is not possible there since this is not supported on Windows
+        if ($result) {
+            touch($destinationFile);
+        }
         return $result;
     }
 

@@ -14,12 +14,19 @@ namespace TYPO3\CMS\Scheduler\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Recycler folder garbage collection task
  *
- * This task finds all "_recycler_" folders below fileadmin and
- * deletes all file in them that where not change for more than
- * given number of days.
+ * This task finds all "_recycler_" folders below all storages and
+ * deletes all files in them that have not changed for more than
+ * a given number of days.
+ *
+ * Compatible drivers should be implemented correctly for this. The shipped "local driver"
+ * does a "touch()" after the file is moved into the recycler folder.
  */
 class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {
@@ -32,13 +39,6 @@ class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTa
     public $numberOfDays = 0;
 
     /**
-     * Name of the recycler directories below the fileadmin dir.
-     *
-     * @var string Recycler directory name
-     */
-    protected $recyclerDirectory = '_recycler_';
-
-    /**
      * Cleanup recycled files, called by scheduler.
      *
      * @return bool TRUE if task run was successful
@@ -46,53 +46,48 @@ class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTa
      */
     public function execute()
     {
-        // There is no file ctime on windows, so this task disables itself if OS = win
-        if (TYPO3_OS === 'WIN') {
-            throw new \BadMethodCallException('This task is not reliable for Windows OS', 1308270454);
+        $recyclerFolders = [];
+        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
+        // takes only _recycler_ folder on the first level into account
+        foreach ($storageRepository->findAll() as $storage) {
+            $rootLevelFolder = $storage->getRootLevelFolder(false);
+            foreach ($rootLevelFolder->getSubfolders() as $subFolder) {
+                if ($subFolder->getRole() === $subFolder::ROLE_RECYCLER) {
+                    $recyclerFolders[] = $subFolder;
+                    break;
+                }
+            }
         }
+
+        // Execute cleanup
         $seconds = 60 * 60 * 24 * (int)$this->numberOfDays;
         $timestamp = $GLOBALS['EXEC_TIME'] - $seconds;
-        // Get fileadmin directory
-        $directory = PATH_site . 'fileadmin/';
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'])) {
-            $directory = PATH_site . trim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']);
+        foreach ($recyclerFolders as $recyclerFolder) {
+            $this->cleanupRecycledFiles($recyclerFolder, $timestamp);
         }
-        // Execute cleanup
-        return $this->cleanupRecycledFiles($directory, $timestamp);
+        return true;
     }
 
     /**
      * Gets a list of all files in a directory recursively and removes
      * old ones.
      *
-     * @throws \RuntimeException If folders are not found or files can not be deleted
-     * @param string $directory Path to the directory
+     * @param Folder $folder the folder
      * @param int $timestamp Timestamp of the last file modification
-     * @return bool TRUE if success
      */
-    protected function cleanupRecycledFiles($directory, $timestamp)
+    protected function cleanupRecycledFiles(Folder $folder, $timestamp)
     {
-        $directory = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($directory);
-        $timestamp = (int)$timestamp;
-        // Check if given directory exists
-        if (!@is_dir($directory)) {
-            throw new \RuntimeException('Given directory "' . $directory . '" does not exist', 1301614535);
-        }
-        // Find all _recycler_ directories
-        $directoryContent = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory));
-        foreach ($directoryContent as $fileName => $file) {
-            // Skip directories and files without recycler directory in absolute path
-            $filePath = $file->getPath();
-            if (substr($filePath, strrpos($filePath, '/') + 1) !== $this->recyclerDirectory) {
-                continue;
-            }
-            // Remove files from _recycler_ that where moved to this folder for more than 'number of days'
-            if ($file->isFile() && $timestamp > $file->getCTime()) {
-                if (!@unlink($fileName)) {
-                    throw new \RuntimeException('Could not remove file "' . $fileName . '"', 1301614537);
-                }
+        foreach ($folder->getFiles() as $file) {
+            if ($timestamp > $file->getModificationTime()) {
+                $file->delete();
             }
         }
-        return true;
+        foreach ($folder->getSubfolders() as $subFolder) {
+            $this->cleanupRecycledFiles($subFolder, $timestamp);
+            // if no more files and subdirectories are in the folder, remove the folder as well
+            if ($subFolder->getFileCount() === 0 && count($subFolder->getSubfolders()) === 0) {
+                $subFolder->delete(true);
+            }
+        }
     }
 }
