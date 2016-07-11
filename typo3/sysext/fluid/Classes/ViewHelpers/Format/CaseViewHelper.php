@@ -104,19 +104,28 @@ class CaseViewHelper extends AbstractViewHelper
     protected static $charsetConverter = null;
 
     /**
+     * Initialize ViewHelper arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('value', 'string', 'The input value. If not given, the evaluated child nodes will be used.', false, null);
+        $this->registerArgument('mode', 'string', 'The case to apply, must be one of this\' CASE_* constants. Defaults to uppercase application.', false, self::CASE_UPPER);
+    }
+
+    /**
      * Changes the case of the input string
      *
-     * @param string $value The input value. If not given, the evaluated child nodes will be used
-     * @param string $mode The case to apply, must be one of this' CASE_* constants. Defaults to uppercase application
      * @return string the altered string.
      * @api
      */
-    public function render($value = null, $mode = self::CASE_UPPER)
+    public function render()
     {
         return static::renderStatic(
             array(
-                'value' => $value,
-                'mode' => $mode,
+                'value' => $this->arguments['value'],
+                'mode' => $this->arguments['mode']
             ),
             $this->buildRenderChildrenClosure(),
             $this->renderingContext

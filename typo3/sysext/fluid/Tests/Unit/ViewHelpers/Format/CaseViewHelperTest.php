@@ -22,17 +22,15 @@ use TYPO3\CMS\Fluid\ViewHelpers\Format\CaseViewHelper;
 class CaseViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * @var CaseViewHelper|\PHPUnit_Framework_MockObject_MockObject
+     * @var CaseViewHelper
      */
-    protected $subject;
+    protected $viewHelper;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->subject = $this->getMockBuilder(CaseViewHelper::class)
-            ->setMethods(array('renderChildren'))
-            ->getMock();
-        $this->injectDependenciesIntoViewHelper($this->subject);
+        $this->viewHelper = new CaseViewHelper();
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }
 
     /**
@@ -40,8 +38,14 @@ class CaseViewHelperTest extends ViewHelperBaseTestcase
      */
     public function viewHelperRendersChildrenIfGivenValueIsNull()
     {
-        $this->subject->expects($this->once())->method('renderChildren');
-        $this->subject->render();
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => ''
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertEquals('', $actualResult);
     }
 
     /**
@@ -49,10 +53,14 @@ class CaseViewHelperTest extends ViewHelperBaseTestcase
      */
     public function viewHelperDoesNotRenderChildrenIfGivenValueIsNotNull()
     {
-        $this->subject->expects($this->never())->method('renderChildren');
-        $this->subject->render('');
-        $this->subject->render(0);
-        $this->subject->render('foo');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'Some string'
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertEquals('SOME STRING', $actualResult);
     }
 
     /**
@@ -62,8 +70,14 @@ class CaseViewHelperTest extends ViewHelperBaseTestcase
     {
         $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException::class);
         $this->expectExceptionCode(1358349150);
-
-        $this->subject->render('Foo', 'incorrectMode');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'Foo',
+                'mode' => 'incorrectMode'
+            ]
+        );
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -71,7 +85,14 @@ class CaseViewHelperTest extends ViewHelperBaseTestcase
      */
     public function viewHelperConvertsUppercasePerDefault()
     {
-        $this->assertSame('FOOB4R', $this->subject->render('FooB4r'));
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'FooB4r'
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertSame('FOOB4R', $actualResult);
     }
 
     /**
@@ -97,6 +118,14 @@ class CaseViewHelperTest extends ViewHelperBaseTestcase
      */
     public function viewHelperConvertsCorrectly($input, $mode, $expected)
     {
-        $this->assertSame($expected, $this->subject->render($input, $mode), sprintf('The conversion with mode "%s" did not perform as expected.', $mode));
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => $input,
+                'mode' => $mode
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertSame($expected, $actualResult, sprintf('The conversion with mode "%s" did not perform as expected.', $mode));
     }
 }

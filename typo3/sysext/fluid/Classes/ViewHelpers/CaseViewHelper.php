@@ -31,20 +31,28 @@ class CaseViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * @param mixed $value The switch value. If it matches, the child will be rendered
-     * @param bool $default If this is set, this child will be rendered, if none else matches
+     * Initialize ViewHelper arguments
      *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('value', 'mixed', 'The switch value. If it matches, the child will be rendered.', false, null);
+        $this->registerArgument('default', 'bool', 'If this is set, this child will be rendered, if none else matches.', false, false);
+    }
+
+    /***
      * @return string the contents of this view helper if $value equals the expression of the surrounding switch view helper, or $default is TRUE. otherwise an empty string
      * @throws Exception
      *
      * @api
      */
-    public function render($value = null, $default = false)
+    public function render()
     {
         return static::renderStatic(
             array(
-                'value' => $value,
-                'default' => $default
+                'value' => $this->arguments['value'],
+                'default' => $this->arguments['default']
             ),
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
