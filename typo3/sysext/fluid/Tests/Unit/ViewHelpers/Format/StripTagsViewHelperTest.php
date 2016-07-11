@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3\CMS\Fluid\ViewHelpers\Format\StripTagsViewHelper;
 
 /**
  * Test case
@@ -28,11 +29,8 @@ class StripTagsViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getMockBuilder(\TYPO3\CMS\Fluid\ViewHelpers\Format\StripTagsViewHelper::class)
-            ->setMethods(array('renderChildren'))
-            ->getMock();
+        $this->viewHelper = new StripTagsViewHelper();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->initializeArguments();
     }
 
     /**
@@ -40,8 +38,13 @@ class StripTagsViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderUsesValueAsSourceIfSpecified()
     {
-        $this->viewHelper->expects($this->never())->method('renderChildren');
-        $actualResult = $this->viewHelper->render('Some string');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'Some string',
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('Some string', $actualResult);
     }
 
@@ -50,8 +53,13 @@ class StripTagsViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderUsesChildnodesAsSourceIfSpecified()
     {
-        $this->viewHelper->expects($this->atLeastOnce())->method('renderChildren')->will($this->returnValue('Some string'));
-        $actualResult = $this->viewHelper->render();
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'Some string',
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('Some string', $actualResult);
     }
 
@@ -73,10 +81,20 @@ class StripTagsViewHelperTest extends ViewHelperBaseTestcase
     /**
      * @test
      * @dataProvider stringsTestDataProvider
+     * @param $source
+     * @param $allowed
+     * @param $expectedResult
      */
     public function renderCorrectlyConvertsIntoPlaintext($source, $allowed, $expectedResult)
     {
-        $actualResult = $this->viewHelper->render($source, $allowed);
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => $source,
+                'allowedTags' => $allowed
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertSame($expectedResult, $actualResult);
     }
 
@@ -86,7 +104,13 @@ class StripTagsViewHelperTest extends ViewHelperBaseTestcase
     public function renderReturnsUnmodifiedSourceIfItIsNoString()
     {
         $source = new \stdClass();
-        $actualResult = $this->viewHelper->render($source);
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => $source
+            ]
+        );
+        $actualResult = $this->viewHelper->render();
         $this->assertSame($source, $actualResult);
     }
 }
