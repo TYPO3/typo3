@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
 /*
@@ -64,28 +65,44 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class CropViewHelper extends AbstractViewHelper
 {
     /**
-     * The output may contain HTML and can not be escaped
+     * The output may contain HTML and can not be escaped.
      *
      * @var bool
      */
     protected $escapeOutput = false;
 
     /**
-     * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
+     * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current['TSFE'] if used in BE mode
      */
     protected static $tsfeBackup;
 
     /**
-     * Render the cropped text
+     * Initialize arguments.
      *
-     * @param int $maxCharacters Place where to truncate the string
-     * @param string $append What to append, if truncation happened
-     * @param bool $respectWordBoundaries If TRUE and division is in the middle of a word, the remains of that word is removed.
-     * @param bool $respectHtml If TRUE the cropped string will respect HTML tags and entities. Technically that means, that cropHTML() is called rather than crop()
-     * @return string cropped text
+     * @api
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
-    public function render($maxCharacters, $append = '...', $respectWordBoundaries = true, $respectHtml = true)
+    public function initializeArguments()
     {
+        $this->registerArgument('maxCharacters', 'int', 'Place where to truncate the string', true);
+        $this->registerArgument('append', 'string', 'What to append, if truncation happened', false, '...');
+        $this->registerArgument('respectWordBoundaries', 'bool', 'If TRUE and division is in the middle of a word, the remains of that word is removed.', false, true);
+        $this->registerArgument('respectHtml', 'bool', 'If TRUE the cropped string will respect HTML tags and entities. Technically that means, that cropHTML() is called rather than crop()', false, true);
+    }
+
+    /**
+     * Render the cropped text.
+     *
+     * @return string cropped text
+     * @throws \InvalidArgumentException
+     */
+    public function render()
+    {
+        $maxCharacters = $this->arguments['maxCharacters'];
+        $append = $this->arguments['append'];
+        $respectWordBoundaries = $this->arguments['respectWordBoundaries'];
+        $respectHtml = $this->arguments['respectHtml'];
+
         return static::renderStatic(
             array(
                 'maxCharacters' => $maxCharacters,
@@ -102,7 +119,9 @@ class CropViewHelper extends AbstractViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
+     *
      * @return string
+     * @throws \InvalidArgumentException
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
@@ -132,15 +151,15 @@ class CropViewHelper extends AbstractViewHelper
         if (TYPO3_MODE === 'BE') {
             self::resetFrontendEnvironment();
         }
+
         return $content;
     }
 
     /**
      * Sets the global variable $GLOBALS['TSFE']->csConvObj in Backend mode
      * This somewhat hacky work around is currently needed because the crop() and cropHTML() functions of
-     * ContentObjectRenderer rely on those variables to be set
-     *
-     * @return void
+     * ContentObjectRenderer rely on those variables to be set.
+     * @throws \InvalidArgumentException
      */
     protected static function simulateFrontendEnvironment()
     {
@@ -153,9 +172,8 @@ class CropViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
+     * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment().
      *
-     * @return void
      * @see simulateFrontendEnvironment()
      */
     protected static function resetFrontendEnvironment()
