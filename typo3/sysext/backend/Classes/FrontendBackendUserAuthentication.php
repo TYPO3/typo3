@@ -15,6 +15,10 @@ namespace TYPO3\CMS\Backend;
  */
 
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -231,16 +235,29 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
      */
     public function extGetTreeList($id, $depth, $begin = 0, $perms_clause)
     {
-        $db = $this->getDatabaseConnection();
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
         $depth = (int)$depth;
         $begin = (int)$begin;
         $id = (int)$id;
         $theList = '';
         if ($id && $depth > 0) {
-            $where = 'pid=' . $id . ' AND doktype IN (' . $GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes']
-                . ') AND deleted=0 AND ' . $perms_clause;
-            $res = $db->exec_SELECTquery('uid,title', 'pages', $where);
-            while (($row = $db->sql_fetch_assoc($res))) {
+            $result = $queryBuilder
+                ->select('uid', 'title')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('pid', $id),
+                    $queryBuilder->expr()->in('doktype', GeneralUtility::intExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'], true)),
+                    QueryHelper::stripLogicalOperatorPrefix($perms_clause)
+                )
+                ->execute();
+            while ($row = $result->fetch()) {
                 if ($begin <= 0) {
                     $theList .= $row['uid'] . ',';
                     $this->extPageInTreeInfo[] = array($row['uid'], htmlspecialchars($row['title'], $depth));
@@ -249,7 +266,6 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
                     $theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $perms_clause);
                 }
             }
-            $db->sql_free_result($res);
         }
         return $theList;
     }
