@@ -13,7 +13,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
@@ -115,5 +117,27 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Core\Tests\UnitTestCase
         if ($viewHelper instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper || $viewHelper instanceof AbstractTagBasedViewHelper) {
             $viewHelper->_set('tag', $this->tagBuilder);
         }
+        if ($viewHelper instanceof AbstractViewHelper) {
+            $reflectionServiceProphecy = $this->prophesize(ReflectionService::class);
+            $viewHelper->injectReflectionService($reflectionServiceProphecy->reveal());
+        }
+    }
+
+    /**
+     * Helper function to merge arguments with default arguments according to their registration
+     * This usually happens in ViewHelperInvoker before the view helper methods are called
+     *
+     * @param ViewHelperInterface $viewHelper
+     * @param array $arguments
+     */
+    protected function setArgumentsUnderTest(ViewHelperInterface $viewHelper, array $arguments = [])
+    {
+        $argumentDefinitions = $viewHelper->prepareArguments();
+        foreach ($argumentDefinitions as $argumentName => $argumentDefinition) {
+            if (!isset($arguments[$argumentName])) {
+                $arguments[$argumentName] = $argumentDefinition->getDefaultValue();
+            }
+        }
+        $viewHelper->setArguments($arguments);
     }
 }

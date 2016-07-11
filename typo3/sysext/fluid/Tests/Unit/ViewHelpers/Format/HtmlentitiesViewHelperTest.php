@@ -13,19 +13,14 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use Prophecy\Prophecy\ObjectProphecy;
-use TYPO3\CMS\Extbase\Reflection\ReflectionService;
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlentitiesViewHelper;
 
 /**
  * Test case
  */
-class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class HtmlentitiesViewHelperTest extends ViewHelperBaseTestcase
 {
-    /**
-     * @var ReflectionService|ObjectProphecy
-     */
-    protected $reflectionServiceProphecy;
 
     /**
      * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlentitiesViewHelper
@@ -41,9 +36,9 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->reflectionServiceProphecy = $this->prophesize(ReflectionService::class);
+        parent::setUp();
         $this->viewHelper = new HtmlentitiesViewHelper();
-        $this->viewHelper->injectReflectionService($this->reflectionServiceProphecy->reveal());
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }
 
     /**
@@ -52,6 +47,7 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function renderUsesValueAsSourceIfSpecified()
     {
         $this->setArgumentsUnderTest(
+            $this->viewHelper,
             [
                 'value' => 'Some string',
             ]
@@ -70,7 +66,7 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 return 'Some string';
             }
         );
-        $this->setArgumentsUnderTest();
+        $this->setArgumentsUnderTest($this->viewHelper);
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('Some string', $actualResult);
     }
@@ -82,6 +78,7 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $source = 'This is a sample text without special characters.';
         $this->setArgumentsUnderTest(
+            $this->viewHelper,
             [
                 'value' => $source,
             ]
@@ -97,7 +94,10 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $source = 'Some special characters: &©"\'';
         $this->setArgumentsUnderTest(
-            ['value' => $source]
+            $this->viewHelper,
+            [
+                'value' => $source
+            ]
         );
         $expectedResult = 'Some special characters: &amp;&copy;&quot;\'';
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
@@ -111,6 +111,7 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $source = 'Some special characters: &©"\'';
         $this->setArgumentsUnderTest(
+            $this->viewHelper,
             [
                 'value' => $source,
                 'keepQuotes' => true,
@@ -128,6 +129,7 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $source = utf8_decode('Some special characters: &©"\'');
         $this->setArgumentsUnderTest(
+            $this->viewHelper,
             [
                 'value' => $source,
                 'encoding' => 'ISO-8859-1',
@@ -145,7 +147,10 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $source = 'already &quot;encoded&quot;';
         $this->setArgumentsUnderTest(
-            ['value' => $source]
+            $this->viewHelper,
+            [
+                'value' => $source
+            ]
         );
         $expectedResult = 'already &amp;quot;encoded&amp;quot;';
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
@@ -159,6 +164,7 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $source = 'already &quot;encoded&quot;';
         $this->setArgumentsUnderTest(
+            $this->viewHelper,
             [
                 'value' => $source,
                 'doubleEncode' => false,
@@ -179,26 +185,12 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $source = new \stdClass();
         $this->setArgumentsUnderTest(
-            ['value' => $source]
+            $this->viewHelper,
+            [
+                'value' => $source
+            ]
         );
         $actualResult = $this->viewHelper->render();
         $this->assertSame($source, $actualResult);
-    }
-
-    /**
-     * Helper function to merge arguments with default arguments according to their registration
-     * This usually happens in ViewHelperInvoker before the view helper methods are called
-     *
-     * @param array $arguments
-     */
-    protected function setArgumentsUnderTest(array $arguments = [])
-    {
-        $argumentDefinitions = $this->viewHelper->prepareArguments();
-        foreach ($argumentDefinitions as $argumentName => $argumentDefinition) {
-            if (!isset($arguments[$argumentName])) {
-                $arguments[$argumentName] = $argumentDefinition->getDefaultValue();
-            }
-        }
-        $this->viewHelper->setArguments($arguments);
     }
 }
