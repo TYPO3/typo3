@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
@@ -114,9 +113,6 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $viewHelper->setRenderingContext($this->renderingContext);
         $viewHelper->setArguments($this->arguments);
-        if ($viewHelper instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper || $viewHelper instanceof AbstractTagBasedViewHelper) {
-            $viewHelper->_set('tag', $this->tagBuilder);
-        }
         if ($viewHelper instanceof AbstractViewHelper) {
             $reflectionServiceProphecy = $this->prophesize(ReflectionService::class);
             $viewHelper->injectReflectionService($reflectionServiceProphecy->reveal());

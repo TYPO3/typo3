@@ -43,6 +43,7 @@ class PageViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
     {
         $this->uriBuilder->expects($this->once())->method('build')->will($this->returnValue('index.php'));
         $this->tagBuilder->expects($this->once())->method('render');
+        $this->viewHelper->_set('tag', $this->tagBuilder);
         $this->viewHelper->render();
     }
 

@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  * @api
  */
-class TextfieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
+class TextfieldViewHelper extends AbstractFormFieldViewHelper
 {
     /**
      * @var string
@@ -39,6 +39,7 @@ class TextfieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractForm
      * Initialize the arguments.
      *
      * @return void
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      * @api
      */
     public function initializeArguments()
@@ -53,18 +54,21 @@ class TextfieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractForm
         $this->registerTagAttribute('pattern', 'string', 'HTML5 validation pattern');
         $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', false, 'f3-form-error');
         $this->registerUniversalTagAttributes();
+        $this->registerArgument('required', 'bool', 'If the field is required or not', false, false);
+        $this->registerArgument('type', 'string', 'The field type, e.g. "text", "email", "url" etc.', false, 'text');
     }
 
     /**
      * Renders the textfield.
      *
-     * @param bool $required If the field is required or not
-     * @param string $type The field type, e.g. "text", "email", "url" etc.
      * @return string
      * @api
      */
-    public function render($required = false, $type = 'text')
+    public function render()
     {
+        $required = $this->arguments['required'];
+        $type = $this->arguments['type'];
+
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);
         $this->setRespectSubmittedDataValue(true);

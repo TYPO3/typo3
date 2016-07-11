@@ -40,7 +40,7 @@ class UploadViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
     public function renderCorrectlySetsTagName()
     {
         $this->tagBuilder->expects($this->once())->method('setTagName')->with('input');
-
+        $this->viewHelper->_set('tag', $this->tagBuilder);
         $this->viewHelper->initialize();
         $this->viewHelper->render();
     }
