@@ -74,11 +74,22 @@ class HtmlViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * @param string $parseFuncTSPath path to TypoScript parseFunc setup.
+     * Initialize arguments.
+     *
+     * @api
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('parseFuncTSPath', 'string', ' path to TypoScript parseFunc setup.', false, 'lib.parseFunc_RTE');
+    }
+
+    /**
      * @return string the parsed string.
      */
-    public function render($parseFuncTSPath = 'lib.parseFunc_RTE')
+    public function render()
     {
+        $parseFuncTSPath = $this->arguments['parseFuncTSPath'];
         return static::renderStatic(
             array(
                 'parseFuncTSPath' => $parseFuncTSPath,
