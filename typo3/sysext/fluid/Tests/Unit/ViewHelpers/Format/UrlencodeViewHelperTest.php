@@ -13,14 +13,13 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Tests\UnitTestCase;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Fluid\ViewHelpers\Format\UrlencodeViewHelper;
 
 /**
  * Test case
  */
-class UrlencodeViewHelperTest extends UnitTestCase
+class UrlencodeViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
      * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\UrlencodeViewHelper
@@ -29,13 +28,9 @@ class UrlencodeViewHelperTest extends UnitTestCase
 
     protected function setUp()
     {
-        $this->viewHelper = $this->getMockBuilder(UrlencodeViewHelper::class)
-            ->setMethods(array('renderChildren'))
-            ->getMock();
-
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->createMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
-        $this->viewHelper->setRenderingContext($renderingContext);
+        parent::setUp();
+        $this->viewHelper = new UrlencodeViewHelper();
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }
 
     /**
@@ -43,8 +38,13 @@ class UrlencodeViewHelperTest extends UnitTestCase
      */
     public function renderUsesValueAsSourceIfSpecified()
     {
-        $this->viewHelper->expects($this->never())->method('renderChildren');
-        $actualResult = $this->viewHelper->render('Source');
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'Source'
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('Source', $actualResult);
     }
 
@@ -53,8 +53,17 @@ class UrlencodeViewHelperTest extends UnitTestCase
      */
     public function renderUsesChildnodesAsSourceIfSpecified()
     {
-        $this->viewHelper->expects($this->atLeastOnce())->method('renderChildren')->will($this->returnValue('Source'));
-        $actualResult = $this->viewHelper->render();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return 'Source';
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('Source', $actualResult);
     }
 
@@ -64,7 +73,13 @@ class UrlencodeViewHelperTest extends UnitTestCase
     public function renderDoesNotModifyValueIfItDoesNotContainSpecialCharacters()
     {
         $source = 'StringWithoutSpecialCharacters';
-        $actualResult = $this->viewHelper->render($source);
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => $source
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertSame($source, $actualResult);
     }
 
@@ -75,17 +90,13 @@ class UrlencodeViewHelperTest extends UnitTestCase
     {
         $source = 'Foo @+%/ "';
         $expectedResult = 'Foo%20%40%2B%25%2F%20%22';
-        $actualResult = $this->viewHelper->render($source);
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => $source
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function renderReturnsUnmodifiedSourceIfItIsNoString()
-    {
-        $source = new \stdClass();
-        $actualResult = $this->viewHelper->render($source);
-        $this->assertSame($source, $actualResult);
     }
 }

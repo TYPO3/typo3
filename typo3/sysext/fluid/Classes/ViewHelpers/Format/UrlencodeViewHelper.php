@@ -50,15 +50,26 @@ class UrlencodeViewHelper extends AbstractViewHelper
     protected $escapeChildren = false;
 
     /**
+     * Initialize arguments.
+     *
+     * @api
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('value', 'string', 'string to format');
+    }
+
+    /**
      * Escapes special characters with their escaped counterparts as needed using PHPs rawurlencode() function.
      *
-     * @param string $value string to format
      * @return mixed
      * @see http://www.php.net/manual/function.rawurlencode.php
      * @api
      */
-    public function render($value = null)
+    public function render()
     {
+        $value = $this->arguments['value'];
         return static::renderStatic(
             array(
                 'value' => $value
