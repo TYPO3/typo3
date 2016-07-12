@@ -13,8 +13,11 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3\CMS\Fluid\ViewHelpers\Format\BytesViewHelper;
 
 /**
  * Test case
@@ -22,25 +25,21 @@ use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 class BytesViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\BytesViewHelper
+     * @var BytesViewHelper
      */
     protected $viewHelper;
 
     protected function setUp()
     {
         parent::setUp();
-
         // XXX: This is bad from a testing POV but the only option right now
         $reflectionClass = new \ReflectionClass(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::class);
         $property = $reflectionClass->getProperty('configurationManager');
         $property->setAccessible(true);
         $property->setValue($this->createMock(ConfigurationManagerInterface::class));
-
-        $this->viewHelper = $this->getMockBuilder(\TYPO3\CMS\Fluid\ViewHelpers\Format\BytesViewHelper::class)
-            ->setMethods(array('renderChildren'))
-            ->getMock();
+        $this->viewHelper = new BytesViewHelper();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->initializeArguments();
+        BytesViewHelper::setUnits(GeneralUtility::trimExplode(',', 'B,KB,MB,GB,TB,PB,EB,ZB,YB'));
     }
 
     /**
@@ -126,17 +125,26 @@ class BytesViewHelperTest extends ViewHelperBaseTestcase
     }
 
     /**
-     * @param $value
-     * @param $decimals
-     * @param $decimalSeparator
-     * @param $thousandsSeparator
-     * @param $expected
+     * @param mixed $value
+     * @param int $decimals
+     * @param string $decimalSeparator
+     * @param string $thousandsSeparator
+     * @param string $expected
      * @test
      * @dataProvider valueDataProvider
      */
-    public function renderCorrectlyConvertsAValue($value, $decimals, $decimalSeparator, $thousandsSeparator, $expected)
+    public function renderConvertsAValue($value, $decimals, $decimalSeparator, $thousandsSeparator, $expected)
     {
-        $actualResult = $this->viewHelper->render($value, $decimals, $decimalSeparator, $thousandsSeparator);
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => $value,
+                'decimals' => $decimals,
+                'decimalSeparator' => $decimalSeparator,
+                'thousandsSeparator' => $thousandsSeparator,
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals($expected, $actualResult);
     }
 
@@ -145,8 +153,12 @@ class BytesViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderUsesChildNodesIfValueArgumentIsOmitted()
     {
-        $this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(12345));
-        $actualResult = $this->viewHelper->render();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return 12345;
+            }
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('12 KB', $actualResult);
     }
 }
