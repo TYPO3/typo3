@@ -56,17 +56,32 @@ class PaddingViewHelper extends AbstractViewHelper
     protected $escapeChildren = false;
 
     /**
+     * Initialize arguments.
+     *
+     * @api
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('padLength', 'int', 'Length of the resulting string. If the value of pad_length is negative or less than the length of the input string, no padding takes place.', true);
+        $this->registerArgument('padString', 'string', 'The padding string', false, ' ');
+        $this->registerArgument('padType', 'string', 'Append the padding at this site (Possible values: right,left,both. Default: right)', false, 'right');
+        $this->registerArgument('value', 'string', 'string to format');
+    }
+
+    /**
      * Pad a string to a certain length with another string
      *
-     * @param int $padLength Length of the resulting string. If the value of pad_length is negative or less than the length of the input string, no padding takes place.
-     * @param string $padString The padding string
-     * @param string $padType Append the padding at this site (Possible values: right,left,both. Default: right)
-     * @param string $value string to format
      * @return string The formatted value
      * @api
      */
-    public function render($padLength, $padString = ' ', $padType = 'right', $value = null)
+    public function render()
     {
+        $padLength = $this->arguments['padLength'];
+        $padString = $this->arguments['padString'];
+        $padType = $this->arguments['padType'];
+        $value = $this->arguments['value'];
+
         return static::renderStatic(
             array(
                 'padLength' => $padLength,
