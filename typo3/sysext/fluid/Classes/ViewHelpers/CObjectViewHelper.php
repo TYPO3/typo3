@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * This ViewHelper renders CObjects from the global TypoScript configuration.
@@ -75,6 +76,11 @@ class CObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
     protected $configurationManager;
 
     /**
+     * @var ContentObjectRenderer
+     */
+    protected $contentObjectRenderer;
+
+    /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      * @return void
      */
@@ -85,17 +91,39 @@ class CObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
     }
 
     /**
+     * @param ContentObjectRenderer $contentObjectRenderer
+     */
+    public function injectContentObjectRenderer(ContentObjectRenderer $contentObjectRenderer)
+    {
+        $this->contentObjectRenderer = $contentObjectRenderer;
+    }
+
+    /**
+     * Initialize arguments.
+     *
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('typoscriptObjectPath', 'string', 'the TypoScript setup path of the TypoScript object to render', true);
+        $this->registerArgument('data', 'mixed', 'the data to be used for rendering the cObject. Can be an object, array or string. If this argument is not set, child nodes will be used');
+        $this->registerArgument('currentValueKey', 'string', 'currentValueKey');
+        $this->registerArgument('table', 'string', 'table', false, '');
+    }
+
+    /**
      * Renders the TypoScript object in the given TypoScript setup path.
      *
-     * @param string $typoscriptObjectPath the TypoScript setup path of the TypoScript object to render
-     * @param mixed $data the data to be used for rendering the cObject. Can be an object, array or string. If this argument is not set, child nodes will be used
-     * @param string $currentValueKey
-     * @param string $table
      * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      * @return string the content of the rendered TypoScript object
      */
-    public function render($typoscriptObjectPath, $data = null, $currentValueKey = null, $table = '')
+    public function render()
     {
+        $typoscriptObjectPath = $this->arguments['typoscriptObjectPath'];
+        $data = $this->arguments['data'];
+        $currentValueKey = $this->arguments['currentValueKey'];
+        $table = $this->arguments['table'];
         if (TYPO3_MODE === 'BE') {
             $this->simulateFrontendEnvironment();
         }
@@ -109,13 +137,11 @@ class CObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
             $currentValue = (string)$data;
             $data = array($data);
         }
-        /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject */
-        $contentObject = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-        $contentObject->start($data, $table);
+        $this->contentObjectRenderer->start($data, $table);
         if ($currentValue !== null) {
-            $contentObject->setCurrentVal($currentValue);
+            $this->contentObjectRenderer->setCurrentVal($currentValue);
         } elseif ($currentValueKey !== null && isset($data[$currentValueKey])) {
-            $contentObject->setCurrentVal($data[$currentValueKey]);
+            $this->contentObjectRenderer->setCurrentVal($data[$currentValueKey]);
         }
         $pathSegments = GeneralUtility::trimExplode('.', $typoscriptObjectPath);
         $lastSegment = array_pop($pathSegments);
@@ -126,7 +152,7 @@ class CObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
             }
             $setup = $setup[$segment . '.'];
         }
-        $content = $contentObject->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
+        $content = $this->contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
         if (TYPO3_MODE === 'BE') {
             $this->resetFrontendEnvironment();
         }
