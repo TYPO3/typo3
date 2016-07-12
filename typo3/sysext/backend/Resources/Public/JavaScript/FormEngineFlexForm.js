@@ -210,7 +210,11 @@ define(['jquery',
 
 		if (!$contentEl.is(':visible')) {
 			$contentEl.find('input[type=text], textarea').each(function() {
-				previewContent += (previewContent ? ' / ' : '') + $(this).val();
+				var content = $($.parseHTML($(this).val())).text();
+				if (content.length > 50) {
+					content = content.substring(0, 50) + '...';
+				}
+				previewContent += (previewContent ? ' / ' : '') + content;
 			});
 		}
 
