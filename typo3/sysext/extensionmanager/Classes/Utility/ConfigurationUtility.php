@@ -124,17 +124,11 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
         $theConstants = array();
 
         if ((string)$rawConfigurationString !== '') {
-            $extensionPathInformation = $this->getExtensionPathInformation($extensionKey);
-
             /** @var ConfigurationForm $tsStyleConfig */
             $tsStyleConfig = $this->objectManager->get(ConfigurationForm::class);
             $tsStyleConfig->doNotSortCategoriesBeforeMakingForm = true;
 
-            $theConstants = $tsStyleConfig->ext_initTSstyleConfig(
-                $rawConfigurationString,
-                $extensionPathInformation['siteRelPath'],
-                PATH_site . $extensionPathInformation['siteRelPath']
-            );
+            $theConstants = $tsStyleConfig->ext_initTSstyleConfig($rawConfigurationString);
 
             // Loop through configuration items, see if it is assigned to a sub category
             // and add the sub category label to the item property if so.
@@ -162,15 +156,6 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         return $theConstants;
-    }
-
-    /**
-     * @param string $extensionKey
-     * @return mixed
-     */
-    protected function getExtensionPathInformation($extensionKey)
-    {
-        return $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey];
     }
 
     /**

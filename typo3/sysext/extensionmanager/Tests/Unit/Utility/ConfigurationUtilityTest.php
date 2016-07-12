@@ -64,17 +64,12 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $configurationUtility = $this->getAccessibleMock(
             \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class,
-            array('getDefaultConfigurationRawString', 'getExtensionPathInformation')
+            array('getDefaultConfigurationRawString')
         );
         $configurationUtility
             ->expects($this->once())
             ->method('getDefaultConfigurationRawString')
             ->will($this->returnValue('foo'));
-
-        $configurationUtility
-            ->expects($this->once())
-            ->method('getExtensionPathInformation')
-            ->will($this->returnValue(null));
 
         $tsStyleConfig = $this->getMockBuilder(\TYPO3\CMS\Core\TypoScript\ConfigurationForm::class)->getMock();
 

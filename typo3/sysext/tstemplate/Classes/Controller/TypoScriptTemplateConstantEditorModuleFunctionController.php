@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
@@ -49,8 +48,6 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
         $templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
         $GLOBALS['tmpl'] = $templateService;
         $templateService->init();
-        $templateService->ext_localGfxPrefix = ExtensionManagementUtility::extPath('tstemplate');
-        $templateService->ext_localWebGfxPrefix = ExtensionManagementUtility::extRelPath('tstemplate') . 'Resources/Public/';
 
         // Get the row of the first VISIBLE template of the page. whereclause like the frontend.
         $GLOBALS['tplRow'] = $templateService->ext_getFirstTemplate($pageId, $template_uid);
@@ -81,10 +78,9 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
     public function displayExample($theOutput)
     {
         $templateService = $this->getExtendedTemplateService();
-        if ($templateService->helpConfig['imagetag'] || $templateService->helpConfig['description'] || $templateService->helpConfig['header']) {
+        if ($templateService->helpConfig['description'] || $templateService->helpConfig['header']) {
             $theOutput .= '<div style="padding-top: 30px;"></div>';
             $theOutput .= '<div>' . htmlspecialchars($templateService->helpConfig['header'])
-                . '<div align="center">' . $templateService->helpConfig['imagetag'] . '</div><br>'
                 . ($templateService->helpConfig['description'] ? implode(explode('//', $templateService->helpConfig['description']), '<br>') . '<br>' : '')
                 . ($templateService->helpConfig['bulletlist'] ? '<ul><li>' . implode(explode('//', $templateService->helpConfig['bulletlist']), '<li>') . '</ul>' : '<br>')
                 . '</div>';

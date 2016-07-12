@@ -54,19 +54,15 @@ class ConfigurationForm extends ExtendedTemplateService
 
     /**
      * @param string $configTemplate
-     * @param string $pathRel PathRel is the path relative to the typo3/ directory
-     * @param string $pathAbs PathAbs is the absolute path from root
      * @return array
      */
-    public function ext_initTSstyleConfig($configTemplate, $pathRel, $pathAbs)
+    public function ext_initTSstyleConfig($configTemplate)
     {
         // Do not log time-performance information
         $this->tt_track = 0;
         $this->constants = array($configTemplate, '');
         // The editable constants are returned in an array.
         $theConstants = $this->generateConfig_constants();
-        $this->ext_localGfxPrefix = $pathAbs;
-        $this->ext_localWebGfxPrefix = $pathRel;
         return $theConstants;
     }
 
@@ -153,9 +149,8 @@ class ConfigurationForm extends ExtendedTemplateService
     public function ext_displayExample()
     {
         $out = '';
-        if ($this->helpConfig['imagetag'] || $this->helpConfig['description'] || $this->helpConfig['header']) {
-            $out = '<div align="center">' . $this->helpConfig['imagetag'] . '</div><br />'
-                . ($this->helpConfig['description'] ? implode(explode('//', $this->helpConfig['description']), '<br />') . '<br />' : '')
+        if ($this->helpConfig['description'] || $this->helpConfig['header']) {
+            $out = ($this->helpConfig['description'] ? implode(explode('//', $this->helpConfig['description']), '<br />') . '<br />' : '')
                 . ($this->helpConfig['bulletlist'] ? '<ul><li>' . implode(explode('//', $this->helpConfig['bulletlist']), '<li>') . '</ul>' : '<BR>');
         }
         return $out;
@@ -174,18 +169,6 @@ class ConfigurationForm extends ExtendedTemplateService
         $arr2 = $parseObj->setup;
         ArrayUtility::mergeRecursiveWithOverrule($arr, $arr2);
         return $arr;
-    }
-
-    /**
-     * @param string $imgConf
-     * @return string
-     */
-    public function ext_getTSCE_config_image($imgConf)
-    {
-        $iFile = $this->ext_localGfxPrefix . $imgConf;
-        $tFile = $this->ext_localWebGfxPrefix . $imgConf;
-        $imageInfo = @getimagesize($iFile);
-        return '<img src="' . $tFile . '" ' . $imageInfo[3] . '>';
     }
 
     /**
