@@ -13,27 +13,29 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Fluid\ViewHelpers\Format\NumberViewHelper;
 
 /**
  * Test case
  */
-class NumberViewHelperTest extends UnitTestCase
+class NumberViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|NumberViewHelper
+     * @var NumberViewHelper
      */
-    protected $fixture;
+    protected $viewHelper;
 
     protected function setUp()
     {
-        $this->fixture = $this->getMockBuilder(NumberViewHelper::class)
-            ->setMethods(array('renderChildren'))
-            ->getMock();
-        $this->fixture->expects($this->once())->method('renderChildren')->will($this->returnValue(10000.0 / 3.0));
-        $renderingContext = $this->createMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
-        $this->fixture->setRenderingContext($renderingContext);
+        parent::setUp();
+        $this->viewHelper = new NumberViewHelper();
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return pi();
+            }
+        );
     }
 
     /**
@@ -41,14 +43,59 @@ class NumberViewHelperTest extends UnitTestCase
      */
     public function formatNumberDefaultsToEnglishNotationWithTwoDecimals()
     {
-        $this->assertEquals('3,333.33', $this->fixture->render());
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            []
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertEquals('3.14', $actualResult);
     }
 
     /**
      * @test
      */
-    public function formatNumberWithDecimalsDecimalPointAndSeparator()
+    public function formatNumberWithDecimalPoint()
     {
-        $this->assertEquals('3.333,333', $this->fixture->render(3, ',', '.'));
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'decimalSeparator' => ',',
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertEquals('3,14', $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function formatNumberWithDecimals()
+    {
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'decimals' => 4,
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertEquals('3.1416', $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function formatNumberWithThousandsSeparator()
+    {
+        $this->viewHelper->setRenderChildrenClosure(function () {
+            return pi() * 1000;
+        });
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'thousandsSeparator' => ',',
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        $this->assertEquals('3,141.59', $actualResult);
     }
 }

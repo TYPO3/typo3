@@ -50,18 +50,31 @@ class NumberViewHelper extends AbstractViewHelper
     protected $escapeChildren = false;
 
     /**
+     * Initialize arguments.
+     *
+     * @api
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('decimals', 'int', 'The number of digits after the decimal point', false, '2');
+        $this->registerArgument('decimalSeparator', 'string', 'The decimal point character', false, '.');
+        $this->registerArgument('thousandsSeparator', 'string', 'The character for grouping the thousand digits', false, ',');
+    }
+
+    /**
      * Format the numeric value as a number with grouped thousands, decimal point and
      * precision.
-     *
-     * @param int $decimals The number of digits after the decimal point
-     * @param string $decimalSeparator The decimal point character
-     * @param string $thousandsSeparator The character for grouping the thousand digits
      *
      * @return string The formatted number
      * @api
      */
-    public function render($decimals = 2, $decimalSeparator = '.', $thousandsSeparator = ',')
+    public function render()
     {
+        $decimals = $this->arguments['decimals'];
+        $decimalSeparator = $this->arguments['decimalSeparator'];
+        $thousandsSeparator = $this->arguments['thousandsSeparator'];
+
         return static::renderStatic(
             array(
                 'decimals' => $decimals,
