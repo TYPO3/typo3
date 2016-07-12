@@ -13,25 +13,24 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Fluid\ViewHelpers\Format\CurrencyViewHelper;
 
 /**
  * Test case
  */
-class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class CurrencyViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
      * @var CurrencyViewHelper
      */
-    protected $subject;
+    protected $viewHelper;
 
     protected function setUp()
     {
-        $this->subject = $this->getAccessibleMock(CurrencyViewHelper::class, array('renderChildren'));
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->createMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
-        $this->subject->_set('renderingContext', $renderingContext);
+        parent::setUp();
+        $this->viewHelper = new CurrencyViewHelper();
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }
 
     /**
@@ -39,8 +38,17 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperRoundsFloatCorrectly()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(123.456));
-        $actualResult = $this->subject->render();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return 123.456;
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('123,46', $actualResult);
     }
 
@@ -49,8 +57,18 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperRendersCurrencySign()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(123));
-        $actualResult = $this->subject->render('foo');
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return 123;
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'currencySign' => 'foo'
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('123,00 foo', $actualResult);
     }
 
@@ -59,8 +77,21 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperRendersPrependedCurrencySign()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(123));
-        $actualResult = $this->subject->render('foo', ',', '.', true);
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return 123;
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'currencySign' => 'foo',
+                'decimalSeparator' => ',',
+                'thousandsSeparator' => '.',
+                'prependCurrency' => true
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('foo 123,00', $actualResult);
     }
 
@@ -69,8 +100,22 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperRespectsCurrencySeparator()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(123));
-        $actualResult = $this->subject->render('foo', ',', '.', true, false);
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return 123;
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'currencySign' => 'foo',
+                'decimalSeparator' => ',',
+                'thousandsSeparator' => '.',
+                'prependCurrency' => true,
+                'separateCurrency' => false
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('foo123,00', $actualResult);
     }
 
@@ -79,8 +124,19 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperRespectsDecimalSeparator()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(12345));
-        $actualResult = $this->subject->render('', '|');
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return 12345;
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'currencySign' => '',
+                'decimalSeparator' => '|'
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('12.345|00', $actualResult);
     }
 
@@ -89,8 +145,20 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperRespectsThousandsSeparator()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(12345));
-        $actualResult = $this->subject->render('', ',', '|');
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return 12345;
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'currencySign' => '',
+                'decimalSeparator' => ',',
+                'thousandsSeparator' => '|'
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('12|345,00', $actualResult);
     }
 
@@ -99,8 +167,17 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperRendersNullValues()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(null));
-        $actualResult = $this->subject->render();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return null;
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('0,00', $actualResult);
     }
 
@@ -109,8 +186,17 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperRendersEmptyString()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(''));
-        $actualResult = $this->subject->render();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return '';
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('0,00', $actualResult);
     }
 
@@ -119,8 +205,17 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperRendersZeroValues()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(0));
-        $actualResult = $this->subject->render();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return 0;
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('0,00', $actualResult);
     }
 
@@ -129,8 +224,17 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperRendersNegativeAmounts()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(-123.456));
-        $actualResult = $this->subject->render();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return -123.456;
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('-123,46', $actualResult);
     }
 
@@ -139,8 +243,17 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperRendersStringsToZeroValueFloat()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue('TYPO3'));
-        $actualResult = $this->subject->render();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return 'TYPO3';
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('0,00', $actualResult);
     }
 
@@ -149,8 +262,17 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperRendersCommaValuesToValueBeforeComma()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue('12,34.00'));
-        $actualResult = $this->subject->render();
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return '12,34.00';
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('12,00', $actualResult);
     }
 
@@ -159,8 +281,23 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperRendersValuesWithoutDecimals()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue('54321'));
-        $actualResult = $this->subject->render('', ',', '.', false, true, 0);
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return '54321';
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'currencySign' => '',
+                'decimalSeparator' => ',',
+                'thousandsSeparator' => '.',
+                'prependCurrency' => false,
+                'separateCurrency' => true,
+                'decimals' => 0
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('54.321', $actualResult);
     }
 
@@ -169,8 +306,23 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperRendersThreeDecimals()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue('54321'));
-        $actualResult = $this->subject->render('', ',', '.', false, true, 3);
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                return '54321';
+            }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'currencySign' => '',
+                'decimalSeparator' => ',',
+                'thousandsSeparator' => '.',
+                'prependCurrency' => false,
+                'separateCurrency' => true,
+                'decimals' => 3
+            ]
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('54.321,000', $actualResult);
     }
 }

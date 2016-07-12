@@ -56,26 +56,30 @@ class CurrencyViewHelper extends AbstractViewHelper
     protected $escapeChildren = false;
 
     /**
-     * @param string $currencySign (optional) The currency sign, eg $ or €.
-     * @param string $decimalSeparator (optional) The separator for the decimal point.
-     * @param string $thousandsSeparator (optional) The thousands separator.
-     * @param bool $prependCurrency (optional) Select if the curreny sign should be prepended
-     * @param bool $separateCurrency (optional) Separate the currency sign from the number by a single space, defaults to true due to backwards compatibility
-     * @param int $decimals (optional) Set decimals places.
+     * Initialize arguments.
+     *
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('currencySign', 'string', 'The currency sign, eg $ or €.', false, '');
+        $this->registerArgument('decimalSeparator', 'string', 'The separator for the decimal point.', false, ',');
+        $this->registerArgument('thousandsSeparator', 'string', 'The thousands separator.', false, '.');
+        $this->registerArgument('prependCurrency', 'bool', 'Select if the currency sign should be prepended', false, false);
+        $this->registerArgument('separateCurrency', 'bool', 'Separate the currency sign from the number by a single space, defaults to true due to backwards compatibility', false, true);
+        $this->registerArgument('decimals', 'int', 'Set decimals places.', false, 2);
+    }
+
+    /**
+     *
      * @return string the formatted amount.
      * @api
      */
-    public function render($currencySign = '', $decimalSeparator = ',', $thousandsSeparator = '.', $prependCurrency = false, $separateCurrency = true, $decimals = 2)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'currencySign' => $currencySign,
-                'decimalSeparator' => $decimalSeparator,
-                'thousandsSeparator' => $thousandsSeparator,
-                'prependCurrency' => $prependCurrency,
-                'separateCurrency' => $separateCurrency,
-                'decimals' => $decimals
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
