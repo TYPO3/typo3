@@ -836,13 +836,11 @@ class ExtensionManagementUtility
         if (empty($extensionName)) {
             throw new \InvalidArgumentException('The extension name must not be empty', 1325938973);
         }
-        $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
         $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
         $defaultModuleConfiguration = array(
             'access' => 'admin',
-            'icon' => self::extRelPath('backend') . 'Resources/Public/Images/Logo.png',
+            'icon' => 'EXT:backend/Resources/Public/Images/Logo.png',
             'labels' => '',
-            'extRelPath' => self::extRelPath($extensionKey) . 'Classes/'
         );
         // Add mandatory parameter to use new pagetree
         if ($mainModuleName === 'web') {

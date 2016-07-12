@@ -169,13 +169,12 @@ tt_content.' . $pluginSignature . ' {
                 self::checkVendorNameFormat($vendorName, $extensionName);
             }
         }
-        $extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+
         $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
         $defaultModuleConfiguration = array(
             'access' => 'admin',
             'icon' => 'EXT:extbase/ext_icon.png',
-            'labels' => '',
-            'extRelPath' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extensionKey) . 'Classes/'
+            'labels' => ''
         );
         if ($mainModuleName !== '' && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {
             $mainModuleName = $extensionName . \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($mainModuleName);
