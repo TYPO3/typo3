@@ -233,7 +233,7 @@ class FormResultCompiler
         $pageRenderer->loadExtJS();
         // Load tree stuff here
         $pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/tree.js');
-        $pageRenderer->addInlineLanguageLabelFile(ExtensionManagementUtility::extPath('lang') . 'locallang_csh_corebe.xlf', 'tcatree');
+        $pageRenderer->addInlineLanguageLabelFile('EXT:lang/locallang_csh_corebe.xlf', 'tcatree');
         $pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/notifications.js');
         if (ExtensionManagementUtility::isLoaded('rtehtmlarea')) {
             // This js addition is hackish ... it will always load this file even if not RTE
@@ -285,10 +285,7 @@ class FormResultCompiler
 
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
 
-        $pageRenderer->addInlineLanguageLabelFile(
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
-            'file_upload'
-        );
+        $pageRenderer->addInlineLanguageLabelFile('EXT:lang/locallang_core.xlf', 'file_upload');
         if (!empty($this->additionalInlineLanguageLabelFiles)) {
             foreach ($this->additionalInlineLanguageLabelFiles as $additionalInlineLanguageLabelFile) {
                 $pageRenderer->addInlineLanguageLabelFile($additionalInlineLanguageLabelFile);

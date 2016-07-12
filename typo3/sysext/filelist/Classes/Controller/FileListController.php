@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -397,20 +396,14 @@ class FileListController extends ActionController
                 }
                 ');
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileDelete');
-            $pageRenderer->addInlineLanguageLabelFile(
-                ExtensionManagementUtility::extPath('lang') . 'locallang_alt_doc.xlf',
-                'buttons'
-            );
+            $pageRenderer->addInlineLanguageLabelFile('EXT:lang/locallang_alt_doc.xlf', 'buttons');
 
             // Include DragUploader only if we have write access
             if ($this->folderObject->getStorage()->checkUserActionPermission('add', 'File')
                 && $this->folderObject->checkActionPermission('write')
             ) {
                 $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
-                $pageRenderer->addInlineLanguageLabelFile(
-                    ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
-                    'file_upload'
-                );
+                $pageRenderer->addInlineLanguageLabelFile('EXT:lang/locallang_core.xlf', 'file_upload');
                 $pageRenderer->addInlineLanguageLabelArray([
                     'permissions.read' => $this->getLanguageService()->getLL('read'),
                     'permissions.write' => $this->getLanguageService()->getLL('write'),
@@ -507,10 +500,7 @@ class FileListController extends ActionController
         ]);
 
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileDelete');
-        $pageRenderer->addInlineLanguageLabelFile(
-            ExtensionManagementUtility::extPath('lang') . 'locallang_alt_doc.xlf',
-            'buttons'
-        );
+        $pageRenderer->addInlineLanguageLabelFile('EXT:lang/locallang_alt_doc.xlf', 'buttons');
     }
 
     /**

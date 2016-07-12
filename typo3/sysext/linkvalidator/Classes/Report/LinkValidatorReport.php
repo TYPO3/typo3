@@ -182,9 +182,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         $this->initialize();
 
         // Localization
-        $this->getPageRenderer()->addInlineLanguageLabelFile(
-            ExtensionManagementUtility::extPath('linkvalidator', 'Resources/Private/Language/Module/locallang.xlf')
-        );
+        $this->getPageRenderer()->addInlineLanguageLabelFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
 
         if ($this->modTS['showCheckLinkTab'] == 1) {
             $this->updateListHtml = '<input class="btn btn-default" type="submit" name="updateLinkList" id="updateLinkList" value="' . $this->getLanguageService()->getLL('label_update') . '"/>';
