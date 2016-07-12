@@ -919,7 +919,8 @@ abstract class AbstractItemProvider
 
         $queryBuilder
             ->select(...GeneralUtility::trimExplode(',', $fieldList, true))
-            ->from($foreignTableName);
+            ->from($foreignTableName)
+            ->where($foreignTableClauseArray['WHERE']);
 
         if (!empty($foreignTableClauseArray['GROUPBY'])) {
             $queryBuilder->groupBy($foreignTableClauseArray['GROUPBY']);
@@ -950,14 +951,11 @@ abstract class AbstractItemProvider
         }
 
         if ($rootLevel === -1) {
-            $queryBuilder->where($queryBuilder->expr()->neq($foreignTableName . '.pid', -1));
+            $queryBuilder->andWhere($queryBuilder->expr()->neq($foreignTableName . '.pid', -1));
         } elseif ($rootLevel === 1) {
-            $queryBuilder->where($queryBuilder->expr()->neq($foreignTableName . '.pid', 0));
+            $queryBuilder->andWhere($queryBuilder->expr()->eq($foreignTableName . '.pid', 0));
         } else {
-            $queryBuilder->where(
-                $backendUser->getPagePermsClause(1),
-                $foreignTableClauseArray['WHERE']
-            );
+            $queryBuilder->andWhere($backendUser->getPagePermsClause(1));
             if ($foreignTableName !== 'pages') {
                 $queryBuilder
                     ->from('pages')

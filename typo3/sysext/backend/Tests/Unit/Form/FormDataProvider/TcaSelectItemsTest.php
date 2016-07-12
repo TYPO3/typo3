@@ -128,7 +128,10 @@ class TcaSelectItemsTest extends UnitTestCase
         $queryBuilderProphet->from('pages')
             ->shouldBeCalled()
             ->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->where(' 1=1', '')
+        $queryBuilderProphet->where('')
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->andWhere(' 1=1')
             ->shouldBeCalled()
             ->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->andWhere('`pages.uid` = `foreignTable.pid`')
@@ -1361,7 +1364,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace REC_FIELD' => [
                 'AND fTable.title=\'###REC_FIELD_rowField###\'',
                 [
-                    [' 1=1', 'fTable.title=\'rowFieldValue\''],
+                    ['fTable.title=\'rowFieldValue\''],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [],
@@ -1369,7 +1373,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace REC_FIELD within FlexForm' => [
                 'AND fTable.title=###REC_FIELD_rowFieldFlexForm###',
                 [
-                    [' 1=1', 'fTable.title=\'rowFieldFlexFormValue\''],
+                    ['fTable.title=\'rowFieldFlexFormValue\''],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [
@@ -1388,7 +1393,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace REC_FIELD fullQuote' => [
                 'AND fTable.title=###REC_FIELD_rowField###',
                 [
-                    [' 1=1', 'fTable.title=\'rowFieldValue\''],
+                    ['fTable.title=\'rowFieldValue\''],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [],
@@ -1396,7 +1402,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace REC_FIELD fullQuoteWithArray' => [
                 'AND fTable.title=###REC_FIELD_rowFieldThree###',
                 [
-                    [' 1=1', 'fTable.title=\'rowFieldThreeValue\''],
+                    ['fTable.title=\'rowFieldThreeValue\''],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [
@@ -1410,7 +1417,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace REC_FIELD multiple markers' => [
                 'AND fTable.title=\'###REC_FIELD_rowField###\' AND fTable.pid=###REC_FIELD_rowFieldTwo###',
                 [
-                    [' 1=1', 'fTable.title=\'rowFieldValue\' AND fTable.pid=\'rowFieldTwoValue\''],
+                    ['fTable.title=\'rowFieldValue\' AND fTable.pid=\'rowFieldTwoValue\''],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [],
@@ -1418,7 +1426,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace CURRENT_PID' => [
                 'AND fTable.uid=###CURRENT_PID###',
                 [
-                    [' 1=1', 'fTable.uid=43'],
+                    ['fTable.uid=43'],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [],
@@ -1426,7 +1435,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace CURRENT_PID within FlexForm' => [
                 'AND fTable.uid=###CURRENT_PID###',
                 [
-                    [' 1=1', 'fTable.uid=77'],
+                    ['fTable.uid=77'],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [
@@ -1438,7 +1448,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace CURRENT_PID integer cast' => [
                 'AND fTable.uid=###CURRENT_PID###',
                 [
-                    [' 1=1', 'fTable.uid=431'],
+                    ['fTable.uid=431'],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [
@@ -1448,7 +1459,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace THIS_UID' => [
                 'AND fTable.uid=###THIS_UID###',
                 [
-                    [' 1=1', 'fTable.uid=42'],
+                    ['fTable.uid=42'],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [],
@@ -1456,7 +1468,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace THIS_UID integer cast' => [
                 'AND fTable.uid=###THIS_UID###',
                 [
-                    [' 1=1', 'fTable.uid=421'],
+                    ['fTable.uid=421'],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [
@@ -1468,7 +1481,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace SITEROOT' => [
                 'AND fTable.uid=###SITEROOT###',
                 [
-                    [' 1=1', 'fTable.uid=44'],
+                    ['fTable.uid=44'],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [],
@@ -1476,7 +1490,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace SITEROOT integer cast' => [
                 'AND fTable.uid=###SITEROOT###',
                 [
-                    [' 1=1', 'fTable.uid=441'],
+                    ['fTable.uid=441'],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [
@@ -1490,7 +1505,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace PAGE_TSCONFIG_ID' => [
                 'AND fTable.uid=###PAGE_TSCONFIG_ID###',
                 [
-                    [' 1=1', 'fTable.uid=45'],
+                    ['fTable.uid=45'],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [
@@ -1508,7 +1524,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace PAGE_TSCONFIG_ID integer cast' => [
                 'AND fTable.uid=###PAGE_TSCONFIG_ID###',
                 [
-                    [' 1=1', 'fTable.uid=451'],
+                    ['fTable.uid=451'],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [
@@ -1526,7 +1543,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace PAGE_TSCONFIG_STR' => [
                 'AND fTable.uid=\'###PAGE_TSCONFIG_STR###\'',
                 [
-                    [' 1=1', 'fTable.uid=\'46\''],
+                    ['fTable.uid=\'46\''],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [
@@ -1544,7 +1562,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace PAGE_TSCONFIG_IDLIST' => [
                 'AND fTable.uid IN (###PAGE_TSCONFIG_IDLIST###)',
                 [
-                    [' 1=1', 'fTable.uid IN (47,48)'],
+                    ['fTable.uid IN (47,48)'],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [
@@ -1562,7 +1581,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'replace PAGE_TSCONFIG_IDLIST cleans list' => [
                 'AND fTable.uid IN (###PAGE_TSCONFIG_IDLIST###)',
                 [
-                    [' 1=1', 'fTable.uid IN (471,481)'],
+                    ['fTable.uid IN (471,481)'],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [
@@ -1580,7 +1600,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'deprecated flexHack PAGE_TSCONFIG_ID is substituted' => [
                 'AND fTable.uid=###PAGE_TSCONFIG_ID###',
                 [
-                    [' 1=1', 'fTable.uid=123'],
+                    ['fTable.uid=123'],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [
@@ -1594,7 +1615,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'deprecated flexHack PAGE_TSCONFIG_IDLIST is substituted' => [
                 'AND fTable.uid IN (###PAGE_TSCONFIG_IDLIST###)',
                 [
-                    [' 1=1', 'fTable.uid IN (123,124)'],
+                    ['fTable.uid IN (123,124)'],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [
@@ -1608,7 +1630,8 @@ class TcaSelectItemsTest extends UnitTestCase
             'deprecated flexHack PAGE_TSCONFIG_STR is substituted' => [
                 'AND fTable.uid=\'###PAGE_TSCONFIG_STR###\'',
                 [
-                    [' 1=1', 'fTable.uid=\'aString\''],
+                    ['fTable.uid=\'aString\''],
+                    [' 1=1'],
                     ['`pages.uid` = `fTable.pid`']
                 ],
                 [
@@ -1765,7 +1788,8 @@ class TcaSelectItemsTest extends UnitTestCase
         $queryBuilderProphet->addOrderBy('orderField', null)->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->setFirstResult(1)->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->setMaxResults(2)->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->where(' 1=1', 'ftable.uid=1')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->where('ftable.uid=1')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->andWhere(' 1=1')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->andWhere('`pages.uid` = `fTable.pid`')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->execute()->shouldBeCalled()->willReturn($statementProphet->reveal());
 
@@ -1831,7 +1855,8 @@ class TcaSelectItemsTest extends UnitTestCase
         $queryBuilderProphet->select('fTable.uid')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('pages')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->where(' 1=1', '')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->where('')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->andWhere(' 1=1')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->andWhere('`pages.uid` = `fTable.pid`')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->execute()->shouldBeCalled()->willReturn($statementProphet->reveal());
 
@@ -1905,7 +1930,8 @@ class TcaSelectItemsTest extends UnitTestCase
         $queryBuilderProphet->select('fTable.uid')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('pages')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->where(' 1=1', '')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->where('')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->andWhere(' 1=1')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->andWhere('`pages.uid` = `fTable.pid`')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->execute()->shouldBeCalled()->willReturn($statementProphet->reveal());
 
@@ -2002,7 +2028,8 @@ class TcaSelectItemsTest extends UnitTestCase
         $queryBuilderProphet->select('fTable.uid', 'fTable.icon')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('pages')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->where(' 1=1', '')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->where('')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->andWhere(' 1=1')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->andWhere('`pages.uid` = `fTable.pid`')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->execute()->shouldBeCalled()->willReturn($statementProphet->reveal());
 

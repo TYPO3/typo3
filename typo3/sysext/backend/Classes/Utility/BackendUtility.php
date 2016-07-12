@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
@@ -687,7 +688,7 @@ class BackendUtility
      *
      * @param int $id Page uid for which to check read-access
      * @param string $perms_clause This is typically a value generated with static::getBackendUserAuthentication()->getPagePermsClause(1);
-     * @return array Returns page record if OK, otherwise FALSE.
+     * @return array|bool Returns page record if OK, otherwise FALSE.
      */
     public static function readPageAccess($id, $perms_clause)
     {
@@ -2285,9 +2286,9 @@ class BackendUtility
                             while ($MMrow = $result->fetch()) {
                                 // Keep sorting of $selectUids
                                 $selectedUid = array_search($MMrow['uid'], $selectUids);
-                                $mmlA[$selectedUid] =  $MMrow['uid'];
+                                $mmlA[$selectedUid] = $MMrow['uid'];
                                 if (!$noRecordLookup) {
-                                    $mmlA[$selectedUid] =  static::getRecordTitle(
+                                    $mmlA[$selectedUid] = static::getRecordTitle(
                                         $theColConf['foreign_table'],
                                         $MMrow,
                                         false,
@@ -4136,11 +4137,11 @@ class BackendUtility
             $count = $queryBuilder->execute()->fetchColumn(0);
         }
 
-        if ($count && $msg) {
-            return sprintf($msg, $count);
+        if ($count) {
+            return $msg ? sprintf($msg, $count) : $count;
+        } else {
+            return $msg ? '' : 0;
         }
-
-        return $count ?? '';
     }
 
     /**
@@ -4179,7 +4180,11 @@ class BackendUtility
             return sprintf($msg, $count);
         }
 
-        return $count ?? '';
+        if ($count) {
+            return $msg ? sprintf($msg, $count) : $count;
+        } else {
+            return $msg ? '' : 0;
+        }
     }
 
     /*******************************************
@@ -4239,7 +4244,7 @@ class BackendUtility
                 )
                 ->orderBy('t3ver_id', 'DESC');
 
-            if ($includeDeletedRecords === false) {
+            if (!$includeDeletedRecords) {
                 $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             }
 
@@ -4454,7 +4459,7 @@ class BackendUtility
      * @param string $table Table name to select from
      * @param int $uid Record uid for which to find workspace version.
      * @param string $fields Field list to select
-     * @return array If found, return record, otherwise FALSE
+     * @return array|bool If found, return record, otherwise false
      */
     public static function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields = '*')
     {
@@ -4497,7 +4502,7 @@ class BackendUtility
     public static function getLiveVersionOfRecord($table, $uid, $fields = '*')
     {
         $liveVersionId = self::getLiveVersionIdOfRecord($table, $uid);
-        if (is_null($liveVersionId) === false) {
+        if ($liveVersionId !== null) {
             return self::getRecord($table, $liveVersionId, $fields);
         }
         return null;
@@ -4584,7 +4589,7 @@ class BackendUtility
      * @param int $uid Record UID of online version
      * @param string $fields Field list, default is *
      * @param int|NULL $workspace The workspace to be used
-     * @return array If found, the record, otherwise nothing.
+     * @return array|bool If found, the record, otherwise false
      */
     public static function getMovePlaceholder($table, $uid, $fields = '*', $workspace = null)
     {
@@ -4603,7 +4608,7 @@ class BackendUtility
                 ->from($table)
                 ->where(
                     $queryBuilder->expr()->neq('pid', -1),
-                    $queryBuilder->expr()->eq('t3ver_state', new VersionState(VersionState::MOVE_PLACEHOLDER)),
+                    $queryBuilder->expr()->eq('t3ver_state', (string)(new VersionState(VersionState::MOVE_PLACEHOLDER))),
                     $queryBuilder->expr()->eq('t3ver_move_id', (int)$uid),
                     $queryBuilder->expr()->eq('t3ver_wsid', (int)$workspace)
                 )

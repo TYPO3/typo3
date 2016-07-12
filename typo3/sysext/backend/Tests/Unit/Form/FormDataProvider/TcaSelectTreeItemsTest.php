@@ -112,7 +112,10 @@ class TcaSelectTreeItemsTest extends UnitTestCase
         $queryBuilderProphet->from('pages')
             ->shouldBeCalled()
             ->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->where(' 1=1', '')
+        $queryBuilderProphet->where('')
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->andWhere(' 1=1')
             ->shouldBeCalled()
             ->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->andWhere('`pages.uid` = `foreignTable.pid`')
