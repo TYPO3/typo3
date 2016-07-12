@@ -102,7 +102,7 @@ return array(
                 'cols' => '48',
                 'rows' => '10',
                 'wrap' => 'OFF',
-                'softref' => 'TStemplate,email[subst],url[subst]'
+                'softref' => 'email[subst],url[subst]'
             ),
             'defaultExtras' => 'fixed-font : enable-tab'
         ),
@@ -194,7 +194,7 @@ return array(
                 'rows' => 10,
                 'cols' => 48,
                 'wrap' => 'OFF',
-                'softref' => 'TStemplate,email[subst],url[subst]'
+                'softref' => 'email[subst],url[subst]'
             ),
             'defaultExtras' => 'fixed-font : enable-tab'
         ),

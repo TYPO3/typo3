@@ -1180,8 +1180,6 @@ return array(
                 'images' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
                 'typolink' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
                 'typolink_tag' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
-                'TSconfig' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
-                'TStemplate' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
                 'ext_fileref' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
                 'email' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
                 'url' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,

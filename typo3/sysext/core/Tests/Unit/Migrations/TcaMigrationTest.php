@@ -1592,4 +1592,94 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         $this->assertEquals($expected, $subject->migrate($input));
     }
+
+    public function migrateTsTemplateSoftReferencesDataProvider()
+    {
+        return [
+            'nothing removed' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aCol' => [
+                                'config' => [
+                                    'softref' => 'email,somethingelse'
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aCol' => [
+                                'config' => [
+                                    'softref' => 'email,somethingelse',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'TStemplate only' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aCol' => [
+                                'config' => [
+                                    'softref' => 'TStemplate,somethingelse'
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aCol' => [
+                                'config' => [
+                                    'softref' => 'somethingelse',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'TStemplate and TSconfig' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aCol' => [
+                                'config' => [
+                                    'softref' => 'TStemplate,somethingelse,TSconfig'
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aCol' => [
+                                'config' => [
+                                    'softref' => 'somethingelse',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider migrateTsTemplateSoftReferencesDataProvider
+     * @param array $givenConfig
+     * @param array $expectedConfig
+     */
+    public function migrateTsTemplateSoftReferences(array $givenConfig, array $expectedConfig)
+    {
+        $subject = new TcaMigration();
+        $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
+    }
 }

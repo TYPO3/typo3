@@ -55,6 +55,7 @@ class TcaMigration
         $tca = $this->migrateDefaultExtrasRteTransFormOptions($tca);
         $tca = $this->migrateColorPickerWizardToRenderType($tca);
         $tca = $this->migrateSelectTreeOptions($tca);
+        $tca = $this->migrateTSconfigSoftReferences($tca);
         // @todo: if showitem/defaultExtras wizards[xy] is migrated to columnsOverrides here, enableByTypeConfig could be dropped
         return $tca;
     }
@@ -784,6 +785,49 @@ class TcaMigration
                                     . ' The \'size\' value was adapted to the previous autoSizeMax value';
                         $fieldConfig['config']['size'] = $fieldConfig['config']['autoSizeMax'];
                         unset($fieldConfig['config']['autoSizeMax']);
+                    }
+                }
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Migrates selectTree fields deprecated options
+     *
+     * @param array $tca Incoming TCA
+     * @return array Migrated TCA
+     */
+    protected function migrateTSconfigSoftReferences(array $tca)
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (isset($fieldConfig['config'])) {
+                    if (isset($fieldConfig['config']['softref'])) {
+                        $softReferences = array_flip(GeneralUtility::trimExplode(',', $fieldConfig['config']['softref']));
+                        $changed = false;
+                        if (isset($softReferences['TSconfig'])) {
+                            $changed = true;
+                            unset($softReferences['TSconfig']);
+                        }
+                        if (isset($softReferences['TStemplate'])) {
+                            $changed = true;
+                            unset($softReferences['TStemplate']);
+                        }
+                        if ($changed) {
+                            if (!empty($softReferences)) {
+                                $softReferences = array_flip($softReferences);
+                                $fieldConfig['config']['softref'] = implode(',', $softReferences);
+                            } else {
+                                unset($fieldConfig['config']['softref']);
+                            }
+                            $this->messages[] = 'The soft reference setting using \'TSconfig\' and '
+                                . '\'TStemplate\' was removed in TCA ' . $table . '[\'columns\']'
+                                . '[\'' . $fieldName . '\'][\'config\'][\'softref\']';
+                        }
                     }
                 }
             }

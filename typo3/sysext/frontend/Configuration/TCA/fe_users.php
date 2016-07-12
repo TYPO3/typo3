@@ -256,8 +256,7 @@ return array(
             'config' => array(
                 'type' => 'text',
                 'cols' => '40',
-                'rows' => '10',
-                'softref' => 'TSconfig'
+                'rows' => '10'
             ),
             'defaultExtras' => 'fixed-font : enable-tab'
         ),

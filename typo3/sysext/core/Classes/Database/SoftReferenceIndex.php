@@ -59,11 +59,9 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
  *
  * - 'substitute' : A full field value targeted for manual substitution (for import /export features)
  * - 'notify' : Just report if a value is found, nothing more.
- * - 'images' : HTML <img> tags for RTE images / images from fileadmin/
+ * - 'images' : HTML <img> tags for RTE images
  * - 'typolink' : references to page id or file, possibly with anchor/target, possibly commaseparated list.
  * - 'typolink_tag' : As typolink, but searching for <link> tag to encapsulate it.
- * - 'TSconfig' processing (filerefs? Domains? what do we know...)
- * - 'TStemplate' : freetext references to "fileadmin/" files.
  * - 'email' : Email highlight
  * - 'url' : URL highlights (with a scheme)
  */
@@ -72,20 +70,7 @@ class SoftReferenceIndex
     /**
      * @var string
      */
-    public $fileAdminDir = '';
-
-    /**
-     * @var string
-     */
     public $tokenID_basePrefix = '';
-
-    /**
-     * Class construct to set global variable
-     */
-    public function __construct()
-    {
-        $this->fileAdminDir = !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']) ? rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') : 'fileadmin';
-    }
 
     /**
      * Main function through which all processing happens
@@ -144,12 +129,6 @@ class SoftReferenceIndex
             case 'ext_fileref':
                 $retVal = $this->findRef_extension_fileref($content, $spParams);
                 break;
-            case 'TStemplate':
-                $retVal = $this->findRef_TStemplate($content, $spParams);
-                break;
-            case 'TSconfig':
-                $retVal = $this->findRef_TSconfig($content, $spParams);
-                break;
             case 'email':
                 $retVal = $this->findRef_email($content, $spParams);
                 break;
@@ -165,7 +144,7 @@ class SoftReferenceIndex
     /**
      * Finding image tags in the content.
      * All images that are not from external URLs will be returned with an info text
-     * Will only return files in fileadmin/ and files in uploads/ folders which are prefixed with "RTEmagic[C|P]_" for substitution
+     * Will only return files in uploads/ folders which are prefixed with "RTEmagic[C|P]_" for substitution
      * Any "clear.gif" images are ignored.
      *
      * @param string $content The input content to analyse
@@ -192,8 +171,8 @@ class SoftReferenceIndex
                     $tokenID = $this->makeTokenID($k);
                     $elements[$k] = array();
                     $elements[$k]['matchString'] = $v;
-                    // If the image seems to be from fileadmin/ folder or an RTE image, then proceed to set up substitution token:
-                    if (GeneralUtility::isFirstPartOfStr($srcRef, $this->fileAdminDir . '/') || GeneralUtility::isFirstPartOfStr($srcRef, 'uploads/') && preg_match('/^RTEmagicC_/', basename($srcRef))) {
+                    // If the image seems to be an RTE image, then proceed to set up substitution token:
+                    if (GeneralUtility::isFirstPartOfStr($srcRef, 'uploads/') && preg_match('/^RTEmagicC_/', basename($srcRef))) {
                         // Token and substitute value:
                         // Make sure the value we work on is found and will get substituted in the content (Very important that the src-value is not DeHSC'ed)
                         if (strstr($splitContent[$k], $attribs[0]['src'])) {
@@ -296,103 +275,6 @@ class SoftReferenceIndex
     }
 
     /**
-     * Processing the content expected from a TypoScript template
-     * This content includes references to files in fileadmin/ folders and file references in HTML tags like <img src="">, <a href=""> and <form action="">
-     *
-     * @param string $content The input content to analyse
-     * @param array $spParams Parameters set for the softref parser key in TCA/columns
-     * @return array Result array on positive matches, see description above. Otherwise FALSE
-     */
-    public function findRef_TStemplate($content, $spParams)
-    {
-        $elements = array();
-        // First, try to find images and links:
-        $htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
-        $splitContent = $htmlParser->splitTags('img,a,form', $content);
-        // Traverse splitted parts:
-        foreach ($splitContent as $k => $v) {
-            if ($k % 2) {
-                $attribs = $htmlParser->get_tag_attributes($v);
-                $attributeName = '';
-                switch ($htmlParser->getFirstTagName($v)) {
-                    case 'img':
-                        $attributeName = 'src';
-                        break;
-                    case 'a':
-                        $attributeName = 'href';
-                        break;
-                    case 'form':
-                        $attributeName = 'action';
-                        break;
-                }
-                // Get file reference:
-                if (isset($attribs[0][$attributeName])) {
-                    $srcRef = htmlspecialchars_decode($attribs[0][$attributeName]);
-                    // Set entry:
-                    $tokenID = $this->makeTokenID($k);
-                    $elements[$k] = array();
-                    $elements[$k]['matchString'] = $v;
-                    // OK, if it looks like a local file from fileadmin/, include it:
-                    $pI = pathinfo($srcRef);
-                    $absPath = GeneralUtility::getFileAbsFileName(PATH_site . $srcRef);
-                    if (GeneralUtility::isFirstPartOfStr($srcRef, $this->fileAdminDir . '/') && !$pI['query'] && $absPath) {
-                        // Token and substitute value:
-                        // Very important that the src-value is not DeHSC'ed
-                        if (strstr($splitContent[$k], $attribs[0][$attributeName])) {
-                            $splitContent[$k] = str_replace($attribs[0][$attributeName], '{softref:' . $tokenID . '}', $splitContent[$k]);
-                            $elements[$k]['subst'] = array(
-                                'type' => 'file',
-                                'relFileName' => $srcRef,
-                                'tokenID' => $tokenID,
-                                'tokenValue' => $attribs[0][$attributeName]
-                            );
-                            if (!@is_file($absPath)) {
-                                $elements[$k]['error'] = 'File does not exist!';
-                            }
-                        } else {
-                            $elements[$k]['error'] = 'Could not substitute attribute (' . $attributeName . ') value with token!';
-                        }
-                    }
-                }
-            }
-        }
-        $content = implode('', $splitContent);
-        // Process free fileadmin/ references as well:
-        $content = $this->fileadminReferences($content, $elements);
-        // Return output:
-        if (!empty($elements)) {
-            $resultArray = array(
-                'content' => $content,
-                'elements' => $elements
-            );
-            return $resultArray;
-        }
-    }
-
-    /**
-     * Processes possible references inside of Page and User TSconfig fields.
-     * Currently this only includes file references to fileadmin/ but in fact there are currently no properties that supports such references.
-     *
-     * @param string $content The input content to analyse
-     * @param array $spParams Parameters set for the softref parser key in TCA/columns
-     * @return array Result array on positive matches, see description above. Otherwise FALSE
-     */
-    public function findRef_TSconfig($content, $spParams)
-    {
-        $elements = array();
-        // Process free fileadmin/ references from TSconfig
-        $content = $this->fileadminReferences($content, $elements);
-        // Return output:
-        if (!empty($elements)) {
-            $resultArray = array(
-                'content' => $content,
-                'elements' => $elements
-            );
-            return $resultArray;
-        }
-    }
-
-    /**
      * Finding email addresses in content and making them substitutable.
      *
      * @param string $content The input content to analyse
@@ -439,7 +321,7 @@ class SoftReferenceIndex
     public function findRef_url($content, $spParams)
     {
         $resultArray = array();
-        // Fileadmin files:
+        // URLs
         $parts = preg_split('/([^[:alnum:]"\']+)((http|ftp):\\/\\/[^[:space:]"\'<>]*)([[:space:]])/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
         foreach ($parts as $idx => $value) {
             if ($idx % 5 == 3) {
@@ -479,7 +361,7 @@ class SoftReferenceIndex
     public function findRef_extension_fileref($content, $spParams)
     {
         $resultArray = array();
-        // Fileadmin files:
+        // Files starting with EXT:
         $parts = preg_split('/([^[:alnum:]"\']+)(EXT:[[:alnum:]_]+\\/[^[:space:]"\',]*)/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
         foreach ($parts as $idx => $value) {
             if ($idx % 3 == 2) {
@@ -503,42 +385,6 @@ class SoftReferenceIndex
      * Helper functions
      *
      *************************/
-    /**
-     * Searches the content for a reference to a file in "fileadmin/".
-     * When a match is found it will get substituted with a token.
-     *
-     * @param string $content Input content to analyse
-     * @param array $elements Element array to be modified with new entries. Passed by reference.
-     * @return string Output content, possibly with tokens inserted.
-     */
-    public function fileadminReferences($content, &$elements)
-    {
-        // Fileadmin files are found
-        $parts = preg_split('/([^[:alnum:]]+)(' . preg_quote($this->fileAdminDir, '/') . '\\/[^[:space:]"\'<>]*)/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
-        // Traverse files:
-        foreach ($parts as $idx => $value) {
-            if ($idx % 3 == 2) {
-                // when file is found, set up an entry for the element:
-                $tokenID = $this->makeTokenID('fileadminReferences:' . $idx);
-                $elements['fileadminReferences.' . $idx] = array();
-                $elements['fileadminReferences.' . $idx]['matchString'] = $value;
-                $elements['fileadminReferences.' . $idx]['subst'] = array(
-                    'type' => 'file',
-                    'relFileName' => $value,
-                    'tokenID' => $tokenID,
-                    'tokenValue' => $value
-                );
-                $parts[$idx] = '{softref:' . $tokenID . '}';
-                // Check if the file actually exists:
-                $absPath = GeneralUtility::getFileAbsFileName(PATH_site . $value);
-                if (!@is_file($absPath)) {
-                    $elements['fileadminReferences.' . $idx]['error'] = 'File does not exist!';
-                }
-            }
-        }
-        // Implode the content again, removing prefixed and trailing white space:
-        return substr(implode('', $parts), 1, -1);
-    }
 
     /**
      * Analyse content as a TypoLink value and return an array with properties.
@@ -691,29 +537,6 @@ class SoftReferenceIndex
                         $content = '{softref:' . $tokenID . '}';
                     } else {
                         // This is a link to a folder...
-                        return $content;
-                    }
-
-                    // Process files found in fileadmin directory:
-                } elseif (!$tLP['query']) {
-                    // We will not process files which has a query added to it. That will look like a script we don't want to move.
-                    // File must be inside fileadmin/
-                    if (GeneralUtility::isFirstPartOfStr($tLP['filepath'], $this->fileAdminDir . '/')) {
-                        // Set up the basic token and token value for the relative file:
-                        $elements[$tokenID . ':' . $idx]['subst'] = array(
-                            'type' => 'file',
-                            'relFileName' => $tLP['filepath'],
-                            'tokenID' => $tokenID,
-                            'tokenValue' => $tLP['filepath']
-                        );
-                        // Depending on whether the file exists or not we will set the
-                        $absPath = GeneralUtility::getFileAbsFileName(PATH_site . $tLP['filepath']);
-                        if (!@is_file($absPath)) {
-                            $elements[$tokenID . ':' . $idx]['error'] = 'File does not exist!';
-                        }
-                        // Output content will be the token instead
-                        $content = '{softref:' . $tokenID . '}';
-                    } else {
                         return $content;
                     }
                 } else {

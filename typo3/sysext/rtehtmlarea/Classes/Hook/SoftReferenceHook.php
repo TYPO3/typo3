@@ -19,42 +19,35 @@ namespace TYPO3\CMS\Rtehtmlarea\Hook;
  */
 class SoftReferenceHook extends \TYPO3\CMS\Core\Database\SoftReferenceIndex
 {
-    // Token prefix
-    public $tokenID_basePrefix = '';
-
     /**
      * Main function through which all processing happens
      *
-     * @param string Database table name
-     * @param string Field name for which processing occurs
-     * @param int UID of the record
-     * @param string The content/value of the field
-     * @param string The softlink parser key. This is only interesting if more than one parser is grouped in the same class. That is the case with this parser.
-     * @param array Parameters of the softlink parser. Basically this is the content inside optional []-brackets after the softref keys. Parameters are exploded by ";
-     * @param string If running from inside a FlexForm structure, this is the path of the tag.
-     * @return array Result array on positive matches. Otherwise FALSE
+     * @param string $table Database table name
+     * @param string $field Field name for which processing occurs
+     * @param int $uid UID of the record
+     * @param string $content The content/value of the field
+     * @param string $spKey The softlink parser key. This is only interesting if more than one parser is grouped in the same class. That is the case with this parser.
+     * @param array $spParams Parameters of the softlink parser. Basically this is the content inside optional []-brackets after the softref keys. Parameters are exploded by ";
+     * @param string $structurePath If running from inside a FlexForm structure, this is the path of the tag.
+     * @return array|bool Result array on positive matches. Otherwise FALSE
      */
     public function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath = '')
     {
-        $retVal = false;
         $this->tokenID_basePrefix = $table . ':' . $uid . ':' . $field . ':' . $structurePath . ':' . $spKey;
-        switch ($spKey) {
-            case 'rtehtmlarea_images':
-                $retVal = $this->findRef_rtehtmlarea_images($content, $spParams);
-                break;
-            default:
-                $retVal = false;
+        if ($spKey === 'rtehtmlarea_images') {
+            return $this->findRef_rtehtmlarea_images($content, $spParams);
+        } else {
+            return false;
         }
-        return $retVal;
     }
 
     /**
      * Finding image tags with data-htmlarea-file-uid attribute in the content.
      * All images that have an data-htmlarea-file-uid attribute will be returned with an info text
      *
-     * @param string The input content to analyse
-     * @param array Parameters set for the softref parser key in TCA/columns
-     * @return array Result array on positive matches, see description above. Otherwise FALSE
+     * @param string $content The input content to analyse
+     * @param array $spParams Parameters set for the softref parser key in TCA/columns
+     * @return array|bool Result array on positive matches, see description above. Otherwise FALSE
      */
     public function findRef_rtehtmlarea_images($content, $spParams)
     {
