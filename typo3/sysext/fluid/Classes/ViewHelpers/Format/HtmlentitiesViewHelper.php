@@ -61,9 +61,9 @@ class HtmlentitiesViewHelper extends AbstractEncodingViewHelper implements Singl
      */
     public function initializeArguments()
     {
-        $this->registerArgument('value', 'string', 'string to format', false, null);
+        $this->registerArgument('value', 'string', 'string to format');
         $this->registerArgument('keepQuotes', 'bool', 'If TRUE, single and double quotes won\'t be replaced (sets ENT_NOQUOTES flag).', false, false);
-        $this->registerArgument('encoding', 'string', '', false, null);
+        $this->registerArgument('encoding', 'string', '');
         $this->registerArgument('doubleEncode', 'bool', 'If FALSE existing html entities won\'t be encoded, the default is to convert everything.', false, true);
     }
 
