@@ -324,6 +324,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @var array
      */
     protected $overridePageIdList = [];
+
     /**
      * Array with before/after setting for tables
      * Structure:
@@ -734,7 +735,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param string[] $fields Field list to select, * for all
      * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
      */
-    protected function getQueryBuilder(
+    public function getQueryBuilder(
         string $table,
         int $pageId,
         array $additionalConstraints = [],
@@ -804,7 +805,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         ];
 
         if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table, 1))) {
-            $parameters['orderBy'] = $this->sortRev ? [$this->sortField, 'DESC'] : [$this->sortField, 'ASC'];
+            $parameters['orderBy'][] = $this->sortRev ? [$this->sortField, 'DESC'] : [$this->sortField, 'ASC'];
         } else {
             $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
             $parameters['orderBy'] = QueryHelper::parseOrderBy((string)$orderBy);
@@ -895,85 +896,86 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         }
 
         $searchableFields = $this->getSearchFields($table);
-        if (!empty($searchableFields)) {
-            if (MathUtility::canBeInterpretedAsInteger($this->searchString)) {
-                $constraints[] = $expressionBuilder->eq('uid', (int)$this->searchString);
-                foreach ($searchableFields as $fieldName) {
-                    if (!isset($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
-                        continue;
-                    }
-                    $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
-                    $fieldType = $fieldConfig['type'];
-                    $evalRules = $fieldConfig['eval'] ?: '';
-                    if ($fieldType === 'input' && $evalRules && GeneralUtility::inList($evalRules, 'int')) {
-                        if (is_array($fieldConfig['search'])
-                            && in_array('pidonly', $fieldConfig['search'], true)
-                            && $currentPid > 0
-                        ) {
-                            $constraints[] = $expressionBuilder->andX(
-                                $expressionBuilder->eq($fieldName, (int)$this->searchString),
-                                $expressionBuilder->eq($tablePidField, (int)$currentPid)
-                            );
-                        }
-                    } elseif ($fieldType === 'text'
-                        || $fieldType === 'flex'
-                        || ($fieldType === 'input' && (!$evalRules || !preg_match('/date|time|int/', $evalRules)))
+        if (empty($searchableFields)) {
+            return '1=1';
+        }
+        if (MathUtility::canBeInterpretedAsInteger($this->searchString)) {
+            $constraints[] = $expressionBuilder->eq('uid', (int)$this->searchString);
+            foreach ($searchableFields as $fieldName) {
+                if (!isset($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
+                    continue;
+                }
+                $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
+                $fieldType = $fieldConfig['type'];
+                $evalRules = $fieldConfig['eval'] ?: '';
+                if ($fieldType === 'input' && $evalRules && GeneralUtility::inList($evalRules, 'int')) {
+                    if (is_array($fieldConfig['search'])
+                        && in_array('pidonly', $fieldConfig['search'], true)
+                        && $currentPid > 0
                     ) {
-                        $constraints[] = $expressionBuilder->like(
-                            $fieldName,
-                            $queryBuilder->quote('%' . (int)$this->searchString . '%')
+                        $constraints[] = $expressionBuilder->andX(
+                            $expressionBuilder->eq($fieldName, (int)$this->searchString),
+                            $expressionBuilder->eq($tablePidField, (int)$currentPid)
+                        );
+                    }
+                } elseif ($fieldType === 'text'
+                    || $fieldType === 'flex'
+                    || ($fieldType === 'input' && (!$evalRules || !preg_match('/date|time|int/', $evalRules)))
+                ) {
+                    $constraints[] = $expressionBuilder->like(
+                        $fieldName,
+                        $queryBuilder->quote('%' . (int)$this->searchString . '%')
+                    );
+                }
+            }
+        } else {
+            $like = $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($this->searchString) . '%');
+            foreach ($searchableFields as $fieldName) {
+                if (!isset($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
+                    continue;
+                }
+                $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
+                $fieldType = $fieldConfig['type'];
+                $evalRules = $fieldConfig['eval'] ?: '';
+                $searchConstraint = $expressionBuilder->andX();
+                if (is_array($fieldConfig['search'])) {
+                    $searchConfig = $fieldConfig['search'];
+                    if (in_array('case', $searchConfig)) {
+                        $searchConstraint->add($expressionBuilder->like($fieldName, $like));
+                    } else {
+                        $searchConstraint->add(
+                            $expressionBuilder->comparison(
+                                'LOWER(' . $queryBuilder->quoteIdentifier($fieldName) . ')',
+                                'LIKE',
+                                'LOWER(' . $like . ')'
+                            )
+                        );
+                    }
+                    if (in_array('pidonly', $searchConfig) && $currentPid > 0) {
+                        $searchConstraint->add($expressionBuilder->eq($tablePidField, (int)$currentPid));
+                    }
+                    if ($searchConfig['andWhere']) {
+                        $searchConstraint->add(
+                            QueryHelper::stripLogicalOperatorPrefix($fieldConfig['search']['andWhere'])
                         );
                     }
                 }
-            } else {
-                $like = $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($this->searchString) . '%');
-                foreach ($searchableFields as $fieldName) {
-                    if (!isset($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
-                        continue;
-                    }
-                    $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
-                    $fieldType = $fieldConfig['type'];
-                    $evalRules = $fieldConfig['eval'] ?: '';
-                    $searchConstraint = $expressionBuilder->andX();
-                    if (is_array($fieldConfig['search'])) {
-                        $searchConfig = $fieldConfig['search'];
-                        if (in_array('case', $searchConfig)) {
-                            $searchConstraint->add($expressionBuilder->like($fieldName, $like));
-                        } else {
-                            $searchConstraint->add(
-                                $expressionBuilder->comparison(
-                                    'LOWER(' . $queryBuilder->quoteIdentifier($fieldName) . ')',
-                                    'LIKE',
-                                    'LOWER(' . $like . ')'
-                                )
-                            );
-                        }
-                        if (in_array('pidonly', $searchConfig) && $currentPid > 0) {
-                            $searchConstraint->add($expressionBuilder->eq($tablePidField, (int)$currentPid));
-                        }
-                        if ($searchConfig['andWhere']) {
-                            $searchConstraint->add(
-                                QueryHelper::stripLogicalOperatorPrefix($fieldConfig['search']['andWhere'])
-                            );
-                        }
-                    }
-                    if ($fieldType === 'text'
-                        || $fieldType === 'flex'
-                        || $fieldType === 'input' && (!$evalRules || !preg_match('/date|time|int/', $evalRules))
-                    ) {
-                        if ($searchConstraint->count() !== 0) {
-                            $constraints[] = $searchConstraint;
-                        }
+                if ($fieldType === 'text'
+                    || $fieldType === 'flex'
+                    || $fieldType === 'input' && (!$evalRules || !preg_match('/date|time|int/', $evalRules))
+                ) {
+                    if ($searchConstraint->count() !== 0) {
+                        $constraints[] = $searchConstraint;
                     }
                 }
             }
-            // If no search field conditions have been build ensure no results are returned
-            if (empty($constraints)) {
-                return '0=1';
-            }
-
-            return $expressionBuilder->orX(...$constraints);
         }
+        // If no search field conditions have been build ensure no results are returned
+        if (empty($constraints)) {
+            return '0=1';
+        }
+
+        return $expressionBuilder->orX(...$constraints);
     }
 
     /**
@@ -1392,17 +1394,18 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             ->getConnectionForTable($tableName)
             ->getExpressionBuilder();
 
-        if (!empty($this->getOverridePageIdList())) {
-            $constraint = $expressionBuilder->in(
-                $tableName . '.pid',
-                $this->getOverridePageIdList()
-            );
-        }
         if ($searchLevels === 0) {
             $constraint = $expressionBuilder->eq($tableName . '.pid', (int)$this->id);
         } elseif ($searchLevels > 0) {
             $allowedMounts = $this->getSearchableWebmounts($this->id, $searchLevels, $this->perms_clause);
             $constraint = $expressionBuilder->in($tableName . '.pid', array_map('intval', $allowedMounts));
+        }
+
+        if (!empty($this->getOverridePageIdList())) {
+            $constraint = $expressionBuilder->in(
+                $tableName . '.pid',
+                $this->getOverridePageIdList()
+            );
         }
 
         return (string)$constraint;
