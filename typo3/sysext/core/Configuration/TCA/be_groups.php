@@ -294,8 +294,7 @@ return array(
                         'maxLevels' => 99,
                     ),
                 ),
-                'size' => 10,
-                'autoSizeMax' => 20,
+                'size' => 20,
                 'minitems' => 0,
                 'maxitems' => 9999
             )

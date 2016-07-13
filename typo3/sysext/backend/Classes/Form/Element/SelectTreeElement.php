@@ -34,13 +34,6 @@ class SelectTreeElement extends AbstractFormElement
     const DEFAULT_HEIGHT = 280;
 
     /**
-     * Default width of the tree in pixels.
-     *
-     * @const
-     */
-    const DEFAULT_WIDTH = 280;
-
-    /**
      * Render tree widget
      *
      * @return array As defined in initializeResultArray() of AbstractNode
@@ -107,7 +100,6 @@ class SelectTreeElement extends AbstractFormElement
         $exclusiveKeys = !empty($config['exclusiveKeys']) ? $config['exclusiveKeys'] : '';
 
         $appearance = !empty($config['treeConfig']['appearance']) ? $config['treeConfig']['appearance'] : [];
-        $width = isset($appearance['width']) ? (int)$appearance['width'] : static::DEFAULT_WIDTH;
         if (isset($config['size']) && (int)$config['size'] > 0) {
             $height = (int)$config['size'] * 20;
         } else {
@@ -115,12 +107,6 @@ class SelectTreeElement extends AbstractFormElement
         }
         $showHeader = !empty($appearance['showHeader']);
         $expanded = !empty($appearance['expandAll']);
-        $allowRecursiveMode = !empty($appearance['allowRecursiveMode']) ? 'true' : 'false';
-
-        $autoSizeMax = null;
-        if (isset($config['autoSizeMax']) && (int)$config['autoSizeMax'] > 0) {
-            $autoSizeMax = (int)$config['autoSizeMax'] * 20;
-        }
 
         $onChange = !empty($parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']) ? $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] : '';
         $onChange .= !empty($parameterArray['fieldChangeFunc']['alert']) ? $parameterArray['fieldChangeFunc']['alert'] : '';
@@ -151,7 +137,6 @@ class SelectTreeElement extends AbstractFormElement
         $javascript[] = '        showHeader: ' . (int)$showHeader . ',';
         $javascript[] = '        onChange: ' . GeneralUtility::quoteJSvalue($onChange) . ',';
         $javascript[] = '        countSelectedNodes: ' . count($config['treeData']['selectedNodes']) . ',';
-        $javascript[] = '        width: ' . $width . ',';
         $javascript[] = '        rendering: false,';
         $javascript[] = '        listeners: {';
         $javascript[] = '            click: function(node, event) {';
@@ -192,19 +177,13 @@ class SelectTreeElement extends AbstractFormElement
         $javascript[] = '            }';
         $javascript[] = '        },';
         $javascript[] = '        tcaMaxItems: ' . $maxItems . ',';
-        $javascript[] = '        tcaSelectRecursiveAllowed: ' . $allowRecursiveMode . ',';
-        $javascript[] = '        tcaSelectRecursive: false,';
         $javascript[] = '        tcaExclusiveKeys: "' . $exclusiveKeys . '",';
         $javascript[] = '        ucId: "' . md5(($table . '|' . $field)) . '",';
         $javascript[] = '        selModel: TYPO3.Components.Tree.EmptySelectionModel,';
         $javascript[] = '        disabled: ' . $disabled;
         $javascript[] = '    });';
 
-        if ($autoSizeMax) {
-            $javascript[] = '    tree' . $formElementId . '.bodyStyle = "max-height: ' . $autoSizeMax . 'px;min-height: ' . $height . 'px;";';
-        } else {
-            $javascript[] = '    tree' . $formElementId . '.height = ' . $height . ';';
-        }
+        $javascript[] = '    tree' . $formElementId . '.bodyStyle = "max-height: ' . $height . 'px;min-height: ' . self::DEFAULT_HEIGHT . 'px;";';
 
         $javascript[] = '    window.setTimeout(function() {';
         $javascript[] = '        tree' . $formElementId . '.render("tree_' . $formElementId . '");';

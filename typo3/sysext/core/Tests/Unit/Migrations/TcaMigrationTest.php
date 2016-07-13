@@ -1426,4 +1426,170 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         $this->assertEquals($expected, $subject->migrate($input));
     }
+
+    /**
+     * @return array
+     */
+    public function migrateSelectTreeOptionsDataProvider()
+    {
+        return [
+            'remove width' => [
+                [
+                    // Given config section
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'renderType' => 'selectTree',
+                                    'treeConfig' => [
+                                        'appearance' => [
+                                            'width' => 200
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    // Expected config section
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'renderType' => 'selectTree',
+                                    'treeConfig' => [
+                                        'appearance' => [
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'remove allowRecursiveMode' => [
+                [
+                    // Given config section
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'renderType' => 'selectTree',
+                                    'treeConfig' => [
+                                        'appearance' => [
+                                            'someKey' => 'value',
+                                            'allowRecursiveMode' => true
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    // Expected config section
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'renderType' => 'selectTree',
+                                    'treeConfig' => [
+                                        'appearance' => [
+                                            'someKey' => 'value'
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'move autoSizeMax to size' => [
+                [
+                    // Given config section
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'renderType' => 'selectTree',
+                                    'autoSizeMax' => 20,
+                                    'size' => 10
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    // Expected config section
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'renderType' => 'selectTree',
+                                    'size' => 20
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'keep settings for non selectTree' => [
+                [
+                    // Given config section
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'renderType' => 'not a select tree',
+                                    'autoSizeMax' => 20,
+                                    'size' => 10,
+                                    'treeConfig' => [
+                                        'appearance' => [
+                                            'someKey' => 'value',
+                                            'allowRecursiveMode' => true,
+                                            'width' => 200
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    // Expected config section
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'renderType' => 'not a select tree',
+                                    'autoSizeMax' => 20,
+                                    'size' => 10,
+                                    'treeConfig' => [
+                                        'appearance' => [
+                                            'someKey' => 'value',
+                                            'allowRecursiveMode' => true,
+                                            'width' => 200
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider migrateSelectTreeOptionsDataProvider
+     * @param array $input
+     * @param array $expected
+     */
+    public function migrateSelectTreeOptions(array $input, array $expected)
+    {
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
 }

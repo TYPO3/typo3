@@ -23,7 +23,6 @@ TYPO3.Components.Tree.StandardTreeItemData = [];
 TYPO3.Components.Tree.StandardTree = function(config) {
 	var conf = Ext.apply({
 		header: false,
-		width: 280,
 		rootVisible: false,
 		useArrows: false,
 		lines: true,
@@ -162,16 +161,6 @@ TYPO3.Components.Tree.Toolbar = function(items, scope) {
 		}),
 		'->',
 		{
-			iconCls: 'icon-select-recursive',
-			tooltip: TYPO3.lang['tcatree.enableRecursiveSelection'],
-			enableToggle: true,
-			disable: scope.tcaSelectRecursive,
-			toggleHandler: function(btn, state) {
-				this.tcaSelectRecursive = state;
-			},
-			scope: scope
-		},
-		{
 			iconCls: 'icon-expand-all',
 			tooltip: TYPO3.l10n.localize('tcatree.expandAll'),
 			handler: function() {
@@ -233,13 +222,6 @@ TYPO3.Components.Tree.TcaCheckChangeHandler = function(checkedNode, checked) {
 		checkedNode.getUI().addClass('complete');
 	} else {
 		checkedNode.getUI().removeClass('complete');
-	}
-		// if recursive selection is asked, hand over selection
-	if(this.tcaSelectRecursive) {
-		checkedNode.cascade(function(node) {
-			node.attributes.checked = checkedNode.attributes.checked;
-			node.ui.toggleCheck(checkedNode.attributes.checked);
-		})
 	}
 
 	this.root.cascade(function(node) {

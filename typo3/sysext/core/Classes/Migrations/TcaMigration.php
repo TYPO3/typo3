@@ -54,6 +54,7 @@ class TcaMigration
         $tca = $this->migrateElementBrowserWizardToLinkHandler($tca);
         $tca = $this->migrateDefaultExtrasRteTransFormOptions($tca);
         $tca = $this->migrateColorPickerWizardToRenderType($tca);
+        $tca = $this->migrateSelectTreeOptions($tca);
         // @todo: if showitem/defaultExtras wizards[xy] is migrated to columnsOverrides here, enableByTypeConfig could be dropped
         return $tca;
     }
@@ -746,6 +747,47 @@ class TcaMigration
             }
         }
 
+        return $tca;
+    }
+
+    /**
+     * Migrates selectTree fields deprecated options
+     *
+     * @param array $tca Incoming TCA
+     * @return array Migrated TCA
+     */
+    protected function migrateSelectTreeOptions(array $tca)
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (isset($fieldConfig['config']['renderType']) && $fieldConfig['config']['renderType'] === 'selectTree') {
+                    if (isset($fieldConfig['config']['treeConfig']['appearance']['width'])) {
+                        $this->messages[] = 'The selectTree field [\'treeConfig\'][\'appearance\'][\'width\'] setting is deprecated'
+                                    . ' and was removed in TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']'
+                                    . '[\'treeConfig\'][\'appearance\'][\'width\'] ';
+                        unset($fieldConfig['config']['treeConfig']['appearance']['width']);
+                    }
+
+                    if (isset($fieldConfig['config']['treeConfig']['appearance']['allowRecursiveMode'])) {
+                        $this->messages[] = 'The selectTree field [\'treeConfig\'][\'appearance\'][\'allowRecursiveMode\'] setting is deprecated'
+                                    . ' and was removed in TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']'
+                                    . '[\'treeConfig\'][\'appearance\'][\'allowRecursiveMode\'] ';
+                        unset($fieldConfig['config']['treeConfig']['appearance']['allowRecursiveMode']);
+                    }
+
+                    if (isset($fieldConfig['config']['autoSizeMax'])) {
+                        $this->messages[] = 'The selectTree field [\'autoSizeMax\'] setting is deprecated'
+                                    . ' and was removed in TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'autoSizeMax\'].'
+                                    . ' The \'size\' value was adapted to the previous autoSizeMax value';
+                        $fieldConfig['config']['size'] = $fieldConfig['config']['autoSizeMax'];
+                        unset($fieldConfig['config']['autoSizeMax']);
+                    }
+                }
+            }
+        }
         return $tca;
     }
 }
