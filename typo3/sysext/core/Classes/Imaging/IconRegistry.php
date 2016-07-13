@@ -2995,7 +2995,7 @@ class IconRegistry implements SingletonInterface
      * @param string $iconReference
      * @return string
      */
-    protected function detectIconProvider($iconReference)
+    public function detectIconProvider($iconReference)
     {
         if (StringUtility::endsWith(strtolower($iconReference), 'svg')) {
             return SvgIconProvider::class;

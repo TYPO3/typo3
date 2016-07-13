@@ -1093,6 +1093,11 @@ class TcaSelectItemsTest extends UnitTestCase
                     'anItemKey' => [
                         0 => 'anItemTitle',
                     ],
+                    'anotherKey' => [
+                        0 => 'anotherTitle',
+                        1 => 'status-status-permission-denied',
+                        2 => 'aDescription',
+                    ],
                 ],
             ]
         ];
@@ -1109,6 +1114,12 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => 'aKey:anItemKey',
                 2 => 'empty-empty',
                 3 => null,
+            ],
+            2 => [
+                0 => 'anotherTitle',
+                1 => 'aKey:anotherKey',
+                2 => 'status-status-permission-denied',
+                3 => [ 'description' => 'aDescription' ],
             ],
         ];
 

@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -159,6 +160,7 @@ abstract class AbstractItemProvider
         }
 
         $languageService = $this->getLanguageService();
+        $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         $special = $result['processedTca']['columns'][$fieldName]['config']['special'];
@@ -292,6 +294,12 @@ abstract class AbstractItemProvider
                             foreach ($coValue['items'] as $itemKey => $itemCfg) {
                                 $icon = 'empty-empty';
                                 $helpText = [];
+                                if (!empty($itemCfg[1])) {
+                                    if ($iconRegistry->isRegistered($itemCfg[1])) {
+                                        // Use icon identifier when registered
+                                        $icon = $itemCfg[1];
+                                    }
+                                }
                                 if (!empty($itemCfg[2])) {
                                     $helpText['description'] = $languageService->sL($itemCfg[2]);
                                 }
