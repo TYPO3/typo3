@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -156,6 +157,7 @@ abstract class AbstractItemProvider
         }
 
         $languageService = $this->getLanguageService();
+        $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         $special = $result['processedTca']['columns'][$fieldName]['config']['special'];
@@ -289,6 +291,28 @@ abstract class AbstractItemProvider
                             foreach ($coValue['items'] as $itemKey => $itemCfg) {
                                 $icon = 'empty-empty';
                                 $helpText = [];
+                                if (!empty($itemCfg[1])) {
+                                    if ($iconRegistry->isRegistered($itemCfg[1])) {
+                                        // Use icon identifier when registered
+                                        $icon = $itemCfg[1];
+                                    } else {
+                                        // @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
+                                        GeneralUtility::deprecationLog(
+                                            'Using "EXT:path/to/icon" is deprecated since TYPO3 CMS 7 and removed since'
+                                            . ' version 8. Please register an icon in ext_tables.php with'
+                                            . ' $iconRegistry->registerIcon() and use the icon identifier in customPermOptions.'
+                                        );
+                                        // Generate custom option icon and reuse same identifier
+                                        $icon = 'custom-option-' . md5($itemCfg[1]);
+                                        if ($iconRegistry->isRegistered($icon) === false) {
+                                            $iconRegistry->registerIcon(
+                                                $icon,
+                                                $iconRegistry->detectIconProvider($itemCfg[1]),
+                                                ['source' => $itemCfg[1]]
+                                            );
+                                        }
+                                    }
+                                }
                                 if (!empty($itemCfg[2])) {
                                     $helpText['description'] = $languageService->sL($itemCfg[2]);
                                 }

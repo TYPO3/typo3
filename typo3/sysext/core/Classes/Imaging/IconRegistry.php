@@ -2932,4 +2932,19 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
         }
         $this->flagsInitialized = true;
     }
+
+    /**
+     * Detect the IconProvider of an icon
+     *
+     * @param string $iconReference
+     * @return string
+     */
+    public function detectIconProvider($iconReference)
+    {
+        if (StringUtility::endsWith(strtolower($iconReference), 'svg')) {
+            return SvgIconProvider::class;
+        } else {
+            return BitmapIconProvider::class;
+        }
+    }
 }
