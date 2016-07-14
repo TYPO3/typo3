@@ -483,9 +483,26 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             $userCanEditPage = $this->getBackendUser()->check('tables_modify', 'pages_language_overlay');
         }
         if ($userCanEditPage) {
+            $languageOverlayId = 0;
+            $overlayExpressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('pages_language_overlay')
+                ->getExpressionBuilder();
+            $constraint = $overlayExpressionBuilder->eq(
+                'sys_language_uid',
+                (int)$this->tt_contentConfig['sys_language_uid']
+            );
+            $pageOverlayRecord = BackendUtility::getRecordsByField(
+                'pages_language_overlay',
+                'pid',
+                (int)$this->id,
+                $constraint
+            );
+            if (!empty($pageOverlayRecord[0]['uid'])) {
+                $languageOverlayId = $pageOverlayRecord[0]['uid'];
+            }
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', 'function(PageActions) {
                 PageActions.setPageId(' . (int)$this->id . ');
-                PageActions.setLanguageOverlayId(' . $this->tt_contentConfig['languageColsPointer'] . ');
+                PageActions.setLanguageOverlayId(' . $languageOverlayId . ');
                 PageActions.initializePageTitleRenaming();
             }');
         }
