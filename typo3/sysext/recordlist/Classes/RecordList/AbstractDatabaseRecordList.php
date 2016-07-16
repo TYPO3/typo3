@@ -937,19 +937,18 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                 $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
                 $fieldType = $fieldConfig['type'];
                 $evalRules = $fieldConfig['eval'] ?: '';
-                $searchConstraint = $expressionBuilder->andX();
+                $searchConstraint = $expressionBuilder->andX(
+                    $expressionBuilder->comparison(
+                        'LOWER(' . $queryBuilder->quoteIdentifier($fieldName) . ')',
+                        'LIKE',
+                        'LOWER(' . $like . ')'
+                    )
+                );
                 if (is_array($fieldConfig['search'])) {
                     $searchConfig = $fieldConfig['search'];
                     if (in_array('case', $searchConfig)) {
-                        $searchConstraint->add($expressionBuilder->like($fieldName, $like));
-                    } else {
-                        $searchConstraint->add(
-                            $expressionBuilder->comparison(
-                                'LOWER(' . $queryBuilder->quoteIdentifier($fieldName) . ')',
-                                'LIKE',
-                                'LOWER(' . $like . ')'
-                            )
-                        );
+                        // Replace case insensitive default constraint
+                        $searchConstraint = $expressionBuilder->andX($expressionBuilder->like($fieldName, $like));
                     }
                     if (in_array('pidonly', $searchConfig) && $currentPid > 0) {
                         $searchConstraint->add($expressionBuilder->eq($tablePidField, (int)$currentPid));
