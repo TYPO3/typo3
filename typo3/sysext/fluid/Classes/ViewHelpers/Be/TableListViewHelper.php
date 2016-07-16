@@ -64,25 +64,47 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
     }
 
     /**
+     * Initialize arguments.
+     *
+     * @api
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('tableName', 'string', 'name of the database table', true);
+        $this->registerArgument('fieldList', 'array', 'list of fields to be displayed. If empty, only the title column (configured in $TCA[$tableName][\'ctrl\'][\'title\']) is shown', false, array());
+        $this->registerArgument('storagePid', 'int', 'by default, records are fetched from the storage PID configured in persistence.storagePid. With this argument, the storage PID can be overwritten');
+        $this->registerArgument('levels', 'int', 'corresponds to the level selector of the TYPO3 list module. By default only records from the current storagePid are fetched', false, 0);
+        $this->registerArgument('filter', 'string', 'corresponds to the "Search String" textbox of the TYPO3 list module. If not empty, only records matching the string will be fetched', false, '');
+        $this->registerArgument('recordsPerPage', 'int', 'amount of records to be displayed at once. Defaults to $TCA[$tableName][\'interface\'][\'maxSingleDBListItems\'] or (if that\'s not set) to 100', false, 0);
+        $this->registerArgument('sortField', 'string', 'table field to sort the results by', false, '');
+        $this->registerArgument('sortDescending', 'bool', 'if TRUE records will be sorted in descending order', false, false);
+        $this->registerArgument('readOnly', 'bool', 'if TRUE, the edit icons won\'t be shown. Otherwise edit icons will be shown, if the current BE user has edit rights for the specified table!', false, false);
+        $this->registerArgument('enableClickMenu', 'bool', 'enables context menu', false, true);
+        $this->registerArgument('clickTitleMode', 'string', 'one of "edit", "show" (only pages, tt_content), "info');
+    }
+
+    /**
      * Renders a record list as known from the TYPO3 list module
      * Note: This feature is experimental!
      *
-     * @param string $tableName name of the database table
-     * @param array $fieldList list of fields to be displayed. If empty, only the title column (configured in $TCA[$tableName]['ctrl']['title']) is shown
-     * @param int $storagePid by default, records are fetched from the storage PID configured in persistence.storagePid. With this argument, the storage PID can be overwritten
-     * @param int $levels corresponds to the level selector of the TYPO3 list module. By default only records from the current storagePid are fetched
-     * @param string $filter corresponds to the "Search String" textbox of the TYPO3 list module. If not empty, only records matching the string will be fetched
-     * @param int $recordsPerPage amount of records to be displayed at once. Defaults to $TCA[$tableName]['interface']['maxSingleDBListItems'] or (if that's not set) to 100
-     * @param string $sortField table field to sort the results by
-     * @param bool $sortDescending if TRUE records will be sorted in descending order
-     * @param bool $readOnly if TRUE, the edit icons won't be shown. Otherwise edit icons will be shown, if the current BE user has edit rights for the specified table!
-     * @param bool $enableClickMenu enables context menu
-     * @param string $clickTitleMode one of "edit", "show" (only pages, tt_content), "info
      * @return string the rendered record list
      * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
      */
-    public function render($tableName, array $fieldList = array(), $storagePid = null, $levels = 0, $filter = '', $recordsPerPage = 0, $sortField = '', $sortDescending = false, $readOnly = false, $enableClickMenu = true, $clickTitleMode = null)
+    public function render()
     {
+        $tableName = $this->arguments['tableName'];
+        $fieldList = $this->arguments['fieldList'];
+        $storagePid = $this->arguments['storagePid'];
+        $levels = $this->arguments['levels'];
+        $filter = $this->arguments['filter'];
+        $recordsPerPage = $this->arguments['recordsPerPage'];
+        $sortField = $this->arguments['sortField'];
+        $sortDescending = $this->arguments['sortDescending'];
+        $readOnly = $this->arguments['readOnly'];
+        $enableClickMenu = $this->arguments['enableClickMenu'];
+        $clickTitleMode = $this->arguments['clickTitleMode'];
+
         $pageinfo = BackendUtility::readPageAccess(GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(1));
         /** @var $dblist \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList */
         $dblist = GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList::class);
