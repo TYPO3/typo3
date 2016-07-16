@@ -63,7 +63,7 @@
 			"always-add-alias-loader": true
 		},
 		"branch-alias": {
-			"dev-master": "7.x-dev"
+			"dev-TYPO3_7-6": "7.x-dev"
 		}
 	},
 	"replace": {
