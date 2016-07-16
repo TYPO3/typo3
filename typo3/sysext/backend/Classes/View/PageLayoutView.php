@@ -443,127 +443,129 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				} else {
 					$showLanguage = ' AND sys_language_uid=' . $lP;
 				}
-				$cList = explode(',', $this->tt_contentConfig['cols']);
+				$cList = GeneralUtility::trimExplode(',', $this->tt_contentConfig['cols'], TRUE);
 				$content = array();
 				$head = array();
 
-				// Select content records per column
-				$contentRecordsPerColumn = $this->getContentRecordsPerColumn('table', $id, array_values($cList), $showHidden . $showLanguage);
-				// For each column, render the content into a variable:
-				foreach ($cList as $key) {
-					if (!$lP) {
-						$defLanguageCount[$key] = array();
-					}
-					// Start wrapping div
-					$content[$key] .= '<div class="t3-page-ce-wrapper';
-					if (count($contentRecordsPerColumn[$key]) === 0) {
-						$content[$key] .= ' t3-page-ce-empty';
-					}
-					$content[$key] .= '">';
-					// Add new content at the top most position
-					$content[$key] .= '
-					<div class="t3-page-ce" id="' . str_replace('.', '', uniqid('', TRUE)) . '">
-						<div class="t3-page-ce-dropzone" id="colpos-' . $key . '-' . 'page-' . $id . '-' . uniqid('', TRUE) . '">
-							<div class="t3-page-ce-wrapper-new-ce">
-								<a href="#" onclick="' . htmlspecialchars($this->newContentElementOnClick($id, $key, $lP))
-									. '" title="' . $this->getLanguageService()->getLL('newRecordHere', TRUE) . '">'
-									. IconUtility::getSpriteIcon('actions-document-new') . '</a>
+				if (!empty($cList)) {
+					// Select content records per column
+					$contentRecordsPerColumn = $this->getContentRecordsPerColumn('table', $id, array_values($cList), $showHidden . $showLanguage);
+					// For each column, render the content into a variable:
+					foreach ($cList as $key) {
+						if (!$lP) {
+							$defLanguageCount[$key] = array();
+						}
+						// Start wrapping div
+						$content[$key] .= '<div class="t3-page-ce-wrapper';
+						if (count($contentRecordsPerColumn[$key]) === 0) {
+							$content[$key] .= ' t3-page-ce-empty';
+						}
+						$content[$key] .= '">';
+						// Add new content at the top most position
+						$content[$key] .= '
+						<div class="t3-page-ce" id="' . str_replace('.', '', uniqid('', TRUE)) . '">
+							<div class="t3-page-ce-dropzone" id="colpos-' . $key . '-' . 'page-' . $id . '-' . uniqid('', TRUE) . '">
+								<div class="t3-page-ce-wrapper-new-ce">
+									<a href="#" onclick="' . htmlspecialchars($this->newContentElementOnClick($id, $key, $lP))
+							. '" title="' . $this->getLanguageService()->getLL('newRecordHere', TRUE) . '">'
+							. IconUtility::getSpriteIcon('actions-document-new') . '</a>
+								</div>
 							</div>
 						</div>
-					</div>
-					';
-					$editUidList = '';
-					$rowArr = $contentRecordsPerColumn[$key];
-					$this->generateTtContentDataArray($rowArr);
-					foreach ((array) $rowArr as $rKey => $row) {
-						if ($this->tt_contentConfig['languageMode']) {
-							$languageColumn[$key][$lP] = $head[$key] . $content[$key];
-							if (!$this->defLangBinding) {
-								$languageColumn[$key][$lP] .= $this->newLanguageButton(
-									$this->getNonTranslatedTTcontentUids($defLanguageCount[$key], $id, $lP),
-									$lP
-								);
-							}
-						}
-						if (is_array($row) && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-							$singleElementHTML = '';
-							if (!$lP && ($this->defLangBinding || $row['sys_language_uid'] != -1)) {
-								$defLanguageCount[$key][] = $row['uid'];
-							}
-							$editUidList .= $row['uid'] . ',';
-							$disableMoveAndNewButtons = $this->defLangBinding && $lP > 0;
-							if (!$this->tt_contentConfig['languageMode']) {
-								$singleElementHTML .= '<div class="t3-page-ce-dragitem" id="' . str_replace('.', '', uniqid('', TRUE)) . '">';
-							}
-							$singleElementHTML .= $this->tt_content_drawHeader(
-								$row,
-								$this->tt_contentConfig['showInfo'] ? 15 : 5,
-								$disableMoveAndNewButtons,
-								TRUE,
-								!$this->tt_contentConfig['languageMode']
-							);
-							$isRTE = $RTE && $this->isRTEforField('tt_content', $row, 'bodytext');
-							$innerContent = '<div ' . ($row['_ORIG_uid'] ? ' class="ver-element"' : '') . '>'
-								. $this->tt_content_drawItem($row, $isRTE) . '</div>';
-							$singleElementHTML .= '<div class="t3-page-ce-body-inner">' . $innerContent . '</div>'
-								. $this->tt_content_drawFooter($row);
-							// NOTE: this is the end tag for <div class="t3-page-ce-body">
-							// because of bad (historic) conception, starting tag has to be placed inside tt_content_drawHeader()
-							$singleElementHTML .= '</div>';
-							$statusHidden = $this->isDisabled('tt_content', $row) ? ' t3-page-ce-hidden' : '';
-							$singleElementHTML = '<div class="t3-page-ce' . $statusHidden . '" id="element-tt_content-'
-								. $row['uid'] . '">' . $singleElementHTML . '</div>';
+						';
+						$editUidList = '';
+						$rowArr = $contentRecordsPerColumn[$key];
+						$this->generateTtContentDataArray($rowArr);
+						foreach ((array)$rowArr as $rKey => $row) {
 							if ($this->tt_contentConfig['languageMode']) {
-								$singleElementHTML .= '<div class="t3-page-ce">';
-							}
-							$singleElementHTML .= '<div class="t3-page-ce-dropzone" id="colpos-' . $key . '-' . 'page-' . $id .
-								'-' . str_replace('.', '', uniqid('', TRUE)) . '">';
-							// Add icon "new content element below"
-							if (!$disableMoveAndNewButtons) {
-								// New content element:
-								if ($this->option_newWizard) {
-									$onClick = 'window.location.href=\'db_new_content_el.php?id=' . $row['pid']
-										. '&sys_language_uid=' . $row['sys_language_uid'] . '&colPos=' . $row['colPos']
-										. '&uid_pid=' . -$row['uid'] .
-										'&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\';';
-								} else {
-									$params = '&edit[tt_content][' . -$row['uid'] . ']=new';
-									$onClick = BackendUtility::editOnClick($params, $this->backPath);
+								$languageColumn[$key][$lP] = $head[$key] . $content[$key];
+								if (!$this->defLangBinding) {
+									$languageColumn[$key][$lP] .= $this->newLanguageButton(
+										$this->getNonTranslatedTTcontentUids($defLanguageCount[$key], $id, $lP),
+										$lP
+									);
 								}
-								$singleElementHTML .= '
-									<div class="t3-page-ce-wrapper-new-ce">
-										<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
-											. $this->getLanguageService()->getLL('newRecordHere', TRUE) . '">'
-											. IconUtility::getSpriteIcon('actions-document-new') . '</a>
-									</div>
-								';
 							}
-							$singleElementHTML .= '</div></div>';
-							if ($this->defLangBinding && $this->tt_contentConfig['languageMode']) {
-								$defLangBinding[$key][$lP][$row[$lP ? 'l18n_parent' : 'uid']] = $singleElementHTML;
+							if (is_array($row) && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+								$singleElementHTML = '';
+								if (!$lP && ($this->defLangBinding || $row['sys_language_uid'] != -1)) {
+									$defLanguageCount[$key][] = $row['uid'];
+								}
+								$editUidList .= $row['uid'] . ',';
+								$disableMoveAndNewButtons = $this->defLangBinding && $lP > 0;
+								if (!$this->tt_contentConfig['languageMode']) {
+									$singleElementHTML .= '<div class="t3-page-ce-dragitem" id="' . str_replace('.', '', uniqid('', TRUE)) . '">';
+								}
+								$singleElementHTML .= $this->tt_content_drawHeader(
+									$row,
+									$this->tt_contentConfig['showInfo'] ? 15 : 5,
+									$disableMoveAndNewButtons,
+									TRUE,
+									!$this->tt_contentConfig['languageMode']
+								);
+								$isRTE = $RTE && $this->isRTEforField('tt_content', $row, 'bodytext');
+								$innerContent = '<div ' . ($row['_ORIG_uid'] ? ' class="ver-element"' : '') . '>'
+									. $this->tt_content_drawItem($row, $isRTE) . '</div>';
+								$singleElementHTML .= '<div class="t3-page-ce-body-inner">' . $innerContent . '</div>'
+									. $this->tt_content_drawFooter($row);
+								// NOTE: this is the end tag for <div class="t3-page-ce-body">
+								// because of bad (historic) conception, starting tag has to be placed inside tt_content_drawHeader()
+								$singleElementHTML .= '</div>';
+								$statusHidden = $this->isDisabled('tt_content', $row) ? ' t3-page-ce-hidden' : '';
+								$singleElementHTML = '<div class="t3-page-ce' . $statusHidden . '" id="element-tt_content-'
+									. $row['uid'] . '">' . $singleElementHTML . '</div>';
+								if ($this->tt_contentConfig['languageMode']) {
+									$singleElementHTML .= '<div class="t3-page-ce">';
+								}
+								$singleElementHTML .= '<div class="t3-page-ce-dropzone" id="colpos-' . $key . '-' . 'page-' . $id .
+									'-' . str_replace('.', '', uniqid('', TRUE)) . '">';
+								// Add icon "new content element below"
+								if (!$disableMoveAndNewButtons) {
+									// New content element:
+									if ($this->option_newWizard) {
+										$onClick = 'window.location.href=\'db_new_content_el.php?id=' . $row['pid']
+											. '&sys_language_uid=' . $row['sys_language_uid'] . '&colPos=' . $row['colPos']
+											. '&uid_pid=' . -$row['uid'] .
+											'&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\';';
+									} else {
+										$params = '&edit[tt_content][' . -$row['uid'] . ']=new';
+										$onClick = BackendUtility::editOnClick($params, $this->backPath);
+									}
+									$singleElementHTML .= '
+										<div class="t3-page-ce-wrapper-new-ce">
+											<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
+										. $this->getLanguageService()->getLL('newRecordHere', TRUE) . '">'
+										. IconUtility::getSpriteIcon('actions-document-new') . '</a>
+										</div>
+									';
+								}
+								$singleElementHTML .= '</div></div>';
+								if ($this->defLangBinding && $this->tt_contentConfig['languageMode']) {
+									$defLangBinding[$key][$lP][$row[$lP ? 'l18n_parent' : 'uid']] = $singleElementHTML;
+								} else {
+									$content[$key] .= $singleElementHTML;
+								}
 							} else {
-								$content[$key] .= $singleElementHTML;
+								unset($rowArr[$rKey]);
 							}
-						} else {
-							unset($rowArr[$rKey]);
 						}
-					}
-					$content[$key] .= '</div>';
-					// Add new-icon link, header:
-					$newP = $this->newContentElementOnClick($id, $key, $lP);
-					$colTitle = BackendUtility::getProcessedValue('tt_content', 'colPos', $key);
-					$tcaItems = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $id, $this);
-					foreach ($tcaItems as $item) {
-						if ($item[1] == $key) {
-							$colTitle = $this->getLanguageService()->sL($item[0]);
+						$content[$key] .= '</div>';
+						// Add new-icon link, header:
+						$newP = $this->newContentElementOnClick($id, $key, $lP);
+						$colTitle = BackendUtility::getProcessedValue('tt_content', 'colPos', $key);
+						$tcaItems = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $id, $this);
+						foreach ($tcaItems as $item) {
+							if ($item[1] == $key) {
+								$colTitle = $this->getLanguageService()->sL($item[0]);
+							}
 						}
-					}
 
-					$pasteP = array('colPos' => $key, 'sys_language_uid' => $lP);
-					$editParam = $this->doEdit && count($rowArr)
-						? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc
-						: '';
-					$head[$key] .= $this->tt_content_drawColHeader($colTitle, $editParam, $newP, $pasteP);
+						$pasteP = array('colPos' => $key, 'sys_language_uid' => $lP);
+						$editParam = $this->doEdit && count($rowArr)
+							? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc
+							: '';
+						$head[$key] .= $this->tt_content_drawColHeader($colTitle, $editParam, $newP, $pasteP);
+					}
 				}
 				// For each column, fit the rendered content into a table cell:
 				$out = '';
