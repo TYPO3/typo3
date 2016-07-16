@@ -72,12 +72,23 @@ class ActionMenuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagB
     }
 
     /**
+     * Initialize arguments.
+     *
+     * @api
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('defaultController', 'string', 'defaultController');
+    }
+
+    /**
      * Render FunctionMenu
      *
-     * @param string $defaultController
      * @return string
      */
-    public function render($defaultController = null)
+    public function render()
     {
         $this->tag->addAttribute('onchange', 'jumpToUrl(this.options[this.selectedIndex].value, this);');
         $options = '';
