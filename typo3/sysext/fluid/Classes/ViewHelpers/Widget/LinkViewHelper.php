@@ -51,21 +51,23 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
         $this->registerTagAttribute('rev', 'string', 'Specifies the relationship between the linked document and the current document');
         $this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
         $this->registerArgument('addQueryStringMethod', 'string', 'Method to be used for query string');
+        $this->registerArgument('action', 'string', 'Target action');
+        $this->registerArgument('arguments', 'array', 'Arguments', false, array());
+        $this->registerArgument('section', 'string', 'The anchor to be added to the URI', false, '');
+        $this->registerArgument('format', 'string', 'The requested format, e.g. ".html', false, '');
+        $this->registerArgument('ajax', 'bool', 'TRUE if the URI should be to an AJAX widget, FALSE otherwise.', false, false);
     }
 
     /**
      * Render the link.
      *
-     * @param string $action Target action
-     * @param array $arguments Arguments
-     * @param string $section The anchor to be added to the URI
-     * @param string $format The requested format, e.g. ".html
-     * @param bool $ajax TRUE if the URI should be to an AJAX widget, FALSE otherwise.
      * @return string The rendered link
      * @api
      */
-    public function render($action = null, $arguments = array(), $section = '', $format = '', $ajax = false)
+    public function render()
     {
+        $ajax = $this->arguments['ajax'];
+
         if ($ajax === true) {
             $uri = $this->getAjaxUri();
         } else {
