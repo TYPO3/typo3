@@ -647,12 +647,12 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             $this->firstElementNumber = $this->firstElementNumber - 2;
             $this->iLimit = $this->iLimit + 2;
             // (API function from TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList)
-            $queryBuilder = $this->getQueryBuilder($table, $id, $additionalConstraints, $selFieldList);
+            $queryBuilder = $this->getQueryBuilder($table, $id, $additionalConstraints);
             $this->firstElementNumber = $this->firstElementNumber + 2;
             $this->iLimit = $this->iLimit - 2;
         } else {
             // (API function from TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList)
-            $queryBuilder = $this->getQueryBuilder($table, $id, $additionalConstraints, $selFieldList);
+            $queryBuilder = $this->getQueryBuilder($table, $id, $additionalConstraints);
         }
 
         // Finding the total amount of records on the page
@@ -1421,7 +1421,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                      && $this->getBackendUserAuthentication()->checkLanguageAccess(0)
                      && $localCalcPerms & Permission::PAGE_EDIT
                      || $table !== 'pages'
-                        && $this->calcPerms & Permission::CONTENT_EDIT;
+                        && $this->calcPerms & Permission::CONTENT_EDIT
+                        && $this->getBackendUserAuthentication()->recordEditAccessInternals($table, $row);
         $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
         // "Show" link (only pages and tt_content elements)
         if ($table == 'pages' || $table == 'tt_content') {
@@ -1543,11 +1544,11 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             $hiddenField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
 
             if (
-                $permsEdit && $hiddenField && $GLOBALS['TCA'][$table]['columns'][$hiddenField]
-                && (!$GLOBALS['TCA'][$table]['columns'][$hiddenField]['exclude']
+                !empty($GLOBALS['TCA'][$table]['columns'][$hiddenField])
+                && (empty($GLOBALS['TCA'][$table]['columns'][$hiddenField]['exclude'])
                     || $this->getBackendUserAuthentication()->check('non_exclude_fields', $table . ':' . $hiddenField))
             ) {
-                if ($this->isRecordCurrentBackendUser($table, $row)) {
+                if (!$permsEdit || $this->isRecordCurrentBackendUser($table, $row)) {
                     $hideAction = $this->spaceIcon;
                 } else {
                     $hideTitle = htmlspecialchars($this->getLanguageService()->getLL('hide' . ($table == 'pages' ? 'Page' : '')));
