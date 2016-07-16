@@ -63,14 +63,27 @@ class PaginateViewHelper extends AbstractWidgetViewHelper
     }
 
     /**
-     * @param mixed $objects
-     * @param string $as
-     * @param array $configuration
+     * Initialize arguments.
+     *
+     * @api
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('objects', 'mixed', 'Object', true);
+        $this->registerArgument('as', 'string', 'as', true);
+        $this->registerArgument('configuration', 'array', 'configuration', false, array('itemsPerPage' => 10, 'insertAbove' => false, 'insertBelow' => true, 'maximumNumberOfLinks' => 99));
+    }
+
+    /**
      * @return string
      * @throws \UnexpectedValueException
      */
-    public function render($objects, $as, array $configuration = array('itemsPerPage' => 10, 'insertAbove' => false, 'insertBelow' => true, 'maximumNumberOfLinks' => 99))
+    public function render()
     {
+        $objects = $this->arguments['objects'];
+
         if (!($objects instanceof QueryResultInterface || $objects instanceof ObjectStorage || is_array($objects))) {
             throw new \UnexpectedValueException('Supplied file object type ' . get_class($objects) . ' must be QueryResultInterface or ObjectStorage or be an array.', 1454510731);
         }
