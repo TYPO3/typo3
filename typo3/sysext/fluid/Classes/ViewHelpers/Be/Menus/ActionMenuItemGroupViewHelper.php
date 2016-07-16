@@ -43,11 +43,24 @@ class ActionMenuItemGroupViewHelper extends ActionMenuViewHelper
     protected $tagName = 'optgroup';
 
     /**
-     * @param string $label
+     * Initialize arguments.
+     *
+     * @api
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('label', 'string', 'label', false, '');
+    }
+
+    /**
      * @return string
      */
-    public function render($label = '')
+    public function render()
     {
+        $label = $this->arguments['label'];
+
         $this->tag->addAttribute('label', $label);
         $options = '';
         foreach ($this->childNodes as $childNode) {
