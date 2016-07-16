@@ -1273,16 +1273,16 @@
     "packages-dev": [
         {
             "name": "7elix/styleguide",
-            "version": "8.0.2",
+            "version": "8.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/7elix/TYPO3.CMS.Styleguide.git",
-                "reference": "e8fae1466fabc841f1c413daefee6142b265a10c"
+                "reference": "5f2b95e7e11cbdd0de0ea98083cb89b6a9d1054e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/7elix/TYPO3.CMS.Styleguide/zipball/e8fae1466fabc841f1c413daefee6142b265a10c",
-                "reference": "e8fae1466fabc841f1c413daefee6142b265a10c",
+                "url": "https://api.github.com/repos/7elix/TYPO3.CMS.Styleguide/zipball/5f2b95e7e11cbdd0de0ea98083cb89b6a9d1054e",
+                "reference": "5f2b95e7e11cbdd0de0ea98083cb89b6a9d1054e",
                 "shasum": ""
             },
             "type": "typo3-cms-extension",
@@ -1309,7 +1309,7 @@
                 "style guide",
                 "typo3"
             ],
-            "time": "2016-05-11 12:07:07"
+            "time": "2016-07-16 10:36:09"
         },
         {
             "name": "behat/gherkin",
