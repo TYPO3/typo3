@@ -49,25 +49,47 @@ class ContainerViewHelper extends AbstractBackendViewHelper
     protected $escapeOutput = false;
 
     /**
+     * Initialize arguments.
+     *
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('pageTitle', 'string', 'Title tag of the module. Not required by default, as BE modules are shown in a frame', false, '');
+        $this->registerArgument('enableClickMenu', 'bool', 'If TRUE, loads clickmenu.js required by BE context menus. Defaults to TRUE', false, true);
+        $this->registerArgument('loadExtJs', 'bool', 'Specifies whether to load ExtJS library. Defaults to FALSE', false, false);
+        $this->registerArgument('loadExtJsTheme', 'bool', 'Whether to load ExtJS "grey" theme. Defaults to FALSE', false, true);
+        $this->registerArgument('enableExtJsDebug', 'bool', 'If TRUE, debug version of ExtJS is loaded. Use this for development only', false, false);
+        $this->registerArgument('loadJQuery', 'bool', 'Whether to load jQuery library. Defaults to FALSE', false, false);
+        $this->registerArgument('includeCssFiles', 'array', 'List of custom CSS file to be loaded');
+        $this->registerArgument('includeJsFiles', 'array', 'List of custom JavaScript file to be loaded');
+        $this->registerArgument('addJsInlineLabels', 'array', 'Custom labels to add to JavaScript inline labels');
+        $this->registerArgument('includeRequireJsModules', 'array', 'List of RequireJS modules to be loaded');
+        $this->registerArgument('jQueryNamespace', 'string', 'Store the jQuery object in a specific namespace');
+    }
+
+    /**
      * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
      *
-     * @param string $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
-     * @param bool $enableClickMenu If TRUE, loads clickmenu.js required by BE context menus. Defaults to TRUE
-     * @param bool $loadExtJs specifies whether to load ExtJS library. Defaults to FALSE
-     * @param bool $loadExtJsTheme whether to load ExtJS "grey" theme. Defaults to FALSE
-     * @param bool $enableExtJsDebug if TRUE, debug version of ExtJS is loaded. Use this for development only
-     * @param bool $loadJQuery whether to load jQuery library. Defaults to FALSE
-     * @param array $includeCssFiles List of custom CSS file to be loaded
-     * @param array $includeJsFiles List of custom JavaScript file to be loaded
-     * @param array $addJsInlineLabels Custom labels to add to JavaScript inline labels
-     * @param array $includeRequireJsModules List of RequireJS modules to be loaded
-     * @param string $jQueryNamespace Store the jQuery object in a specific namespace
      * @return string
      * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
      * @see \TYPO3\CMS\Core\Page\PageRenderer
      */
-    public function render($pageTitle = '', $enableClickMenu = true, $loadExtJs = false, $loadExtJsTheme = true, $enableExtJsDebug = false, $loadJQuery = false, $includeCssFiles = null, $includeJsFiles = null, $addJsInlineLabels = null, $includeRequireJsModules = null, $jQueryNamespace = null)
+    public function render()
     {
+        $pageTitle = $this->arguments['pageTitle'];
+        $enableClickMenu = $this->arguments['enableClickMenu'];
+        $loadExtJs = $this->arguments['loadExtJs'];
+        $loadExtJsTheme = $this->arguments['loadExtJsTheme'];
+        $enableExtJsDebug = $this->arguments['enableExtJsDebug'];
+        $loadJQuery = $this->arguments['loadJQuery'];
+        $includeCssFiles = $this->arguments['includeCssFiles'];
+        $includeJsFiles = $this->arguments['includeJsFiles'];
+        $addJsInlineLabels = $this->arguments['addJsInlineLabels'];
+        $includeRequireJsModules = $this->arguments['includeRequireJsModules'];
+        $jQueryNamespace = $this->arguments['jQueryNamespace'];
+
         $pageRenderer = $this->getPageRenderer();
         $doc = $this->getDocInstance();
         $doc->JScode .= GeneralUtility::wrapJS($doc->redirectUrls());
