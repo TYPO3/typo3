@@ -66,20 +66,24 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('alt', 'string', 'Specifies an alternate text for an image', false);
+        $this->registerArgument('file', 'object', 'File', true);
+        $this->registerArgument('additionalConfig', 'string', 'This array can hold additional configuration that is passed though to the Renderer object', false, array());
+        $this->registerArgument('width', 'string', 'This can be a numeric value representing the fixed width of in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
+        $this->registerArgument('height', 'string', 'This can be a numeric value representing the fixed height in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
     }
 
     /**
      * Render a given media file
      *
-     * @param object $file
-     * @param array $additionalConfig This array can hold additional configuration that is passed though to the Renderer object
-     * @param string $width This can be a numeric value representing the fixed width of in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.
-     * @param string $height This can be a numeric value representing the fixed height in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.
      * @return string Rendered tag
      * @throws \UnexpectedValueException
      */
-    public function render($file, $additionalConfig = array(), $width = null, $height = null)
+    public function render()
     {
+        $file = $this->arguments['file'];
+        $additionalConfig = $this->arguments['additionalConfig'];
+        $width = $this->arguments['width'];
+        $height = $this->arguments['height'];
 
         // get Resource Object (non ExtBase version)
         if (is_callable(array($file, 'getOriginalResource'))) {
