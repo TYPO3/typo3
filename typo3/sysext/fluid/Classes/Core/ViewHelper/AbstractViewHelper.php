@@ -26,56 +26,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface
 {
     /**
-     * TRUE if arguments have already been initialized
-     *
-     * @var bool
-     */
-    private $argumentsInitialized = false;
-
-    /**
-     * Cache of argument definitions; the key is the ViewHelper class name, and the
-     * value is the array of argument definitions.
-     *
-     * In our benchmarks, this cache leads to a 40% improvement when using a certain
-     * ViewHelper class many times throughout the rendering process.
-     *
-     * @var array
-     */
-    private static $argumentDefinitionCache = array();
-
-    /**
-     * Current variable container reference.
-     *
-     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
-     * @api
-     */
-    protected $templateVariableContainer;
-
-    /**
      * Controller Context to use
      *
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
      * @api
      */
     protected $controllerContext;
-
-    /**
-     * @var \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
-     */
-    protected $renderingContext;
-
-    /**
-     * @var \Closure
-     */
-    protected $renderChildrenClosure = null;
-
-    /**
-     * ViewHelper Variable Container
-     *
-     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
-     * @api
-     */
-    protected $viewHelperVariableContainer;
 
     /**
      * Reflection service
@@ -95,9 +51,7 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
      */
     public function setRenderingContext(\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
     {
-        $this->renderingContext = $renderingContext;
-        $this->templateVariableContainer = $renderingContext->getVariableProvider();
-        $this->viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
+        parent::setRenderingContext($renderingContext);
         if ($renderingContext instanceof \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext) {
             $this->controllerContext = $renderingContext->getControllerContext();
         }
@@ -119,75 +73,6 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
     public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService)
     {
         $this->reflectionService = $reflectionService;
-    }
-
-    /**
-     * Register a new argument. Call this method from your ViewHelper subclass
-     * inside the initializeArguments() method.
-     *
-     * @param string $name Name of the argument
-     * @param string $type Type of the argument
-     * @param string $description Description of the argument
-     * @param bool $required If TRUE, argument is required. Defaults to FALSE.
-     * @param mixed $defaultValue Default value of argument
-     * @return \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface $this, to allow chaining.
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     * @api
-     */
-    protected function registerArgument($name, $type, $description, $required = false, $defaultValue = null)
-    {
-        if (array_key_exists($name, $this->argumentDefinitions)) {
-            throw new \TYPO3Fluid\Fluid\Core\ViewHelper\Exception('Argument "' . $name . '" has already been defined, thus it should not be defined again.', 1253036401);
-        }
-        $this->argumentDefinitions[$name] = new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition($name, $type, $description, $required, $defaultValue);
-        return $this;
-    }
-
-    /**
-     * Overrides a registered argument. Call this method from your ViewHelper subclass
-     * inside the initializeArguments() method if you want to override a previously registered argument.
-     *
-     * @see registerArgument()
-     * @param string $name Name of the argument
-     * @param string $type Type of the argument
-     * @param string $description Description of the argument
-     * @param bool $required If TRUE, argument is required. Defaults to FALSE.
-     * @param mixed $defaultValue Default value of argument
-     * @return \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface $this, to allow chaining.
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     * @api
-     */
-    protected function overrideArgument($name, $type, $description, $required = false, $defaultValue = null)
-    {
-        if (!array_key_exists($name, $this->argumentDefinitions)) {
-            throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Argument "' . $name . '" has not been defined, thus it can\'t be overridden.', 1279212461);
-        }
-        $this->argumentDefinitions[$name] = new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition($name, $type, $description, $required, $defaultValue);
-        return $this;
-    }
-
-    /**
-     * Called when being inside a cached template.
-     *
-     * @param \Closure $renderChildrenClosure
-     * @return void
-     */
-    public function setRenderChildrenClosure(\Closure $renderChildrenClosure)
-    {
-        $this->renderChildrenClosure = $renderChildrenClosure;
-    }
-
-    /**
-     * Initialize the arguments of the ViewHelper, and call the render() method of the ViewHelper.
-     *
-     * @return string the rendered ViewHelper.
-     */
-    public function initializeArgumentsAndRender()
-    {
-        $this->validateArguments();
-        $this->initialize();
-
-        return $this->callRenderMethod();
     }
 
     /**
@@ -223,50 +108,6 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
     protected function getLogger()
     {
         return GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-    }
-
-    /**
-     * Initializes the view helper before invoking the render method.
-     *
-     * Override this method to solve tasks before the view helper content is rendered.
-     *
-     * @return void
-     * @api
-     */
-    public function initialize()
-    {
-    }
-
-    /**
-     * Helper method which triggers the rendering of everything between the
-     * opening and the closing tag.
-     *
-     * @return mixed The finally rendered child nodes.
-     * @api
-     */
-    public function renderChildren()
-    {
-        if ($this->renderChildrenClosure !== null) {
-            $closure = $this->renderChildrenClosure;
-            return $closure();
-        }
-        return $this->viewHelperNode->evaluateChildNodes($this->renderingContext);
-    }
-
-    /**
-     * Helper which is mostly needed when calling renderStatic() from within
-     * render().
-     *
-     * No public API yet.
-     *
-     * @return \Closure
-     */
-    protected function buildRenderChildrenClosure()
-    {
-        $self = $this;
-        return function () use ($self) {
-            return $self->renderChildren();
-        };
     }
 
     /**
