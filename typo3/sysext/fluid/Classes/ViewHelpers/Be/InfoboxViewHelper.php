@@ -44,8 +44,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * <code title="All options">
  * <f:be.infobox title="Message title" message="your box content" state="-2" iconName="check" disableIcon="TRUE" />
  * </code>
- *
- * @api
  */
 class InfoboxViewHelper extends AbstractViewHelper
 {
@@ -63,24 +61,28 @@ class InfoboxViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * @param string $title The title of the info box
-     * @param string $message The message of the info box, if NULL tag content is used
-     * @param int $state The state of the box, InfoboxViewHelper::STATE_*
-     * @param string $iconName The icon name from font awesome, NULL sets default icon
-     * @param bool $disableIcon If set to TRUE, the icon is not rendered.
+     * Initialize arguments.
+     *
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('title', 'string', 'The title of the info box');
+        $this->registerArgument('message', 'string', 'The message of the info box, if NULL tag content is used');
+        $this->registerArgument('state', 'int', 'The state of the box, InfoboxViewHelper::STATE_*', false, self::STATE_NOTICE);
+        $this->registerArgument('iconName', 'string', 'The icon name from font awesome, NULL sets default icon');
+        $this->registerArgument('disableIcon', 'bool', 'If set to TRUE, the icon is not rendered.', false, false);
+    }
+
+    /**
      *
      * @return string
      */
-    public function render($title = null, $message = null, $state = self::STATE_NOTICE, $iconName = null, $disableIcon = false)
+    public function render()
     {
         return static::renderStatic(
-            [
-                'title' => $title,
-                'message' => $message,
-                'state' => $state,
-                'iconName' => $iconName,
-                'disableIcon' => $disableIcon
-            ],
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
