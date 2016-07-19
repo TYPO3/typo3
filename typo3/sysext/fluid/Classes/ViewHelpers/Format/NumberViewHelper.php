@@ -37,8 +37,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * <output>
  * 423.423,2
  * </output>
- *
- * @api
  */
 class NumberViewHelper extends AbstractViewHelper
 {
@@ -52,11 +50,11 @@ class NumberViewHelper extends AbstractViewHelper
     /**
      * Initialize arguments.
      *
-     * @api
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerArgument('decimals', 'int', 'The number of digits after the decimal point', false, '2');
         $this->registerArgument('decimalSeparator', 'string', 'The decimal point character', false, '.');
         $this->registerArgument('thousandsSeparator', 'string', 'The character for grouping the thousand digits', false, ',');
@@ -67,20 +65,11 @@ class NumberViewHelper extends AbstractViewHelper
      * precision.
      *
      * @return string The formatted number
-     * @api
      */
     public function render()
     {
-        $decimals = $this->arguments['decimals'];
-        $decimalSeparator = $this->arguments['decimalSeparator'];
-        $thousandsSeparator = $this->arguments['thousandsSeparator'];
-
         return static::renderStatic(
-            array(
-                'decimals' => $decimals,
-                'decimalSeparator' => $decimalSeparator,
-                'thousandsSeparator' => $thousandsSeparator,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
