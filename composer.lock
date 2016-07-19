@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b3010505b8b6fea74c480ff04f06c4ef",
-    "content-hash": "b97243c19fa537ad28979aebfc0c4503",
+    "hash": "7d95c793a3070049c398001b7cf6178c",
+    "content-hash": "41a3359834c954eec02fbe20f5e10ab7",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -3357,7 +3357,6 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^7.0",
-        "ext-fileinfo": "*",
         "ext-json": "*",
         "ext-pcre": "*",
         "ext-session": "*",
