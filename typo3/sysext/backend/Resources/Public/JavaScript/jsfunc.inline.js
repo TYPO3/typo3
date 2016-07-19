@@ -1133,7 +1133,7 @@ var inline = {
 			} else {
 				value = formObj.value;
 			}
-			TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_label').html(value.length ? value : this.noTitleString);
+			TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_label').text(value.length ? value : this.noTitleString);
 		}
 		return true;
 	},
