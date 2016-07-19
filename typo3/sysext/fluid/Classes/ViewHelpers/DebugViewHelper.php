@@ -56,7 +56,6 @@ class DebugViewHelper extends AbstractViewHelper
     /**
      * Initialize arguments.
      *
-     * @api
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
     public function initializeArguments()
@@ -78,23 +77,8 @@ class DebugViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        $title = $this->arguments['title'];
-        $maxDepth = $this->arguments['maxDepth'];
-        $plainText = $this->arguments['plainText'];
-        $ansiColors = $this->arguments['ansiColors'];
-        $inline = $this->arguments['inline'];
-        $blacklistedClassNames = $this->arguments['blacklistedClassNames'];
-        $blacklistedPropertyNames = $this->arguments['blacklistedPropertyNames'];
         return static::renderStatic(
-            array(
-                'title' => $title,
-                'maxDepth' => $maxDepth,
-                'plainText' => $plainText,
-                'ansiColors' => $ansiColors,
-                'inline' => $inline,
-                'blacklistedClassNames' => $blacklistedClassNames,
-                'blacklistedPropertyNames' => $blacklistedPropertyNames
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
