@@ -152,7 +152,12 @@ class AuthenticationService extends AbstractAuthenticationService
                 if ($this->writeDevLog) {
                     GeneralUtility::devLog('Get usergroups with id: ' . $list, __CLASS__);
                 }
-                $lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST'] . '\')';
+                $lockToDomain_SQL =
+                    ' AND ('
+                        . 'lockToDomain=\'\''
+                        . ' OR lockToDomain IS NULL'
+                        . ' OR lockToDomain=' . $this->getDatabaseConnection()->fullQuoteStr($this->authInfo['HTTP_HOST'], $this->db_groups['table'])
+                    . ')';
                 $hiddenP = !$this->authInfo['showHiddenRecords'] ? 'AND hidden=0 ' : '';
                 $res = $this->getDatabaseConnection()->exec_SELECTquery('*', $this->db_groups['table'], 'deleted=0 ' . $hiddenP . ' AND uid IN (' . $list . ')' . $lockToDomain_SQL);
                 while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
@@ -184,7 +189,12 @@ class AuthenticationService extends AbstractAuthenticationService
     public function getSubGroups($grList, $idList = '', &$groups)
     {
         // Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
-        $lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST'] . '\')';
+        $lockToDomain_SQL =
+            ' AND ('
+                . 'lockToDomain=\'\''
+                . ' OR lockToDomain IS NULL'
+                . ' OR lockToDomain=' . $this->getDatabaseConnection()->fullQuoteStr($this->authInfo['HTTP_HOST'], 'fe_groups')
+            . ')';
         $hiddenP = !$this->authInfo['showHiddenRecords'] ? 'AND hidden=0 ' : '';
         $res = $this->getDatabaseConnection()->exec_SELECTquery('uid,subgroup', 'fe_groups', 'deleted=0 ' . $hiddenP . ' AND uid IN (' . $grList . ')' . $lockToDomain_SQL);
         // Internal group record storage
