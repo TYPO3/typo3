@@ -163,7 +163,12 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 				if ($this->writeDevLog) {
 					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Get usergroups with id: ' . $list, 'TYPO3\\CMS\\Sv\\AuthenticationService');
 				}
-				$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST'] . '\')';
+				$lockToDomain_SQL =
+					' AND ('
+						. 'lockToDomain=\'\''
+						. ' OR lockToDomain IS NULL'
+						. ' OR lockToDomain=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->authInfo['HTTP_HOST'], $this->db_groups['table'])
+					. ')';
 				if (!$this->authInfo['showHiddenRecords']) {
 					$hiddenP = 'AND hidden=0 ';
 				}
@@ -199,7 +204,12 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 */
 	public function getSubGroups($grList, $idList = '', &$groups) {
 		// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
-		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST'] . '\')';
+		$lockToDomain_SQL =
+			' AND ('
+				. 'lockToDomain=\'\''
+				. ' OR lockToDomain IS NULL'
+				. ' OR lockToDomain=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->authInfo['HTTP_HOST'], 'fe_groups')
+			. ')';
 		if (!$this->authInfo['showHiddenRecords']) {
 			$hiddenP = 'AND hidden=0 ';
 		}
