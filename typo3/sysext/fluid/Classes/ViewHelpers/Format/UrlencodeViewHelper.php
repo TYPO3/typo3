@@ -39,7 +39,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  * Url encoded text (rawurlencode() applied)
  * </output>
  *
- * @api
  */
 class UrlencodeViewHelper extends AbstractViewHelper
 {
@@ -53,8 +52,6 @@ class UrlencodeViewHelper extends AbstractViewHelper
     /**
      * Initialize ViewHelper arguments
      *
-     * @api
-     * @return void
      * @throws Exception
      */
     public function initializeArguments()
