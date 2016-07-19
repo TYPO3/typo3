@@ -6479,7 +6479,7 @@ class ContentObjectRenderer {
 	 */
 	public function getMailTo($mailAddress, $linktxt, $initP = '?') {
 		if ((string)$linktxt === '') {
-			$linktxt = $mailAddress;
+			$linktxt = htmlspecialchars($mailAddress);
 		}
 		$mailToUrl = 'mailto:' . $mailAddress;
 		if (!$GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $GLOBALS['TSFE']->config['config']['jumpurl_mailto_disable']) {
@@ -6492,7 +6492,7 @@ class ContentObjectRenderer {
 				if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']) {
 					$atLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']);
 				}
-				$spamProtectedMailAddress = str_replace('@', $atLabel ? $atLabel : '(at)', $mailAddress);
+				$spamProtectedMailAddress = str_replace('@', $atLabel ? $atLabel : '(at)', htmlspecialchars($mailAddress));
 				if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']) {
 					$lastDotLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']);
 					$lastDotLabel = $lastDotLabel ? $lastDotLabel : '(dot)';
