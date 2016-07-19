@@ -177,6 +177,7 @@ class ImportExportController extends BaseScriptClass
      *
      * @throws \BadFunctionCallException
      * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      * @return void
      */
     public function main()
@@ -217,6 +218,15 @@ class ImportExportController extends BaseScriptClass
                 $this->standaloneView->setTemplate('Export.html');
                 break;
             case 'import':
+                $backendUser = $this->getBackendUser();
+                $isEnabledForNonAdmin = $backendUser->getTSConfig('options.impexp.enableImportForNonAdminUser');
+                if (!$backendUser->isAdmin() && empty($isEnabledForNonAdmin['value'])) {
+                    throw new \RuntimeException(
+                        'Import module is disabled for non admin users and '
+                        . 'userTsConfig options.impexp.enableImportForNonAdminUser is not enabled.',
+                        1464435459
+                    );
+                }
                 $this->shortcutName = $this->lang->getLL('title_import');
                 if (GeneralUtility::_POST('_upload')) {
                     $this->checkUpload();

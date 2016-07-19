@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Impexp;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -76,20 +77,24 @@ class Clickmenu
                 1
             );
             if ($table === 'pages') {
-                $urlParameters = array(
-                    'id' => $uid,
-                    'table' => $table,
-                    'tx_impexp' => array(
-                        'action' => 'import'
-                    ),
-                );
-                $url = BackendUtility::getModuleUrl('xMOD_tximpexp', $urlParameters);
-                $localItems[] = $backRef->linkItem(
-                    htmlspecialchars($this->getLanguageService()->getLLL('import', $LL)),
-                    $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL),
-                    $backRef->urlRefForCM($url),
-                    1
-                );
+                $backendUser = $this->getBackendUser();
+                $isEnabledForNonAdmin = $backendUser->getTSConfig('options.impexp.enableImportForNonAdminUser');
+                if ($backendUser->isAdmin() || !empty($isEnabledForNonAdmin['value'])) {
+                    $urlParameters = array(
+                        'id' => $uid,
+                        'table' => $table,
+                        'tx_impexp' => array(
+                            'action' => 'import'
+                        ),
+                    );
+                    $url = BackendUtility::getModuleUrl('xMOD_tximpexp', $urlParameters);
+                    $localItems[] = $backRef->linkItem(
+                        htmlspecialchars($this->getLanguageService()->getLLL('import', $LL)),
+                        $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL),
+                        $backRef->urlRefForCM($url),
+                        1
+                    );
+                }
             }
         }
         return array_merge($menuItems, $localItems);
@@ -111,5 +116,13 @@ class Clickmenu
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
