@@ -71,31 +71,25 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
         if (substr($absolutePackagePath, 0, $pathSiteLength) === $pathSite) {
             $relativePackagePathToPathSite = substr($absolutePackagePath, $pathSiteLength);
             $relativePackagePathToPathSiteSegments = explode('/', $relativePackagePathToPathSite);
-            $relativePackagePathToPathTypo3 = null;
             $packageType = null;
             // Determine if extension is installed locally, globally or system (in this order)
             switch (implode('/', array_slice($relativePackagePathToPathSiteSegments, 0, 2))) {
                 case 'typo3conf/ext':
                     $packageType = 'L';
-                    $relativePackagePathToPathTypo3 = '../typo3conf/ext/' . implode('/', array_slice($relativePackagePathToPathSiteSegments, 2));
                     break;
                 case TYPO3_mainDir . 'ext':
                     $packageType = 'G';
-                    $relativePackagePathToPathTypo3 = 'ext/' . implode('/', array_slice($relativePackagePathToPathSiteSegments, 2));
                     break;
                 case TYPO3_mainDir . 'sysext':
                     $packageType = 'S';
-                    $relativePackagePathToPathTypo3 = 'sysext/' . implode('/', array_slice($relativePackagePathToPathSiteSegments, 2));
                     break;
                 case 'typo3temp/var/tests/test_ext':
                     $packageType = 'T';
-                    $relativePackagePathToPathTypo3 = '../typo3temp/var/tests/test_ext/' . implode('/', array_slice($relativePackagePathToPathSiteSegments, 2));
                     break;
             }
-            if ($packageType !== null && $relativePackagePathToPathSite !== null && $relativePackagePathToPathTypo3 !== null) {
+            if ($packageType !== null && $relativePackagePathToPathSite !== null) {
                 $this->extensionInformation['type'] = $packageType;
                 $this->extensionInformation['siteRelPath'] = $relativePackagePathToPathSite;
-                $this->extensionInformation['typo3RelPath'] = $relativePackagePathToPathTypo3;
             }
         }
     }
