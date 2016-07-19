@@ -55,8 +55,7 @@ class GroupElementTest extends UnitTestCase
         $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
         $subject = new GroupElement($nodeFactoryProphecy->reveal(), $data);
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1468149217);
+        $this->setExpectedException(\RuntimeException::class, 1468149217);
 
         $subject->render();
     }
