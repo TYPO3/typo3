@@ -204,7 +204,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 
 		LoginRefresh.$loginForm = LoginRefresh.generateModal(LoginRefresh.identifier.loginFormModal);
 		LoginRefresh.$loginForm.addClass('t3-modal-notice');
-		LoginRefresh.$loginForm.find('.modal-header h4').text(TYPO3.LLL.core.refresh_login_title);
+		var refresh_login_title = String(TYPO3.LLL.core.refresh_login_title).replace('%s', TYPO3.configuration.username);
+		LoginRefresh.$loginForm.find('.modal-header h4').text(refresh_login_title);
 		LoginRefresh.$loginForm.find('.modal-body').append(
 			$('<p />').text(TYPO3.LLL.core.login_expired),
 			$('<form />', {id: 'beLoginRefresh', method: 'POST', action: TYPO3.settings.ajaxUrls['login']}).append(
