@@ -63,20 +63,29 @@ class EmailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
      */
     public function render($email)
     {
-        if (TYPO3_MODE === 'FE') {
-            list($linkHref, $linkText) = $GLOBALS['TSFE']->cObj->getMailTo($email, $email);
+        if ($this->isFrontendAvailable()) {
+            list($linkHref, $linkText) = $GLOBALS['TSFE']->cObj->getMailTo($email, '');
+            $escapeSpecialCharacters = !isset($GLOBALS['TSFE']->spamProtectEmailAddresses) || $GLOBALS['TSFE']->spamProtectEmailAddresses !== 'ascii';
         } else {
             $linkHref = 'mailto:' . $email;
-            $linkText = $email;
+            $linkText = htmlspecialchars($email);
+            $escapeSpecialCharacters = true;
         }
         $tagContent = $this->renderChildren();
         if ($tagContent !== null) {
             $linkText = $tagContent;
         }
         $this->tag->setContent($linkText);
-        $escapeSpecialCharacters = !isset($GLOBALS['TSFE']->spamProtectEmailAddresses) || $GLOBALS['TSFE']->spamProtectEmailAddresses !== 'ascii';
         $this->tag->addAttribute('href', $linkHref, $escapeSpecialCharacters);
         $this->tag->forceClosingTag(true);
         return $this->tag->render();
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isFrontendAvailable()
+    {
+        return TYPO3_MODE === 'FE';
     }
 }
