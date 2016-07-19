@@ -481,7 +481,7 @@ class BackendController
             'waitTitle' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_logging_in'),
             'refresh_login_failed' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_failed'),
             'refresh_login_failed_message' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_failed_message'),
-            'refresh_login_title' => sprintf($lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_title'), htmlspecialchars($this->getBackendUser()->user['username'])),
+            'refresh_login_title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_title'),
             'login_expired' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.login_expired'),
             'refresh_login_username' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_username'),
             'refresh_login_password' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_password'),
