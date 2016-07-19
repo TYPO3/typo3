@@ -48,12 +48,10 @@ class TypolinkViewHelper extends AbstractViewHelper
 {
     /**
      * Initialize arguments
-     *
-     * @return void
-     * @api
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerArgument('parameter', 'string', 'stdWrap.typolink style parameter string', true);
         $this->registerArgument('additionalParams', 'string', 'stdWrap.typolink additionalParams', false, '');
     }
@@ -66,10 +64,7 @@ class TypolinkViewHelper extends AbstractViewHelper
     public function render()
     {
         return static::renderStatic(
-            array(
-                'parameter' => $this->arguments['parameter'],
-                'additionalParams' => $this->arguments['additionalParams']
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
