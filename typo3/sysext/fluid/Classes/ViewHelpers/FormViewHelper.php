@@ -72,11 +72,6 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
     protected $formActionUriArguments;
 
     /**
-     * @var bool
-     */
-    private $securedReferrerFieldRendered = false;
-
-    /**
      * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
      */
     public function injectHashService(\TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService)
@@ -176,6 +171,7 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
         $this->removeFormObjectNameFromViewHelperVariableContainer();
         $this->removeFormFieldNamesFromViewHelperVariableContainer();
         $this->removeCheckboxFieldNamesFromViewHelperVariableContainer();
+        $this->removeSecuredHiddenFieldsRenderedFromViewHelperVariableContainer();
         return $this->tag->render();
     }
 
@@ -269,7 +265,7 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
      */
     protected function renderHiddenSecuredReferrerField()
     {
-        if ($this->securedReferrerFieldRendered) {
+        if ($this->hasSecuredHiddenFieldsRendered()) {
             return '';
         }
         $request = $this->renderingContext->getControllerContext()->getRequest();
@@ -286,7 +282,7 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
             $actionRequest['@vendor'] = $vendorName;
         }
         $result = '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@request]') . '" value="' . htmlspecialchars($this->hashService->appendHmac(serialize($actionRequest))) . '" />' . LF;
-        $this->securedReferrerFieldRendered = true;
+        $this->addSecuredHiddenFieldsRenderedToViewHelperVariableContainer();
         return $result;
     }
 
@@ -397,6 +393,32 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
     protected function removeFormFieldNamesFromViewHelperVariableContainer()
     {
         $this->viewHelperVariableContainer->remove(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formFieldNames');
+    }
+
+    /**
+     * Adds flag to indicate the secured hidden fields have been rendered to the ViewHelperVariableContainer
+     */
+    protected function addSecuredHiddenFieldsRenderedToViewHelperVariableContainer()
+    {
+        $this->viewHelperVariableContainer->add(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'securedHiddenFieldsRendered', true);
+    }
+
+    /**
+     * Checks whether the secured hidden fields have been rendered
+     *
+     * @return bool
+     */
+    protected function hasSecuredHiddenFieldsRendered()
+    {
+        return $this->viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'securedHiddenFieldsRendered');
+    }
+
+    /**
+     * Removes flag to indicate the secured hidden fields have been rendered from the ViewHelperVariableContainer
+     */
+    protected function removeSecuredHiddenFieldsRenderedFromViewHelperVariableContainer()
+    {
+        $this->viewHelperVariableContainer->remove(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'securedHiddenFieldsRendered');
     }
 
     /**
