@@ -79,8 +79,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * 1980-12-13
  * (depending on the value of {dateObject})
  * </output>
- *
- * @api
  */
 class DateViewHelper extends AbstractViewHelper
 {
@@ -93,9 +91,6 @@ class DateViewHelper extends AbstractViewHelper
 
     /**
      * Initialize arguments
-     *
-     * @return void
-     * @api
      */
     public function initializeArguments()
     {
@@ -110,20 +105,11 @@ class DateViewHelper extends AbstractViewHelper
      *
      * @return string Formatted date
      * @throws Exception
-     * @api
      */
     public function render()
     {
-        $date = $this->arguments['date'];
-        $format = $this->arguments['format'];
-        $base = $this->arguments['base'];
-
         return static::renderStatic(
-            array(
-                'date' => $date,
-                'format' => $format,
-                'base' => $base
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
