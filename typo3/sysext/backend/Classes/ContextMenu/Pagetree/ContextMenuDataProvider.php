@@ -64,7 +64,24 @@ class ContextMenuDataProvider extends \TYPO3\CMS\Backend\ContextMenu\AbstractCon
                 $additionalItems[] = $item;
             }
         }
-        return array_merge($disableItems, $additionalItems);
+        $disableItems = array_merge($disableItems, $additionalItems);
+
+        // Further manipulation of disableItems array via hook
+        // @internal: This is an internal hook for extension impexp only, this hook may change without further notice
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['backend']['contextMenu']['disableItems'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['backend']['contextMenu']['disableItems'])
+        ) {
+            $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['backend']['contextMenu']['disableItems'];
+            foreach ($hooks as $hook) {
+                $parameterArray = [
+                    'disableItems' => &$disableItems,
+                ];
+                $null = null;
+                GeneralUtility::callUserFunction($hook, $parameterArray, $null);
+            }
+        }
+
+        return $disableItems;
     }
 
     /**

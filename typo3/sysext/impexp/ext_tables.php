@@ -49,4 +49,8 @@ if (TYPO3_MODE === 'BE') {
 			}
 		}
 	');
+    // Hook into page tree context menu to remove "import" items again if user is not admin or module
+    // is not enabled for this user / group
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['backend']['contextMenu']['disableItems'][]
+        = \TYPO3\CMS\Impexp\Hook\ContextMenuDisableItemsHook::class . '->disableImportForNonAdmin';
 }
