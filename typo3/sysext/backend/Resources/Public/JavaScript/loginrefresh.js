@@ -74,10 +74,11 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 	},
 
 	initComponents: function() {
+		var refresh_login_title = String(TYPO3.LLL.core.refresh_login_title).replace('%s', TYPO3.configuration.username);
 		var loginPanel = new Ext.FormPanel({
 			url: TYPO3.settings.ajaxUrls['BackendLogin::login'],
 			id: 'loginform',
-			title: TYPO3.LLL.core.refresh_login_title,
+			title: refresh_login_title,
 			defaultType: 'textfield',
 			scope: this,
 			width: '100%',
