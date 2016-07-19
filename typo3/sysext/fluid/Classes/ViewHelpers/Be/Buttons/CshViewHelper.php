@@ -52,11 +52,11 @@ class CshViewHelper extends AbstractBackendViewHelper
     /**
      * Initialize arguments.
      *
-     * @api
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerArgument('table', 'string', 'Table name (\'_MOD_\'+module name). If not set, the current module name will be used');
         $this->registerArgument('field', 'string', 'Field name (CSH locallang main key)', false, '');
         $this->registerArgument('wrap', 'string', 'Markup to wrap around the CSH, split by "|"', false, '');
@@ -69,16 +69,8 @@ class CshViewHelper extends AbstractBackendViewHelper
      */
     public function render()
     {
-        $table = $this->arguments['table'];
-        $field = $this->arguments['field'];
-        $wrap = $this->arguments['wrap'];
-
         return static::renderStatic(
-            array(
-                'table' => $table,
-                'field' => $field,
-                'wrap' => $wrap
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
