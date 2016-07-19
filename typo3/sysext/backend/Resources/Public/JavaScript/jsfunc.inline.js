@@ -1069,7 +1069,7 @@ var inline = {
 			} else {
 				value = formObj.value;
 			}
-			$(objectId+'_label').innerHTML = value.length ? value : this.noTitleString;
+			$(objectId+'_label').textContent = value.length ? value : this.noTitleString;
 		}
 		return true;
 	},
