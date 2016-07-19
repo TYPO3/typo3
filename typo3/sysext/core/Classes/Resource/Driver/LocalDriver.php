@@ -1190,7 +1190,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     {
         $folderPath = $this->getAbsolutePath($folderIdentifier);
         $recycleDirectory = $this->getRecycleDirectory($folderPath);
-        if (!empty($recycleDirectory)) {
+        if (!empty($recycleDirectory) && $folderPath !== $recycleDirectory) {
             $result = $this->recycleFileOrFolder($folderPath, $recycleDirectory);
         } else {
             $result = GeneralUtility::rmdir($folderPath, $deleteRecursively);
