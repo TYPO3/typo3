@@ -114,6 +114,15 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$this->exportData($inData);
 				break;
 			case 'import':
+				$backendUser = $this->getBackendUser();
+				$isEnabledForNonAdmin = $backendUser->getTSConfig('options.impexp.enableImportForNonAdminUser');
+				if (!$backendUser->isAdmin() && empty($isEnabledForNonAdmin['value'])) {
+					throw new \RuntimeException(
+						'Import module is disabled for non admin users and '
+						. 'userTsConfig options.impexp.enableImportForNonAdminUser is not enabled.',
+						1464435459
+					);
+				}
 				// Finally: If upload went well, set the new file as the import file:
 				if (!empty($this->uploadedFiles[0])) {
 					// Only allowed extensions....

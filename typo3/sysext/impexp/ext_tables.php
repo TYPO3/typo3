@@ -51,4 +51,9 @@ if (TYPO3_MODE === 'BE') {
 		}
 	';
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath('xMOD_tximpexp', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'app/');
+
+	// Hook into page tree context menu to remove "import" items again if user is not admin or module
+	// is not enabled for this user / group
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['backend']['contextMenu']['disableItems'][]
+		= 'TYPO3\\CMS\\Impexp\\Hook\\ContextMenuDisableItemsHook->disableImportForNonAdmin';
 }

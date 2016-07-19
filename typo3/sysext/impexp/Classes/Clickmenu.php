@@ -54,15 +54,19 @@ class Clickmenu {
 			$url = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('xMOD_tximpexp', $urlParameters);
 			$localItems[] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('export', $LL)), $backRef->excludeIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-export-t3d')), $backRef->urlRefForCM($url), 1);
 			if ($table == 'pages') {
-				$urlParameters = array(
-					'id' => $uid,
-					'table' => $table,
-					'tx_impexp' => array(
-						'action' => 'import'
-					),
-				);
-				$url = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('xMOD_tximpexp', $urlParameters);
-				$localItems[] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('import', $LL)), $backRef->excludeIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-import-t3d')), $backRef->urlRefForCM($url), 1);
+				$backendUser = $this->getBackendUser();
+				$isEnabledForNonAdmin = $backendUser->getTSConfig('options.impexp.enableImportForNonAdminUser');
+				if ($backendUser->isAdmin() || !empty($isEnabledForNonAdmin['value'])) {
+					$urlParameters = array(
+						'id' => $uid,
+						'table' => $table,
+						'tx_impexp' => array(
+							'action' => 'import'
+						),
+					);
+					$url = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('xMOD_tximpexp', $urlParameters);
+					$localItems[] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('import', $LL)), $backRef->excludeIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-import-t3d')), $backRef->urlRefForCM($url), 1);
+				}
 			}
 		}
 		return array_merge($menuItems, $localItems);
@@ -79,4 +83,10 @@ class Clickmenu {
 		return $LANG->includeLLFile('EXT:impexp/app/locallang.xlf', FALSE);
 	}
 
+	/**
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
 }
