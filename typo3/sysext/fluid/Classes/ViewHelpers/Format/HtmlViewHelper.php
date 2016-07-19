@@ -76,11 +76,11 @@ class HtmlViewHelper extends AbstractViewHelper
     /**
      * Initialize arguments.
      *
-     * @api
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerArgument('parseFuncTSPath', 'string', ' path to TypoScript parseFunc setup.', false, 'lib.parseFunc_RTE');
     }
 
@@ -89,11 +89,8 @@ class HtmlViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        $parseFuncTSPath = $this->arguments['parseFuncTSPath'];
         return static::renderStatic(
-            array(
-                'parseFuncTSPath' => $parseFuncTSPath,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -126,8 +123,6 @@ class HtmlViewHelper extends AbstractViewHelper
     /**
      * Copies the specified parseFunc configuration to $GLOBALS['TSFE']->tmpl->setup in Backend mode
      * This somewhat hacky work around is currently needed because the parseFunc() function of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on those variables to be set
-     *
-     * @return void
      */
     protected static function simulateFrontendEnvironment()
     {
@@ -142,7 +137,6 @@ class HtmlViewHelper extends AbstractViewHelper
     /**
      * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
      *
-     * @return void
      * @see simulateFrontendEnvironment()
      */
     protected static function resetFrontendEnvironment()
