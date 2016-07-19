@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Driver\Statement;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -271,16 +272,27 @@ class ResourceStorageTest extends BaseTestCase
      */
     public function isWithinFileMountBoundariesRespectsReadOnlyFileMounts($fileIdentifier, $fileMountFolderIdentifier, $isFileMountReadOnly, $checkWriteAccess, $expectedResult)
     {
+        // @todo mess ahead - rewrite those tests!
         $connectionProphet = $this->prophesize(Connection::class);
         $connectionProphet->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
+        $connectionProphet->delete(Argument::cetera())->willReturn(0);
+        $connectionProphet->insert(Argument::cetera())->willReturn(0);
 
         $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
         $queryBuilderProphet->expr()->willReturn(
             GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
         );
+        $queryBuilderProphet->select(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->from(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->createNamedParameter(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->__toString()->willReturn('');
+        $queryBuilderProphet->where(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
+        $statementProphecy = $this->prophesize(Statement::class);
+        $queryBuilderProphet->execute()->willReturn($statementProphecy->reveal());
 
         $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
         $connectionPoolProphet->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
+        $connectionPoolProphet->getConnectionForTable(Argument::cetera())->willReturn($connectionProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         /** @var AbstractDriver|\PHPUnit_Framework_MockObject_MockObject $driverMock */
