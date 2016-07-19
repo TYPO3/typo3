@@ -82,7 +82,6 @@ class TranslateViewHelper extends AbstractViewHelper
     /**
      * Initialize arguments.
      *
-     * @api
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
     public function initializeArguments()
@@ -103,22 +102,8 @@ class TranslateViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        $key = $this->arguments['key'];
-        $id = $this->arguments['id'];
-        $default = $this->arguments['default'];
-        $htmlEscape = $this->arguments['htmlEscape'];
-        $arguments = $this->arguments['arguments'];
-        $extensionName = $this->arguments['extensionName'];
-
         return static::renderStatic(
-            array(
-                'key' => $key,
-                'id' => $id,
-                'default' => $default,
-                'htmlEscape' => $htmlEscape,
-                'arguments' => $arguments,
-                'extensionName' => $extensionName,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
