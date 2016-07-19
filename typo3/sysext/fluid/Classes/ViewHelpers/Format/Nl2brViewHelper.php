@@ -36,8 +36,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * <output>
  * text with line breaks replaced by <br />
  * </output>
- *
- * @api
  */
 class Nl2brViewHelper extends AbstractViewHelper
 {
@@ -49,7 +47,6 @@ class Nl2brViewHelper extends AbstractViewHelper
     /**
      * Initialize arguments.
      *
-     * @api
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
     public function initializeArguments()
@@ -62,15 +59,11 @@ class Nl2brViewHelper extends AbstractViewHelper
      * Replaces newline characters by HTML line breaks.
      *
      * @return string the altered string.
-     * @api
      */
     public function render()
     {
-        $value = $this->arguments['value'];
         return static::renderStatic(
-            array(
-                'value' => $value
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
