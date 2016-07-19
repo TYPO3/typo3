@@ -7129,7 +7129,7 @@ class ContentObjectRenderer
     {
         $mailAddress = (string)$mailAddress;
         if ((string)$linktxt === '') {
-            $linktxt = $mailAddress;
+            $linktxt = htmlspecialchars($mailAddress);
         }
 
         $originalMailToUrl = 'mailto:' . $mailAddress;
@@ -7148,7 +7148,7 @@ class ContentObjectRenderer
                 if ($tsfe->config['config']['spamProtectEmailAddresses_atSubst']) {
                     $atLabel = trim($tsfe->config['config']['spamProtectEmailAddresses_atSubst']);
                 }
-                $spamProtectedMailAddress = str_replace('@', $atLabel ? $atLabel : '(at)', $mailAddress);
+                $spamProtectedMailAddress = str_replace('@', $atLabel ? $atLabel : '(at)', htmlspecialchars($mailAddress));
                 if ($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst']) {
                     $lastDotLabel = trim($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst']);
                     $lastDotLabel = $lastDotLabel ? $lastDotLabel : '(dot)';
