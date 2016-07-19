@@ -52,11 +52,11 @@ class ActionMenuItemViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
     /**
      * Initialize arguments.
      *
-     * @api
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerArgument('label', 'string', 'label of the option tag', true);
         $this->registerArgument('controller', 'string', 'controller to be associated with this ActionMenuItem', true);
         $this->registerArgument('action', 'string', 'the action to be associated with this ActionMenuItem', true);
