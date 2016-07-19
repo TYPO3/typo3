@@ -43,8 +43,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * <output>
  * --TYPO3---
  * </output>
- *
- * @api
  */
 class PaddingViewHelper extends AbstractViewHelper
 {
@@ -58,11 +56,11 @@ class PaddingViewHelper extends AbstractViewHelper
     /**
      * Initialize arguments.
      *
-     * @api
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerArgument('padLength', 'int', 'Length of the resulting string. If the value of pad_length is negative or less than the length of the input string, no padding takes place.', true);
         $this->registerArgument('padString', 'string', 'The padding string', false, ' ');
         $this->registerArgument('padType', 'string', 'Append the padding at this site (Possible values: right,left,both. Default: right)', false, 'right');
@@ -73,22 +71,11 @@ class PaddingViewHelper extends AbstractViewHelper
      * Pad a string to a certain length with another string
      *
      * @return string The formatted value
-     * @api
      */
     public function render()
     {
-        $padLength = $this->arguments['padLength'];
-        $padString = $this->arguments['padString'];
-        $padType = $this->arguments['padType'];
-        $value = $this->arguments['value'];
-
         return static::renderStatic(
-            array(
-                'padLength' => $padLength,
-                'padString' => $padString,
-                'padType' => $padType,
-                'value' => $value
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
