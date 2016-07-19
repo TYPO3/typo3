@@ -1858,7 +1858,7 @@ class ContentObjectRenderer
                     . '); return false;';
                 $a1 = '<a href="' . htmlspecialchars($url) . '"'
                     . ' onclick="' . htmlspecialchars($onClick) . '"'
-                    . ($target !== '' ? ' target="' . $target . '"' : '')
+                    . ($target !== '' ? ' target="' . htmlspecialchars($target) . '"' : '')
                     . $this->getTypoScriptFrontendController()->ATagParams . '>';
                 $a2 = '</a>';
                 $this->getTypoScriptFrontendController()->setJS('openPic');
@@ -1891,8 +1891,8 @@ class ContentObjectRenderer
             $extension = $fileInfo['fileext'];
             if ($extension === 'jpg' || $extension === 'jpeg' || $extension === 'gif' || $extension === 'png') {
                 $imgFile = $incFile;
-                $imgInfo = @getImageSize($imgFile);
-                return '<img src="' . $tsfe->absRefPrefix . $imgFile . '" width="' . (int)$imgInfo[0] . '" height="' . (int)$imgInfo[1] . '"' . $this->getBorderAttr(' border="0"') . ' ' . $addParams . ' />';
+                $imgInfo = @getimagesize($imgFile);
+                return '<img src="' . htmlspecialchars($tsfe->absRefPrefix . $imgFile) . '" width="' . (int)$imgInfo[0] . '" height="' . (int)$imgInfo[1] . '"' . $this->getBorderAttr(' border="0"') . ' ' . $addParams . ' />';
             } elseif (filesize($incFile) < 1024 * 1024) {
                 return $tsfe->tmpl->fileContent($incFile);
             }
@@ -3512,7 +3512,7 @@ class ContentObjectRenderer
     {
         $wrapAlign = trim($conf['wrapAlign']);
         if ($wrapAlign) {
-            $content = $this->wrap($content, '<div style="text-align:' . $wrapAlign . ';">|</div>');
+            $content = $this->wrap($content, '<div style="text-align:' . htmlspecialchars($wrapAlign) . ';">|</div>');
         }
         return $content;
     }
@@ -5632,7 +5632,7 @@ class ContentObjectRenderer
                     $linkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_COMMON, $scheme . $parts[0], $conf);
 
                     $res = '<a href="' . htmlspecialchars($linkUrl) . '"'
-                        . ($target !== '' ? ' target="' . $target . '"' : '')
+                        . ($target !== '' ? ' target="' . htmlspecialchars($target) . '"' : '')
                         . $aTagParams . $this->extLinkATagParams(('http://' . $parts[0]), 'url') . '>';
 
                     $wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
@@ -6507,7 +6507,7 @@ class ContentObjectRenderer
 
                 $this->lastTypoLinkTarget = $target;
                 $finalTagParts['url'] = $this->lastTypoLinkUrl;
-                $finalTagParts['targetParams'] = $target ? ' target="' . $target . '"' : '';
+                $finalTagParts['targetParams'] = $target ? ' target="' . htmlspecialchars($target) . '"' : '';
                 $finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], $linkType);
             break;
 
@@ -6533,7 +6533,7 @@ class ContentObjectRenderer
                     }
                     $this->lastTypoLinkTarget = $target;
                     $finalTagParts['url'] = $this->lastTypoLinkUrl;
-                    $finalTagParts['targetParams'] = $target ? ' target="' . $target . '"' : '';
+                    $finalTagParts['targetParams'] = $target ? ' target="' . htmlspecialchars($target) . '"' : '';
                     $finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], $linkType);
                 } else {
                     $this->getTimeTracker()->setTSlogMessage('typolink(): File "' . $splitLinkParam[0] . '" did not exist, so "' . $linktxt . '" was not linked.', 1);
@@ -6805,7 +6805,7 @@ class ContentObjectRenderer
                 . $target
                 . ' onclick="' . htmlspecialchars($onClick) . '"'
                 . ((string)$title !== '' ? ' title="' . htmlspecialchars($title) . '"' : '')
-                . ($linkClass !== '' ? ' class="' . $linkClass . '"' : '')
+                . ($linkClass !== '' ? ' class="' . htmlspecialchars($linkClass) . '"' : '')
                 . $finalTagParts['aTagParams']
                 . '>';
         } else {
@@ -6816,7 +6816,7 @@ class ContentObjectRenderer
             }
             $finalAnchorTag .= ((string)$title !== '' ? ' title="' . htmlspecialchars($title) . '"' : '')
                 . $finalTagParts['targetParams']
-                . ($linkClass ? ' class="' . $linkClass . '"' : '')
+                . ($linkClass ? ' class="' . htmlspecialchars($linkClass) . '"' : '')
                 . $finalTagParts['aTagParams']
                 . '>';
         }
