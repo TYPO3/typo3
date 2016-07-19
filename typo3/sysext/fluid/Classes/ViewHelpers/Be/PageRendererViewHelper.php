@@ -51,11 +51,11 @@ class PageRendererViewHelper extends AbstractViewHelper
     /**
      * Initialize arguments.
      *
-     * @api
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerArgument('pageTitle', 'string', 'title tag of the module. Not required by default, as BE modules are shown in a frame', false, '');
         $this->registerArgument('loadExtJs', 'bool', 'specifies whether to load ExtJS library. Defaults to FALSE', false, false);
         $this->registerArgument('loadExtJsTheme', 'bool', 'whether to load ExtJS "grey" theme. Defaults to FALSE', false, true);
@@ -70,8 +70,6 @@ class PageRendererViewHelper extends AbstractViewHelper
 
     /**
      * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
-     *
-     * @return void
      */
     public function render()
     {
