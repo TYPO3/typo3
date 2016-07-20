@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -4206,17 +4207,24 @@ class GeneralUtility
     {
         if (strlen($inUrl) > $l) {
             $md5 = substr(md5($inUrl), 0, 20);
-            $count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'cache_md5params', 'md5hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($md5, 'cache_md5params'));
+            $connection = self::makeInstance(ConnectionPool::class)->getConnectionForTable('cache_md5params');
+            $count = $connection->count(
+                '*',
+                'cache_md5params',
+                ['md5hash' => $md5]
+            );
             if (!$count) {
-                $insertFields = array(
-                    'md5hash' => $md5,
-                    'tstamp' => $GLOBALS['EXEC_TIME'],
-                    'type' => 2,
-                    'params' => $inUrl
+                $connection->insert(
+                    'cache_md5params',
+                    [
+                        'md5hash' => $md5,
+                        'tstamp'  => $GLOBALS['EXEC_TIME'],
+                        'type'    => 2,
+                        'params'  => $inUrl
+                    ]
                 );
-                $GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_md5params', $insertFields);
             }
-            $inUrl = ($index_script_url ? $index_script_url : self::getIndpEnv('TYPO3_REQUEST_DIR') . 'index.php') . '?RDCT=' . $md5;
+            $inUrl = ($index_script_url ?: self::getIndpEnv('TYPO3_REQUEST_DIR') . 'index.php') . '?RDCT=' . $md5;
         }
         return $inUrl;
     }
