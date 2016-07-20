@@ -246,7 +246,7 @@ class RequestHandler implements RequestHandlerInterface
         if (isset($this->controller->config['config']['debug'])) {
             $debugParseTime = (bool)$this->controller->config['config']['debug'];
         } else {
-            $debugParseTime = !empty($this->controller->TYPO3_CONF_VARS['FE']['debug']);
+            $debugParseTime = !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']);
         }
         if ($this->controller->isOutputting() && $debugParseTime) {
             $this->controller->content .= LF . '<!-- Parsetime: ' . $this->controller->scriptParseTime . 'ms -->';
@@ -344,7 +344,7 @@ class RequestHandler implements RequestHandlerInterface
     {
         $this->controller = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,
-            $GLOBALS['TYPO3_CONF_VARS'],
+            null,
             GeneralUtility::_GP('id'),
             GeneralUtility::_GP('type'),
             GeneralUtility::_GP('no_cache'),

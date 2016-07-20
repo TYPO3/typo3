@@ -110,7 +110,7 @@ class EidUtility
         // Cached instance
         static $tsfe = null;
         if (is_null($tsfe)) {
-            $tsfe = GeneralUtility::makeInstance(TypoScriptFrontendController::class, $GLOBALS['TYPO3_CONF_VARS'], 0, 0);
+            $tsfe = GeneralUtility::makeInstance(TypoScriptFrontendController::class, null, 0, 0);
         }
         return $tsfe;
     }

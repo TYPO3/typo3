@@ -34,8 +34,7 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     {
         GeneralUtility::flushInternalRuntimeCaches();
         $this->subject = $this->getAccessibleMock(TypoScriptFrontendController::class, array('dummy'), array(), '', false);
-        $this->subject->TYPO3_CONF_VARS = $GLOBALS['TYPO3_CONF_VARS'];
-        $this->subject->TYPO3_CONF_VARS['SYS']['encryptionKey'] = '170928423746123078941623042360abceb12341234231';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '170928423746123078941623042360abceb12341234231';
 
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
         $this->subject->sys_page = $pageRepository;

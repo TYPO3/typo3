@@ -77,7 +77,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
             // configuration
             $this->tsfeObj = GeneralUtility::makeInstance(
                 \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class,
-                $GLOBALS['TYPO3_CONF_VARS'],
+                null,
                 GeneralUtility::_GP('id'),
                 GeneralUtility::_GP('type'),
                 GeneralUtility::_GP('no_cache'),
@@ -240,13 +240,13 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
             // "log out"
             if ($inputCode == 'LOGOUT') {
                 setcookie($this->previewKey, '', 0, GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
-                if ($this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']) {
-                    $templateFile = PATH_site . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate'];
+                if ($GLOBALS['TYPO3_CONF_VARS']['FE']['workspacePreviewLogoutTemplate']) {
+                    $templateFile = PATH_site . $GLOBALS['TYPO3_CONF_VARS']['FE']['workspacePreviewLogoutTemplate'];
                     if (@is_file($templateFile)) {
                         $message = file_get_contents($templateFile);
                     } else {
                         $message = '<strong>ERROR!</strong><br>Template File "'
-                            . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']
+                            . $GLOBALS['TYPO3_CONF_VARS']['FE']['workspacePreviewLogoutTemplate']
                             . '" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.';
                     }
                 } else {
