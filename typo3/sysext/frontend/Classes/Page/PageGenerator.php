@@ -532,14 +532,6 @@ class PageGenerator
                 }
                 $pageRenderer->loadJquery($version, $source, $namespace);
             }
-            if ($tsfe->pSetup['javascriptLibs.']['ExtJs']) {
-                $css = (bool)$tsfe->pSetup['javascriptLibs.']['ExtJs.']['css'];
-                $theme = (bool)$tsfe->pSetup['javascriptLibs.']['ExtJs.']['theme'];
-                $pageRenderer->loadExtJS($css, $theme);
-                if ($tsfe->pSetup['javascriptLibs.']['ExtJs.']['debug']) {
-                    $pageRenderer->enableExtJsDebug();
-                }
-            }
         }
         // JavaScript library files
         if (is_array($tsfe->pSetup['includeJSLibs.'])) {
@@ -842,15 +834,8 @@ class PageGenerator
                 );
             }
         }
-        // ExtJS specific code
-        if (is_array($tsfe->pSetup['inlineLanguageLabel.'])) {
-            $pageRenderer->addInlineLanguageLabelArray($tsfe->pSetup['inlineLanguageLabel.'], true);
-        }
         if (is_array($tsfe->pSetup['inlineSettings.'])) {
             $pageRenderer->addInlineSettingArray('TS', $tsfe->pSetup['inlineSettings.']);
-        }
-        if (is_array($tsfe->pSetup['extOnReady.'])) {
-            $pageRenderer->addExtOnReadyCode($tsfe->cObj->cObjGet($tsfe->pSetup['extOnReady.'], 'extOnReady.'));
         }
         // Compression and concatenate settings
         if ($tsfe->config['config']['compressCss']) {

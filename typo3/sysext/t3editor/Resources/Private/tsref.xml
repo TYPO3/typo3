@@ -5596,26 +5596,6 @@ cssInline {
 			<description><![CDATA[This option disables <body> tag generation by the TYPO3 core. It is useful for extensions like TemplaVoila, which can produce its own <body> tag with additional attributes.]]></description>
 			<default><![CDATA[0]]></default>
 		</property>
-		<property name="extOnReady" type="CARRAY">
-			<description><![CDATA[ExtJS specific, adds inline javascript, wrapped in Ext.onReady.
-
-Example:
-
-page.extOnReady {
-
-   10 = TEXT
-
-   10.value = Ext.Msg.alert("Typoscript Message","Hello World!");
-
-}
-
-will produce following source:
-
-Ext.onReady(function() {Ext.Msg.alert("Typoscript Message","Hello World!"); });
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="footerData" type="CARRAY">
 			<description><![CDATA[Same as headerData above, except that this block gets included at the bottom of the page (just before the closing body tag).
 			]]></description>
@@ -5741,27 +5721,9 @@ includeJSLibs.twitter.external = 1
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="inlineLanguageLabel" type="array">
-			<description><![CDATA[array of strings
-			ExtJS specific, adds language labels to the page.
-
-Example:
-
-inlineLanguageLabel {
-   label1 = 123
-   label2 = 456
-}
-
-will produce following source:
-
-TYPO3.lang = {"label1":"123","label2":"456"};
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="inlineSettings" type="array">
 			<description><![CDATA[array of strings
-ExtJS specific, adds settings to the page.
+Adds settings to the page.
 
 Example:
 
@@ -5791,18 +5753,8 @@ Might be deprecated soon. Most likely the RTE should be configured by the styles
 	This allows to include the JavaScript libraries that are shipped with the TYPO3 Core.
 
 javascriptLibs {
-
-     # includes ExtJS
-   ExtJs = 1
-
-     # include ext-all-notheme.css
-   ExtJs.css = 1
-
-     # include default theme
-   ExtJs.theme = 1
-
-     # includes ExtJS debug file (uncompressed)
-   ExtJs.debug = 1
+     # includes jQuery
+   jQuery = 1
 }
 ]]></description>
 			<default><![CDATA[

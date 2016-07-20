@@ -2181,11 +2181,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
         $this->inlineLanguageLabelFiles = array();
-        // Convert labels/settings back to UTF-8 since json_encode() only works with UTF-8:
+        // Convert settings back to UTF-8 since json_encode() only works with UTF-8:
         if (TYPO3_MODE === 'FE' && $this->getCharSet() !== 'utf-8') {
-            if ($this->inlineLanguageLabels) {
-                $this->csConvObj->convArray($this->inlineLanguageLabels, $this->getCharSet(), 'utf-8');
-            }
             if ($this->inlineSettings) {
                 $this->csConvObj->convArray($this->inlineSettings, $this->getCharSet(), 'utf-8');
             }
