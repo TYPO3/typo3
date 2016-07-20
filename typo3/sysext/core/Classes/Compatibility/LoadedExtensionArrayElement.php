@@ -87,9 +87,8 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
                     $packageType = 'T';
                     break;
             }
-            if ($packageType !== null && $relativePackagePathToPathSite !== null) {
+            if ($packageType !== null) {
                 $this->extensionInformation['type'] = $packageType;
-                $this->extensionInformation['siteRelPath'] = $relativePackagePathToPathSite;
             }
         }
     }

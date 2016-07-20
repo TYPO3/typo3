@@ -14,6 +14,7 @@ namespace TYPO3\CMS\About\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\About\Domain\Model\Extension;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -33,7 +34,7 @@ class ExtensionRepository extends Repository
         $loadedExtensionsArray = $GLOBALS['TYPO3_LOADED_EXT'];
         foreach ($loadedExtensionsArray as $extensionKey => $extension) {
             if ((is_array($extension) || $extension instanceof \ArrayAccess) && $extension['type'] !== 'S') {
-                $emconfPath = PATH_site . $extension['siteRelPath'] . 'ext_emconf.php';
+                $emconfPath = GeneralUtility::getFileAbsFileName('EXT:' . $extensionKey . '/ext_emconf.php');
                 if (file_exists($emconfPath)) {
                     include $emconfPath;
                     $extension = $this->objectManager->get(Extension::class);

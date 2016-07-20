@@ -15,7 +15,11 @@ namespace TYPO3\CMS\Documentation\Service;
  */
 
 use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Documentation\Exception\Document;
+use TYPO3\CMS\Documentation\Utility\MiscUtility;
+use TYPO3\CMS\Lang\Exception\XmlParser;
 
 /**
  * Service class to connect to docs.typo3.org.
@@ -35,7 +39,7 @@ class DocumentationService
         if ($json) {
             $documents = json_decode($json, true);
             foreach ($documents as &$document) {
-                $document['icon'] = \TYPO3\CMS\Documentation\Utility\MiscUtility::getIcon($document['key']);
+                $document['icon'] = MiscUtility::getIcon($document['key']);
             }
 
             // Cache file locally to be able to create a composer.json file when fetching a document
@@ -55,9 +59,9 @@ class DocumentationService
         $documents = array();
 
         foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extensionKey => $extensionData) {
-            $absoluteExtensionPath = GeneralUtility::getFileAbsFileName($extensionData['siteRelPath']);
+            $absoluteExtensionPath = ExtensionManagementUtility::extPath($extensionKey);
             if (is_file($absoluteExtensionPath . 'README.rst') || is_file($absoluteExtensionPath . 'Documentation' . DIRECTORY_SEPARATOR . 'Index.rst')) {
-                $metadata = \TYPO3\CMS\Documentation\Utility\MiscUtility::getExtensionMetaData($extensionKey);
+                $metadata = MiscUtility::getExtensionMetaData($extensionKey);
                 if ($extensionData['type'] === 'S') {
                     $version = TYPO3_branch;
                 } else {
@@ -67,7 +71,7 @@ class DocumentationService
                 $documentKey = 'typo3cms.extensions.' . $extensionKey;
                 $documents[] = array(
                     'title'   => $metadata['title'],
-                    'icon'    => \TYPO3\CMS\Documentation\Utility\MiscUtility::getIcon($documentKey),
+                    'icon'    => MiscUtility::getIcon($documentKey),
                     'type'    => 'Extension',
                     'key'     => $documentKey,
                     'shortcut' => $extensionKey,
@@ -241,7 +245,7 @@ class DocumentationService
      * Parses content of packages.xml into a suitable array.
      *
      * @param string $string: XML data to parse
-     * @throws \TYPO3\CMS\Documentation\Exception\XmlParser
+     * @throws XmlParser
      * @return array Array representation of XML data
      */
     protected function parsePackagesXML($string)
@@ -251,7 +255,7 @@ class DocumentationService
         $data = json_decode(json_encode((array)simplexml_load_string($string)), true);
         libxml_disable_entity_loader($previousValueOfEntityLoader);
         if (count($data) !== 2) {
-            throw new \TYPO3\CMS\Documentation\Exception\XmlParser('Error in XML parser while decoding packages XML file.', 1374222437);
+            throw new XmlParser('Error in XML parser while decoding packages XML file.', 1374222437);
         }
 
         // SimpleXML does not properly handle arrays with only 1 item
@@ -299,21 +303,22 @@ class DocumentationService
                         $absoluteTargetPath = GeneralUtility::getFileAbsFileName($path . implode('/', $zipEntryPathSegments) . '/' . $fileName);
                         if (trim($absoluteTargetPath) !== '') {
                             $return = GeneralUtility::writeFile(
-                                $absoluteTargetPath, zip_entry_read($zipEntry, zip_entry_filesize($zipEntry))
+                                $absoluteTargetPath,
+                                zip_entry_read($zipEntry, zip_entry_filesize($zipEntry))
                             );
                             if ($return === false) {
-                                throw new \TYPO3\CMS\Documentation\Exception\Document('Could not write file ' . $zipEntryName, 1374161546);
+                                throw new Document('Could not write file ' . $zipEntryName, 1374161546);
                             }
                         } else {
-                            throw new \TYPO3\CMS\Documentation\Exception\Document('Could not write file ' . $zipEntryName, 1374161532);
+                            throw new Document('Could not write file ' . $zipEntryName, 1374161532);
                         }
                     }
                 } else {
-                    throw new \TYPO3\CMS\Documentation\Exception\Document('Extension directory missing in zip file!', 1374161519);
+                    throw new Document('Extension directory missing in zip file!', 1374161519);
                 }
             }
         } else {
-            throw new \TYPO3\CMS\Documentation\Exception\Document('Unable to open zip file ' . $file, 1374161508);
+            throw new Document('Unable to open zip file ' . $file, 1374161508);
         }
 
         return $result;
