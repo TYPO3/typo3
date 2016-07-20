@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c4c00760ec72aaac12257c4f91f8ba11",
-    "content-hash": "b5a82e675339190fa8f425525bdce43a",
+    "hash": "def4531edbca188b5e0d84aa52943af9",
+    "content-hash": "e4e1135266ede2d241eee1dcec5859c6",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -1371,16 +1371,16 @@
         },
         {
             "name": "codeception/codeception",
-            "version": "2.2.1",
+            "version": "2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "f137636f0c185e7d4a495b9cea70c1afae27dfc7"
+                "reference": "8d80bb4ec7470e8df5de0e4c401785bc3fa1f4f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/f137636f0c185e7d4a495b9cea70c1afae27dfc7",
-                "reference": "f137636f0c185e7d4a495b9cea70c1afae27dfc7",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/8d80bb4ec7470e8df5de0e4c401785bc3fa1f4f6",
+                "reference": "8d80bb4ec7470e8df5de0e4c401785bc3fa1f4f6",
                 "shasum": ""
             },
             "require": {
@@ -1393,6 +1393,8 @@
                 "php": ">=5.4.0 <8.0",
                 "phpunit/php-code-coverage": ">=2.1.3",
                 "phpunit/phpunit": ">4.8.20 <5.5",
+                "sebastian/comparator": "~1.1",
+                "sebastian/diff": "^1.4",
                 "symfony/browser-kit": ">=2.7 <4.0",
                 "symfony/console": ">=2.7 <4.0",
                 "symfony/css-selector": ">=2.7 <4.0",
@@ -1456,7 +1458,7 @@
                 "functional testing",
                 "unit testing"
             ],
-            "time": "2016-06-03 12:44:06"
+            "time": "2016-06-29 00:59:28"
         },
         {
             "name": "facebook/webdriver",
@@ -1503,16 +1505,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v1.11.4",
+            "version": "v1.11.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "eeb280e909834603ffe03524dbe0066e77c83084"
+                "reference": "d3d08b76753092a232a4d8c3b94095ac06898719"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/eeb280e909834603ffe03524dbe0066e77c83084",
-                "reference": "eeb280e909834603ffe03524dbe0066e77c83084",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/d3d08b76753092a232a4d8c3b94095ac06898719",
+                "reference": "d3d08b76753092a232a4d8c3b94095ac06898719",
                 "shasum": ""
             },
             "require": {
@@ -1526,8 +1528,12 @@
                 "symfony/process": "~2.3|~3.0",
                 "symfony/stopwatch": "~2.5|~3.0"
             },
+            "conflict": {
+                "hhvm": "<3.9"
+            },
             "require-dev": {
-                "satooshi/php-coveralls": "0.7.*@dev"
+                "phpunit/phpunit": "^4.5|^5",
+                "satooshi/php-coveralls": "^0.7.1"
             },
             "bin": [
                 "php-cs-fixer"
@@ -1553,20 +1559,20 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "time": "2016-06-07 07:51:27"
+            "time": "2016-07-06 22:49:35"
         },
         {
             "name": "jakoch/phantomjs-installer",
-            "version": "2.1.1-p03",
+            "version": "2.1.1-p05",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jakoch/phantomjs-installer.git",
-                "reference": "d4e9db3d16d5b6e70d1d4941cb84425f9d9fa801"
+                "reference": "1aa2a29da48fee62679f7f7a3d446b0e52df494a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jakoch/phantomjs-installer/zipball/d4e9db3d16d5b6e70d1d4941cb84425f9d9fa801",
-                "reference": "d4e9db3d16d5b6e70d1d4941cb84425f9d9fa801",
+                "url": "https://api.github.com/repos/jakoch/phantomjs-installer/zipball/1aa2a29da48fee62679f7f7a3d446b0e52df494a",
+                "reference": "1aa2a29da48fee62679f7f7a3d446b0e52df494a",
                 "shasum": ""
             },
             "require": {
@@ -1595,20 +1601,20 @@
                 "headless",
                 "phantomjs"
             ],
-            "time": "2016-05-22 09:49:40"
+            "time": "2016-07-11 09:07:23"
         },
         {
             "name": "mikey179/vfsStream",
-            "version": "v1.6.3",
+            "version": "v1.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikey179/vfsStream.git",
-                "reference": "c19925cd0390d3c436a0203ae859afa460d0474b"
+                "reference": "0247f57b2245e8ad2e689d7cee754b45fbabd592"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/c19925cd0390d3c436a0203ae859afa460d0474b",
-                "reference": "c19925cd0390d3c436a0203ae859afa460d0474b",
+                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/0247f57b2245e8ad2e689d7cee754b45fbabd592",
+                "reference": "0247f57b2245e8ad2e689d7cee754b45fbabd592",
                 "shasum": ""
             },
             "require": {
@@ -1641,7 +1647,7 @@
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
             "homepage": "http://vfs.bovigo.org/",
-            "time": "2016-04-09 09:42:01"
+            "time": "2016-07-18 14:02:57"
         },
         {
             "name": "myclabs/deep-copy",
@@ -2276,16 +2282,16 @@
         },
         {
             "name": "se/selenium-server-standalone",
-            "version": "v2.53.0",
+            "version": "v2.53.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sveneisenschmidt/selenium-server-standalone.git",
-                "reference": "b67b6b933edce2ffa26f075247a05c464a335cea"
+                "reference": "ef4eea9c99efb9c0e3084e9cae625662ccd43361"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sveneisenschmidt/selenium-server-standalone/zipball/b67b6b933edce2ffa26f075247a05c464a335cea",
-                "reference": "b67b6b933edce2ffa26f075247a05c464a335cea",
+                "url": "https://api.github.com/repos/sveneisenschmidt/selenium-server-standalone/zipball/ef4eea9c99efb9c0e3084e9cae625662ccd43361",
+                "reference": "ef4eea9c99efb9c0e3084e9cae625662ccd43361",
                 "shasum": ""
             },
             "require-dev": {
@@ -2311,7 +2317,7 @@
                 "selenium",
                 "testing"
             ],
-            "time": "2016-03-21 15:02:15"
+            "time": "2016-07-01 14:16:52"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -2827,16 +2833,16 @@
         },
         {
             "name": "site5/phantoman",
-            "version": "v1.1.3",
+            "version": "v1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/site5/phantoman.git",
-                "reference": "ff0323394e25308a87b82e3a51e20b53ea5823f9"
+                "reference": "f7a373c52816dad25852ea773e08fc7373fc8345"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/site5/phantoman/zipball/ff0323394e25308a87b82e3a51e20b53ea5823f9",
-                "reference": "ff0323394e25308a87b82e3a51e20b53ea5823f9",
+                "url": "https://api.github.com/repos/site5/phantoman/zipball/f7a373c52816dad25852ea773e08fc7373fc8345",
+                "reference": "f7a373c52816dad25852ea773e08fc7373fc8345",
                 "shasum": ""
             },
             "require": {
@@ -2870,7 +2876,7 @@
                 "headless",
                 "phantomjs"
             ],
-            "time": "2016-05-25 14:29:33"
+            "time": "2016-06-29 13:39:37"
         },
         {
             "name": "symfony/browser-kit",

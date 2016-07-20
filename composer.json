@@ -58,7 +58,7 @@
 		"se/selenium-server-standalone": "~2.53",
 		"7elix/styleguide": "~8.0.0",
 		"site5/phantoman": "^1.0",
-		"jakoch/phantomjs-installer": "2.1.1-p03",
+		"jakoch/phantomjs-installer": "2.1.1-p05",
 		"friendsofphp/php-cs-fixer": "^1.11"
 	},
 	"suggest": {
