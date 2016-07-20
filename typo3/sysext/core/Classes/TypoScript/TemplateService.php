@@ -447,7 +447,7 @@ class TemplateService
     {
         if (is_array($theRootLine)) {
             $setupData = '';
-            $hash = '';
+            $cacheIdentifier = '';
             // Flag that indicates that the existing data in cache_pagesection
             // could be used (this is the case if $TSFE->all is set, and the
             // rowSum still matches). Based on this we decide if cache_pagesection
@@ -477,23 +477,23 @@ class TemplateService
                     $cc = $this->matching($cc);
                     ksort($cc);
                 }
-                $hash = md5(serialize($cc));
+                $cacheIdentifier = md5(serialize($cc));
             } else {
                 // If currentPageData was not there, we first find $rowSum (freshly generated). After that we try to see, if it is stored with a list of all conditions. If so we match the result.
                 $rowSumHash = md5('ROWSUM:' . serialize($this->rowSum));
-                $result = PageRepository::getHash($rowSumHash);
+                $result = $this->getCacheEntry($rowSumHash);
                 if (is_array($result)) {
-                    $cc = array();
+                    $cc = [];
                     $cc['all'] = $result;
                     $cc['rowSum'] = $this->rowSum;
                     $cc = $this->matching($cc);
                     ksort($cc);
-                    $hash = md5(serialize($cc));
+                    $cacheIdentifier = md5(serialize($cc));
                 }
             }
-            if ($hash) {
+            if ($cacheIdentifier) {
                 // Get TypoScript setup array
-                $setupData = PageRepository::getHash($hash);
+                $setupData = $this->getCacheEntry($cacheIdentifier);
             }
             if (is_array($setupData) && !$this->forceTemplateParsing) {
                 // If TypoScript setup structure was cached we unserialize it here:
@@ -509,21 +509,21 @@ class TemplateService
                 // Make configuration
                 $this->generateConfig();
                 // This stores the template hash thing
-                $cc = array();
+                $cc = [];
                 // All sections in the template at this point is found
                 $cc['all'] = $this->sections;
                 // The line of templates is collected
                 $cc['rowSum'] = $this->rowSum;
                 $cc = $this->matching($cc);
                 ksort($cc);
-                $hash = md5(serialize($cc));
+                $cacheIdentifier = md5(serialize($cc));
                 // This stores the data.
-                PageRepository::storeHash($hash, $this->setup, 'TS_TEMPLATE');
+                $this->setCacheEntry($cacheIdentifier, $this->setup, 'TS_TEMPLATE');
                 if ($this->tt_track) {
                     $this->getTimeTracker()->setTSlogMessage('TS template size, serialized: ' . strlen(serialize($this->setup)) . ' bytes');
                 }
                 $rowSumHash = md5('ROWSUM:' . serialize($this->rowSum));
-                PageRepository::storeHash($rowSumHash, $cc['all'], 'TMPL_CONDITIONS_ALL');
+                $this->setCacheEntry($rowSumHash, $cc['all'], 'TMPL_CONDITIONS_ALL');
             }
             // Add rootLine
             $cc['rootLine'] = $this->rootLine;
@@ -537,10 +537,10 @@ class TemplateService
                 $mpvarHash = GeneralUtility::md5int($this->getTypoScriptFrontendController()->MP);
                 /** @var $pageSectionCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
                 $pageSectionCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_pagesection');
-                $pageSectionCache->set((int)$this->getTypoScriptFrontendController()->id . '_' . $mpvarHash, $cc, array(
+                $pageSectionCache->set((int)$this->getTypoScriptFrontendController()->id . '_' . $mpvarHash, $cc, [
                     'pageId_' . (int)$this->getTypoScriptFrontendController()->id,
                     'mpvarHash_' . $mpvarHash
-                ));
+                ]);
             }
             // If everything OK.
             if ($this->rootId && $this->rootLine && $this->setup) {
@@ -1726,5 +1726,30 @@ class TemplateService
     protected function getTimeTracker()
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
+    }
+
+    /**
+     * Returns data stored for the hash string in the cache "cache_hash"
+     * used to store the parsed TypoScript template structures.
+     *
+     * @param string $identifier The hash-string which was used to store the data value
+     * @return mixed The data from the cache
+     */
+    protected function getCacheEntry($identifier)
+    {
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash')->get($identifier);
+    }
+
+    /**
+     * Stores $data in the 'cache_hash' cache with the hash key $identifier
+     *
+     * @param string $identifier 32 bit hash string (eg. a md5 hash of a serialized array identifying the data being stored)
+     * @param mixed $data The data to store
+     * @param string $tag Is just a textual identification in order to inform about the content
+     * @return void
+     */
+    protected function setCacheEntry($identifier, $data, $tag)
+    {
+        GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash')->set($identifier, $data, ['ident_' . $tag], 0);
     }
 }
