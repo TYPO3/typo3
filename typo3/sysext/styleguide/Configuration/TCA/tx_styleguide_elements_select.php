@@ -491,9 +491,7 @@ return [
                     'parentField' => 'pid',
                     'appearance' => [
                         'showHeader' => false,
-                        'nonSelectableLevels' => '0,1',
-                        'allowRecursiveMode' => true, // @TODO: No effect?
-                        'width' => 400,
+                        'nonSelectableLevels' => '0,1'
                     ],
                 ],
             ],
