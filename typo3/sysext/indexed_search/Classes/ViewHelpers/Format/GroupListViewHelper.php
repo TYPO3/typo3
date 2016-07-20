@@ -23,17 +23,23 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class GroupListViewHelper extends AbstractViewHelper
 {
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('groups', 'array', '', false, []);
+    }
+
+    /**
      * Render the given group information as string
      *
-     * @param array $groups
      * @return string
      */
-    public function render(array $groups = array())
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'groups' => $groups,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

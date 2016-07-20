@@ -31,20 +31,19 @@ class ClickMenuOnIconViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
+        $this->registerArgument('table', 'string', '', true);
     }
 
     /**
      * Renders click menu link (context sensitive menu)
      *
-     * @param string $table
-     *
      * @return string
      * @see \TYPO3\CMS\Backend\Utility\BackendUtility::wrapClickMenuOnIcon()
      */
-    public function render($table)
+    public function render()
     {
         $this->tag->addAttribute('class', 't3-js-clickmenutrigger ' . $this->arguments['class']);
-        $this->tag->addAttribute('data-table', $table);
+        $this->tag->addAttribute('data-table', $this->arguments['table']);
         $this->tag->addAttribute('data-listframe', 1);
         $this->tag->addAttribute('href', '#');
 

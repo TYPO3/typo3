@@ -42,25 +42,27 @@ class PageBrowsingViewHelper extends AbstractViewHelper
     protected static $prefixId = 'tx_indexedsearch';
 
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('maximumNumberOfResultPages', 'int', '', true);
+        $this->registerArgument('numberOfResults', 'int', '', true);
+        $this->registerArgument('resultsPerPage', 'int', '', true);
+        $this->registerArgument('currentPage', 'int', '', false, 0);
+        $this->registerArgument('freeIndexUid', 'int', '');
+    }
+
+    /**
      * Main render function
      *
-     * @param int $maximumNumberOfResultPages The number of page links shown
-     * @param int $numberOfResults Total number of results
-     * @param int $resultsPerPage Number of results per page
-     * @param int $currentPage The current page starting with 0
-     * @param string|NULL $freeIndexUid List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
      * @return string The content
      */
-    public function render($maximumNumberOfResultPages, $numberOfResults, $resultsPerPage, $currentPage = 0, $freeIndexUid = null)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'maximumNumberOfResultPages' => $maximumNumberOfResultPages,
-                'numberOfResults' => $numberOfResults,
-                'resultsPerPage' => $resultsPerPage,
-                'currentPage' => $currentPage,
-                'freeIndexUid' => $freeIndexUid,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

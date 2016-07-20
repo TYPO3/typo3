@@ -22,18 +22,21 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class FlagValueViewHelper extends AbstractViewHelper
 {
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('flags', 'int', '', true);
+    }
+
     /**
      * Render additional flag information
      *
-     * @param int $flags
      * @return string
      */
-    public function render($flags)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'flags' => $flags,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

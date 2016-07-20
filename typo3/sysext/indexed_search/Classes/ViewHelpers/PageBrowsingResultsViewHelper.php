@@ -25,21 +25,25 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class PageBrowsingResultsViewHelper extends AbstractViewHelper
 {
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('numberOfResults', 'int', '', true);
+        $this->registerArgument('resultsPerPage', 'int', '', true);
+        $this->registerArgument('currentPage', 'int', '', false, 1);
+    }
+
+    /**
      * main render function
      *
-     * @param int $numberOfResults
-     * @param int $resultsPerPage
-     * @param int $currentPage
      * @return string the content
      */
-    public function render($numberOfResults, $resultsPerPage, $currentPage = 1)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'numberOfResults' => $numberOfResults,
-                'resultsPerPage' => $resultsPerPage,
-                'currentPage' => $currentPage,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

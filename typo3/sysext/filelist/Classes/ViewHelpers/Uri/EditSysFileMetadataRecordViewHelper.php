@@ -26,20 +26,24 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class EditSysFileMetadataRecordViewHelper extends AbstractViewHelper
 {
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('uid', 'int', '', true);
+        $this->registerArgument('returnUrl', 'string', '', false, '');
+    }
+
+    /**
      * Renders a link to edit sys_file_metadata
-     *
-     * @param int $uid
-     * @param string $returnUrl
      *
      * @return string
      */
-    public function render($uid, $returnUrl = '')
+    public function render()
     {
         return static::renderStatic(
-            [
-                'uid' => $uid,
-                'returnUrl' => $returnUrl,
-            ],
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

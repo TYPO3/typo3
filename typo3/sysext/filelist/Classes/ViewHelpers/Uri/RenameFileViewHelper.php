@@ -26,20 +26,24 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class RenameFileViewHelper extends AbstractViewHelper
 {
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('file', \TYPO3\CMS\Core\Resource\AbstractFile::class, '', true);
+        $this->registerArgument('returnUrl', 'string', '', false, '');
+    }
+
+    /**
      * Renders a link to rename a file
-     *
-     * @param \TYPO3\CMS\Core\Resource\AbstractFile $file
-     * @param string $returnUrl
      *
      * @return string
      */
-    public function render(\TYPO3\CMS\Core\Resource\AbstractFile $file, $returnUrl = '')
+    public function render()
     {
         return static::renderStatic(
-            [
-                'file' => $file,
-                'returnUrl' => $returnUrl,
-            ],
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
