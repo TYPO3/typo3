@@ -42,18 +42,24 @@ class SizeViewHelper extends AbstractViewHelper
     protected $escapeChildren = false;
 
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('format', 'bool', 'If true, file size will be formatted', false, true);
+    }
+
+    /**
      * Get size from file
      *
-     * @param bool $format If true, file size will be formatted
      * @throws \TYPO3\CMS\Install\ViewHelpers\Exception
      * @return int File size
      */
-    public function render($format = true)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'format' => $format,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

@@ -32,17 +32,23 @@ class ImageMagickCommandsViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('commands', 'array', 'Given commands', false, []);
+    }
+
+    /**
      * Display image magick commands
      *
-     * @param array $commands Given commands
      * @return string Formatted commands
      */
-    public function render(array $commands = array())
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'commands' => $commands,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

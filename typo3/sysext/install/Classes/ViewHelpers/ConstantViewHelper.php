@@ -25,17 +25,23 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class ConstantViewHelper extends AbstractViewHelper
 {
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('name', 'string', 'Name of the constant', true);
+    }
+
+    /**
      * Render a constant
      *
-     * @param string $name Name of the constant
      * @return string Value of constant
      */
-    public function render($name)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'name' => $name,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

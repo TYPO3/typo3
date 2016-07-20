@@ -35,19 +35,24 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class ArrayValueByKeyViewHelper extends AbstractViewHelper
 {
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('array', 'array', 'The array being processed', true);
+        $this->registerArgument('key', 'mixed', 'The key being accessed', true);
+    }
+
+    /**
      * Get the value of an key in an array.
      *
-     * @param array $array The array being processed
-     * @param mixed $key The key being accessed
      * @return string
      */
-    public function render(array $array, $key)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'array' => $array,
-                'key' => $key,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

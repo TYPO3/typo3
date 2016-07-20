@@ -52,18 +52,29 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
     protected $escapeChildren = false;
 
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('pageTitle', 'string', 'title tag of the module. Not required by default, as BE modules are shown in a frame', false, '');
+        $this->registerArgument('addCssFiles', 'array', 'Custom CSS files to be loaded', false, []);
+        $this->registerArgument('addJsFiles', 'array', 'Custom JavaScript files to be loaded', false, []);
+    }
+
+    /**
      * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
-     *
-     * @param string $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
-     * @param array $addCssFiles Custom CSS files to be loaded
-     * @param array $addJsFiles Custom JavaScript files to be loaded
      *
      * @return string
      * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
      * @see \TYPO3\CMS\Core\Page\PageRenderer
      */
-    public function render($pageTitle = '', $addCssFiles = array(), $addJsFiles = array())
+    public function render()
     {
+        $pageTitle = $this->arguments['pageTitle'];
+        $addCssFiles = $this->arguments['addCssFiles'];
+        $addJsFiles = $this->arguments['addJsFiles'];
+
         $doc = $this->getDocInstance();
         $pageRenderer = $this->getPageRenderer();
 

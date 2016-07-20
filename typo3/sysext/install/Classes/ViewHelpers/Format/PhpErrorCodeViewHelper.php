@@ -46,17 +46,23 @@ class PhpErrorCodeViewHelper extends AbstractViewHelper
     );
 
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('phpErrorCode', 'int', '', true);
+    }
+
+    /**
      * Render a readable string for PHP error code
      *
-     * @param int $phpErrorCode
      * @return string
      */
-    public function render($phpErrorCode)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'phpErrorCode' => $phpErrorCode,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

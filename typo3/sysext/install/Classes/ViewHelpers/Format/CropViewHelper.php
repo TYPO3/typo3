@@ -49,18 +49,24 @@ class CropViewHelper extends AbstractViewHelper
     protected $escapeChildren = false;
 
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('maxCharacters', 'int', '', true);
+    }
+
+    /**
      * Render the cropped text
      *
-     * @param int $maxCharacters Place where to truncate the string
      * @throws \TYPO3\CMS\Install\ViewHelpers\Exception
      * @return string cropped text
      */
-    public function render($maxCharacters)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'maxCharacters' => $maxCharacters,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

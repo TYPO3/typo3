@@ -41,18 +41,24 @@ class ImageDimensionViewHelper extends AbstractViewHelper
     protected $escapeChildren = false;
 
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('dimension', 'string', '', false, 'width');
+    }
+
+    /**
      * Get width / height from image file
      *
-     * @param string $dimension Either width or height
      * @throws \TYPO3\CMS\Install\ViewHelpers\Exception
      * @return int width or height
      */
-    public function render($dimension = 'width')
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'dimension' => $dimension,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

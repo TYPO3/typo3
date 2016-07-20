@@ -34,18 +34,21 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class ExistsViewHelper extends AbstractViewHelper
 {
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('file', 'string', 'Absolute path', true);
+    }
+
     /**
      * Check if given file is a regular file
      *
-     * @param string $file Absolute path
      * @return bool
      */
-    public function render($file)
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'file' => $file,
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

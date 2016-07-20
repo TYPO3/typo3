@@ -14,13 +14,12 @@ namespace TYPO3\CMS\Install\Tests\Unit\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
-use TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture;
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 /**
  * Test case
  */
-class PhpErrorCodeViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class PhpErrorCodeViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
      * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\NumberViewHelper
@@ -32,12 +31,10 @@ class PhpErrorCodeViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->viewHelper = $this->getMockBuilder(\TYPO3\CMS\Install\ViewHelpers\Format\PhpErrorCodeViewHelper::class)
-            ->setMethods(array('dummy'))
-            ->getMock();
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = new RenderingContextFixture();
-        $this->viewHelper->setRenderingContext($renderingContext);
+        parent::setUp();
+        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Install\ViewHelpers\Format\PhpErrorCodeViewHelper::class, ['dummy']);
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+        $this->viewHelper->initializeArguments();
     }
 
     /**
@@ -73,7 +70,10 @@ class PhpErrorCodeViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function renderPhpCodesCorrectly($errorCode, $expectedString)
     {
-        $actualString = $this->viewHelper->render($errorCode);
+        $this->viewHelper->setArguments([
+            'phpErrorCode' => $errorCode
+        ]);
+        $actualString = $this->viewHelper->render();
         $this->assertEquals($expectedString, $actualString);
     }
 }
