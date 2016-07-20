@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Frontend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Exception\ConnectionException;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -929,32 +931,17 @@ class TypoScriptFrontendController
      */
     public function connectToDB()
     {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
         try {
-            $this->getDatabaseConnection()->connectDB();
-        } catch (\RuntimeException $exception) {
-            switch ($exception->getCode()) {
-                case 1270853883:
-                    // Cannot connect to current database
-                    $message = 'Cannot connect to the configured database "' . TYPO3_db . '"';
-                    if ($this->checkPageUnavailableHandler()) {
-                        $this->pageUnavailableAndExit($message);
-                    } else {
-                        GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
-                        throw new ServiceUnavailableException($message, 1301648782);
-                    }
-                    break;
-                case 1270853884:
-                    // Username / password not accepted
-                    $message = 'The current username, password or host was not accepted when' . ' the connection to the database was attempted to be established!';
-                    if ($this->checkPageUnavailableHandler()) {
-                        $this->pageUnavailableAndExit($message);
-                    } else {
-                        GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
-                        throw new ServiceUnavailableException('Database Error: ' . $message, 1301648945);
-                    }
-                    break;
-                default:
-                    throw $exception;
+            $connection->connect();
+        } catch (ConnectionException $exception) {
+            // Cannot connect to current database
+            $message = 'Cannot connect to the configured database "' . $connection->getDatabase() . '"';
+            if ($this->checkPageUnavailableHandler()) {
+                $this->pageUnavailableAndExit($message);
+            } else {
+                GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+                throw new ServiceUnavailableException($message, 1301648782);
             }
         }
         // Call post processing function for DB connection:
