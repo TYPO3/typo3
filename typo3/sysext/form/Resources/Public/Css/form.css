@@ -574,10 +574,10 @@
   background-image: none;
 }
 #fake-form .formwizard-element button.t3-icon-edit-delete {
-  background-image: url('../../../../../core/Resources/Public/Icons/T3Icons/actions/actions-delete.svg');
+  background-image: url('../../../../core/Resources/Public/Icons/T3Icons/actions/actions-delete.svg');
 }
 #fake-form .formwizard-element button.t3-icon-document-open {
-  background-image: url('../../../../../core/Resources/Public/Icons/T3Icons/actions/actions-open.svg');
+  background-image: url('../../../../core/Resources/Public/Icons/T3Icons/actions/actions-open.svg');
 }
 @media only screen and (max-width: 615px) {
   .tab-content fieldset.form-section ol#formwizard-right {
