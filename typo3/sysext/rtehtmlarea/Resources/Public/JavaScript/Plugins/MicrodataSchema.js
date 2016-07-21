@@ -158,7 +158,7 @@ define([
 			var propertyStore = this.filteredProperties.length > 0 ? this.filteredProperties : this.itemprop;
 			this.inheritedType = 'none';
 			var parent = element.parentNode;
-			while (parent && !/^(body)$/i.test(parent.nodeName)) {
+			while (parent && !/^(html|body)$/i.test(parent.nodeName)) {
 				if (parent.getAttribute('itemtype')) {
 					this.inheritedType = parent.getAttribute('itemtype');
 					break;

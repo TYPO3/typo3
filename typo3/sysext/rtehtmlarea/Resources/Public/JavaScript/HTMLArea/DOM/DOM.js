@@ -250,7 +250,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 		getBlockAncestors: function (node, withinBlock) {
 			var ancestors = [];
 			var ancestor = node;
-			while (ancestor && (ancestor.nodeType === Dom.ELEMENT_NODE) && !/^(body)$/i.test(ancestor.nodeName) && ancestor != withinBlock) {
+			while (ancestor && (ancestor.nodeType === Dom.ELEMENT_NODE) && !/^(html|body)$/i.test(ancestor.nodeName) && ancestor != withinBlock) {
 				if (Dom.isBlockElement(ancestor)) {
 					ancestors.unshift(ancestor);
 				}
@@ -277,7 +277,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 			// Is types a non-empty array?
 			if (types && Object.prototype.toString.call(types) === '[object Array]' && types.length > 0) {
 				types = new RegExp( '^(' + types.join('|') + ')$', 'i');
-				while (parent && parent.nodeType === Dom.ELEMENT_NODE && !/^(body)$/i.test(parent.nodeName)) {
+				while (parent && parent.nodeType === Dom.ELEMENT_NODE && !/^(html|body)$/i.test(parent.nodeName)) {
 					if (types.test(parent.nodeName)) {
 						ancestor = parent;
 						break;

@@ -587,7 +587,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			while (i < startAncestors.length && i < endAncestors.length && startAncestors[i] === endAncestors[i]) {
 				++i;
 			}
-			if ((endBlocks.start === endBlocks.end && /^(body)$/i.test(endBlocks.start.nodeName)) || !startAncestors[i] || !endAncestors[i]) {
+			if ((endBlocks.start === endBlocks.end && /^(html|body)$/i.test(endBlocks.start.nodeName)) || !startAncestors[i] || !endAncestors[i]) {
 				--i;
 			}
 			if (keepValid) {
@@ -652,7 +652,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			if (endBlocks.start === endBlocks.end) {
 				--index;
 			}
-			if (!/^(body)$/i.test(startAncestors[index].nodeName)) {
+			if (!/^(html|body)$/i.test(startAncestors[index].nodeName)) {
 				for (var block = startAncestors[index]; block; block = block.nextSibling) {
 					if (Dom.isBlockElement(block)) {
 						switch (buttonId) {
@@ -705,7 +705,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				this.editor.getDomNode().removeMarkup(block);
 			}
 		},
-	
+
 		insertList: function (buttonId, parentElement) {
 			if (/^(dd)$/i.test(parentElement.nodeName)) {
 				var list = parentElement.appendChild(this.editor.document.createElement((buttonId === 'OrderedList') ? 'ol' : 'ul'));
@@ -753,7 +753,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				// which breaks the range
 			var range = this.editor.getBookMark().moveTo(bookmark);
 			bookmark = this.editor.getBookMark().get(range);
-	
+
 				// Check if the last element has children. If so, outdent those that do not intersect the selection
 			var last = indentedList.lastChild.lastChild;
 			if (last && /^(ol|ul)$/i.test(last.nodeName)) {
@@ -1037,8 +1037,8 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			if (mode === 'wysiwyg' && this.editor.isEditable()) {
 				var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
 				var parentElement = statusBarSelection ? statusBarSelection : this.editor.getSelection().getParentElement();
-				if (!/^body$/i.test(parentElement.nodeName)) {
-					while (parentElement && !Dom.isBlockElement(parentElement) || /^li$/i.test(parentElement.nodeName)) {
+				if (!/^(html|body)$/i.test(parentElement.nodeName)) {
+					while (parentElement && (!Dom.isBlockElement(parentElement) || /^li$/i.test(parentElement.nodeName))) {
 						parentElement = parentElement.parentNode;
 					}
 					var blockAncestors = Dom.getBlockAncestors(parentElement);
@@ -1081,7 +1081,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 							break;
 						case "InsertParagraphBefore" :
 						case "InsertParagraphAfter"  :
-							button.setDisabled(/^(body)$/i.test(startAncestors[index].nodeName));
+							button.setDisabled(/^(html|body)$/i.test(startAncestors[index].nodeName));
 							break;
 						case "Blockquote" :
 							for (var j = blockAncestors.length; --j >= 0;) {
@@ -1103,7 +1103,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 									commandState = false;
 								}
 							} else {
-								if (/^(body)$/i.test(startAncestors[index].nodeName)) {
+								if (/^(html|body)$/i.test(startAncestors[index].nodeName)) {
 									button.setDisabled(true);
 								} else {
 									button.setDisabled(false);
