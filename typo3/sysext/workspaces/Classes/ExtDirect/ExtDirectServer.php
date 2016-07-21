@@ -379,7 +379,7 @@ class ExtDirectServer extends AbstractHandler
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
 
         $result = $queryBuilder
-            ->select('log_data', 'tstamp,userid')
+            ->select('log_data', 'tstamp', 'userid')
             ->from('sys_log')
             ->where(
                 $queryBuilder->expr()->eq('action', 6),
