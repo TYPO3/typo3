@@ -384,14 +384,6 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
-    /**
      * @return FrontendBackendUserAuthentication
      */
     protected function createFrontendBackendUser()
