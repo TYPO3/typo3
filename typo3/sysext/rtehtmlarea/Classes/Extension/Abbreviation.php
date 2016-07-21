@@ -14,9 +14,8 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -147,16 +146,25 @@ class Abbreviation extends RteHtmlAreaApi
      */
     protected function buildJSAbbreviationArray()
     {
-        $database = $this->getDatabaseConnection();
         $backendUser = $this->getBackendUserAuthentication();
         $button = 'abbreviation';
         $acronymArray = array();
         $abbrArray = array();
         $tableA = 'tx_rtehtmlarea_acronym';
         $tableB = 'static_languages';
-        $fields = $tableA . '.type,' . $tableA . '.term,' . $tableA . '.acronym,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2';
-        $tableAB = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
-        $whereClause = '1=1';
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($tableA);
+
+        $queryBuilder->select('a.type', 'a.term', 'a.acronym', 'b.lg_iso_2', 'b.lg_country_iso_2');
+        $queryBuilder->from($tableA, 'a');
+        $queryBuilder->leftJoin(
+            'a',
+            $tableB,
+            'b',
+            $queryBuilder->expr()->eq('a.static_lang_isocode', $queryBuilder->quoteIdentifier('b.uid'))
+        );
+
         $loadRecordsFromDatabase = true;
         // Get all abbreviations on pages to which the user has access
         $lockBeUserToDBmounts = isset($this->configuration['thisConfig']['buttons.'][$button . '.']['lockBeUserToDBmounts']) ? $this->configuration['thisConfig']['buttons.'][$button . '.']['lockBeUserToDBmounts'] : $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'];
@@ -193,7 +201,7 @@ class Abbreviation extends RteHtmlAreaApi
             }
 
             if ($pageTree !== '') {
-                $whereClause .= ' AND ' . $tableA . '.pid IN (' . $pageTree . ')';
+                $queryBuilder->where($queryBuilder->expr()->in('a.pid', $pageTree));
             } else {
                 // If page tree is empty the user does not have access to any pages / acronyms.
                 // This is why we do not try do read any records from the database.
@@ -204,19 +212,21 @@ class Abbreviation extends RteHtmlAreaApi
         if ($loadRecordsFromDatabase) {
             // Restrict to abbreviations applicable to the language of current content element
             if ($this->configuration['contentLanguageUid'] > -1) {
-                $whereClause .= ' AND (' . $tableA . '.sys_language_uid=' . $this->configuration['contentLanguageUid'] . ' OR ' . $tableA . '.sys_language_uid=-1) ';
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->eq('a.sys_language_uid', $this->configuration['contentLanguageUid']),
+                        $queryBuilder->expr()->eq('a.sys_language_uid', -1)
+                    )
+                );
             }
             // Restrict to abbreviations in certain languages
             if (is_array($this->configuration['thisConfig']['buttons.']) && is_array($this->configuration['thisConfig']['buttons.']['language.']) && isset($this->configuration['thisConfig']['buttons.']['language.']['restrictToItems'])) {
-                $languageList = implode('\',\'', GeneralUtility::trimExplode(',', $database->fullQuoteStr(strtoupper($this->configuration['thisConfig']['buttons.']['language.']['restrictToItems']), $tableB)));
-                $whereClause .= ' AND ' . $tableB . '.lg_iso_2 IN (' . $languageList . ') ';
+                $languageList = GeneralUtility::trimExplode(',', strtoupper($this->configuration['thisConfig']['buttons.']['language.']['restrictToItems']));
+                $queryBuilder->andWhere($queryBuilder->expr()->in('b.lg_iso_2', $languageList));
             }
-            $whereClause .= BackendUtility::BEenableFields($tableA);
-            $whereClause .= BackendUtility::deleteClause($tableA);
-            $whereClause .= BackendUtility::BEenableFields($tableB);
-            $whereClause .= BackendUtility::deleteClause($tableB);
-            $res = $database->exec_SELECTquery($fields, $tableAB, $whereClause);
-            while ($abbreviationRow = $database->sql_fetch_assoc($res)) {
+
+            $result = $queryBuilder->execute();
+            while ($abbreviationRow = $result->fetch()) {
                 $item = array('term' => $abbreviationRow['term'], 'abbr' => $abbreviationRow['acronym'], 'language' => strtolower($abbreviationRow['lg_iso_2']) . ($abbreviationRow['lg_country_iso_2'] ? '-' . $abbreviationRow['lg_country_iso_2'] : ''));
                 if ($abbreviationRow['type'] == 1) {
                     $acronymArray[] = $item;
@@ -224,20 +234,11 @@ class Abbreviation extends RteHtmlAreaApi
                     $abbrArray[] = $item;
                 }
             }
-            $database->sql_free_result($res);
         }
 
         $this->acronymIndex = count($acronymArray);
         $this->abbreviationIndex = count($abbrArray);
         return json_encode(array('abbr' => $abbrArray, 'acronym' => $acronymArray));
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**

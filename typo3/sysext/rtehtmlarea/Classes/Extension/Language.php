@@ -15,8 +15,7 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  */
 
 use SJBR\StaticInfoTables\Utility\LocalizationUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
@@ -103,31 +102,41 @@ class Language extends RteHtmlAreaApi
      */
     protected function getLanguages()
     {
-        $databaseConnection = $this->getDatabaseConnection();
         $nameArray = array();
         if (ExtensionManagementUtility::isLoaded('static_info_tables')) {
             $where = '1=1';
             $table = 'static_languages';
             $lang = LocalizationUtility::getCurrentLanguage();
             $titleFields = LocalizationUtility::getLabelFields($table, $lang);
-            $prefixedTitleFields = array();
+            $labelFields = array();
             foreach ($titleFields as $titleField) {
-                $prefixedTitleFields[] = $table . '.' . $titleField;
+                $labelFields[] = $table . '.' . $titleField;
             }
-            $labelFields = implode(',', $prefixedTitleFields);
+
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($table);
+
+            $result = $queryBuilder
+                ->select($table . '.lg_iso_2', $table . '.lg_country_iso_2')
+                ->addSelect(...GeneralUtility::trimExplode(',', $labelFields, true))
+                ->from($table)
+                ->where($queryBuilder->expr()->eq('lg_constructed', 0));
+
             // Restrict to certain languages
-            if (is_array($this->configuration['thisConfig']['buttons.']) && is_array($this->configuration['thisConfig']['buttons.']['language.']) && isset($this->configuration['thisConfig']['buttons.']['language.']['restrictToItems'])) {
-                $languageList = implode('\',\'', GeneralUtility::trimExplode(',', $databaseConnection->fullQuoteStr(strtoupper($this->configuration['thisConfig']['buttons.']['language.']['restrictToItems']), $table)));
-                $where .= ' AND ' . $table . '.lg_iso_2 IN (' . $languageList . ')';
+            if (
+                is_array($this->configuration['thisConfig']['buttons.'])
+                && is_array($this->configuration['thisConfig']['buttons.']['language.'])
+                && isset($this->configuration['thisConfig']['buttons.']['language.']['restrictToItems'])
+            ) {
+                $languageList = GeneralUtility::trimExplode(',', strtoupper($this->configuration['thisConfig']['buttons.']['language.']['restrictToItems']));
+                $queryBuilder->andWhere($queryBuilder->expr()->in($table . '.lg_iso_2', $languageList));
             }
-            $res = $databaseConnection->exec_SELECTquery(
-                $table . '.lg_iso_2,' . $table . '.lg_country_iso_2,' . $labelFields,
-                $table,
-                $where . ' AND lg_constructed = 0 ' . BackendUtility::BEenableFields($table) . BackendUtility::deleteClause($table)
-            );
+
+            $result = $queryBuilder->execute();
+
             $prefixLabelWithCode = (bool)$this->configuration['thisConfig']['buttons.']['language.']['prefixLabelWithCode'];
             $postfixLabelWithCode = (bool)$this->configuration['thisConfig']['buttons.']['language.']['postfixLabelWithCode'];
-            while ($row = $databaseConnection->sql_fetch_assoc($res)) {
+            while ($row = $result->fetch()) {
                 $code = strtolower($row['lg_iso_2']) . ($row['lg_country_iso_2'] ? '-' . strtoupper($row['lg_country_iso_2']) : '');
                 foreach ($titleFields as $titleField) {
                     if ($row[$titleField]) {
@@ -136,7 +145,6 @@ class Language extends RteHtmlAreaApi
                     }
                 }
             }
-            $databaseConnection->sql_free_result($res);
             uasort($nameArray, 'strcoll');
         }
         return $nameArray;
@@ -155,13 +163,5 @@ class Language extends RteHtmlAreaApi
         } else {
             return $show;
         }
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -1166,7 +1166,6 @@ class RichTextElement extends AbstractFormElement
      */
     public function initializeLanguageRelatedProperties()
     {
-        $database = $this->getDatabaseConnection();
         $this->language = $GLOBALS['LANG']->lang;
         if ($this->language === 'default' || !$this->language) {
             $this->language = 'en';
@@ -1181,16 +1180,25 @@ class RichTextElement extends AbstractFormElement
             if (ExtensionManagementUtility::isLoaded('static_info_tables')) {
                 $tableA = 'sys_language';
                 $tableB = 'static_languages';
-                $selectFields = $tableA . '.uid,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2';
-                $tableAB = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
-                $whereClause = $tableA . '.uid = ' . intval($this->contentLanguageUid);
-                $whereClause .= BackendUtility::BEenableFields($tableA);
-                $whereClause .= BackendUtility::deleteClause($tableA);
-                $res = $database->exec_SELECTquery($selectFields, $tableAB, $whereClause);
-                while ($languageRow = $database->sql_fetch_assoc($res)) {
+
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($tableA);
+
+                $result = $queryBuilder
+                    ->select('a.uid', 'b.lg_iso_2', 'b.lg_country_iso_2')
+                    ->from($tableA)
+                    ->where('a.uid', (int)$this->contentLanguageUid)
+                    ->leftJoin(
+                        'a',
+                        $tableB,
+                        'b',
+                        $queryBuilder->expr()->eq('a.static_lang_isocode', $queryBuilder->quoteIdentifier('b.uid'))
+                    )
+                    ->execute();
+
+                while ($languageRow = $result->fetch()) {
                     $this->contentISOLanguage = strtolower(trim($languageRow['lg_iso_2']) . (trim($languageRow['lg_country_iso_2']) ? '_' . trim($languageRow['lg_country_iso_2']) : ''));
                 }
-                $database->sql_free_result($res);
             }
         } else {
             $this->contentISOLanguage = trim($this->processedRteConfiguration['defaultContentLanguage']) ?: 'en';
@@ -1322,13 +1330,5 @@ class RichTextElement extends AbstractFormElement
     protected function getBackendUserAuthentication()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
