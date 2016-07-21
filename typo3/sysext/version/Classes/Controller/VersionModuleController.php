@@ -378,7 +378,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         ) . '
 					</td>
 					<td class="col-icon">' . $this->moduleTemplate->getIconFactory()->getIconForRecord($this->table, $row, Icon::SIZE_SMALL)->render() . '</td>
-					<td>' . htmlspecialchars(BackendUtility::getRecordTitle($this->table, $row, true)) . '</td>
+					<td>' . BackendUtility::getRecordTitle($this->table, $row, true) . '</td>
 					<td>' . $row['uid'] . '</td>
 					<td>' . $row['t3ver_oid'] . '</td>
 					<td>' . $row['t3ver_id'] . '</td>
@@ -484,7 +484,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $content .= '
 						<tr>
 							<td class="col-icon">' . $this->moduleTemplate->getIconFactory()->getIconForRecord($table, $subrow, Icon::SIZE_SMALL)->render() . '</td>
-							<td class="col-title">' . htmlspecialchars(BackendUtility::getRecordTitle($table, $subrow, true)) . '</td>
+							<td class="col-title">' . BackendUtility::getRecordTitle($table, $subrow, true) . '</td>
 							<td>' . ($ownVer > 1 ? '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_txversionM1', array('table' => $table, 'uid' => $subrow['uid']))) . '">' . ($ownVer - 1) . '</a>' : '') . '</td>
 							<td class="col-control">' . $this->adminLinks($table, $subrow) . '</td>
 						</tr>';
