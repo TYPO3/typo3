@@ -81,8 +81,8 @@ class CheckboxViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        self::assertContains('<input type="hidden" name="fieldPrefix[objectName][someProperty]" value="" />', $result);
-        self::assertContains('<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />', $result);
+        $this->assertContains('<input type="hidden" name="fieldPrefix[objectName][someProperty]" value="" />', $result);
+        $this->assertContains('<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />', $result);
     }
 
     /**
@@ -108,8 +108,8 @@ class CheckboxViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        self::assertContains('<input type="hidden" name="fieldPrefix[objectName][someProperty]" value="" />', $result);
-        self::assertContains(
+        $this->assertContains('<input type="hidden" name="fieldPrefix[objectName][someProperty]" value="" />', $result);
+        $this->assertContains(
             '<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />',
             $result
         );
@@ -136,7 +136,7 @@ class CheckboxViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        self::assertContains(
+        $this->assertContains(
             '<input type="checkbox" name="fieldPrefix[objectName][someProperty][]" value="foo" />',
             $result
         );
@@ -164,7 +164,7 @@ class CheckboxViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        self::assertContains(
+        $this->assertContains(
             '<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />',
             $result
         );
@@ -191,7 +191,7 @@ class CheckboxViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        self::assertContains(
+        $this->assertContains(
             '<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="bar" checked="checked" />',
             $result
         );
@@ -218,7 +218,7 @@ class CheckboxViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        self::assertContains(
+        $this->assertContains(
             '<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />',
             $result
         );
@@ -245,7 +245,7 @@ class CheckboxViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        self::assertContains(
+        $this->assertContains(
             '<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" />',
             $result
         );
@@ -282,7 +282,7 @@ class CheckboxViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        self::assertContains(
+        $this->assertContains(
             '<input type="checkbox" name="fieldPrefix[objectName][someProperty][]" value="2" />',
             $result
         );
@@ -310,7 +310,7 @@ class CheckboxViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        self::assertContains(
+        $this->assertContains(
             '<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" class="error" />',
             $result
         );
@@ -337,7 +337,7 @@ class CheckboxViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        self::assertContains(
+        $this->assertContains(
             '<input type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" class="f3-form-error" />',
             $result
         );
@@ -365,7 +365,7 @@ class CheckboxViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        self::assertContains(
+        $this->assertContains(
             '<input class="css_class f3-form-error" type="checkbox" name="fieldPrefix[objectName][someProperty]" value="foo" />',
             $result
         );
