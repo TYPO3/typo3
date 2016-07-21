@@ -17,7 +17,9 @@ namespace TYPO3\CMS\Recordlist\LinkHandler;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -158,14 +160,22 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             $this->view->assign('activePageIcon', $this->iconFactory->getIconForRecord('pages', $activePageRecord, Icon::SIZE_SMALL)->render());
 
             // Look up tt_content elements from the expanded page
-            $contentElements = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                'uid,header,hidden,starttime,endtime,fe_group,CType,colPos,bodytext',
-                'tt_content',
-                'pid=' . (int)$pageId . BackendUtility::deleteClause('tt_content')
-                . BackendUtility::versioningPlaceholderClause('tt_content'),
-                '',
-                'colPos,sorting'
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('tt_content');
+
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+            $contentElements = $queryBuilder
+                ->select('uid', 'header', 'hidden', 'starttime', 'endtime', 'fe_group', 'CType', 'colPos', 'bodytext')
+                ->from('tt_content')
+                ->where($queryBuilder->expr()->eq('pid', (int)$pageId))
+                ->orderBy('colPos')
+                ->addOrderBy('sorting')
+                ->execute()
+                ->fetchAll();
 
             // Enrich list of records
             foreach ($contentElements as &$contentElement) {
@@ -288,13 +298,5 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 				</tr>';
         }
         return $fieldDefinitions;
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
