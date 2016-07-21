@@ -293,7 +293,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			if (mode === 'wysiwyg' && this.editor.isEditable()) {
 				var statusBarSelection = editor.statusBar ? editor.statusBar.getSelection() : null;
 				var parentElement = statusBarSelection ? statusBarSelection : editor.getSelection().getParentElement();
-				if (!/^(body)$/i.test(parentElement.nodeName)) {
+				if (!/^(html|body)$/i.test(parentElement.nodeName)) {
 					var endBlocks = editor.getSelection().getEndBlocks();
 					switch (button.itemId) {
 						case 'Outdent':

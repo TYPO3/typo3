@@ -250,7 +250,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 				this.selection.setBaseAndExtent(node, 0, node, 1);
 			} else {
 				var range = this.document.createRange();
-				if (node.nodeType === Dom.ELEMENT_NODE && /^(body)$/i.test(node.nodeName)) {
+				if (node.nodeType === Dom.ELEMENT_NODE && /^(html|body)$/i.test(node.nodeName)) {
 					if (UserAgent.isWebKit) {
 						range.setStart(node, 0);
 						range.setEnd(node, node.childNodes.length);
@@ -367,7 +367,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	Selection.prototype.getAllAncestors = function () {
 		var parent = this.getParentElement(),
 			ancestors = [];
-		while (parent && parent.nodeType === Dom.ELEMENT_NODE && !/^(body)$/i.test(parent.nodeName)) {
+		while (parent && parent.nodeType === Dom.ELEMENT_NODE && !/^(html|body)$/i.test(parent.nodeName)) {
 			ancestors.push(parent);
 			parent = parent.parentNode;
 		}
@@ -451,11 +451,11 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 			parentStart,
 			parentEnd;
 		parentStart = range.startContainer;
-		if (/^(body)$/i.test(parentStart.nodeName)) {
+		if (/^(html|body)$/i.test(parentStart.nodeName)) {
 			parentStart = parentStart.firstChild;
 		}
 		parentEnd = range.endContainer;
-		if (/^(body)$/i.test(parentEnd.nodeName)) {
+		if (/^(html|body)$/i.test(parentEnd.nodeName)) {
 			parentEnd = parentEnd.lastChild;
 		}
 		while (parentStart && !Dom.isBlockElement(parentStart)) {
@@ -583,7 +583,6 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	 * @return	boolean		true to stop the event and cancel the default action
 	 */
 	Selection.prototype.handleBackSpace = function () {
-		var range = this.createRange();
 		var self = this;
 		window.setTimeout(function() {
 			var range = self.createRange();
@@ -592,9 +591,9 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 			// If the selection is collapsed...
 			if (self.isEmpty()) {
 				// ... and the cursor lies in a direct child of body...
-				if (/^(body)$/i.test(startContainer.nodeName)) {
+				if (/^(html|body)$/i.test(startContainer.nodeName)) {
 					var node = startContainer.childNodes[startOffset-1];
-				} else if (/^(body)$/i.test(startContainer.parentNode.nodeName)) {
+				} else if (/^(html|body)$/i.test(startContainer.parentNode.nodeName)) {
 					var node = startContainer;
 				// ... or, in Google, a span tag may have been inserted inside a heading element
 				} else if (UserAgent.isWebKit && /^(#text)$/i.test(startContainer.nodeName)) {
@@ -608,39 +607,41 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 				} else {
 					return false;
 				}
-				// ... which is a br or text node containing no non-whitespace character...
-				node.normalize();
-				if (/^(br|#text)$/i.test(node.nodeName) && !/\S/.test(node.textContent)) {
-					// Get a meaningful previous sibling in which to reposition de cursor
-					var previousSibling = node.previousSibling;
-					while (previousSibling && /^(br|#text)$/i.test(previousSibling.nodeName) && !/\S/.test(previousSibling.textContent)) {
-						previousSibling = previousSibling.previousSibling;
-					}
-					// If there is no meaningful previous sibling, the cursor is at the start of body or the start of a direct child of body
-					if (previousSibling) {
-						// Remove the node
-						Dom.removeFromParent(node);
-						// Position the cursor
-						if (/^(ol|ul|dl)$/i.test(previousSibling.nodeName)) {
-							self.selectNodeContents(previousSibling.lastChild, false);
-						} else if (/^(table)$/i.test(previousSibling.nodeName)) {
-							self.selectNodeContents(previousSibling.rows[previousSibling.rows.length-1].cells[previousSibling.rows[previousSibling.rows.length-1].cells.length-1], false);
-						} else if (!/\S/.test(previousSibling.textContent) && previousSibling.firstChild) {
-							self.selectNode(previousSibling.firstChild, true);
-						} else {
-							self.selectNodeContents(previousSibling, false);
+				if (typeof node !== 'undefined') {
+					// ... which is a br or text node containing no non-whitespace character...
+					node.normalize();
+					if (/^(br|#text)$/i.test(node.nodeName) && !/\S/.test(node.textContent)) {
+						// Get a meaningful previous sibling in which to reposition de cursor
+						var previousSibling = node.previousSibling;
+						while (previousSibling && /^(br|#text)$/i.test(previousSibling.nodeName) && !/\S/.test(previousSibling.textContent)) {
+							previousSibling = previousSibling.previousSibling;
 						}
-					}
-				// ... or the only child of body and having no child (IE) or only a br child (FF)
-				} else if (
-						/^(body)$/i.test(node.parentNode.nodeName)
+						// If there is no meaningful previous sibling, the cursor is at the start of body or the start of a direct child of body
+						if (previousSibling) {
+							// Remove the node
+							Dom.removeFromParent(node);
+							// Position the cursor
+							if (/^(ol|ul|dl)$/i.test(previousSibling.nodeName)) {
+								self.selectNodeContents(previousSibling.lastChild, false);
+							} else if (/^(table)$/i.test(previousSibling.nodeName)) {
+								self.selectNodeContents(previousSibling.rows[previousSibling.rows.length - 1].cells[previousSibling.rows[previousSibling.rows.length - 1].cells.length - 1], false);
+							} else if (!/\S/.test(previousSibling.textContent) && previousSibling.firstChild) {
+								self.selectNode(previousSibling.firstChild, true);
+							} else {
+								self.selectNodeContents(previousSibling, false);
+							}
+						}
+						// ... or the only child of body and having no child (IE) or only a br child (FF)
+					} else if (
+						/^(html|body)$/i.test(node.parentNode.nodeName)
 						&& !/\S/.test(node.parentNode.textContent)
 						&& (node.childNodes.length === 0 || (node.childNodes.length === 1 && /^(br)$/i.test(node.firstChild.nodeName)))
 					) {
-					var parentNode = node.parentNode;
-					Dom.removeFromParent(node);
-					parentNode.innerHTML = '<br />';
-					self.selectNodeContents(parentNode, true);
+						var parentNode = node.parentNode;
+						Dom.removeFromParent(node);
+						parentNode.innerHTML = '<br />';
+						self.selectNodeContents(parentNode, true);
+					}
 				}
 			}
 		}, 10);

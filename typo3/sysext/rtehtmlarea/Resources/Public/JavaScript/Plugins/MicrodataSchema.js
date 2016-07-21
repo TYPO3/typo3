@@ -199,7 +199,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 			var itemsConfig = [];
 			this.inheritedType = 'none';
 			var parent = element.parentNode;
-			while (parent && !/^(body)$/i.test(parent.nodeName)) {
+			while (parent && !/^(html|body)$/i.test(parent.nodeName)) {
 				if (parent.getAttribute('itemtype')) {
 					this.inheritedType = parent.getAttribute('itemtype');
 					break;
