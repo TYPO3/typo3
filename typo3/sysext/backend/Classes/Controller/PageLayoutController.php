@@ -29,6 +29,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -434,7 +435,17 @@ class PageLayoutController
             2 => $this->getLanguageService()->getLL('m_function_2')
         );
         // Find if there are ANY languages at all (and if not, remove the language option from function menu).
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'sys_language', $this->getBackendUser()->isAdmin() ? '' : 'hidden=0');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+        if ($this->getBackendUser()->isAdmin()) {
+            $queryBuilder->getRestrictions()->removeAll();
+        }
+
+        $count = $queryBuilder
+            ->count('uid')
+            ->from('sys_language')
+            ->execute()
+            ->fetchColumn(0);
+
         if (!$count) {
             unset($availableActionArray['2']);
         }
@@ -1267,11 +1278,50 @@ class PageLayoutController
      */
     public function getNumberOfHiddenElements()
     {
-        return $this->getDatabaseConnection()->exec_SELECTcountRows(
-            'uid',
-            'tt_content',
-            'pid=' . (int)$this->id . ' AND sys_language_uid=' . (int)$this->current_sys_language . BackendUtility::BEenableFields('tt_content', 1) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content')
-        );
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+        $queryBuilder
+            ->count('uid')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq('pid', (int)$this->id),
+                $queryBuilder->expr()->eq('sys_language_uid', (int)$this->current_sys_language)
+            );
+
+        if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'])) {
+            $andWhere[] = $queryBuilder->expr()->neq('hidden', 0);
+        }
+
+        if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['starttime'])) {
+            $andWhere[] = $queryBuilder->expr()->andX(
+                $queryBuilder->expr()->neq('starttime', 0),
+                $queryBuilder->expr()->gt('starttime', (int)$GLOBALS['SIM_ACCESS_TIME'])
+            );
+        }
+
+        if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['endtime'])) {
+            $andWhere[] = $queryBuilder->expr()->andX(
+                $queryBuilder->expr()->neq('endtime', 0),
+                $queryBuilder->expr()->lte('endtime', (int)$GLOBALS['SIM_ACCESS_TIME'])
+            );
+        }
+
+        if (!empty($andWhere)) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->orX(...$andWhere)
+            );
+        }
+
+        $count = $queryBuilder
+            ->execute()
+            ->fetchColumn(0);
+
+        return (int)$count;
     }
 
     /**
@@ -1580,15 +1630,28 @@ class PageLayoutController
      */
     protected function currentPageHasSubPages()
     {
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
-            'uid',
-            'pages',
-            'pid = ' . (int)$this->id
-                . BackendUtility::deleteClause('pages')
-                . BackendUtility::versioningPlaceholderClause('pages')
-                . BackendUtility::getWorkspaceWhereClause('pages')
-        );
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
 
-        return $count > 0;
+        // get workspace id
+        $workspaceId = (int)$this->getBackendUser()->workspace;
+        $comparisonExpression = $workspaceId === 0 ? 'neq' : 'eq';
+
+        $count = $queryBuilder
+            ->count('uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('pid', (int)$this->id),
+                $queryBuilder->expr()->eq('t3ver_wsid', $workspaceId),
+                $queryBuilder->expr()->{$comparisonExpression}('pid', -1)
+            )
+            ->execute()
+            ->fetchColumn(0);
+
+        return (bool)$count;
     }
 }
