@@ -1170,7 +1170,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 $additionalWhereClause
             ]
         );
-        $result = $queryBuilder->execute();
+
         // Traverse any selected elements and render their display code:
         $result = $queryBuilder->execute();
 
