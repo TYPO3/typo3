@@ -14,7 +14,11 @@ namespace TYPO3\CMS\Lowlevel;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Looking for RTE images integrity
@@ -86,41 +90,54 @@ Reports problems with RTE images';
             'lostFiles' => array()
         );
         // Select all RTEmagic files in the reference table (only from soft references of course)
-        $recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE', 'sys_refindex') . ' AND ref_string LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%/RTEmagic%', 'sys_refindex') . ' AND softref_key=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('images', 'sys_refindex'), '', 'sorting DESC');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_refindex');
+
+        $result = $queryBuilder
+            ->select('*')
+            ->from('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->eq('ref_table', $queryBuilder->expr()->literal('_FILE')),
+                $queryBuilder->expr()->like('ref_string', $queryBuilder->expr()->literal('%/RTEmagic%')),
+                $queryBuilder->expr()->eq('softref_key', $queryBuilder->expr()->literal('images'))
+            )
+            ->orderBy('sorting', 'DESC')
+            ->execute();
+
         // Traverse the files and put into a large table:
-        if (is_array($recs)) {
-            foreach ($recs as $rec) {
-                $filename = basename($rec['ref_string']);
-                if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($filename, 'RTEmagicC_')) {
-                    $original = 'RTEmagicP_' . preg_replace('/\\.[[:alnum:]]+$/', '', substr($filename, 10));
-                    $infoString = $this->infoStr($rec);
-                    // Build index:
-                    $resultArray['RTEmagicFilePairs'][$rec['ref_string']]['exists'] = @is_file((PATH_site . $rec['ref_string']));
-                    $resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original'] = substr($rec['ref_string'], 0, -strlen($filename)) . $original;
-                    $resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original_exists'] = @is_file((PATH_site . $resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original']));
-                    $resultArray['RTEmagicFilePairs'][$rec['ref_string']]['count']++;
-                    $resultArray['RTEmagicFilePairs'][$rec['ref_string']]['usedIn'][$rec['hash']] = $infoString;
-                    $resultArray['completeFileList'][$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original']]++;
-                    $resultArray['completeFileList'][$rec['ref_string']]++;
-                    // Missing files:
-                    if (!$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['exists']) {
-                        $resultArray['missingFiles'][$rec['ref_string']] = $resultArray['RTEmagicFilePairs'][$rec['ref_string']]['usedIn'];
-                    }
-                    if (!$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original_exists']) {
-                        $resultArray['missingFiles'][$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original']] = $resultArray['RTEmagicFilePairs'][$rec['ref_string']]['usedIn'];
-                    }
+
+        while ($rec = $result->fetch()) {
+            $filename = basename($rec['ref_string']);
+            if (GeneralUtility::isFirstPartOfStr($filename, 'RTEmagicC_')) {
+                $original = 'RTEmagicP_' . preg_replace('/\\.[[:alnum:]]+$/', '', substr($filename, 10));
+                $infoString = $this->infoStr($rec);
+                // Build index:
+                $resultArray['RTEmagicFilePairs'][$rec['ref_string']]['exists'] = @is_file((PATH_site . $rec['ref_string']));
+                $resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original'] = substr($rec['ref_string'], 0, -strlen($filename)) . $original;
+                $resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original_exists'] = @is_file((PATH_site . $resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original']));
+                $resultArray['RTEmagicFilePairs'][$rec['ref_string']]['count']++;
+                $resultArray['RTEmagicFilePairs'][$rec['ref_string']]['usedIn'][$rec['hash']] = $infoString;
+                $resultArray['completeFileList'][$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original']]++;
+                $resultArray['completeFileList'][$rec['ref_string']]++;
+                // Missing files:
+                if (!$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['exists']) {
+                    $resultArray['missingFiles'][$rec['ref_string']] = $resultArray['RTEmagicFilePairs'][$rec['ref_string']]['usedIn'];
                 }
-            }
-            // Searching for duplicates:
-            foreach ($resultArray['RTEmagicFilePairs'] as $fileName => $fileInfo) {
-                if ($fileInfo['count'] > 1 && $fileInfo['exists'] && $fileInfo['original_exists']) {
-                    $resultArray['doubleFiles'][$fileName] = $fileInfo['usedIn'];
+                if (!$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original_exists']) {
+                    $resultArray['missingFiles'][$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original']] = $resultArray['RTEmagicFilePairs'][$rec['ref_string']]['usedIn'];
                 }
             }
         }
+        // Searching for duplicates:
+        foreach ($resultArray['RTEmagicFilePairs'] as $fileName => $fileInfo) {
+            if ($fileInfo['count'] > 1 && $fileInfo['exists'] && $fileInfo['original_exists']) {
+                $resultArray['doubleFiles'][$fileName] = $fileInfo['usedIn'];
+            }
+        }
+
         // Now, ask for RTEmagic files inside uploads/ folder:
         $cleanerModules = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules'];
-        $cleanerMode = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($cleanerModules['lost_files'][0]);
+        $cleanerMode = GeneralUtility::getUserObj($cleanerModules['lost_files'][0]);
         $resLostFiles = $cleanerMode->main(array(), false, true);
         if (is_array($resLostFiles['RTEmagicFiles'])) {
             foreach ($resLostFiles['RTEmagicFiles'] as $fileName) {
@@ -165,7 +182,7 @@ Reports problems with RTE images';
                                 $dirPrefix = dirname($fileName) . '/';
                                 $rteOrigName = basename($fileInfo['original']);
                                 // If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
-                                if ($rteOrigName && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($dirPrefix, 'uploads/') && @is_dir((PATH_site . $dirPrefix))) {
+                                if ($rteOrigName && GeneralUtility::isFirstPartOfStr($dirPrefix, 'uploads/') && @is_dir((PATH_site . $dirPrefix))) {
                                     // RTE:
                                     // From the "original" RTE filename, produce a new "original" destination filename which is unused.
                                     $fileProcObj = $this->getFileProcObj();
@@ -173,18 +190,18 @@ Reports problems with RTE images';
                                     // Create copy file name:
                                     $pI = pathinfo($fileName);
                                     $copyDestName = dirname($origDestName) . '/RTEmagicC_' . substr(basename($origDestName), 10) . '.' . $pI['extension'];
-                                    if (!@is_file($copyDestName) && !@is_file($origDestName) && $origDestName === \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($origDestName) && $copyDestName === \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($copyDestName)) {
+                                    if (!@is_file($copyDestName) && !@is_file($origDestName) && $origDestName === GeneralUtility::getFileAbsFileName($origDestName) && $copyDestName === GeneralUtility::getFileAbsFileName($copyDestName)) {
                                         echo ' to ' . basename($copyDestName);
                                         if ($bypass = $this->cli_noExecutionCheck($fileName)) {
                                             echo $bypass;
                                         } else {
                                             // Making copies:
-                                            \TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move(PATH_site . $fileInfo['original'], $origDestName);
-                                            \TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move(PATH_site . $fileName, $copyDestName);
+                                            GeneralUtility::upload_copy_move(PATH_site . $fileInfo['original'], $origDestName);
+                                            GeneralUtility::upload_copy_move(PATH_site . $fileName, $copyDestName);
                                             clearstatcache();
                                             if (@is_file($copyDestName)) {
-                                                $sysRefObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
-                                                $error = $sysRefObj->setReferenceValue($hash, \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($copyDestName));
+                                                $sysRefObj = GeneralUtility::makeInstance(ReferenceIndex::class);
+                                                $error = $sysRefObj->setReferenceValue($hash, PathUtility::stripPathSitePrefix($copyDestName));
                                                 if ($error) {
                                                     echo '	- ERROR:	TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error . LF;
                                                     die;
@@ -215,7 +232,7 @@ Reports problems with RTE images';
             if ($limitTo === 'lostFiles') {
                 echo 'Removing lost RTEmagic files from folders inside uploads/: ' . LF;
                 foreach ($resultArray['lostFiles'] as $key => $value) {
-                    $absFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($value);
+                    $absFileName = GeneralUtility::getFileAbsFileName($value);
                     echo 'Deleting file: "' . $absFileName . '": ';
                     if ($bypass = $this->cli_noExecutionCheck($absFileName)) {
                         echo $bypass;
@@ -243,7 +260,7 @@ Reports problems with RTE images';
     public function getFileProcObj()
     {
         if (!is_object($this->fileProcObj)) {
-            $this->fileProcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ExtendedFileUtility::class);
+            $this->fileProcObj = GeneralUtility::makeInstance(ExtendedFileUtility::class);
             $this->fileProcObj->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
             $this->fileProcObj->setActionPermissions();
         }

@@ -13,6 +13,11 @@ namespace TYPO3\CMS\Lowlevel;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * cleanflexform
@@ -55,8 +60,8 @@ Cleaning XML for FlexForm fields.
             ),
             'dirty' => array()
         );
-        $startingPoint = $this->cli_isArg('--pid') ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
-        $depth = $this->cli_isArg('--depth') ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
+        $startingPoint = $this->cli_isArg('--pid') ? MathUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
+        $depth = $this->cli_isArg('--depth') ? MathUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
         $this->cleanFlexForm_dirtyFields = &$resultArray['dirty'];
         // Do not repair flexform data in deleted records.
         $this->genTree_traverseDeleted = false;
@@ -82,8 +87,8 @@ Cleaning XML for FlexForm fields.
                 if ($echoLevel > 2) {
                     echo LF . '			[cleanflexform:] Field "' . $colName . '" in ' . $tableName . ':' . $uid . ' was a flexform and...';
                 }
-                $recRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($tableName, 'uid=' . (int)$uid);
-                $flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+                $recRow = BackendUtility::getRecordRaw($tableName, 'uid=' . (int)$uid);
+                $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
                 if ($recRow[$colName]) {
                     // Clean XML:
                     $newXML = $flexObj->cleanFlexFormXML($tableName, $colName, $recRow);
@@ -91,7 +96,7 @@ Cleaning XML for FlexForm fields.
                         if ($echoLevel > 2) {
                             echo ' was DIRTY, needs cleanup!';
                         }
-                        $this->cleanFlexForm_dirtyFields[\TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($tableName . ':' . $uid . ':' . $colName)] = $tableName . ':' . $uid . ':' . $colName;
+                        $this->cleanFlexForm_dirtyFields[GeneralUtility::shortMD5($tableName . ':' . $uid . ':' . $colName)] = $tableName . ':' . $uid . ':' . $colName;
                     } else {
                         if ($echoLevel > 2) {
                             echo ' was CLEAN';
@@ -121,13 +126,13 @@ Cleaning XML for FlexForm fields.
             } else {
                 // Clean XML:
                 $data = array();
-                $recRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($table, 'uid=' . (int)$uid);
-                $flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+                $recRow = BackendUtility::getRecordRaw($table, 'uid=' . (int)$uid);
+                $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
                 if ($recRow[$field]) {
                     $data[$table][$uid][$field] = $flexObj->cleanFlexFormXML($table, $field, $recRow);
                 }
                 // Execute Data array:
-                $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                $tce = GeneralUtility::makeInstance(DataHandler::class);
                 $tce->dontProcessTransformations = true;
                 $tce->bypassWorkspaceRestrictions = true;
                 $tce->bypassFileHandling = true;

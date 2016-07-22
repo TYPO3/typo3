@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Lowlevel;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Looking for Lost files
  */
@@ -84,32 +87,45 @@ Will report lost files.';
         );
         // Get all files:
         $fileArr = array();
-        $fileArr = \TYPO3\CMS\Core\Utility\GeneralUtility::getAllFilesAndFoldersInPath($fileArr, PATH_site . 'uploads/');
-        $fileArr = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($fileArr, PATH_site);
-        $excludePaths = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->cli_argValue('--excludePath', 0), true);
+        $fileArr = GeneralUtility::getAllFilesAndFoldersInPath($fileArr, PATH_site . 'uploads/');
+        $fileArr = GeneralUtility::removePrefixPathFromList($fileArr, PATH_site);
+        $excludePaths = GeneralUtility::trimExplode(',', $this->cli_argValue('--excludePath', 0), true);
         // Traverse files and for each, look up if its found in the reference index.
         foreach ($fileArr as $key => $value) {
             $include = true;
             foreach ($excludePaths as $exclPath) {
-                if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($value, $exclPath)) {
+                if (GeneralUtility::isFirstPartOfStr($value, $exclPath)) {
                     $include = false;
                 }
             }
-            $shortKey = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($value);
+            $shortKey = GeneralUtility::shortMD5($value);
             if ($include) {
                 // First, allow "index.html", ".htaccess" files since they are often used for good reasons
-                if (substr($value, -11) == '/index.html' || substr($value, -10) == '/.htaccess') {
+                if (substr($value, -11) === '/index.html' || substr($value, -10) === '/.htaccess') {
                     unset($fileArr[$key]);
                     $resultArray['ignoredFiles'][$shortKey] = $value;
                 } else {
                     // Looking for a reference from a field which is NOT a soft reference (thus, only fields with a proper TCA/Flexform configuration)
-                    $recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE', 'sys_refindex') . ' AND ref_string=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, 'sys_refindex') . ' AND softref_key=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('', 'sys_refindex'), '', 'sorting DESC');
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getQueryBuilderForTable('sys_refindex');
+
+                    $result = $queryBuilder
+                        ->select('*')
+                        ->from('sys_refindex')
+                        ->where(
+                            $queryBuilder->expr()->eq('ref_table', $queryBuilder->expr()->literal('_FILE')),
+                            $queryBuilder->expr()->eq('ref_string', $queryBuilder->expr()->literal($value)),
+                            $queryBuilder->expr()->eq('softref_key', $queryBuilder->expr()->literal(''))
+                        )
+                        ->orderBy('sorting', 'DESC')
+                        ->execute();
+
                     // If found, unset entry:
-                    if (count($recs)) {
+                    if ($result->rowCount()) {
                         unset($fileArr[$key]);
                         $resultArray['managedFiles'][$shortKey] = $value;
-                        if (count($recs) > 1) {
-                            $resultArray['warnings'][$shortKey] = 'Warning: File "' . $value . '" had ' . count($recs) . ' references from group-fields, should have only one!';
+                        if ($result->rowCount() > 1) {
+                            $resultArray['warnings'][$shortKey] = 'Warning: File "' . $value . '" had ' . $result->rowCount() . ' references from group-fields, should have only one!';
                         }
                     } else {
                         // When here it means the file was not found. So we test if it has a RTEmagic-image name and if so, we allow it:
@@ -144,7 +160,7 @@ Will report lost files.';
     public function main_autoFix($resultArray)
     {
         foreach ($resultArray['lostFiles'] as $key => $value) {
-            $absFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($value);
+            $absFileName = GeneralUtility::getFileAbsFileName($value);
             echo 'Deleting file: "' . $absFileName . '": ';
             if ($bypass = $this->cli_noExecutionCheck($absFileName)) {
                 echo $bypass;

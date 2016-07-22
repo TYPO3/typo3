@@ -15,7 +15,12 @@ namespace TYPO3\CMS\Lowlevel;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Core functions for cleaning and analysing
@@ -55,7 +60,7 @@ class CleanerCommand extends \TYPO3\CMS\Core\Controller\CommandLineController
     /**
      * @var array
      */
-    protected $workspaceIndex = array();
+    protected $workspaceIndex = [0 => true];
 
     /**
      * Constructor
@@ -111,7 +116,7 @@ This will show you missing files in the TYPO3 system and only report back if err
         $GLOBALS['BE_USER']->setWorkspace(0);
         // Print Howto:
         if ($this->cli_isArg('--showhowto')) {
-            $howto = file_get_contents(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lowlevel') . 'README.rst');
+            $howto = file_get_contents(ExtensionManagementUtility::extPath('lowlevel') . 'README.rst');
             echo wordwrap($howto, 120) . LF;
             die;
         }
@@ -168,7 +173,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
             case 'check':
 
             case 'update':
-                $refIndexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
+                $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
                 list($headerContent, $bodyContent, $errorCount) = $refIndexObj->updateIndex($refIndexMode === 'check', $this->cli_echo());
                 if ($errorCount && $refIndexMode === 'check') {
                     $ok = false;
@@ -225,7 +230,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
      */
     public function cli_printInfo($header, $res)
     {
-        $detailLevel = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_isArg('-v') ? $this->cli_argValue('-v') : 1, 0, 3);
+        $detailLevel = MathUtility::forceIntegerInRange($this->cli_isArg('-v') ? $this->cli_argValue('-v') : 1, 0, 3);
         $silent = !$this->cli_echo();
         $severity = array(
             0 => 'MESSAGE',
@@ -282,7 +287,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
      *
      * @param int $rootID Root page id from where to start traversal. Use "0" (zero) to have full page tree (necessary when spotting orphans, otherwise you can run it on parts only)
      * @param int $depth Depth to traverse. zero is do not traverse at all. 1 = 1 sublevel, 1000= 1000 sublevels (all...)
-     * @param bool $echoLevel If >0, will echo information about the traversal process.
+     * @param int $echoLevel If >0, will echo information about the traversal process.
      * @param string $callBack Call back function (from this class or subclass)
      * @return void
      */
@@ -291,11 +296,25 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
         $pt = GeneralUtility::milliseconds();
         $this->performanceStatistics['genTree()'] = '';
         // Initialize:
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
-            $this->workspaceIndex = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', 'sys_workspace', '1=1' . BackendUtility::deleteClause('sys_workspace'), '', '', '', 'uid');
+        if (ExtensionManagementUtility::isLoaded('workspaces')) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('sys_workspace');
+
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+            $workspaceRecords = $queryBuilder
+                ->select('uid', 'title')
+                ->from('sys_workspace')
+                ->execute()
+                ->fetchAll();
+
+            foreach ($workspaceRecords as $workspaceRecord) {
+                $this->workspaceIndex[$workspaceRecord['uid']] = true;
+            }
         }
-        $this->workspaceIndex[-1] = true;
-        $this->workspaceIndex[0] = true;
+
         $this->recStats = array(
             'all' => array(),
             // All records connected in tree including versions (the reverse are orphans). All Info and Warning categories below are included here (and therefore safe if you delete the reverse of the list)
@@ -338,9 +357,15 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
         // Count records:
         foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
             // Select all records belonging to page:
-            $resSub = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $tableName, '');
-            $countRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resSub);
-            $this->performanceStatistics['MySQL_count'][$tableName] = $countRow['count(*)'];
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($tableName);
+
+            $amount = $queryBuilder
+                ->count('*')
+                ->from($tableName)
+                ->execute()
+                ->fetchColumn(0);
+            $this->performanceStatistics['MySQL_count'][$tableName] = $amount;
             $this->performanceStatistics['CSV'] .= LF . $tableName . ',' . $this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL'][$tableName] . ',' . $this->performanceStatistics['genTree_traverse():TraverseTables:']['Proc'][$tableName] . ',' . $this->performanceStatistics['MySQL_count'][$tableName];
         }
         $this->performanceStatistics['recStats_size']['(ALL)'] = strlen(serialize($this->recStats));
@@ -409,25 +434,45 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
         $pt3 = GeneralUtility::milliseconds();
         // Traverse tables of records that belongs to page:
         foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
-            if ($tableName != 'pages') {
+            if ($tableName !== 'pages') {
                 // Select all records belonging to page:
                 $pt4 = GeneralUtility::milliseconds();
-                $resSub = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid' . ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), $tableName, 'pid=' . (int)$rootID . ($this->genTree_traverseDeleted ? '' : BackendUtility::deleteClause($tableName)));
+
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($tableName);
+
+                $queryBuilder->getRestrictions()->removeAll();
+
+                $queryBuilder
+                    ->select('uid')
+                    ->from($tableName)
+                    ->where($queryBuilder->expr()->eq('pid', (int)$rootID));
+
+                if ($GLOBALS['TCA'][$tableName]['ctrl']['delete']) {
+                    $queryBuilder->addSelect($GLOBALS['TCA'][$tableName]['ctrl']['delete']);
+                }
+
+                if (!$this->genTree_traverseDeleted) {
+                    $queryBuilder->getRestrictions()->add(DeletedRestriction::class);
+                }
+
+                $result = $queryBuilder->execute();
+
                 $this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL']['(ALL)'] += GeneralUtility::milliseconds() - $pt4;
                 $this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL'][$tableName] += GeneralUtility::milliseconds() - $pt4;
                 $pt5 = GeneralUtility::milliseconds();
-                $count = $GLOBALS['TYPO3_DB']->sql_num_rows($resSub);
+                $count = $result->rowCount();
                 if ($count) {
                     if ($echoLevel == 2) {
                         echo LF . '	\\-' . $tableName . ' (' . $count . ')';
                     }
                 }
-                while ($rowSub = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resSub)) {
+                while ($rowSub = $result->fetch()) {
                     if ($echoLevel == 3) {
                         echo LF . '	\\-' . $tableName . ':' . $rowSub['uid'];
                     }
                     // If the rootID represents an "element" or "page" version type, we must check if the record from this table is allowed to belong to this:
-                    if ($versionSwapmode == 'SWAPMODE:-1' || $versionSwapmode == 'SWAPMODE:0' && !$GLOBALS['TCA'][$tableName]['ctrl']['versioning_followPages']) {
+                    if ($versionSwapmode === 'SWAPMODE:-1' || ($versionSwapmode === 'SWAPMODE:0' && !$GLOBALS['TCA'][$tableName]['ctrl']['versioning_followPages'])) {
                         // This is illegal records under a versioned page - therefore not registered in $this->recStats['all'] so they should be orphaned:
                         $this->recStats['illegal_record_under_versioned_page'][$tableName][$rowSub['uid']] = $rowSub['uid'];
                         if ($echoLevel > 1) {
@@ -523,8 +568,22 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
         if (!$versionSwapmode || $versionSwapmode == 'SWAPMODE:1') {
             if ($depth > 0) {
                 $depth--;
-                $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . (int)$rootID . ($this->genTree_traverseDeleted ? '' : BackendUtility::deleteClause('pages')), '', 'sorting');
-                while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('pages');
+
+                $queryBuilder->getRestrictions()->removeAll();
+                if (!$this->genTree_traverseDeleted) {
+                    $queryBuilder->getRestrictions()->add(DeletedRestriction::class);
+                }
+
+                $queryBuilder
+                    ->select('uid')
+                    ->from('pages')
+                    ->where($queryBuilder->expr()->eq('pid', (int)$rootID))
+                    ->orderBy('sorting');
+
+                $result = $queryBuilder->execute();
+                while ($row = $result->fetch()) {
                     $this->genTree_traverse($row['uid'], $depth, $echoLevel, $callBack, $versionSwapmode, 0, $accumulatedPath);
                 }
             }

@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Lowlevel;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Looking for double files
  */
@@ -80,33 +85,44 @@ This will check the system for double files relations.';
             'warnings' => array()
         );
         // Select all files in the reference table not found by a soft reference parser (thus TCA configured)
-        $recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE', 'sys_refindex') . ' AND softref_key=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('', 'sys_refindex'), '', 'sorting DESC');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_refindex');
+
+        $result = $queryBuilder
+            ->select('*')
+            ->from('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->eq('ref_table', $queryBuilder->expr()->literal('_FILE')),
+                $queryBuilder->expr()->eq('softref_key', $queryBuilder->expr()->literal(''))
+            )
+            ->orderBy('sorting', 'DESC')
+            ->execute();
+
         // Traverse the files and put into a large table:
         $tempCount = array();
-        if (is_array($recs)) {
-            foreach ($recs as $rec) {
-                // Compile info string for location of reference:
-                $infoString = $this->infoStr($rec);
-                // Registering occurencies in directories:
-                $resultArray['dirname_registry'][dirname($rec['ref_string'])][$rec['tablename'] . ':' . $rec['field']]++;
-                // Handle missing file:
-                if (!@is_file((PATH_site . $rec['ref_string']))) {
-                    $resultArray['missingFiles'][$rec['ref_string']][$rec['hash']] = $infoString;
-                    ksort($resultArray['missingFiles'][$rec['ref_string']]);
+        while ($rec = $result->fetch()) {
+            // Compile info string for location of reference:
+            $infoString = $this->infoStr($rec);
+            // Registering occurencies in directories:
+            $resultArray['dirname_registry'][dirname($rec['ref_string'])][$rec['tablename'] . ':' . $rec['field']]++;
+            // Handle missing file:
+            if (!@is_file((PATH_site . $rec['ref_string']))) {
+                $resultArray['missingFiles'][$rec['ref_string']][$rec['hash']] = $infoString;
+                ksort($resultArray['missingFiles'][$rec['ref_string']]);
+            }
+            // Add entry if file has multiple references pointing to it:
+            if (isset($tempCount[$rec['ref_string']])) {
+                if (!is_array($resultArray['multipleReferencesList'][$rec['ref_string']])) {
+                    $resultArray['multipleReferencesList'][$rec['ref_string']] = array();
+                    $resultArray['multipleReferencesList'][$rec['ref_string']][$tempCount[$rec['ref_string']][1]] = $tempCount[$rec['ref_string']][0];
                 }
-                // Add entry if file has multiple references pointing to it:
-                if (isset($tempCount[$rec['ref_string']])) {
-                    if (!is_array($resultArray['multipleReferencesList'][$rec['ref_string']])) {
-                        $resultArray['multipleReferencesList'][$rec['ref_string']] = array();
-                        $resultArray['multipleReferencesList'][$rec['ref_string']][$tempCount[$rec['ref_string']][1]] = $tempCount[$rec['ref_string']][0];
-                    }
-                    $resultArray['multipleReferencesList'][$rec['ref_string']][$rec['hash']] = $infoString;
-                    ksort($resultArray['multipleReferencesList'][$rec['ref_string']]);
-                } else {
-                    $tempCount[$rec['ref_string']] = array($infoString, $rec['hash']);
-                }
+                $resultArray['multipleReferencesList'][$rec['ref_string']][$rec['hash']] = $infoString;
+                ksort($resultArray['multipleReferencesList'][$rec['ref_string']]);
+            } else {
+                $tempCount[$rec['ref_string']] = array($infoString, $rec['hash']);
             }
         }
+
         ksort($resultArray['missingFiles']);
         ksort($resultArray['multipleReferencesList']);
         // Add count for multi-references:
@@ -116,8 +132,8 @@ This will check the system for double files relations.';
         ksort($resultArray['dirname_registry']);
         foreach ($resultArray['dirname_registry'] as $dir => $temp) {
             ksort($resultArray['dirname_registry'][$dir]);
-            if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($dir, 'uploads/')) {
-                $resultArray['warnings'][\TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($dir)] = 'Directory "' . $dir . '" was outside uploads/ which is unusual practice in TYPO3 although not forbidden. Directory used by the following table:field pairs: ' . implode(',', array_keys($temp));
+            if (!GeneralUtility::isFirstPartOfStr($dir, 'uploads/')) {
+                $resultArray['warnings'][GeneralUtility::shortMD5($dir)] = 'Directory "' . $dir . '" was outside uploads/ which is unusual practice in TYPO3 although not forbidden. Directory used by the following table:field pairs: ' . implode(',', array_keys($temp));
             }
         }
         return $resultArray;
@@ -133,7 +149,7 @@ This will check the system for double files relations.';
     public function main_autoFix($resultArray)
     {
         foreach ($resultArray['multipleReferencesList'] as $key => $value) {
-            $absFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($key);
+            $absFileName = GeneralUtility::getFileAbsFileName($key);
             if ($absFileName && @is_file($absFileName)) {
                 echo 'Processing file: ' . $key . LF;
                 $c = 0;
@@ -142,16 +158,16 @@ This will check the system for double files relations.';
                         echo '	Keeping ' . $key . ' for record "' . $recReference . '"' . LF;
                     } else {
                         // Create unique name for file:
-                        $fileFunc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\File\BasicFileUtility::class);
+                        $fileFunc = GeneralUtility::makeInstance(BasicFileUtility::class);
                         $newName = $fileFunc->getUniqueName(basename($key), dirname($absFileName));
                         echo '	Copying ' . $key . ' to ' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($newName) . ' for record "' . $recReference . '": ';
                         if ($bypass = $this->cli_noExecutionCheck($recReference)) {
                             echo $bypass;
                         } else {
-                            \TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move($absFileName, $newName);
+                            GeneralUtility::upload_copy_move($absFileName, $newName);
                             clearstatcache();
                             if (@is_file($newName)) {
-                                $sysRefObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
+                                $sysRefObj = GeneralUtility::makeInstance(ReferenceIndex::class);
                                 $error = $sysRefObj->setReferenceValue($hash, basename($newName));
                                 if ($error) {
                                     echo '	ERROR:	TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error . LF;

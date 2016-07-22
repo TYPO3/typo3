@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Lowlevel;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Looking for Orphan Records
  */
@@ -74,7 +78,7 @@ Will report orphan uids from TCA tables.';
         );
         // zero = tree root, must use tree root if you wish to reverse selection to find orphans!
         $startingPoint = 0;
-        $pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+        $pt = GeneralUtility::milliseconds();
         $this->genTree($startingPoint, 1000, (int)$this->cli_argValue('--echotree'));
         $resultArray['misplaced_at_rootlevel'] = $this->recStats['misplaced_at_rootlevel'];
         $resultArray['misplaced_inside_tree'] = $this->recStats['misplaced_inside_tree'];
@@ -83,11 +87,20 @@ Will report orphan uids from TCA tables.';
         foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
             $idList = is_array($this->recStats['all'][$tableName]) && count($this->recStats['all'][$tableName]) ? implode(',', $this->recStats['all'][$tableName]) : 0;
             // Select all records belonging to page:
-            $orphanRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $tableName, 'uid NOT IN (' . $idList . ')', '', 'uid', '', 'uid');
-            if (count($orphanRecords)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($tableName);
+
+            $result = $queryBuilder
+                ->select('uid')
+                ->from($tableName)
+                ->where($queryBuilder->expr()->notIn('uid', $idList))
+                ->orderBy('uid')
+                ->execute();
+
+            if ($result->rowCount()) {
                 $resultArray['orphans'][$tableName] = array();
-                foreach ($orphanRecords as $oR) {
-                    $resultArray['orphans'][$tableName][$oR['uid']] = $oR['uid'];
+                while ($orphanRecord = $result->fetch()) {
+                    $resultArray['orphans'][$tableName][$orphanRecord['uid']] = $orphanRecord['uid'];
                 }
             }
         }
@@ -118,7 +131,7 @@ Will report orphan uids from TCA tables.';
                     echo $bypass;
                 } else {
                     // Execute CMD array:
-                    $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                    $tce = GeneralUtility::makeInstance(DataHandler::class);
                     $tce->start(array(), array());
                     // Notice, we are deleting pages with no regard to subpages/subrecords - we do this
                     // since they should also be included in the set of orphans of course!

@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Lowlevel;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Looking for missing files.
@@ -74,24 +77,33 @@ This will show you missing files in the TYPO3 system and only report back if err
             'softrefFilesMissing' => array()
         );
         // Select all files in the reference table
-        $recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE', 'sys_refindex'), '', 'sorting DESC');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_refindex');
+
+        $result = $queryBuilder
+            ->select('*')
+            ->from('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->eq('ref_table', $queryBuilder->expr()->literal('_FILE'))
+            )
+            ->orderBy('sorting', 'DESC')
+            ->execute();
         // Traverse the files and put into a large table:
-        if (is_array($recs)) {
-            foreach ($recs as $rec) {
-                // Compile info string for location of reference:
-                $infoString = $this->infoStr($rec);
-                // Handle missing file:
-                if (!@is_file((PATH_site . $rec['ref_string']))) {
-                    if ((string)$rec['softref_key'] == '') {
-                        $resultArrayIndex = 'managedFilesMissing';
-                    } else {
-                        $resultArrayIndex = 'softrefFilesMissing';
-                    }
-                    $resultArray[$resultArrayIndex][$rec['ref_string']][$rec['hash']] = $infoString;
-                    ksort($resultArray[$resultArrayIndex][$rec['ref_string']]);
+        while ($rec = $result->fetch()) {
+            // Compile info string for location of reference:
+            $infoString = $this->infoStr($rec);
+            // Handle missing file:
+            if (!@is_file((PATH_site . $rec['ref_string']))) {
+                if ((string)$rec['softref_key'] == '') {
+                    $resultArrayIndex = 'managedFilesMissing';
+                } else {
+                    $resultArrayIndex = 'softrefFilesMissing';
                 }
+                $resultArray[$resultArrayIndex][$rec['ref_string']][$rec['hash']] = $infoString;
+                ksort($resultArray[$resultArrayIndex][$rec['ref_string']]);
             }
         }
+
         ksort($resultArray['managedFilesMissing']);
         ksort($resultArray['softrefFilesMissing']);
         return $resultArray;
@@ -114,7 +126,7 @@ This will show you missing files in the TYPO3 system and only report back if err
                 if ($bypass = $this->cli_noExecutionCheck($recReference)) {
                     echo $bypass;
                 } else {
-                    $sysRefObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
+                    $sysRefObj = GeneralUtility::makeInstance(ReferenceIndex::class);
                     $error = $sysRefObj->setReferenceValue($hash, null);
                     if ($error) {
                         echo '		TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error . LF;

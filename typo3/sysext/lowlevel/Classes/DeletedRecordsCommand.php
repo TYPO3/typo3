@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Lowlevel;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Looking for Deleted records
@@ -55,8 +58,8 @@ Although deleted records are not errors to be repaired, this tool allows you to 
             ),
             'deleted' => array()
         );
-        $startingPoint = $this->cli_isArg('--pid') ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
-        $depth = $this->cli_isArg('--depth') ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
+        $startingPoint = $this->cli_isArg('--pid') ? MathUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
+        $depth = $this->cli_isArg('--depth') ? MathUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
         $this->genTree($startingPoint, $depth, (int)$this->cli_argValue('--echotree'));
         $resultArray['deleted'] = $this->recStats['deleted'];
         return $resultArray;
@@ -93,7 +96,7 @@ Although deleted records are not errors to be repaired, this tool allows you to 
                     echo $bypass;
                 } else {
                     // Execute CMD array:
-                    $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                    $tce = GeneralUtility::makeInstance(DataHandler::class);
                     $tce->start(array(), array());
                     // Notice, we are deleting pages with no regard to subpages/subrecords - we do this since they
                     // should also be included in the set of deleted pages of course (no un-deleted record can exist

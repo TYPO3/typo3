@@ -15,7 +15,11 @@ namespace TYPO3\CMS\Lowlevel;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -71,8 +75,8 @@ Automatic Repair:
             ),
             'versions' => array()
         );
-        $startingPoint = $this->cli_isArg('--pid') ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
-        $depth = $this->cli_isArg('--depth') ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
+        $startingPoint = $this->cli_isArg('--pid') ? MathUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
+        $depth = $this->cli_isArg('--depth') ? MathUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
         $this->genTree($startingPoint, $depth, (int)$this->cli_argValue('--echotree'));
         $resultArray['versions'] = $this->recStats['versions'];
         $resultArray['versions_published'] = $this->recStats['versions_published'];
@@ -83,14 +87,25 @@ Automatic Repair:
         $resultArray['versions_unused_placeholders'] = array();
         foreach ($GLOBALS['TCA'] as $table => $cfg) {
             if ($cfg['ctrl']['versioningWS']) {
-                $placeHolders = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-                    'uid,pid',
-                    $table,
-                    't3ver_state=' . new VersionState(VersionState::NEW_PLACEHOLDER) . ' AND pid>=0' . BackendUtility::deleteClause($table)
-                );
-                foreach ($placeHolders as $phrec) {
-                    if (count(BackendUtility::selectVersionsOfRecord($table, $phrec['uid'], 'uid', '*', null)) <= 1) {
-                        $resultArray['versions_unused_placeholders'][GeneralUtility::shortMD5($table . ':' . $phrec['uid'])] = $table . ':' . $phrec['uid'];
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($table);
+
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+                $result = $queryBuilder
+                    ->select('uid', 'pid')
+                    ->from($table)
+                    ->where(
+                        $queryBuilder->expr()->gte('pid', 0),
+                        $queryBuilder->expr()->eq('t3ver_state', new VersionState(VersionState::NEW_PLACEHOLDER))
+                    )
+                    ->execute();
+
+                while ($placeholderRecord = $result->fetch()) {
+                    if (count(BackendUtility::selectVersionsOfRecord($table, $placeholderRecord['uid'], 'uid', '*', null)) <= 1) {
+                        $resultArray['versions_unused_placeholders'][GeneralUtility::shortMD5($table . ':' . $placeholderRecord['uid'])] = $table . ':' . $placeholderRecord['uid'];
                     }
                 }
             }
@@ -101,35 +116,45 @@ Automatic Repair:
         $resultArray['versions_move_placeholders_bad'] = array();
         foreach ($GLOBALS['TCA'] as $table => $cfg) {
             if (BackendUtility::isTableWorkspaceEnabled($table)) {
-                $placeHolders = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-                    'uid,pid,t3ver_move_id,t3ver_wsid,t3ver_state',
-                    $table,
-                    't3ver_state=' . new VersionState(VersionState::MOVE_PLACEHOLDER) . ' AND pid>=0' . BackendUtility::deleteClause($table)
-                );
-                foreach ($placeHolders as $phrec) {
-                    $shortID = GeneralUtility::shortMD5($table . ':' . $phrec['uid']);
-                    if ((int)$phrec['t3ver_wsid'] != 0) {
-                        $phrecCopy = $phrec;
-                        if (BackendUtility::movePlhOL($table, $phrec)) {
-                            if ($wsAlt = BackendUtility::getWorkspaceVersionOfRecord($phrecCopy['t3ver_wsid'], $table, $phrec['uid'], 'uid,pid,t3ver_state')) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($table);
+
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+                $result = $queryBuilder
+                    ->select('uid', 'pid', 't3ver_move_id', 't3ver_wsid', 't3ver_state')
+                    ->from($table)
+                    ->where(
+                        $queryBuilder->expr()->gte('pid', 0),
+                        $queryBuilder->expr()->eq('t3ver_state', new VersionState(VersionState::MOVE_PLACEHOLDER))
+                    )
+                    ->execute();
+                while ($placeholderRecord = $result->fetch()) {
+                    $shortID = GeneralUtility::shortMD5($table . ':' . $placeholderRecord['uid']);
+                    if ((int)$placeholderRecord['t3ver_wsid'] !== 0) {
+                        $phrecCopy = $placeholderRecord;
+                        if (BackendUtility::movePlhOL($table, $placeholderRecord)) {
+                            if ($wsAlt = BackendUtility::getWorkspaceVersionOfRecord($phrecCopy['t3ver_wsid'], $table, $placeholderRecord['uid'], 'uid,pid,t3ver_state')) {
                                 if (!VersionState::cast($wsAlt['t3ver_state'])->equals(VersionState::MOVE_POINTER)) {
-                                    $resultArray['versions_move_placeholders_bad'][$shortID] = array($table . ':' . $phrec['uid'], 'State for version was not "4" as it should be!', $phrecCopy);
+                                    $resultArray['versions_move_placeholders_bad'][$shortID] = array($table . ':' . $placeholderRecord['uid'], 'State for version was not "4" as it should be!', $phrecCopy);
                                 } else {
                                     $resultArray['versions_move_placeholders_ok'][$shortID] = array(
-                                        $table . ':' . $phrec['uid'],
+                                        $table . ':' . $placeholderRecord['uid'],
                                         'PLH' => $phrecCopy,
-                                        'online' => $phrec,
+                                        'online' => $placeholderRecord,
                                         'PNT' => $wsAlt
                                     );
                                 }
                             } else {
-                                $resultArray['versions_move_placeholders_bad'][$shortID] = array($table . ':' . $phrec['uid'], 'No version was found for online record to be moved. A version must exist.', $phrecCopy);
+                                $resultArray['versions_move_placeholders_bad'][$shortID] = array($table . ':' . $placeholderRecord['uid'], 'No version was found for online record to be moved. A version must exist.', $phrecCopy);
                             }
                         } else {
-                            $resultArray['versions_move_placeholders_bad'][$shortID] = array($table . ':' . $phrec['uid'], 'Did not find online record for "t3ver_move_id" value ' . $phrec['t3ver_move_id'], $phrec);
+                            $resultArray['versions_move_placeholders_bad'][$shortID] = array($table . ':' . $placeholderRecord['uid'], 'Did not find online record for "t3ver_move_id" value ' . $placeholderRecord['t3ver_move_id'], $placeholderRecord);
                         }
                     } else {
-                        $resultArray['versions_move_placeholders_bad'][$shortID] = array($table . ':' . $phrec['uid'], 'Placeholder was not assigned a workspace value in t3ver_wsid.', $phrec);
+                        $resultArray['versions_move_placeholders_bad'][$shortID] = array($table . ':' . $placeholderRecord['uid'], 'Placeholder was not assigned a workspace value in t3ver_wsid.', $placeholderRecord);
                     }
                 }
             }
@@ -140,15 +165,27 @@ Automatic Repair:
         $resultArray['versions_move_id_check'] = array();
         foreach ($GLOBALS['TCA'] as $table => $cfg) {
             if (BackendUtility::isTableWorkspaceEnabled($table)) {
-                $placeHolders = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid,t3ver_move_id,t3ver_wsid,t3ver_state', $table, 't3ver_move_id<>0' . BackendUtility::deleteClause($table));
-                foreach ($placeHolders as $phrec) {
-                    if (VersionState::cast($phrec['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)) {
-                        if ($phrec['pid'] != -1) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($table);
+
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+                $result = $queryBuilder
+                    ->select('uid', 'pid', 't3ver_move_id', 't3ver_wsid', 't3ver_state')
+                    ->from($table)
+                    ->where($queryBuilder->expr()->neq('t3ver_move_id', 0))
+                    ->execute();
+
+                while ($placeholderRecord = $result->fetch()) {
+                    if (VersionState::cast($placeholderRecord['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)) {
+                        if ($placeholderRecord['pid'] != -1) {
                         } else {
-                            $resultArray['versions_move_id_check'][] = array($table . ':' . $phrec['uid'], 'Record was offline, must not be!', $phrec);
+                            $resultArray['versions_move_id_check'][] = array($table . ':' . $placeholderRecord['uid'], 'Record was offline, must not be!', $placeholderRecord);
                         }
                     } else {
-                        $resultArray['versions_move_id_check'][] = array($table . ':' . $phrec['uid'], 'Record had t3ver_move_id set to "' . $phrec['t3ver_move_id'] . '" while having t3ver_state=' . $phrec['t3ver_state'], $phrec);
+                        $resultArray['versions_move_id_check'][] = array($table . ':' . $placeholderRecord['uid'], 'Record had t3ver_move_id set to "' . $placeholderRecord['t3ver_move_id'] . '" while having t3ver_state=' . $placeholderRecord['t3ver_state'], $placeholderRecord);
                     }
                 }
             }
@@ -181,7 +218,7 @@ Automatic Repair:
                     echo $bypass;
                 } else {
                     // Execute CMD array:
-                    $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                    $tce = GeneralUtility::makeInstance(DataHandler::class);
                     $tce->start(array(), array());
                     $tce->deleteEl($table, $uid, true, true);
                     // Return errors if any:
@@ -202,10 +239,14 @@ Automatic Repair:
                 if ($bypass = $this->cli_noExecutionCheck($table . ':' . $uid)) {
                     echo $bypass;
                 } else {
-                    $fields_values = array(
-                        't3ver_wsid' => 0
-                    );
-                    $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$uid, $fields_values);
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getQueryBuilderForTable($table);
+
+                    $queryBuilder
+                        ->update($table)
+                        ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+                        ->set('t3ver_wsid', 0)
+                        ->execute();
                     echo 'DONE';
                 }
                 echo LF;
@@ -219,7 +260,7 @@ Automatic Repair:
                 echo $bypass;
             } else {
                 // Execute CMD array:
-                $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                $tce = GeneralUtility::makeInstance(DataHandler::class);
                 $tce->start(array(), array());
                 $tce->deleteAction($table, $uid);
                 // Return errors if any:
