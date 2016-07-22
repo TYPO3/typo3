@@ -114,19 +114,13 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                 ]
             );
         if (!empty($tags)) {
-            $fields = array();
-            $fields[] = 'identifier';
-            $fields[] = 'tag';
-            $tagRows = array();
+            $tagRows = [];
             foreach ($tags as $tag) {
-                $tagRow = [];
-                $tagRow[] = $entryIdentifier;
-                $tagRow[] = $tag;
-                $tagRows[] = $tagRow;
+                $tagRows[] = [$entryIdentifier, $tag];
             }
             GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable($this->tagsTable)
-                ->bulkInsert($this->tagsTable, $tagRows, $fields);
+                ->bulkInsert($this->tagsTable, $tagRows, ['identifier', 'tag']);
         }
     }
 

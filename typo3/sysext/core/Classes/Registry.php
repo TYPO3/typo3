@@ -14,17 +14,20 @@ namespace TYPO3\CMS\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A class to store and retrieve entries in a registry database table.
+ *
+ * This is a simple, persistent key-value-pair store.
  *
  * The intention is to have a place where we can store things (mainly settings)
  * that should live for more than one request, longer than a session, and that
  * shouldn't expire like it would with a cache. You can actually think of it
  * being like the Windows Registry in some ways.
- *
- * Credits: Heavily inspired by Drupal's variable_*() functions.
  */
-class Registry implements \TYPO3\CMS\Core\SingletonInterface
+class Registry implements SingletonInterface
 {
     /**
      * @var array
@@ -39,10 +42,10 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Returns a persistent entry.
      *
-     * @param string $namespace Extension key for extensions starting with 'tx_' / 'Tx_' / 'user_' or 'core' for core registry entries
-     * @param string $key The key of the entry to return.
+     * @param string $namespace Extension key of extension
+     * @param string $key Key of the entry to return.
      * @param mixed $defaultValue Optional default value to use if this entry has never been set. Defaults to NULL.
-     * @return mixed The value of the entry.
+     * @return mixed Value of the entry.
      * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
      */
     public function get($namespace, $key, $defaultValue = null)
@@ -57,17 +60,14 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Sets a persistent entry.
      *
-     * This is the main method that can be used to store a key-value. It is name spaced with
-     * a unique string. This name space should be chosen from extensions that it is unique.
-     * It is advised to use something like 'tx_extensionname'. The prefix 'core' is reserved
-     * for the TYPO3 core.
+     * This is the main method that can be used to store a key-value-pair.
      *
      * Do not store binary data into the registry, it's not build to do that,
      * instead use the proper way to store binary data: The filesystem.
      *
-     * @param string $namespace Extension key for extensions starting with 'tx_' / 'Tx_' / 'user_' or 'core' for core registry entries.
+     * @param string $namespace Extension key of extension
      * @param string $key The key of the entry to set.
-     * @param mixed $value The value to set. This can be any PHP data type; this class takes care of serialization if necessary.
+     * @param mixed $value The value to set. This can be any PHP data type; This class takes care of serialization
      * @return void
      * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
      */
@@ -78,25 +78,32 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface
             $this->loadEntriesByNamespace($namespace);
         }
         $serializedValue = serialize($value);
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_registry', 'entry_namespace = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($namespace, 'sys_registry') . ' AND entry_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($key, 'sys_registry'));
-        if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) < 1) {
-            $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_registry', array(
-                'entry_namespace' => $namespace,
-                'entry_key' => $key,
-                'entry_value' => $serializedValue
-            ));
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_registry');
+        $rowCount = $connection->count(
+            '*',
+            'sys_registry',
+            ['entry_namespace' => $namespace, 'entry_key' => $key]
+        );
+        if ((int)$rowCount < 1) {
+            $connection->insert(
+                'sys_registry',
+                ['entry_namespace' => $namespace, 'entry_key' => $key, 'entry_value' => $serializedValue]
+            );
         } else {
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_registry', 'entry_namespace = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($namespace, 'sys_registry') . ' AND entry_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($key, 'sys_registry'), array(
-                'entry_value' => $serializedValue
-            ));
+            $connection->update(
+                'sys_registry',
+                ['entry_value' => $serializedValue],
+                ['entry_namespace' => $namespace, 'entry_key' => $key]
+            );
         }
         $this->entries[$namespace][$key] = $value;
     }
 
     /**
-     * Unsets a persistent entry.
+     * Unset a persistent entry.
      *
-     * @param string $namespace Namespace. extension key for extensions or 'core' for core registry entries
+     * @param string $namespace Extension key of extension
      * @param string $key The key of the entry to unset.
      * @return void
      * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
@@ -104,30 +111,39 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface
     public function remove($namespace, $key)
     {
         $this->validateNamespace($namespace);
-        $GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_registry', 'entry_namespace = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($namespace, 'sys_registry') . ' AND entry_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($key, 'sys_registry'));
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_registry')
+            ->delete(
+                'sys_registry',
+                ['entry_namespace' => $namespace, 'entry_key' => $key]
+            );
         unset($this->entries[$namespace][$key]);
     }
 
     /**
-     * Unsets all persistent entries of the given namespace.
+     * Unset all persistent entries of given namespace.
      *
-     * @param string $namespace Namespace. extension key for extensions or 'core' for core registry entries
+     * @param string $namespace Extension key of extension
      * @return void
-     * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
+     * @throws \InvalidArgumentException Throws an exception if given namespace is invalid
      */
     public function removeAllByNamespace($namespace)
     {
         $this->validateNamespace($namespace);
-        $GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_registry', 'entry_namespace = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($namespace, 'sys_registry'));
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_registry')
+            ->delete(
+                'sys_registry',
+                ['entry_namespace' => $namespace]
+            );
         unset($this->entries[$namespace]);
     }
 
     /**
      * check if the given namespace is loaded
      *
-     * @param string $namespace Namespace. extension key for extensions or 'core' for core registry entries
-     *
-     * @return bool
+     * @param string $namespace Extension key of extension
+     * @return bool True if namespace was loaded already
      */
     protected function isNamespaceLoaded($namespace)
     {
@@ -135,33 +151,36 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Loads all entries of the given namespace into the internal $entries cache.
+     * Loads all entries of given namespace into the internal $entries cache.
      *
-     * @param string $namespace Namespace. extension key for extensions or 'core' for core registry entries
+     * @param string $namespace Extension key of extension
      * @return void
-     * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
+     * @throws \InvalidArgumentException Thrown if given namespace is invalid
      */
     protected function loadEntriesByNamespace($namespace)
     {
         $this->validateNamespace($namespace);
-        $storedEntries = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_registry', 'entry_namespace = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($namespace, 'sys_registry'));
-        foreach ($storedEntries as $storedEntry) {
-            $key = $storedEntry['entry_key'];
-            $this->entries[$namespace][$key] = unserialize($storedEntry['entry_value']);
+        $this->entries[$namespace] = [];
+        $result = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_registry')
+            ->select(
+                ['entry_key', 'entry_value'],
+                'sys_registry',
+                ['entry_namespace' => $namespace]
+            );
+        while ($row = $result->fetch()) {
+            $this->entries[$namespace][$row['entry_key']] = unserialize($row['entry_value']);
         }
         $this->loadedNamespaces[$namespace] = true;
     }
 
     /**
-     * Checks the given namespace.
-     * It must be at least two characters long. The word 'core' is reserved for
-     * TYPO3 core usage.
-     *
-     * If it does not have a valid format an exception is thrown.
+     * Check namespace key
+     * It must be at least two characters long. The word 'core' is reserved for TYPO3 core usage.
      *
      * @param string $namespace Namespace
      * @return void
-     * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
+     * @throws \InvalidArgumentException Thrown if given namespace is invalid
      */
     protected function validateNamespace($namespace)
     {
