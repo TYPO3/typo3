@@ -36,8 +36,7 @@
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-transform: translate(0, 0);
-          transform: translate(0, 0);
+  transform: translate(0, 0);
 }
 #TSFE_ADMIN_PANEL_FORM .fa-pencil:before,
 .typo3-feedit-element .fa-pencil:before {
