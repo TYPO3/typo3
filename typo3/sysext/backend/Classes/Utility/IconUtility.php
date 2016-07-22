@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Utility;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -596,6 +597,15 @@ class IconUtility
     public static function getSpriteIcon($iconName, array $options = array(), array $overlays = array())
     {
         GeneralUtility::logDeprecatedFunction();
+
+        // First check if an icon is registered in IconRegistry and
+        // return if icon is available.
+        $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
+        if ($iconRegistry->isRegistered($iconName)) {
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+            return $iconFactory->getIcon($iconName, Icon::SIZE_SMALL)->render();
+        }
+
         // Check if icon can be cached and return cached version if present
         if (empty($options) && empty($overlays)) {
             if (isset(static::$spriteIconCache[$iconName])) {
