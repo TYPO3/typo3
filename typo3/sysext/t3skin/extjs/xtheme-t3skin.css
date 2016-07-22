@@ -2204,14 +2204,11 @@ body.x-body-masked .x-window-plain .x-window-mc {
 .icon-tree-search-open {
 	background-image: url("../../core/Resources/Public/Icons/T3Icons/actions/actions-filter.svg") !important;
 }
-.icon-select-recursive {
-	background-image: url("images/tree/tcatree-select-recursive.png") !important;
-}
 .icon-collapse-all {
-	background-image: url("images/tree/collapse-all.gif") !important;
+	background-image: url("../../core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-category-collaps-all.svg") !important;
 }
 .icon-expand-all {
-	background-image: url("images/tree/expand-all.gif") !important;
+	background-image: url("../../core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-category-expand-all.svg") !important;
 }
 
 .x-grid3-col {
