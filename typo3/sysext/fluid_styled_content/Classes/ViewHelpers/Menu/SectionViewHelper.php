@@ -132,7 +132,7 @@ class SectionViewHelper extends AbstractMenuViewHelper
         $contentElements = $this->getTypoScriptFrontendController()->cObj->getRecords('tt_content', [
             'where' => $whereStatement,
             'orderBy' => 'sorting',
-            'languageField = sys_language_uid',
+            'languageField' => 'sys_language_uid',
             'pidInList' => (int)$pageUid
         ]);
 
