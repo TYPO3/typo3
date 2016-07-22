@@ -144,7 +144,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
             $this->pObj->MOD_SETTINGS = BackendUtility::getModuleData($this->pObj->MOD_MENU, GeneralUtility::_GP('SET'), $this->pObj->MCONF['name']);
             // Resetting the menu (stop)
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-            $content = $iconFactory->getIconForRecord('sys_template', $tplRow, Icon::SIZE_SMALL)->render() . '<strong>' . $this->pObj->linkWrapTemplateTitle($tplRow['title'], 'constants') . '</strong>' . (trim($tplRow['sitetitle']) ? htmlspecialchars(' (' . $tplRow['sitetitle'] . ')') : '');
+            $content = $iconFactory->getIconForRecord('sys_template', $tplRow, Icon::SIZE_SMALL)->render() . '<strong>&nbsp;' . $this->pObj->linkWrapTemplateTitle($tplRow['title'], 'constants') . '</strong>' . (trim($tplRow['sitetitle']) ? htmlspecialchars(' (' . $tplRow['sitetitle'] . ')') : '');
             $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('editConstants')) . '</h2><div>' . $content . '</div>';
             if ($manyTemplatesMenu) {
                 $theOutput .= '<div>' . $manyTemplatesMenu . '</div>';
