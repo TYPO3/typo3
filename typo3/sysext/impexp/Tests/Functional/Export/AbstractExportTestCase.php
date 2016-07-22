@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -91,15 +93,27 @@ abstract class AbstractExportTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTe
         foreach ($GLOBALS['TCA'] as $table => $value) {
             if ($table != 'pages' && (in_array($table, $tables) || in_array('_ALL', $tables))) {
                 if ($GLOBALS['BE_USER']->check('tables_select', $table) && !$GLOBALS['TCA'][$table]['ctrl']['is_static']) {
-                    $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ? 'ORDER BY ' . $GLOBALS['TCA'][$table]['ctrl']['sortby'] : $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
-                    $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-                        '*',
-                        $table,
-                            'pid = ' . (int)$pid . BackendUtility::deleteClause($table),
-                        '',
-                        $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy)
-                    );
-                    while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+                    $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
+
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getQueryBuilderForTable($table);
+
+                    $queryBuilder->getRestrictions()
+                        ->removeAll()
+                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+                    $queryBuilder
+                        ->select('*')
+                        ->from($table)
+                        ->where($queryBuilder->expr()->eq('pid', (int)$pid));
+
+                    foreach (QueryHelper::parseOrderBy((string)$orderBy) as $orderPair) {
+                        list($fieldName, $order) = $orderPair;
+                        $queryBuilder->addOrderBy($fieldName, $order);
+                    }
+
+                    $result = $queryBuilder->execute();
+                    while ($row = $result->fetch()) {
                         $this->export->export_addRecord($table, $row);
                     }
                 }

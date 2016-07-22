@@ -242,12 +242,4 @@ class ImportExportTask implements TaskInterface
     {
         return $GLOBALS['LANG'];
     }
-
-    /**
-     * @return mixed
-     */
-    protected function getDatabase()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
 }
