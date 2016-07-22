@@ -254,7 +254,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                 }
             }
             $content = '<a href="#" class="t3-js-clickmenutrigger" data-table="sys_template" data-uid="' . $tplRow['uid'] . '" data-listframe="1">' . $this->iconFactory->getIconForRecord('sys_template', $tplRow, Icon::SIZE_SMALL)->render() . '</a><strong>&nbsp;' . htmlspecialchars($tplRow['title']) . '</strong>' . (trim($tplRow['sitetitle']) ? htmlspecialchars(' (' . $tplRow['sitetitle'] . ')') : '');
-            $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('templateInformation')) . '</h2><div>' . $content . '</div>';
+            $theOutput .= '<h3>' . htmlspecialchars($lang->getLL('templateInformation')) . '</h3><div>' . $content . '</div>';
             if ($manyTemplatesMenu) {
                 $theOutput .= '<div>' . $manyTemplatesMenu . '</div>';
             }

@@ -145,7 +145,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
             // Resetting the menu (stop)
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $content = $iconFactory->getIconForRecord('sys_template', $tplRow, Icon::SIZE_SMALL)->render() . '<strong>&nbsp;' . $this->pObj->linkWrapTemplateTitle($tplRow['title'], 'constants') . '</strong>' . (trim($tplRow['sitetitle']) ? htmlspecialchars(' (' . $tplRow['sitetitle'] . ')') : '');
-            $theOutput .= '<h2>' . htmlspecialchars($lang->getLL('editConstants')) . '</h2><div>' . $content . '</div>';
+            $theOutput .= '<h3>' . htmlspecialchars($lang->getLL('editConstants')) . '</h3><div>' . $content . '</div>';
             if ($manyTemplatesMenu) {
                 $theOutput .= '<div>' . $manyTemplatesMenu . '</div>';
             }
