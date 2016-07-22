@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt;
  */
 
 use TYPO3\CMS\Core\Crypto\Random;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for SaltFactory
@@ -77,13 +76,13 @@ class SaltFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         // used for MD5 and PHPass salted hashing
         $byteLength = 3;
         $reqLengthBase64 = (int)ceil($byteLength * 8 / 6);
-        $randomBytes = GeneralUtility::makeInstance(Random::class)->generateRandomBytes($byteLength);
+        $randomBytes = (new Random())->generateRandomBytes($byteLength);
         $this->assertTrue(strlen($this->objectInstance->base64Encode($randomBytes, $byteLength)) == $reqLengthBase64);
         // 16 Bytes should result in a 22 char length base64 encoded string
         // used for Blowfish salted hashing
         $byteLength = 16;
         $reqLengthBase64 = (int)ceil($byteLength * 8 / 6);
-        $randomBytes = GeneralUtility::makeInstance(Random::class)->generateRandomBytes($byteLength);
+        $randomBytes = (new Random())->generateRandomBytes($byteLength);
         $this->assertTrue(strlen($this->objectInstance->base64Encode($randomBytes, $byteLength)) == $reqLengthBase64);
     }
 

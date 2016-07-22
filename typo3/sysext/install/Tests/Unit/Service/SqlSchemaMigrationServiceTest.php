@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Install\Tests\Unit\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\SqlSchemaMigrationService;
 
 /**
@@ -45,7 +44,10 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $databaseConnection */
         $databaseConnection = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, array('dummy'), array(), '', false);
-        $databaseConnection->_set('dbmsSpecifics', GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\Specifics\PostgresSpecifics::class));
+        $databaseConnection->_set(
+            'dbmsSpecifics',
+            new \TYPO3\CMS\Dbal\Database\Specifics\PostgresSpecifics()
+        );
 
         $subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, array('isDbalEnabled', 'getDatabaseConnection'), array(), '', false);
         $subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(true));

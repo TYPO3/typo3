@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt;
  */
 
 use TYPO3\CMS\Core\Crypto\Random;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for PhpassSalt
@@ -97,7 +96,7 @@ class PhpassSaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $password = 'password';
         // custom salt without setting
-        $randomBytes = GeneralUtility::makeInstance(Random::class)->generateRandomBytes($this->objectInstance->getSaltLength());
+        $randomBytes = (new Random())->generateRandomBytes($this->objectInstance->getSaltLength());
         $salt = $this->objectInstance->base64Encode($randomBytes, $this->objectInstance->getSaltLength());
         $this->assertTrue($this->objectInstance->isValidSalt($salt));
         $saltedHashPassword = $this->objectInstance->getHashedPassword($password, $salt);
