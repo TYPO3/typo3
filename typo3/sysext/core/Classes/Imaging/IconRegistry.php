@@ -1403,6 +1403,18 @@ class IconRegistry implements SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-spacer.svg'
             )
         ),
+        'apps-pagetree-category-expand-all' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-category-expand-all.svg'
+            )
+        ),
+        'apps-pagetree-category-collapse-all' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-category-collaps-all.svg'
+            )
+        ),
         'apps-toolbar-menu-actions' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
