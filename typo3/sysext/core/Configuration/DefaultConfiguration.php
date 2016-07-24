@@ -1058,6 +1058,8 @@ return [
         'defaultMailFromName' => '',
         'defaultMailReplyToAddress' => '',
         'defaultMailReplyToName' => '',
+        'transport_spool_type' => '',
+        'transport_spool_filepath' => 'typo3temp/var/messages/',
     ],
     'HTTP' => [ // HTTP configuration to tune how TYPO3 behaves on HTTP requests made by TYPO3. Have a look at http://docs.guzzlephp.org/en/latest/request-options.html for some background information on those settings.
         'allow_redirects' => [ // Mixed, set to false if you want to allow redirects, or use it as an array to add more values,

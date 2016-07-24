@@ -128,4 +128,37 @@ class MailerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $port = $this->subject->getTransport()->getPort();
         $this->assertEquals(12345, $port);
     }
+
+    /**
+     * @test
+     * @dataProvider getRealTransportReturnsNoSpoolTransportProvider
+     */
+    public function getRealTransportReturnsNoSpoolTransport($settings)
+    {
+        $this->subject->injectMailSettings($settings);
+        // $this->subject->__construct();
+        $transport = $this->subject->getRealTransport();
+
+        $this->assertInstanceOf(\Swift_Transport::class, $transport);
+        $this->assertNotInstanceOf(\Swift_SpoolTransport::class, $transport);
+    }
+
+    /**
+     * Data provider for getRealTransportReturnsNoSpoolTransport
+     *
+     * @return array Data sets
+     */
+    public static function getRealTransportReturnsNoSpoolTransportProvider()
+    {
+        return [
+            'without spool' => [[
+                'transport' => 'mail',
+                'spool' => '',
+            ]],
+            'with spool' => [[
+                'transport' => 'mail',
+                'spool' => 'memory',
+            ]],
+        ];
+    }
 }

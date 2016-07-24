@@ -494,6 +494,12 @@ MAIL:
         defaultMailReplyToName:
             type: text
             description: 'This default name is used when no other "reply-to" name is set for a TYPO3-generated email.'
+        transport_spool_type:
+            type: text
+            description: '<dl><dt>file</dt><dd>Messages get stored to the file system till they get sent through the command swiftmailer:spool:send.</dd><dt>memory</dt><dd>Messages get send at the end of the running process.</dd><dt>&lt;classname&gt;</dt><dd>Custom class which implements the Swift_Spool interface.</dd></dl>'
+        transport_spool_filepath:
+            type: text
+            description: '<em>only with transport_spool_type=file</em>: Path where messages get temporarily stored.'
 HTTP:
     type: container
     items:
