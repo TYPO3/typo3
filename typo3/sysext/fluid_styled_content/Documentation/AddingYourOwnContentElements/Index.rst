@@ -59,10 +59,10 @@ define its CType. We call it "yourextensionkey_newcontentelement".
    }
 
 
-.. _AddingCE-ext-tables-php:
+.. _AddingCE-TCA-Overrides-tt_content:
 
-ext\_tables.php
----------------
+Configuration/TCA/Overrides/tt_content.php
+------------------------------------------
 
 Then we need to add the content element to the "Type" dropdown, where you can select
 the type of content element:
@@ -74,10 +74,10 @@ the type of content element:
       array(
          'LLL:EXT:your_extension_key/Resources/Private/Language/Tca.xlf:yourextensionkey_newcontentelement',
          'yourextensionkey_newcontentelement',
-         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY)
-            . 'Resources/Public/Icons/ContentElements/yourextensionkey_newcontentelement.gif'
+         'EXT:your_extension_key/Resources/Public/Icons/ContentElements/yourextensionkey_newcontentelement.gif'
       ),
-      'CType'
+      'CType',
+      'your_extension_key'
    );
 
 Then we configure the backend fields for our new content element:
@@ -97,6 +97,11 @@ Then we configure the backend fields for our new content element:
          --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xml:tabs.extended
    ');
 
+.. _AddingCE-TCA-Overrides-sys_template:
+
+Configuration/TCA/Overrides/sys_template.php
+--------------------------------------------
+
 Since we need to use TypoScript as well, we add an entry in the static template list
 found in sys_templates for static TS:
 
@@ -104,7 +109,7 @@ found in sys_templates for static TS:
 
    // Add an entry in the static template list found in sys_templates for static TS
    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-      $_EXTKEY,
+      'your_extension_key',
       'Configuration/TypoScript',
       'Your description'
    );
@@ -115,8 +120,8 @@ found in sys_templates for static TS:
 setup.txt
 ---------
 
-As defined in `ext_tables.php`, this file is in the directory `Configuration/TypoScript`
-of our own extension. You can have two options in the TypoScript:
+As defined in `Configuration/TCA/Overrides/tt_content.php`, this file is in the directory
+`Configuration/TypoScript` of our own extension. You can have two options in the TypoScript:
 
 - Send all the data from the tt\_content table for this particular content element
   directly to a Fluid template
