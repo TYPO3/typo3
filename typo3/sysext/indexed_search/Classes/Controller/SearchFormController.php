@@ -1361,15 +1361,17 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // Adding search field value
         $markerArray['###SWORD_VALUE###'] = '';
         $markerArray['###PLACEHOLDER###'] = '';
+        $isHTML5 = $GLOBALS['TSFE']->config['config']['doctype'] === 'html5';
         if (!empty($this->piVars['sword'])) {
             $markerArray['###SWORD_VALUE###'] = htmlspecialchars($this->piVars['sword']);
-        } else {
-            // Add a HTML5 placeholder attribute if the configured doctype allows it
-            if ($GLOBALS['TSFE']->config['config']['doctype'] === 'html5') {
-                $markerArray['###PLACEHOLDER###'] = 'placeholder="' . $this->pi_getLL('default_search_word_entry') . '"';
-            } else {
-                $markerArray['###SWORD_VALUE###'] = $this->pi_getLL('default_search_word_entry');
-            }
+        } elseif (!$isHTML5) {
+            // only use placeholder as default value if we cannot use
+            // HTML5 placeholder attribute
+            $markerArray['###SWORD_VALUE###'] = htmlspecialchars($this->pi_getLL('default_search_word_entry'));
+        }
+        // Add a HTML5 placeholder attribute if the configured doctype allows it
+        if ($isHTML5) {
+            $markerArray['###PLACEHOLDER###'] = 'placeholder="' . htmlspecialchars($this->pi_getLL('default_search_word_entry')) . '"';
         }
         // Additonal keyword => "Add to current search words"
         if ($this->conf['show.']['clearSearchBox'] && $this->conf['show.']['clearSearchBox.']['enableSubSearchCheckBox']) {
