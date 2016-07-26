@@ -24,7 +24,7 @@
   "private": true,
   "devDependencies": {
     "fontawesome": "4.6.3",
-    "bootstrap": "3.3.6"
+    "bootstrap": "3.3.7"
   },
   "dependencies": {
     "requirejs": "2.2.0",
