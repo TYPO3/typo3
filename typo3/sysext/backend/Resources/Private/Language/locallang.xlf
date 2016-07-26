@@ -31,6 +31,9 @@ Have a nice day.</source>
 			<trans-unit id="config.backendLogo">
 				<source>Logo: If set, this logo will be used instead of the TYPO3 logo in the TYPO3 Backend in the left top corner (e.g. fileadmin/images/backend-logo.png or EXT:my_theme/Resources/Public/Images/backend-logo.png</source>
 			</trans-unit>
+			<trans-unit id="config.backendFavicon">
+				<source>Favicon: If set, this favicon will be used instead of the TYPO3 logo (e.g. EXT:my_theme/Resources/Public/Images/favicon.ico)</source>
+			</trans-unit>
 			<trans-unit id="foldertreeview.noFolders.title">
 				<source>No folders available</source>
 			</trans-unit>

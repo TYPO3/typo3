@@ -13,3 +13,6 @@ loginBackgroundImage =
 
 # cat=Backend; type=string; label=LLL:EXT:backend/Resources/Private/Language/locallang.xlf:config.backendLogo
 backendLogo =
+
+# cat=Backend; type=string; label=LLL:EXT:backend/Resources/Private/Language/locallang.xlf:config.backendFavicon
+backendFavicon =

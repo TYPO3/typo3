@@ -1511,6 +1511,39 @@ function jumpToUrl(URL) {
     */
     protected function getBackendFavicon()
     {
-        return PathUtility::getAbsoluteWebPath($GLOBALS['TBE_STYLES']['favicon'] ?: ExtensionManagementUtility::extPath('backend') . 'Resources/Public/Icons/favicon.ico');
+        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['backend'], ['allowed_classes' => false]);
+
+        if (!empty($extConf['backendFavicon'])) {
+            $path =  $this->getUriForFileName($extConf['backendFavicon']);
+        } else {
+            $path = ExtensionManagementUtility::extPath('backend') . 'Resources/Public/Icons/favicon.ico';
+        }
+        return PathUtility::getAbsoluteWebPath($path);
+    }
+
+    /**
+     * Returns the uri of a relative reference, resolves the "EXT:" prefix
+     * (way of referring to files inside extensions) and checks that the file is inside
+     * the PATH_site of the TYPO3 installation
+     *
+     * @param string $filename The input filename/filepath to evaluate
+     * @return string Returns the filename of $filename if valid, otherwise blank string.
+     */
+    protected function getUriForFileName($filename)
+    {
+        if (strpos($filename, '://')) {
+            return $filename;
+        }
+        $urlPrefix = '';
+        if (strpos($filename, 'EXT:') === 0) {
+            $absoluteFilename = GeneralUtility::getFileAbsFileName($filename);
+            $filename = '';
+            if ($absoluteFilename !== '') {
+                $filename = PathUtility::getAbsoluteWebPath($absoluteFilename);
+            }
+        } elseif (strpos($filename, '/') !== 0) {
+            $urlPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
+        }
+        return $urlPrefix . $filename;
     }
 }
