@@ -263,7 +263,7 @@ class InlineRecordContainer extends AbstractContainer
             $markup[] = '            </span>';
             $markup[] = '        </div>';
             $markup[] = '        <div class="media-body">';
-            $markup[] = '            <div class="alert-message">' . htmlspecialchars($message) .  '</div>';
+            $markup[] = '            <div class="alert-message">' . htmlspecialchars($message) . '</div>';
             $markup[] = '        </div>';
             $markup[] = '    </div>';
             $markup[] = '</div>';
@@ -306,7 +306,10 @@ class InlineRecordContainer extends AbstractContainer
 
         $recordTitle = $data['recordTitle'];
         if (!empty($recordTitle)) {
-            $recordTitle = BackendUtility::getRecordTitlePrep($recordTitle);
+            // The user function may return HTML, therefore we can't escape it
+            if (empty($data['processedTca']['ctrl']['formattedLabel_userFunc'])) {
+                $recordTitle = BackendUtility::getRecordTitlePrep($recordTitle);
+            }
         } else {
             $recordTitle = '<em>[' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title')) . ']</em>';
         }
