@@ -16,7 +16,8 @@ namespace TYPO3\CMS\Beuser\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -136,7 +137,7 @@ class BackendUserController extends BackendUserActionController
             $this->moduleData->setDemand($demand);
         }
         // Switch user until logout
-        $switchUser = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SwitchUser');
+        $switchUser = (int)GeneralUtility::_GP('SwitchUser');
         if ($switchUser > 0) {
             $this->switchUser($switchUser);
         }
@@ -231,11 +232,18 @@ class BackendUserController extends BackendUserActionController
      */
     protected function terminateBackendUserSessionAction(\TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser, $sessionId)
     {
-        $this->getDatabaseConnection()->exec_DELETEquery(
-            'be_sessions',
-            'ses_userid = "' . (int)$backendUser->getUid() . '" AND ses_id = ' . $this->getDatabaseConnection()->fullQuoteStr($sessionId, 'be_sessions') . ' LIMIT 1'
-        );
-        if ($this->getDatabaseConnection()->sql_affected_rows() == 1) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('be_sessions');
+
+        $affectedRows = $queryBuilder
+            ->delete('be_sessions')
+            ->where(
+                $queryBuilder->expr()->eq('ses_userid', (int)$backendUser->getUid()),
+                $queryBuilder->expr()->eq('ses_id', $queryBuilder->expr()->literal($sessionId))
+            )
+            ->execute();
+
+        if ($affectedRows === 1) {
             $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:terminateSessionSuccess', 'beuser'));
         }
         $this->forward('online');
@@ -251,34 +259,27 @@ class BackendUserController extends BackendUserActionController
     {
         $targetUser = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('be_users', $switchUser);
         if (is_array($targetUser) && $this->getBackendUserAuthentication()->isAdmin()) {
-            $updateData['ses_userid'] = (int)$targetUser['uid'];
-            $updateData['ses_backuserid'] = (int)$this->getBackendUserAuthentication()->user['uid'];
-
             // Set backend user listing module as starting module for switchback
             $this->getBackendUserAuthentication()->uc['startModuleOnFirstLogin'] = 'system_BeuserTxBeuser';
             $this->getBackendUserAuthentication()->writeUC();
 
-            $whereClause = 'ses_id=' . $this->getDatabaseConnection()->fullQuoteStr($this->getBackendUserAuthentication()->id, 'be_sessions');
-            $whereClause .= ' AND ses_name=' . $this->getDatabaseConnection()->fullQuoteStr(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName(), 'be_sessions');
-            $whereClause .= ' AND ses_userid=' . (int)$this->getBackendUserAuthentication()->user['uid'];
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('be_sessions');
 
-            $this->getDatabaseConnection()->exec_UPDATEquery(
-                'be_sessions',
-                $whereClause,
-                $updateData
-            );
+            $queryBuilder
+                ->update('be_sessions')
+                ->where(
+                    $queryBuilder->expr()->eq('ses_id', $queryBuilder->expr()->literal($this->getBackendUserAuthentication()->id)),
+                    $queryBuilder->expr()->eq('ses_name', $queryBuilder->expr()->literal(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName())),
+                    $queryBuilder->expr()->eq('ses_userid', (int)$this->getBackendUserAuthentication()->user['uid'])
+                )
+                ->set('ses_userid', (int)$targetUser['uid'])
+                ->set('ses_backuserid', (int)$this->getBackendUserAuthentication()->user['uid'])
+                ->execute();
 
             $redirectUrl = 'index.php' . ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? '' : '?commandLI=1');
             \TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
         }
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
