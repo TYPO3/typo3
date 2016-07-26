@@ -14,10 +14,14 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Driver\Statement;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -34,10 +38,6 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
      * @var DatabaseSystemLanguageRows
      */
     protected $subject;
-    /**
-     * @var DatabaseConnection | ObjectProphecy
-     */
-    protected $dbProphecy;
 
     /**
      * @var array A backup of registered singleton instances
@@ -47,8 +47,6 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
     protected function setUp()
     {
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
-        $this->dbProphecy = $this->prophesize(DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
@@ -60,18 +58,6 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         GeneralUtility::purgeInstances();
         GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
-    }
-
-    /**
-     * @test
-     */
-    public function addDataThrowsExceptionOnDatabaseError()
-    {
-        $this->dbProphecy->exec_SELECTgetRows(Argument::cetera())->willReturn(null);
-        $this->dbProphecy->sql_error(Argument::cetera())->willReturn(null);
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1438170741);
-        $this->subject->addData([]);
     }
 
     /**
@@ -95,7 +81,31 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->dbProphecy->exec_SELECTgetRows(Argument::cetera())->willReturn([]);
+
+        // Prophecies and revelations for a lot of the database stack classes
+        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
+        $queryBuilderRevelation = $queryBuilderProphecy->reveal();
+        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
+        $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
+        $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
+        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
+        $statementProphecy = $this->prophesize(Statement::class);
+
+        // Register connection pool revelation in framework, this is the entry point used by system unter tetst
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+
+        // Simulate method call flow on database objects and verify correct query is built
+        $connectionPoolProphecy->getQueryBuilderForTable('sys_language')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryRestrictionContainerProphecy->removeAll()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
+        $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
+        $queryBuilderProphecy->select('uid', 'title', 'language_isocode', 'flag')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->from('sys_language')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
+        $expressionBuilderProphecy->eq('pid', 0)->shouldBeCalled()->willReturn('pid = 0');
+        $queryBuilderProphecy->where('pid = 0')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
+        $statementProphecy->fetch()->shouldBeCalledTimes(1)->willReturn(false);
+
         $this->assertSame($expected, $this->subject->addData([]));
     }
 
@@ -113,7 +123,31 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
                 ]
             ],
         ];
-        $this->dbProphecy->exec_SELECTgetRows(Argument::cetera())->willReturn([]);
+
+        // Prophecies and revelations for a lot of the database stack classes
+        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
+        $queryBuilderRevelation = $queryBuilderProphecy->reveal();
+        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
+        $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
+        $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
+        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
+        $statementProphecy = $this->prophesize(Statement::class);
+
+        // Register connection pool revelation in framework, this is the entry point used by system unter tetst
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+
+        // Simulate method call flow on database objects and verify correct query is built
+        $connectionPoolProphecy->getQueryBuilderForTable('sys_language')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryRestrictionContainerProphecy->removeAll()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
+        $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
+        $queryBuilderProphecy->select('uid', 'title', 'language_isocode', 'flag')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->from('sys_language')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
+        $expressionBuilderProphecy->eq('pid', 0)->shouldBeCalled()->willReturn('pid = 0');
+        $queryBuilderProphecy->where('pid = 0')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
+        $statementProphecy->fetch()->shouldBeCalledTimes(1)->willReturn(false);
+
         $expected = $input;
         $expected['systemLanguageRows'] = [
             -1 => [
@@ -146,7 +180,31 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
                 ]
             ],
         ];
-        $this->dbProphecy->exec_SELECTgetRows(Argument::cetera())->willReturn([]);
+
+        // Prophecies and revelations for a lot of the database stack classes
+        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
+        $queryBuilderRevelation = $queryBuilderProphecy->reveal();
+        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
+        $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
+        $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
+        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
+        $statementProphecy = $this->prophesize(Statement::class);
+
+        // Register connection pool revelation in framework, this is the entry point used by system unter tetst
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+
+        // Simulate method call flow on database objects and verify correct query is built
+        $connectionPoolProphecy->getQueryBuilderForTable('sys_language')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryRestrictionContainerProphecy->removeAll()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
+        $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
+        $queryBuilderProphecy->select('uid', 'title', 'language_isocode', 'flag')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->from('sys_language')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
+        $expressionBuilderProphecy->eq('pid', 0)->shouldBeCalled()->willReturn('pid = 0');
+        $queryBuilderProphecy->where('pid = 0')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
+        $statementProphecy->fetch()->shouldBeCalledTimes(1)->willReturn(false);
+
         $expected = $input;
         $expected['systemLanguageRows'] = [
             -1 => [
@@ -170,16 +228,39 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
      */
     public function addDataResolvesLanguageIsocodeFromDatabaseField()
     {
-        $dbRows = [
-            [
-                'uid' => 3,
-                'title' => 'french',
-                'language_isocode' => 'fr',
-                'static_lang_isocode' => '',
-                'flag' => 'fr',
-            ],
+        $aDatabaseResultRow = [
+            'uid' => 3,
+            'title' => 'french',
+            'language_isocode' => 'fr',
+            'static_lang_isocode' => '',
+            'flag' => 'fr',
         ];
-        $this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,flag', 'sys_language', 'pid=0')->willReturn($dbRows);
+
+        // Prophecies and revelations for a lot of the database stack classes
+        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
+        $queryBuilderRevelation = $queryBuilderProphecy->reveal();
+        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
+        $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
+        $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
+        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
+        $statementProphecy = $this->prophesize(Statement::class);
+
+        // Register connection pool revelation in framework, this is the entry point used by system under test
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+
+        // Simulate method call flow on database objects and verify correct query is built
+        $connectionPoolProphecy->getQueryBuilderForTable('sys_language')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryRestrictionContainerProphecy->removeAll()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
+        $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
+        $queryBuilderProphecy->select('uid', 'title', 'language_isocode', 'flag')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->from('sys_language')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
+        $expressionBuilderProphecy->eq('pid', 0)->shouldBeCalled()->willReturn('pid = 0');
+        $queryBuilderProphecy->where('pid = 0')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
+
+        $statementProphecy->fetch()->shouldBeCalledTimes(2)->willReturn($aDatabaseResultRow, false);
+
         $expected = [
             'systemLanguageRows' => [
                 -1 => [
@@ -210,16 +291,39 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
      */
     public function addDataAddFlashMessageWithMissingIsoCode()
     {
-        $dbRows = [
-            [
-                'uid' => 3,
-                'title' => 'french',
-                'language_isocode' => '',
-                'static_lang_isocode' => '',
-                'flag' => 'fr',
-            ],
+        $aDatabaseResultRow = [
+            'uid' => 3,
+            'title' => 'french',
+            'language_isocode' => '',
+            'static_lang_isocode' => '',
+            'flag' => 'fr',
         ];
-        $this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,flag', 'sys_language', 'pid=0')->shouldBeCalled()->willReturn($dbRows);
+
+        // Prophecies and revelations for a lot of the database stack classes
+        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
+        $queryBuilderRevelation = $queryBuilderProphecy->reveal();
+        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
+        $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
+        $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
+        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
+        $statementProphecy = $this->prophesize(Statement::class);
+
+        // Register connection pool revelation in framework, this is the entry point used by system under test
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+
+        // Simulate method call flow on database objects and verify correct query is built
+        $connectionPoolProphecy->getQueryBuilderForTable('sys_language')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryRestrictionContainerProphecy->removeAll()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
+        $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
+        $queryBuilderProphecy->select('uid', 'title', 'language_isocode', 'flag')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->from('sys_language')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
+        $expressionBuilderProphecy->eq('pid', 0)->shouldBeCalled()->willReturn('pid = 0');
+        $queryBuilderProphecy->where('pid = 0')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
+
+        $statementProphecy->fetch()->shouldBeCalledTimes(2)->willReturn($aDatabaseResultRow, false);
+
         // Needed for backendUtility::getRecord()
         $GLOBALS['TCA']['static_languages'] = [ 'foo' ];
         $expected = [

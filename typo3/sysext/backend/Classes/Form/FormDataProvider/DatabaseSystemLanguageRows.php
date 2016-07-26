@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,7 +35,6 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
      */
     public function addData(array $result)
     {
-        $database = $this->getDatabase();
         $languageService = $this->getLanguageService();
 
         $pageTs = $result['pageTsConfig'];
@@ -69,28 +68,26 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
             ],
         ];
 
-        $dbRows = $database->exec_SELECTgetRows(
-            'uid,title,language_isocode,flag',
-            'sys_language',
-            'pid=0'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_language');
 
-        if ($dbRows === null) {
-            throw new \UnexpectedValueException(
-                'Database query error ' . $database->sql_error(),
-                1438170741
-            );
-        }
+        $queryBuilder->getRestrictions()->removeAll();
 
-        foreach ($dbRows as $dbRow) {
-            $uid = $dbRow['uid'];
+        $queryResult = $queryBuilder
+            ->select('uid', 'title', 'language_isocode', 'flag')
+            ->from('sys_language')
+            ->where($queryBuilder->expr()->eq('pid', 0))
+            ->execute();
+
+        while ($row = $queryResult->fetch()) {
+            $uid = $row['uid'];
             $languageRows[$uid] = [
                 'uid' => $uid,
-                'title' => $dbRow['title'],
-                'flagIconIdentifier' => 'flags-' . $dbRow['flag'],
+                'title' => $row['title'],
+                'flagIconIdentifier' => 'flags-' . $row['flag'],
             ];
-            if (!empty($dbRow['language_isocode'])) {
-                $languageRows[$uid]['iso'] = $dbRow['language_isocode'];
+            if (!empty($row['language_isocode'])) {
+                $languageRows[$uid]['iso'] = $row['language_isocode'];
             } else {
                 // No iso code could be found. This is currently possible in the system but discouraged.
                 // So, code within FormEngine has to be suited to work with an empty iso code. However,
@@ -102,7 +99,7 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
                 // @todo: since the rest of the FormEngine code does not rely on iso code?
                 $message = sprintf(
                     $languageService->sL('LLL:EXT:lang/locallang_core.xlf:error.missingLanguageIsocode'),
-                    $dbRow['title'],
+                    $row['title'],
                     $uid
                 );
                 /** @var FlashMessage $flashMessage */
@@ -123,14 +120,6 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
         $result['systemLanguageRows'] = $languageRows;
 
         return $result;
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabase()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
