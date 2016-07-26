@@ -33,6 +33,14 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class PagePathViewHelper extends AbstractBackendViewHelper
 {
+
+    /**
+     * This view helper renders HTML, thus output must not be escaped
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
     /**
      * Renders the current page path
      *

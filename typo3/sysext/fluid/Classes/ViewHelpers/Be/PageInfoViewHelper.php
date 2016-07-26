@@ -35,6 +35,14 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class PageInfoViewHelper extends AbstractBackendViewHelper
 {
+
+    /**
+     * This view helper renders HTML, thus output must not be escaped
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
     /**
      * Render javascript in header
      *
