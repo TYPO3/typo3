@@ -15,6 +15,11 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -410,48 +415,74 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
     }
 
     /**
-     * Returns the where clause for fetching pages
+     * Sets the Doctrine where clause for fetching pages
      *
+     * @param QueryBuilder $queryBuilder
      * @param int $id
      * @param string $searchFilter
-     * @return string
+     * @return QueryBuilder
      */
-    protected function getWhereClause($id, $searchFilter = '')
+    protected function setWhereClause(QueryBuilder $queryBuilder, $id, $searchFilter = ''): QueryBuilder
     {
-        $where = $GLOBALS['BE_USER']->getPagePermsClause(1) . BackendUtility::deleteClause('pages') . BackendUtility::versioningPlaceholderClause('pages');
+        $expressionBuilder = $queryBuilder->expr();
+        $queryBuilder->where(
+            QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(1))
+        );
+
         if (is_numeric($id) && $id >= 0) {
-            $where .= ' AND pid= ' . $GLOBALS['TYPO3_DB']->fullQuoteStr((int)$id, 'pages');
+            $queryBuilder->andWhere(
+                $expressionBuilder->eq('pid', (int)$id)
+            );
         }
 
         $excludedDoktypes = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.excludeDoktypes');
         if (!empty($excludedDoktypes)) {
-            $excludedDoktypes = $GLOBALS['TYPO3_DB']->fullQuoteArray(GeneralUtility::intExplode(',', $excludedDoktypes), 'pages');
-            $where .= ' AND doktype NOT IN (' . implode(',', $excludedDoktypes) . ')';
+            $queryBuilder->andWhere(
+                $expressionBuilder->notIn('doktype', GeneralUtility::intExplode(',', $excludedDoktypes))
+            );
         }
 
         if ($searchFilter !== '') {
+            $searchParts = $expressionBuilder->orX();
             if (is_numeric($searchFilter) && $searchFilter > 0) {
-                $searchWhere .= 'uid = ' . (int)$searchFilter . ' OR ';
+                $searchParts->add(
+                    $expressionBuilder->eq('uid', (int)$searchFilter)
+                );
             }
-            $searchFilter = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . $searchFilter . '%', 'pages');
+            $searchFilter = '%' . $queryBuilder->escapeLikeWildcards($searchFilter) . '%';
             $useNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
             $useAlias = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.searchInAlias');
 
-            $searchWhereAlias = '';
+            $aliasExpression = '';
             if ($useAlias) {
-                $searchWhereAlias = ' OR alias LIKE ' . $searchFilter;
+                $aliasExpression = $expressionBuilder->like('alias', $queryBuilder->createNamedParameter($searchFilter));
             }
 
             if ($useNavTitle) {
-                $searchWhere .= '(nav_title LIKE ' . $searchFilter .
-                ' OR (nav_title = "" AND title LIKE ' . $searchFilter . ')' . $searchWhereAlias . ')';
+                $searchWhereAlias = $expressionBuilder->orX(
+                    $expressionBuilder->like('nav_title', $queryBuilder->createNamedParameter($searchFilter)),
+                    $expressionBuilder->andX(
+                        $expressionBuilder->eq('nav_title', $queryBuilder->createNamedParameter('')),
+                        $expressionBuilder->like('title', $queryBuilder->createNamedParameter($searchFilter))
+                    )
+                );
+                if (strlen($aliasExpression)) {
+                    $searchWhereAlias->add($aliasExpression);
+                }
+                $searchParts->add($searchWhereAlias);
             } else {
-                $searchWhere .= 'title LIKE ' . $searchFilter . $searchWhereAlias;
+                $searchParts->add(
+                    $expressionBuilder->like('title', $queryBuilder->createNamedParameter($searchFilter))
+                );
+
+                if (strlen($aliasExpression)) {
+                    $searchParts->add($aliasExpression);
+                }
             }
 
-            $where .= ' AND (' . $searchWhere . ')';
+            $queryBuilder->andWhere($searchParts);
         }
-        return $where;
+        return $queryBuilder;
     }
 
     /**
@@ -463,8 +494,21 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
      */
     protected function getSubpages($id, $searchFilter = '')
     {
-        $where = $this->getWhereClause($id, $searchFilter);
-        return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,t3ver_wsid', 'pages', $where, '', 'sorting', '', 'uid');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+        $result = [];
+        $queryBuilder = $this->setWhereClause($queryBuilder, $id, $searchFilter);
+        $queryResult = $queryBuilder->select('uid', 't3ver_wsid')
+            ->from('pages')
+            ->orderBy('sorting')
+            ->execute();
+        while ($row = $queryResult->fetch()) {
+            $result[$row['uid']] = $row;
+        }
+        return $result;
     }
 
     /**
@@ -475,12 +519,16 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
      */
     protected function hasNodeSubPages($id)
     {
-        $where = $this->getWhereClause($id);
-        $subpage = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'pages', $where, '', 'sorting', '', 'uid');
-        $returnValue = true;
-        if (!$subpage['uid']) {
-            $returnValue = false;
-        }
-        return $returnValue;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+        $queryBuilder = $this->setWhereClause($queryBuilder, $id);
+        $count = $queryBuilder->count('uid')
+            ->from('pages')
+            ->execute()
+            ->fetchColumn(0);
+        return (bool)$count;
     }
 }
