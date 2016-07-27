@@ -13,11 +13,13 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Test case
  */
-class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class DebuggerUtilityTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Utility\DebuggerUtility
@@ -26,7 +28,7 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->debugger = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Utility\DebuggerUtility::class, array('dummy'));
+        $this->debugger = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Utility\DebuggerUtility::class, ['dummy']);
     }
 
     /**
@@ -72,5 +74,32 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $testObject->foo = 'bar';
         $result = $this->debugger->var_dump($testObject, null, 8, true, false, true);
         $this->assertRegExp('/foo.*bar/', $result);
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function varDumpRespectsBlacklistedProperties()
+    {
+        $testClass = new \stdClass();
+        $testClass->secretData = 'I like cucumber.';
+        $testClass->notSoSecretData = 'I like burger.';
+
+        $result = DebuggerUtility::var_dump($testClass, null, 8, true, false, true, null, ['secretData']);
+        self::assertNotContains($testClass->secretData, $result);
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function varDumpRespectsBlacklistedClasses()
+    {
+        $testClass = new \stdClass();
+        $testClass->data = 'I like burger.';
+
+        $result = DebuggerUtility::var_dump($testClass, null, 8, true, false, true, [\stdClass::class]);
+        self::assertNotContains($testClass->data, $result);
     }
 }
