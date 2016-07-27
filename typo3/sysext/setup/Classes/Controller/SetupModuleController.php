@@ -467,7 +467,11 @@ class SetupModuleController extends AbstractModule
         $fieldArray = $this->getFieldsFromShowItem();
         $tabLabel = '';
         foreach ($fieldArray as $fieldName) {
-            $more = '';
+            $config = $GLOBALS['TYPO3_USER_SETTINGS']['columns'][$fieldName];
+            if (isset($config['access']) && !$this->checkAccess($config)) {
+                continue;
+            }
+
             if (substr($fieldName, 0, 8) === '--div--;') {
                 if ($firstTabLabel === '') {
                     // First tab
@@ -483,28 +487,18 @@ class SetupModuleController extends AbstractModule
                 }
                 continue;
             }
-            $config = $GLOBALS['TYPO3_USER_SETTINGS']['columns'][$fieldName];
-
-            // Field my be disabled in setup.fields
-            if (isset($this->tsFieldConf[$fieldName . '.']['disabled']) && $this->tsFieldConf[$fieldName . '.']['disabled'] == 1) {
-                continue;
-            }
-            if (isset($config['access']) && !$this->checkAccess($config)) {
-                continue;
-            }
             $label = $this->getLabel($config['label'], $fieldName);
             $label = $this->getCSH($config['csh'] ?: $fieldName, $label);
             $type = $config['type'];
             $class = $config['class'];
-
             if ($type !== 'check') {
                 $class .= ' form-control';
             }
-
-            $style = $config['style'];
+            $more = '';
             if ($class) {
                 $more .= ' class="' . htmlspecialchars($class) . '"';
             }
+            $style = $config['style'];
             if ($style) {
                 $more .= ' style="' . htmlspecialchars($style) . '"';
             }
@@ -660,11 +654,9 @@ class SetupModuleController extends AbstractModule
     /**
      * Return a select with available languages
      *
-     * @param array $params
-     *
      * @return string Complete select as HTML string or warning box if something went wrong.
      */
-    public function renderLanguageSelect($params)
+    public function renderLanguageSelect()
     {
         $languageOptions = [];
         // Compile the languages dropdown
@@ -831,10 +823,9 @@ class SetupModuleController extends AbstractModule
      * @param string $str Locallang key
      * @param string $key Alternative override-config key
      * @param bool $addLabelTag Defines whether the string should be wrapped in a <label> tag.
-     * @param string $altLabelTagId Alternative id for use in "for" attribute of <label> tag. By default the $str key is used prepended with "field_".
      * @return string HTML output.
      */
-    protected function getLabel($str, $key = '', $addLabelTag = true, $altLabelTagId = '')
+    protected function getLabel($str, $key = '', $addLabelTag = true)
     {
         if (substr($str, 0, 4) === 'LLL:') {
             $out = htmlspecialchars($this->getLanguageService()->sL($str));
@@ -874,12 +865,23 @@ class SetupModuleController extends AbstractModule
 
     /**
      * Returns array with fields defined in $GLOBALS['TYPO3_USER_SETTINGS']['showitem']
+     * Remove fields which are disabled by user TSconfig
      *
-     * @return array Array with fieldnames visible in form
+     * @return string[] Array with field names visible in form
      */
     protected function getFieldsFromShowItem()
     {
-        return GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_USER_SETTINGS']['showitem'], true);
+        $allowedFields = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_USER_SETTINGS']['showitem'], true);
+        foreach ($this->tsFieldConf as $fieldName => $userTsFieldConfig) {
+            if (!empty($userTsFieldConfig['disabled'])) {
+                $fieldName = rtrim($fieldName, '.');
+                $key = array_search($fieldName, $allowedFields);
+                if ($key !== false) {
+                    unset($allowedFields[$key]);
+                }
+            }
+        }
+        return $allowedFields;
     }
 
     /**
