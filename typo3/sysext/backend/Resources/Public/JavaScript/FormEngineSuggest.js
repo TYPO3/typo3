@@ -102,7 +102,6 @@ define(['jquery', 'jquery/autocomplete'], function ($) {
 		// set up the events
 		$containerElement.on('click', '.autocomplete-suggestion-link', function(evt) {
 			evt.preventDefault();
-			insertValue(this);
 		});
 	};
 
