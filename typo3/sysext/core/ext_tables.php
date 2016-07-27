@@ -38,10 +38,6 @@ $GLOBALS['PAGES_TYPES'] = array(
     ),
 );
 
-/** @var \TYPO3\CMS\Core\Resource\Driver\DriverRegistry $registry */
-\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class)
-    ->addDriversToTCA();
-
 /**
  * $TBE_MODULES contains the structure of the backend modules as they are
  * arranged in main- and sub-modules. Every entry in this array represents a
