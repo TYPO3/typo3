@@ -13,7 +13,9 @@ namespace TYPO3\CMS\Core\Log\Writer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\LogRecord;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Log writer that writes the log records into a database table.
@@ -54,7 +56,6 @@ class DatabaseWriter extends AbstractWriter
      *
      * @param LogRecord $record Log record
      * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface $this
-     * @throws \RuntimeException
      */
     public function writeLog(LogRecord $record)
     {
@@ -78,17 +79,10 @@ class DatabaseWriter extends AbstractWriter
             'data' => $data
         );
 
-        if (false === $this->getDatabaseConnection()->exec_INSERTquery($this->logTable, $fieldValues)) {
-            throw new \RuntimeException('Could not write log record to database', 1345036334);
-        }
-        return $this;
-    }
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($this->logTable)
+            ->insert($this->logTable, $fieldValues);
 
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
+        return $this;
     }
 }

@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Test case
  */
@@ -37,71 +42,25 @@ class DatabaseWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function writeLogThrowsExceptionIfDatabaseInsertFailed()
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1345036334);
-
-        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_INSERTquery')->will($this->returnValue(false));
-        /** @var \TYPO3\CMS\Core\Log\LogRecord|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $logRecordMock = $this->createMock(\TYPO3\CMS\Core\Log\LogRecord::class);
-        /** @var \TYPO3\CMS\Core\Log\Writer\DatabaseWriter|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class)
-            ->setMethods(array('dummy'))
-            ->disableOriginalConstructor()
-            ->getMock();
-        $subject->writeLog($logRecordMock);
-    }
-
-    /**
-     * @test
-     */
     public function writeLogInsertsToSpecifiedTable()
     {
         $logTable = $this->getUniqueId('logtable_');
-        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_INSERTquery')->with($logTable, $this->anything());
-        /** @var \TYPO3\CMS\Core\Log\LogRecord|\PHPUnit_Framework_MockObject_MockObject $subject */
+
+        $connectionProphecy = $this->prophesize(Connection::class);
+        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
+        $connectionPoolProphecy->getConnectionForTable(Argument::cetera())->willReturn($connectionProphecy->reveal());
+
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
         $logRecordMock = $this->createMock(\TYPO3\CMS\Core\Log\LogRecord::class);
-        /** @var \TYPO3\CMS\Core\Log\Writer\DatabaseWriter|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class)
             ->setMethods(array('dummy'))
             ->disableOriginalConstructor()
             ->getMock();
         $subject->setLogTable($logTable);
+
+        // $logTable should end up as first insert argument
+        $connectionProphecy->insert($logTable, Argument::cetera())->willReturn(1);
+
         $subject->writeLog($logRecordMock);
-    }
-
-    /**
-     * @test
-     */
-    public function writeLogInsertsLogRecordWithGivenProperties()
-    {
-        $logRecordData = array(
-            'request_id' => $this->getUniqueId('request_id'),
-            'time_micro' => $this->getUniqueId('time_micro'),
-            'component' => $this->getUniqueId('component'),
-            'level' => $this->getUniqueId('level'),
-            'message' => $this->getUniqueId('message'),
-            'data' => '',
-        );
-        /** @var \TYPO3\CMS\Core\Log\LogRecord|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $logRecordFixture = $this->createMock(\TYPO3\CMS\Core\Log\LogRecord::class);
-        $logRecordFixture->expects($this->any())->method('getRequestId')->will($this->returnValue($logRecordData['request_id']));
-        $logRecordFixture->expects($this->any())->method('getCreated')->will($this->returnValue($logRecordData['time_micro']));
-        $logRecordFixture->expects($this->any())->method('getComponent')->will($this->returnValue($logRecordData['component']));
-        $logRecordFixture->expects($this->any())->method('getLevel')->will($this->returnValue($logRecordData['level']));
-        $logRecordFixture->expects($this->any())->method('getMessage')->will($this->returnValue($logRecordData['message']));
-        $logRecordFixture->expects($this->any())->method('getData')->will($this->returnValue(array()));
-
-        /** @var \TYPO3\CMS\Core\Log\Writer\DatabaseWriter|\PHPUnit_Framework_MockObject_MockObject $subject */
-        #$subject = $this->getMock(\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class, array('dummy'), array(), '', FALSE);
-        $subject = new \TYPO3\CMS\Core\Log\Writer\DatabaseWriter();
-
-        $GLOBALS['TYPO3_DB'] = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_INSERTquery')->with($this->anything(), $logRecordData);
-
-        $subject->writeLog($logRecordFixture);
     }
 }
