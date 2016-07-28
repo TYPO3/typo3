@@ -869,7 +869,17 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      */
     public function setTotalItems(string $table, int $pageId, array $constraints)
     {
-        $queryBuilder = $this->getQueryBuilder($table, $pageId, $constraints);
+        $queryParameters = $this->buildQueryParameters($table, $pageId, ['*'], $constraints);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($queryParameters['table']);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+        $queryBuilder
+            ->from($queryParameters['table'])
+            ->where(...$queryParameters['where']);
+
         $this->totalItems = (int)$queryBuilder->count('*')
             ->execute()
             ->fetchColumn();
