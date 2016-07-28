@@ -18,7 +18,6 @@ use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -88,15 +87,5 @@ class AbstractWizardController extends AbstractModule
     protected function getDocumentTemplate()
     {
         return $GLOBALS['TBE_TEMPLATE'];
-    }
-
-    /**
-     * Returns an instance of DatabaseConnection
-     *
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
