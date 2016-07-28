@@ -3660,10 +3660,10 @@ class BackendUtility
     {
         $beUser = static::getBackendUserAuthentication();
         if (isset($beUser->user['uid'])) {
-            $user_id = (int)$beUser->user['uid'];
+            $userId = (int)$beUser->user['uid'];
             if ($table && $uid) {
-                $fields_values = array(
-                    'userid' => $user_id,
+                $fieldsValues = array(
+                    'userid' => $userId,
                     'feuserid' => 0,
                     'tstamp' => $GLOBALS['EXEC_TIME'],
                     'record_table' => $table,
@@ -3671,9 +3671,19 @@ class BackendUtility
                     'username' => $beUser->user['username'],
                     'record_pid' => $pid
                 );
-                static::getDatabaseConnection()->exec_INSERTquery('sys_lockedrecords', $fields_values);
+                GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable('sys_lockedrecords')
+                    ->insert(
+                        'sys_lockedrecords',
+                        $fieldsValues
+                    );
             } else {
-                static::getDatabaseConnection()->exec_DELETEquery('sys_lockedrecords', 'userid=' . (int)$user_id);
+                GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable('sys_lockedrecords')
+                    ->delete(
+                        'sys_lockedrecords',
+                        ['userid' => (int)$userId]
+                    );
             }
         }
     }

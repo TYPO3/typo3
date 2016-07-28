@@ -76,6 +76,16 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var ObjectProphecy|Connection $connection */
         $connection = $this->prophesize(Connection::class);
+        $connection->delete('sys_lockedrecords', Argument::cetera())->willReturn(1);
+
+        /** @var ObjectProphecy|ConnectionPool $connectionPool */
+        $connectionPool = $this->prophesize(ConnectionPool::class);
+        $connectionPool->getConnectionForTable(Argument::cetera())->willReturn($connection->reveal());
+
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
+
+        /** @var ObjectProphecy|Connection $connection */
+        $connection = $this->prophesize(Connection::class);
         $connection->delete('be_sessions', Argument::cetera())->willReturn(1);
 
         /** @var ObjectProphecy|ConnectionPool $connectionPool */
