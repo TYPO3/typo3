@@ -23,13 +23,18 @@
 					</f:if>
 
 					<div>
-						<f:if condition="{file.name}">
-							<a href="{file.publicUrl}">
-								<span class="ce-uploads-fileName">
-									{file.name}
-								</span>
-							</a>
-						</f:if>
+						<a href="{file.publicUrl}">
+							<span class="ce-uploads-fileName">
+								<f:if condition="{file.title}">
+									<f:then>
+										{file.title}
+									</f:then>
+									<f:else>
+										{file.name}
+									</f:else>
+								</f:if>
+							</span>
+						</a>
 
 						<f:if condition="{file.properties.description}">
 							<f:if condition="{data.uploads_description}">
