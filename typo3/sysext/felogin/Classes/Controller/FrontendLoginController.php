@@ -797,9 +797,9 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 }
             }
         }
-        // Remove empty values
+        // Remove empty values, but keep "0" as value (that's why "strlen" is used as second parameter)
         if (!empty($redirect_url)) {
-            return GeneralUtility::trimExplode(',', implode(',', $redirect_url), true);
+            return array_filter($redirect_url, 'strlen');
         }
         return array();
     }
