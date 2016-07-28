@@ -1496,7 +1496,7 @@ abstract class AbstractMenuContentObject
             foreach ($NOconf as $key => $val) {
                 if ($this->isItemState('USERDEF2', $key)) {
                     // If this is the first active, we must generate USERDEF2.
-                    if ($USERDEF2conf) {
+                    if ($USERDEF2conf === null) {
                         $USERDEF2conf = $this->tmpl->splitConfArray($this->mconf['USERDEF2.'], $splitCount);
                         // Prepare active rollOver settings, overriding normal active settings
                         if (!empty($this->mconf['USERDEF2RO'])) {
