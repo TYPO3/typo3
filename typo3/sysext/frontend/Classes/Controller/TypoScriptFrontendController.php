@@ -1999,7 +1999,7 @@ class TypoScriptFrontendController
         }
         // Create response:
         // Simply boolean; Just shows TYPO3 error page with reason:
-        if (gettype($code) == 'boolean' || (string)$code === '1') {
+        if (strtolower($code) === 'true' || (string)$code === '1' || gettype($code) === 'boolean') {
             $title = 'Page Not Found';
             $message = 'The page did not exist or was inaccessible.' . ($reason ? ' Reason: ' . htmlspecialchars($reason) : '');
             $messagePage = GeneralUtility::makeInstance(ErrorpageMessage::class, $message, $title);

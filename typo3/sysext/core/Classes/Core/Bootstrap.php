@@ -403,7 +403,6 @@ class Bootstrap
             ->setCacheHashOptions()
             ->setDefaultTimezone()
             ->initializeL10nLocales()
-            ->convertPageNotFoundHandlingToBoolean()
             ->setMemoryLimit();
         if ($allowCaching) {
             $this->ensureClassLoadingInformationExists();
@@ -618,21 +617,6 @@ class Bootstrap
     protected function initializeL10nLocales()
     {
         \TYPO3\CMS\Core\Localization\Locales::initialize();
-        return $this;
-    }
-
-    /**
-     * Convert type of "pageNotFound_handling" setting in case it was written as a
-     * string (e.g. if edited in Install Tool)
-     *
-     * @TODO : Remove, if the Install Tool handles such data types correctly
-     * @return Bootstrap
-     */
-    protected function convertPageNotFoundHandlingToBoolean()
-    {
-        if (!strcasecmp($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling'], 'TRUE')) {
-            $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling'] = true;
-        }
         return $this;
     }
 
