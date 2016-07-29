@@ -230,6 +230,20 @@ abstract class AbstractMenuContentObject
     protected $useCacheHash = false;
 
     /**
+     * Holds the menuArr of the parent menu, if this menu is a subMenu.
+     *
+     * @var array
+     */
+    public $parentMenuArr = [];
+
+    /**
+     * Array key of the parentMenuItem in the parentMenuArr, if this menu is a subMenu.
+     *
+     * @var null|int
+     */
+    protected $parentMenuArrItemKey;
+
+    /**
      * The initialization of the object. This just sets some internal variables.
      *
      * @param TemplateService $tmpl The $this->getTypoScriptFrontendController()->tmpl object
@@ -1760,6 +1774,7 @@ abstract class AbstractMenuContentObject
                 }
                 // Especially scripts that build the submenu needs the parent data
                 $submenu->parent_cObj = $this->parent_cObj;
+                $submenu->setParentMenu($this->menuArr, $this->I['key']);
                 // Setting alternativeMenuTempArray (will be effective only if an array)
                 if (is_array($altArray)) {
                     $submenu->alternativeMenuTempArray = $altArray;
@@ -2227,5 +2242,86 @@ abstract class AbstractMenuContentObject
     protected function getCache()
     {
         return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
+    }
+
+    /**
+     * Set the parentMenuArr and key to provide the parentMenu informations to the
+     * subMenu, special fur IProcFunc and itemArrayProcFunc user functions.
+     *
+     * @internal
+     *
+     * @param array $menuArr
+     * @param int $menuItemKey
+     */
+    public function setParentMenu(array $menuArr = [], $menuItemKey)
+    {
+        // check if menuArr is a valid array and that menuItemKey matches an existing menuItem in menuArr
+        if (is_array($menuArr)
+            && (is_int($menuItemKey) && $menuItemKey >= 0 && isset($menuArr[$menuItemKey]))
+        ) {
+            $this->parentMenuArr = $menuArr;
+            $this->parentMenuArrItemKey = $menuItemKey;
+        }
+    }
+
+    /**
+     * Check if there is an valid parentMenuArr.
+     *
+     * @return bool
+     */
+    protected function hasParentMenuArr()
+    {
+        return
+            $this->menuNumber > 1
+            && is_array($this->parentMenuArr)
+            && !empty($this->parentMenuArr)
+        ;
+    }
+
+    /**
+     * Check if we have an parentMenutArrItemKey
+     */
+    protected function hasParentMenuItemKey()
+    {
+        return null !== $this->parentMenuArrItemKey;
+    }
+
+    /**
+     * Check if the the parentMenuItem exists
+     */
+    protected function hasParentMenuItem()
+    {
+        return
+            $this->hasParentMenuArr()
+            && $this->hasParentMenuItemKey()
+            && isset($this->getParentMenuArr()[$this->parentMenuArrItemKey])
+        ;
+    }
+
+    /**
+     * Get the parentMenuArr, if this is subMenu.
+     *
+     * @return array
+     */
+    public function getParentMenuArr()
+    {
+        return $this->hasParentMenuArr() ? $this->parentMenuArr : [];
+    }
+
+    /**
+     * Get the parentMenuItem from the parentMenuArr, if this is a subMenu
+     *
+     * @return null|array
+     */
+    public function getParentMenuItem()
+    {
+        // check if we have an parentMenuItem and if it is an array
+        if ($this->hasParentMenuItem()
+            && is_array($this->getParentMenuArr()[$this->parentMenuArrItemKey])
+        ) {
+            return $this->getParentMenuArr()[$this->parentMenuArrItemKey];
+        }
+
+        return null;
     }
 }
