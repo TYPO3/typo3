@@ -601,7 +601,7 @@ CREATE TABLE sys_log (
 	tablename varchar(255) DEFAULT '' NOT NULL,
 	recpid int(11) DEFAULT '0' NOT NULL,
 	error tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	details text NOT NULL,
+	details text,
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	type tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	details_nr tinyint(3) DEFAULT '0' NOT NULL,
