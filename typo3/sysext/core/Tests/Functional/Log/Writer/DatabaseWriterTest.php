@@ -38,6 +38,7 @@ class DatabaseWriterTest extends FunctionalTestCase
             'level' => LogLevel::DEBUG,
             'message' => 'aMessage',
             'data' => '',
+            'details' => ''
         );
         $logRecord = new LogRecord(
             $logRecordData['component'],

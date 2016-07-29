@@ -76,7 +76,8 @@ class DatabaseWriter extends AbstractWriter
             'component' => $record->getComponent(),
             'level' => $record->getLevel(),
             'message' => $record->getMessage(),
-            'data' => $data
+            'data' => $data,
+            'details' => ''
         );
 
         GeneralUtility::makeInstance(ConnectionPool::class)
