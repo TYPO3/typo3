@@ -15,6 +15,10 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -94,14 +98,13 @@ class LiveSearch
         foreach ($mounts as $pageId) {
             $pageList[] = $this->getAvailablePageIds($pageId, self::RECURSIVE_PAGE_LEVEL);
         }
-        $pageIdList = implode(',', array_unique(explode(',', implode(',', $pageList))));
+        $pageIdList = array_unique(explode(',', implode(',', $pageList)));
         unset($pageList);
-        $limit = $this->startCount . ',' . $this->limitCount;
         if ($this->queryParser->isValidCommand($searchQuery)) {
             $this->setQueryString($this->queryParser->getSearchQueryValue($searchQuery));
             $tableName = $this->queryParser->getTableNameFromCommand($searchQuery);
             if ($tableName) {
-                $recordArray[] = $this->findByTable($tableName, $pageIdList, $limit);
+                $recordArray[] = $this->findByTable($tableName, $pageIdList, $this->startCount, $this->limitCount);
             }
         } else {
             $this->setQueryString($searchQuery);
@@ -141,7 +144,7 @@ class LiveSearch
             if (!$GLOBALS['BE_USER']->check('tables_select', $tableName) && !$GLOBALS['BE_USER']->check('tables_modify', $tableName)) {
                 continue;
             }
-            $recordArray = $this->findByTable($tableName, $pageIdList, '0,' . $limit);
+            $recordArray = $this->findByTable($tableName, $pageIdList, 0, $limit);
             $recordCount = count($recordArray);
             if ($recordCount) {
                 $limit = $limit - $recordCount;
@@ -159,49 +162,62 @@ class LiveSearch
      *
      * @param string $tableName Database table name
      * @param string $pageIdList Comma separated list of page IDs
-     * @param string $limit MySql Limit notation
+     * @param int $firstResult
+     * @param int $maxResults
      * @return array Records found in the database matching the searchQuery
      * @see getRecordArray()
-     * @see makeOrderByTable()
      * @see makeQuerySearchByTable()
      * @see extractSearchableFieldsFromTable()
      */
-    protected function findByTable($tableName, $pageIdList, $limit)
+    protected function findByTable($tableName, $pageIdList, $firstResult, $maxResults)
     {
         $fieldsToSearchWithin = $this->extractSearchableFieldsFromTable($tableName);
         $getRecordArray = array();
         if (!empty($fieldsToSearchWithin)) {
-            $pageBasedPermission = $tableName == 'pages' && $this->userPermissions ? $this->userPermissions : '1=1 ';
-            $where = 'pid IN (' . $pageIdList . ') AND ' . $pageBasedPermission . $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin);
-            $getRecordArray = $this->getRecordArray($tableName, $where, $this->makeOrderByTable($tableName), $limit);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($tableName);
+
+            $queryBuilder
+                ->select('*')
+                ->from($tableName)
+                ->where(
+                    $queryBuilder->expr()->in('pid', $pageIdList),
+                    $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin)
+                )
+                ->setFirstResult($firstResult)
+                ->setMaxResults($maxResults);
+
+            if ($tableName === 'pages' && $this->userPermissions) {
+                $queryBuilder->andWhere($this->userPermissions);
+            }
+
+            $orderBy = $GLOBALS['TCA'][$tableName]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$tableName]['ctrl']['default_sortby'];
+            foreach (QueryHelper::parseOrderBy((string)$orderBy) as $orderPair) {
+                list($fieldName, $order) = $orderPair;
+                $queryBuilder->addOrderBy($fieldName, $order);
+            }
+
+            $getRecordArray = $this->getRecordArray($queryBuilder, $tableName);
         }
+
         return $getRecordArray;
     }
 
     /**
      * Process the Database operation to get the search result.
      *
-     * @param string $tableName Database table name
-     * @param string $where
-     * @param string $orderBy
-     * @param string $limit MySql Limit notation
+     * @param QueryBuilder $queryBuilder Database table name
+     * @param string $tableName
      * @return array
      * @see getTitleFromCurrentRow()
      * @see getEditLink()
      */
-    protected function getRecordArray($tableName, $where, $orderBy, $limit)
+    protected function getRecordArray($queryBuilder, $tableName)
     {
         $collect = array();
-        $queryParts = array(
-            'SELECT' => '*',
-            'FROM' => $tableName,
-            'WHERE' => $where,
-            'ORDERBY' => $orderBy,
-            'LIMIT' => $limit
-        );
-        $result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+        $result = $queryBuilder->execute();
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
+        while ($row = $result->fetch()) {
             $title = 'id=' . $row['uid'] . ', pid=' . $row['pid'];
             $collect[] = array(
                 'id' => $tableName . ':' . $row['uid'],
@@ -212,7 +228,6 @@ class LiveSearch
                 'editLink' => htmlspecialchars($this->getEditLink($tableName, $row))
             );
         }
-        $GLOBALS['TYPO3_DB']->sql_free_result($result);
         return $collect;
     }
 
@@ -229,7 +244,7 @@ class LiveSearch
         $pageInfo = BackendUtility::readPageAccess($row['pid'], $this->userPermissions);
         $calcPerms = $GLOBALS['BE_USER']->calcPerms($pageInfo);
         $editLink = '';
-        if ($tableName == 'pages') {
+        if ($tableName === 'pages') {
             $localCalcPerms = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
             $permsEdit = $localCalcPerms & Permission::PAGE_EDIT;
         } else {
@@ -280,84 +295,96 @@ class LiveSearch
      *
      * @param string $tableName Record table name
      * @param array $fieldsToSearchWithin User right based visible fields where we can search within.
-     * @return string
+     * @return CompositeExpression
      */
     protected function makeQuerySearchByTable($tableName, array $fieldsToSearchWithin)
     {
-        $queryPart = '';
-        $whereParts = array();
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $expressionBuilder = $queryBuilder->expr();
+        $constraints = [];
+
         // If the search string is a simple integer, assemble an equality comparison
         if (MathUtility::canBeInterpretedAsInteger($this->queryString)) {
             foreach ($fieldsToSearchWithin as $fieldName) {
-                if ($fieldName == 'uid' || $fieldName == 'pid' || isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
-                    $fieldConfig = &$GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
-                    // Assemble the search condition only if the field is an integer, or is uid or pid
-                    if ($fieldName == 'uid' || $fieldName == 'pid' || $fieldConfig['type'] == 'input' && $fieldConfig['eval'] && GeneralUtility::inList($fieldConfig['eval'], 'int')) {
-                        $whereParts[] = $fieldName . '=' . $this->queryString;
-                    } elseif (
-                        $fieldConfig['type'] == 'text' ||
-                        $fieldConfig['type'] == 'flex' ||
-                        ($fieldConfig['type'] == 'input' && (!$fieldConfig['eval'] ||
-                        !preg_match('/date|time|int/', $fieldConfig['eval'])))) {
-                        // Otherwise and if the field makes sense to be searched, assemble a like condition
-                            $whereParts[] = $fieldName . ' LIKE \'%' . $this->queryString . '%\'';
-                    }
+                if ($fieldName !== 'uid'
+                    && $fieldName !== 'pid'
+                    && !isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])
+                ) {
+                    continue;
                 }
-            }
-        } else {
-            $like = '\'%' . $GLOBALS['TYPO3_DB']->escapeStrForLike($GLOBALS['TYPO3_DB']->quoteStr($this->queryString, $tableName), $tableName) . '%\'';
-            foreach ($fieldsToSearchWithin as $fieldName) {
-                if (isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
-                    $fieldConfig = &$GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
-                    // Check whether search should be case-sensitive or not
-                    $format = 'LOWER(%s) LIKE LOWER(%s)';
-                    if (is_array($fieldConfig['search'])) {
-                        if (in_array('case', $fieldConfig['search'])) {
-                            $format = '%s LIKE %s';
-                        }
-                        // Apply additional condition, if any
-                        if ($fieldConfig['search']['andWhere']) {
-                            $format = '((' . $fieldConfig['search']['andWhere'] . ') AND (' . $format . '))';
-                        }
-                    }
-                    // Assemble the search condition only if the field makes sense to be searched
-                    if ($fieldConfig['type'] == 'text' || $fieldConfig['type'] == 'flex' || $fieldConfig['type'] == 'input' && (!$fieldConfig['eval'] || !preg_match('/date|time|int/', $fieldConfig['eval']))) {
-                        $whereParts[] = sprintf($format, $fieldName, $like);
-                    }
-                }
-            }
-        }
-        // If at least one condition was defined, create the search query
-        if (!empty($whereParts)) {
-            $queryPart = ' AND (' . implode(' OR ', $whereParts) . ')';
-            // And the relevant conditions for deleted and versioned records
-            $queryPart .= BackendUtility::deleteClause($tableName);
-            $queryPart .= BackendUtility::versioningPlaceholderClause($tableName);
-            $queryPart .= BackendUtility::getWorkspaceWhereClause($tableName);
-        } else {
-            $queryPart = ' AND 0 = 1';
-        }
-        return $queryPart;
-    }
+                $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
+                $fieldType = $fieldConfig['type'];
+                $evalRules = $fieldConfig['eval'] ?: '';
 
-    /**
-     * Build the MySql ORDER BY statement.
-     *
-     * @param string $tableName Record table name
-     * @return string
-     */
-    protected function makeOrderByTable($tableName)
-    {
-        $orderBy = '';
-        if (is_array($GLOBALS['TCA'][$tableName]['ctrl']) && array_key_exists('sortby', $GLOBALS['TCA'][$tableName]['ctrl'])) {
-            $sortBy = trim($GLOBALS['TCA'][$tableName]['ctrl']['sortby']);
-            if (!empty($sortBy)) {
-                $orderBy = 'ORDER BY ' . $sortBy;
+                // Assemble the search condition only if the field is an integer, or is uid or pid
+                if ($fieldName === 'uid'
+                    || $fieldName === 'pid'
+                    || ($fieldType === 'input' && $evalRules && GeneralUtility::inList($evalRules, 'int'))
+                ) {
+                    $constraints[] = $expressionBuilder->eq(
+                        $fieldName,
+                        $queryBuilder->expr()->literal($this->queryString)
+                    );
+                } elseif ($fieldType === 'text'
+                    || $fieldType === 'flex'
+                    || ($fieldType === 'input' && (!$evalRules || !preg_match('/date|time|int/', $evalRules)))
+                ) {
+                    // Otherwise and if the field makes sense to be searched, assemble a like condition
+                    $constraints[] = $constraints[] = $expressionBuilder->like(
+                        $fieldName,
+                        $queryBuilder->quote('%' . (int)$this->queryString . '%')
+                    );
+                }
             }
         } else {
-            $orderBy = $GLOBALS['TCA'][$tableName]['ctrl']['default_sortby'];
+            $like = $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($this->queryString) . '%');
+            foreach ($fieldsToSearchWithin as $fieldName) {
+                if (!isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
+                    continue;
+                }
+                $fieldConfig = &$GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
+                $fieldType = $fieldConfig['type'];
+                $evalRules = $fieldConfig['eval'] ?: '';
+
+                // Check whether search should be case-sensitive or not
+                $searchConstraint = $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->comparison(
+                        'LOWER(' . $queryBuilder->quoteIdentifier($fieldName) . ')',
+                        'LIKE',
+                        'LOWER(' . $like . ')'
+                    )
+                );
+
+                if (is_array($fieldConfig['search'])) {
+                    if (in_array('case', $fieldConfig['search'], true)) {
+                        // Replace case insensitive default constraint
+                        $searchConstraint = $queryBuilder->expr()->andX($queryBuilder->expr()->like($fieldName, $like));
+                    }
+                    // Apply additional condition, if any
+                    if ($fieldConfig['search']['andWhere']) {
+                        $searchConstraint->add(
+                            QueryHelper::stripLogicalOperatorPrefix($fieldConfig['search']['andWhere'])
+                        );
+                    }
+                }
+                // Assemble the search condition only if the field makes sense to be searched
+                if ($fieldType === 'text'
+                    || $fieldType === 'flex'
+                    || $fieldType === 'input' && (!$evalRules || !preg_match('/date|time|int/', $evalRules))
+                ) {
+                    if ($searchConstraint->count() !== 0) {
+                        $constraints[] = $searchConstraint;
+                    }
+                }
+            }
         }
-        return $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy);
+
+        // If no search field conditions have been build ensure no results are returned
+        if (empty($constraints)) {
+            return '0=1';
+        }
+
+        return $expressionBuilder->orX(...$constraints);
     }
 
     /**
