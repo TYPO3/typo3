@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form;
  */
 
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
@@ -23,12 +22,6 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  */
 class InlineStackProcessorTest extends UnitTestCase
 {
-    protected function setUp()
-    {
-        // @todo: Remove if stack processor does not fiddle with tsConfig anymore and no longer sets 'config'
-        $dbProphecy = $this->prophesize(DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB'] = $dbProphecy->reveal();
-    }
 
     /**
      * @return array
