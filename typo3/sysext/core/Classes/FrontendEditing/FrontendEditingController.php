@@ -14,8 +14,14 @@ namespace TYPO3\CMS\Core\FrontendEditing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\View\AdminPanelView;
 
 /**
  * Controller class for frontend editing.
@@ -191,7 +197,7 @@ class FrontendEditingController
      * Basically taking in the data and commands and passes them on to the proper classes as they should be.
      *
      * @return void
-     * @throws UnexpectedValueException if TSFE_EDIT[cmd] is not a valid command
+     * @throws \UnexpectedValueException if TSFE_EDIT[cmd] is not a valid command
      * @see \TYPO3\CMS\Frontend\Http\RequestHandler
      */
     public function editAction()
@@ -308,56 +314,92 @@ class FrontendEditingController
      */
     protected function move($table, $uid, $direction = '', $afterUID = 0)
     {
-        $cmdData = array();
+        $dataHandlerCommands = [];
         $sortField = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
         if ($sortField) {
-            // Get self
-            $fields = array_unique(GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'] . ',uid,pid,' . $sortField, true));
-            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $fields), $table, 'uid=' . $uid);
-            if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-                // Record before or after
-                if ($GLOBALS['BE_USER']->adminPanel instanceof \TYPO3\CMS\Frontend\View\AdminPanelView && $GLOBALS['BE_USER']->adminPanel->extGetFeAdminValue('preview')) {
-                    $ignore = array('starttime' => 1, 'endtime' => 1, 'disabled' => 1, 'fe_group' => 1);
+            // Get the current record
+            // Only fetch uid, pid and the fields that are necessary to detect the sorting factors
+            if (isset($GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'])) {
+                $copyAfterDuplicateFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], true);
+            } else {
+                $copyAfterDuplicateFields = [];
+            }
+
+            $fields = $copyAfterDuplicateFields;
+            $fields[] = 'uid';
+            $fields[] = 'pid';
+            $fields[] = $sortField;
+            $fields = array_unique($fields);
+
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()->removeAll();
+
+            $currentRecord = $queryBuilder
+                ->select(...$fields)
+                ->from($table)
+                ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+                ->execute()
+                ->fetch();
+
+            if (is_array($currentRecord)) {
+                // Fetch the record before or after the current one
+                // to define the data handler commands
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($table);
+
+                $queryBuilder
+                    ->select('uid', 'pid')
+                    ->from($table)
+                    ->where($queryBuilder->expr()->eq('pid', (int)$currentRecord['pid']))
+                    ->setMaxResults(2);
+
+                // Disable the default restrictions (but not all) if the admin panel is in preview mode
+                if ($GLOBALS['BE_USER']->adminPanel instanceof AdminPanelView && $GLOBALS['BE_USER']->adminPanel->extGetFeAdminValue('preview')) {
+                    $queryBuilder->getRestrictions()
+                        ->removeByType(StartTimeRestriction::class)
+                        ->removeByType(EndTimeRestriction::class)
+                        ->removeByType(HiddenRestriction::class)
+                        ->removeByType(FrontendGroupRestriction::class);
                 }
-                $copyAfterFieldsQuery = '';
-                if ($GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields']) {
-                    $cAFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], true);
-                    foreach ($cAFields as $fieldName) {
-                        $copyAfterFieldsQuery .= ' AND ' . $fieldName . '="' . $row[$fieldName] . '"';
+
+                if (!empty($copyAfterDuplicateFields)) {
+                    foreach ($copyAfterDuplicateFields as $fieldName) {
+                        $queryBuilder->andWhere($queryBuilder->expr()->eq($fieldName, $currentRecord[$fieldName]));
                     }
                 }
                 if (!empty($direction)) {
-                    if ($direction == 'up') {
-                        $operator = '<';
-                        $order = 'DESC';
+                    if ($direction === 'up') {
+                        $queryBuilder->andWhere($queryBuilder->expr()->lt($sortField, (int)$currentRecord[$sortField]));
+                        $queryBuilder->orderBy($sortField, 'DESC');
                     } else {
-                        $operator = '>';
-                        $order = 'ASC';
+                        $queryBuilder->andWhere($queryBuilder->expr()->gt($sortField, (int)$currentRecord[$sortField]));
+                        $queryBuilder->orderBy($sortField, 'ASC');
                     }
-                    $sortCheck = ' AND ' . $sortField . $operator . (int)$row[$sortField];
                 }
-                $GLOBALS['TYPO3_DB']->sql_free_result($res);
-                $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid', $table, 'pid=' . (int)$row['pid'] . $sortCheck . $copyAfterFieldsQuery . $GLOBALS['TSFE']->sys_page->enableFields($table, '', $ignore), '', $sortField . ' ' . $order, '2');
-                if ($row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+
+                $result = $queryBuilder->execute();
+                if ($recordBefore = $result->fetch()) {
                     if ($afterUID) {
-                        $cmdData[$table][$uid]['move'] = -$afterUID;
-                    } elseif ($direction == 'down') {
-                        $cmdData[$table][$uid]['move'] = -$row2['uid'];
-                    } elseif ($row3 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+                        $dataHandlerCommands[$table][$uid]['move'] = -$afterUID;
+                    } elseif ($direction === 'down') {
+                        $dataHandlerCommands[$table][$uid]['move'] = -$recordBefore['uid'];
+                    } elseif ($recordAfter = $result->fetch()) {
                         // Must take the second record above...
-                        $cmdData[$table][$uid]['move'] = -$row3['uid'];
+                        $dataHandlerCommands[$table][$uid]['move'] = -$recordAfter['uid'];
                     } else {
                         // ... and if that does not exist, use pid
-                        $cmdData[$table][$uid]['move'] = $row['pid'];
+                        $dataHandlerCommands[$table][$uid]['move'] = $currentRecord['pid'];
                     }
-                } elseif ($direction == 'up') {
-                    $cmdData[$table][$uid]['move'] = $row['pid'];
+                } elseif ($direction === 'up') {
+                    $dataHandlerCommands[$table][$uid]['move'] = $currentRecord['pid'];
                 }
-                $GLOBALS['TYPO3_DB']->sql_free_result($res);
             }
-            if (!empty($cmdData)) {
+
+            // If any data handler commands were set, execute the data handler command
+            if (!empty($dataHandlerCommands)) {
                 $this->initializeTceMain();
-                $this->tce->start(array(), $cmdData);
+                $this->tce->start([], $dataHandlerCommands);
                 $this->tce->process_cmdmap();
             }
         }
