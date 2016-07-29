@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Core\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+
 /**
  * Class to handle mail specific functionality
  */
@@ -75,7 +78,21 @@ class MailUtility
         if (!GeneralUtility::validEmail($address)) {
             // just get us a domain record we can use as the host
             $host = '';
-            $domainRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('domainName', 'sys_domain', 'hidden = 0', '', 'pid ASC, sorting ASC');
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('sys_domain');
+
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
+
+            $domainRecord = $queryBuilder
+                ->select('domainName')
+                ->from('sys_domain')
+                ->orderBy('pid', 'ASC')
+                ->orderBy('sorting', 'ASC')
+                ->execute()
+                ->fetch();
+
             if (!empty($domainRecord['domainName'])) {
                 $tempUrl = $domainRecord['domainName'];
                 if (!GeneralUtility::isFirstPartOfStr($tempUrl, 'http')) {
