@@ -8267,12 +8267,14 @@ class DataHandler
      */
     protected function resolveVersionedRecords($tableName, $fieldNames, $sortingField, array $liveIds)
     {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($tableName);
         /** @var PlainDataResolver $resolver */
         $resolver = GeneralUtility::makeInstance(
             PlainDataResolver::class,
             $tableName,
             $liveIds,
-            $sortingField
+            [$connection->quoteIdentifier($sortingField)]
         );
 
         $resolver->setWorkspaceId($this->BE_USER->workspace);

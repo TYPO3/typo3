@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\DataHandling;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -37,7 +39,7 @@ class PlainDataResolver
     protected $liveIds;
 
     /**
-     * @var string
+     * @var array
      */
     protected $sortingStatement;
 
@@ -69,9 +71,9 @@ class PlainDataResolver
     /**
      * @param string $tableName
      * @param int[] $liveIds
-     * @param NULL|string $sortingStatement
+     * @param NULL|array $sortingStatement
      */
-    public function __construct($tableName, array $liveIds, $sortingStatement = null)
+    public function __construct($tableName, array $liveIds, array $sortingStatement = null)
     {
         $this->tableName = $tableName;
         $this->liveIds = $this->reindex($liveIds);
@@ -148,27 +150,35 @@ class PlainDataResolver
         }
 
         $ids = $this->processVersionMovePlaceholders($ids);
-        $versions = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'uid,t3ver_oid,t3ver_state',
-            $this->tableName,
-            'pid=-1 AND t3ver_oid IN (' . $this->intImplode(',', $ids) . ')'
-            . ' AND t3ver_wsid=' . $this->workspaceId
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->tableName);
 
-        if (!empty($versions)) {
-            foreach ($versions as $version) {
-                $liveReferenceId = $version['t3ver_oid'];
-                $versionId = $version['uid'];
-                if (isset($ids[$liveReferenceId])) {
-                    if (!$this->keepDeletePlaceholder && VersionState::cast($version['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-                        unset($ids[$liveReferenceId]);
-                    } else {
-                        $ids[$liveReferenceId] = $versionId;
-                    }
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $result = $queryBuilder
+            ->select('uid', 't3ver_oid', 't3ver_state')
+            ->from($this->tableName)
+            ->where(
+                $queryBuilder->expr()->eq('pid', -1),
+                $queryBuilder->expr()->in('t3ver_oid', array_map('intval', $ids)),
+                $queryBuilder->expr()->eq('t3ver_wsid', $this->workspaceId)
+            )
+            ->execute();
+
+        while ($version = $result->fetch()) {
+            $liveReferenceId = $version['t3ver_oid'];
+            $versionId = $version['uid'];
+            if (isset($ids[$liveReferenceId])) {
+                if (!$this->keepDeletePlaceholder
+                    && VersionState::cast($version['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
+                ) {
+                    unset($ids[$liveReferenceId]);
+                } else {
+                    $ids[$liveReferenceId] = $versionId;
                 }
             }
-            $ids = $this->reindex($ids);
         }
+        $ids = $this->reindex($ids);
 
         return $ids;
     }
@@ -186,29 +196,36 @@ class PlainDataResolver
             return $ids;
         }
 
-        $movePlaceholders = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'uid,t3ver_move_id',
-            $this->tableName,
-            'pid<>-1 AND t3ver_state=' . VersionState::MOVE_PLACEHOLDER
-            . ' AND t3ver_wsid=' . $this->workspaceId
-            . ' AND t3ver_move_id IN (' . $this->intImplode(',', $ids) . ')'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->tableName);
 
-        if (!empty($movePlaceholders)) {
-            foreach ($movePlaceholders as $movePlaceholder) {
-                $liveReferenceId = $movePlaceholder['t3ver_move_id'];
-                $movePlaceholderId = $movePlaceholder['uid'];
-                // Substitute MOVE_PLACEHOLDER and purge live reference
-                if (isset($ids[$movePlaceholderId])) {
-                    $ids[$movePlaceholderId] = $liveReferenceId;
-                    unset($ids[$liveReferenceId]);
-                // Just purge live reference
-                } elseif (!$this->keepMovePlaceholder) {
-                    unset($ids[$liveReferenceId]);
-                }
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $result = $queryBuilder
+            ->select('uid', 't3ver_move_id')
+            ->from($this->tableName)
+            ->where(
+                $queryBuilder->expr()->neq('pid', -1),
+                $queryBuilder->expr()->eq('t3ver_state', VersionState::MOVE_PLACEHOLDER),
+                $queryBuilder->expr()->eq('t3ver_wsid', $this->workspaceId),
+                $queryBuilder->expr()->in('t3ver_move_id', array_map('intval', $ids))
+            )
+            ->execute();
+
+        while ($movePlaceholder = $result->fetch()) {
+            $liveReferenceId = $movePlaceholder['t3ver_move_id'];
+            $movePlaceholderId = $movePlaceholder['uid'];
+            // Substitute MOVE_PLACEHOLDER and purge live reference
+            if (isset($ids[$movePlaceholderId])) {
+                $ids[$movePlaceholderId] = $liveReferenceId;
+                unset($ids[$liveReferenceId]);
+            // Just purge live reference
+            } elseif (!$this->keepMovePlaceholder) {
+                unset($ids[$liveReferenceId]);
             }
-            $ids = $this->reindex($ids);
         }
+
+        $ids = $this->reindex($ids);
 
         return $ids;
     }
@@ -227,22 +244,27 @@ class PlainDataResolver
             return $ids;
         }
 
-        $records = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'uid',
-            $this->tableName,
-            'uid IN (' . $this->intImplode(',', $ids) . ')',
-            '',
-            $this->sortingStatement,
-            '',
-            'uid'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->tableName);
 
-        if (!is_array($records)) {
-            return array();
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $queryBuilder
+            ->select('uid')
+            ->from($this->tableName)
+            ->where(
+                $queryBuilder->expr()->in('uid', array_map('intval', $ids))
+            );
+
+        if (!empty($this->sortingStatement)) {
+            foreach ($this->sortingStatement as $sortingStatement) {
+                $queryBuilder->add('orderBy', $sortingStatement, true);
+            }
         }
 
-        $ids = $this->reindex(array_keys($records));
-        return $ids;
+        $sortedIds = $queryBuilder->execute()->fetchAll();
+
+        return $this->reindex(array_column($sortedIds, 'uid'));
     }
 
     /**
@@ -259,28 +281,32 @@ class PlainDataResolver
             return $ids;
         }
 
-        $records = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'uid,t3ver_oid',
-            $this->tableName,
-            'uid IN (' . $this->intImplode(',', $ids) . ')',
-            '',
-            '',
-            '',
-            'uid'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->tableName);
 
-        if (!is_array($records)) {
-            return array();
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $result = $queryBuilder
+            ->select('uid', 't3ver_oid')
+            ->from($this->tableName)
+            ->where(
+                $queryBuilder->expr()->in('uid', array_map('intval', $ids))
+            )
+            ->execute();
+
+        $versionIds = [];
+        while ($record = $result->fetch()) {
+            $liveId = $record['uid'];
+            $versionIds[$liveId] = $record['t3ver_oid'];
         }
 
         foreach ($ids as $id) {
-            if (!empty($records[$id]['t3ver_oid'])) {
-                $ids[$id] = $records[$id]['t3ver_oid'];
+            if (!empty($versionIds[$id])) {
+                $ids[$id] = $versionIds[$id];
             }
         }
 
-        $ids = $this->reindex($ids);
-        return $ids;
+        return $this->reindex($ids);
     }
 
     /**
@@ -313,25 +339,5 @@ class PlainDataResolver
     protected function isLocalizationEnabled()
     {
         return BackendUtility::isTableLocalizable($this->tableName);
-    }
-
-    /**
-     * Implodes an array of casted integer values.
-     *
-     * @param string $delimiter
-     * @param array $values
-     * @return string
-     */
-    protected function intImplode($delimiter, array $values)
-    {
-        return implode($delimiter, array_map('intval', $values));
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

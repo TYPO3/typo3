@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Database;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -769,29 +771,51 @@ class RelationHandler
         $foreign_table_field = $conf['foreign_table_field'];
         $useDeleteClause = !$this->undeleteRecord;
         $foreign_match_fields = is_array($conf['foreign_match_fields']) ? $conf['foreign_match_fields'] : array();
-        // Search for $uid in foreign_field, and if we have symmetric relations, do this also on symmetric_field
-        if ($conf['symmetric_field']) {
-            $whereClause = '(' . $conf['foreign_field'] . '=' . $uid . ' OR ' . $conf['symmetric_field'] . '=' . $uid . ')';
-        } else {
-            $whereClause = $conf['foreign_field'] . '=' . $uid;
-        }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($foreign_table);
+        $queryBuilder->getRestrictions()
+            ->removeAll();
         // Use the deleteClause (e.g. "deleted=0") on this table
         if ($useDeleteClause) {
-            $whereClause .= BackendUtility::deleteClause($foreign_table);
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        }
+
+        $queryBuilder->select('uid')
+            ->from($foreign_table);
+
+        // Search for $uid in foreign_field, and if we have symmetric relations, do this also on symmetric_field
+        if ($conf['symmetric_field']) {
+            $queryBuilder->where(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->eq($conf['foreign_field'], $uid),
+                    $queryBuilder->expr()->eq($conf['symmetric_field'], $uid)
+                )
+            );
+        } else {
+            $queryBuilder->where($queryBuilder->expr()->eq($conf['foreign_field'], $uid));
         }
         // If it's requested to look for the parent uid AND the parent table,
         // add an additional SQL-WHERE clause
         if ($foreign_table_field && $this->currentTable) {
-            $whereClause .= ' AND ' . $foreign_table_field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->currentTable, $foreign_table);
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq(
+                    $foreign_table_field,
+                    $queryBuilder->createNamedParameter($this->currentTable)
+                )
+            );
         }
         // Add additional where clause if foreign_match_fields are defined
         foreach ($foreign_match_fields as $field => $value) {
-            $whereClause .= ' AND ' . $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $foreign_table);
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($value))
+            );
         }
         // Select children from the live(!) workspace only
         if (BackendUtility::isTableWorkspaceEnabled($foreign_table)) {
-            $workspaceList = '0,' . $this->getWorkspaceId();
-            $whereClause .= ' AND ' . $foreign_table . '.t3ver_wsid IN (' . $workspaceList . ') AND ' . $foreign_table . '.pid<>-1';
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in($foreign_table . '.t3ver_wsid', [0, (int)$this->getWorkspaceId()]),
+                $queryBuilder->expr()->neq($foreign_table . '.pid', -1)
+            );
         }
         // Get the correct sorting field
         // Specific manual sortby for data handled by this field
@@ -799,12 +823,15 @@ class RelationHandler
         if ($conf['foreign_sortby']) {
             if ($conf['symmetric_sortby'] && $conf['symmetric_field']) {
                 // Sorting depends on, from which side of the relation we're looking at it
-                $sortby = '
-					CASE
-						WHEN ' . $conf['foreign_field'] . '=' . $uid . '
-						THEN ' . $conf['foreign_sortby'] . '
-						ELSE ' . $conf['symmetric_sortby'] . '
-					END';
+                // This requires bypassing automatic quoting and setting of the default sort direction
+                $queryBuilder->add(
+                    'orderBy',
+                    'CASE
+						WHEN ' . $queryBuilder->expr()->eq($conf['foreign_field'], $uid) . '
+						THEN ' . $queryBuilder->quoteIdentifier($conf['foreign_sortby']) . '
+						ELSE ' . $queryBuilder->quoteIdentifier($conf['symmetric_sortby']) . '
+					END'
+                );
             } else {
                 // Regular single-side behaviour
                 $sortby = $conf['foreign_sortby'];
@@ -819,11 +846,23 @@ class RelationHandler
             // Default sortby for all table records
             $sortby = $GLOBALS['TCA'][$foreign_table]['ctrl']['default_sortby'];
         }
-        // Strip a possible "ORDER BY" in front of the $sortby value
-        $sortby = $GLOBALS['TYPO3_DB']->stripOrderBy($sortby);
+
+        if (!empty($sortby)) {
+            foreach (QueryHelper::parseOrderBy($sortby) as $orderPair) {
+                list($fieldName, $sorting) = $orderPair;
+                $queryBuilder->addOrderBy($fieldName, $sorting);
+            }
+        }
+
         // Get the rows from storage
-        $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $foreign_table, $whereClause, '', $sortby, '', 'uid');
+        $rows = [];
+        $result = $queryBuilder->execute();
+        while ($row = $result->fetch()) {
+            $rows[$row['uid']] = $row;
+        }
         if (!empty($rows)) {
+            // Retrieve the parsed and prepared ORDER BY configuration for the resolver
+            $sortby = $queryBuilder->getQueryPart('orderBy');
             $ids = $this->getResolver($foreign_table, array_keys($rows), $sortby)->get();
             foreach ($ids as $id) {
                 $this->itemArray[$key]['id'] = $id;
@@ -1336,10 +1375,10 @@ class RelationHandler
     /**
      * @param string $tableName
      * @param int[] $ids
-     * @param string $sortingStatement
+     * @param array $sortingStatement
      * @return PlainDataResolver
      */
-    protected function getResolver($tableName, array $ids, $sortingStatement = null)
+    protected function getResolver($tableName, array $ids, array $sortingStatement = null)
     {
         /** @var PlainDataResolver $resolver */
         $resolver = GeneralUtility::makeInstance(
