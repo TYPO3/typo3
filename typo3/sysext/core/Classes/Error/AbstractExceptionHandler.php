@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Error;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -95,8 +96,10 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
      */
     protected function writeLog($logMessage)
     {
-        $databaseConnection = $this->getDatabaseConnection();
-        if (!is_object($databaseConnection) || !$databaseConnection->isConnected()) {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_log');
+
+        if (!$connection->isConnected()) {
             return;
         }
         $userId = 0;
@@ -114,19 +117,22 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
                 $data['originalUser'] = $backendUser->user['ses_backuserid'];
             }
         }
-        $fields_values = array(
-            'userid' => $userId,
-            'type' => 5,
-            'action' => 0,
-            'error' => 2,
-            'details_nr' => 0,
-            'details' => str_replace('%', '%%', $logMessage),
-            'log_data' => (empty($data) ? '' : serialize($data)),
-            'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
-            'tstamp' => $GLOBALS['EXEC_TIME'],
-            'workspace' => $workspace
+
+        $connection->insert(
+            'sys_log',
+            [
+                'userid' => $userId,
+                'type' => 5,
+                'action' => 0,
+                'error' => 2,
+                'details_nr' => 0,
+                'details' => str_replace('%', '%%', $logMessage),
+                'log_data' => empty($data) ? '' : serialize($data),
+                'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+                'tstamp' => $GLOBALS['EXEC_TIME'],
+                'workspace' => $workspace
+            ]
         );
-        $databaseConnection->exec_INSERTquery('sys_log', $fields_values);
     }
 
     /**
@@ -156,14 +162,5 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Gets the Database Object
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
