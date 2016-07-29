@@ -137,6 +137,19 @@ table.t3-workspaces-foldout-contentDiff .diff-r {
 	margin-right: 2px;
 	border: 2px solid green;
 }
+
+.t3-workspaces-foldout-contentDiff .content del {
+         color: #c83c3c;
+         background-color: lighten(#c83c3c, 45%);
+         text-decoration: none;
+}
+
+.t3-workspaces-foldout-contentDiff .content ins {
+         color: #79a548;
+         background-color: lighten(#79a548, 45%);
+         text-decoration: none;
+}
+
 .t3-workspaces-foldout-contentDiff .content del > img {
 	padding: 1px;
 	margin-right: 2px;
