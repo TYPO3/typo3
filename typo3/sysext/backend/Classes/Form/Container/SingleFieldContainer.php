@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -65,10 +66,25 @@ class SingleFieldContainer extends AbstractContainer
         // Based on this decision we need to trigger field exclusion or special rendering (like readOnly)
         if (isset($this->data['processedTca']['ctrl']['transOrigPointerField'])
             && is_array($this->data['processedTca']['columns'][$this->data['processedTca']['ctrl']['transOrigPointerField']])
-            && is_array($row[$this->data['processedTca']['ctrl']['transOrigPointerField']])
-            && $row[$this->data['processedTca']['ctrl']['transOrigPointerField']][0] > 0
         ) {
-            $isOverlay = true;
+            $parentValue = $row[$this->data['processedTca']['ctrl']['transOrigPointerField']];
+            if (MathUtility::canBeInterpretedAsInteger($parentValue)) {
+                $isOverlay = (bool)$parentValue;
+            } elseif (is_array($parentValue)) {
+                // This case may apply if the value has been converted to an array by the select data provider
+                $isOverlay = !empty($parentValue) ? (bool)$parentValue[0] : false;
+            } elseif (is_string($parentValue) && $parentValue !== '') {
+                // This case may apply if a group definition is used in TCA and the group provider builds a weird string
+                $recordsReferencedInField = GeneralUtility::trimExplode(',', $parentValue);
+                // Pick the first record because if you set multiple records you're in trouble anyways
+                $recordIdentifierParts = GeneralUtility::trimExplode('|', $recordsReferencedInField[0]);
+                list(, $refUid) = BackendUtility::splitTable_Uid($recordIdentifierParts[0]);
+                $isOverlay = MathUtility::canBeInterpretedAsInteger($refUid) ? (bool)$refUid : false;
+            } else {
+                throw new \InvalidArgumentException('The given value for the original language field '
+                                                    . $this->data['processedTca']['ctrl']['transOrigPointerField']
+                                                    . ' of table ' . $table . ' contains an invalid value.', 1470742770);
+            }
         }
 
         // A couple of early returns in case the field should not be rendered
@@ -79,7 +95,7 @@ class SingleFieldContainer extends AbstractContainer
             // @todo: Drop option "showIfRTE" ?
             || !$backendUser->isRTE() && $parameterArray['fieldConf']['config']['showIfRTE']
             // Return if field should not be rendered in translated records
-            || $isOverlay && !$parameterArray['fieldConf']['l10n_display'] && $parameterArray['fieldConf']['l10n_mode'] === 'exclude'
+            || $isOverlay && empty($parameterArray['fieldConf']['l10n_display']) && $parameterArray['fieldConf']['l10n_mode'] === 'exclude'
             // @todo: localizationMode still needs handling!
             || $isOverlay && $this->data['localizationMode'] && $this->data['localizationMode'] !== $parameterArray['fieldConf']['l10n_cat']
             || $this->inlineFieldShouldBeSkipped()
