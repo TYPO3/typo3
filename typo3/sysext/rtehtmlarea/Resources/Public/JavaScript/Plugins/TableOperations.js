@@ -264,7 +264,7 @@ define([
 			if (layoutTabItems.length > 0) {
 				this.buildTabMarkup($tabs, $tabContent, 'layout', layoutTabItems, this.localize('Layout'));
 			}
-			if (this.removedFieldsets.indexOf('language') === -1 && (this.removedProperties.indexOf('language') === -1 || this.removedProperties.indexOf('direction') === -1) && (this.getButton('Language') || this.getButton('LeftToRight') || this.getButton('RightToLeft'))) {
+			if (this.getButton('Language') && this.removedFieldsets.indexOf('language') === -1 && (this.removedProperties.indexOf('language') === -1 || this.removedProperties.indexOf('direction') === -1) && (this.getButton('Language') || this.getButton('LeftToRight') || this.getButton('RightToLeft'))) {
 				this.addConfigElement(this.buildLanguageFieldsetConfig(element), languageTabItems);
 			}
 			if (languageTabItems.length > 0) {

@@ -253,9 +253,11 @@ define([
 				}
 			});
 
-			var languageObject = this.getPluginInstance('Language');
 			if (this.getButton('Language')) {
-				var selectedLanguage = typeof element === 'object' && element !== null ? languageObject.getLanguageAttribute(element) : 'none';
+				var languageObject = this.getPluginInstance('Language'),
+					selectedLanguage = typeof element === 'object' && element !== null
+						? languageObject.getLanguageAttribute(element)
+						: 'none';
 
 				$fieldset.append(
 					$('<div />', {'class': 'form-group'}).append(

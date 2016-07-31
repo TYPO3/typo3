@@ -149,7 +149,7 @@ define([
 			if (generalTabItemConfig.length > 0) {
 				this.buildTabMarkup($tabs, $tabContent, 'general', generalTabItemConfig, this.localize('general'));
 			}
-			if (this.removedFieldsets.indexOf('language') === -1 && this.getPluginInstance('Language')) {
+			if (this.getButton('Language') && this.removedFieldsets.indexOf('language') === -1 && this.getPluginInstance('Language')) {
 				this.addConfigElement(this.buildLanguageFieldsetConfig(element), languageTabItemConfig);
 				this.buildTabMarkup($tabs, $tabContent, 'language', languageTabItemConfig, this.localize('Language'));
 			}
