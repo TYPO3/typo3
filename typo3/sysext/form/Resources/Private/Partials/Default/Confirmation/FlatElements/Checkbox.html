@@ -2,6 +2,7 @@
 	<f:if condition="{model.additionalArguments.checked} == 'checked'">
 		<li class="csc-form-{model.elementCounter} csc-form-element csc-form-element-{model.elementTypeLowerCase}">
 			<label>{model.additionalArguments.label}</label>
+			<f:if condition="{model.additionalArguments.value}">{model.additionalArguments.value}</f:if>
 		</li>
 	</f:if>
 </f:if>
