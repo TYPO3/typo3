@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
 
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Action;
@@ -226,12 +227,14 @@ class ImportantActions extends Action\AbstractAction
             $message->setTitle('Administrator user not created');
             $message->setMessage('Password must be at least eight characters long.');
         } else {
-            $database = $this->getDatabaseConnection();
-            $userExists = $database->exec_SELECTcountRows(
-                'uid',
-                'be_users',
-                'username=' . $database->fullQuoteStr($username, 'be_users')
-            );
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            $userExists = $connectionPool->getConnectionForTable('be_users')
+                ->count(
+                    'uid',
+                    'be_users',
+                    ['username' => $username]
+                );
+
             if ($userExists) {
                 /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
                 $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
@@ -246,7 +249,8 @@ class ImportantActions extends Action\AbstractAction
                     'tstamp' => $GLOBALS['EXEC_TIME'],
                     'crdate' => $GLOBALS['EXEC_TIME']
                 );
-                $database->exec_INSERTquery('be_users', $adminUserFields);
+                $connectionPool->getConnectionForTable('be_users')
+                    ->insert('be_users', $adminUserFields);
                 /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
                 $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
                 $message->setTitle('Administrator created with username "' . $username . '".');
