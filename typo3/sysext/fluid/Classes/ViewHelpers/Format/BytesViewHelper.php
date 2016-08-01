@@ -40,6 +40,15 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * // depending on the value of {fileSize}
  * </output>
  *
+ * You may provide an own set of units, like this: B,KB,MB,GB,TB,PB,EB,ZB,YB
+ * <code title="custom units">
+ * {fileSize -> f:format.bytes(units: '{f:translate(\'viewhelper.format.bytes.units\', \'fluid\')}'
+ * </code>
+ * <output>
+ * 123 KB
+ * // depending on the value of {fileSize}
+ * </output>
+ *
  * @api
  */
 class BytesViewHelper extends AbstractViewHelper
@@ -67,12 +76,9 @@ class BytesViewHelper extends AbstractViewHelper
             '.');
         $this->registerArgument('thousandsSeparator', 'string',
             'The character for grouping the thousand digits', false, ',');
+        $this->registerArgument('units', 'string',
+            'comma separated list of available units, default is LocalizationUtility::translate(\'viewhelper.format.bytes.units\', \'fluid\')');
     }
-
-    /**
-     * @var array
-     */
-    protected static $units = array();
 
     /**
      * Render the supplied byte count as a human readable string.
@@ -90,19 +96,6 @@ class BytesViewHelper extends AbstractViewHelper
     }
 
     /**
-     * set units - temporary method, will vanish with https://review.typo3.org/#/c/49289/
-     *
-     */
-    public static function setUnits($units = [])
-    {
-        self::$units = $units;
-        if (empty($units)) {
-            self::$units = GeneralUtility::trimExplode(',',
-                LocalizationUtility::translate('viewhelper.format.bytes.units', 'fluid'));
-        }
-    }
-
-    /**
      * Applies htmlspecialchars() on the specified value.
      *
      * @param array $arguments
@@ -116,9 +109,12 @@ class BytesViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        if (empty(self::$units)) {
-            self::setUnits();
+        if ($arguments['units'] !== null) {
+            $units = $arguments['units'];
+        } else {
+            $units = LocalizationUtility::translate('viewhelper.format.bytes.units', 'fluid');
         }
+        $units = GeneralUtility::trimExplode(',', $units, true);
 
         $value = $arguments['value'];
         if ($value === null) {
@@ -133,14 +129,14 @@ class BytesViewHelper extends AbstractViewHelper
         }
         $bytes = max($value, 0);
         $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
-        $pow = min($pow, count(self::$units) - 1);
+        $pow = min($pow, count($units) - 1);
         $bytes /= pow(2, 10 * $pow);
 
         return sprintf(
             '%s %s',
             number_format(round($bytes, 4 * $arguments['decimals']), $arguments['decimals'],
                 $arguments['decimalSeparator'], $arguments['thousandsSeparator']),
-            self::$units[$pow]
+            $units[$pow]
         );
     }
 }

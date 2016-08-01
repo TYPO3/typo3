@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Fluid\ViewHelpers\Format\BytesViewHelper;
 
@@ -32,14 +30,8 @@ class BytesViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        // XXX: This is bad from a testing POV but the only option right now
-        $reflectionClass = new \ReflectionClass(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::class);
-        $property = $reflectionClass->getProperty('configurationManager');
-        $property->setAccessible(true);
-        $property->setValue($this->createMock(ConfigurationManagerInterface::class));
         $this->viewHelper = new BytesViewHelper();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        BytesViewHelper::setUnits(GeneralUtility::trimExplode(',', 'B,KB,MB,GB,TB,PB,EB,ZB,YB'));
     }
 
     /**
@@ -142,6 +134,7 @@ class BytesViewHelperTest extends ViewHelperBaseTestcase
                 'decimals' => $decimals,
                 'decimalSeparator' => $decimalSeparator,
                 'thousandsSeparator' => $thousandsSeparator,
+                'units' => 'B,KB,MB,GB,TB,PB,EB,ZB,YB',
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
@@ -157,6 +150,12 @@ class BytesViewHelperTest extends ViewHelperBaseTestcase
             function () {
                 return 12345;
             }
+        );
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'units' => 'B,KB,MB,GB,TB,PB,EB,ZB,YB',
+            ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('12 KB', $actualResult);
