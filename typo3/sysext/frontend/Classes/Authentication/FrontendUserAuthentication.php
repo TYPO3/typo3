@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Authentication;
  */
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -399,16 +400,18 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     public function fetchSessionData()
     {
-        $db = $this->getDatabaseConnection();
         // Gets SesData if any AND if not already selected by session fixation check in ->isExistingSessionRecord()
         if ($this->id && empty($this->sesData)) {
-            $statement = $db->prepare_SELECTquery('*', 'fe_session_data', 'hash = :hash');
-            $statement->execute(array(':hash' => $this->id));
-            if (($sesDataRow = $statement->fetch()) !== false) {
+            $sesDataRow = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('fe_session_data')->select(
+                    ['*'],
+                    'fe_session_data',
+                    ['hash' => $this->id]
+                )->fetch();
+            if ($sesDataRow !== null) {
                 $this->sesData = unserialize($sesDataRow['content']);
                 $this->sessionDataTimestamp = $sesDataRow['tstamp'];
             }
-            $statement->free();
         }
     }
 
@@ -427,7 +430,8 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         if ($this->userData_change) {
             $this->writeUC('');
         }
-        $db = $this->getDatabaseConnection();
+        $databaseConnection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('fe_session_data');
         if ($this->sesData_change && $this->id) {
             if (empty($this->sesData)) {
                 // Remove session-data
@@ -444,7 +448,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
                     'tstamp' => $GLOBALS['EXEC_TIME']
                 );
                 $this->sessionDataTimestamp = $GLOBALS['EXEC_TIME'];
-                $db->exec_INSERTquery('fe_session_data', $insertFields);
+                $databaseConnection->insert('fe_session_data', $insertFields);
                 // Now set the cookie (= fix the session)
                 $this->setSessionCookie();
             } else {
@@ -454,7 +458,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
                     'tstamp' => $GLOBALS['EXEC_TIME']
                 );
                 $this->sessionDataTimestamp = $GLOBALS['EXEC_TIME'];
-                $db->exec_UPDATEquery('fe_session_data', 'hash=' . $db->fullQuoteStr($this->id, 'fe_session_data'), $updateFields);
+                $databaseConnection->update('fe_session_data', $updateFields, ['hash' => $this->id]);
             }
         }
     }
@@ -466,9 +470,11 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     public function removeSessionData()
     {
-        $db = $this->getDatabaseConnection();
         $this->sessionDataTimestamp = null;
-        $db->exec_DELETEquery('fe_session_data', 'hash=' . $db->fullQuoteStr($this->id, 'fe_session_data'));
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('fe_session_data')->delete(
+                'fe_session_data',
+                ['hash' => $this->id]
+            );
     }
 
     /**
@@ -494,15 +500,15 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     protected function regenerateSessionId()
     {
-        $db = $this->getDatabaseConnection();
         $oldSessionId = $this->id;
         parent::regenerateSessionId();
         // Update session data with new ID
-        $db->exec_UPDATEquery(
-            'fe_session_data',
-            'hash=' . $db->fullQuoteStr($oldSessionId, 'fe_session_data'),
-            array('hash' => $this->id)
-        );
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('fe_session_data')
+            ->update(
+                'fe_session_data',
+                ['hash' => $this->id],
+                ['hash' => $oldSessionId]
+            );
 
         // We force the cookie to be set later in the authentication process
         $this->dontSetCookie = false;
@@ -517,7 +523,10 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     public function gc()
     {
         $timeoutTimeStamp = (int)($GLOBALS['EXEC_TIME'] - $this->sessionDataLifetime);
-        $this->getDatabaseConnection()->exec_DELETEquery('fe_session_data', 'tstamp < ' . $timeoutTimeStamp);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_session_data');
+        $queryBuilder->delete('fe_session_data')
+            ->where($queryBuilder->expr()->lt('tstamp', $timeoutTimeStamp))
+            ->execute();
         parent::gc();
     }
 
@@ -662,15 +671,13 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         $count = parent::isExistingSessionRecord($id);
         // Check if there are any fe_session_data records for the session ID the client claims to have
         if ($count == false) {
-            $statement = $this->getDatabaseConnection()->prepare_SELECTquery('content,tstamp', 'fe_session_data', 'hash = :hash');
-            $res = $statement->execute(array(':hash' => $id));
-            if ($res !== false) {
-                if ($sesDataRow = $statement->fetch()) {
-                    $count = true;
-                    $this->sesData = unserialize($sesDataRow['content']);
-                    $this->sessionDataTimestamp = $sesDataRow['tstamp'];
-                }
-                $statement->free();
+            $sesDataRow = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('fe_session_data')
+                ->select(['content', 'tstamp'], 'fe_session_data', ['hash' => $id])->fetch();
+
+            if ($sesDataRow !== null) {
+                $count = true;
+                $this->sesData = unserialize($sesDataRow['content']);
+                $this->sessionDataTimestamp = $sesDataRow['tstamp'];
             }
         }
         return $count;
