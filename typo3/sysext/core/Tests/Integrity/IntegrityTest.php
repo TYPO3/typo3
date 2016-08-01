@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Integrity;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * This test case is used in test suites to check for healthy
@@ -40,5 +41,20 @@ class IntegrityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $registeredSingletons = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
         $this->assertArrayHasKey(\TYPO3\CMS\Core\Cache\CacheManager::class, $registeredSingletons);
         $this->assertTrue($registeredSingletons[\TYPO3\CMS\Core\Cache\CacheManager::class] instanceof \TYPO3\CMS\Core\Cache\CacheManager);
+    }
+
+    /**
+     * This test fails if any test case manipulates the configurationManager
+     * property in LocalizationUtility due to mocking and fails to restore it
+     * properly.
+     *
+     * @test
+     */
+    public function ensureLocalisationUtilityConfigurationManagerIsNull()
+    {
+        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
+        $property = $reflectionClass->getProperty('configurationManager');
+        $property->setAccessible(true);
+        $this->assertNull($property->getValue());
     }
 }
