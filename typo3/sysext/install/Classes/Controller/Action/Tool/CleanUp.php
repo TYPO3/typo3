@@ -121,7 +121,13 @@ class CleanUp extends Action\AbstractAction
         $tables = array();
         foreach ($tableCandidates as $candidate) {
             if (in_array($candidate['name'], $allTables)) {
-                $candidate['rows'] = $database->exec_SELECTcountRows('*', $candidate['name']);
+                $candidate['rows'] = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable($candidate['name'])
+                    ->count(
+                        '*',
+                        $candidate['name'],
+                        []
+                    );
                 $tables[] = $candidate;
             }
         }
