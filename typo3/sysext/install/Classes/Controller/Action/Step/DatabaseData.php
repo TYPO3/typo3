@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Status\ErrorStatus;
 
@@ -70,16 +72,20 @@ class DatabaseData extends AbstractStepAction
             'tstamp' => $GLOBALS['EXEC_TIME'],
             'crdate' => $GLOBALS['EXEC_TIME']
         );
-        if (false === $this->getDatabaseConnection()->exec_INSERTquery('be_users', $adminUserFields)) {
+        $databaseConnection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('be_users');
+        try {
+            $databaseConnection->insert('be_users', $adminUserFields);
+        } catch (DBALException $exception) {
             $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
             $errorStatus->setTitle('Administrator account not created!');
             $errorStatus->setMessage(
                 'The administrator account could not be created. The following error occurred:' . LF .
-                $this->getDatabaseConnection()->sql_error()
+                $exception->getPrevious()->getMessage()
             );
             $result[] = $errorStatus;
             return $result;
-        };
+        }
 
         // Set password as install tool password
         $configurationManager->setLocalConfigurationValueByPath('BE/installToolPassword', $this->getHashedPassword($password));
