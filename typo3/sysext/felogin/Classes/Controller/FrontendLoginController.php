@@ -64,13 +64,6 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     protected $template;
 
     /**
-     * Upload directory, used for flexform template files
-     *
-     * @var string
-     */
-    protected $uploadDir;
-
-    /**
      * URL for the redirect
      *
      * @var string
@@ -117,7 +110,6 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     {
         // Loading TypoScript array into object variable:
         $this->conf = $conf;
-        $this->uploadDir = 'uploads/tx_felogin/';
         // Loading default pivars
         $this->pi_setPiVarDefaults();
         // Loading language-labels
@@ -834,9 +826,6 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
         if ($this->flexFormValue('recursive', 'sDEF')) {
             $flex['recursive'] = $this->flexFormValue('recursive', 'sDEF');
-        }
-        if ($this->flexFormValue('templateFile', 'sDEF')) {
-            $flex['templateFile'] = $this->uploadDir . $this->flexFormValue('templateFile', 'sDEF');
         }
         if ($this->flexFormValue('redirectMode', 's_redirect')) {
             $flex['redirectMode'] = $this->flexFormValue('redirectMode', 's_redirect');

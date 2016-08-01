@@ -110,21 +110,6 @@
 							</config>
 						</TCEforms>
 					</recursive>
-					<templateFile>
-						<TCEforms>
-							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.template_file</label>
-							<config>
-								<type>group</type>
-								<internal_type>file</internal_type>
-								<allowed>tmpl,html,htm</allowed>
-								<max_size>100</max_size>
-								<uploadfolder>uploads/tx_felogin</uploadfolder>
-								<maxitems>1</maxitems>
-								<size>1</size>
-								<selectedListStyle>width:180px</selectedListStyle>
-							</config>
-						</TCEforms>
-					</templateFile>
 				</el>
 			</ROOT>
 		</sDEF>
