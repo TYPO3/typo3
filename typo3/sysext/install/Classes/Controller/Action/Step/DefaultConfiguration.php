@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\EnableFileService;
@@ -34,6 +35,7 @@ class DefaultConfiguration extends AbstractStepAction
         $featureManager = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Configuration\FeatureManager::class);
         // Get best matching configuration presets
         $configurationValues = $featureManager->getBestMatchingConfigurationForAllFeatures();
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
         // let the admin user redirect to the distributions page on first login
         switch ($this->postValues['values']['sitesetup']) {
@@ -43,18 +45,19 @@ class DefaultConfiguration extends AbstractStepAction
                     'startModuleOnFirstLogin' => 'tools_ExtensionmanagerExtensionmanager->tx_extensionmanager_tools_extensionmanagerextensionmanager%5Baction%5D=distributions&tx_extensionmanager_tools_extensionmanagerextensionmanager%5Bcontroller%5D=List',
                     'ucSetByInstallTool' => '1',
                 );
-                $this->getDatabaseConnection()->exec_UPDATEquery(
+                $connectionPool->getConnectionForTable('be_users')->update(
                     'be_users',
-                    'admin=1',
-                    array('uc' => serialize($adminUserFirstLogin))
+                    ['uc' => serialize($adminUserFirstLogin)],
+                    ['admin' => 1]
                 );
             break;
 
             // Create a page with UID 1 and PID1 and fluid_styled_content for page TS config, respect ownership
             case 'createsite':
-                $this->getDatabaseConnection()->exec_INSERTquery(
+                $databaseConnectionForPages = $connectionPool->getConnectionForTable('pages');
+                $databaseConnectionForPages->insert(
                     'pages',
-                    array(
+                    [
                         'pid' => 0,
                         'crdate' => time(),
                         'cruser_id' => 1,
@@ -67,15 +70,14 @@ class DefaultConfiguration extends AbstractStepAction
                         'perms_user' => 32,
                         'perms_group' => 32,
                         'perms_everybody' => 1
-                    )
+                    ]
                 );
-
-                $pageUid = $this->getDatabaseConnection()->sql_insert_id();
+                $pageUid = $databaseConnectionForPages->lastInsertId();
 
                 // add a root sys_template with fluid_styled_content and a default PAGE typoscript snippet
-                $this->getDatabaseConnection()->exec_INSERTquery(
+                $connectionPool->getConnectionForTable('sys_template')->insert(
                     'sys_template',
-                    array(
+                    [
                         'pid' => $pageUid,
                         'crdate' => time(),
                         'cruser_id' => 1,
@@ -100,7 +102,7 @@ page.100 < styles.content.get',
                         'description' => 'This is an Empty Site Package TypoScript template.
 
 For each website you need a TypoScript template on the main page of your website (on the top level). For better maintenance all TypoScript should be extracted into external files via <INCLUDE_TYPOSCRIPT: source="FILE:EXT:site_myproject/Configuration/TypoScript/setup.ts">.'
-                    )
+                    ]
                 );
             break;
         }
