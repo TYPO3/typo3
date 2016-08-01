@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Resource;
  */
 
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -53,11 +55,6 @@ class StorageRepository extends AbstractRepository
      */
     protected $logger;
 
-    /**
-     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected $db;
-
     public function __construct()
     {
         parent::__construct();
@@ -65,7 +62,6 @@ class StorageRepository extends AbstractRepository
         /** @var $logManager LogManager */
         $logManager = GeneralUtility::makeInstance(LogManager::class);
         $this->logger = $logManager->getLogger(__CLASS__);
-        $this->db = $GLOBALS['TYPO3_DB'];
     }
 
     /**
@@ -90,23 +86,38 @@ class StorageRepository extends AbstractRepository
     protected function initializeLocalCache()
     {
         if (static::$storageRowCache === null) {
-            static::$storageRowCache = $this->db->exec_SELECTgetRows(
-                '*',
-                $this->table,
-                '1=1' . $this->getWhereClauseForEnabledFields(),
-                '',
-                'name',
-                '',
-                'uid'
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($this->table);
+
+            if ($this->getEnvironmentMode() === 'FE') {
+                $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+            }
+
+            $result = $queryBuilder
+                ->select('*')
+                ->from($this->table)
+                ->orderBy('name')
+                ->execute();
+
+            static::$storageRowCache = array();
+            while ($row = $result->fetch()) {
+                if (!empty($row['uid'])) {
+                    static::$storageRowCache[$row['uid']] = $row;
+                }
+            }
+
             // if no storage is created before or the user has not access to a storage
             // static::$storageRowCache would have the value array()
             // so check if there is any record. If no record is found, create the fileadmin/ storage
-            // selecting just one row is enoung
+            // selecting just one row is enough
 
             if (static::$storageRowCache === array()) {
-                $storageObjectsExists = $this->db->exec_SELECTgetSingleRow('uid', $this->table, '');
-                if ($storageObjectsExists !== null) {
+                $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable($this->table);
+
+                $storageObjectsCount = $connection->count('uid', $this->table, []);
+
+                if ($storageObjectsCount === 0) {
                     if ($this->createLocalStorage(
                         'fileadmin/ (auto-created)',
                         $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
@@ -226,8 +237,12 @@ class StorageRepository extends AbstractRepository
             'is_writable' => 1,
             'is_default' => $default ? 1 : 0
         );
-        $this->db->exec_INSERTquery('sys_file_storage', $field_values);
-        return (int)$this->db->sql_insert_id();
+
+        $dbConnection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($this->table);
+        $dbConnection->insert($this->table, $field_values);
+
+        return (int)$dbConnection->lastInsertId();
     }
 
     /**
