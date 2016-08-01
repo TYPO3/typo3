@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\TranslateViewHelperFixtureForEmptyString;
 use TYPO3\CMS\Fluid\ViewHelpers\TranslateViewHelper;
 
 /**
@@ -25,18 +26,14 @@ class TranslateViewHelperTest extends ViewHelperBaseTestcase
      */
     protected $viewHelper;
 
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->viewHelper = new TranslateViewHelper();
-        $this->injectDependenciesIntoViewHelper($this->viewHelper);
-    }
-
     /**
      * @test
      */
     public function renderThrowsExceptionIfNoKeyOrIdParameterIsGiven()
     {
+        $this->viewHelper = new TranslateViewHelper();
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+
         $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException::class);
         $this->expectExceptionCode(1351584844);
 
@@ -52,6 +49,9 @@ class TranslateViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderReturnsStringForGivenKey()
     {
+        $this->viewHelper = new TranslateViewHelperFixtureForEmptyString();
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+
         $this->viewHelper->setRenderChildrenClosure(
             function () {
                 return '<p>hello world</p>';
@@ -72,6 +72,9 @@ class TranslateViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderReturnsStringForGivenId()
     {
+        $this->viewHelper = new TranslateViewHelperFixtureForEmptyString();
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+
         $this->viewHelper->setRenderChildrenClosure(
             function () {
                 return '<p>hello world</p>';
@@ -93,6 +96,9 @@ class TranslateViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderReturnsDefaultIfNoTranslationIsFound()
     {
+        $this->viewHelper = new TranslateViewHelperFixtureForEmptyString();
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+
         $this->viewHelper->setRenderChildrenClosure(
             function () {
                 return 'default';
