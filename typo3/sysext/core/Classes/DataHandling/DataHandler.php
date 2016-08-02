@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\DataHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -22,6 +23,8 @@ use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
@@ -2566,35 +2569,64 @@ class DataHandler
      */
     public function getUnique($table, $field, $value, $id, $newPid = 0)
     {
-        // Initialize:
-        $whereAdd = '';
-        $newValue = '';
-        if ((int)$newPid) {
-            $whereAdd .= ' AND pid=' . (int)$newPid;
-        } else {
-            $whereAdd .= ' AND pid>=0';
-        }
-        // "AND pid>=0" for versioning
-        $whereAdd .= $this->deleteClause($table);
         // If the field is configured in TCA, proceed:
         if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
-            // Look for a record which might already have the value:
-            $res = $this->databaseConnection->exec_SELECTquery('uid', $table, $field . '=' . $this->databaseConnection->fullQuoteStr($value, $table) . ' AND uid<>' . (int)$id . $whereAdd);
-            $counter = 0;
-            // For as long as records with the test-value existing, try again (with incremented numbers appended).
-            while ($this->databaseConnection->sql_num_rows($res)) {
-                $newValue = $value . $counter;
-                $res = $this->databaseConnection->exec_SELECTquery('uid', $table, $field . '=' . $this->databaseConnection->fullQuoteStr($newValue, $table) . ' AND uid<>' . (int)$id . $whereAdd);
-                $counter++;
-                if ($counter > 100) {
-                    break;
+            $newValue = $value;
+            $statement = $this->getUniqueCountStatement($newValue, $table, $field, (int)$id, (int)$newPid);
+            // For as long as records with the test-value existing, try again (with incremented numbers appended)
+            if ($statement->fetchColumn()) {
+                $statement->bindParam(1, $newValue);
+                for ($counter = 0; $counter <= 100; $counter++) {
+                    $newValue = $value . $counter;
+                    $statement->execute();
+                    if (!$statement->fetchColumn()) {
+                        break;
+                    }
                 }
             }
-            $this->databaseConnection->sql_free_result($res);
-            // If the new value is there:
-            $value = $newValue !== '' ? $newValue : $value;
+            $value = $newValue;
         }
         return $value;
+    }
+
+    /**
+     * Gets the count of records for a unique field
+     *
+     * @param string $value The string value which should be unique
+     * @param string $table Table name
+     * @param string $field Field name for which $value must be unique
+     * @param int $uid UID to filter out in the lookup (the record itself...)
+     * @param int $pid If set, the value will be unique for this PID
+     * @return \Doctrine\DBAL\Statement Return the prepared statement to check uniqueness
+     */
+    protected function getUniqueCountStatement(
+        string $value,
+        string $table,
+        string $field,
+        int $uid,
+        int $pid
+    ): Statement {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+        $queryBuilder
+            ->count('uid')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq($field, $queryBuilder->createPositionalParameter($value)),
+                $queryBuilder->expr()->neq('uid', $uid)
+            );
+        if ($pid !== 0) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('pid', $pid)
+            );
+        } else {
+            // pid>=0 for versioning
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->gte('pid', 0)
+            );
+        }
+
+        return $queryBuilder->execute();
     }
 
     /**
@@ -5007,13 +5039,22 @@ class DataHandler
         if ($uid) {
             foreach ($GLOBALS['TCA'] as $table => $_) {
                 if ($table != 'pages') {
-                    $mres = $this->databaseConnection->exec_SELECTquery('uid', $table, 'pid=' . (int)$uid . $this->deleteClause($table));
-                    while ($row = $this->databaseConnection->sql_fetch_assoc($mres)) {
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getQueryBuilderForTable($table);
+
+                    $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+
+                    $statement = $queryBuilder
+                        ->select('uid')
+                        ->from($table)
+                        ->where($queryBuilder->expr()->eq('pid', (int)$uid))
+                        ->execute();
+
+                    while ($row = $statement->fetch()) {
                         $this->copyMovedRecordToNewLocation($table, $row['uid']);
                         $this->deleteVersionsForRecord($table, $row['uid'], $forceHardDelete);
                         $this->deleteRecord($table, $row['uid'], true, $forceHardDelete);
                     }
-                    $this->databaseConnection->sql_free_result($mres);
                 }
             }
             $this->copyMovedRecordToNewLocation('pages', $uid);
@@ -6628,14 +6669,31 @@ class DataHandler
     {
         $id = (int)$id;
         if (is_array($GLOBALS['TCA'][$table]) && $id) {
-            $res = $this->databaseConnection->exec_SELECTquery('*', $table, 'uid=' . (int)$id);
-            if ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()->removeAll();
+
+            $row = $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->where($queryBuilder->expr()->eq('uid', (int)$id))
+                ->execute()
+                ->fetch();
+
+            if (!empty($row)) {
                 // Traverse array of values that was inserted into the database and compare with the actually stored value:
                 $errors = array();
                 foreach ($fieldArray as $key => $value) {
-                    if ($this->checkStoredRecords_loose && !$value && !$row[$key]) {
-                    } elseif ((string)$value !== (string)$row[$key]) {
-                        $errors[] = $key;
+                    if (!$this->checkStoredRecords_loose || $value || $row[$key]) {
+                        if (is_double($row[$key])) {
+                            // if the database returns the value as double, compare it as double
+                            if ((double)$value !== (double)$row[$key]) {
+                                $errors[] = $key;
+                            }
+                        } else {
+                            if ((string)$value !== (string)$row[$key]) {
+                                $errors[] = $key;
+                            }
+                        }
                     }
                 }
                 // Set log message if there were fields with unmatching values:
@@ -6651,7 +6709,6 @@ class DataHandler
                 // Return selected rows:
                 return $row;
             }
-            $this->databaseConnection->sql_free_result($res);
         }
         return null;
     }
@@ -6674,7 +6731,9 @@ class DataHandler
             $fields_values['tablename'] = $table;
             $fields_values['recuid'] = $id;
             $fields_values['sys_log_uid'] = $logId;
-            $this->databaseConnection->exec_INSERTquery('sys_history', $fields_values);
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('sys_history')
+                ->insert('sys_history', $fields_values);
         }
     }
 
@@ -6714,12 +6773,25 @@ class DataHandler
     {
         if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
             $sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
+            $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+
+            $queryBuilder
+                ->select($sortRow, 'pid', 'uid')
+                ->from($table);
+
             // Sorting number is in the top
             if ($pid >= 0) {
                 // Fetches the first record under this pid
-                $res = $this->databaseConnection->exec_SELECTquery($sortRow . ',pid,uid', $table, 'pid=' . (int)$pid . $this->deleteClause($table), '', $sortRow . ' ASC', '1');
+                $row = $queryBuilder
+                    ->where($queryBuilder->expr()->eq('pid', (int)$pid))
+                    ->orderBy($sortRow, 'ASC')
+                    ->setMaxResults(1)
+                    ->execute()
+                    ->fetch();
                 // There was an element
-                if ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
+                if (!empty($row)) {
                     // The top record was the record it self, so we return its current sortnumber
                     if ($row['uid'] == $uid) {
                         return $row[$sortRow];
@@ -6741,9 +6813,13 @@ class DataHandler
             } else {
                 // Sorting number is inside the list
                 // Fetches the record which is supposed to be the prev record
-                $res = $this->databaseConnection->exec_SELECTquery($sortRow . ',pid,uid', $table, 'uid=' . abs($pid) . $this->deleteClause($table));
+                $row = $queryBuilder
+                    ->where($queryBuilder->expr()->eq('uid', abs($pid)))
+                    ->execute()
+                    ->fetch();
+
                 // There was a record
-                if ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
+                if (!empty($row)) {
                     // Look, if the record UID happens to be an offline record. If so, find its live version. Offline uids will be used when a page is versionized as "branch" so this is when we must correct - otherwise a pid of "-1" and a wrong sort-row number is returned which we don't want.
                     if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortRow . ',pid,uid')) {
                         $row = $lookForLiveVersion;
@@ -6756,14 +6832,26 @@ class DataHandler
                     if ($row['uid'] == $uid) {
                         $sortNumber = $row[$sortRow];
                     } else {
-                        $subres = $this->databaseConnection->exec_SELECTquery($sortRow . ',pid,uid', $table, 'pid=' . (int)$row['pid'] . ' AND ' . $sortRow . '>=' . (int)$row[$sortRow] . $this->deleteClause($table), '', $sortRow . ' ASC', '2');
+                        $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
+                        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+
+                        $subResult = $queryBuilder
+                            ->select($sortRow, 'pid', 'uid')
+                            ->from($table)
+                            ->where(
+                                $queryBuilder->expr()->eq('pid', (int)$row['pid']),
+                                $queryBuilder->expr()->gte($sortRow, (int)$row[$sortRow])
+                            )
+                            ->orderBy($sortRow, 'ASC')
+                            ->setMaxResults(2)
+                            ->execute();
                         // Fetches the next record in order to calculate the in-between sortNumber
                         // There was a record afterwards
-                        if ($this->databaseConnection->sql_num_rows($subres) == 2) {
+                        if ($subResult->rowCount() === 2) {
                             // Forward to the second result...
-                            $this->databaseConnection->sql_fetch_assoc($subres);
+                            $subResult->fetch();
                             // There was a record afterwards
-                            $subrow = $this->databaseConnection->sql_fetch_assoc($subres);
+                            $subrow = $subResult->fetch();
                             // The sortNumber is found in between these values
                             $sortNumber = $row[$sortRow] + floor(($subrow[$sortRow] - $row[$sortRow]) / 2);
                             // The sortNumber happened NOT to be between the two surrounding numbers, so we'll have to resort the list
@@ -6775,7 +6863,6 @@ class DataHandler
                             // If after the last record in the list, we just add the sortInterval to the last sortvalue
                             $sortNumber = $row[$sortRow] + $this->sortIntervals;
                         }
-                        $this->databaseConnection->sql_free_result($subres);
                     }
                     return array('pid' => $row['pid'], 'sortNumber' => $sortNumber);
                 } else {
@@ -6810,11 +6897,21 @@ class DataHandler
             $returnVal = 0;
             $intervals = $this->sortIntervals;
             $i = $intervals * 2;
-            $res = $this->databaseConnection->exec_SELECTquery('uid', $table, 'pid=' . (int)$pid . $this->deleteClause($table), '', $sortRow . ' ASC');
-            while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+
+            $result = $queryBuilder
+                ->select('uid')
+                ->from($table)
+                ->where($queryBuilder->expr()->eq('pid', (int)$pid))
+                ->orderBy($sortRow, 'ASC')
+                ->execute();
+            while ($row = $result->fetch()) {
                 $uid = (int)$row['uid'];
                 if ($uid) {
-                    $this->databaseConnection->exec_UPDATEquery($table, 'uid=' . (int)$uid, array($sortRow => $i));
+                    GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getConnectionForTable($table)
+                        ->update($table, [$sortRow => $i], ['uid' => (int)$uid]);
                     // This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
                     if ($uid == $return_SortNumber_After_This_Uid) {
                         $i = $i + $intervals;
@@ -6825,7 +6922,6 @@ class DataHandler
                 }
                 $i = $i + $intervals;
             }
-            $this->databaseConnection->sql_free_result($res);
             return $returnVal;
         }
         return null;
@@ -6846,29 +6942,39 @@ class DataHandler
         $previousLocalizedRecordUid = $uid;
         if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
             $sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
-            $select = $sortRow . ',pid,uid';
+            $select = [$sortRow, 'pid', 'uid'];
             // For content elements, we also need the colPos
             if ($table === 'tt_content') {
-                $select .= ',colPos';
+                $select[] = 'colPos';
             }
             // Get the sort value of the default language record
-            $row = BackendUtility::getRecord($table, $uid, $select);
+            $row = BackendUtility::getRecord($table, $uid, implode(',', $select));
             if (is_array($row)) {
-                // Find the previous record in default language on the same page
-                $where = 'pid=' . (int)$pid . ' AND ' . 'sys_language_uid=0' . ' AND ' . $sortRow . '<' . (int)$row[$sortRow];
-                // Respect the colPos for content elements
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+
+                $queryBuilder
+                    ->select(...$select)
+                    ->from($table)
+                    ->where(
+                        $queryBuilder->expr()->eq('pid', (int)$pid),
+                        $queryBuilder->expr()->eq('sys_language_uid', 0),
+                        $queryBuilder->expr()->lt($sortRow, (int)$row[$sortRow])
+                    )
+                    ->orderBy($sortRow, 'DESC')
+                    ->setMaxResults(1);
                 if ($table === 'tt_content') {
-                    $where .= ' AND colPos=' . (int)$row['colPos'];
+                    $queryBuilder->andWhere(
+                        $queryBuilder->expr()->eq('colPos', (int)$row['colPos'])
+                    );
                 }
-                $res = $this->databaseConnection->exec_SELECTquery($select, $table, $where . $this->deleteClause($table), '', $sortRow . ' DESC', '1');
                 // If there is an element, find its localized record in specified localization language
-                if ($previousRow = $this->databaseConnection->sql_fetch_assoc($res)) {
+                if ($previousRow = $queryBuilder->execute()->fetch()) {
                     $previousLocalizedRecord = BackendUtility::getRecordLocalization($table, $previousRow['uid'], $language);
                     if (is_array($previousLocalizedRecord[0])) {
                         $previousLocalizedRecordUid = $previousLocalizedRecord[0]['uid'];
                     }
                 }
-                $this->databaseConnection->sql_free_result($res);
             }
         }
         return $previousLocalizedRecordUid;
@@ -6945,7 +7051,16 @@ class DataHandler
         if ($GLOBALS['TCA'][$table]['ctrl']['languageField']) {
             if (!isset($incomingFieldArray[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
                 // Language field must be found in input row - otherwise it does not make sense.
-                $rows = array_merge(array(array('uid' => 0)), $this->databaseConnection->exec_SELECTgetRows('uid', 'sys_language', 'pid=0' . BackendUtility::deleteClause('sys_language')), array(array('uid' => -1)));
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('sys_language');
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                $queryBuilder
+                    ->select('uid')
+                    ->from('sys_language')
+                    ->where($queryBuilder->expr()->eq('pid', 0));
+                $rows = array_merge([['uid' => 0]], $queryBuilder->execute()->fetchAll(), [['uid' => -1]]);
                 foreach ($rows as $r) {
                     if ($this->BE_USER->checkLanguageAccess($r['uid'])) {
                         $incomingFieldArray[$GLOBALS['TCA'][$table]['ctrl']['languageField']] = $r['uid'];
@@ -7151,6 +7266,19 @@ class DataHandler
     }
 
     /**
+     * Add delete restriction if not disabled
+     *
+     * @param QueryRestrictionContainerInterface $restrictions
+     * @return void
+     */
+    protected function addDeleteRestriction(QueryRestrictionContainerInterface $restrictions)
+    {
+        if (!$this->disableDeleteClause) {
+            $restrictions->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        }
+    }
+
+    /**
      * Gets UID of parent record. If record is deleted it will be looked up in
      * an array built before the record was deleted
      *
@@ -7206,8 +7334,13 @@ class DataHandler
      */
     public function getPID($table, $uid)
     {
-        $res_tmp = $this->databaseConnection->exec_SELECTquery('pid', $table, 'uid=' . (int)$uid);
-        if ($row = $this->databaseConnection->sql_fetch_assoc($res_tmp)) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $queryBuilder->select('pid')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('uid', (int)$uid));
+        if ($row = $queryBuilder->execute()->fetch()) {
             return $row['pid'];
         }
         return false;
@@ -7511,9 +7644,15 @@ class DataHandler
     {
         $pid = (int)$pid;
         if ($pid < 0) {
-            $res = $this->databaseConnection->exec_SELECTquery('pid', $table, 'uid=' . abs($pid));
-            $row = $this->databaseConnection->sql_fetch_assoc($res);
-            $this->databaseConnection->sql_free_result($res);
+            $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $query->getRestrictions()
+                ->removeAll();
+            $row = $query
+                ->select('pid')
+                ->from($table)
+                ->where($query->expr()->eq('uid', abs($pid)))
+                ->execute()
+                ->fetch();
             // Look, if the record UID happens to be an offline record. If so, find its live version.
             // Offline uids will be used when a page is versionized as "branch" so this is when we
             // must correct - otherwise a pid of "-1" and a wrong sort-row number
@@ -7584,7 +7723,15 @@ class DataHandler
         $inList = trim($this->rmComma(trim($inList)));
         if ($inList && !$this->admin) {
             foreach ($GLOBALS['TCA'] as $table => $_) {
-                $count = $this->databaseConnection->exec_SELECTcountRows('uid', $table, 'pid IN (' . $inList . ')' . BackendUtility::deleteClause($table));
+                $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                $query->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                $count = $query->count('uid')
+                    ->from($table)
+                    ->where($query->expr()->in('pid', $inList))
+                    ->execute()
+                    ->fetchColumn(0);
                 if ($count && ($this->tableReadOnly($table) || !$this->checkModifyAccessList($table))) {
                     return false;
                 }
@@ -7710,31 +7857,64 @@ class DataHandler
                 } else {
                     $pageUid = $uid;
                 }
+
                 // Builds list of pages on the SAME level as this page (siblings)
-                $res_tmp = $this->databaseConnection->exec_SELECTquery('A.pid AS pid, B.uid AS uid', 'pages A, pages B', 'A.uid=' . (int)$pageUid . ' AND B.pid=A.pid AND B.deleted=0');
+                $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+                $queryBuilder = $connectionPool->getQueryBuilderForTable('pages');
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                $siblings = $queryBuilder
+                    ->select('A.pid AS pid', 'B.uid AS uid')
+                    ->from('pages', 'A')
+                    ->from('pages', 'B')
+                    ->where(
+                        $queryBuilder->expr()->eq('A.uid', (int)$pageUid),
+                        $queryBuilder->expr()->eq('B.pid', 'A.pid')
+                    )
+                    ->execute();
+
                 $pid_tmp = 0;
-                while ($row_tmp = $this->databaseConnection->sql_fetch_assoc($res_tmp)) {
+                while ($row_tmp = $siblings->fetch()) {
                     $pageIdsThatNeedCacheFlush[] = (int)$row_tmp['uid'];
                     $pid_tmp = $row_tmp['pid'];
                     // Add children as well:
                     if ($TSConfig['clearCache_pageSiblingChildren']) {
-                        $res_tmp2 = $this->databaseConnection->exec_SELECTquery('uid', 'pages', 'pid=' . (int)$row_tmp['uid'] . ' AND deleted=0');
-                        while ($row_tmp2 = $this->databaseConnection->sql_fetch_assoc($res_tmp2)) {
+                        $siblingChildrenQuery = $connectionPool->getQueryBuilderForTable('pages');
+                        $siblingChildrenQuery->getRestrictions()
+                            ->removeAll()
+                            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                        $siblingChildren = $siblingChildrenQuery
+                            ->select('uid')
+                            ->from('pages')
+                            ->where(
+                                $siblingChildrenQuery->expr()->eq('pid', (int)$row_tmp['uid'])
+                            )
+                            ->execute();
+                        while ($row_tmp2 = $siblingChildren->fetch()) {
                             $pageIdsThatNeedCacheFlush[] = (int)$row_tmp2['uid'];
                         }
-                        $this->databaseConnection->sql_free_result($res_tmp2);
                     }
                 }
-                $this->databaseConnection->sql_free_result($res_tmp);
                 // Finally, add the parent page as well:
                 $pageIdsThatNeedCacheFlush[] = (int)$pid_tmp;
                 // Add grand-parent as well:
                 if ($TSConfig['clearCache_pageGrandParent']) {
-                    $res_tmp = $this->databaseConnection->exec_SELECTquery('pid', 'pages', 'uid=' . (int)$pid_tmp);
-                    if ($row_tmp = $this->databaseConnection->sql_fetch_assoc($res_tmp)) {
+                    $parentQuery = $connectionPool->getQueryBuilderForTable('pages');
+                    $parentQuery->getRestrictions()
+                        ->removeAll()
+                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                    $row_tmp = $parentQuery
+                        ->select('pid')
+                        ->from('pages')
+                        ->where(
+                            $parentQuery->expr()->eq('uid', (int)$pid_tmp)
+                        )
+                        ->execute()
+                        ->fetch();
+                    if (!empty($row_tmp)) {
                         $pageIdsThatNeedCacheFlush[] = (int)$row_tmp['pid'];
                     }
-                    $this->databaseConnection->sql_free_result($res_tmp);
                 }
             } else {
                 // For other tables than "pages", delete cache for the records "parent page".
