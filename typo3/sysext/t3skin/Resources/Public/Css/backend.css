@@ -13356,7 +13356,7 @@ iframe {
 }
 .typo3-extension-list .ext-icon {
   max-height: 16px;
-  width: auto;
+  max-width: 16px;
 }
 .typo3-extension-list tr.installed td {
   background-color: #c8ffaa;
