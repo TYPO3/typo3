@@ -768,23 +768,6 @@ class ReferenceIndex
             $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
             $dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
             return $dbAnalysis->itemArray;
-        } elseif ($conf['type'] === 'inline' && $conf['foreign_table'] === 'sys_file_reference') {
-            // @todo It looks like this was never called before since isDbReferenceField also checks for type 'inline' and any 'foreign_table'
-            $files = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                'uid_local',
-                'sys_file_reference',
-                'tablenames=\'' . $table . '\' AND fieldname=\'' . $field . '\' AND uid_foreign=' . $uid . ' AND deleted=0'
-            );
-            $fileArray = array();
-            if (!empty($files)) {
-                foreach ($files as $fileUid) {
-                    $fileArray[] = array(
-                        'table' => 'sys_file',
-                        'id' => $fileUid['uid_local']
-                    );
-                }
-            }
-            return $fileArray;
         }
         return false;
     }
