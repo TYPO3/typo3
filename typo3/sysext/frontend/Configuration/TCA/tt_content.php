@@ -123,7 +123,7 @@ return array(
             )
         ),
         'editlock' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:editlock',
             'config' => array(
                 'type' => 'check',
@@ -135,7 +135,7 @@ return array(
             )
         ),
         'hidden' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
             'config' => array(
                 'type' => 'check',
@@ -147,11 +147,11 @@ return array(
             )
         ),
         'starttime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
+                'size' => 13,
                 'eval' => 'datetime',
                 'default' => 0
             ),
@@ -159,11 +159,11 @@ return array(
             'l10n_display' => 'defaultAsReadonly'
         ),
         'endtime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
+                'size' => 13,
                 'eval' => 'datetime',
                 'default' => 0,
                 'range' => array(
@@ -174,7 +174,7 @@ return array(
             'l10n_display' => 'defaultAsReadonly'
         ),
         'fe_group' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
             'config' => array(
                 'type' => 'select',
@@ -202,7 +202,7 @@ return array(
             )
         ),
         'sys_language_uid' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
             'config' => array(
                 'type' => 'select',
@@ -219,7 +219,7 @@ return array(
             )
         ),
         'l18n_parent' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
             'config' => array(
@@ -237,7 +237,7 @@ return array(
             )
         ),
         'layout' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.layout',
             'config' => array(
                 'type' => 'select',
@@ -264,7 +264,7 @@ return array(
             )
         ),
         'colPos' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos',
             'config' => array(
                 'type' => 'select',
@@ -292,12 +292,12 @@ return array(
             )
         ),
         'date' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:date',
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
-                'max' => '20',
+                'size' => 13,
+                'max' => 20,
                 'eval' => 'date',
                 'default' => 0
             )
@@ -308,12 +308,12 @@ return array(
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header',
             'config' => array(
                 'type' => 'input',
-                'size' => '50',
-                'max' => '255'
+                'size' => 50,
+                'max' => 255
             )
         ),
         'rowDescription' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
             'config' => array(
                 'type' => 'text',
@@ -322,7 +322,7 @@ return array(
             )
         ),
         'header_link' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link',
             'config' => array(
                 'type' => 'input',
@@ -344,7 +344,7 @@ return array(
             )
         ),
         'header_layout' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.type',
             'config' => array(
                 'type' => 'select',
@@ -383,12 +383,12 @@ return array(
             )
         ),
         'subheader' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.subheader',
             'config' => array(
                 'type' => 'input',
-                'size' => '50',
-                'max' => '255',
+                'size' => 50,
+                'max' => 255,
                 'softref' => 'email[subst]'
             )
         ),
@@ -402,8 +402,8 @@ return array(
                 'rows' => '15',
                 'wizards' => array(
                     'RTE' => array(
-                        'notNewRecords' => 1,
-                        'RTEonly' => 1,
+                        'notNewRecords' => true,
+                        'RTEonly' => true,
                         'type' => 'script',
                         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.W.RTE',
                         'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif',
@@ -412,7 +412,7 @@ return array(
                         )
                     ),
                     'table' => array(
-                        'notNewRecords' => 1,
+                        'notNewRecords' => true,
                         'enableByTypeConfig' => 1,
                         'type' => 'script',
                         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.W.table',
@@ -474,12 +474,12 @@ return array(
             ), $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'])
         ),
         'imagewidth' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagewidth',
             'config' => array(
                 'type' => 'input',
-                'size' => '4',
-                'max' => '4',
+                'size' => 4,
+                'max' => 4,
                 'eval' => 'int',
                 'range' => array(
                     'upper' => 1999,
@@ -489,12 +489,12 @@ return array(
             )
         ),
         'imageheight' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageheight',
             'config' => array(
                 'type' => 'input',
-                'size' => '4',
-                'max' => '4',
+                'size' => 4,
+                'max' => 4,
                 'eval' => 'int',
                 'range' => array(
                     'upper' => 1999,
@@ -504,7 +504,7 @@ return array(
             )
         ),
         'imageorient' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient',
             'config' => array(
                 'type' => 'select',
@@ -571,7 +571,7 @@ return array(
             )
         ),
         'imageborder' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageborder',
             'config' => array(
                 'type' => 'check',
@@ -583,7 +583,7 @@ return array(
             )
         ),
         'image_zoom' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_zoom',
             'config' => array(
                 'type' => 'check',
@@ -595,7 +595,7 @@ return array(
             )
         ),
         'imagecols' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagecols',
             'config' => array(
                 'type' => 'select',
@@ -688,16 +688,16 @@ return array(
             )
         ),
         'pages' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.startingpoint',
             'config' => array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'pages',
-                'size' => '3',
-                'maxitems' => '50',
-                'minitems' => '0',
-                'show_thumbs' => '1',
+                'size' => 3,
+                'maxitems' => 50,
+                'minitems' => 0,
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'
@@ -706,7 +706,7 @@ return array(
             )
         ),
         'recursive' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.recursive',
             'config' => array(
                 'type' => 'select',
@@ -813,12 +813,12 @@ return array(
             )
         ),
         'select_key' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.code',
             'config' => array(
                 'type' => 'input',
-                'size' => '50',
-                'max' => '80',
+                'size' => 50,
+                'max' => 80,
                 'eval' => 'trim'
             )
         ),
@@ -893,10 +893,10 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'tt_content',
-                'size' => '5',
-                'maxitems' => '200',
-                'minitems' => '0',
-                'show_thumbs' => '1',
+                'size' => 5,
+                'maxitems' => 200,
+                'minitems' => 0,
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'
@@ -905,7 +905,7 @@ return array(
             )
         ),
         'sectionIndex' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:sectionIndex',
             'config' => array(
                 'type' => 'check',
@@ -918,7 +918,7 @@ return array(
             )
         ),
         'linkToTop' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:linkToTop',
             'config' => array(
                 'type' => 'check',
@@ -1005,8 +1005,8 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
             'config' => array(
                 'type' => 'input',
-                'size' => '30',
-                'max' => '255'
+                'size' => 30,
+                'max' => 255
             )
         ),
         'selected_categories' => array(

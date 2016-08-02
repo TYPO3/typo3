@@ -11,7 +11,7 @@ return array(
         'typeicon_classes' => array(
             'default' => 'mimetypes-x-tx_scheduler_task_group'
         ),
-        'adminOnly' => 1, // Only admin users can edit
+        'adminOnly' => true, // Only admin users can edit
         'rootLevel' => 1,
         'enablecolumns' => array(
             'disabled' => 'hidden'
@@ -26,8 +26,8 @@ return array(
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task_group.groupName',
             'config' => array(
                 'type' => 'input',
-                'size' => '35',
-                'max' => '80',
+                'size' => 35,
+                'max' => 80,
                 'eval' => 'required,unique,trim',
                 'softref' => 'substitute'
             )
@@ -40,10 +40,10 @@ return array(
         ),
         'hidden' => array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
-            'exclude' => 1,
+            'exclude' => true,
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         )
     ),

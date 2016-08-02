@@ -8,7 +8,7 @@ if (!isset($GLOBALS['TCA']['fe_users']['ctrl']['type'])) {
         ),
         'columns' => array(
             'tx_extbase_type' => array(
-                'exclude' => 1,
+                'exclude' => true,
                 'label' => 'LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:fe_users.tx_extbase_type',
                 'config' => array(
                     'type' => 'select',
@@ -19,7 +19,7 @@ if (!isset($GLOBALS['TCA']['fe_users']['ctrl']['type'])) {
                     ),
                     'size' => 1,
                     'maxitems' => 1,
-                    'default' => '0'
+                    'default' => 0
                 )
             )
         ),

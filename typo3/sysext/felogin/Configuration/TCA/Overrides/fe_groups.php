@@ -6,7 +6,7 @@ call_user_func(function () {
     // Adds the redirect field to the fe_groups table
     $additionalColumns = [
         'felogin_redirectPid' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:felogin/Resources/Private/Language/Database.xlf:felogin_redirectPid',
             'config' => [
                 'type' => 'group',

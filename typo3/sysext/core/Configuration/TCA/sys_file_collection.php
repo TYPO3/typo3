@@ -36,12 +36,12 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
             'config' => array(
                 'type' => 'input',
-                'size' => '30',
-                'max' => '30'
+                'size' => 30,
+                'max' => 30
             )
         ),
         'sys_language_uid' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
             'config' => array(
                 'type' => 'select',
@@ -58,7 +58,7 @@ return array(
         ),
         'l10n_parent' => array(
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
             'config' => array(
                 'type' => 'select',
@@ -77,40 +77,39 @@ return array(
             )
         ),
         'hidden' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'starttime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
             'config' => array(
                 'type' => 'input',
-                'size' => '8',
-                'max' => '20',
+                'size' => 8,
+                'max' => 20,
                 'eval' => 'date',
-                'default' => '0',
+                'default' => 0,
             )
         ),
         'endtime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
             'config' => array(
                 'type' => 'input',
-                'size' => '8',
-                'max' => '20',
+                'size' => 8,
+                'max' => 20,
                 'eval' => 'date',
-                'default' => '0',
+                'default' => 0,
                 'range' => array(
                     'upper' => mktime(0, 0, 0, 1, 1, 2038),
                 )
             )
         ),
         'type' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.type',
             'config' => array(
                 'type' => 'select',
@@ -123,21 +122,18 @@ return array(
             )
         ),
         'files' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.files',
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('files')
         ),
         'title' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.title',
             'config' => array(
                 'type' => 'input',
-                'size' => '30',
+                'size' => 30,
                 'eval' => 'required'
             )
         ),
         'storage' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.storage',
             'config' => array(
                 'type' => 'select',
@@ -153,7 +149,6 @@ return array(
             )
         ),
         'folder' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.folder',
             'config' => array(
                 'type' => 'select',
@@ -164,7 +159,6 @@ return array(
             )
         ),
         'recursive' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.recursive',
             'config' => array(
                 'type' => 'check',
@@ -172,7 +166,6 @@ return array(
             )
         ),
         'category' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.category',
             'config' => array(
                 'minitems' => 0,

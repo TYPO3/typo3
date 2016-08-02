@@ -47,12 +47,12 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
             'config' => array(
                 'type' => 'input',
-                'size' => '30',
-                'max' => '30'
+                'size' => 30,
+                'max' => 30
             )
         ),
         'sys_language_uid' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
             'config' => array(
                 'type' => 'select',
@@ -69,7 +69,7 @@ return array(
         ),
         'l10n_parent' => array(
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
             'config' => array(
                 'type' => 'select',
@@ -89,48 +89,46 @@ return array(
             )
         ),
         'hidden' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
             'config' => array(
                 'type' => 'check'
             )
         ),
         'starttime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'mergeIfNotBlank',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
             'config' => array(
                 'type' => 'input',
-                'size' => '10',
+                'size' => 10,
                 'eval' => 'datetime',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'endtime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'mergeIfNotBlank',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
             'config' => array(
                 'type' => 'input',
-                'size' => '8',
+                'size' => 8,
                 'eval' => 'datetime',
-                'default' => '0',
+                'default' => 0,
                 'range' => array(
                     'upper' => mktime(0, 0, 0, 1, 1, 2038),
                 )
             )
         ),
         'title' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_category.title',
             'config' => array(
                 'type' => 'input',
-                'width' => '200',
+                'width' => 200,
                 'eval' => 'trim,required'
             )
         ),
         'description' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_category.description',
             'config' => array(
                 'type' => 'text',
@@ -138,7 +136,6 @@ return array(
             )
         ),
         'parent' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_category.parent',
             'config' => array(
                 'minitems' => 0,
@@ -159,7 +156,6 @@ return array(
             )
         ),
         'items' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_category.items',
             'config' => array(
                 'type' => 'group',

@@ -41,16 +41,14 @@ return array(
     ),
     'columns' => array(
         't3ver_label' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
             'config' => array(
                 'type' => 'input',
-                'size' => '30',
-                'max' => '30'
+                'size' => 30,
+                'max' => 30
             )
         ),
         'sys_language_uid' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
             'config' => array(
                 'type' => 'select',
@@ -67,7 +65,6 @@ return array(
         ),
         'l10n_parent' => array(
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
             'config' => array(
                 'type' => 'select',
@@ -81,22 +78,19 @@ return array(
             )
         ),
         'l10n_diffsource' => array(
-            'exclude' => 0,
             'config' => array(
                 'type' => 'passthrough',
                 'default' => ''
             )
         ),
         'hidden' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'uid_local' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.uid_local',
             'config' => array(
                 'type' => 'group',
@@ -109,38 +103,34 @@ return array(
             )
         ),
         'uid_foreign' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.uid_foreign',
             'config' => array(
                 'type' => 'input',
-                'size' => '10',
+                'size' => 10,
                 'eval' => 'int'
             )
         ),
         'tablenames' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.tablenames',
             'config' => array(
                 'type' => 'input',
-                'size' => '30',
+                'size' => 30,
                 'eval' => 'trim'
             )
         ),
         'fieldname' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.fieldname',
             'config' => array(
                 'type' => 'input',
-                'size' => '30'
+                'size' => 30
             )
         ),
         'sorting_foreign' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.sorting_foreign',
             'config' => array(
                 'type' => 'input',
-                'size' => '4',
-                'max' => '4',
+                'size' => 4,
+                'max' => 4,
                 'eval' => 'int',
                 'range' => array(
                     'upper' => '1000',
@@ -150,21 +140,20 @@ return array(
             )
         ),
         'table_local' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.table_local',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
+                'size' => 20,
                 'default' => 'sys_file'
             )
         ),
         'title' => array(
             'l10n_mode' => 'prefixLangTitle',
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.title',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
+                'size' => 20,
                 'eval' => 'null',
                 'placeholder' => '__row|uid_local|metadata|title',
                 'mode' => 'useOrOverridePlaceholder',
@@ -172,11 +161,11 @@ return array(
             )
         ),
         'link' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.link',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
+                'size' => 20,
                 'max' => 1024,
                 'wizards' => array(
                     'link' => array(
@@ -195,12 +184,12 @@ return array(
         'description' => array(
             // This is used for captions in the frontend
             'l10n_mode' => 'prefixLangTitle',
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.description',
             'config' => array(
                 'type' => 'text',
-                'cols' => '20',
-                'rows' => '5',
+                'cols' => 20,
+                'rows' => 5,
                 'eval' => 'null',
                 'placeholder' => '__row|uid_local|metadata|description',
                 'mode' => 'useOrOverridePlaceholder',
@@ -209,11 +198,11 @@ return array(
         ),
         'alternative' => array(
             'l10n_mode' => 'prefixLangTitle',
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.alternative',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
+                'size' => 20,
                 'eval' => 'null',
                 'placeholder' => '__row|uid_local|metadata|alternative',
                 'mode' => 'useOrOverridePlaceholder',
@@ -221,14 +210,14 @@ return array(
             ),
         ),
         'crop' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.crop',
             'config' => array(
                 'type' => 'imageManipulation'
             )
         ),
         'autoplay' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.autoplay',
             'config' => array(
                 'type' => 'check',

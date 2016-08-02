@@ -22,14 +22,13 @@ return array(
     ),
     'columns' => array(
         'hidden' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
             'config' => array(
                 'type' => 'check'
             )
         ),
         'firstname' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_person.firstname',
             'config' => array(
                 'type' => 'input',
@@ -39,7 +38,6 @@ return array(
             )
         ),
         'lastname' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_person.lastname',
             'config' => array(
                 'type' => 'input',
@@ -49,7 +47,6 @@ return array(
             )
         ),
         'email' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_person.email',
             'config' => array(
                 'type' => 'input',
@@ -59,7 +56,6 @@ return array(
             )
         ),
         'tags' => array(
-            'exclude' => 1,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_person.tags',
             'config' => array(
                 'type' => 'inline',
@@ -79,7 +75,7 @@ return array(
             )
         ),
         'tags_special' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_person.tags_special',
             'config' => array(
                 'type' => 'inline',

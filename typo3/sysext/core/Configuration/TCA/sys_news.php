@@ -25,38 +25,38 @@ return array(
     'columns' => array(
         'hidden' => array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
-            'exclude' => 1,
+            'exclude' => true,
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'starttime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
+                'size' => 13,
                 'eval' => 'datetime',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'endtime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
+                'size' => 13,
                 'eval' => 'datetime',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'title' => array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.title',
             'config' => array(
                 'type' => 'input',
-                'size' => '30',
-                'max' => '255',
+                'size' => 30,
+                'max' => 255,
                 'eval' => 'required'
             )
         ),
@@ -64,12 +64,12 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.text',
             'config' => array(
                 'type' => 'text',
-                'cols' => '48',
-                'rows' => '5',
+                'cols' => 48,
+                'rows' => 5,
                 'wizards' => array(
                     'RTE' => array(
-                        'notNewRecords' => 1,
-                        'RTEonly' => 1,
+                        'notNewRecords' => true,
+                        'RTEonly' => true,
                         'type' => 'script',
                         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.W.RTE',
                         'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif',

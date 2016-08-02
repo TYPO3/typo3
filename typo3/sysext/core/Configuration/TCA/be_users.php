@@ -8,7 +8,7 @@ return array(
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
-        'adminOnly' => 1, // Only admin users can edit
+        'adminOnly' => true,
         'rootLevel' => 1,
         'default_sortby' => 'ORDER BY admin, username',
         'enablecolumns' => array(
@@ -35,8 +35,8 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.username',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
-                'max' => '50',
+                'size' => 20,
+                'max' => 50,
                 'eval' => 'nospace,trim,lower,unique,required',
                 'autocomplete' => false,
             )
@@ -47,15 +47,15 @@ return array(
                 'type' => 'text',
                 'rows' => 5,
                 'cols' => 30,
-                'max' => '2000',
+                'max' => 2000,
             )
         ),
         'password' => array(
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.password',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
-                'max' => '40',
+                'size' => 20,
+                'max' => 40,
                 'eval' => 'trim,required,md5,password',
                 'autocomplete' => false,
             )
@@ -67,8 +67,8 @@ return array(
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'be_groups',
                 'foreign_table_where' => 'ORDER BY be_groups.title',
-                'size' => '5',
-                'maxitems' => '20',
+                'size' => 5,
+                'maxitems' => 20,
                 'enableMultiSelectFilterTextfield' => true,
                 'wizards' => array(
                     '_VERTICAL' => 1,
@@ -78,7 +78,7 @@ return array(
                         'module' => array(
                             'name' => 'wizard_edit',
                         ),
-                        'popup_onlyOpenIfSelected' => 1,
+                        'popup_onlyOpenIfSelected' => true,
                         'icon' => 'actions-open',
                         'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
                     ),
@@ -88,7 +88,7 @@ return array(
                         'icon' => 'actions-add',
                         'params' => array(
                             'table' => 'be_groups',
-                            'pid' => '0',
+                            'pid' => 0,
                             'setValue' => 'prepend'
                         ),
                         'module' => array(
@@ -101,7 +101,7 @@ return array(
                         'icon' => 'actions-system-list-open',
                         'params' => array(
                             'table' => 'be_groups',
-                            'pid' => '0'
+                            'pid' => 0
                         ),
                         'module' => array(
                             'name' => 'wizard_list'
@@ -122,9 +122,9 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:lockToDomain',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
+                'size' => 20,
                 'eval' => 'trim',
-                'max' => '50',
+                'max' => 50,
                 'softref' => 'substitute'
             )
         ),
@@ -134,10 +134,10 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'pages',
-                'size' => '3',
+                'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 10,
-                'show_thumbs' => '1',
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'
@@ -152,7 +152,7 @@ return array(
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'sys_filemounts',
                 'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
-                'size' => '3',
+                'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 10,
                 'wizards' => array(
@@ -164,7 +164,7 @@ return array(
                             'name' => 'wizard_edit',
                         ),
                         'icon' => 'actions-open',
-                        'popup_onlyOpenIfSelected' => 1,
+                        'popup_onlyOpenIfSelected' => true,
                         'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
                     ),
                     'add' => array(
@@ -173,7 +173,7 @@ return array(
                         'icon' => 'actions-add',
                         'params' => array(
                             'table' => 'sys_filemounts',
-                            'pid' => '0',
+                            'pid' => 0,
                             'setValue' => 'prepend'
                         ),
                         'module' => array(
@@ -186,7 +186,7 @@ return array(
                         'icon' => 'actions-system-list-open',
                         'params' => array(
                             'table' => 'sys_filemounts',
-                            'pid' => '0'
+                            'pid' => 0
                         ),
                         'module' => array(
                             'name' => 'wizard_list'
@@ -199,9 +199,9 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.email',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
+                'size' => 20,
                 'eval' => 'trim',
-                'max' => '80',
+                'max' => 80,
                 'softref' => 'email[subst]'
             )
         ),
@@ -209,9 +209,9 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.name',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
+                'size' => 20,
                 'eval' => 'trim',
-                'max' => '80'
+                'max' => 80
             )
         ),
         'disable' => array(
@@ -230,7 +230,7 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.admin',
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'options' => array(
@@ -241,7 +241,7 @@ return array(
                     array('LLL:EXT:lang/locallang_tca.xlf:be_users.options_db_mounts', 0),
                     array('LLL:EXT:lang/locallang_tca.xlf:be_users.options_file_mounts', 0)
                 ),
-                'default' => '3'
+                'default' => 3
             )
         ),
         'file_permissions' => array(
@@ -288,18 +288,18 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
+                'size' => 13,
                 'eval' => 'datetime',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'endtime' => array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
+                'size' => 13,
                 'eval' => 'datetime',
-                'default' => '0',
+                'default' => 0,
                 'range' => array(
                     'upper' => mktime(0, 0, 0, 1, 1, 2038)
                 )
@@ -321,9 +321,9 @@ return array(
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'modListUser',
-                'size' => '5',
+                'size' => 5,
                 'autoSizeMax' => 50,
-                'maxitems' => '100',
+                'maxitems' => 100,
             )
         ),
         'allowed_languages' => array(
@@ -332,15 +332,15 @@ return array(
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'languages',
-                'maxitems' => '1000',
+                'maxitems' => 1000,
             )
         ),
         'TSconfig' => array(
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:TSconfig',
             'config' => array(
                 'type' => 'text',
-                'cols' => '40',
-                'rows' => '5'
+                'cols' => 40,
+                'rows' => 5
             ),
             'defaultExtras' => 'fixed-font : enable-tab'
         ),
@@ -353,8 +353,8 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.lastlogin',
             'config' => array(
                 'type' => 'input',
-                'readOnly' => '1',
-                'size' => '12',
+                'readOnly' => true,
+                'size' => 12,
                 'eval' => 'datetime',
                 'default' => 0
             )

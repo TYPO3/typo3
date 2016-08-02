@@ -10,7 +10,7 @@ $GLOBALS['TCA']['tt_content']['ctrl']['shadowColumnsForMovePlaceholders'] = 'tx_
     'tt_content',
     array(
         'tx_irretutorial_1nff_hotels' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tt_content.tx_irretutorial_1nff_hotels',
             'config' => array(
                 'type' => 'inline',
@@ -31,7 +31,7 @@ $GLOBALS['TCA']['tt_content']['ctrl']['shadowColumnsForMovePlaceholders'] = 'tx_
             )
         ),
         'tx_irretutorial_1ncsv_hotels' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tt_content.tx_irretutorial_1ncsv_hotels',
             'config' => array(
                 'type' => 'inline',
@@ -51,7 +51,7 @@ $GLOBALS['TCA']['tt_content']['ctrl']['shadowColumnsForMovePlaceholders'] = 'tx_
             )
         ),
         'tx_irretutorial_flexform' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tt_content.tx_irretutorial_flexform',
             'config' => array(
                 'type' => 'flex',

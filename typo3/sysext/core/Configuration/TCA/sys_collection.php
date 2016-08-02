@@ -37,12 +37,12 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
             'config' => array(
                 'type' => 'input',
-                'size' => '30',
-                'max' => '30'
+                'size' => 30,
+                'max' => 30
             )
         ),
         'sys_language_uid' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
             'config' => array(
                 'type' => 'select',
@@ -59,7 +59,7 @@ return array(
         ),
         'l10n_parent' => array(
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
             'config' => array(
                 'type' => 'select',
@@ -78,40 +78,40 @@ return array(
             )
         ),
         'hidden' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'starttime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
             'config' => array(
                 'type' => 'input',
-                'size' => '8',
-                'max' => '20',
+                'size' => 8,
+                'max' => 20,
                 'eval' => 'date',
-                'default' => '0',
+                'default' => 0,
             )
         ),
         'endtime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
             'config' => array(
                 'type' => 'input',
-                'size' => '8',
-                'max' => '20',
+                'size' => 8,
+                'max' => 20,
                 'eval' => 'date',
-                'default' => '0',
+                'default' => 0,
                 'range' => array(
                     'upper' => mktime(0, 0, 0, 1, 1, 2038),
                 )
             )
         ),
         'fe_group' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
             'config' => array(
                 'type' => 'select',
@@ -126,7 +126,6 @@ return array(
             )
         ),
         'table_name' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_collection.table_name',
             'config' => array(
                 'type' => 'select',
@@ -135,7 +134,6 @@ return array(
             )
         ),
         'items' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_collection.items',
             'config' => array(
                 'type' => 'group',
@@ -149,25 +147,22 @@ return array(
             )
         ),
         'title' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_collection.title',
             'config' => array(
                 'type' => 'input',
-                'size' => '60',
+                'size' => 60,
                 'eval' => 'required'
             )
         ),
         'description' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_collection.description',
             'config' => array(
                 'type' => 'text',
-                'cols' => '60',
-                'rows' => '5'
+                'cols' => 60,
+                'rows' => 5
             )
         ),
         'type' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_collection.type',
             'config' => array(
                 'type' => 'select',

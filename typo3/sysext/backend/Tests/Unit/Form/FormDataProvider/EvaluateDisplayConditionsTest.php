@@ -137,7 +137,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                                                     'displayCond' => 'FIELD:mmType:!=:audio',
                                                     'config' => [
                                                         'type' => 'check',
-                                                        'default' => '0',
+                                                        'default' => 0,
                                                         'items' => [],
                                                     ],
                                                 ],
@@ -221,7 +221,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                                                     'displayCond' => 'FIELD:mmType:!=:audio',
                                                     'config' => [
                                                         'type' => 'check',
-                                                        'default' => '0',
+                                                        'default' => 0,
                                                         'items' => [],
                                                     ],
                                                 ],
@@ -229,7 +229,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                                                     'displayCond' => 'FIELD:mmType:=:audio',
                                                     'config' => [
                                                         'type' => 'check',
-                                                        'default' => '0',
+                                                        'default' => 0,
                                                         'items' => [],
                                                     ],
                                                 ],

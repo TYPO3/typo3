@@ -7,7 +7,7 @@ return array(
         'sortby' => 'sorting',
         'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
         'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_filemounts',
-        'adminOnly' => 1,
+        'adminOnly' => true,
         'rootLevel' => 1,
         'requestUpdate' => 'base',
         'delete' => 'deleted',
@@ -29,8 +29,8 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.title',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
-                'max' => '30',
+                'size' => 20,
+                'max' => 30,
                 'eval' => 'required,trim'
             )
         ),

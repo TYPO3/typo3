@@ -26,7 +26,7 @@ return array(
     ),
     'columns' => array(
         'sys_language_uid' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
             'config' => array(
                 'type' => 'select',
@@ -42,7 +42,7 @@ return array(
         ),
         'l18n_parent' => array(
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
             'config' => array(
                 'type' => 'select',
@@ -62,11 +62,11 @@ return array(
             )
         ),
         'hidden' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'parentid' => array(
@@ -88,17 +88,17 @@ return array(
             )
         ),
         'title' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'prefixLangTitle',
             'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_hotel.title',
             'config' => array(
                 'type' => 'input',
-                'size' => '30',
+                'size' => 30,
                 'eval' => 'required',
             )
         ),
         'offers' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_hotel.offers',
             'config' => array(
                 'type' => 'inline',

@@ -3,7 +3,7 @@
     'pages_language_overlay',
     array(
         'tx_irretutorial_hotels' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:pages.tx_irretutorial_hotels',
             'config' => array(
                 'type' => 'inline',

@@ -30,7 +30,7 @@ return array(
                     array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.4', '4', 'sysnote-type-4'),
                     array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.2', '2', 'sysnote-type-2')
                 ),
-                'default' => '0',
+                'default' => 0,
                 'showIconTable' => true,
             )
         ),
@@ -38,15 +38,15 @@ return array(
             'label' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.subject',
             'config' => array(
                 'type' => 'input',
-                'size' => '40',
-                'max' => '255'
+                'size' => 40,
+                'max' => 255
             )
         ),
         'message' => array(
             'label' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.message',
             'config' => array(
                 'type' => 'text',
-                'cols' => '40',
+                'cols' => 40,
                 'rows' => '15'
             )
         ),

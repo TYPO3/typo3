@@ -23,7 +23,7 @@ return array(
     ),
     'columns' => array(
         'sys_language_uid' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
             'config' => array(
                 'type' => 'select',
@@ -39,7 +39,7 @@ return array(
         ),
         'l18n_parent' => array(
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
             'config' => array(
                 'type' => 'select',
@@ -66,14 +66,14 @@ return array(
             )
         ),
         'hidden' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
             'config' => array(
                 'type' => 'check'
             )
         ),
         'fe_group' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
             'config' => array(
                 'type' => 'select',
@@ -100,7 +100,6 @@ return array(
             ),
         ),
         'title' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_blog.title',
             'config' => array(
                 'type' => 'input',
@@ -110,7 +109,7 @@ return array(
             )
         ),
         'description' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_blog.description',
             'config' => array(
                 'type' => 'text',
@@ -120,7 +119,7 @@ return array(
             )
         ),
         'logo' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_blog.logo',
             'config' => array(
                 'type' => 'group',
@@ -128,14 +127,14 @@ return array(
                 'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
                 'max_size' => 3000,
                 'uploadfolder' => 'uploads/pics',
-                'show_thumbs' => 1,
+                'show_thumbs' => true,
                 'size' => 1,
                 'maxitems' => 1,
                 'minitems' => 0
             )
         ),
         'posts' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_blog.posts',
             'config' => array(
                 'type' => 'inline',
@@ -150,7 +149,7 @@ return array(
             )
         ),
         'administrator' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_blog.administrator',
             'config' => array(
                 'type' => 'select',

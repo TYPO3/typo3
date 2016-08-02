@@ -137,7 +137,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                         'config' => [
                             'type' => 'inline',
                             'foreign_table' => 'aForeignTableName',
-                            'minitems' => '-23',
+                            'minitems' => -23,
                         ],
                     ],
                 ],

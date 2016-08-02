@@ -34,10 +34,9 @@ return array(
             )
         ),
         'storage' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.storage',
             'config' => array(
-                'readOnly' => 1,
+                'readOnly' => true,
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => array(
@@ -51,32 +50,29 @@ return array(
             )
         ),
         'identifier' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.identifier',
             'config' => array(
-                'readOnly' => 1,
+                'readOnly' => true,
                 'type' => 'input',
-                'size' => '30'
+                'size' => 30
             )
         ),
         'name' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.name',
             'config' => array(
-                'readOnly' => 1,
+                'readOnly' => true,
                 'type' => 'input',
-                'size' => '30',
+                'size' => 30,
                 'eval' => 'required',
             )
         ),
         'type' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.type',
             'config' => array(
-                'readOnly' => 1,
+                'readOnly' => true,
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'size' => '1',
+                'size' => 1,
                 'items' => array(
                     array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.unknown', 0),
                     array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.text', 1),
@@ -88,49 +84,44 @@ return array(
             )
         ),
         'mime_type' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.mime_type',
             'config' => array(
-                'readOnly' => 1,
+                'readOnly' => true,
                 'type' => 'input',
-                'size' => '30'
+                'size' => 30
             )
         ),
         'sha1' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.sha1',
             'config' => array(
-                'readOnly' => 1,
+                'readOnly' => true,
                 'type' => 'input',
-                'size' => '30',
+                'size' => 30,
             )
         ),
         'size' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.size',
             'config' => array(
-                'readOnly' => 1,
+                'readOnly' => true,
                 'type' => 'input',
-                'size' => '8',
-                'max' => '30',
+                'size' => 8,
+                'max' => 30,
                 'eval' => 'int',
                 'default' => 0
             )
         ),
         'missing' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.missing',
             'config' => array(
-                'readOnly' => 1,
+                'readOnly' => true,
                 'type' => 'check',
                 'default' => 0
             )
         ),
         'metadata' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.metadata',
             'config' => array(
-                'readOnly' => 1,
+                'readOnly' => true,
                 'type' => 'inline',
                 'foreign_table' => 'sys_file_metadata',
                 'foreign_field' => 'file',

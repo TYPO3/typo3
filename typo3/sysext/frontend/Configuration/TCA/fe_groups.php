@@ -24,23 +24,23 @@ return array(
     'columns' => array(
         'hidden' => array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
-            'exclude' => 1,
+            'exclude' => true,
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'title' => array(
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_groups.title',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
-                'max' => '50',
+                'size' => 20,
+                'max' => 50,
                 'eval' => 'trim,required'
             )
         ),
         'subgroup' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_groups.subgroup',
             'config' => array(
                 'type' => 'select',
@@ -55,13 +55,13 @@ return array(
             )
         ),
         'lockToDomain' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_groups.lockToDomain',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
+                'size' => 20,
                 'eval' => 'trim',
-                'max' => '50'
+                'max' => 50
             )
         ),
         'description' => array(
@@ -73,12 +73,12 @@ return array(
             )
         ),
         'TSconfig' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'TSconfig:',
             'config' => array(
                 'type' => 'text',
-                'cols' => '40',
-                'rows' => '10'
+                'cols' => 40,
+                'rows' => 10
             ),
             'defaultExtras' => 'fixed-font : enable-tab'
         )

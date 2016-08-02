@@ -5,7 +5,7 @@ return array(
         'tstamp' => 'tstamp',
         'sortby' => 'sorting',
         'title' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage',
-        'adminOnly' => 1,
+        'adminOnly' => true,
         'rootLevel' => 1,
         'hideTable' => true,
         'delete' => 'deleted',
@@ -19,8 +19,8 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.title',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
-                'max' => '30',
+                'size' => 20,
+                'max' => 30,
                 'eval' => 'required,trim'
             )
         ),
@@ -30,11 +30,11 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
-                'prepend_tname' => 1,
-                'size' => '3',
-                'maxitems' => '100',
+                'prepend_tname' => true,
+                'size' => 3,
+                'maxitems' => 100,
                 'autoSizeMax' => 20,
-                'show_thumbs' => '1',
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'
@@ -51,14 +51,12 @@ return array(
             )
         ),
         'parentid' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.parentid',
             'config' => array(
                 'type' => 'passthrough'
             )
         ),
         'parenttable' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.parenttable',
             'config' => array(
                 'type' => 'passthrough'
@@ -71,11 +69,11 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
-                'prepend_tname' => 1,
-                'size' => '3',
-                'maxitems' => '100',
+                'prepend_tname' => true,
+                'size' => 3,
+                'maxitems' => 100,
                 'autoSizeMax' => 20,
-                'show_thumbs' => '1',
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'

@@ -10,7 +10,7 @@ return array(
         'origUid' => 't3_origuid',
         'delete' => 'deleted',
         'crdate' => 'crdate',
-        'hideAtCopy' => 1,
+        'hideAtCopy' => true,
         'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
         'cruser_id' => 'cruser_id',
         'editlock' => 'editlock',
@@ -66,7 +66,7 @@ return array(
     ),
     'columns' => array(
         'doktype' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.type',
             'config' => array(
                 'type' => 'select',
@@ -132,23 +132,23 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:title',
             'config' => array(
                 'type' => 'input',
-                'size' => '50',
-                'max' => '255',
+                'size' => 50,
+                'max' => 255,
                 'eval' => 'trim,required'
             )
         ),
         'TSconfig' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'TSconfig:',
             'config' => array(
                 'type' => 'text',
-                'cols' => '40',
-                'rows' => '5'
+                'cols' => 40,
+                'rows' => 5
             ),
             'defaultExtras' => 'fixed-font : enable-tab'
         ),
         'php_tree_stop' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:php_tree_stop',
             'config' => array(
                 'type' => 'check',
@@ -164,12 +164,12 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
             'config' => array(
                 'type' => 'input',
-                'size' => '23',
-                'max' => '255'
+                'size' => 23,
+                'max' => 255
             )
         ),
         'editlock' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:editlock',
             'config' => array(
                 'type' => 'check',
@@ -181,11 +181,11 @@ return array(
             )
         ),
         'hidden' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.hidden',
             'config' => array(
                 'type' => 'check',
-                'default' => '1',
+                'default' => 1,
                 'items' => array(
                     '1' => array(
                         '0' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.hidden_checkbox_1_formlabel'
@@ -194,30 +194,30 @@ return array(
             )
         ),
         'starttime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
+                'size' => 13,
                 'eval' => 'datetime',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'endtime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
+                'size' => 13,
                 'eval' => 'datetime',
-                'default' => '0',
+                'default' => 0,
                 'range' => array(
                     'upper' => mktime(0, 0, 0, 1, 1, 2038)
                 )
             )
         ),
         'layout' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.layout',
             'config' => array(
                 'type' => 'select',
@@ -240,11 +240,11 @@ return array(
                         '3'
                     )
                 ),
-                'default' => '0'
+                'default' => 0
             )
         ),
         'url_scheme' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url_scheme',
             'config' => array(
                 'type' => 'select',
@@ -267,7 +267,7 @@ return array(
             )
         ),
         'fe_group' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
             'config' => array(
                 'type' => 'select',
@@ -295,7 +295,7 @@ return array(
             )
         ),
         'extendToSubpages' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.extendToSubpages',
             'config' => array(
                 'type' => 'check',
@@ -307,17 +307,17 @@ return array(
             )
         ),
         'nav_title' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_title',
             'config' => array(
                 'type' => 'input',
-                'size' => '50',
-                'max' => '255',
+                'size' => 50,
+                'max' => 255,
                 'eval' => 'trim'
             )
         ),
         'nav_hide' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_hide',
             'config' => array(
                 'type' => 'check',
@@ -329,33 +329,33 @@ return array(
             )
         ),
         'subtitle' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.subtitle',
             'config' => array(
                 'type' => 'input',
-                'size' => '50',
-                'max' => '255',
+                'size' => 50,
+                'max' => 255,
                 'eval' => 'trim'
             )
         ),
         'target' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.target',
             'config' => array(
                 'type' => 'input',
-                'size' => '50',
-                'max' => '80',
+                'size' => 50,
+                'max' => 80,
                 'eval' => 'trim'
             )
         ),
         'alias' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'displayCond' => 'VERSION:IS:false',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.alias',
             'config' => array(
                 'type' => 'input',
-                'size' => '50',
-                'max' => '32',
+                'size' => 50,
+                'max' => 32,
                 'eval' => 'nospace,alphanum_x,lower,unique',
                 'softref' => 'notify'
             )
@@ -364,8 +364,8 @@ return array(
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url',
             'config' => array(
                 'type' => 'input',
-                'size' => '23',
-                'max' => '255',
+                'size' => 23,
+                'max' => 255,
                 'eval' => 'trim,required',
                 'softref' => 'url'
             )
@@ -397,32 +397,32 @@ return array(
                         '3'
                     )
                 ),
-                'default' => '1'
+                'default' => 1
             )
         ),
         'lastUpdated' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.lastUpdated',
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
+                'size' => 13,
                 'eval' => 'datetime',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'newUntil' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.newUntil',
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
-                'max' => '20',
+                'size' => 13,
+                'max' => 20,
                 'eval' => 'date',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'cache_timeout' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout',
             'config' => array(
                 'type' => 'select',
@@ -473,21 +473,21 @@ return array(
                         2678400
                     )
                 ),
-                'default' => '0'
+                'default' => 0
             )
         ),
         'cache_tags' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_tags',
             'config' => array(
                 'type' => 'input',
-                'size' => '30',
-                'max' => '255',
+                'size' => 30,
+                'max' => 255,
                 'eval' => ''
             )
         ),
         'no_cache' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.no_cache',
             'config' => array(
                 'type' => 'check',
@@ -499,7 +499,7 @@ return array(
             )
         ),
         'no_search' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.no_search',
             'config' => array(
                 'type' => 'check',
@@ -516,10 +516,10 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'pages',
-                'size' => '1',
-                'maxitems' => '1',
-                'minitems' => '0',
-                'show_thumbs' => '1',
+                'size' => 1,
+                'maxitems' => 1,
+                'minitems' => 0,
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest',
@@ -532,7 +532,7 @@ return array(
             )
         ),
         'shortcut_mode' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_mode',
             'config' => array(
                 'type' => 'select',
@@ -555,20 +555,20 @@ return array(
                         \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_PARENT_PAGE
                     )
                 ),
-                'default' => '0'
+                'default' => 0
             )
         ),
         'content_from_pid' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.content_from_pid',
             'config' => array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'pages',
-                'size' => '1',
-                'maxitems' => '1',
-                'minitems' => '0',
-                'show_thumbs' => '1',
+                'size' => 1,
+                'maxitems' => 1,
+                'minitems' => 0,
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'
@@ -583,10 +583,10 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'pages',
-                'size' => '1',
-                'maxitems' => '1',
-                'minitems' => '0',
-                'show_thumbs' => '1',
+                'size' => 1,
+                'maxitems' => 1,
+                'minitems' => 0,
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'
@@ -596,55 +596,55 @@ return array(
             )
         ),
         'keywords' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.keywords',
             'config' => array(
                 'type' => 'text',
-                'cols' => '40',
-                'rows' => '3'
+                'cols' => 40,
+                'rows' => 3
             )
         ),
         'description' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
             'config' => array(
                 'type' => 'text',
-                'cols' => '40',
-                'rows' => '3'
+                'cols' => 40,
+                'rows' => 3
             )
         ),
         'abstract' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.abstract',
             'config' => array(
                 'type' => 'text',
-                'cols' => '40',
-                'rows' => '3'
+                'cols' => 40,
+                'rows' => 3
             )
         ),
         'author' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.author',
             'config' => array(
                 'type' => 'input',
-                'size' => '23',
+                'size' => 23,
                 'eval' => 'trim',
-                'max' => '80'
+                'max' => 80
             )
         ),
         'author_email' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.email',
             'config' => array(
                 'type' => 'input',
-                'size' => '23',
+                'size' => 23,
                 'eval' => 'trim',
-                'max' => '80',
+                'max' => 80,
                 'softref' => 'email[subst]'
             )
         ),
         'media' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.media',
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('media', array(
                     // Use the imageoverlayPalette instead of the basicoverlayPalette
@@ -684,7 +684,7 @@ return array(
             )
         ),
         'is_siteroot' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.is_siteroot',
             'config' => array(
                 'type' => 'check',
@@ -696,7 +696,7 @@ return array(
             )
         ),
         'mount_pid_ol' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.mount_pid_ol',
             'config' => array(
                 'type' => 'radio',
@@ -713,7 +713,7 @@ return array(
             )
         ),
         'module' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.module',
             'config' => array(
                 'type' => 'select',
@@ -734,7 +734,7 @@ return array(
             )
         ),
         'fe_login_mode' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.fe_login_mode',
             'config' => array(
                 'type' => 'select',
@@ -760,7 +760,7 @@ return array(
             )
         ),
         'l18n_cfg' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg',
             'config' => array(
                 'type' => 'check',
@@ -777,7 +777,7 @@ return array(
             )
         ),
         'backend_layout' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout_formlabel',
             'config' => array(
                 'type' => 'select',
@@ -794,7 +794,7 @@ return array(
             )
         ),
         'backend_layout_next_level' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout_next_level_formlabel',
             'config' => array(
                 'type' => 'select',
@@ -811,7 +811,7 @@ return array(
             )
         ),
         'tsconfig_includes' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tsconfig_includes',
             'config' => array(
                 'type' => 'select',

@@ -10,7 +10,7 @@ return array(
         'title' => 'LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
-        'adminOnly' => 1,
+        'adminOnly' => true,
         'rootLevel' => -1,
         'setToDefaultOnCopy' => 'assign_to_groups',
         'enablecolumns' => array(
@@ -29,8 +29,8 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.title',
             'config' => array(
                 'type' => 'input',
-                'size' => '25',
-                'max' => '255',
+                'size' => 25,
+                'max' => 255,
                 'eval' => 'trim,required'
             )
         ),
@@ -71,17 +71,17 @@ return array(
                 'foreign_table' => 'be_groups',
                 'foreign_table_where' => 'ORDER BY be_groups.title',
                 'MM' => 'sys_action_asgr_mm',
-                'size' => '10',
-                'minitems' => '0',
-                'maxitems' => '200',
-                'autoSizeMax' => '10'
+                'size' => 10,
+                'minitems' => 0,
+                'maxitems' => 200,
+                'autoSizeMax' => 10
             )
         ),
         't1_userprefix' => array(
             'label' => 'LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.t1_userprefix',
             'config' => array(
                 'type' => 'input',
-                'size' => '25',
+                'size' => 25,
                 'max' => '10',
                 'eval' => 'trim'
             )
@@ -93,9 +93,9 @@ return array(
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'be_groups',
                 'foreign_table_where' => 'ORDER BY be_groups.title',
-                'size' => '10',
+                'size' => 10,
                 'maxitems' => '20',
-                'autoSizeMax' => '10'
+                'autoSizeMax' => 10
             )
         ),
         't1_create_user_dir' => array(
@@ -110,10 +110,10 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users',
-                'size' => '1',
-                'maxitems' => '1',
-                'minitems' => '1',
-                'show_thumbs' => '1',
+                'size' => 1,
+                'maxitems' => 1,
+                'minitems' => 1,
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'
@@ -127,10 +127,10 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'pages',
-                'size' => '1',
-                'maxitems' => '1',
-                'minitems' => '1',
-                'show_thumbs' => '1',
+                'size' => 1,
+                'maxitems' => 1,
+                'minitems' => 1,
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'
@@ -155,11 +155,11 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => '*',
-                'prepend_tname' => 1,
-                'size' => '5',
-                'maxitems' => '50',
-                'minitems' => '1',
-                'show_thumbs' => '1',
+                'prepend_tname' => true,
+                'size' => 5,
+                'maxitems' => 50,
+                'minitems' => 1,
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'

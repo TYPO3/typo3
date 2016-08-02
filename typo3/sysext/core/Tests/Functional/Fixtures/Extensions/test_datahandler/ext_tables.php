@@ -7,7 +7,7 @@ defined('TYPO3_MODE') or die();
     'tt_content',
      array(
          'tx_testdatahandler_select' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'DataHandler Test Select',
             'config' => array(
                 'type' => 'select',
@@ -15,12 +15,12 @@ defined('TYPO3_MODE') or die();
                 'foreign_table' => 'tx_testdatahandler_element',
                 'minitems' => 1,
                 'maxitems' => 10,
-                'autoSizeMax' => '10',
+                'autoSizeMax' => 10,
                 'default' => '',
             ),
         ),
          'tx_testdatahandler_group' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'DataHandler Test Group',
             'config' => array(
                 'type' => 'group',
@@ -28,12 +28,12 @@ defined('TYPO3_MODE') or die();
                 'allowed' => 'tx_testdatahandler_element',
                 'minitems' => 1,
                 'maxitems' => 10,
-                'autoSizeMax' => '10',
+                'autoSizeMax' => 10,
                 'default' => '',
             ),
         ),
          'tx_testdatahandler_radio' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'DataHandler Test Radio',
             'config' => array(
                 'type' => 'radio',
@@ -45,7 +45,7 @@ defined('TYPO3_MODE') or die();
             ),
         ),
          'tx_testdatahandler_checkbox' => array(
-             'exclude' => 1,
+             'exclude' => true,
              'label' => 'DataHandler Test Checkbox',
              'config' => array(
                  'type' => 'check',

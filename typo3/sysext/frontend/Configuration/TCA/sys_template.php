@@ -13,7 +13,7 @@ return array(
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         // Only admin, if any
-        'adminOnly' => 1,
+        'adminOnly' => true,
         'enablecolumns' => array(
             'disabled' => 'hidden',
             'starttime' => 'starttime',
@@ -34,37 +34,37 @@ return array(
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.title',
             'config' => array(
                 'type' => 'input',
-                'size' => '25',
-                'max' => '255',
+                'size' => 25,
+                'max' => 255,
                 'eval' => 'required'
             )
         ),
         'hidden' => array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
-            'exclude' => 1,
+            'exclude' => true,
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'starttime' => array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
-            'exclude' => 1,
+            'exclude' => true,
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
+                'size' => 13,
                 'eval' => 'datetime',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'endtime' => array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
-            'exclude' => 1,
+            'exclude' => true,
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
+                'size' => 13,
                 'eval' => 'datetime',
-                'default' => '0',
+                'default' => 0,
                 'range' => array(
                     'upper' => mktime(0, 0, 0, 12, 31, 2020)
                 )
@@ -91,16 +91,16 @@ return array(
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.sitetitle',
             'config' => array(
                 'type' => 'input',
-                'size' => '25',
-                'max' => '255'
+                'size' => 25,
+                'max' => 255
             )
         ),
         'constants' => array(
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.constants',
             'config' => array(
                 'type' => 'text',
-                'cols' => '48',
-                'rows' => '10',
+                'cols' => 48,
+                'rows' => 10,
                 'wrap' => 'OFF',
                 'softref' => 'email[subst],url[subst]'
             ),
@@ -112,10 +112,10 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'sys_template',
-                'show_thumbs' => '1',
-                'size' => '1',
-                'maxitems' => '1',
-                'minitems' => '0',
+                'show_thumbs' => true,
+                'size' => 1,
+                'maxitems' => 1,
+                'minitems' => 0,
                 'default' => '',
                 'wizards' => array(
                     'suggest' => array(
@@ -142,11 +142,11 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'sys_template',
-                'show_thumbs' => '1',
-                'size' => '3',
-                'maxitems' => '50',
+                'show_thumbs' => true,
+                'size' => 3,
+                'maxitems' => 50,
                 'autoSizeMax' => 10,
-                'minitems' => '0',
+                'minitems' => 0,
                 'default' => '',
                 'wizards' => array(
                     '_VERTICAL' => 1,
@@ -181,10 +181,10 @@ return array(
         ),
         'includeStaticAfterBasedOn' => array(
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.includeStaticAfterBasedOn',
-            'exclude' => 1,
+            'exclude' => true,
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'config' => array(
@@ -217,7 +217,7 @@ return array(
                     array('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode.2', '2'),
                     array('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode.3', '3')
                 ),
-                'default' => '0'
+                'default' => 0
             )
         ),
         'tx_impexp_origuid' => array('config' => array('type' => 'passthrough')),
@@ -225,8 +225,8 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
             'config' => array(
                 'type' => 'input',
-                'size' => '30',
-                'max' => '255'
+                'size' => 30,
+                'max' => 255
             )
         )
     ),

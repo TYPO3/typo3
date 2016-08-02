@@ -45,14 +45,14 @@ return array(
         ),
 
         'hidden' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
             'config' => array(
                 'type' => 'check',
             ),
         ),
         'starttime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'mergeIfNotBlank',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
             'config' => array(
@@ -66,7 +66,7 @@ return array(
             ),
         ),
         'endtime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'mergeIfNotBlank',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
             'config' => array(
@@ -95,7 +95,6 @@ return array(
             )
         ),
         'images' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:impexp_group_files/Resources/Private/Language/locallang_db.xml:tx_impexpgroupfiles_item_images',
             'config' => array(
                 'type' => 'group',
@@ -105,11 +104,10 @@ return array(
                 'uploadfolder' => 'uploads/tx_impexpgroupfiles',
                 'size' => 5,
                 'maxitems' => 5,
-                'show_thumbs' => 1,
+                'show_thumbs' => true,
             ),
         ),
         'image_references' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:impexp_group_files/Resources/Private/Language/locallang_db.xml:tx_impexpgroupfiles_item_image_references',
             'config' => array(
                 'type' => 'group',
@@ -118,7 +116,7 @@ return array(
                 'disallowed' => 'php',
                 'size' => 5,
                 'maxitems' => 5,
-                'show_thumbs' => 1,
+                'show_thumbs' => true,
             ),
         ),
         'flexform' => array(

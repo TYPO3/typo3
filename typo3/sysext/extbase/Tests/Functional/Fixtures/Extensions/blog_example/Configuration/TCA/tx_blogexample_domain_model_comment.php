@@ -18,14 +18,14 @@ return array(
     ),
     'columns' => array(
         'hidden' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
             'config' => array(
                 'type' => 'check'
             )
         ),
         'date' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_comment.date',
             'config' => array(
                 'type' => 'input',
@@ -36,7 +36,6 @@ return array(
             )
         ),
         'author' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_comment.author',
             'config' => array(
                 'type' => 'input',
@@ -46,7 +45,6 @@ return array(
             )
         ),
         'email' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_comment.email',
             'config' => array(
                 'type' => 'input',
@@ -56,7 +54,7 @@ return array(
             )
         ),
         'content' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_comment.content',
             'config' => array(
                 'type' => 'text',

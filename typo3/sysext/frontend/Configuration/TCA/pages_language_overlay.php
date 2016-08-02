@@ -34,11 +34,11 @@ return array(
     'columns' => array(
         'doktype' => $GLOBALS['TCA']['pages']['columns']['doktype'],
         'hidden' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.hidden',
             'config' => array(
                 'type' => 'check',
-                'default' => '0',
+                'default' => 0,
                 'items' => array(
                     '1' => array(
                         '0' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.hidden_checkbox_1_formlabel'
@@ -47,23 +47,23 @@ return array(
             )
         ),
         'starttime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
+                'size' => 13,
                 'eval' => 'datetime',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'endtime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
+                'size' => 13,
                 'eval' => 'datetime',
-                'default' => '0',
+                'default' => 0,
                 'range' => array(
                     'upper' => mktime(0, 0, 0, 12, 31, 2020)
                 )
@@ -75,99 +75,99 @@ return array(
             'l10n_cat' => 'text',
             'config' => array(
                 'type' => 'input',
-                'size' => '50',
-                'max' => '255',
+                'size' => 50,
+                'max' => 255,
                 'eval' => 'trim,required'
             )
         ),
         'subtitle' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_cat' => 'text',
             'label' => $GLOBALS['TCA']['pages']['columns']['subtitle']['label'],
             'config' => array(
                 'type' => 'input',
-                'size' => '50',
-                'max' => '255',
+                'size' => 50,
+                'max' => 255,
                 'eval' => 'trim'
             )
         ),
         'nav_title' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_cat' => 'text',
             'label' => $GLOBALS['TCA']['pages']['columns']['nav_title']['label'],
             'config' => array(
                 'type' => 'input',
-                'size' => '50',
-                'max' => '255',
+                'size' => 50,
+                'max' => 255,
                 'eval' => 'trim'
             )
         ),
         'keywords' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $GLOBALS['TCA']['pages']['columns']['keywords']['label'],
             'config' => array(
                 'type' => 'text',
-                'cols' => '40',
-                'rows' => '3'
+                'cols' => 40,
+                'rows' => 3
             )
         ),
         'description' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $GLOBALS['TCA']['pages']['columns']['description']['label'],
             'config' => array(
                 'type' => 'text',
-                'cols' => '40',
-                'rows' => '3'
+                'cols' => 40,
+                'rows' => 3
             )
         ),
         'abstract' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $GLOBALS['TCA']['pages']['columns']['abstract']['label'],
             'config' => array(
                 'type' => 'text',
-                'cols' => '40',
-                'rows' => '3'
+                'cols' => 40,
+                'rows' => 3
             )
         ),
         'author' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $GLOBALS['TCA']['pages']['columns']['author']['label'],
             'config' => array(
                 'type' => 'input',
-                'size' => '23',
+                'size' => 23,
                 'eval' => 'trim',
-                'max' => '80'
+                'max' => 80
             )
         ),
         'author_email' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $GLOBALS['TCA']['pages']['columns']['author_email']['label'],
             'config' => array(
                 'type' => 'input',
-                'size' => '23',
+                'size' => 23,
                 'eval' => 'trim',
-                'max' => '80',
+                'max' => 80,
                 'softref' => 'email[subst]'
             )
         ),
         'media' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $GLOBALS['TCA']['pages']['columns']['media']['label'],
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('media')
         ),
         'url' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url',
             'config' => array(
                 'type' => 'input',
-                'size' => '23',
-                'max' => '255',
+                'size' => 23,
+                'max' => 255,
                 'eval' => 'trim',
                 'softref' => 'url'
             )
         ),
         'urltype' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.type',
             'config' => array(
                 'type' => 'select',
@@ -182,26 +182,26 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'pages',
-                'size' => '1',
-                'maxitems' => '1',
-                'minitems' => '0',
-                'show_thumbs' => '1',
+                'size' => 1,
+                'maxitems' => 1,
+                'minitems' => 0,
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'
                     )
                 ),
-                'default' => '0'
+                'default' => 0
             )
         ),
         'shortcut_mode' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_mode',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => $GLOBALS['TCA']['pages']['columns']['shortcut_mode']['config']['items'],
-                'default' => '0'
+                'default' => 0
             )
         ),
         'sys_language_uid' => array(
@@ -227,8 +227,8 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
             'config' => array(
                 'type' => 'input',
-                'size' => '30',
-                'max' => '255'
+                'size' => 30,
+                'max' => 255
             )
         )
     ),

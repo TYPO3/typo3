@@ -2084,14 +2084,14 @@ class ContentObjectRendererTest extends UnitTestCase
          */
         $sourceCollectionArray = array(
             'small.' => array(
-                'width' => '200',
+                'width' => 200,
                 'srcsetCandidate' => '600w',
                 'mediaQuery' => '(max-device-width: 600px)',
                 'dataKey' => 'small',
             ),
             'smallRetina.' => array(
                 'if.directReturn' => 0,
-                'width' => '200',
+                'width' => 200,
                 'pixelDensity' => '2',
                 'srcsetCandidate' => '600w 2x',
                 'mediaQuery' => '(max-device-width: 600px) AND (min-resolution: 192dpi)',
@@ -2158,14 +2158,14 @@ class ContentObjectRendererTest extends UnitTestCase
          */
         $sourceCollectionArray = array(
             'small.' => array(
-                'width' => '200',
+                'width' => 200,
                 'srcsetCandidate' => '600w',
                 'mediaQuery' => '(max-device-width: 600px)',
                 'dataKey' => 'small',
             ),
             'smallRetina.' => array(
                 'if.directReturn' => 1,
-                'width' => '200',
+                'width' => 200,
                 'pixelDensity' => '2',
                 'srcsetCandidate' => '600w 2x',
                 'mediaQuery' => '(max-device-width: 600px) AND (min-resolution: 192dpi)',
@@ -2325,7 +2325,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ),
             'sourceCollection.' => array(
                 'small.' => array(
-                    'width' => '200',
+                    'width' => 200,
                     'srcsetCandidate' => '600w',
                     'mediaQuery' => '(max-device-width: 600px)',
                     'dataKey' => 'small',

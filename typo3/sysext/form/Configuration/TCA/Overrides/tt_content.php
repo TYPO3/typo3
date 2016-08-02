@@ -40,7 +40,7 @@ if ($groupFound && $groupPosition) {
     array(
         'tx_form_predefinedform' => array(
             'label' => 'LLL:EXT:form/Resources/Private/Language/Database.xlf:tx_form_predefinedform',
-            'exclude' => 1,
+            'exclude' => true,
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -68,7 +68,7 @@ $GLOBALS['TCA']['tt_content']['columns']['bodytext']['displayCond']['AND'] = arr
 );
 
 $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['wizards']['forms'] = array(
-    'notNewRecords' => 1,
+    'notNewRecords' => true,
     'enableByTypeConfig' => 1,
     'type' => 'script',
     'title' => 'Form wizard',

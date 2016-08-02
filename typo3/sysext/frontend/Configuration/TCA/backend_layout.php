@@ -29,8 +29,8 @@ return array(
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.title',
             'config' => array(
                 'type' => 'input',
-                'size' => '25',
-                'max' => '255',
+                'size' => 25,
+                'max' => 255,
                 'eval' => 'required'
             )
         ),
@@ -38,8 +38,8 @@ return array(
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.description',
             'config' => array(
                 'type' => 'text',
-                'rows' => '5',
-                'cols' => '25'
+                'rows' => 5,
+                'cols' => 25
             )
         ),
         'config' => array(
@@ -51,21 +51,21 @@ return array(
         ),
         'hidden' => array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
-            'exclude' => 1,
+            'exclude' => true,
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'icon' => array(
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.icon',
-            'exclude' => 1,
+            'exclude' => true,
             'config' => array(
                 'type' => 'group',
                 'internal_type' => 'file',
                 'allowed' => 'jpg,gif,png',
                 'uploadfolder' => 'uploads/media',
-                'show_thumbs' => 1,
+                'show_thumbs' => true,
                 'size' => 1,
                 'maxitems' => 1
             )

@@ -189,7 +189,7 @@ class BackendUtilityTest extends UnitTestCase
                             'internal_type' => 'db',
                             'maxitems' => 22,
                             'minitems' => 0,
-                            'show_thumbs' => 1,
+                            'show_thumbs' => true,
                             'size' => 3,
                         ),
                     ),

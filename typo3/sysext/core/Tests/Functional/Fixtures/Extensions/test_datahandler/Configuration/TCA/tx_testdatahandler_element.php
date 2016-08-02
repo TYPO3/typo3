@@ -23,7 +23,7 @@ return array(
     ),
     'columns' => array(
         'sys_language_uid' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
             'config' => array(
                 'type'                => 'select',
@@ -57,20 +57,20 @@ return array(
             )
         ),
         'hidden' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'title' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'prefixLangTitle',
             'label' => 'Title',
             'config' => array(
                 'type' => 'input',
-                'size' => '30',
+                'size' => 30,
                 'eval' => 'required',
             )
         ),

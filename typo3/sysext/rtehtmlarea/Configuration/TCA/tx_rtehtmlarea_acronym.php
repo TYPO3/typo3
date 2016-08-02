@@ -20,33 +20,30 @@ return array(
     ),
     'columns' => array(
         'hidden' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'starttime' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
             'config' => array(
                 'type' => 'input',
-                'size' => '8',
-                'max' => '20',
+                'size' => 8,
+                'max' => 20,
                 'eval' => 'date',
-                'default' => '0',
+                'default' => 0,
             )
         ),
         'endtime' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
             'config' => array(
                 'type' => 'input',
-                'size' => '8',
-                'max' => '20',
+                'size' => 8,
+                'max' => 20,
                 'eval' => 'date',
-                'default' => '0',
+                'default' => 0,
                 'range' => array(
                     'upper' => mktime(0, 0, 0, 12, 31, 2020),
                     'lower' => mktime(0, 0, 0, date('m') - 1, date('d'), date('Y'))
@@ -54,7 +51,6 @@ return array(
             )
         ),
         'sys_language_uid' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
             'config' => array(
                 'type' => 'select',
@@ -70,7 +66,7 @@ return array(
             )
         ),
         'type' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_db.xlf:tx_rtehtmlarea_acronym.type',
             'config' => array(
                 'type' => 'radio',
@@ -82,20 +78,18 @@ return array(
             )
         ),
         'term' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_db.xlf:tx_rtehtmlarea_acronym.term',
             'config' => array(
                 'type' => 'input',
-                'size' => '30',
+                'size' => 30,
                 'eval' => 'trim,required'
             )
         ),
         'acronym' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_db.xlf:tx_rtehtmlarea_acronym.acronym',
             'config' => array(
                 'type' => 'input',
-                'size' => '30',
+                'size' => 30,
                 'eval' => 'trim,required'
             )
         ),

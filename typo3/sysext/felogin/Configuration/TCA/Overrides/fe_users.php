@@ -6,7 +6,7 @@ call_user_func(function () {
     // Adds the redirect field and the forgotHash field to the fe_users-table
     $additionalColumns = [
         'felogin_redirectPid' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:felogin/Resources/Private/Language/Database.xlf:felogin_redirectPid',
             'config' => [
                 'type' => 'group',
@@ -23,7 +23,7 @@ call_user_func(function () {
             ]
         ],
         'felogin_forgotHash' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:felogin/Resources/Private/Language/Database.xlf:felogin_forgotHash',
             'config' => [
                 'type' => 'passthrough'

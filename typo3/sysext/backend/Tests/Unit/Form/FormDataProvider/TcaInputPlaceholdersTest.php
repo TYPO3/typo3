@@ -301,7 +301,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                     ],
                     'metadata' => [
                         'config' => [
-                            'readOnly' => 1,
+                            'readOnly' => true,
                             'type' => 'inline',
                             'foreign_table' => 'sys_file_metadata',
                             'foreign_field' => 'file',
@@ -385,7 +385,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                 'columns' => [
                     'metadata' => [
                         'config' => [
-                            'readOnly' => 1,
+                            'readOnly' => true,
                             'type' => 'inline',
                             'foreign_table' => 'sys_file_metadata',
                             'foreign_field' => 'file',

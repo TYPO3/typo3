@@ -29,7 +29,7 @@ return array(
     ),
     'columns' => array(
         'sys_language_uid' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
             'config' => array(
                 'type' => 'select',
@@ -45,7 +45,7 @@ return array(
         ),
         'l18n_parent' => array(
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
             'config' => array(
                 'type' => 'select',
@@ -64,14 +64,14 @@ return array(
             )
         ),
         'hidden' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
             'config' => array(
                 'type' => 'check'
             )
         ),
         'blog' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_post.blog',
             'config' => array(
                 'type' => 'select',
@@ -81,7 +81,6 @@ return array(
             )
         ),
         'title' => array(
-            'exclude' => 0,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_post.title',
             'config' => array(
                 'type' => 'input',
@@ -91,7 +90,7 @@ return array(
             )
         ),
         'date' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_post.date',
             'config' => array(
                 'type' => 'input',
@@ -101,7 +100,7 @@ return array(
             )
         ),
         'author' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_post.author',
             'config' => array(
                 'type' => 'select',
@@ -136,7 +135,7 @@ return array(
             )
         ),
         'content' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_post.content',
             'config' => array(
                 'type' => 'text',
@@ -145,7 +144,7 @@ return array(
             )
         ),
         'tags' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_post.tags',
             'config' => array(
                 'type' => 'inline',
@@ -161,7 +160,7 @@ return array(
             )
         ),
         'comments' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_post.comments',
             'config' => array(
                 'type' => 'inline',
@@ -178,7 +177,7 @@ return array(
             )
         ),
         'related_posts' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_post.related',
             'config' => array(
                 'type' => 'select',

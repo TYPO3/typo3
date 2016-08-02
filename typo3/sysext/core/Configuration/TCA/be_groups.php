@@ -9,7 +9,7 @@ return array(
         'delete' => 'deleted',
         'default_sortby' => 'ORDER BY title',
         'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
-        'adminOnly' => 1,
+        'adminOnly' => true,
         'rootLevel' => 1,
         'typeicon_classes' => array(
             'default' => 'status-user-group-backend'
@@ -30,8 +30,8 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_groups.title',
             'config' => array(
                 'type' => 'input',
-                'size' => '25',
-                'max' => '50',
+                'size' => 25,
+                'max' => 50,
                 'eval' => 'trim,required'
             )
         ),
@@ -41,10 +41,10 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'pages',
-                'size' => '3',
+                'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 10,
-                'show_thumbs' => '1',
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'
@@ -59,7 +59,7 @@ return array(
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'sys_filemounts',
                 'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
-                'size' => '3',
+                'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 10,
                 'wizards' => array(
@@ -70,7 +70,7 @@ return array(
                         'module' => array(
                             'name' => 'wizard_edit',
                         ),
-                        'popup_onlyOpenIfSelected' => 1,
+                        'popup_onlyOpenIfSelected' => true,
                         'icon' => 'actions-open',
                         'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
                     ),
@@ -80,7 +80,7 @@ return array(
                         'icon' => 'actions-add',
                         'params' => array(
                             'table' => 'sys_filemounts',
-                            'pid' => '0',
+                            'pid' => 0,
                             'setValue' => 'prepend'
                         ),
                         'module' => array(
@@ -93,7 +93,7 @@ return array(
                         'icon' => 'actions-system-list-open',
                         'params' => array(
                             'table' => 'sys_filemounts',
-                            'pid' => '0'
+                            'pid' => 0
                         ),
                         'module' => array(
                             'name' => 'wizard_list'
@@ -148,7 +148,7 @@ return array(
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'pagetypes',
-                'size' => '5',
+                'size' => 5,
                 'autoSizeMax' => 50,
                 'maxitems' => 20,
             )
@@ -159,7 +159,7 @@ return array(
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'tables',
-                'size' => '5',
+                'size' => 5,
                 'autoSizeMax' => 50,
                 'maxitems' => 100,
             )
@@ -170,7 +170,7 @@ return array(
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'tables',
-                'size' => '5',
+                'size' => 5,
                 'autoSizeMax' => 50,
                 'maxitems' => 100,
             )
@@ -181,7 +181,7 @@ return array(
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'exclude',
-                'size' => '25',
+                'size' => 25,
                 'maxitems' => 1000,
                 'autoSizeMax' => 50,
             )
@@ -217,16 +217,16 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'lockToDomain' => array(
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:lockToDomain',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
+                'size' => 20,
                 'eval' => 'trim',
-                'max' => '50',
+                'max' => 50,
                 'softref' => 'substitute'
             )
         ),
@@ -236,7 +236,7 @@ return array(
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'modListGroup',
-                'size' => '5',
+                'size' => 5,
                 'autoSizeMax' => 50,
                 'maxitems' => 100,
             )
@@ -247,15 +247,15 @@ return array(
                 'type' => 'text',
                 'rows' => 5,
                 'cols' => 30,
-                'max' => '2000',
+                'max' => 2000,
             )
         ),
         'TSconfig' => array(
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:TSconfig',
             'config' => array(
                 'type' => 'text',
-                'cols' => '40',
-                'rows' => '5'
+                'cols' => 40,
+                'rows' => 5
             ),
             'defaultExtras' => 'fixed-font : enable-tab'
         ),
@@ -273,7 +273,7 @@ return array(
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'be_groups',
                 'foreign_table_where' => 'AND NOT(be_groups.uid = ###THIS_UID###) AND be_groups.hidden=0 ORDER BY be_groups.title',
-                'size' => '5',
+                'size' => 5,
                 'autoSizeMax' => 50,
                 'maxitems' => 20,
             )

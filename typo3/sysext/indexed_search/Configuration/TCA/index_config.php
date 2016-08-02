@@ -32,17 +32,17 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
             'config' => array(
                 'type' => 'input',
-                'size' => '8',
-                'max' => '20',
+                'size' => 8,
+                'max' => 20,
                 'eval' => 'date',
-                'default' => '0',
+                'default' => 0,
             )
         ),
         'title' => array(
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.title',
             'config' => array(
                 'type' => 'input',
-                'size' => '30',
+                'size' => 30,
                 'eval' => 'required'
             )
         ),
@@ -50,8 +50,8 @@ return array(
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.description',
             'config' => array(
                 'type' => 'text',
-                'cols' => '30',
-                'rows' => '2'
+                'cols' => 30,
+                'rows' => 2
             )
         ),
         'type' => array(
@@ -136,21 +136,21 @@ return array(
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.get_params',
             'config' => array(
                 'type' => 'input',
-                'size' => '30'
+                'size' => 30
             )
         ),
         'fieldlist' => array(
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.fields',
             'config' => array(
                 'type' => 'input',
-                'size' => '30'
+                'size' => 30
             )
         ),
         'externalUrl' => array(
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.externalUrl',
             'config' => array(
                 'type' => 'input',
-                'size' => '30'
+                'size' => 30
             )
         ),
         'chashcalc' => array(
@@ -163,46 +163,46 @@ return array(
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.filepath',
             'config' => array(
                 'type' => 'input',
-                'size' => '30'
+                'size' => 30
             )
         ),
         'extensions' => array(
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.extensions',
             'config' => array(
                 'type' => 'input',
-                'size' => '30'
+                'size' => 30
             )
         ),
         'url_deny' => array(
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.url_deny',
             'config' => array(
                 'type' => 'text',
-                'cols' => '30',
-                'rows' => '2'
+                'cols' => 30,
+                'rows' => 2
             )
         ),
         'records_indexonchange' => array(
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.records_indexonchange',
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'timer_next_indexing' => array(
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.timer_next_indexing',
             'config' => array(
                 'type' => 'input',
-                'size' => '12',
+                'size' => 12,
                 'eval' => 'datetime',
-                'default' => '0',
+                'default' => 0,
             )
         ),
         'timer_offset' => array(
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.timer_offset',
             'config' => array(
                 'type' => 'input',
-                'size' => '8',
-                'max' => '20',
+                'size' => 8,
+                'max' => 20,
                 'eval' => 'time',
                 'default' => 3600
             )
@@ -226,10 +226,10 @@ return array(
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.recordsbatch',
             'config' => array(
                 'type' => 'input',
-                'size' => '8',
-                'max' => '20',
+                'size' => 8,
+                'max' => 20,
                 'eval' => 'int',
-                'default' => '0',
+                'default' => 0,
             )
         ),
         'set_id' => array(

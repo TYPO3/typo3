@@ -27,8 +27,8 @@ return array(
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.username',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
-                'max' => '255',
+                'size' => 20,
+                'max' => 255,
                 'eval' => 'nospace,trim,lower,uniqueInPid,required',
                 'autocomplete' => false,
             )
@@ -37,8 +37,8 @@ return array(
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.password',
             'config' => array(
                 'type' => 'input',
-                'size' => '10',
-                'max' => '40',
+                'size' => 10,
+                'max' => 40,
                 'eval' => 'trim,required,password',
                 'autocomplete' => false,
             )
@@ -51,222 +51,222 @@ return array(
                 'foreign_table' => 'fe_groups',
                 'foreign_table_where' => 'ORDER BY fe_groups.title',
                 'enableMultiSelectFilterTextfield' => true,
-                'size' => '6',
-                'minitems' => '1',
-                'maxitems' => '50'
+                'size' => 6,
+                'minitems' => 1,
+                'maxitems' => 50
             )
         ),
         'lockToDomain' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.lockToDomain',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
+                'size' => 20,
                 'eval' => 'trim',
-                'max' => '50',
+                'max' => 50,
                 'softref' => 'substitute'
             )
         ),
         'name' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.name',
             'config' => array(
                 'type' => 'input',
-                'size' => '40',
+                'size' => 40,
                 'eval' => 'trim',
-                'max' => '160'
+                'max' => 160
             )
         ),
         'first_name' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.first_name',
             'config' => array(
                 'type' => 'input',
-                'size' => '25',
+                'size' => 25,
                 'eval' => 'trim',
-                'max' => '50'
+                'max' => 50
             )
         ),
         'middle_name' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.middle_name',
             'config' => array(
                 'type' => 'input',
-                'size' => '25',
+                'size' => 25,
                 'eval' => 'trim',
-                'max' => '50'
+                'max' => 50
             )
         ),
         'last_name' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.last_name',
             'config' => array(
                 'type' => 'input',
-                'size' => '25',
+                'size' => 25,
                 'eval' => 'trim',
-                'max' => '50'
+                'max' => 50
             )
         ),
         'address' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.address',
             'config' => array(
                 'type' => 'text',
-                'cols' => '20',
-                'rows' => '3'
+                'cols' => 20,
+                'rows' => 3
             )
         ),
         'telephone' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.phone',
             'config' => array(
                 'type' => 'input',
                 'eval' => 'trim',
-                'size' => '20',
-                'max' => '30'
+                'size' => 20,
+                'max' => 30
             )
         ),
         'fax' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fax',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
+                'size' => 20,
                 'eval' => 'trim',
-                'max' => '30'
+                'max' => 30
             )
         ),
         'email' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.email',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
+                'size' => 20,
                 'eval' => 'trim',
-                'max' => '255'
+                'max' => 255
             )
         ),
         'title' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.title_person',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
+                'size' => 20,
                 'eval' => 'trim',
                 'max' => '40'
             )
         ),
         'zip' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.zip',
             'config' => array(
                 'type' => 'input',
                 'eval' => 'trim',
-                'size' => '10',
+                'size' => 10,
                 'max' => '10'
             )
         ),
         'city' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.city',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
+                'size' => 20,
                 'eval' => 'trim',
-                'max' => '50'
+                'max' => 50
             )
         ),
         'country' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.country',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
+                'size' => 20,
                 'eval' => 'trim',
-                'max' => '40'
+                'max' => 40
             )
         ),
         'www' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.www',
             'config' => array(
                 'type' => 'input',
                 'eval' => 'trim',
-                'size' => '20',
-                'max' => '80'
+                'size' => 20,
+                'max' => 80
             )
         ),
         'company' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.company',
             'config' => array(
                 'type' => 'input',
                 'eval' => 'trim',
-                'size' => '20',
-                'max' => '80'
+                'size' => 20,
+                'max' => 80
             )
         ),
         'image' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.image',
             'config' => array(
                 'type' => 'group',
                 'internal_type' => 'file',
                 'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
                 'uploadfolder' => 'uploads/pics',
-                'show_thumbs' => '1',
-                'size' => '3',
-                'maxitems' => '6',
-                'minitems' => '0'
+                'show_thumbs' => true,
+                'size' => 3,
+                'maxitems' => 6,
+                'minitems' => 0
             )
         ),
         'disable' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
             'config' => array(
                 'type' => 'check'
             )
         ),
         'starttime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
+                'size' => 13,
                 'eval' => 'datetime',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'endtime' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
             'config' => array(
                 'type' => 'input',
-                'size' => '13',
+                'size' => 13,
                 'eval' => 'datetime',
-                'default' => '0',
+                'default' => 0,
                 'range' => array(
                     'upper' => mktime(0, 0, 0, 12, 31, 2020)
                 )
             )
         ),
         'TSconfig' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'TSconfig:',
             'config' => array(
                 'type' => 'text',
-                'cols' => '40',
-                'rows' => '10'
+                'cols' => 40,
+                'rows' => 10
             ),
             'defaultExtras' => 'fixed-font : enable-tab'
         ),
         'lastlogin' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.lastlogin',
             'config' => array(
                 'type' => 'input',
-                'readOnly' => '1',
-                'size' => '12',
+                'readOnly' => true,
+                'size' => 12,
                 'eval' => 'datetime',
                 'default' => 0
             )

@@ -61,7 +61,7 @@ class TcaMigrationTest extends UnitTestCase
             'aTable' => array(
                 'columns' => array(
                     'bodytext' => array(
-                        'exclude' => 1,
+                        'exclude' => true,
                         'label' => 'aLabel',
                         'config' => array(
                             'type' => 'text',
@@ -90,7 +90,7 @@ class TcaMigrationTest extends UnitTestCase
             'aTable' => array(
                 'columns' => array(
                     'bodytext' => array(
-                        'exclude' => 1,
+                        'exclude' => true,
                         'label' => 'aLabel',
                         'config' => array(
                             'type' => 'text',
@@ -222,7 +222,7 @@ class TcaMigrationTest extends UnitTestCase
             'aTable' => array(
                 'columns' => array(
                     'bodytext' => array(
-                        'exclude' => 1,
+                        'exclude' => true,
                         'label' => 'aLabel',
                         'config' => array(
                             'type' => 'text',
@@ -274,7 +274,7 @@ class TcaMigrationTest extends UnitTestCase
             'aTable' => array(
                 'columns' => array(
                     'bodytext' => array(
-                        'exclude' => 1,
+                        'exclude' => true,
                         'label' => 'aLabel',
                         'config' => array(
                             'type' => 'text',
@@ -323,7 +323,7 @@ class TcaMigrationTest extends UnitTestCase
             'aTable' => array(
                 'columns' => array(
                     'bodytext' => array(
-                        'exclude' => 1,
+                        'exclude' => true,
                         'label' => 'aLabel',
                         'config' => array(
                             'type' => 'text',
@@ -353,7 +353,7 @@ class TcaMigrationTest extends UnitTestCase
             'aTable' => array(
                 'columns' => array(
                     'bodytext' => array(
-                        'exclude' => 1,
+                        'exclude' => true,
                         'label' => 'aLabel',
                         'config' => array(
                             'type' => 'text',
@@ -789,14 +789,14 @@ class TcaMigrationTest extends UnitTestCase
                     'a-maxitems-column-1' => [
                         'config' => [
                             'type' => 'select',
-                            'maxitems' => '1',
+                            'maxitems' => 1,
                             'renderType' => 'selectSingle'
                         ]
                     ],
                     'a-maxitems-column-2' => [
                         'config' => [
                             'type' => 'select',
-                            'maxitems' => '2',
+                            'maxitems' => 2,
                             'renderType' => 'selectMultipleSideBySide'
                         ]
                     ],

@@ -4,7 +4,7 @@ return array(
         'label' => 'title',
         'tstamp' => 'tstamp',
         'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace',
-        'adminOnly' => 1,
+        'adminOnly' => true,
         'rootLevel' => 1,
         'delete' => 'deleted',
         'typeicon_classes' => array(
@@ -17,8 +17,8 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.title',
             'config' => array(
                 'type' => 'input',
-                'size' => '20',
-                'max' => '30',
+                'size' => 20,
+                'max' => 30,
                 'eval' => 'required,trim,unique'
             )
         ),
@@ -36,11 +36,11 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
-                'prepend_tname' => 1,
-                'size' => '3',
-                'maxitems' => '10',
+                'prepend_tname' => true,
+                'size' => 3,
+                'maxitems' => 10,
                 'autoSizeMax' => 10,
-                'show_thumbs' => '1',
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'
@@ -54,11 +54,11 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
-                'prepend_tname' => 1,
-                'size' => '3',
-                'maxitems' => '100',
+                'prepend_tname' => true,
+                'size' => 3,
+                'maxitems' => 100,
                 'autoSizeMax' => 10,
-                'show_thumbs' => '1',
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'
@@ -72,10 +72,10 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'pages',
-                'size' => '3',
+                'size' => 3,
                 'maxitems' => 25,
                 'autoSizeMax' => 10,
-                'show_thumbs' => '1',
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'
@@ -90,7 +90,7 @@ return array(
                 'renderType' => 'selectCheckBox',
                 'foreign_table' => 'sys_filemounts',
                 'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
-                'size' => '3',
+                'size' => 3,
                 'maxitems' => 25,
                 'autoSizeMax' => 10,
             )
@@ -99,18 +99,18 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.publish_time',
             'config' => array(
                 'type' => 'input',
-                'size' => '8',
+                'size' => 8,
                 'eval' => 'datetime',
-                'default' => '0',
+                'default' => 0,
             )
         ),
         'unpublish_time' => array(
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.unpublish_time',
             'config' => array(
                 'type' => 'input',
-                'size' => '8',
+                'size' => 8,
                 'eval' => 'datetime',
-                'default' => '0',
+                'default' => 0,
                 'range' => array(
                     'upper' => mktime(0, 0, 0, 12, 31, 2020)
                 )
@@ -121,14 +121,14 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.freeze',
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'live_edit' => array(
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.live_edit',
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
+                'default' => 0
             )
         ),
         'swap_modes' => array(
@@ -166,7 +166,7 @@ return array(
             )
         ),
         'custom_stages' => array(
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.custom_stages',
             'config' => array(
                 'type' => 'inline',
@@ -185,11 +185,11 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
-                'prepend_tname' => 1,
-                'size' => '3',
-                'maxitems' => '100',
+                'prepend_tname' => true,
+                'size' => 3,
+                'maxitems' => 100,
                 'autoSizeMax' => 20,
-                'show_thumbs' => '1',
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'
@@ -229,11 +229,11 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
-                'prepend_tname' => 1,
-                'size' => '3',
-                'maxitems' => '100',
+                'prepend_tname' => true,
+                'size' => 3,
+                'maxitems' => 100,
                 'autoSizeMax' => 20,
-                'show_thumbs' => '1',
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'
@@ -273,11 +273,11 @@ return array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
-                'prepend_tname' => 1,
-                'size' => '3',
-                'maxitems' => '100',
+                'prepend_tname' => true,
+                'size' => 3,
+                'maxitems' => 100,
                 'autoSizeMax' => 20,
-                'show_thumbs' => '1',
+                'show_thumbs' => true,
                 'wizards' => array(
                     'suggest' => array(
                         'type' => 'suggest'
