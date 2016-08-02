@@ -46,7 +46,15 @@ use TYPO3\CMS\Core\Resource\FileReference;
  * (depending on your TYPO3s encryption key)
  * </output>
  *
- * <code title="non existing image">
+ * <code title="Other resource type (e.g. PDF)">
+ * <f:image src="fileadmin/user_upload/example.pdf" alt="foo" />
+ * </code>
+ * <output>
+ * If your graphics processing library is set up correctly then it will output a thumbnail of the first page of your PDF document.
+ * <img src="fileadmin/_processed_/1/2/csm_example_aabbcc112233.gif" width="200" height="284" alt="foo">
+ * </output>
+ *
+ * <code title="Non-existant image">
  * <f:image src="NonExistingImage.png" alt="foo" />
  * </code>
  * <output>
