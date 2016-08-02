@@ -13,6 +13,10 @@ namespace TYPO3\CMS\Extbase\Configuration;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A general purpose configuration manager used in backend mode.
@@ -159,9 +163,25 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
      */
     protected function getCurrentPageIdFromCurrentSiteRoot()
     {
-        $rootPage = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-            'uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', 'sorting'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
+
+        $rootPage = $queryBuilder
+            ->select('uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('is_siteroot', 1)
+            )
+            ->orderBy('sorting')
+            ->execute()
+            ->fetch();
+
         if (empty($rootPage)) {
             return 0;
         }
@@ -176,9 +196,25 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
      */
     protected function getCurrentPageIdFromRootTemplate()
     {
-        $rootTemplate = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-            'pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', 'crdate'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_template');
+
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
+
+        $rootTemplate = $queryBuilder
+            ->select('pid')
+            ->from('sys_template')
+            ->where(
+                $queryBuilder->expr()->eq('root', 1)
+            )
+            ->orderBy('crdate')
+            ->execute()
+            ->fetch();
+
         if (empty($rootTemplate)) {
             return 0;
         }
