@@ -4,37 +4,26 @@ defined('TYPO3_MODE') or die();
 /**
  * $GLOBALS['PAGES_TYPES'] defines the various types of pages (field: doktype) the system
  * can handle and what restrictions may apply to them.
- * Here you can set the icon and especially you can define which tables are
- * allowed on a certain pagetype (doktype)
+ * Here you can define which tables are allowed on a certain pagetype (doktype)
  * NOTE: The 'default' entry in the $GLOBALS['PAGES_TYPES'] array is the 'base' for all
  * types, and for every type the entries simply overrides the entries in the 'default' type!
  */
 $GLOBALS['PAGES_TYPES'] = array(
-    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK => array(),
-    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT => array(),
     (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION => array(
-        'type' => 'web',
         'allowedTables' => '*'
-    ),
-    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT => array(),
-    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER => array(
-        'type' => 'sys'
     ),
     (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER => array(
         //  Doktype 254 is a 'Folder' - a general purpose storage folder for whatever you like.
         // In CMS context it's NOT a viewable page. Can contain any element.
-        'type' => 'sys',
         'allowedTables' => '*'
     ),
     (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER => array(
         // Doktype 255 is a recycle-bin.
-        'type' => 'sys',
         'allowedTables' => '*'
     ),
     'default' => array(
-        'type' => 'web',
         'allowedTables' => 'pages,sys_category,sys_file_reference,sys_file_collection',
-        'onlyAllowedTables' => '0'
+        'onlyAllowedTables' => false
     ),
 );
 
