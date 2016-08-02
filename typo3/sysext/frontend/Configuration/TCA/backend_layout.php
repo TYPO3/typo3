@@ -18,8 +18,7 @@ return array(
             'default' => 'mimetypes-x-backend_layout'
         ),
         'selicon_field' => 'icon',
-        'selicon_field_path' => 'uploads/media',
-        'thumbnail' => 'resources'
+        'selicon_field_path' => 'uploads/media'
     ),
     'interface' => array(
         'showRecordFieldList' => 'title,config,description,hidden,icon'
