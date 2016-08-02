@@ -274,7 +274,7 @@ class FormBuilder
                     $actionLayoutKey = 'form.';
                     break;
                 case 'confirmation':
-                    $actionLayoutKey = 'confirmation.';
+                    $actionLayoutKey = 'confirmationView.';
                     break;
                 case 'process':
                     $actionLayoutKey = 'postProcessor.';

@@ -79,7 +79,7 @@ the following code could be applied.
     }
 
     # customize confirmation view
-    confirmation {
+    confirmationView {
       layout {
         textline (
           <div class="form-group">
@@ -1376,7 +1376,7 @@ including their default layout.
     # confirmation view
     # ###
 
-    confirmation {
+    confirmationView {
       layout {
         confirmation (
           <containerWrap />
