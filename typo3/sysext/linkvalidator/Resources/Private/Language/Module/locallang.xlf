@@ -201,6 +201,12 @@
 			<trans-unit id="no.access">
 				<source>You do not have access to these listings.</source>
 			</trans-unit>
+			<trans-unit id="label_update-link-list">
+				<source>Checking links, please stand by.</source>
+			</trans-unit>
+			<trans-unit id="label_refresh-link-list">
+				<source>Refreshing link list, please stand by.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

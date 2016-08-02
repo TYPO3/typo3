@@ -185,9 +185,9 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         $this->getPageRenderer()->addInlineLanguageLabelFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
 
         if ($this->modTS['showCheckLinkTab'] == 1) {
-            $this->updateListHtml = '<input class="btn btn-default" type="submit" name="updateLinkList" id="updateLinkList" value="' . $this->getLanguageService()->getLL('label_update') . '"/>';
+            $this->updateListHtml = '<input class="btn btn-default t3js-update-button" type="submit" name="updateLinkList" id="updateLinkList" value="' . htmlspecialchars($this->getLanguageService()->getLL('label_update')) . '" data-notification-message="' . htmlspecialchars($this->getLanguageService()->getLL('label_update-link-list')) . '"/>';
         }
-        $this->refreshListHtml = '<input class="btn btn-default" type="submit" name="refreshLinkList" id="refreshLinkList" value="' . $this->getLanguageService()->getLL('label_refresh') . '"/>';
+        $this->refreshListHtml = '<input class="btn btn-default t3js-update-button" type="submit" name="refreshLinkList" id="refreshLinkList" value="' . htmlspecialchars($this->getLanguageService()->getLL('label_refresh')) . '" data-notification-message="' . htmlspecialchars($this->getLanguageService()->getLL('label_refresh-link-list')) . '"/>';
         $this->linkAnalyzer = GeneralUtility::makeInstance(LinkAnalyzer::class);
         $this->updateBrokenLinks();
 
@@ -598,7 +598,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         } else {
             $linkMessage = '<span class="error">'
                 . nl2br(
-                    // Encode for output
+                // Encode for output
                     htmlspecialchars(
                         $hookObj->getErrorMessage($response['errorParams']),
                         ENT_QUOTES,
@@ -717,7 +717,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
             'CONTENT' => $this->content,
             'CHECKOPTIONS' => $this->checkOptionsHtml,
             'ID' => '<input type="hidden" name="id" value="' . $this->pObj->id . '" />',
-            'REFRESH' => '<input type="submit" class="btn btn-default" name="refreshLinkList" id="refreshLinkList" value="' . $this->getLanguageService()->getLL('label_refresh') . '" />',
+            'REFRESH' => '<input type="submit" class="btn btn-default t3js-update-button" name="refreshLinkList" id="refreshLinkList" value="' . htmlspecialchars($this->getLanguageService()->getLL('label_refresh')) . '" data-notification-message="' . htmlspecialchars($this->getLanguageService()->getLL('label_refresh-link-list')) . '" />',
             'UPDATE' => '',
         );
     }
@@ -737,7 +737,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
             'CHECKOPTIONS' => $this->checkOptionsHtmlCheck,
             'ID' => '<input type="hidden" name="id" value="' . $this->pObj->id . '" />',
             'REFRESH' => '',
-            'UPDATE' => '<input type="submit" class="btn btn-default" name="updateLinkList" id="updateLinkList" value="' . $this->getLanguageService()->getLL('label_update') . '"/>',
+            'UPDATE' => '<input type="submit" class="btn btn-default t3js-update-button" name="updateLinkList" id="updateLinkList" value="' . htmlspecialchars($this->getLanguageService()->getLL('label_update')) . '" data-notification-message="' . htmlspecialchars($this->getLanguageService()->getLL('label_update-link-list')) . '"/>',
         );
     }
 

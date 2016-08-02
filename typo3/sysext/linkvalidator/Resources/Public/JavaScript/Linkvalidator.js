@@ -54,6 +54,16 @@ define(['jquery'], function($) {
 		$('.check').on('click', function() {
 			Linkvalidator.toggleActionButton('check');
 		});
+
+		$('.t3js-update-button').on('click', function() {
+			var $element = $(this);
+			var name = $element.attr('name');
+			var message = 'Event triggered';
+			if (name === 'refreshLinkList' || name === 'updateLinkList') {
+				message = $element.data('notification-message');
+			}
+			top.TYPO3.Notification.success(message);
+		});
 	};
 
 	$(Linkvalidator.initializeEvents);
