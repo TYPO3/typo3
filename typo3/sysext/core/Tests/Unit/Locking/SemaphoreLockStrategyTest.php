@@ -40,5 +40,6 @@ class SemaphoreLockStrategyTest extends UnitTestCase
         $lock = new SemaphoreLockStrategy('99999');
         $this->assertTrue($lock->acquire());
         $lock->release();
+        $lock->destroy();
     }
 }
