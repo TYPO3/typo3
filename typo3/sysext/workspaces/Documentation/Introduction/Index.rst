@@ -1,9 +1,4 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
-.. include:: ../Includes.txt
+﻿.. include:: ../Includes.txt
 
 
 
@@ -18,12 +13,12 @@ Introduction
 About this document
 ^^^^^^^^^^^^^^^^^^^
 
-This document explains how versioning and workspaces function in TYPO3
+This document explains how versioning and workspaces function in TYPO3 CMS
 and how they are set up. The first part explains the technical
 background for administrators or developers who want to make their
 extensions version aware. The second part is for users of workspaces,
 a short guide about what is possible and how to use workspaces. The
-last parts shows how to create a custom workspace.
+last part shows how to create a custom workspace.
 
 
 .. _credits:
@@ -43,10 +38,6 @@ Feedback
 ^^^^^^^^
 
 If you find a bug either in this manual or in the workspaces /
-versioning extensions please use our bug tracker at
-`http://forge.typo3.org/projects/typo3v4-workspaces/issues
-<http://forge.typo3.org/projects/typo3v4-workspaces/issues>`_
-
-If you have a question please ask on the projects mailing list / news
-group: typo3.project.workflow
+versioning extensions please use the bug tracker at
+https://forge.typo3.org/projects/typo3cms-core/issues.
 

@@ -1,9 +1,4 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
-.. include:: Includes.txt
+﻿.. include:: Includes.txt
 
 
 .. _start:
@@ -22,13 +17,13 @@ Workspaces and Versioning
       en
 
 :Description:
-      Workspace functionality for TYPO3.
+      Workspace functionality for TYPO3 CMS.
 
 :Keywords:
       worspaces
 
 :Copyright:
-      2000-2014
+      2000-2015
 
 :Author:
       TYPO3 CMS Core Development Team
@@ -58,6 +53,5 @@ a GNU/GPL CMS/Framework available from `www.typo3.org
    Introduction/Index
    Administration/Index
    UsersGuide/Index
-   CustomWorkspace/Index
    Targets
 
