@@ -315,35 +315,6 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 */
-	public function removeReallyRemovesACacheEntry() {
-		/** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend', array('dummy'), array('Testing'));
-		$this->setUpMockFrontendOfBackend($backend);
-
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
-		$GLOBALS['TYPO3_DB']
-			->expects($this->at(0))
-			->method('fullQuoteStr')
-			->will($this->returnValue('aIdentifier'));
-		$GLOBALS['TYPO3_DB']
-			->expects($this->at(1))
-			->method('exec_DELETEquery')
-			->with('cf_Testing', "identifier = aIdentifier");
-		$GLOBALS['TYPO3_DB']
-			->expects($this->at(2))
-			->method('fullQuoteStr')
-			->will($this->returnValue('aIdentifier'));
-		$GLOBALS['TYPO3_DB']
-			->expects($this->at(3))
-			->method('exec_DELETEquery')
-			->with('cf_Testing_tags', "identifier = aIdentifier");
-
-		$backend->remove('aIdentifier');
-	}
-
-	/**
-	 * @test
 	 * @expectedException \TYPO3\CMS\Core\Cache\Exception
 	 */
 	public function collectGarbageThrowsExceptionIfFrontendWasNotSet() {
@@ -377,27 +348,6 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->expects($this->at(5))
 			->method('exec_DELETEquery')
 			->with('cf_Testing_tags', 'identifier IN (aIdentifier)');
-
-		$backend->collectGarbage();
-	}
-
-	/**
-	 * @test
-	 */
-	public function collectGarbageDeletesExpiredEntry() {
-		/** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend', array('dummy'), array('Testing'));
-		$this->setUpMockFrontendOfBackend($backend);
-
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
-		$GLOBALS['TYPO3_DB']
-			->expects($this->at(1))
-			->method('sql_fetch_assoc')
-			->will($this->returnValue(FALSE));
-		$GLOBALS['TYPO3_DB']
-			->expects($this->at(3))
-			->method('exec_DELETEquery')
-			->with('cf_Testing', $this->stringContains('cf_Testing.expires < '));
 
 		$backend->collectGarbage();
 	}
@@ -537,5 +487,4 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$backend->flushByTag('UnitTestTag%special');
 	}
-
 }

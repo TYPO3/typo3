@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A caching backend which stores cache entries in database tables
  *
@@ -213,15 +214,18 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 	public function remove($entryIdentifier) {
 		$this->throwExceptionIfFrontendDoesNotExist();
 		$entryRemoved = FALSE;
-		$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			$this->cacheTable,
 			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable)
 		);
+		// we need to save the affected rows as mysqli_affected_rows just returns the amount of affected rows
+		// of the last call
+		$affectedRows = $GLOBALS['TYPO3_DB']->sql_affected_rows();
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			$this->tagsTable,
 			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->tagsTable)
 		);
-		if ($GLOBALS['TYPO3_DB']->sql_affected_rows($res) == 1) {
+		if ($affectedRows == 1) {
 			$entryRemoved = TRUE;
 		}
 		return $entryRemoved;
@@ -268,35 +272,27 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 	public function flushByTag($tag) {
 		$this->throwExceptionIfFrontendDoesNotExist();
 
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal')) {
-			$this->flushByTagDbal($tag);
-		} else {
+		if ($this->isConnectionMysql()) {
 			$GLOBALS['TYPO3_DB']->sql_query('
-				DELETE ' . $this->cacheTable . ', ' . $this->tagsTable . '
-				FROM ' . $this->cacheTable . ' JOIN ' . $this->tagsTable . ' ON ' . $this->cacheTable . '.identifier=' . $this->tagsTable . '.identifier
-				WHERE ' . $this->tagsTable . '.tag = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tag, $this->tagsTable)
+				DELETE tags2, cache1'
+				. ' FROM ' . $this->tagsTable . ' AS tags1'
+				. ' JOIN ' . $this->tagsTable . ' AS tags2 ON tags1.identifier = tags2.identifier'
+				. ' JOIN ' . $this->cacheTable . ' AS cache1 ON tags1.identifier = cache1.identifier'
+				. ' WHERE tags1.tag = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tag, $this->tagsTable)
 			);
-		}
-	}
-
-	/**
-	 * Removes all cache entries of this cache for DBAL databases which are tagged by the specified tag.
-	 *
-	 * @param string $tag The tag the entries must have
-	 * @return void
-	 */
-	protected function flushByTagDbal($tag) {
-		$tagsTableWhereClause = $this->tagsTable . '.tag = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tag, $this->tagsTable);
-		$cacheEntryIdentifierRowsResource = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT identifier', $this->tagsTable, $tagsTableWhereClause);
-		$cacheEntryIdentifiers = array();
-		while ($cacheEntryIdentifierRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($cacheEntryIdentifierRowsResource)) {
-			$cacheEntryIdentifiers[] = $GLOBALS['TYPO3_DB']->fullQuoteStr($cacheEntryIdentifierRow['identifier'], $this->cacheTable);
-		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($cacheEntryIdentifierRowsResource);
-		if (!empty($cacheEntryIdentifiers)) {
-			$deleteWhereClause = 'identifier IN (' . implode(', ', $cacheEntryIdentifiers) . ')';
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->cacheTable, $deleteWhereClause);
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->tagsTable, $deleteWhereClause);
+		} else {
+			$tagsTableWhereClause = $this->tagsTable . '.tag = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tag, $this->tagsTable);
+			$cacheEntryIdentifierRowsResource = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT identifier', $this->tagsTable, $tagsTableWhereClause);
+			$cacheEntryIdentifiers = array();
+			while ($cacheEntryIdentifierRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($cacheEntryIdentifierRowsResource)) {
+				$cacheEntryIdentifiers[] = $GLOBALS['TYPO3_DB']->fullQuoteStr($cacheEntryIdentifierRow['identifier'], $this->cacheTable);
+			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($cacheEntryIdentifierRowsResource);
+			if (!empty($cacheEntryIdentifiers)) {
+				$deleteWhereClause = 'identifier IN (' . implode(', ', $cacheEntryIdentifiers) . ')';
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->cacheTable, $deleteWhereClause);
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->tagsTable, $deleteWhereClause);
+			}
 		}
 	}
 
@@ -308,36 +304,57 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 	public function collectGarbage() {
 		$this->throwExceptionIfFrontendDoesNotExist();
 
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal')) {
-			$this->collectGarbageDbal();
-		} else {
-			$GLOBALS['TYPO3_DB']->sql_query('
-				DELETE ' . $this->cacheTable . ', ' . $this->tagsTable . '
-				FROM ' . $this->cacheTable . ' JOIN ' . $this->tagsTable . ' ON ' . $this->cacheTable . '.identifier=' . $this->tagsTable . '.identifier
-				WHERE ' . $this->expiredStatement
+		if ($this->isConnectionMysql()) {
+			// First delete all expired rows from cache table and their connected tag rows
+			$GLOBALS['TYPO3_DB']->sql_query(
+				'DELETE cache, tags'
+				. ' FROM ' . $this->cacheTable . ' AS cache'
+				. ' LEFT OUTER JOIN ' . $this->tagsTable . ' AS tags ON cache.identifier = tags.identifier'
+				. ' WHERE cache.expires < ' . $GLOBALS['EXEC_TIME']
 			);
-		}
-	}
+			// Then delete possible "orphaned" rows from tags table - tags that have no cache row for whatever reason
+			$GLOBALS['TYPO3_DB']->sql_query(
+				'DELETE tags'
+				. ' FROM ' . $this->tagsTable . ' AS tags'
+				. ' LEFT OUTER JOIN ' . $this->cacheTable . ' AS cache ON tags.identifier = cache.identifier'
+				. ' WHERE cache.identifier IS NULL'
+			);
+		} else {
+			// Get identifiers of expired cache entries
+			$cacheEntryIdentifierRowsResource = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT identifier', $this->cacheTable, 'expires < ' . $GLOBALS['EXEC_TIME']);
+			$cacheEntryIdentifiers = array();
+			while ($cacheEntryIdentifierRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($cacheEntryIdentifierRowsResource)) {
+				$cacheEntryIdentifiers[] = $GLOBALS['TYPO3_DB']->fullQuoteStr($cacheEntryIdentifierRow['identifier'], $this->tagsTable);
+			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($cacheEntryIdentifierRowsResource);
+			// Delete tag rows connected to expired cache entries
+			if (!empty($cacheEntryIdentifiers)) {
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->tagsTable, 'identifier IN (' . implode(', ', $cacheEntryIdentifiers) . ')');
+			}
+			// Delete expired cache rows
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->cacheTable, 'expires < ' . $GLOBALS['EXEC_TIME']);
 
-	/**
-	 * Does garbage collection for DBAL databases
-	 *
-	 * @return void
-	 */
-	protected function collectGarbageDbal() {
-		// Get identifiers of expired cache entries
-		$cacheEntryIdentifierRowsResource = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT identifier', $this->cacheTable, $this->expiredStatement);
-		$cacheEntryIdentifiers = array();
-		while ($cacheEntryIdentifierRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($cacheEntryIdentifierRowsResource)) {
-			$cacheEntryIdentifiers[] = $GLOBALS['TYPO3_DB']->fullQuoteStr($cacheEntryIdentifierRow['identifier'], $this->tagsTable);
+			// Find out which "orphaned" tags rows exists that have no cache row and delete those, too.
+			$result = $GLOBALS['TYPO3_DB']->sql_query(
+				'SELECT tags.identifier'
+				. ' FROM ' . $this->tagsTable . ' AS tags'
+				. ' LEFT OUTER JOIN ' . $this->cacheTable . ' AS cache ON tags.identifier = cache.identifier'
+				. ' WHERE cache.identifier IS NULL'
+				. ' GROUP BY tags.identifier'
+			);
+
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
+				$tagsEntryIdentifiers[] = $GLOBALS['TYPO3_DB']->fullQuoteStr($row['identifier'], $this->tagsTable);
+			}
+
+			if (!empty($tagsEntryIdentifiers)) {
+				$GLOBALS['TYPO3_DB']->sql_query(
+					'DELETE'
+					. ' FROM ' . $this->tagsTable
+					. ' WHERE identifier IN (' . implode(',', $tagsEntryIdentifiers) . ')'
+				);
+			}
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($cacheEntryIdentifierRowsResource);
-		// Delete tag rows connected to expired cache entries
-		if (!empty($cacheEntryIdentifiers)) {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->tagsTable, 'identifier IN (' . implode(', ', $cacheEntryIdentifiers) . ')');
-		}
-		// Delete expired cache rows
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->cacheTable, $this->expiredStatement);
 	}
 
 	/**
@@ -415,4 +432,14 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 		return $requiredTableStructures;
 	}
 
+	/**
+	 * This database backend uses some optimized queries for mysql
+	 * to get maximum performance.
+	 *
+	 * @return bool
+	 */
+	protected function isConnectionMysql()
+	{
+		return !((bool)\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal'));
+	}
 }
