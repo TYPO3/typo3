@@ -14,14 +14,21 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\SqlErrorException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
  * A Storage backend
  */
-class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInterface
+class Typo3DbBackend implements BackendInterface, SingletonInterface
 {
     /**
      * The TYPO3 database object
@@ -29,6 +36,11 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      * @var \TYPO3\CMS\Core\Database\DatabaseConnection
      */
     protected $databaseHandle;
+
+    /**
+     * @var ConnectionPool
+     */
+    protected $connectionPool;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
@@ -102,7 +114,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      */
-    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
     }
@@ -145,6 +157,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
     public function __construct()
     {
         $this->databaseHandle = $GLOBALS['TYPO3_DB'];
+        $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
     }
 
     /**
@@ -165,16 +178,21 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      * @param array $fieldValues The row to be inserted
      * @param bool $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
      * @return int The uid of the inserted row
+     * @throws SqlErrorException
      */
     public function addRow($tableName, array $fieldValues, $isRelation = false)
     {
         if (isset($fieldValues['uid'])) {
             unset($fieldValues['uid']);
         }
+        try {
+            $connection = $this->connectionPool->getConnectionForTable($tableName);
+            $connection->insert($tableName, $fieldValues);
+        } catch (DBALException $e) {
+            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230766);
+        }
 
-        $this->databaseHandle->exec_INSERTquery($tableName, $fieldValues);
-        $this->checkSqlErrors();
-        $uid = $this->databaseHandle->sql_insert_id();
+        $uid = $connection->lastInsertId();
 
         if (!$isRelation) {
             $this->clearPageCache($tableName, $uid);
@@ -189,6 +207,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      * @param array $fieldValues The row to be updated
      * @param bool $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
      * @throws \InvalidArgumentException
+     * @throws SqlErrorException
      * @return bool
      */
     public function updateRow($tableName, array $fieldValues, $isRelation = false)
@@ -200,14 +219,19 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
         $uid = (int)$fieldValues['uid'];
         unset($fieldValues['uid']);
 
-        $updateSuccessful = $this->databaseHandle->exec_UPDATEquery($tableName, 'uid = ' . $uid, $fieldValues);
-        $this->checkSqlErrors();
+        try {
+            $this->connectionPool->getConnectionForTable($tableName)
+                ->update($tableName, $fieldValues, ['uid' => $uid]);
+        } catch (DBALException $e) {
+            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230767);
+        }
 
         if (!$isRelation) {
             $this->clearPageCache($tableName, $uid);
         }
 
-        return $updateSuccessful;
+        // always returns true
+        return true;
     }
 
     /**
@@ -217,6 +241,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      * @param array $fieldValues The row to be updated
      * @throws \InvalidArgumentException
      * @return bool
+     * @throws SqlErrorException
      */
     public function updateRelationTableRow($tableName, array $fieldValues)
     {
@@ -240,14 +265,15 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
             unset($fieldValues['fieldname']);
         }
 
-        $updateSuccessful = $this->databaseHandle->exec_UPDATEquery(
-            $tableName,
-            $this->resolveWhereStatement($where, $tableName),
-            $fieldValues
-        );
-        $this->checkSqlErrors();
+        try {
+            $this->connectionPool->getConnectionForTable($tableName)
+                ->update($tableName, $fieldValues, $where);
+        } catch (DBALException $e) {
+            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230768);
+        }
 
-        return $updateSuccessful;
+        // always returns true
+        return true;
     }
 
     /**
@@ -257,20 +283,22 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      * @param array $where An array of where array('fieldname' => value).
      * @param bool $isRelation TRUE if we are currently manipulating a relation table, FALSE by default
      * @return bool
+     * @throws SqlErrorException
      */
     public function removeRow($tableName, array $where, $isRelation = false)
     {
-        $deleteSuccessful = $this->databaseHandle->exec_DELETEquery(
-            $tableName,
-            $this->resolveWhereStatement($where, $tableName)
-        );
-        $this->checkSqlErrors();
+        try {
+            $this->connectionPool->getConnectionForTable($tableName)->delete($tableName, $where);
+        } catch (DBALException $e) {
+            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230769);
+        }
 
         if (!$isRelation && isset($where['uid'])) {
             $this->clearPageCache($tableName, $where['uid']);
         }
 
-        return $deleteSuccessful;
+        // always returns true
+        return true;
     }
 
     /**
@@ -280,20 +308,18 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      * @param array $where An array of where array('fieldname' => value).
      * @param string $columnName column name to get the max value from
      * @return mixed the max value
+     * @throws SqlErrorException
      */
     public function getMaxValueFromTable($tableName, array $where, $columnName)
     {
-        $result = $this->databaseHandle->exec_SELECTgetSingleRow(
-            $columnName,
-            $tableName,
-            $this->resolveWhereStatement($where, $tableName),
-            '',
-            $columnName . ' DESC',
-            true
-        );
-        $this->checkSqlErrors();
-
-        return $result[0];
+        try {
+            $result = $this->connectionPool->getConnectionForTable($tableName)
+                ->select([$columnName], $tableName, $where, [], [$columnName => 'DESC'], 1)
+                ->fetchColumn(0);
+        } catch (DBALException $e) {
+            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230770);
+        }
+        return $result;
     }
 
     /**
@@ -302,36 +328,18 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      * @param string $tableName
      * @param array $where An array of where array('fieldname' => value).
      * @return array|bool
+     * @throws SqlErrorException
      */
     public function getRowByIdentifier($tableName, array $where)
     {
-        $row = $this->databaseHandle->exec_SELECTgetSingleRow(
-            '*',
-            $tableName,
-            $this->resolveWhereStatement($where, $tableName)
-        );
-        $this->checkSqlErrors();
-
-        return $row ?: false;
-    }
-
-    /**
-     * Converts an array to an AND concatenated where statement
-     *
-     * @param array $where array('fieldName' => 'fieldValue')
-     * @param string $tableName table to use for escaping config
-     *
-     * @return string
-     */
-    protected function resolveWhereStatement(array $where, $tableName = 'foo')
-    {
-        $whereStatement = array();
-
-        foreach ($where as $fieldName => $fieldValue) {
-            $whereStatement[] = $fieldName . ' = ' . $this->databaseHandle->fullQuoteStr($fieldValue, $tableName);
+        try {
+            $row = $this->connectionPool->getConnectionForTable($tableName)
+                ->select(['*'], $tableName, $where)
+                ->fetch();
+        } catch (DBALException $e) {
+            throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230771);
         }
-
-        return implode(' AND ', $whereStatement);
+        return $row ?: false;
     }
 
     /**
@@ -863,7 +871,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
             if ($this->environmentService->isEnvironmentInFrontendMode() && is_object($GLOBALS['TSFE'])) {
                 $this->pageRepository = $GLOBALS['TSFE']->sys_page;
             } else {
-                $this->pageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+                $this->pageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
             }
         }
 
@@ -875,14 +883,14 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      *
      * @return void
      * @param string $sql The SQL statement
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\SqlErrorException
+     * @throws SqlErrorException
      */
     protected function checkSqlErrors($sql = '')
     {
         $error = $this->databaseHandle->sql_error();
         if ($error !== '') {
             $error .= $sql ? ': ' . $sql : '';
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\SqlErrorException($error, 1247602160);
+            throw new SqlErrorException($error, 1247602160);
         }
     }
 
@@ -899,7 +907,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      */
     protected function clearPageCache($tableName, $uid)
     {
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         if (isset($frameworkConfiguration['persistence']['enableAutomaticCacheClearing']) && $frameworkConfiguration['persistence']['enableAutomaticCacheClearing'] === '1') {
         } else {
             // if disabled, return
@@ -909,8 +917,8 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
         $storagePage = null;
         $columns = $this->databaseHandle->admin_get_fields($tableName);
         if (array_key_exists('pid', $columns)) {
-            $result = $this->databaseHandle->exec_SELECTquery('pid', $tableName, 'uid=' . (int)$uid);
-            if ($row = $this->databaseHandle->sql_fetch_assoc($result)) {
+            $result = $this->connectionPool->getConnectionForTable($tableName)->select(['pid'], $tableName, ['uid' => (int)$uid]);
+            if ($row = $result->fetch()) {
                 $storagePage = $row['pid'];
                 $pageIdsToClear[] = $storagePage;
             }
@@ -926,10 +934,10 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
             $this->pageTSConfigCache[$storagePage] = BackendUtility::getPagesTSconfig($storagePage);
         }
         if (isset($this->pageTSConfigCache[$storagePage]['TCEMAIN.']['clearCacheCmd'])) {
-            $clearCacheCommands = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($this->pageTSConfigCache[$storagePage]['TCEMAIN.']['clearCacheCmd']), true);
+            $clearCacheCommands = GeneralUtility::trimExplode(',', strtolower($this->pageTSConfigCache[$storagePage]['TCEMAIN.']['clearCacheCmd']), true);
             $clearCacheCommands = array_unique($clearCacheCommands);
             foreach ($clearCacheCommands as $clearCacheCommand) {
-                if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($clearCacheCommand)) {
+                if (MathUtility::canBeInterpretedAsInteger($clearCacheCommand)) {
                     $pageIdsToClear[] = $clearCacheCommand;
                 }
             }
