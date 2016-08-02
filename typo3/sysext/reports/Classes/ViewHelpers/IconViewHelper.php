@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Reports\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
@@ -69,7 +70,14 @@ class IconViewHelper extends AbstractBackendViewHelper
         $icon = $arguments['icon'];
         $title = $arguments['title'];
 
-        $icon = GeneralUtility::getFileAbsFileName($icon ?: 'EXT:reports/ext_icon.png');
+        $icon = GeneralUtility::getFileAbsFileName($icon);
+
+        // use the extension icon from EXT:reports as fallback
+        if (!$icon) {
+            $fallbackIconPath = ExtensionManagementUtility::extPath('reports');
+            $icon = ExtensionManagementUtility::getExtensionIcon($fallbackIconPath, true);
+        }
+
         return '<img src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($icon))
                . '" width="16" height="16" title="' . htmlspecialchars($title)
                . '" alt="' . htmlspecialchars($title) . '" />';

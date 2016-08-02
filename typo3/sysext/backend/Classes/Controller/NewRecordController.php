@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -540,13 +541,14 @@ class NewRecordController extends AbstractModule
                                         $langFile = $temp[0];
                                         $thisTitle = $lang->sL('LLL:EXT:' . $_EXTKEY . '/' . $langFile . ':extension.title');
                                         // If no localisation available, read title from ext_emconf.php
-                                        $extEmConfFile = ExtensionManagementUtility::extPath($_EXTKEY) . 'ext_emconf.php';
+                                        $extPath = ExtensionManagementUtility::extPath($_EXTKEY);
+                                        $extEmConfFile = $extPath . 'ext_emconf.php';
                                         if (!$thisTitle && is_file($extEmConfFile)) {
                                             $EM_CONF = array();
                                             include $extEmConfFile;
                                             $thisTitle = $EM_CONF[$_EXTKEY]['title'];
                                         }
-                                        $iconFile[$_EXTKEY] = '<img ' . 'src="' . ExtensionManagementUtility::extRelPath($_EXTKEY) . $GLOBALS['TYPO3_LOADED_EXT'][$_EXTKEY]['ext_icon'] . '" ' . 'width="16" height="16" ' . 'alt="' . $thisTitle . '" />';
+                                        $iconFile[$_EXTKEY] = '<img src="' . PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::getExtensionIcon($extPath, true)) . '" ' . 'width="16" height="16" ' . 'alt="' . $thisTitle . '" />';
                                     }
                                 }
                                 if (empty($thisTitle)) {

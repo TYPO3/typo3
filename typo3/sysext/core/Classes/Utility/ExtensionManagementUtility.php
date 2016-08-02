@@ -1574,10 +1574,17 @@ tt_content.' . $key . $suffix . ' {
     public static function getExtensionIcon($extensionPath, $returnFullPath = false)
     {
         $icon = '';
-        $iconFileTypesToCheckFor = array('png', 'svg', 'gif');
-        foreach ($iconFileTypesToCheckFor as $fileType) {
-            if (file_exists($extensionPath . 'ext_icon.' . $fileType)) {
-                $icon = 'ext_icon.' . $fileType;
+        $locationsToCheckFor = [
+            'Resources/Public/Icons/Extension.png',
+            'Resources/Public/Icons/Extension.svg',
+            'Resources/Public/Icons/Extension.gif',
+            'ext_icon.png',
+            'ext_icon.svg',
+            'ext_icon.gif',
+        ];
+        foreach ($locationsToCheckFor as $fileLocation) {
+            if (file_exists($extensionPath . $fileLocation)) {
+                $icon = $fileLocation;
                 break;
             }
         }
