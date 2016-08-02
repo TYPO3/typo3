@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -942,8 +943,18 @@ class TypoScriptFrontendController
     public function sendRedirect()
     {
         if ($this->RDCT) {
-            $db = $this->getDatabaseConnection();
-            $row = $db->exec_SELECTgetSingleRow('params', 'cache_md5params', 'md5hash=' . $db->fullQuoteStr($this->RDCT, 'cache_md5params'));
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('cache_md5params');
+
+            $row = $queryBuilder
+                ->select('params')
+                ->from('cache_md5params')
+                ->where(
+                    $queryBuilder->expr()->eq('md5hash', $queryBuilder->createNamedParameter($this->RDCT))
+                )
+                ->execute()
+                ->fetch();
+
             if ($row) {
                 $this->updateMD5paramsRecord($this->RDCT);
                 header('Location: ' . $row['params']);
@@ -1015,7 +1026,17 @@ class TypoScriptFrontendController
         }
         // For every 60 seconds the is_online timestamp is updated.
         if (is_array($this->fe_user->user) && $this->fe_user->user['uid'] && $this->fe_user->user['is_online'] < $GLOBALS['EXEC_TIME'] - 60) {
-            $this->getDatabaseConnection()->exec_UPDATEquery('fe_users', 'uid=' . (int)$this->fe_user->user['uid'], array('is_online' => $GLOBALS['EXEC_TIME']));
+            $dbConnection = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('fe_users');
+            $dbConnection->update(
+                'fe_users',
+                [
+                    'is_online' => $GLOBALS['EXEC_TIME']
+                ],
+                [
+                    'uid' => (int)$this->fe_user->user['uid']
+                ]
+            );
         }
     }
 
@@ -1329,6 +1350,7 @@ class TypoScriptFrontendController
         $field = MathUtility::canBeInterpretedAsInteger($this->id) ? 'uid' : 'alias';
         $pageSelectCondition = $field . '=' . $this->getDatabaseConnection()->fullQuoteStr($this->id, 'pages');
         $page = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid,hidden,starttime,endtime', 'pages', $pageSelectCondition . ' AND pid>=0 AND deleted=0');
+
         $workspace = $this->whichWorkspace();
         if ($workspace !== 0 && $workspace !== false) {
             // Fetch overlay of page if in workspace and check if it is hidden
@@ -1667,10 +1689,27 @@ class TypoScriptFrontendController
                 $this->pageAccessFailureHistory['sub_section'][] = $this->rootLine[$a];
                 $removeTheRestFlag = 1;
             }
+
             if ($this->rootLine[$a]['doktype'] == PageRepository::DOKTYPE_BE_USER_SECTION) {
                 // If there is a backend user logged in, check if he has read access to the page:
                 if ($this->beUserLogin) {
-                    $row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid', 'pages', 'uid=' . (int)$this->id . ' AND ' . $this->getBackendUser()->getPagePermsClause(1));
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getQueryBuilderForTable('pages');
+
+                    $queryBuilder
+                        ->getRestrictions()
+                        ->removeAll();
+
+                    $row = $queryBuilder
+                        ->select('uid')
+                        ->from('pages')
+                        ->where(
+                            $queryBuilder->expr()->eq('uid', (int)$this->id),
+                            $this->getBackendUser()->getPagePermsClause(1)
+                        )
+                        ->execute()
+                        ->fetch();
+
                     // versionOL()?
                     if (!$row) {
                         // If there was no page selected, the user apparently did not have read access to the current PAGE (not position in rootline) and we set the remove-flag...
@@ -3103,7 +3142,17 @@ class TypoScriptFrontendController
     {
         // Draft workspaces are always uid 1 or more. We do not update SYS_LASTCHANGED if we are browsing page from one of theses workspaces
         if ((int)$this->whichWorkspace() < 1 && $this->page['SYS_LASTCHANGED'] < (int)$this->register['SYS_LASTCHANGED']) {
-            $this->getDatabaseConnection()->exec_UPDATEquery('pages', 'uid=' . (int)$this->id, array('SYS_LASTCHANGED' => (int)$this->register['SYS_LASTCHANGED']));
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('pages');
+            $connection->update(
+                'pages',
+                [
+                    'SYS_LASTCHANGED' => (int)$this->register['SYS_LASTCHANGED']
+                ],
+                [
+                    'uid' => (int)$this->id
+                ]
+            );
         }
     }
 
@@ -3867,7 +3916,17 @@ class TypoScriptFrontendController
      */
     public function updateMD5paramsRecord($hash)
     {
-        $this->getDatabaseConnection()->exec_UPDATEquery('cache_md5params', 'md5hash=' . $this->getDatabaseConnection()->fullQuoteStr($hash, 'cache_md5params'), array('tstamp' => $GLOBALS['EXEC_TIME']));
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('cache_md5params');
+        $connection->update(
+            'cache_md5params',
+            [
+                'tstamp' => $GLOBALS['EXEC_TIME']
+            ],
+            [
+                'md5hash' => $hash
+            ]
+        );
     }
 
     /********************************************
@@ -3900,7 +3959,20 @@ class TypoScriptFrontendController
         }
         if ($ws && $returnTitle) {
             if (ExtensionManagementUtility::isLoaded('workspaces')) {
-                $row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('title', 'sys_workspace', 'uid=' . (int)$ws);
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('sys_workspace');
+
+                $queryBuilder->getRestrictions()->removeAll();
+
+                $row = $queryBuilder
+                    ->select('title')
+                    ->from('sys_workspace')
+                    ->where(
+                        $queryBuilder->expr()->eq('uid', (int)$ws)
+                    )
+                    ->execute()
+                    ->fetch();
+
                 if ($row) {
                     return $row['title'];
                 }
