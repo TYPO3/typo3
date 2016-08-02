@@ -1988,31 +1988,30 @@ class DataHandler
         if ($tcaFieldConf['type'] == 'group') {
             switch ($tcaFieldConf['internal_type']) {
                 case 'file_reference':
-
                 case 'file':
                     $valueArray = $this->checkValue_group_select_file($valueArray, $tcaFieldConf, $curValue, $uploadedFiles, $status, $table, $id, $recFID);
-                    break;
-                case 'db':
-                    $valueArray = $this->checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, 'group', $table, $field);
                     break;
             }
         }
         // For select types which has a foreign table attached:
         $unsetResult = false;
-        if ($tcaFieldConf['type'] === 'select' && ($tcaFieldConf['foreign_table'] || isset($tcaFieldConf['special']) && $tcaFieldConf['special'] === 'languages')) {
+        if (
+            $tcaFieldConf['type'] === 'group' && $tcaFieldConf['internal_type'] === 'db'
+            || $tcaFieldConf['type'] === 'select' && ($tcaFieldConf['foreign_table'] || isset($tcaFieldConf['special']) && $tcaFieldConf['special'] === 'languages')
+        ) {
             // check, if there is a NEW... id in the value, that should be substituted later
             if (strpos($value, 'NEW') !== false) {
                 $this->remapStackRecords[$table][$id] = array('remapStackIndex' => count($this->remapStack));
                 $this->addNewValuesToRemapStackChildIds($valueArray);
                 $this->remapStack[] = array(
                     'func' => 'checkValue_group_select_processDBdata',
-                    'args' => array($valueArray, $tcaFieldConf, $id, $status, 'select', $table, $field),
+                    'args' => array($valueArray, $tcaFieldConf, $id, $status, $tcaFieldConf['type'], $table, $field),
                     'pos' => array('valueArray' => 0, 'tcaFieldConf' => 1, 'id' => 2, 'table' => 5),
                     'field' => $field
                 );
                 $unsetResult = true;
             } else {
-                $valueArray = $this->checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, 'select', $table, $field);
+                $valueArray = $this->checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, $tcaFieldConf['type'], $table, $field);
             }
         }
         if (!$unsetResult) {
@@ -5803,16 +5802,27 @@ class DataHandler
                 }
                 // Replace relations to NEW...-IDs in field value (uids of child records):
                 if (is_array($valueArray)) {
-                    $foreign_table = $tcaFieldConf['foreign_table'];
                     foreach ($valueArray as $key => $value) {
                         if (strpos($value, 'NEW') !== false) {
+                            if (strpos($value, '_') === false) {
+                                $affectedTable = $tcaFieldConf['foreign_table'];
+                                $prependTable = false;
+                            } else {
+                                $parts = explode('_', $value);
+                                $value = array_pop($parts);
+                                $affectedTable = implode('_', $parts);
+                                $prependTable = true;
+                            }
                             $value = $this->substNEWwithIDs[$value];
                             // The record is new, but was also auto-versionized and has another new id:
-                            if (isset($this->autoVersionIdMap[$foreign_table][$value])) {
-                                $value = $this->autoVersionIdMap[$foreign_table][$value];
+                            if (isset($this->autoVersionIdMap[$affectedTable][$value])) {
+                                $value = $this->autoVersionIdMap[$affectedTable][$value];
+                            }
+                            if ($prependTable) {
+                                $value = $affectedTable . '_' . $value;
                             }
                             // Set a hint that this was a new child record:
-                            $this->newRelatedIDs[$foreign_table][] = $value;
+                            $this->newRelatedIDs[$affectedTable][] = $value;
                             $valueArray[$key] = $value;
                         }
                     }
