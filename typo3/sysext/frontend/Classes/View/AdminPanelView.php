@@ -672,7 +672,7 @@ class AdminPanelView
             }
             $icon = $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
             $link = $newContentWizScriptPath . 'id=' . $id . $params . '&returnUrl=' . rawurlencode($returnUrl);
-            $toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($link) . '" title="' . $this->extGetLL('edit_newContentElement') .  '"">' . $icon . '</a>';
+            $toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($link) . '" title="' . $this->extGetLL('edit_newContentElement') . '"">' . $icon . '</a>';
         }
         if ($perms & Permission::PAGE_EDIT) {
             $icon = $this->iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL)->render();

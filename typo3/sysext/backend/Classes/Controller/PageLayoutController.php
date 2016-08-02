@@ -978,7 +978,7 @@ class PageLayoutController
             // Generate the list of elements here:
             $dbList->generateList();
             // Adding the list content to the tableOutput variable:
-            $tableOutput[$table] = $h_func .  $dbList->HTMLcode . $h_func_b;
+            $tableOutput[$table] = $h_func . $dbList->HTMLcode . $h_func_b;
             // ... and any accumulated JavaScript goes the same way!
             $tableJSOutput[$table] = $dbList->JScode;
             // Increase global counter:
