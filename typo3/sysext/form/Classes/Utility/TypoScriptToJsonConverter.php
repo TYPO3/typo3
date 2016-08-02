@@ -33,7 +33,6 @@ class TypoScriptToJsonConverter
         'FILEUPLOAD',
         'HEADER',
         'HIDDEN',
-        'IMAGEBUTTON',
         'OPTGROUP',
         'OPTION',
         'PASSWORD',

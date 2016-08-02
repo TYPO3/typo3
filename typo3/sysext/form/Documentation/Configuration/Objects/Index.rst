@@ -35,7 +35,6 @@ TypoScript setup.
     Form/Index
     Header/Index
     Hidden/Index
-    Imagebutton/Index
     Optgroup/Index
     Option/Index
     Password/Index
@@ -90,86 +89,84 @@ value          :ref:`X <reference-objects-attributes-value>`     :ref:`X <refere
 ============== ================================================= ================================================= ================================================= ================================================= ====================================================== ===================================================
 
 ============== ================================================= ================================================= ================================================= ================================================= ================================================= =================================================
-Element        HIDDEN                                            IMAGEBUTTON                                       OPTGROUP                                          OPTION                                            PASSWORD                                          RADIO
+Element        HIDDEN                                            OPTGROUP                                          OPTION                                            PASSWORD                                          RADIO                                             RESET
 ============== ================================================= ================================================= ================================================= ================================================= ================================================= =================================================
 accept
 accept-charset
-accesskey                                                        :ref:`X <reference-objects-attributes-accesskey>`                                                                                                     :ref:`X <reference-objects-attributes-accesskey>` :ref:`X <reference-objects-attributes-accesskey>`
+accesskey                                                                                                                                                            :ref:`X <reference-objects-attributes-accesskey>` :ref:`X <reference-objects-attributes-accesskey>` :ref:`X <reference-objects-attributes-accesskey>`
 action
-alt                                                              :ref:`X <reference-objects-attributes-alt>`                                                                                                           :ref:`X <reference-objects-attributes-alt>`       :ref:`X <reference-objects-attributes-alt>`
-checked                                                                                                                                                                                                                                                                  :ref:`X <reference-objects-attributes-checked>`
+alt                                                                                                                                                                  :ref:`X <reference-objects-attributes-alt>`       :ref:`X <reference-objects-attributes-alt>`       :ref:`X <reference-objects-attributes-alt>`
+checked                                                                                                                                                                                                                :ref:`X <reference-objects-attributes-checked>`
 class          :ref:`X <reference-objects-attributes-class>`     :ref:`X <reference-objects-attributes-class>`     :ref:`X <reference-objects-attributes-class>`     :ref:`X <reference-objects-attributes-class>`     :ref:`X <reference-objects-attributes-class>`     :ref:`X <reference-objects-attributes-class>`
 content
 cols
-data                                                                                                                                                                 :ref:`X <reference-objects-attributes-data>`
-dir                                                              :ref:`X <reference-objects-attributes-dir>`                                                                                                           :ref:`X <reference-objects-attributes-dir>`       :ref:`X <reference-objects-attributes-dir>`
+data                                                                                                               :ref:`X <reference-objects-attributes-data>`
+dir                                                                                                                                                                  :ref:`X <reference-objects-attributes-dir>`       :ref:`X <reference-objects-attributes-dir>`       :ref:`X <reference-objects-attributes-dir>`
 disabled                                                         :ref:`X <reference-objects-attributes-disabled>`  :ref:`X <reference-objects-attributes-disabled>`  :ref:`X <reference-objects-attributes-disabled>`  :ref:`X <reference-objects-attributes-disabled>`  :ref:`X <reference-objects-attributes-disabled>`
 enctype
-filters        :ref:`X <reference-objects-attributes-filters>`                                                                                                                                                         :ref:`X <reference-objects-attributes-filters>`
+filters        :ref:`X <reference-objects-attributes-filters>`                                                                                                       :ref:`X <reference-objects-attributes-filters>`
 headingSize
 id             :ref:`X <reference-objects-attributes-id>`        :ref:`X <reference-objects-attributes-id>`        :ref:`X <reference-objects-attributes-id>`        :ref:`X <reference-objects-attributes-id>`        :ref:`X <reference-objects-attributes-id>`        :ref:`X <reference-objects-attributes-id>`
 label                                                            :ref:`X <reference-objects-attributes-label>`     :ref:`X <reference-objects-attributes-label>`     :ref:`X <reference-objects-attributes-label>`     :ref:`X <reference-objects-attributes-label>`     :ref:`X <reference-objects-attributes-label>`
 lang           :ref:`X <reference-objects-attributes-lang>`      :ref:`X <reference-objects-attributes-lang>`      :ref:`X <reference-objects-attributes-lang>`      :ref:`X <reference-objects-attributes-lang>`      :ref:`X <reference-objects-attributes-lang>`      :ref:`X <reference-objects-attributes-lang>`
 layout         :ref:`X <reference-layout>`                       :ref:`X <reference-layout>`                       :ref:`X <reference-layout>`                       :ref:`X <reference-layout>`                       :ref:`X <reference-layout>`                       :ref:`X <reference-layout>`
 legend
-maxlength                                                                                                                                                                                                              :ref:`X <reference-objects-attributes-maxlength>`
+maxlength                                                                                                                                                            :ref:`X <reference-objects-attributes-maxlength>`
 method
 multiple
-name           :ref:`X <reference-objects-attributes-name>`      :ref:`X <reference-objects-attributes-name>`                                                                                                          :ref:`X <reference-objects-attributes-name>`      :ref:`X <reference-objects-attributes-name>`
+name           :ref:`X <reference-objects-attributes-name>`                                                                                                          :ref:`X <reference-objects-attributes-name>`      :ref:`X <reference-objects-attributes-name>`      :ref:`X <reference-objects-attributes-name>`
 postProcessor
 prefix
-readonly                                                                                                                                                                                                               :ref:`X <reference-objects-attributes-readonly>`
+readonly                                                                                                                                                             :ref:`X <reference-objects-attributes-readonly>`
 rows
 rules
-selected                                                                                                                                                             :ref:`X <reference-objects-attributes-selected>`
-size                                                                                                                                                                                                                   :ref:`X <reference-objects-attributes-size>`
-src                                                              :ref:`X <reference-objects-attributes-src>`
+selected                                                                                                           :ref:`X <reference-objects-attributes-selected>`
+size                                                                                                                                                                 :ref:`X <reference-objects-attributes-size>`
 style          :ref:`X <reference-objects-attributes-style>`     :ref:`X <reference-objects-attributes-style>`     :ref:`X <reference-objects-attributes-style>`     :ref:`X <reference-objects-attributes-style>`     :ref:`X <reference-objects-attributes-style>`     :ref:`X <reference-objects-attributes-style>`
-tabindex                                                         :ref:`X <reference-objects-attributes-tabindex>`                                                                                                      :ref:`X <reference-objects-attributes-tabindex>`  :ref:`X <reference-objects-attributes-tabindex>`
+tabindex                                                                                                                                                             :ref:`X <reference-objects-attributes-tabindex>`  :ref:`X <reference-objects-attributes-tabindex>`  :ref:`X <reference-objects-attributes-tabindex>`
 title                                                            :ref:`X <reference-objects-attributes-title>`     :ref:`X <reference-objects-attributes-title>`     :ref:`X <reference-objects-attributes-title>`     :ref:`X <reference-objects-attributes-title>`     :ref:`X <reference-objects-attributes-title>`
-type           :ref:`X <reference-objects-attributes-type>`      :ref:`X <reference-objects-attributes-type>`                                                                                                          :ref:`X <reference-objects-attributes-type>`      :ref:`X <reference-objects-attributes-type>`
-value          :ref:`X <reference-objects-attributes-value>`     :ref:`X <reference-objects-attributes-value>`                                                       :ref:`X <reference-objects-attributes-value>`     :ref:`X <reference-objects-attributes-value>`     :ref:`X <reference-objects-attributes-value>`
+type           :ref:`X <reference-objects-attributes-type>`                                                                                                          :ref:`X <reference-objects-attributes-type>`      :ref:`X <reference-objects-attributes-type>`      :ref:`X <reference-objects-attributes-type>`
+value          :ref:`X <reference-objects-attributes-value>`                                                       :ref:`X <reference-objects-attributes-value>`     :ref:`X <reference-objects-attributes-value>`     :ref:`X <reference-objects-attributes-value>`     :ref:`X <reference-objects-attributes-value>`
 ============== ================================================= ================================================= ================================================= ================================================= ================================================= =================================================
 
-============== ================================================= ================================================= ================================================= ================================================= ================================================= =================================================
-Element        RESET                                             SELECT                                            SUBMIT                                            TEXTAREA                                          TEXTBLOCK                                         TEXTLINE
-============== ================================================= ================================================= ================================================= ================================================= ================================================= =================================================
+============== ================================================= ================================================= ================================================= ================================================= =================================================
+Element        SELECT                                            SUBMIT                                            TEXTAREA                                          TEXTBLOCK                                         TEXTLINE
+============== ================================================= ================================================= ================================================= ================================================= =================================================
 accept
 accept-charset
-accesskey      :ref:`X <reference-objects-attributes-accesskey>`                                                   :ref:`X <reference-objects-attributes-accesskey>` :ref:`X <reference-objects-attributes-accesskey>`                                                   :ref:`X <reference-objects-attributes-accesskey>`
+accesskey                                                        :ref:`X <reference-objects-attributes-accesskey>` :ref:`X <reference-objects-attributes-accesskey>`                                                   :ref:`X <reference-objects-attributes-accesskey>`
 action
-alt            :ref:`X <reference-objects-attributes-alt>`                                                         :ref:`X <reference-objects-attributes-alt>`                                                                                                           :ref:`X <reference-objects-attributes-alt>`
+alt                                                              :ref:`X <reference-objects-attributes-alt>`                                                                                                           :ref:`X <reference-objects-attributes-alt>`
 checked
-class          :ref:`X <reference-objects-attributes-class>`     :ref:`X <reference-objects-attributes-class>`     :ref:`X <reference-objects-attributes-class>`     :ref:`X <reference-objects-attributes-class>`                                                       :ref:`X <reference-objects-attributes-class>`
-content                                                                                                                                                                                                                :ref:`X <reference-objects-attributes-content>`
-cols                                                                                                                                                                 :ref:`X <reference-objects-attributes-cols>`
+class          :ref:`X <reference-objects-attributes-class>`     :ref:`X <reference-objects-attributes-class>`     :ref:`X <reference-objects-attributes-class>`                                                       :ref:`X <reference-objects-attributes-class>`
+content                                                                                                                                                              :ref:`X <reference-objects-attributes-content>`
+cols                                                                                                               :ref:`X <reference-objects-attributes-cols>`
 data
-dir            :ref:`X <reference-objects-attributes-dir>`                                                         :ref:`X <reference-objects-attributes-dir>`       :ref:`X <reference-objects-attributes-dir>`                                                         :ref:`X <reference-objects-attributes-dir>`
-disabled       :ref:`X <reference-objects-attributes-disabled>`  :ref:`X <reference-objects-attributes-disabled>`  :ref:`X <reference-objects-attributes-disabled>`  :ref:`X <reference-objects-attributes-disabled>`                                                    :ref:`X <reference-objects-attributes-disabled>`
+dir                                                              :ref:`X <reference-objects-attributes-dir>`       :ref:`X <reference-objects-attributes-dir>`                                                         :ref:`X <reference-objects-attributes-dir>`
+disabled       :ref:`X <reference-objects-attributes-disabled>`  :ref:`X <reference-objects-attributes-disabled>`  :ref:`X <reference-objects-attributes-disabled>`                                                    :ref:`X <reference-objects-attributes-disabled>`
 enctype
 filters
 headingSize
-id             :ref:`X <reference-objects-attributes-id>`        :ref:`X <reference-objects-attributes-id>`        :ref:`X <reference-objects-attributes-id>`        :ref:`X <reference-objects-attributes-id>`                                                          :ref:`X <reference-objects-attributes-id>`
-label          :ref:`X <reference-objects-attributes-label>`     :ref:`X <reference-objects-attributes-label>`     :ref:`X <reference-objects-attributes-label>`     :ref:`X <reference-objects-attributes-label>`                                                       :ref:`X <reference-objects-attributes-label>`
-lang           :ref:`X <reference-objects-attributes-lang>`      :ref:`X <reference-objects-attributes-lang>`      :ref:`X <reference-objects-attributes-lang>`      :ref:`X <reference-objects-attributes-lang>`                                                        :ref:`X <reference-objects-attributes-lang>`
-layout         :ref:`X <reference-layout>`                       :ref:`X <reference-layout>`                       :ref:`X <reference-layout>`
+id             :ref:`X <reference-objects-attributes-id>`        :ref:`X <reference-objects-attributes-id>`        :ref:`X <reference-objects-attributes-id>`                                                          :ref:`X <reference-objects-attributes-id>`
+label          :ref:`X <reference-objects-attributes-label>`     :ref:`X <reference-objects-attributes-label>`     :ref:`X <reference-objects-attributes-label>`                                                       :ref:`X <reference-objects-attributes-label>`
+lang           :ref:`X <reference-objects-attributes-lang>`      :ref:`X <reference-objects-attributes-lang>`      :ref:`X <reference-objects-attributes-lang>`                                                        :ref:`X <reference-objects-attributes-lang>`
+layout         :ref:`X <reference-layout>`                       :ref:`X <reference-layout>`
 legend
-maxlength                                                                                                                                                                                                                                                                :ref:`X <reference-objects-attributes-maxlength>`
+maxlength                                                                                                                                                                                                              :ref:`X <reference-objects-attributes-maxlength>`
 method
-multiple                                                         :ref:`X <reference-objects-attributes-multiple>`
-name           :ref:`X <reference-objects-attributes-name>`      :ref:`X <reference-objects-attributes-name>`      :ref:`X <reference-objects-attributes-name>`      :ref:`X <reference-objects-attributes-name>`                                                        :ref:`X <reference-objects-attributes-name>`
+multiple       :ref:`X <reference-objects-attributes-multiple>`
+name           :ref:`X <reference-objects-attributes-name>`      :ref:`X <reference-objects-attributes-name>`      :ref:`X <reference-objects-attributes-name>`                                                        :ref:`X <reference-objects-attributes-name>`
 postProcessor
 prefix
-readonly                                                                                                                                                             :ref:`X <reference-objects-attributes-readonly>`                                                    :ref:`X <reference-objects-attributes-readonly>`
-rows                                                                                                                                                                 :ref:`X <reference-objects-attributes-rows>`
+readonly                                                                                                           :ref:`X <reference-objects-attributes-readonly>`                                                    :ref:`X <reference-objects-attributes-readonly>`
+rows                                                                                                               :ref:`X <reference-objects-attributes-rows>`
 rules
 selected
-size                                                             :ref:`X <reference-objects-attributes-size>`                                                                                                                                                            :ref:`X <reference-objects-attributes-size>`
-src
-style          :ref:`X <reference-objects-attributes-style>`     :ref:`X <reference-objects-attributes-style>`     :ref:`X <reference-objects-attributes-style>`     :ref:`X <reference-objects-attributes-style>`                                                       :ref:`X <reference-objects-attributes-style>`
-tabindex       :ref:`X <reference-objects-attributes-tabindex>`  :ref:`X <reference-objects-attributes-tabindex>`  :ref:`X <reference-objects-attributes-tabindex>`  :ref:`X <reference-objects-attributes-tabindex>`                                                    :ref:`X <reference-objects-attributes-tabindex>`
-title          :ref:`X <reference-objects-attributes-title>`     :ref:`X <reference-objects-attributes-title>`     :ref:`X <reference-objects-attributes-title>`     :ref:`X <reference-objects-attributes-title>`                                                       :ref:`X <reference-objects-attributes-title>`
-type           :ref:`X <reference-objects-attributes-type>`                                                        :ref:`X <reference-objects-attributes-type>`
-value          :ref:`X <reference-objects-attributes-value>`                                                       :ref:`X <reference-objects-attributes-value>`                                                                                                         :ref:`X <reference-objects-attributes-value>`
-============== ================================================= ================================================= ================================================= ================================================= ================================================= =================================================
+size           :ref:`X <reference-objects-attributes-size>`                                                                                                                                                            :ref:`X <reference-objects-attributes-size>`
+style          :ref:`X <reference-objects-attributes-style>`     :ref:`X <reference-objects-attributes-style>`     :ref:`X <reference-objects-attributes-style>`                                                       :ref:`X <reference-objects-attributes-style>`
+tabindex       :ref:`X <reference-objects-attributes-tabindex>`  :ref:`X <reference-objects-attributes-tabindex>`  :ref:`X <reference-objects-attributes-tabindex>`                                                    :ref:`X <reference-objects-attributes-tabindex>`
+title          :ref:`X <reference-objects-attributes-title>`     :ref:`X <reference-objects-attributes-title>`     :ref:`X <reference-objects-attributes-title>`                                                       :ref:`X <reference-objects-attributes-title>`
+type                                                             :ref:`X <reference-objects-attributes-type>`
+value                                                            :ref:`X <reference-objects-attributes-value>`                                                                                                         :ref:`X <reference-objects-attributes-value>`
+============== ================================================= ================================================= ================================================= ================================================= =================================================
 

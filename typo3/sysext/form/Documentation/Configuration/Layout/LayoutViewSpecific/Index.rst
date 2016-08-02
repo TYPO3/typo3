@@ -752,32 +752,6 @@ hidden
       </td>
 
 
-.. _reference-layout-imagebutton:
-
-imagebutton
-^^^^^^^^^^^
-
-:aspect:`Property:`
-    imagebutton
-
-:aspect:`Data type:`
-    string
-
-:aspect:`Available in views:`
-    - form
-
-:aspect:`Description:`
-    Layout for the IMAGEBUTTON object.
-
-:aspect:`Default:`
-    Default layout **form view**:
-
-    .. code-block:: html
-
-      <label />
-      <input />
-
-
 .. _reference-layout-optgroup:
 
 optgroup
@@ -1304,11 +1278,6 @@ including their default layout.
         )
 
         hidden (
-          <input />
-        )
-
-        imagebutton (
-          <label />
           <input />
         )
 
