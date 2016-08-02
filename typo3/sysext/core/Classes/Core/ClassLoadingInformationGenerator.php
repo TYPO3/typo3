@@ -81,17 +81,19 @@ class ClassLoadingInformationGenerator
             $autoloadPsr4 = $this->getAutoloadSectionFromManifest($manifest, 'psr-4');
             if (!empty($autoloadPsr4)) {
                 $classLoaderPrefixesPsr4 = $this->classLoader->getPrefixesPsr4();
-                foreach ($autoloadPsr4 as $namespacePrefix => $path) {
-                    $namespacePath = $packagePath . $path;
-                    if ($useRelativePaths) {
-                        $psr4[$namespacePrefix] = $this->makePathRelative($namespacePath, realpath($namespacePath));
-                    } else {
-                        $psr4[$namespacePrefix] = $namespacePath;
-                    }
-                    if (!empty($classLoaderPrefixesPsr4[$namespacePrefix])) {
-                        // The namespace prefix has been registered already, which means there also might be
-                        // a class map which we need to override
-                        $classMap = array_merge($classMap, $this->createClassMap($namespacePath, $useRelativePaths, false, $namespacePrefix));
+                foreach ($autoloadPsr4 as $namespacePrefix => $paths) {
+                    foreach ((array)$paths as $path) {
+                        $namespacePath = $packagePath . $path;
+                        if ($useRelativePaths) {
+                            $psr4[$namespacePrefix][] = $this->makePathRelative($namespacePath, realpath($namespacePath));
+                        } else {
+                            $psr4[$namespacePrefix][] = $namespacePath;
+                        }
+                        if (!empty($classLoaderPrefixesPsr4[$namespacePrefix])) {
+                            // The namespace prefix has been registered already, which means there also might be
+                            // a class map which we need to override
+                            $classMap = array_merge($classMap, $this->createClassMap($namespacePath, $useRelativePaths, false, $namespacePrefix));
+                        }
                     }
                 }
             }
@@ -233,8 +235,8 @@ EOF;
         }
         $classMapFile .= ");\n";
 
-        foreach ($psr4 as $prefix => $relativePath) {
-            $psr4File .= sprintf('    %s => array(%s),', var_export($prefix, true), $this->getPathCode($relativePath)) . LF;
+        foreach ($psr4 as $prefix => $relativePaths) {
+            $psr4File .= sprintf('    %s => array(%s),', var_export($prefix, true), implode(',', array_map([$this, 'getPathCode'], $relativePaths))) . LF;
         }
         $psr4File .= ");\n";
 
