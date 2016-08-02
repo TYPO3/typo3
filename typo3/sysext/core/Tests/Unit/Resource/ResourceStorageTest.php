@@ -14,13 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Doctrine\DBAL\Driver\Statement;
-use Prophecy\Argument;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\File;
@@ -29,7 +23,6 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\CMS\Core\Resource\ResourceStorageInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -207,120 +200,6 @@ class ResourceStorageTest extends BaseTestCase
         $subject = $this->getAccessibleMock(ResourceStorage::class, array('dummy'), array($driverMock, array()));
         $subject->_set('evaluatePermissions', $evaluatePermissions);
         $this->assertSame($isAllowed, $subject->_call('checkFileExtensionPermission', $fileName));
-    }
-
-    /**
-     * @return array
-     */
-    public function isWithinFileMountBoundariesDataProvider()
-    {
-        return array(
-            'Access to file in ro file mount denied for write request' => array(
-                '$fileIdentifier' => '/fooBaz/bar.txt',
-                '$fileMountFolderIdentifier' => '/fooBaz/',
-                '$isFileMountReadOnly' => true,
-                '$checkWriteAccess' => true,
-                '$expectedResult' => false,
-            ),
-            'Access to file in ro file mount allowed for read request' => array(
-                '$fileIdentifier' => '/fooBaz/bar.txt',
-                '$fileMountFolderIdentifier' => '/fooBaz/',
-                '$isFileMountReadOnly' => true,
-                '$checkWriteAccess' => false,
-                '$expectedResult' => true,
-            ),
-            'Access to file in rw file mount allowed for write request' => array(
-                '$fileIdentifier' => '/fooBaz/bar.txt',
-                '$fileMountFolderIdentifier' => '/fooBaz/',
-                '$isFileMountReadOnly' => false,
-                '$checkWriteAccess' => true,
-                '$expectedResult' => true,
-            ),
-            'Access to file in rw file mount allowed for read request' => array(
-                '$fileIdentifier' => '/fooBaz/bar.txt',
-                '$fileMountFolderIdentifier' => '/fooBaz/',
-                '$isFileMountReadOnly' => false,
-                '$checkWriteAccess' => false,
-                '$expectedResult' => true,
-            ),
-            'Access to file not in file mount denied for write request' => array(
-                '$fileIdentifier' => '/fooBaz/bar.txt',
-                '$fileMountFolderIdentifier' => '/barBaz/',
-                '$isFileMountReadOnly' => false,
-                '$checkWriteAccess' => true,
-                '$expectedResult' => false,
-            ),
-            'Access to file not in file mount denied for read request' => array(
-                '$fileIdentifier' => '/fooBaz/bar.txt',
-                '$fileMountFolderIdentifier' => '/barBaz/',
-                '$isFileMountReadOnly' => false,
-                '$checkWriteAccess' => false,
-                '$expectedResult' => false,
-            ),
-        );
-    }
-
-    /**
-     * @param string $fileIdentifier
-     * @param string $fileMountFolderIdentifier
-     * @param bool $isFileMountReadOnly
-     * @param bool $checkWriteAccess
-     * @param bool $expectedResult
-     * @throws \TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException
-     * @test
-     * @dataProvider isWithinFileMountBoundariesDataProvider
-     */
-    public function isWithinFileMountBoundariesRespectsReadOnlyFileMounts($fileIdentifier, $fileMountFolderIdentifier, $isFileMountReadOnly, $checkWriteAccess, $expectedResult)
-    {
-        // @todo mess ahead - rewrite those tests!
-        $connectionProphet = $this->prophesize(Connection::class);
-        $connectionProphet->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
-        $connectionProphet->delete(Argument::cetera())->willReturn(0);
-        $connectionProphet->insert(Argument::cetera())->willReturn(0);
-
-        $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
-        $queryBuilderProphet->expr()->willReturn(
-            GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
-        );
-        $queryBuilderProphet->select(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->from(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->createNamedParameter(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->__toString()->willReturn('');
-        $queryBuilderProphet->where(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
-        $statementProphecy = $this->prophesize(Statement::class);
-        $queryBuilderProphet->execute()->willReturn($statementProphecy->reveal());
-
-        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphet->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
-        $connectionPoolProphet->getConnectionForTable(Argument::cetera())->willReturn($connectionProphet->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
-
-        /** @var AbstractDriver|\PHPUnit_Framework_MockObject_MockObject $driverMock */
-        $driverMock = $this->getMockForAbstractClass(AbstractDriver::class, array(), '', false);
-        $driverMock->expects($this->any())
-            ->method('getFolderInfoByIdentifier')
-            ->willReturnCallback(function ($identifier) use ($isFileMountReadOnly) {
-                return array(
-                    'identifier' => $identifier,
-                    'name' => trim($identifier, '/'),
-                );
-            });
-        $driverMock->expects($this->any())
-            ->method('isWithin')
-            ->willReturnCallback(function ($folderIdentifier, $fileIdentifier) {
-                if ($fileIdentifier === ResourceStorageInterface::DEFAULT_ProcessingFolder . '/') {
-                    return false;
-                } else {
-                    return strpos($fileIdentifier, $folderIdentifier) === 0;
-                }
-            });
-        $this->prepareSubject(array(), false, $driverMock);
-        $fileMock = $this->getSimpleFileMock($fileIdentifier);
-        $this->subject->setEvaluatePermissions(true);
-        $this->subject->addFileMount('/' . $this->getUniqueId('random') . '/', array('read_only' => false));
-        $this->subject->addFileMount($fileMountFolderIdentifier, array('read_only' => $isFileMountReadOnly));
-        $this->subject->addFileMount('/' . $this->getUniqueId('random') . '/', array('read_only' => false));
-        $this->assertSame($expectedResult, $this->subject->isWithinFileMountBoundaries($fileMock, $checkWriteAccess));
     }
 
     /**
@@ -871,26 +750,5 @@ class ResourceStorageTest extends BaseTestCase
         $processingFolder = $this->subject->getProcessingFolder();
 
         $this->assertInstanceOf(Folder::class, $processingFolder);
-    }
-
-    /**
-     * @test
-     */
-    public function getNestedProcessingFolderTest()
-    {
-        $mockedDriver = $this->createDriverMock(array('basePath' => $this->getMountRootUrl()), null, null);
-        $this->prepareSubject(array(), true, $mockedDriver);
-        $mockedFile = $this->getSimpleFileMock('/someFile');
-
-        $rootProcessingFolder = $this->subject->getProcessingFolder();
-        $processingFolder = $this->subject->getProcessingFolder($mockedFile);
-
-        $this->assertInstanceOf(Folder::class, $processingFolder);
-        $this->assertNotEquals($rootProcessingFolder, $processingFolder);
-
-        for ($i = ResourceStorage::PROCESSING_FOLDER_LEVELS; $i>0; $i--) {
-            $processingFolder = $processingFolder->getParentFolder();
-        }
-        $this->assertEquals($rootProcessingFolder, $processingFolder);
     }
 }
