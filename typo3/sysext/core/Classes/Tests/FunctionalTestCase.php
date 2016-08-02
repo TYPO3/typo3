@@ -270,6 +270,14 @@ abstract class FunctionalTestCase extends BaseTestCase
     }
 
     /**
+     * @return ConnectionPool
+     */
+    protected function getConnectionPool()
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class);
+    }
+
+    /**
      * Initialize backend user
      *
      * @param int $userUid uid of the user we want to initialize. This user must exist in the fixture file
