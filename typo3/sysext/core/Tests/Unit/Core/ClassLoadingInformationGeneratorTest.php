@@ -152,6 +152,19 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 ],
                 [],
             ],
+            'Psr-4 section with array' => [
+                [
+                    'autoload' => [
+                        'psr-4' => [
+                            'TYPO3\\CMS\\TestExtension\\' => ['Classes/', 'Resources/PHP/'],
+                        ],
+                    ],
+                ],
+                [
+                    '\'TYPO3\\\\CMS\\\\TestExtension\\\\\' => array($typo3InstallDir . \'/Fixtures/test_extension/Classes\',$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP\')',
+                ],
+                [],
+            ],
             'Psr-4 section without trailing slash' => [
                 [
                     'autoload' => [
