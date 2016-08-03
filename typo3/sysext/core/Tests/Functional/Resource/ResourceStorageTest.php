@@ -14,11 +14,10 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -28,50 +27,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ResourceStorageTest extends FunctionalTestCase
 {
 
-    protected $defaultStorageRecord = [
-        'pid' => 0,
-        'name' => 'test storage',
-        'description' => '',
-        'driver' => 'Local',
-        'processingfolder' => 'typo3temp/assets/_processed_/',
-        'configuration' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-                <T3FlexForms>
-                    <data>
-                        <sheet index="sDEF">
-                            <language index="lDEF">
-                                <field index="basePath">
-                                    <value index="vDEF">fileadmin/</value>
-                                </field>
-                                <field index="pathType">
-                                    <value index="vDEF">relative</value>
-                                </field>
-                                <field index="caseSensitive">
-                                    <value index="vDEF">1</value>
-                                </field>
-                            </language>
-                        </sheet>
-                    </data>
-                </T3FlexForms>
-                ',
-        'is_online' => true,
-        'is_browsable' => true,
-        'is_public' => true,
-        'is_writable' => true,
-        'is_default' => 0,
-    ];
-
     /**
      * @test
      */
     public function getNestedProcessingFolderTest()
     {
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
-        $driver = new LocalDriver(['basePath' => 'fileadmin/', 'pathType' => 'relative', 'caseSensitive' => '1']);
-        $subject = new ResourceStorage($driver, $this->defaultStorageRecord);
+        $subject = (new StorageRepository())->findByUid(1);
         $subject->setEvaluatePermissions(false);
 
-        (new ConnectionPool())->getConnectionForTable('sys_file_storage')
-            ->insert('sys_file_storage', $this->defaultStorageRecord);
         GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/_processed_');
         GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/adirectory');
         GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/assets/_processed_/');
@@ -103,10 +68,9 @@ class ResourceStorageTest extends FunctionalTestCase
      */
     public function isWithinFileMountBoundariesRespectsReadOnlyFileMounts($targetDirectory, $fileMountFolder, $isFileMountReadOnly, $checkWriteAccess, $expectedResult)
     {
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/sys_file_storage.xml');
         $fileName = 'bar.txt';
         $this->setUpBackendUserFromFixture(1);
-        (new ConnectionPool())->getConnectionForTable('sys_file_storage')
-            ->insert('sys_file_storage', $this->defaultStorageRecord);
         GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/_processed_');
         GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/' . $targetDirectory);
         if ($fileMountFolder !== $targetDirectory) {
@@ -115,9 +79,8 @@ class ResourceStorageTest extends FunctionalTestCase
         file_put_contents(PATH_site . 'fileadmin/' . $targetDirectory . '/' . $fileName, 'myData');
         clearstatcache();
         $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier('1:/' . $targetDirectory . '/' . $fileName);
-        $driver = new LocalDriver(['basePath' => 'fileadmin/', 'pathType' => 'relative', 'caseSensitive' => '1']);
 
-        $subject = new ResourceStorage($driver, $this->defaultStorageRecord);
+        $subject = (new StorageRepository())->findByUid(1);
         $subject->setEvaluatePermissions(true);
 
         // read_only = true -> no write access for user, so checkinf for second argument true should assert false

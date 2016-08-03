@@ -4,6 +4,7 @@
 		<uid>1</uid>
 		<pid>0</pid>
 		<name>fileadmin/ (auto-created)</name>
+		<processingfolder>typo3temp/assets/_processed_/</processingfolder>
 		<driver>Local</driver>
 		<configuration><![CDATA[<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3FlexForms>
