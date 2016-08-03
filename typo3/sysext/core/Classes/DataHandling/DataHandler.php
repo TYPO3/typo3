@@ -2857,6 +2857,9 @@ class DataHandler
         $dbAnalysis->registerNonTableValues = !empty($tcaFieldConf['allowNonIdValues']);
         $dbAnalysis->start($newRelations, $tables, '', 0, $currentTable, $tcaFieldConf);
         if ($tcaFieldConf['MM']) {
+            // convert submitted items to use version ids instead of live ids
+            // (only required for MM relations in a workspace context)
+            $dbAnalysis->convertItemArray();
             if ($status == 'update') {
                 /** @var $oldRelations_dbAnalysis RelationHandler */
                 $oldRelations_dbAnalysis = $this->createRelationHandlerInstance();

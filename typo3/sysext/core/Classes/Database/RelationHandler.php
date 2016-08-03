@@ -1263,6 +1263,59 @@ class RelationHandler
     }
 
     /**
+     * Converts elements in the local item array to use version ids instead of
+     * live ids, if possible. The most common use case is, to call that prior
+     * to processing with MM relations in a workspace context. For tha special
+     * case, ids on both side of the MM relation must use version ids if
+     * available.
+     *
+     * @return bool Whether items have been converted
+     */
+    public function convertItemArray()
+    {
+        $hasBeenConverted = false;
+
+        // conversion is only required in a workspace context
+        // (the case that version ids are submitted in a live context are rare)
+        if ($this->getWorkspaceId() === 0) {
+            return $hasBeenConverted;
+        }
+
+        foreach ($this->tableArray as $tableName => $ids) {
+            if (empty($ids) || !BackendUtility::isTableWorkspaceEnabled($tableName)) {
+                continue;
+            }
+
+            // convert live ids to version ids if available
+            $convertedIds = $this->getResolver($tableName, $ids)
+                ->setKeepDeletePlaceholder(false)
+                ->setKeepMovePlaceholder(false)
+                ->processVersionOverlays($ids);
+            foreach ($this->itemArray as $index => $item) {
+                if ($item['table'] !== $tableName) {
+                    continue;
+                }
+                $currentItemId = $item['id'];
+                if (
+                    !isset($convertedIds[$currentItemId])
+                    || $currentItemId === $convertedIds[$currentItemId]
+                ) {
+                    continue;
+                }
+                // adjust local item to use resolved version id
+                $this->itemArray[$index]['id'] = $convertedIds[$currentItemId];
+                $hasBeenConverted = true;
+            }
+            // update per-table reference for ids
+            if ($hasBeenConverted) {
+                $this->tableArray[$tableName] = array_values($convertedIds);
+            }
+        }
+
+        return $hasBeenConverted;
+    }
+
+    /**
      * @param NULL|int $workspaceId
      * @return bool Whether items have been purged
      */
