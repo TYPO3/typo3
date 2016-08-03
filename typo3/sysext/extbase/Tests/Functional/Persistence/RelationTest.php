@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -67,7 +69,15 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function attachPostToBlogAtTheEnd()
     {
-        $countPostsOriginal = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post', 'blog =' . $this->blog->getUid());
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()->removeAll();
+        $countPostsOriginal = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_domain_model_post')
+            ->where(
+                $queryBuilder->expr()->eq('blog', $this->blog->getUid())
+            )->execute()
+            ->fetchColumn(0);
 
         $newPostTitle = 'sdufhisdhuf';
         /** @var \ExtbaseTeam\BlogExample\Domain\Model\Post $newPost */
@@ -79,12 +89,27 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->blog->addPost($newPost);
         $this->updateAndPersistBlog();
 
-        $countPosts = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post', 'blog =' . $this->blog->getUid());
+        $queryBuilder->resetQueryParts();
+        $countPosts  = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_domain_model_post')
+            ->where(
+                $queryBuilder->expr()->eq('blog', $this->blog->getUid())
+            )->execute()
+            ->fetchColumn(0);
         $this->assertSame(($countPostsOriginal + 1), $countPosts);
 
-        $post = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('title,sorting', 'tx_blogexample_domain_model_post', 'blog =' . $this->blog->getUid(), '', 'sorting DESC');
+        $queryBuilder->resetQueryParts();
+        $post = $queryBuilder
+            ->select('title', 'sorting')
+            ->from('tx_blogexample_domain_model_post')
+            ->where(
+                $queryBuilder->expr()->eq('blog', $this->blog->getUid())
+            )->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetch();
         $this->assertSame($newPostTitle, $post['title']);
-        $this->assertSame((string)($countPostsOriginal + 1), $post['sorting']);
+        $this->assertSame((int)($countPostsOriginal + 1), $post['sorting']);
     }
 
     /**
@@ -94,9 +119,24 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function removeLastPostFromBlog()
     {
-        $countPostsOriginal = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post', 'deleted=0');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
+        $countPostsOriginal = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_domain_model_post')
+            ->execute()
+            ->fetchColumn(0);
 
-        $post = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('sorting', 'tx_blogexample_domain_model_post', 'blog =' . $this->blog->getUid(), '', 'sorting DESC');
+        $queryBuilder->resetQueryParts();
+        $post = $queryBuilder
+            ->select('title', 'sorting')
+            ->from('tx_blogexample_domain_model_post')
+            ->where(
+                $queryBuilder->expr()->eq('blog', $this->blog->getUid())
+            )->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetch();
         $this->assertEquals(10, $post['sorting']);
 
         $posts = $this->blog->getPosts();
@@ -108,15 +148,36 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->blog->removePost($latestPost);
         $this->updateAndPersistBlog();
 
-        $countPosts = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post', 'deleted=0');
+        $queryBuilder->resetQueryParts();
+        $countPosts = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_domain_model_post')
+            ->execute()
+            ->fetchColumn(0);
         $this->assertEquals(($countPostsOriginal - 1), $countPosts);
 
-        $post = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid', 'tx_blogexample_domain_model_post', 'uid =' . $latestPost->getUid() . ' AND deleted=0');
+        $queryBuilder->resetQueryParts();
+        $post = $queryBuilder
+            ->select('title', 'sorting')
+            ->from('tx_blogexample_domain_model_post')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $latestPost->getUid())
+            )->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetch();
         $this->assertSame(null, $post['uid']);
 
-        $post = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('title,sorting', 'tx_blogexample_domain_model_post', 'blog =' . $this->blog->getUid(), '', 'sorting DESC');
+        $queryBuilder->resetQueryParts();
+        $post = $queryBuilder
+            ->select('title', 'sorting')
+            ->from('tx_blogexample_domain_model_post')
+            ->where(
+                $queryBuilder->expr()->eq('blog', $this->blog->getUid())
+            )->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetch();
         $this->assertSame('Post9', $post['title']);
-        $this->assertSame('9', $post['sorting']);
+        $this->assertSame(9, $post['sorting']);
     }
 
     /**
@@ -126,7 +187,14 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function addPostToBlogInTheMiddle()
     {
-        $countPostsOriginal = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post', 'deleted=0');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
+        $countPostsOriginal = $queryBuilder
+        ->count('*')
+        ->from('tx_blogexample_domain_model_post')
+        ->execute()
+        ->fetchColumn(0);
 
         /** @var \ExtbaseTeam\BlogExample\Domain\Model\Post $newPost */
         $newPost = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Model\Post::class);
@@ -147,18 +215,39 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         }
         $this->updateAndPersistBlog();
 
-        $countPosts = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post', 'deleted=0');
+        $queryBuilder->resetQueryParts();
+        $countPosts = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_domain_model_post')
+            ->execute()
+            ->fetchColumn(0);
         $this->assertSame(($countPostsOriginal + 1), $countPosts);
 
         //last post
-        $post = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('title,sorting', 'tx_blogexample_domain_model_post', 'blog =' . $this->blog->getUid(), '', 'sorting DESC');
+        $queryBuilder->resetQueryParts();
+        $post = $queryBuilder
+            ->select('title', 'sorting')
+            ->from('tx_blogexample_domain_model_post')
+            ->where(
+                $queryBuilder->expr()->eq('blog', $this->blog->getUid())
+            )->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetch();
         $this->assertSame('Post10', $post['title']);
-        $this->assertSame('11', $post['sorting']);
+        $this->assertSame(11, $post['sorting']);
 
         // check sorting of the post added in the middle
-        $post = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('title,sorting', 'tx_blogexample_domain_model_post', 'uid=' . $newPost->getUid());
+        $queryBuilder->resetQueryParts();
+        $post = $queryBuilder
+            ->select('title', 'sorting')
+            ->from('tx_blogexample_domain_model_post')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $newPost->getUid())
+            )->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetch();
         $this->assertSame($newPostTitle, $post['title']);
-        $this->assertSame('6', $post['sorting']);
+        $this->assertSame(6, $post['sorting']);
     }
 
     /**
@@ -168,7 +257,14 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function removeMiddlePostFromBlog()
     {
-        $countPostsOriginal = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post', 'deleted=0');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
+        $countPostsOriginal = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_domain_model_post')
+            ->execute()
+            ->fetchColumn(0);
 
         $posts = clone $this->blog->getPosts();
         $counter = 1;
@@ -180,12 +276,25 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         }
         $this->updateAndPersistBlog();
 
-        $countPosts = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post', 'deleted=0');
+        $queryBuilder->resetQueryParts();
+        $countPosts = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_domain_model_post')
+            ->execute()
+            ->fetchColumn(0);
         $this->assertSame(($countPostsOriginal - 1), $countPosts);
 
-        $post = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('title,sorting', 'tx_blogexample_domain_model_post', 'blog =' . $this->blog->getUid(), '', 'sorting DESC');
+        $queryBuilder->resetQueryParts();
+        $post = $queryBuilder
+            ->select('title', 'sorting')
+            ->from('tx_blogexample_domain_model_post')
+            ->where(
+                $queryBuilder->expr()->eq('blog', $this->blog->getUid())
+            )->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetch();
         $this->assertSame('Post10', $post['title']);
-        $this->assertSame('10', $post['sorting']);
+        $this->assertSame(10, $post['sorting']);
     }
 
     /**
@@ -195,7 +304,14 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function movePostFromEndToTheMiddle()
     {
-        $countPostsOriginal = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post', 'deleted=0');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
+        $countPostsOriginal = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_domain_model_post')
+            ->execute()
+            ->fetchColumn(0);
 
         $posts = clone $this->blog->getPosts();
         $postsArray = $posts->toArray();
@@ -216,16 +332,40 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         }
         $this->updateAndPersistBlog();
 
-        $countPosts = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post', 'deleted=0');
+        $queryBuilder->resetQueryParts();
+        $countPosts = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_domain_model_post')
+            ->execute()
+            ->fetchColumn(0);
         $this->assertSame($countPostsOriginal, $countPosts);
 
-        $post = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('title,sorting', 'tx_blogexample_domain_model_post', 'blog =' . $this->blog->getUid(), '', 'sorting DESC');
+        $queryBuilder->getRestrictions()->removeAll();
+        $post = $queryBuilder
+            ->select('title', 'sorting')
+            ->from('tx_blogexample_domain_model_post')
+            ->where(
+                $queryBuilder->expr()->eq('blog', $this->blog->getUid())
+            )->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetch();
         $this->assertSame('Post9', $post['title']);
-        $this->assertSame('10', $post['sorting']);
+        $this->assertSame(10, $post['sorting']);
 
-        $post = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('title,uid', 'tx_blogexample_domain_model_post', 'blog =' . $this->blog->getUid() . ' AND sorting=6');
+        $queryBuilder->resetQueryParts();
+        $post = $queryBuilder
+            ->select('title', 'uid')
+            ->from('tx_blogexample_domain_model_post')
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('blog', $this->blog->getUid()),
+                    $queryBuilder->expr()->eq('sorting', 6)
+                )
+            )
+            ->execute()
+            ->fetch();
         $this->assertSame('MOVED POST Post10', $post['title']);
-        $this->assertSame('10', $post['uid']);
+        $this->assertSame(10, $post['uid']);
     }
 
     /**
@@ -235,7 +375,14 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function attachTagToPostAtTheEnd()
     {
-        $countOriginal = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_tag');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_tag');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $countOriginal = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_domain_model_tag')
+            ->execute()
+            ->fetchColumn(0);
 
         $newTagTitle = 'sdufhisdhuf';
 
@@ -250,11 +397,26 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $postRepository->update($post);
         $this->persistentManager->persistAll();
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_tag');
+        $queryBuilder->resetQueryParts();
+        $count = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_domain_model_tag')
+            ->execute()
+            ->fetchColumn(0);
         $this->assertSame(($countOriginal + 1), $count);
 
-        $tag = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid_foreign', 'tx_blogexample_post_tag_mm', 'uid_local =' . $post->getUid(), '', 'sorting DESC');
-        $this->assertSame($newTag->getUid(), (int)$tag['uid_foreign']);
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $tag = $queryBuilder
+            ->select('uid_foreign')
+            ->from('tx_blogexample_post_tag_mm')
+            ->where(
+                $queryBuilder->expr()->eq('uid_local', $post->getUid())
+            )->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetch();
+        $this->assertSame($newTag->getUid(), $tag['uid_foreign']);
     }
 
     /**
@@ -264,7 +426,14 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function removeLastTagFromPost()
     {
-        $countOriginal = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_tag', 'deleted=0');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_tag');
+        $queryBuilder->getRestrictions()
+            ->removeAll()->add(new DeletedRestriction());
+        $countOriginal = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_domain_model_tag')
+            ->execute()
+            ->fetchColumn(0);
 
         /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
         $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
@@ -280,13 +449,39 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $postRepository->update($post);
         $this->persistentManager->persistAll();
 
-        $countPosts = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_tag', 'deleted=0');
-        $this->assertEquals($countOriginal, $countPosts);
+        $queryBuilder->resetQueryParts();
+        $countTags = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_domain_model_tag')
+            ->execute()
+            ->fetchColumn(0);
+        $this->assertEquals($countOriginal, $countTags);
 
-        $tag = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid_foreign', 'tx_blogexample_post_tag_mm', 'uid_local =' . $post->getUid(), '', 'sorting DESC');
-        $this->assertSame('9', $tag['uid_foreign']);
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $tag = $queryBuilder
+            ->select('uid_foreign')
+            ->from('tx_blogexample_post_tag_mm')
+            ->where(
+                $queryBuilder->expr()->eq('uid_local', $post->getUid())
+            )->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetch();
+        $this->assertSame(9, $tag['uid_foreign']);
 
-        $tag = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid_foreign', 'tx_blogexample_post_tag_mm', 'uid_local =' . $post->getUid() . ' AND uid_foreign=' . $latestTag->getUid());
+        $queryBuilder->resetQueryParts();
+        $tag = $queryBuilder
+            ->select('uid_foreign')
+            ->from('tx_blogexample_post_tag_mm')
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('uid_local', $post->getUid()),
+                    $queryBuilder->expr()->eq('uid_foreign', $latestTag->getUid())
+                )
+            )->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetch();
         $this->assertSame(null, $tag['uid_foreign']);
     }
 
@@ -297,7 +492,17 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function addTagToPostInTheMiddle()
     {
-        $countTagsOriginal = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_post_tag_mm', 'uid_local=1');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $countTagsOriginal = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_post_tag_mm')
+            ->where(
+                $queryBuilder->expr()->eq('uid_local', 1)
+            )
+            ->execute()
+            ->fetchColumn(0);
 
         /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
         $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
@@ -320,14 +525,41 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $postRepository->update($post);
         $this->persistentManager->persistAll();
 
-        $countTags = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_post_tag_mm', 'uid_local=1');
+        $queryBuilder->resetQueryParts();
+        $countTags = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_post_tag_mm')
+            ->where(
+                $queryBuilder->expr()->eq('uid_local', 1)
+            )
+            ->execute()
+            ->fetchColumn(0);
         $this->assertSame(($countTagsOriginal + 1), $countTags);
 
-        $tag = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid_foreign', 'tx_blogexample_post_tag_mm', 'uid_local =' . $post->getUid(), '', 'sorting DESC');
-        $this->assertSame('10', $tag['uid_foreign']);
+        $queryBuilder->resetQueryParts();
+        $tag = $queryBuilder
+            ->select('uid_foreign')
+            ->from('tx_blogexample_post_tag_mm')
+            ->where(
+                $queryBuilder->expr()->eq('uid_local', $post->getUid())
+            )->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetch();
+        $this->assertSame(10, $tag['uid_foreign']);
 
-        $tag = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid_foreign', 'tx_blogexample_post_tag_mm', 'uid_local =' . $post->getUid() . ' AND sorting=6');
-        $this->assertSame($newTag->getUid(), (int)$tag['uid_foreign']);
+        $queryBuilder->resetQueryParts();
+        $tag = $queryBuilder
+            ->select('uid_foreign')
+            ->from('tx_blogexample_post_tag_mm')
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('uid_local', $post->getUid()),
+                    $queryBuilder->expr()->eq('sorting', 6)
+                )
+            )->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetch();
+        $this->assertSame($newTag->getUid(), $tag['uid_foreign']);
     }
 
     /**
@@ -337,7 +569,17 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function removeMiddleTagFromPost()
     {
-        $countTags = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_post_tag_mm', 'uid_local=1');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $countTags = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_post_tag_mm')
+            ->where(
+                $queryBuilder->expr()->eq('uid_local', 1)
+            )
+            ->execute()
+            ->fetchColumn(0);
         $this->assertSame(10, $countTags);
 
         /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
@@ -355,14 +597,41 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $postRepository->update($post);
         $this->persistentManager->persistAll();
 
-        $countTags = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_post_tag_mm', 'uid_local=1');
+        $queryBuilder->resetQueryParts();
+        $countTags = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_post_tag_mm')
+            ->where(
+                $queryBuilder->expr()->eq('uid_local', 1)
+            )
+            ->execute()
+            ->fetchColumn(0);
         $this->assertSame(9, $countTags);
 
-        $tag = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid_foreign,sorting', 'tx_blogexample_post_tag_mm', 'uid_local =' . $post->getUid(), '', 'sorting DESC');
-        $this->assertSame('10', $tag['uid_foreign']);
-        $this->assertSame('10', $tag['sorting']);
+        $queryBuilder->resetQueryParts();
+        $tag = $queryBuilder
+            ->select('uid_foreign', 'sorting')
+            ->from('tx_blogexample_post_tag_mm')
+            ->where(
+                $queryBuilder->expr()->eq('uid_local', $post->getUid())
+            )->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetch();
+        $this->assertSame(10, $tag['uid_foreign']);
+        $this->assertSame(10, $tag['sorting']);
 
-        $tag = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid_foreign', 'tx_blogexample_post_tag_mm', 'uid_local =' . $post->getUid() . ' AND sorting=5');
+        $queryBuilder->resetQueryParts();
+        $tag = $queryBuilder
+            ->select('uid_foreign')
+            ->from('tx_blogexample_post_tag_mm')
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('uid_local', $post->getUid()),
+                    $queryBuilder->expr()->eq('sorting', 5)
+                )
+            )
+            ->execute()
+            ->fetch();
         $this->assertSame(null, $tag['uid_foreign']);
     }
 
@@ -373,7 +642,17 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function moveTagFromEndToTheMiddle()
     {
-        $countTags = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_post_tag_mm', 'uid_local=1');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $countTags = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_post_tag_mm')
+            ->where(
+                $queryBuilder->expr()->eq('uid_local', 1)
+            )
+            ->execute()
+            ->fetchColumn(0);
         $this->assertSame(10, $countTags);
 
         /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
@@ -401,16 +680,43 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $postRepository->update($post);
         $this->persistentManager->persistAll();
 
-        $countTags = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_post_tag_mm', 'uid_local=1');
+        $queryBuilder->resetQueryParts();
+        $countTags = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_post_tag_mm')
+            ->where(
+                $queryBuilder->expr()->eq('uid_local', 1)
+            )
+            ->execute()
+            ->fetchColumn(0);
         $this->assertSame(10, $countTags);
 
-        $tag = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid_foreign,sorting', 'tx_blogexample_post_tag_mm', 'uid_local =' . $post->getUid(), '', 'sorting DESC');
-        $this->assertSame('9', $tag['uid_foreign']);
-        $this->assertSame('10', $tag['sorting']);
+        $queryBuilder->resetQueryParts();
+        $tag = $queryBuilder
+            ->select('uid_foreign', 'sorting')
+            ->from('tx_blogexample_post_tag_mm')
+            ->where(
+                $queryBuilder->expr()->eq('uid_local', $post->getUid())
+            )->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetch();
+        $this->assertSame(9, $tag['uid_foreign']);
+        $this->assertSame(10, $tag['sorting']);
 
         $sorting = '6';
-        $tag = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid_foreign', 'tx_blogexample_post_tag_mm', 'uid_local =' . $post->getUid() . ' AND sorting=' . $sorting);
-        $this->assertSame('10', $tag['uid_foreign']);
+        $queryBuilder->resetQueryParts();
+        $tag = $queryBuilder
+            ->select('uid_foreign')
+            ->from('tx_blogexample_post_tag_mm')
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('uid_local', $post->getUid()),
+                    $queryBuilder->expr()->eq('sorting', $sorting)
+                )
+            )
+            ->execute()
+            ->fetch();
+        $this->assertSame(10, $tag['uid_foreign']);
     }
 
     /**
@@ -420,7 +726,17 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function timestampFieldIsUpdatedOnPostSave()
     {
-        $rawPost = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'tx_blogexample_domain_model_post', 'uid=1');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $rawPost = $queryBuilder
+            ->select('*')
+            ->from('tx_blogexample_domain_model_post')
+            ->where(
+                $queryBuilder->expr()->eq('uid', 1)
+            )
+            ->execute()
+            ->fetch();
 
         /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
         $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
@@ -430,7 +746,15 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $postRepository->update($post);
         $this->persistentManager->persistAll();
 
-        $rawPost2 = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'tx_blogexample_domain_model_post', 'uid=1');
+        $queryBuilder->resetQueryParts();
+        $rawPost2 = $queryBuilder
+            ->select('*')
+            ->from('tx_blogexample_domain_model_post')
+            ->where(
+                $queryBuilder->expr()->eq('uid', 1)
+            )
+            ->execute()
+            ->fetch();
         $this->assertTrue($rawPost2['tstamp'] > $rawPost['tstamp']);
     }
 
@@ -452,7 +776,21 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function mmRelationWithMatchFieldIsResolvedFromLocalSide()
     {
-        $countCategories = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'sys_category_record_mm', 'uid_foreign=1 AND tablenames="tx_blogexample_domain_model_post" AND fieldname="categories"');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('sys_category_record_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $countCategories = $queryBuilder
+            ->count('*')
+            ->from('sys_category_record_mm')
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('uid_foreign', 1),
+                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->expr()->literal('tx_blogexample_domain_model_post')),
+                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->expr()->literal('categories'))
+                )
+            )
+            ->execute()
+            ->fetchColumn(0);
         $this->assertSame(3, $countCategories);
 
         /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
@@ -482,7 +820,21 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function mmRelationWithMatchFieldIsCreatedFromLocalSide()
     {
-        $countCategories = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'sys_category_record_mm', 'uid_foreign=1 AND tablenames="tx_blogexample_domain_model_post" AND fieldname="categories"');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('sys_category_record_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $countCategories = $queryBuilder
+            ->count('*')
+            ->from('sys_category_record_mm')
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('uid_foreign', 1),
+                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->expr()->literal('tx_blogexample_domain_model_post')),
+                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->expr()->literal('categories'))
+                )
+            )
+            ->execute()
+            ->fetchColumn(0);
         $this->assertSame(3, $countCategories);
 
         /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
@@ -498,11 +850,19 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $postRepository->update($post);
         $this->persistentManager->persistAll();
 
-        $countCategories = $this->getDatabaseConnection()->exec_SELECTcountRows(
-            '*',
-            'sys_category_record_mm',
-            'uid_foreign=1 AND tablenames="tx_blogexample_domain_model_post" AND fieldname="categories"'
-        );
+        $queryBuilder->resetQueryParts();
+        $countCategories = $queryBuilder
+            ->count('*')
+            ->from('sys_category_record_mm')
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('uid_foreign', 1),
+                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->expr()->literal('tx_blogexample_domain_model_post')),
+                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->expr()->literal('categories'))
+                )
+            )
+            ->execute()
+            ->fetchColumn(0);
         $this->assertSame(4, $countCategories);
     }
 
@@ -527,13 +887,21 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->persistentManager->persistAll();
 
         // re-fetch Post and Blog
-        $newBlogCategoryCount = $this->getDatabaseConnection()->exec_SELECTcountRows(
-            'uid_local',
-            'sys_category_record_mm',
-            'tablenames = "tx_blogexample_domain_model_blog"
-			AND fieldname = "categories"
-			AND uid_foreign = ' . $this->blog->getUid() . ''
-        );
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('sys_category_record_mm');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $newBlogCategoryCount = $queryBuilder
+            ->count('*')
+            ->from('sys_category_record_mm')
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('uid_foreign', $this->blog->getUid()),
+                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->expr()->literal('tx_blogexample_domain_model_post')),
+                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->expr()->literal('categories'))
+                )
+            )
+            ->execute()
+            ->fetchColumn(0);
 
         $this->assertSame($this->blog->getCategories()->count(), $newBlogCategoryCount);
     }

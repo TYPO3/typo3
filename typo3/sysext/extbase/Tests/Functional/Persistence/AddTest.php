@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
@@ -68,7 +69,17 @@ class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->blogRepository->add($newBlog);
         $this->persistentManager->persistAll();
 
-        $newBlogCount = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_blog', 'title = \'' . $newBlogTitle . '\'');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_blog');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $newBlogCount = $queryBuilder
+            ->count('*')
+            ->from('tx_blogexample_domain_model_blog')
+            ->where(
+                $queryBuilder->expr()->eq('title', $queryBuilder->expr()->literal($newBlogTitle))
+            )
+            ->execute()
+            ->fetchColumn(0);
         $this->assertSame(1, $newBlogCount);
     }
 
@@ -85,7 +96,17 @@ class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->blogRepository->add($newBlog);
         $this->persistentManager->persistAll();
 
-        $newBlogRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'tx_blogexample_domain_model_blog', 'title = \'' . $newBlogTitle . '\'');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_blog');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $newBlogRecord = $queryBuilder
+            ->select('*')
+            ->from('tx_blogexample_domain_model_blog')
+            ->where(
+                $queryBuilder->expr()->eq('title', $queryBuilder->expr()->literal($newBlogTitle))
+            )
+            ->execute()
+            ->fetch();
         $this->assertEquals(0, $newBlogRecord['sys_language_uid']);
     }
 
@@ -103,7 +124,17 @@ class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->blogRepository->add($newBlog);
         $this->persistentManager->persistAll();
 
-        $newBlogRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'tx_blogexample_domain_model_blog', 'title = \'' . $newBlogTitle . '\'');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_blog');
+        $queryBuilder->getRestrictions()
+            ->removeAll();
+        $newBlogRecord = $queryBuilder
+            ->select('*')
+            ->from('tx_blogexample_domain_model_blog')
+            ->where(
+                $queryBuilder->expr()->eq('title', $queryBuilder->expr()->literal($newBlogTitle))
+            )
+            ->execute()
+            ->fetch();
         $this->assertEquals(-1, $newBlogRecord['sys_language_uid']);
     }
 }
