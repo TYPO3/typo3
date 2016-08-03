@@ -154,6 +154,40 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
     }
 
+    public function createContentWithCategoryAndAddRelation()
+    {
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            array(
+                self::TABLE_Category => array('pid' => 0, 'title' => 'Testing #1'),
+                self::TABLE_Content => array('header' => 'Testing #1'),
+            )
+        );
+        $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+
+        $this->actionService->modifyRecord(
+            self::TABLE_Content, $this->recordIds['newContentId'], array('categories' => $this->recordIds['newCategoryId'])
+        );
+    }
+
+    public function createCategoryWithContentAndAddRelation()
+    {
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            array(
+                self::TABLE_Content => array('header' => 'Testing #1'),
+                self::TABLE_Category => array('pid' => 0, 'title' => 'Testing #1', 'items' => 'tt_content___previousUid'),
+            )
+        );
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+        $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
+
+        $this->actionService->modifyRecord(
+            self::TABLE_Category, $this->recordIds['newCategoryId'], array('items' => 'tt_content_' . $this->recordIds['newContentId'])
+        );
+    }
+
     /**
      * @see DataSet/Assertion/modifyCategoryRecordOfCategoryRelation.csv
      */

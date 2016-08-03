@@ -139,6 +139,26 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
     /**
      * @test
+     * @see DataSet/createContentWCategoryNAddRelation.csv
+     */
+    public function createContentWithCategoryAndAddRelation()
+    {
+        parent::createContentWithCategoryAndAddRelation();
+        $this->assertAssertionDataSet('createContentWCategoryNAddRelation');
+    }
+
+    /**
+     * @test
+     * @see DataSet/createCategoryWContentNAddRelation.csv
+     */
+    public function createCategoryWithContentAndAddRelation()
+    {
+        parent::createCategoryWithContentAndAddRelation();
+        $this->assertAssertionDataSet('createCategoryWContentNAddRelation');
+    }
+
+    /**
+     * @test
      * @see DataSet/Assertion/modifyCategoryRecordOfCategoryRelation.csv
      */
     public function modifyCategoryOfRelation()
