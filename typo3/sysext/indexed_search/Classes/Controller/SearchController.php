@@ -15,6 +15,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  */
 
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -659,13 +660,18 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if ($row['show_resume']) {
             if (!$noMarkup) {
                 $markedSW = '';
-                $res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'index_fulltext', 'phash=' . (int)$row['phash']);
-                if ($ftdrow = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_fulltext');
+                $ftdrow = $queryBuilder
+                    ->select('*')
+                    ->from('index_fulltext')
+                    ->where($queryBuilder->expr()->eq('phash', (int)$row['phash']))
+                    ->execute()
+                    ->fetch();
+                if ($ftdrow !== false) {
                     // Cut HTTP references after some length
                     $content = preg_replace('/(http:\\/\\/[^ ]{' . $this->settings['results.']['hrefInSummaryCropAfter'] . '})([^ ]+)/i', '$1...', $ftdrow['fulltextdata']);
                     $markedSW = $this->markupSWpartsOfString($content);
                 }
-                $this->getDatabaseConnection()->sql_free_result($res);
             }
             if (!trim($markedSW)) {
                 $outputStr = $this->charsetConverter->crop('utf-8', $row['item_description'], $length, $this->settings['results.']['summaryCropSignifier']);
@@ -772,9 +778,11 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             // Time stamp
             'tstamp' => $GLOBALS['EXEC_TIME']
         );
-        $this->getDatabaseConnection()->exec_INSERTquery('index_stat_search', $insertFields);
-        $newId = $this->getDatabaseConnection()->sql_insert_id();
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_search_stat');
+        $connection->insert('index_stat_search', $insertFields);
+        $newId = $connection->lastInsertId();
         if ($newId) {
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_stat_word');
             foreach ($searchWords as $val) {
                 $insertFields = array(
                     'word' => $val['sword'],
@@ -784,7 +792,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     // search page id for indexed search stats
                     'pageid' => $GLOBALS['TSFE']->id
                 );
-                $this->getDatabaseConnection()->exec_INSERTquery('index_stat_word', $insertFields);
+                $connection->insert('index_stat_word', $insertFields);
             }
         }
     }

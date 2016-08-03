@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -56,15 +57,20 @@ class AdministrationRepository
      */
     public function getGrlistRecord($phash)
     {
-        $db = $this->getDatabaseConnection();
-        $res = $db->exec_SELECTquery('index_grlist.*', 'index_grlist', 'phash=' . (int)$phash);
-        $allRows = array();
-        $numberOfRows = $db->sql_num_rows($res);
-        while ($row = $db->sql_fetch_assoc($res)) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_grlist');
+        $res = $queryBuilder
+            ->select('*')
+            ->from('index_grlist')
+            ->where(
+                $queryBuilder->expr()->eq('phash', (int)$phash)
+            )
+            ->execute();
+        $numberOfRows = $res->rowCount();
+        $allRows = [];
+        while ($row = $res->fetch()) {
             $row['pcount'] = $numberOfRows;
             $allRows[] = $row;
         }
-        $db->sql_free_result($res);
         return $allRows;
     }
 
@@ -76,7 +82,13 @@ class AdministrationRepository
      */
     public function getNumberOfFulltextRecords($phash)
     {
-        return $this->getDatabaseConnection()->exec_SELECTcountRows('phash', 'index_fulltext', 'phash=' . (int)$phash);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_fulltext');
+        return $queryBuilder
+            ->count('phash')
+            ->from('index_fulltext')
+            ->where($queryBuilder->expr()->eq('phash', (int)$phash))
+            ->execute()
+            ->fetchColumn(0);
     }
 
     /**
@@ -87,7 +99,13 @@ class AdministrationRepository
      */
     public function getNumberOfWords($phash)
     {
-        return $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'index_rel', 'phash=' . (int)$phash);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_rel');
+        return $queryBuilder
+            ->count('*')
+            ->from('index_rel')
+            ->where($queryBuilder->expr()->eq('phash', (int)$phash))
+            ->execute()
+            ->fetchColumn(0);
     }
 
     /**
@@ -147,7 +165,12 @@ class AdministrationRepository
         );
         $recordList = array();
         foreach ($tables as $tableName) {
-            $recordList[$tableName] = $this->getDatabaseConnection()->exec_SELECTcountRows('*', $tableName);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+            $recordList[$tableName] = $queryBuilder
+                ->count('*')
+                ->from($tableName)
+                ->execute()
+                ->fetchColumn(0);
         }
         return $recordList;
     }
@@ -193,19 +216,17 @@ class AdministrationRepository
      */
     protected function countUniqueTypes($itemType)
     {
-        $db = $this->getDatabaseConnection();
-        $res = $db->exec_SELECTquery(
-            'count(*)',
-            'index_phash',
-            'item_type=' . $db->fullQuoteStr($itemType, 'index_phash'),
-            'phash_grouping'
-        );
         $items = array();
-        while ($row = $db->sql_fetch_row($res)) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_phash');
+        $res = $queryBuilder
+            ->count('*')
+            ->from('index_phash')
+            ->where($queryBuilder->expr()->eq('item_type', $queryBuilder->createNamedParameter($itemType)))
+            ->groupBy('phash_grouping')
+            ->execute();
+        while ($row = $res->fetch()) {
             $items[] = $row;
         }
-        $db->sql_free_result($res);
-
         return count($items);
     }
 
@@ -217,7 +238,13 @@ class AdministrationRepository
      */
     public function getNumberOfSections($pageHash)
     {
-        return $this->getDatabaseConnection()->exec_SELECTcountRows('phash', 'index_section', 'phash=' . (int)$pageHash);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_section');
+        return $queryBuilder
+            ->count('phash')
+            ->from('index_section')
+            ->where($queryBuilder->expr()->eq('phash', (int)$pageHash))
+            ->execute()
+            ->fetchColumn(0);
     }
 
     /**
@@ -457,16 +484,21 @@ class AdministrationRepository
             $phashRows = GeneralUtility::trimExplode(',', $phashList, true);
         }
 
-        $db = $this->getDatabaseConnection();
         foreach ($phashRows as $phash) {
             $phash = (int)$phash;
             if ($phash > 0) {
                 $idList = array();
-                $res = $db->exec_SELECTquery('page_id', 'index_section', 'phash=' . $phash);
-                while ($row = $db->sql_fetch_assoc($res)) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_section');
+                $res = $queryBuilder
+                    ->select('page_id')
+                    ->from('index_section')
+                    ->where(
+                        $queryBuilder->expr()->eq('phash', (int)$phash)
+                    )
+                    ->execute();
+                while ($row = $res->fetch()) {
                     $idList[] = (int)$row['page_id'];
                 }
-                $db->sql_free_result($res);
 
                 if (!empty($idList)) {
                     /** @var FrontendInterface $pageCache */
@@ -479,7 +511,13 @@ class AdministrationRepository
                 // Removing old registrations for all tables.
                 $tableArr = array('index_phash', 'index_rel', 'index_section', 'index_grlist', 'index_fulltext', 'index_debug');
                 foreach ($tableArr as $table) {
-                    $db->exec_DELETEquery($table, 'phash=' . $phash);
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                    $queryBuilder
+                        ->delete($table)
+                        ->where(
+                            $queryBuilder->expr()->eq('phash', (int)$phash)
+                        )
+                        ->execute();
                 }
             }
         }
@@ -494,10 +532,12 @@ class AdministrationRepository
     public function saveStopWords(array $words)
     {
         foreach ($words as $wid => $state) {
-            $fieldArray = array(
-                'is_stopword' => (int)$state
-            );
-            $this->getDatabaseConnection()->exec_UPDATEquery('index_words', 'wid=' . (int)$wid, $fieldArray);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_words');
+            $queryBuilder
+                ->update('index_words')
+                ->set('is_stopword', (int)$state)
+                ->where($queryBuilder->expr()->eq('wid', (int)$wid))
+                ->execute();
         }
     }
 

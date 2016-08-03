@@ -16,6 +16,7 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
 
 use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -82,7 +83,8 @@ class CrawlerHook
                 'timer_next_indexing' => $nextTime,
                 'session_data' => ''
             );
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_config', 'uid=' . (int)$cfgRec['uid'], $field_array);
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_config');
+            $connection->update('index_config', $field_array, ['uid' => (int)$cfgRec['uid']]);
             // Based on configuration type:
             switch ($cfgRec['type']) {
                 case 1:
@@ -212,10 +214,14 @@ class CrawlerHook
                         }
                 }
                 // Save process data which might be modified:
-                $field_array = array(
-                    'session_data' => serialize($session_data)
-                );
-                $GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_config', 'uid=' . (int)$cfgRec['uid'], $field_array);
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_config');
+                $queryBuilder
+                    ->update('index_config')
+                    ->where(
+                        $queryBuilder->expr()->eq('uid', (int)$cfgRec['uid'])
+                    )
+                    ->set('session_data', serialize($session_data))
+                    ->execute();
             }
         }
         return array('log' => $params);

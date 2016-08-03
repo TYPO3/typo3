@@ -16,6 +16,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -269,15 +270,25 @@ class AdministrationController extends ActionController
         $this->view->getModuleTemplate()->getDocHeaderComponent()
             ->getButtonBar()->addButton($backButton);
 
-        $pageHash = (int)$pageHash;
-        $db = $this->getDatabaseConnection();
-        $pageHashRow = $db->exec_SELECTgetSingleRow('*', 'index_phash', 'phash = ' . (int)$pageHash);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_phash');
+        $pageHashRow = $queryBuilder
+            ->select('*')
+            ->from('index_phash')
+            ->where($queryBuilder->expr()->eq('phash', (int)$pageHash))
+            ->execute()
+            ->fetch();
 
         if (!is_array($pageHashRow)) {
             $this->redirect('statistic');
         }
 
-        $debugRow = $db->exec_SELECTgetRows('*', 'index_debug', 'phash = ' . (int)$pageHash);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_debug');
+        $debugRow = $queryBuilder
+            ->select('*')
+            ->from('index_debug')
+            ->where($queryBuilder->expr()->eq('phash', (int)$pageHash))
+            ->execute()
+            ->fetchAll();
         $debugInfo = array();
         $lexer = '';
         if (is_array($debugRow)) {
@@ -317,7 +328,7 @@ class AdministrationController extends ActionController
             }
         }
         $this->view->assignMultiple(array(
-            'phash' => $pageHash,
+            'phash' => (int)$pageHash,
             'phashRow' => $pageHashRow,
             'words' => $wordRecords,
             'sections' => $db->exec_SELECTgetRows(
