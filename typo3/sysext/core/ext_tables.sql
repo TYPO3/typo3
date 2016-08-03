@@ -572,7 +572,7 @@ CREATE TABLE sys_refindex (
 	hash varchar(32) DEFAULT '' NOT NULL,
 	tablename varchar(255) DEFAULT '' NOT NULL,
 	recuid int(11) DEFAULT '0' NOT NULL,
-	field varchar(40) DEFAULT '' NOT NULL,
+	field varchar(64) DEFAULT '' NOT NULL,
 	flexpointer varchar(255) DEFAULT '' NOT NULL,
 	softref_key varchar(30) DEFAULT '' NOT NULL,
 	softref_id varchar(40) DEFAULT '' NOT NULL,
