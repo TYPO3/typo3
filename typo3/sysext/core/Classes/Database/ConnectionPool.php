@@ -156,4 +156,18 @@ class ConnectionPool
 
         return $this->getConnectionForTable($tableName)->createQueryBuilder();
     }
+
+    /**
+     * Returns an array containing the names of all currently configured connections.
+     *
+     * This method should only be used in edge cases. Use getConnectionForTable() so
+     * that the tablename<>databaseConnection mapping will be taken into account.
+     *
+     * @internal
+     * @return array
+     */
+    public function getConnectionNames(): array
+    {
+        return array_keys($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']);
+    }
 }

@@ -167,13 +167,17 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     protected function getDatabase()
     {
-        $this->systemInformation[] = array(
-            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.database')),
-            'value' => GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
-                ->getServerVersion(),
-            'icon' => $this->iconFactory->getIcon('sysinfo-database', Icon::SIZE_SMALL)->render()
-        );
+        foreach (GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames() as $connectionName) {
+            $this->systemInformation[] = [
+                'title' => $this->getLanguageService()
+                    ->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.database')
+                    . ' (' . htmlspecialchars($connectionName) . ')',
+                'value' => GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionByName($connectionName)
+                    ->getServerVersion(),
+                'icon' => $this->iconFactory->getIcon('sysinfo-database', Icon::SIZE_SMALL)->render()
+            ];
+        }
     }
 
     /**
