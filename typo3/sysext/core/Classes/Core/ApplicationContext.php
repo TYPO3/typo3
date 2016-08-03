@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Exception;
+
 /**
  * The TYPO3 Context object.
  *
@@ -57,11 +59,11 @@ class ApplicationContext
      * Initialize the context object.
      *
      * @param string $contextString
-     * @throws \Exception if the parent context is none of "Development", "Production" or "Testing"
+     * @throws Exception if the parent context is none of "Development", "Production" or "Testing"
      */
     public function __construct($contextString)
     {
-        if (strstr($contextString, '/') === false) {
+        if (strpos($contextString, '/') === false) {
             $this->rootContextString = $contextString;
             $this->parentContext = null;
         } else {
@@ -71,8 +73,8 @@ class ApplicationContext
             $this->parentContext = new ApplicationContext(implode('/', $contextStringParts));
         }
 
-        if (!in_array($this->rootContextString, array('Development', 'Production', 'Testing'))) {
-            throw new \TYPO3\CMS\Core\Exception('The given context "' . $contextString . '" was not valid. Only allowed are Development, Production and Testing, including their sub-contexts', 1335436551);
+        if (!in_array($this->rootContextString, ['Development', 'Production', 'Testing'], true)) {
+            throw new Exception('The given context "' . $contextString . '" was not valid. Only allowed are Development, Production and Testing, including their sub-contexts', 1335436551);
         }
 
         $this->contextString = $contextString;
