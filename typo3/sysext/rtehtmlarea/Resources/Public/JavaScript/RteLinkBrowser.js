@@ -66,8 +66,14 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 	 *
 	 */
 	RteLinkBrowser.initialize = function() {
-		RteLinkBrowser.plugin = window.parent.RTEarea[LinkBrowser.urlParameters.editorNo].editor.getPlugin("TYPO3Link");
-		RteLinkBrowser.HTMLArea = window.parent.HTMLArea;
+		var callerWindow;
+		if (typeof top.TYPO3.Backend !== 'undefined' && typeof top.TYPO3.Backend.ContentContainer.iframe !== 'undefined') {
+			callerWindow = top.TYPO3.Backend.ContentContainer.iframe;
+		} else {
+			callerWindow = window.parent;
+		}
+		RteLinkBrowser.plugin = callerWindow.RTEarea[LinkBrowser.urlParameters.editorNo].editor.getPlugin("TYPO3Link");
+		RteLinkBrowser.HTMLArea = callerWindow.HTMLArea;
 
 		$.extend(RteLinkBrowser, $('body').data());
 

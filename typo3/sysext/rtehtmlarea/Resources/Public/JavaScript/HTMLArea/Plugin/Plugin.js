@@ -435,17 +435,13 @@ define([
 		 * @param {String} url The url to load ino the iframe
 		 */
 		openContainerWindow: function (buttonId, title, height, url) {
-			var self = this,
-				$iframe = $('<iframe />', {src: url, 'class': 'content-iframe', style: 'border: 0; height: ' + height * 1 + 'px;'}),
+			var $iframe = $('<iframe />', {src: url, 'class': 'content-iframe', style: 'border: 0; height: ' + height * 1 + 'px;'}),
 				$content = $('<div />', {'class': 'htmlarea-window', id: this.editor.editorId + buttonId}).append($iframe);
 
 			this.dialog = Modal.show(this.localize(title) || title, $content, Severity.notice);
 
 			// TODO: dirty CSS hack - provide an API instead?
 			this.dialog.find('.modal-body').css('padding', 0);
-			this.dialog.on('modal-dismiss', function() {
-				self.onCancel();
-			});
 		},
 
 		/**
