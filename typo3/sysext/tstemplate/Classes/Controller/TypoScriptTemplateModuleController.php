@@ -501,7 +501,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         $GLOBALS['tmpl'] = $tmpl;
         $tmpl->init();
 
-        $all = $tmpl->ext_getAllTemplates($this->id, $this->perms_clause);
+        $all = $tmpl->ext_getAllTemplates($this->id);
         if (count($all) > 1) {
             $this->MOD_MENU['templatesOnPage'] = array();
             foreach ($all as $d) {
