@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Scheduler\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This is the base class for all Scheduler tasks
  * It's an abstract class, not designed to be instantiated directly
@@ -79,7 +82,7 @@ abstract class AbstractTask
     public function __construct()
     {
         $this->setScheduler();
-        $this->execution = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Execution::class);
+        $this->execution = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Execution::class);
     }
 
     /**
@@ -252,7 +255,7 @@ abstract class AbstractTask
      */
     public function setScheduler()
     {
-        $this->scheduler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Scheduler::class);
+        $this->scheduler = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Scheduler::class);
     }
 
     /**
@@ -275,7 +278,7 @@ abstract class AbstractTask
     public function registerSingleExecution($timestamp)
     {
         /** @var $execution \TYPO3\CMS\Scheduler\Execution */
-        $execution = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Execution::class);
+        $execution = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Execution::class);
         $execution->setStart($timestamp);
         $execution->setInterval(0);
         $execution->setEnd($timestamp);
@@ -299,7 +302,7 @@ abstract class AbstractTask
     public function registerRecurringExecution($start, $interval, $end = 0, $multiple = false, $cron_cmd = '')
     {
         /** @var $execution \TYPO3\CMS\Scheduler\Execution */
-        $execution = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Execution::class);
+        $execution = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Execution::class);
         // Set general values
         $execution->setStart($start);
         $execution->setEnd($end);
@@ -366,19 +369,20 @@ abstract class AbstractTask
     public function isExecutionRunning()
     {
         $isRunning = false;
-        $queryArr = array(
-            'SELECT' => 'serialized_executions',
-            'FROM' => 'tx_scheduler_task',
-            'WHERE' => 'uid = ' . $this->taskUid,
-            'LIMIT' => 1
-        );
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryArr);
-        if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-            if (!empty($row['serialized_executions'])) {
-                $isRunning = true;
-            }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_scheduler_task');
+        $row = $queryBuilder
+            ->select('serialized_executions')
+            ->from('tx_scheduler_task')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $this->taskUid)
+            )
+            ->execute()
+            ->fetch();
+
+        if ($row && !empty($row['serialized_executions'])) {
+            $isRunning = true;
         }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
         return $isRunning;
     }
 
@@ -390,20 +394,22 @@ abstract class AbstractTask
      */
     public function markExecution()
     {
-        $queryArr = array(
-            'SELECT' => 'serialized_executions',
-            'FROM' => 'tx_scheduler_task',
-            'WHERE' => 'uid = ' . $this->taskUid,
-            'LIMIT' => 1
-        );
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryArr);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_scheduler_task');
+
+        $row = $queryBuilder
+            ->select('serialized_executions')
+            ->from('tx_scheduler_task')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $this->taskUid)
+            )
+            ->execute()
+            ->fetch();
+
         $runningExecutions = array();
-        if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-            if ($row['serialized_executions'] !== '') {
-                $runningExecutions = unserialize($row['serialized_executions']);
-            }
+        if ($row && $row['serialized_executions'] !== '') {
+            $runningExecutions = unserialize($row['serialized_executions']);
         }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
         // Count the number of existing executions and use that number as a key
         // (we need to know that number, because it is returned at the end of the method)
         $numExecutions = count($runningExecutions);
@@ -413,11 +419,19 @@ abstract class AbstractTask
         if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
             $context = 'CLI';
         }
-        $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $this->taskUid, array(
-            'serialized_executions' => serialize($runningExecutions),
-            'lastexecution_time' => time(),
-            'lastexecution_context' => $context
-        ));
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('tx_scheduler_task')
+            ->update(
+                'tx_scheduler_task',
+                [
+                    'serialized_executions' => serialize($runningExecutions),
+                    'lastexecution_time' => time(),
+                    'lastexecution_context' => $context
+                ],
+                [
+                    'uid' => $this->taskUid
+                ]
+            );
         return $numExecutions;
     }
 
@@ -431,47 +445,57 @@ abstract class AbstractTask
     public function unmarkExecution($executionID, \Exception $failure = null)
     {
         // Get the executions for the task
-        $queryArr = array(
-            'SELECT' => 'serialized_executions',
-            'FROM' => 'tx_scheduler_task',
-            'WHERE' => 'uid = ' . $this->taskUid,
-            'LIMIT' => 1
-        );
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryArr);
-        if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-            if ($row['serialized_executions'] !== '') {
-                $runningExecutions = unserialize($row['serialized_executions']);
-                // Remove the selected execution
-                unset($runningExecutions[$executionID]);
-                if (!empty($runningExecutions)) {
-                    // Re-serialize the updated executions list (if necessary)
-                    $runningExecutionsSerialized = serialize($runningExecutions);
-                } else {
-                    $runningExecutionsSerialized = '';
-                }
-                if ($failure instanceof \Exception) {
-                    // Log failed execution
-                    $logMessage = 'Task failed to execute successfully. Class: ' . get_class($this) . ', UID: ' . $this->taskUid . '. ' . $failure->getMessage();
-                    $this->scheduler->log($logMessage, 1, $failure->getCode());
-                    // Do not serialize the complete exception or the trace, this can lead to huge strings > 50MB
-                    $failureString = serialize(array(
-                        'code' => $failure->getCode(),
-                        'message' => $failure->getMessage(),
-                        'file' => $failure->getFile(),
-                        'line' => $failure->getLine(),
-                        'traceString' => $failure->getTraceAsString(),
-                    ));
-                } else {
-                    $failureString = '';
-                }
-                // Save the updated executions list
-                $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $this->taskUid, array(
-                    'serialized_executions' => $runningExecutionsSerialized,
-                    'lastexecution_failure' => $failureString
-                ));
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_scheduler_task');
+
+        $row = $queryBuilder
+            ->select('serialized_executions')
+            ->from('tx_scheduler_task')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $this->taskUid)
+            )
+            ->execute()
+            ->fetch();
+
+        if ($row && $row['serialized_executions'] !== '') {
+            $runningExecutions = unserialize($row['serialized_executions']);
+            // Remove the selected execution
+            unset($runningExecutions[$executionID]);
+            if (!empty($runningExecutions)) {
+                // Re-serialize the updated executions list (if necessary)
+                $runningExecutionsSerialized = serialize($runningExecutions);
+            } else {
+                $runningExecutionsSerialized = '';
             }
+            if ($failure instanceof \Exception) {
+                // Log failed execution
+                $logMessage = 'Task failed to execute successfully. Class: ' . get_class($this) . ', UID: ' . $this->taskUid . '. ' . $failure->getMessage();
+                $this->scheduler->log($logMessage, 1, $failure->getCode());
+                // Do not serialize the complete exception or the trace, this can lead to huge strings > 50MB
+                $failureString = serialize(array(
+                    'code' => $failure->getCode(),
+                    'message' => $failure->getMessage(),
+                    'file' => $failure->getFile(),
+                    'line' => $failure->getLine(),
+                    'traceString' => $failure->getTraceAsString(),
+                ));
+            } else {
+                $failureString = '';
+            }
+            // Save the updated executions list
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('tx_scheduler_task')
+                ->update(
+                    'tx_scheduler_task',
+                    [
+                        'serialized_executions' => $runningExecutionsSerialized,
+                        'lastexecution_failure' => $failureString
+                    ],
+                    [
+                        'uid' => $this->taskUid
+                    ]
+                );
         }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
     }
 
     /**
@@ -482,10 +506,18 @@ abstract class AbstractTask
     public function unmarkAllExecutions()
     {
         // Set the serialized executions field to empty
-        $result = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $this->taskUid, array(
-            'serialized_executions' => ''
-        ));
-        return $result;
+        $result = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('tx_scheduler_task')
+            ->update(
+                'tx_scheduler_task',
+                [
+                    'serialized_executions' => ''
+                ],
+                [
+                    'uid' => $this->taskUid
+                ]
+            );
+        return (bool)$result;
     }
 
     /**
@@ -506,7 +538,7 @@ abstract class AbstractTask
      */
     public function stop()
     {
-        $this->execution = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Execution::class);
+        $this->execution = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Execution::class);
     }
 
     /**
