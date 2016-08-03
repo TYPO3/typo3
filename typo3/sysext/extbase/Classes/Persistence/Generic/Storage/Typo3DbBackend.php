@@ -313,9 +313,21 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     public function getMaxValueFromTable($tableName, array $where, $columnName)
     {
         try {
-            $result = $this->connectionPool->getConnectionForTable($tableName)
-                ->select([$columnName], $tableName, $where, [], [$columnName => 'DESC'], 1)
-                ->fetchColumn(0);
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+            $queryBuilder->getRestrictions()->removeAll();
+            $queryBuilder
+                ->select($columnName)
+                ->from($tableName)
+                ->orderBy($columnName, 'DESC')
+                ->setMaxResults(1);
+
+            foreach ($where as $fieldName => $value) {
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq($fieldName, $queryBuilder->createNamedParameter($value))
+                );
+            }
+
+            $result = $queryBuilder->execute()->fetchColumn(0);
         } catch (DBALException $e) {
             throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230770);
         }
@@ -333,9 +345,19 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     public function getRowByIdentifier($tableName, array $where)
     {
         try {
-            $row = $this->connectionPool->getConnectionForTable($tableName)
-                ->select(['*'], $tableName, $where)
-                ->fetch();
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+            $queryBuilder->getRestrictions()->removeAll();
+            $queryBuilder
+                ->select('*')
+                ->from($tableName);
+
+            foreach ($where as $fieldName => $value) {
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq($fieldName, $queryBuilder->createNamedParameter($value))
+                );
+            }
+
+            $row = $queryBuilder->execute()->fetch();
         } catch (DBALException $e) {
             throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230771);
         }
@@ -917,7 +939,13 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         $storagePage = null;
         $columns = $this->databaseHandle->admin_get_fields($tableName);
         if (array_key_exists('pid', $columns)) {
-            $result = $this->connectionPool->getConnectionForTable($tableName)->select(['pid'], $tableName, ['uid' => (int)$uid]);
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+            $queryBuilder->getRestrictions()->removeAll();
+            $result = $queryBuilder
+                ->select('pid')
+                ->from($tableName)
+                ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+                ->execute();
             if ($row = $result->fetch()) {
                 $storagePage = $row['pid'];
                 $pageIdsToClear[] = $storagePage;
