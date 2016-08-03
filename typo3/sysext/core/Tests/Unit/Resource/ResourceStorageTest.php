@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -709,46 +708,5 @@ class ResourceStorageTest extends BaseTestCase
         $mockedDriver = $this->createDriverMock(array(), $this->subject);
         $mockedDriver->expects($this->once())->method('folderExists')->with($this->equalTo('/someFolder/'))->will($this->returnValue(false));
         $this->subject->createFolder('newFolder', $mockedParentFolder);
-    }
-
-    /**
-     * @test
-     */
-    public function replaceFileFailsIfLocalFileDoesNotExist()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1325842622);
-        $this->prepareSubject(array(), true);
-        $mockedFile = $this->getSimpleFileMock('/someFile');
-        $this->subject->replaceFile($mockedFile, PATH_site . $this->getUniqueId());
-    }
-
-    /**
-     * @test
-     * @TODO: Rewrite or move to functional suite
-     */
-    public function getRoleReturnsDefaultForRegularFolders()
-    {
-        $this->markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
-        $folderIdentifier = $this->getUniqueId();
-        $this->addToMount(array(
-            $folderIdentifier => array()
-        ));
-        $this->prepareSubject(array());
-
-        $role = $this->subject->getRole($this->getSimpleFolderMock('/' . $folderIdentifier . '/'));
-
-        $this->assertSame(FolderInterface::ROLE_DEFAULT, $role);
-    }
-
-    /**
-     * @test
-     */
-    public function getProcessingRootFolderTest()
-    {
-        $this->prepareSubject(array());
-        $processingFolder = $this->subject->getProcessingFolder();
-
-        $this->assertInstanceOf(Folder::class, $processingFolder);
     }
 }

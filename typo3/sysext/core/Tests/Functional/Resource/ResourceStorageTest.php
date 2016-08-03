@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -26,6 +28,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ResourceStorageTest extends FunctionalTestCase
 {
+
+    protected function tearDown()
+    {
+        // cleanup manually created folders
+        foreach (glob(PATH_site . 'fileadmin/*') as $folderToRemove) {
+            GeneralUtility::rmdir($folderToRemove, true);
+        }
+    }
 
     /**
      * @test
@@ -137,5 +147,69 @@ class ResourceStorageTest extends FunctionalTestCase
                 '$expectedResult' => false,
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function getProcessingRootFolderTest()
+    {
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/sys_file_storage.xml');
+        $this->setUpBackendUserFromFixture(1);
+
+        $subject = (new StorageRepository())->findByUid(1);
+        $processingFolder = $subject->getProcessingFolder();
+
+        $this->assertInstanceOf(Folder::class, $processingFolder);
+    }
+
+    /**
+     * @test
+     */
+    public function getRoleReturnsDefaultForRegularFolders()
+    {
+        $folderIdentifier = $this->getUniqueId();
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/sys_file_storage.xml');
+        $this->setUpBackendUserFromFixture(1);
+
+        $subject = (new StorageRepository())->findByUid(1);
+        $folder = new Folder($subject, '/foo/' . $folderIdentifier . '/', $folderIdentifier);
+
+        $role = $subject->getRole($folder);
+
+        $this->assertSame(FolderInterface::ROLE_DEFAULT, $role);
+    }
+
+    /**
+     * @test
+     */
+    public function replaceFileFailsIfLocalFileDoesNotExist()
+    {
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/sys_file_storage.xml');
+        $this->setUpBackendUserFromFixture(1);
+        $subject = (new StorageRepository())->findByUid(1);
+
+        GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/foo');
+        file_put_contents(PATH_site . 'fileadmin/foo/bar.txt', 'myData');
+        clearstatcache();
+        $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1325842622);
+        $subject->replaceFile($file, PATH_site . $this->getUniqueId());
+    }
+
+    /**
+     * @test
+     */
+    public function createFolderThrowsExceptionIfParentFolderDoesNotExist()
+    {
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/sys_file_storage.xml');
+        $this->setUpBackendUserFromFixture(1);
+        $subject = (new StorageRepository())->findByUid(1);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1325689164);
+        $subject->createFolder('newFolder', new Folder($subject, '/foo/', 'foo'));
     }
 }
