@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -207,16 +208,21 @@ class ReferenceIndex
             $tableRelationFields = $this->runtimeCache->get($cacheId);
         }
 
-        $databaseConnection = $this->getDatabaseConnection();
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_refindex');
 
         // Get current index from Database with hash as index using $uidIndexField
-        $currentRelations = $databaseConnection->exec_SELECTgetRows(
-            '*',
-            'sys_refindex',
-            'tablename=' . $databaseConnection->fullQuoteStr($tableName, 'sys_refindex')
-            . ' AND recuid=' . (int)$uid . ' AND workspace=' . $this->getWorkspaceId(),
-            '', '', '', 'hash'
-        );
+        // no restrictions are needed, since sys_refindex is not a TCA table
+        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryResult = $queryBuilder->select('*')->from('sys_refindex')->where(
+            $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
+            $queryBuilder->expr()->eq('recuid', (int)$uid),
+            $queryBuilder->expr()->eq('workspace', (int)$this->getWorkspaceId())
+        )->execute();
+        $currentRelations = [];
+        while ($relation = $queryResult->fetch()) {
+            $currentRelations[$relation['hash']] = $currentRelations;
+        }
 
         // If the table has fields which could contain relations and the record does exist (including deleted-flagged)
         if ($tableRelationFields !== '' && BackendUtility::getRecordRaw($tableName, 'uid=' . (int)$uid, 'uid')) {
@@ -237,7 +243,7 @@ class ReferenceIndex
                     } else {
                         // If new, add it:
                         if (!$testOnly) {
-                            $databaseConnection->exec_INSERTquery('sys_refindex', $relation);
+                            $connection->insert('sys_refindex', $relation);
                         }
                         $result['addedNodes']++;
                         $relation['_ACTION'] = 'ADDED';
@@ -256,9 +262,16 @@ class ReferenceIndex
                 $result['deletedNodes'] = count($hashList);
                 $result['deletedNodes_hashList'] = implode(',', $hashList);
                 if (!$testOnly) {
-                    $databaseConnection->exec_DELETEquery(
-                        'sys_refindex', 'hash IN (' . implode(',', $databaseConnection->fullQuoteArray($hashList, 'sys_refindex')) . ')'
-                    );
+                    $queryBuilder = $connection->createQueryBuilder();
+                    $queryBuilder
+                        ->delete('sys_refindex')
+                        ->where(
+                            $queryBuilder->expr()->in(
+                                'hash',
+                                $queryBuilder->createNamedParameter($hashList, Connection::PARAM_STR_ARRAY)
+                            )
+                        )
+                        ->execute();
                 }
             }
         }
@@ -306,8 +319,8 @@ class ReferenceIndex
             $selectFields = 'uid,' . $tableRelationFields . ($deleteField ? ',' . $deleteField : '');
         }
 
-        // Get raw record from DB:
-        $record = $this->getDatabaseConnection()->exec_SELECTgetSingleRow($selectFields, $tableName, 'uid=' . (int)$uid);
+        // Get raw record from DB
+        $record = BackendUtility::getRecordRaw($tableName, 'uid=' . (int)$uid, $selectFields);
         if (!is_array($record)) {
             return null;
         }
@@ -801,10 +814,20 @@ class ReferenceIndex
     {
         $backendUser = $this->getBackendUser();
         if ($backendUser->workspace === 0 && $backendUser->isAdmin() || $bypassWorkspaceAdminCheck) {
-            $databaseConnection = $this->getDatabaseConnection();
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+            $queryBuilder->getRestrictions()->removeAll();
 
-            // Get current index from Database:
-            $referenceRecord = $databaseConnection->exec_SELECTgetSingleRow('*', 'sys_refindex', 'hash=' . $databaseConnection->fullQuoteStr($hash, 'sys_refindex'));
+            // Get current index from Database
+            $referenceRecord = $queryBuilder
+                ->select('*')
+                ->from('sys_refindex')
+                ->where(
+                    $queryBuilder->expr()->eq('hash', $queryBuilder->createNamedParameter($hash))
+                )
+                ->setMaxResults(1)
+                ->execute()
+                ->fetch();
+
             // Check if reference existed.
             if (!is_array($referenceRecord)) {
                 return 'ERROR: No reference record with hash="' . $hash . '" was found!';
@@ -814,8 +837,20 @@ class ReferenceIndex
                 return 'ERROR: Table "' . $referenceRecord['tablename'] . '" was not in TCA!';
             }
 
-            // Get that record from database:
-            $record = $databaseConnection->exec_SELECTgetSingleRow('*', $referenceRecord['tablename'], 'uid=' . (int)$referenceRecord['recuid']);
+            // Get that record from database
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($referenceRecord['tablename']);
+            $queryBuilder->getRestrictions()->removeAll();
+            $record = $queryBuilder
+                ->select('*')
+                ->from($referenceRecord['tablename'])
+                ->where(
+                    $queryBuilder->expr()->eq('uid',  (int)$referenceRecord['recuid'])
+                )
+                ->setMaxResults(1)
+                ->execute()
+                ->fetch();
+
             if (is_array($record)) {
                 // Get relation for single field from record
                 $recordRelations = $this->getRelations($referenceRecord['tablename'], $record, $referenceRecord['field']);
@@ -1117,7 +1152,6 @@ class ReferenceIndex
      */
     public function updateIndex($testOnly, $cli_echo = false)
     {
-        $databaseConnection = $this->getDatabaseConnection();
         $errors = array();
         $tableNames = array();
         $recCount = 0;
@@ -1127,23 +1161,34 @@ class ReferenceIndex
             echo '*******************************************' . LF . $headerContent . LF . '*******************************************' . LF;
         }
         // Traverse all tables:
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
             if (isset(static::$nonRelationTables[$tableName])) {
                 continue;
             }
-            // Traverse all records in tables, including deleted records:
-            $fieldNames = (BackendUtility::isTableWorkspaceEnabled($tableName) ? 'uid,t3ver_wsid' : 'uid');
-            $res = $databaseConnection->exec_SELECTquery($fieldNames, $tableName, '1=1');
-            if ($databaseConnection->sql_error()) {
+            $fields = ['uid'];
+            if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
+                $fields[] = 't3ver_wsid';
+            }
+            // Traverse all records in tables, including deleted records
+            $queryBuilder = $connectionPool->getQueryBuilderForTable($tableName);
+            $queryBuilder->getRestrictions()->removeAll();
+            try {
+                $queryResult = $queryBuilder
+                    ->select(...$fields)
+                    ->from($tableName)
+                    ->execute();
+            } catch (DBALException $e) {
                 // Table exists in $TCA but does not exist in the database
+                // @todo: improve / change message and add actual sql error?
                 GeneralUtility::sysLog(sprintf('Table "%s" exists in $TCA but does not exist in the database. You should run the Database Analyzer in the Install Tool to fix this.', $tableName), 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
                 continue;
             }
+
             $tableNames[] = $tableName;
             $tableCount++;
-            $uidList = array(0);
-            while ($record = $databaseConnection->sql_fetch_assoc($res)) {
-                /** @var $refIndexObj ReferenceIndex */
+            $uidList = [0];
+            while ($record = $queryResult->fetch()) {
                 $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
                 if (isset($record['t3ver_wsid'])) {
                     $refIndexObj->setWorkspaceId($record['t3ver_wsid']);
@@ -1159,35 +1204,66 @@ class ReferenceIndex
                     }
                 }
             }
-            $databaseConnection->sql_free_result($res);
 
-            // Searching lost indexes for this table:
-            $where = 'tablename=' . $databaseConnection->fullQuoteStr($tableName, 'sys_refindex') . ' AND recuid NOT IN (' . implode(',', $uidList) . ')';
-            $lostIndexes = $databaseConnection->exec_SELECTgetRows('hash', 'sys_refindex', $where);
-            $lostIndexesCount = count($lostIndexes);
-            if ($lostIndexesCount) {
-                $error = 'Table ' . $tableName . ' has ' . $lostIndexesCount . ' lost indexes which are now deleted';
+            // Searching for lost indexes for this table
+            $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_refindex');
+            $queryBuilder->getRestrictions()->removeAll();
+            $lostIndexes = $queryBuilder
+                ->count('hash')
+                ->from('sys_refindex')
+                ->where(
+                    $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
+                    $queryBuilder->expr()->notIn('recuid', $uidList)
+                )
+                ->execute()
+                ->fetchColumn(0);
+
+            if ($lostIndexes > 0) {
+                $error = 'Table ' . $tableName . ' has ' . $lostIndexes . ' lost indexes which are now deleted';
                 $errors[] = $error;
                 if ($cli_echo) {
                     echo $error . LF;
                 }
                 if (!$testOnly) {
-                    $databaseConnection->exec_DELETEquery('sys_refindex', $where);
+                    $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_refindex');
+                    $queryBuilder->delete('sys_refindex')
+                        ->where(
+                            $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
+                            $queryBuilder->expr()->notIn('recuid', $uidList)
+                        )->execute();
                 }
             }
         }
-        // Searching lost indexes for non-existing tables:
-        $where = 'tablename NOT IN (' . implode(',', $databaseConnection->fullQuoteArray($tableNames, 'sys_refindex')) . ')';
-        $lostTables = $databaseConnection->exec_SELECTgetRows('hash', 'sys_refindex', $where);
-        $lostTablesCount = count($lostTables);
-        if ($lostTablesCount) {
-            $error = 'Index table hosted ' . $lostTablesCount . ' indexes for non-existing tables, now removed';
+
+        // Searching lost indexes for non-existing tables
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder->getRestrictions()->removeAll();
+        $lostTables = $queryBuilder
+            ->count('hash')
+            ->from('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->notIn(
+                    'tablename',
+                    $queryBuilder->createNamedParameter($tableNames, Connection::PARAM_STR_ARRAY)
+                )
+            )->execute()
+            ->fetchColumn(0);
+
+        if ($lostTables > 0) {
+            $error = 'Index table hosted ' . $lostTables . ' indexes for non-existing tables, now removed';
             $errors[] = $error;
             if ($cli_echo) {
                 echo $error . LF;
             }
             if (!$testOnly) {
-                $databaseConnection->exec_DELETEquery('sys_refindex', $where);
+                $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_refindex');
+                $queryBuilder->delete('sys_refindex')
+                    ->where(
+                        $queryBuilder->expr()->notIn(
+                            'tablename',
+                            $queryBuilder->createNamedParameter($tableNames, Connection::PARAM_STR_ARRAY)
+                        )
+                    )->execute();
             }
         }
         $errorCount = count($errors);
@@ -1212,16 +1288,6 @@ class ReferenceIndex
             $registry->set('core', 'sys_refindex_lastUpdate', $GLOBALS['EXEC_TIME']);
         }
         return array($headerContent, $bodyContent, $errorCount);
-    }
-
-    /**
-     * Return DatabaseConnection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
