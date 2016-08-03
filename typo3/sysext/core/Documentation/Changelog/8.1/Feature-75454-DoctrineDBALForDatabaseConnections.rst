@@ -29,6 +29,40 @@ The :php:``Connection`` class provides convenience methods for ``insert``, ``sel
 equality comparisons (``WHERE "aField" = 'aValue') are supported. For complex statements it's
 required to use the :php:``QueryBuilder``.
 
+It is possible to swap tables out of the default database and use a specific setup (e.g.
+for logging or caching). This snippet of a LocalConfiguration could for exampe be used
+to swap the sys_log table out to another database or even another database server:
+
+.. code-block:: php
+
+    //LocalConfiguration.php
+    //[...]
+    'DB' => [
+        'Connections' => [
+            'Default' => [
+                'charset' => 'utf8',
+                'dbname' => 'default_dbname',
+                'driver' => 'mysqli',
+                'host' => 'default_host',
+                'password' => '***',
+                'port' => 3306,
+                'user' => 'default_user',
+            ],
+            'Syslog' => [
+                'charset' => 'utf8',
+                'dbname' => 'syslog_dbname',
+                'driver' => 'mysqli',
+                'host' => 'syslog_host',
+                'password' => '***',
+                'port' => 3306,
+                'user' => 'syslog_user',
+            ],
+        ],
+        'TableMapping' => [
+            'sys_log' => 'Syslog'
+        ]
+    ],
+    //[...]
 
 Impact
 ======
