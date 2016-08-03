@@ -69,15 +69,11 @@ class BytesViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('value', 'int',
-            'The incoming data to convert, or NULL if VH children should be used');
-        $this->registerArgument('decimals', 'int', 'The number of digits after the decimal point');
-        $this->registerArgument('decimalSeparator', 'string', 'The decimal point character', false,
-            '.');
-        $this->registerArgument('thousandsSeparator', 'string',
-            'The character for grouping the thousand digits', false, ',');
-        $this->registerArgument('units', 'string',
-            'comma separated list of available units, default is LocalizationUtility::translate(\'viewhelper.format.bytes.units\', \'fluid\')');
+        $this->registerArgument('value', 'int', 'The incoming data to convert, or NULL if VH children should be used');
+        $this->registerArgument('decimals', 'int', 'The number of digits after the decimal point', false, 0);
+        $this->registerArgument('decimalSeparator', 'string', 'The decimal point character', false, '.');
+        $this->registerArgument('thousandsSeparator', 'string', 'The character for grouping the thousand digits', false, ',');
+        $this->registerArgument('units', 'string', 'comma separated list of available units, default is LocalizationUtility::translate(\'viewhelper.format.bytes.units\', \'fluid\')');
     }
 
     /**
@@ -104,11 +100,8 @@ class BytesViewHelper extends AbstractViewHelper
      *
      * @return string
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
         if ($arguments['units'] !== null) {
             $units = $arguments['units'];
         } else {
