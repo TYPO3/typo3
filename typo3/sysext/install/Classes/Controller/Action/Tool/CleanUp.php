@@ -116,18 +116,17 @@ class CleanUp extends Action\AbstractAction
                 'description' => 'Login process key storage'
             ),
         );
-        $database = $this->getDatabaseConnection();
-        $allTables = array_keys($database->admin_get_tables());
-        $tables = array();
+
+        $tables = [];
         foreach ($tableCandidates as $candidate) {
-            if (in_array($candidate['name'], $allTables)) {
-                $candidate['rows'] = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable($candidate['name'])
-                    ->count(
-                        '*',
-                        $candidate['name'],
-                        []
-                    );
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+               ->getConnectionForTable($candidate['name']);
+            if ($connection->getSchemaManager()->tablesExist(array($candidate['name']))) {
+                $candidate['rows'] = $connection->count(
+                    '*',
+                    $candidate['name'],
+                    []
+                );
                 $tables[] = $candidate;
             }
         }
