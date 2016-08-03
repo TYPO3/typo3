@@ -17,7 +17,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -220,8 +219,12 @@ class AdministrationController extends ActionController
         ));
 
         if ($this->pageUid) {
-            $last24hours = ' AND tstamp > ' . ($GLOBALS['EXEC_TIME'] - 24 * 60 * 60);
-            $last30days = ' AND tstamp > ' . ($GLOBALS['EXEC_TIME'] - 30 * 24 * 60 * 60);
+            $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('index_stat_word')
+                ->expr();
+
+            $last24hours = $expressionBuilder->gt('tstamp', ($GLOBALS['EXEC_TIME'] - 86400));
+            $last30days = $expressionBuilder->gt('tstamp', ($GLOBALS['EXEC_TIME'] - 30 * 86400));
 
             $this->view->assignMultiple(array(
                 'pageUid' => $this->pageUid,
@@ -260,6 +263,7 @@ class AdministrationController extends ActionController
      */
     public function statisticDetailsAction($pageHash = 0)
     {
+        $pageHash = (int)$pageHash;
         // Set back button
         $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL);
         $backButton = $this->view->getModuleTemplate()->getDocHeaderComponent()
@@ -274,7 +278,7 @@ class AdministrationController extends ActionController
         $pageHashRow = $queryBuilder
             ->select('*')
             ->from('index_phash')
-            ->where($queryBuilder->expr()->eq('phash', (int)$pageHash))
+            ->where($queryBuilder->expr()->eq('phash', $pageHash))
             ->execute()
             ->fetch();
 
@@ -286,7 +290,7 @@ class AdministrationController extends ActionController
         $debugRow = $queryBuilder
             ->select('*')
             ->from('index_debug')
-            ->where($queryBuilder->expr()->eq('phash', (int)$pageHash))
+            ->where($queryBuilder->expr()->eq('phash', $pageHash))
             ->execute()
             ->fetchAll();
         $debugInfo = array();
@@ -298,13 +302,19 @@ class AdministrationController extends ActionController
         }
         $pageRecord = BackendUtility::getRecord('pages', $pageHashRow['data_page_id']);
         $keywords = is_array($pageRecord) ? array_flip(GeneralUtility::trimExplode(',', $pageRecord['keywords'], true)) : array();
-        $wordRecords = $db->exec_SELECTgetRows(
-            'index_words.*, index_rel.*',
-            'index_rel, index_words',
-            'index_rel.phash = ' . (int)$pageHash . ' AND index_words.wid = index_rel.wid',
-            '',
-            'index_words.baseword'
-        );
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_words');
+        $wordRecords = $queryBuilder
+            ->select('index_words.*', 'index_rel.*')
+            ->from('index_words')
+            ->from('index_rel')
+            ->where(
+                $queryBuilder->expr()->eq('index_rel.phash', $pageHash),
+                $queryBuilder->expr()->eq('index_words.wid', $queryBuilder->quoteIdentifier('index_rel.wid'))
+            )
+            ->orderBy('index_words.baseword')
+            ->execute()
+            ->fetchAll();
         foreach ($wordRecords as $id => $row) {
             if (isset($keywords[$row['baseword']])) {
                 $wordRecords[$id]['is_keyword'] = true;
@@ -327,39 +337,61 @@ class AdministrationController extends ActionController
                 }
             }
         }
-        $this->view->assignMultiple(array(
+
+        // sections
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_section');
+        $sections = $queryBuilder
+            ->select('*')
+            ->from('index_section')
+            ->where($queryBuilder->expr()->eq('phash', $pageHash))
+            ->execute()
+            ->fetchAll();
+
+        // top words
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_words');
+        $topCountWords = $queryBuilder
+            ->select('index_words.baseword', 'index_words.metaphone', 'index_rel.*')
+            ->from('index_words')
+            ->from('index_rel')
+            ->setMaxResults(20)
+            ->where(
+                $queryBuilder->expr()->eq('index_rel.phash', $pageHash),
+                $queryBuilder->expr()->eq('index_words.is_stopword', 0),
+                $queryBuilder->expr()->eq('index_words.wid', $queryBuilder->quoteIdentifier('index_rel.wid'))
+            )
+            ->orderBy('index_rel.count', 'DESC')
+            ->execute()
+            ->fetchAll();
+
+        // top frequency
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_words');
+        $topFrequency = $queryBuilder
+            ->select('index_words.baseword', 'index_words.metaphone', 'index_rel.*')
+            ->from('index_words')
+            ->from('index_rel')
+            ->setMaxResults(20)
+            ->where(
+                $queryBuilder->expr()->eq('index_rel.phash', $pageHash),
+                $queryBuilder->expr()->eq('index_words.is_stopword', 0),
+                $queryBuilder->expr()->eq('index_words.wid', $queryBuilder->quoteIdentifier('index_rel.wid'))
+            )
+            ->orderBy('index_rel.freq', 'DESC')
+            ->execute()
+            ->fetchAll();
+
+        $this->view->assignMultiple([
             'phash' => (int)$pageHash,
             'phashRow' => $pageHashRow,
             'words' => $wordRecords,
-            'sections' => $db->exec_SELECTgetRows(
-                '*',
-                'index_section',
-                'index_section.phash = ' . (int)$pageHash
-            ),
-            'topCount' => $db->exec_SELECTgetRows(
-                'index_words.baseword, index_words.metaphone, index_rel.*',
-                'index_rel, index_words',
-                'index_rel.phash = ' . (int)$pageHash . ' AND index_words.wid = index_rel.wid
-					 AND index_words.is_stopword=0',
-                '',
-                'index_rel.count DESC',
-                 '20'
-             ),
-            'topFrequency' => $db->exec_SELECTgetRows(
-                'index_words.baseword, index_words.metaphone, index_rel.*',
-                'index_rel, index_words',
-                'index_rel.phash = ' . (int)$pageHash . ' AND index_words.wid = index_rel.wid
-					 AND index_words.is_stopword=0',
-                '',
-                'index_rel.freq DESC',
-                '20'
-            ),
+            'sections' => $sections,
+            'topCount' => $topCountWords,
+            'topFrequency' => $topFrequency,
             'debug' => $debugInfo,
             'lexer' => $lexer,
             'metaphone' => $metaphone,
             'page' => $pageRecord,
             'keywords' => $keywords
-    ));
+        ]);
     }
 
     /**
@@ -394,13 +426,20 @@ class AdministrationController extends ActionController
      */
     public function wordDetailAction($id = 0, $pageHash = 0)
     {
-        $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'index_phash.*, index_section.*, index_rel.*',
-            'index_rel, index_section, index_phash',
-            'index_rel.wid = ' . (int)$id . ' AND index_rel.phash = index_section.phash' . ' AND index_section.phash = index_phash.phash',
-            '',
-            'index_rel.freq DESC'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_phash');
+        $rows = $queryBuilder
+            ->select('index_phash.*', 'index_section.*', 'index_rel.*')
+            ->from('index_rel')
+            ->from('index_section')
+            ->from('index_phash')
+            ->where(
+                $queryBuilder->expr()->eq('index_rel.wid', (int)$id),
+                $queryBuilder->expr()->eq('index_rel.phash', $queryBuilder->quoteIdentifier('index_section.phash')),
+                $queryBuilder->expr()->eq('index_section.phash', $queryBuilder->quoteIdentifier('index_phash.phash'))
+            )
+            ->orderBy('index_rel.freq', 'desc')
+            ->execute()
+            ->fetchAll();
 
         $this->view->assignMultiple(array(
             'rows' => $rows,
@@ -467,14 +506,6 @@ class AdministrationController extends ActionController
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
         $uriBuilder->setRequest($this->request);
         return $uriBuilder->reset()->uriFor($action, $parameters, $controller);
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**

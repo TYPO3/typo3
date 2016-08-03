@@ -14,6 +14,9 @@ namespace TYPO3\CMS\IndexedSearch\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Driver\Statement;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -207,15 +210,15 @@ class IndexSearchRepository
         // Getting SQL result pointer:
         $this->getTimeTracker()->push('Searching result');
         if ($hookObj = &$this->hookRequest('getResultRows_SQLpointer')) {
-            $res = $hookObj->getResultRows_SQLpointer($searchWords, $freeIndexUid);
+            $result = $hookObj->getResultRows_SQLpointer($searchWords, $freeIndexUid);
         } else {
-            $res = $this->getResultRows_SQLpointer($searchWords, $freeIndexUid);
+            $result = $this->getResultRows_SQLpointer($searchWords, $freeIndexUid);
         }
         $this->getTimeTracker()->pull();
         // Organize and process result:
-        if ($res) {
+        if ($result) {
             // Total search-result count
-            $count = $this->getDatabaseConnection()->sql_num_rows($res);
+            $count = $result->rowCount();
             // The pointer is set to the result page that is currently being viewed
             $pointer = MathUtility::forceIntegerInRange($this->resultpagePointer, 0, floor($count / $this->numberOfResults));
             // Initialize result accumulation variables:
@@ -232,7 +235,7 @@ class IndexSearchRepository
             // Now, traverse result and put the rows to be displayed into an array
             // Each row should contain the fields from 'ISEC.*, IP.*' combined
             // + artificial fields "show_resume" (bool) and "result_number" (counter)
-            while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+            while ($row = $result->fetch()) {
                 // Set first row
                 if (!$c) {
                     $firstRow = $row;
@@ -276,7 +279,7 @@ class IndexSearchRepository
                 }
             }
 
-            $this->getDatabaseConnection()->sql_free_result($res);
+            $result->closeCursor();
 
             return array(
                 'resultRows' => $resultRows,
@@ -294,7 +297,7 @@ class IndexSearchRepository
      *
      * @param array $searchWords Search words
      * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-     * @return bool|\mysqli_result
+     * @return Statement
      */
     protected function getResultRows_SQLpointer($searchWords, $freeIndexUid = -1)
     {
@@ -387,10 +390,9 @@ class IndexSearchRepository
             if ($res) {
                 // Get phash list by searching for it:
                 $phashList = array();
-                while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+                while ($row = $res->fetch()) {
                     $phashList[] = $row['phash'];
                 }
-                $this->getDatabaseConnection()->sql_free_result($res);
                 // Here the phash list are merged with the existing result based on whether we are dealing with OR, NOT or AND operations.
                 if ($c) {
                     switch ($v['oper']) {
@@ -420,16 +422,25 @@ class IndexSearchRepository
      *
      * @param string $wordSel WHERE clause selecting the word from phash
      * @param string $additionalWhereClause Additional AND clause in the end of the query.
-     * @return bool|\mysqli_result SQL result pointer
+     * @return Statement
      */
     protected function execPHashListQuery($wordSel, $additionalWhereClause = '')
     {
-        return $this->getDatabaseConnection()->exec_SELECTquery(
-            'IR.phash',
-            'index_words IW, index_rel IR, index_section ISEC',
-            $wordSel . ' AND IW.wid=IR.wid AND ISEC.phash=IR.phash' . $this->sectionTableWhere() . $additionalWhereClause,
-            'IR.phash'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_words');
+        $queryBuilder->select('IR.phash')
+            ->from('index_words', 'IW')
+            ->from('index_rel', 'IR')
+            ->from('index_section', 'ISEC')
+            ->where(
+                QueryHelper::stripLogicalOperatorPrefix($wordSel),
+                $queryBuilder->expr()->eq('IW.wid', $queryBuilder->quoteIdentifier('IR.wid')),
+                $queryBuilder->expr()->eq('ISEC.phash', $queryBuilder->quoteIdentifier('IR.phash')),
+                QueryHelper::stripLogicalOperatorPrefix($this->sectionTableWhere()),
+                QueryHelper::stripLogicalOperatorPrefix($additionalWhereClause)
+            )
+            ->groupBy('IR.phash');
+
+        return $queryBuilder->execute();
     }
 
     /**
@@ -437,7 +448,7 @@ class IndexSearchRepository
      *
      * @param string $sWord the search word
      * @param int $wildcard Bit-field of Utility\LikeWildcard
-     * @return bool|\mysqli_result SQL result pointer
+     * @return Statement
      */
     protected function searchWord($sWord, $wildcard)
     {
@@ -455,20 +466,23 @@ class IndexSearchRepository
      * Search for one distinct word
      *
      * @param string $sWord the search word
-     * @return bool|\mysqli_result SQL result pointer
+     * @return Statement
      */
     protected function searchDistinct($sWord)
     {
-        $wSel = 'IW.wid=' . $this->md5inthash($sWord);
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('index_words')
+            ->expr();
+        $wSel = $expressionBuilder->eq('IW.wid', $this->md5inthash($sWord));
         $this->wSelClauses[] = $wSel;
-        return $this->execPHashListQuery($wSel, ' AND is_stopword=0');
+        return $this->execPHashListQuery($wSel, $expressionBuilder->eq('is_stopword', 0));
     }
 
     /**
      * Search for a sentence
      *
      * @param string $sWord the search word
-     * @return bool|\mysqli_result SQL result pointer
+     * @return Statement
      */
     protected function searchSentence($sWord)
     {
@@ -480,25 +494,33 @@ class IndexSearchRepository
             $sWord
         );
 
-        return $this->getDatabaseConnection()->exec_SELECTquery(
-            'ISEC.phash',
-            'index_section ISEC, index_fulltext IFT',
-            $likePart . ' AND ISEC.phash = IFT.phash' . $this->sectionTableWhere(),
-            'ISEC.phash'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_section');
+        return $queryBuilder->select('ISEC.phash')
+            ->from('index_section', 'ISEC')
+            ->from('index_fulltext', 'IFT')
+            ->where(
+                QueryHelper::stripLogicalOperatorPrefix($likePart),
+                $queryBuilder->expr()->eq('ISEC.phash', $queryBuilder->quoteIdentifier(('IFT.phash'))),
+                QueryHelper::stripLogicalOperatorPrefix($this->sectionTableWhere())
+            )
+            ->groupBy('ISEC.phash')
+            ->execute();
     }
 
     /**
      * Search for a metaphone word
      *
      * @param string $sWord the search word
-     * @return bool|\mysqli_result SQL result pointer
+     * @return Statement
      */
     protected function searchMetaphone($sWord)
     {
-        $wSel = 'IW.metaphone=' . $sWord;
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('index_words')
+            ->expr();
+        $wSel = $expressionBuilder->eq('IW.metaphone', $expressionBuilder->literal($sWord));
         $this->wSelClauses[] = $wSel;
-        return $this->execPHashListQuery($wSel, ' AND is_stopword=0');
+        return $this->execPHashListQuery($wSel, $expressionBuilder->eq('is_stopword', 0));
     }
 
     /**
@@ -508,25 +530,37 @@ class IndexSearchRepository
      */
     public function sectionTableWhere()
     {
-        $whereClause = '';
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('index_section')
+            ->expr();
+
+        $whereClause = $expressionBuilder->andX();
         $match = false;
         if (!($this->searchRootPageIdList < 0)) {
-            $whereClause = ' AND ISEC.rl0 IN (' . $this->searchRootPageIdList . ') ';
+            $whereClause->add(
+                $expressionBuilder->in('ISEC.rl0', GeneralUtility::intExplode(',', $this->searchRootPageIdList, true))
+            );
         }
         if (substr($this->sections, 0, 4) == 'rl1_') {
-            $list = implode(',', GeneralUtility::intExplode(',', substr($this->sections, 4)));
-            $whereClause .= ' AND ISEC.rl1 IN (' . $list . ')';
+            $whereClause->add(
+                $expressionBuilder->in('ISEC.rl1', GeneralUtility::intExplode(',', substr($this->sections, 4)))
+            );
             $match = true;
         } elseif (substr($this->sections, 0, 4) == 'rl2_') {
-            $list = implode(',', GeneralUtility::intExplode(',', substr($this->sections, 4)));
-            $whereClause .= ' AND ISEC.rl2 IN (' . $list . ')';
+            $whereClause->add(
+                $expressionBuilder->in('ISEC.rl2', GeneralUtility::intExplode(',', substr($this->sections, 4)))
+            );
             $match = true;
         } elseif (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'])) {
             // Traversing user configured fields to see if any of those are used to limit search to a section:
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'] as $fieldName => $rootLineLevel) {
                 if (substr($this->sections, 0, strlen($fieldName) + 1) == $fieldName . '_') {
-                    $list = implode(',', GeneralUtility::intExplode(',', substr($this->sections, strlen($fieldName) + 1)));
-                    $whereClause .= ' AND ISEC.' . $fieldName . ' IN (' . $list . ')';
+                    $whereClause->add(
+                        $expressionBuilder->in(
+                            'ISEC.' . $fieldName,
+                            GeneralUtility::intExplode(',', substr($this->sections, strlen($fieldName) + 1))
+                        )
+                    );
                     $match = true;
                     break;
                 }
@@ -536,17 +570,20 @@ class IndexSearchRepository
         if (!$match) {
             switch ((string)$this->sections) {
                 case '-1':
-                    $whereClause .= ' AND ISEC.page_id=' . $this->getTypoScriptFrontendController()->id;
+                    $whereClause->add(
+                        $expressionBuilder->eq('ISEC.page_id', (int)$this->getTypoScriptFrontendController()->id)
+                    );
                     break;
                 case '-2':
-                    $whereClause .= ' AND ISEC.rl2=0';
+                    $whereClause->add($expressionBuilder->eq('ISEC.rl2', 0));
                     break;
                 case '-3':
-                    $whereClause .= ' AND ISEC.rl2>0';
+                    $whereClause->add($expressionBuilder->gt('ISEC.rl2', 0));
                     break;
             }
         }
-        return $whereClause;
+
+        return $whereClause->count() ? ' AND ' . $whereClause : '';
     }
 
     /**
@@ -556,25 +593,28 @@ class IndexSearchRepository
      */
     public function mediaTypeWhere()
     {
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('index_phash')
+            ->expr();
         switch ($this->mediaType) {
             case '0':
-                // '0' => 'Kun TYPO3 sider',
-                $whereClause = ' AND IP.item_type=' . $this->getDatabaseConnection()->fullQuoteStr('0', 'index_phash');
+                // '0' => 'only TYPO3 pages',
+                $whereClause = $expressionBuilder->eq('IP.item_type', $expressionBuilder->literal('0'));
                 break;
             case '-2':
                 // All external documents
-                $whereClause = ' AND IP.item_type!=' . $this->getDatabaseConnection()->fullQuoteStr('0', 'index_phash');
+                $whereClause = $expressionBuilder->neq('IP.item_type', $expressionBuilder->literal('0'));
                 break;
             case false:
-
+                // Intentional fall-through
             case '-1':
                 // All content
                 $whereClause = '';
                 break;
             default:
-                $whereClause = ' AND IP.item_type=' . $this->getDatabaseConnection()->fullQuoteStr($this->mediaType, 'index_phash');
+                $whereClause = $expressionBuilder->eq('IP.item_type', $expressionBuilder->literal($this->mediaType));
         }
-        return $whereClause;
+        return $whereClause ? ' AND ' . $whereClause : '';
     }
 
     /**
@@ -585,10 +625,15 @@ class IndexSearchRepository
     public function languageWhere()
     {
         // -1 is the same as ALL language.
-        if ($this->languageUid >= 0) {
-            return ' AND IP.sys_language_uid=' . (int)$this->languageUid;
+        if ($this->languageUid < 0) {
+            return '';
         }
-        return '';
+
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('index_phash')
+            ->expr();
+
+        return ' AND ' . $expressionBuilder->eq('IP.sys_language_uid', (int)$this->languageUid);
     }
 
     /**
@@ -600,38 +645,63 @@ class IndexSearchRepository
     public function freeIndexUidWhere($freeIndexUid)
     {
         $freeIndexUid = (int)$freeIndexUid;
-        if ($freeIndexUid >= 0) {
-            // First, look if the freeIndexUid is a meta configuration:
-            $indexCfgRec = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('indexcfgs', 'index_config', 'type=5 AND uid=' . $freeIndexUid . $this->enableFields('index_config'));
-            if (is_array($indexCfgRec)) {
-                $refs = GeneralUtility::trimExplode(',', $indexCfgRec['indexcfgs']);
-                // Default value to protect against empty array.
-                $list = array(-99);
-                foreach ($refs as $ref) {
-                    list($table, $uid) = GeneralUtility::revExplode('_', $ref, 2);
-                    $uid = (int)$uid;
-                    switch ($table) {
-                        case 'index_config':
-                            $idxRec = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid', 'index_config', 'uid=' . $uid . $this->enableFields('index_config'));
-                            if ($idxRec) {
-                                $list[] = $uid;
-                            }
-                            break;
-                        case 'pages':
-                            $indexCfgRecordsFromPid = $this->getDatabaseConnection()->exec_SELECTgetRows('uid', 'index_config', 'pid=' . $uid . $this->enableFields('index_config'));
-                            foreach ($indexCfgRecordsFromPid as $idxRec) {
-                                $list[] = $idxRec['uid'];
-                            }
-                            break;
-                    }
-                }
-                $list = array_unique($list);
-            } else {
-                $list = array($freeIndexUid);
-            }
-            return ' AND IP.freeIndexUid IN (' . implode(',', $list) . ')';
+        if ($freeIndexUid < 0) {
+            return '';
         }
-        return '';
+        // First, look if the freeIndexUid is a meta configuration:
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('index_config');
+        $queryBuilder->getRestrictions()->removeAll();
+        $indexCfgRec = $queryBuilder->select('indexcfgs')
+            ->from('index_config')
+            ->where(
+                $queryBuilder->expr()->eq('type', 5),
+                $queryBuilder->expr()->eq('uid', $freeIndexUid),
+                QueryHelper::stripLogicalOperatorPrefix($this->enableFields('index_config'))
+            )
+            ->execute()
+            ->fetch();
+
+        if (is_array($indexCfgRec)) {
+            $refs = GeneralUtility::trimExplode(',', $indexCfgRec['indexcfgs']);
+            // Default value to protect against empty array.
+            $list = array(-99);
+            foreach ($refs as $ref) {
+                list($table, $uid) = GeneralUtility::revExplode('_', $ref, 2);
+                $uid = (int)$uid;
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('index_config');
+                $queryBuilder->getRestrictions()->removeAll();
+                $queryBuilder->select('uid')
+                    ->from('index_config')
+                    ->where(QueryHelper::stripLogicalOperatorPrefix($this->enableFields('index_config')));
+                switch ($table) {
+                    case 'index_config':
+                        $idxRec = $queryBuilder->andWhere($queryBuilder->expr()->eq('uid', $uid))
+                            ->execute()
+                            ->fetch();
+                        if ($idxRec) {
+                            $list[] = $uid;
+                        }
+                        break;
+                    case 'pages':
+                        $indexCfgRecordsFromPid = $queryBuilder->andWhere($queryBuilder->expr()->eq('pid', $uid))
+                            ->execute();
+                        while ($idxRec = $indexCfgRecordsFromPid->fetch()) {
+                            $list[] = $idxRec['uid'];
+                        }
+                        break;
+                }
+            }
+            $list = array_unique($list);
+        } else {
+            $list = [$freeIndexUid];
+        }
+
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('index_phash')
+            ->expr();
+        return ' AND ' . $expressionBuilder->in('IP.freeIndexUid', array_map('intval', $list));
     }
 
     /**
@@ -639,28 +709,74 @@ class IndexSearchRepository
      *
      * @param string $list List of phash integers which match the search.
      * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-     * @return bool|\mysqli_result Query result pointer
+     * @return Statement
      */
     protected function execFinalQuery($list, $freeIndexUid = -1)
     {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_words');
+        $queryBuilder->select('ISEC.*', 'IP.*')
+            ->from('index_phash', 'IP')
+            ->from('index_section', 'ISEC')
+            ->where(
+                $queryBuilder->expr()->in('IP.phash', GeneralUtility::intExplode(',', $list, true)),
+                QueryHelper::stripLogicalOperatorPrefix($this->mediaTypeWhere()),
+                QueryHelper::stripLogicalOperatorPrefix($this->languageWhere()),
+                QueryHelper::stripLogicalOperatorPrefix($this->freeIndexUidWhere($freeIndexUid)),
+                $queryBuilder->expr()->eq('IP.phash', $queryBuilder->quoteIdentifier('IR.phash'))
+            )
+            ->groupBy(
+                'IP.phash',
+                'ISEC.phash',
+                'ISEC.phash_t3',
+                'ISEC.rl0',
+                'ISEC.rl1',
+                'ISEC.rl2',
+                'ISEC.page_id',
+                'ISEC.uniqid',
+                'IP.phash_grouping',
+                'IP.data_filename',
+                'IP.data_page_id',
+                'IP.data_page_reg1',
+                'IP.data_page_type',
+                'IP.data_page_mp',
+                'IP.gr_list',
+                'IP.item_type',
+                'IP.item_title',
+                'IP.item_description',
+                'IP.item_mtime',
+                'IP.tstamp',
+                'IP.item_size',
+                'IP.contentHash',
+                'IP.crdate',
+                'IP.parsetime',
+                'IP.sys_language_uid',
+                'IP.item_crdate',
+                'IP.cHashParams',
+                'IP.externalUrl',
+                'IP.recordUid',
+                'IP.freeIndexUid',
+                'IP.freeIndexSetId'
+            );
+
         // Setting up methods of filtering results
         // based on page types, access, etc.
-        $page_join = '';
-        // Indexing configuration clause:
-        $freeIndexUidClause = $this->freeIndexUidWhere($freeIndexUid);
-        // Calling hook for alternative creation of page ID list
         if ($hookObj = $this->hookRequest('execFinalQuery_idList')) {
-            $page_where = $hookObj->execFinalQuery_idList($list);
+            // Calling hook for alternative creation of page ID list
+            $hookWhere = QueryHelper::stripLogicalOperatorPrefix($hookObj->execFinalQuery_idList($list));
+            if (!empty($hookWhere)) {
+                $queryBuilder->andWhere($hookWhere);
+            }
         } elseif ($this->joinPagesForQuery) {
             // Alternative to getting all page ids by ->getTreeList() where
             // "excludeSubpages" is NOT respected.
-            $page_join = ',
-				pages';
-            $page_where = 'pages.uid = ISEC.page_id
-				' . $this->enableFields('pages') . '
-				AND pages.no_search=0
-				AND pages.doktype<200
-			';
+            $queryBuilder->getRestrictions()->removeAll();
+            $queryBuilder->from('pages');
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('ISEC.page')),
+                QueryHelper::stripLogicalOperatorPrefix($this->enableFields('pages')),
+                $queryBuilder->expr()->eq('pages.no_search', 0),
+                $queryBuilder->expr()->lt('pages.doktype', 200)
+            );
         } elseif ($this->searchRootPageIdList >= 0) {
             // Collecting all pages IDs in which to search;
             // filtering out ALL pages that are not accessible due to enableFields.
@@ -670,80 +786,85 @@ class IndexSearchRepository
             foreach ($siteIdNumbers as $rootId) {
                 $pageIdList[] = $this->getTypoScriptFrontendController()->cObj->getTreeList(-1 * $rootId, 9999);
             }
-            $page_where = 'ISEC.page_id IN (' . implode(',', $pageIdList) . ')';
-        } else {
-            // Disable everything... (select all)
-            $page_where = '1=1';
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in(
+                    'ISEC.page_id',
+                    array_unique(GeneralUtility::intExplode(',', implode(',', $pageIdList), true))
+                )
+            );
         }
         // otherwise select all / disable everything
         // If any of the ranking sortings are selected, we must make a
         // join with the word/rel-table again, because we need to
         // calculate ranking based on all search-words found.
         if (substr($this->sortOrder, 0, 5) === 'rank_') {
+            $queryBuilder
+                ->from('index_words', 'IW')
+                ->from('index_rel', 'IR')
+                ->andWhere(
+                    $queryBuilder->expr()->eq('IW.wid', $queryBuilder->quoteIdentifier('IR.wid')),
+                    $queryBuilder->expr()->eq('ISEC.phash', $queryBuilder->quoteIdentifier('IR.phash'))
+                );
             switch ($this->sortOrder) {
                 case 'rank_flag':
                     // This gives priority to word-position (max-value) so that words in title, keywords, description counts more than in content.
                     // The ordering is refined with the frequency sum as well.
-                    $grsel = 'MAX(IR.flags) AS order_val1, SUM(IR.freq) AS order_val2';
-                    $orderBy = 'order_val1' . $this->getDescendingSortOrderFlag() . ', order_val2' . $this->getDescendingSortOrderFlag();
+                    $queryBuilder
+                        ->addSelectLiteral(
+                            $queryBuilder->expr()->max('IR.flags', 'order_val1'),
+                            $queryBuilder->expr()->sum('IR.freq', 'order_val2')
+                        )
+                        ->orderBy('order_val1', $this->getDescendingSortOrderFlag())
+                        ->addOrderBy('order_val2', $this->getDescendingSortOrderFlag());
                     break;
                 case 'rank_first':
                     // Results in average position of search words on page.
                     // Must be inversely sorted (low numbers are closer to top)
-                    $grsel = 'AVG(IR.first) AS order_val';
-                    $orderBy = 'order_val' . $this->getDescendingSortOrderFlag(true);
+                    $queryBuilder
+                        ->addSelectLiteral($queryBuilder->expr()->avg('IR.first', 'order_val'))
+                        ->orderBy('order_val', $this->getDescendingSortOrderFlag(true));
                     break;
                 case 'rank_count':
                     // Number of words found
-                    $grsel = 'SUM(IR.count) AS order_val';
-                    $orderBy = 'order_val' . $this->getDescendingSortOrderFlag();
+                    $queryBuilder
+                        ->addSelectLiteral($queryBuilder->expr()->sum('IR.count', 'order_val'))
+                        ->orderBy('order_val', $this->getDescendingSortOrderFlag());
                     break;
                 default:
                     // Frequency sum. I'm not sure if this is the best way to do
                     // it (make a sum...). Or should it be the average?
-                    $grsel = 'SUM(IR.freq) AS order_val';
-                    $orderBy = 'order_val' . $this->getDescendingSortOrderFlag();
+                    $queryBuilder
+                        ->addSelectLiteral($queryBuilder->expr()->sum('IR.freq', 'order_val'))
+                        ->orderBy('order_val', $this->getDescendingSortOrderFlag());
             }
-            $wordSel = '';
+
             if (!empty($this->wSelClauses)) {
-                // So, words are imploded into an OR statement (no "sentence search" should be done here - may deselect results)
-                $wordSel = '(' . implode(' OR ', $this->wSelClauses) . ') AND ';
+                // So, words are combined in an OR statement
+                // (no "sentence search" should be done here - may deselect results)
+                $wordSel = $queryBuilder->expr()->orX();
+                foreach ($this->wSelClauses as $wSelClause) {
+                    $wordSel->add(QueryHelper::stripLogicalOperatorPrefix($wSelClause));
+                }
+                $queryBuilder->andWhere($wordSel);
             }
-            $res = $this->getDatabaseConnection()->exec_SELECTquery(
-                'ISEC.*, IP.*, ' . $grsel,
-                'index_words IW,
-					index_rel IR,
-					index_section ISEC,
-					index_phash IP' . $page_join,
-                $wordSel .
-                'IP.phash IN (' . $list . ') ' .
-                    $this->mediaTypeWhere() . ' ' . $this->languageWhere() . $freeIndexUidClause . '
-					AND IW.wid=IR.wid
-					AND ISEC.phash = IR.phash
-					AND IP.phash = IR.phash
-					AND ' . $page_where,
-                'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2 ,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,IP.cHashParams,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId',
-                $orderBy
-            );
         } else {
             // Otherwise, if sorting are done with the pages table or other fields,
             // there is no need for joining with the rel/word tables:
             $orderBy = '';
             switch ((string)$this->sortOrder) {
                 case 'title':
-                    $orderBy = 'IP.item_title' . $this->getDescendingSortOrderFlag();
+                    $queryBuilder->orderBy('IP.item_title', $this->getDescendingSortOrderFlag());
                     break;
                 case 'crdate':
-                    $orderBy = 'IP.item_crdate' . $this->getDescendingSortOrderFlag();
+                    $queryBuilder->orderBy('IP.item_crdate', $this->getDescendingSortOrderFlag());
                     break;
                 case 'mtime':
-                    $orderBy = 'IP.item_mtime' . $this->getDescendingSortOrderFlag();
+                    $queryBuilder->orderBy('IP.item_mtime', $this->getDescendingSortOrderFlag());
                     break;
             }
-            $res = $this->getDatabaseConnection()->exec_SELECTquery('ISEC.*, IP.*', 'index_phash IP,index_section ISEC' . $page_join, 'IP.phash IN (' . $list . ') ' . $this->mediaTypeWhere() . $this->languageWhere() . $freeIndexUidClause . '
-							AND IP.phash = ISEC.phash AND ' . $page_where, 'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2 ,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,IP.cHashParams,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId', $orderBy);
         }
-        return $res;
+
+        return $queryBuilder->execute();
     }
 
     /**
@@ -764,35 +885,44 @@ class IndexSearchRepository
         }
         // Evaluate regularly indexed pages based on item_type:
         // External media:
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_grlist');
         if ($row['item_type']) {
             // For external media we will check the access of the parent page on which the media was linked from.
-            // "phash_t3" is the phash of the parent TYPO3 page row which initiated the indexing of the documents in this section.
-            // So, selecting for the grlist records belonging to the parent phash-row where the current users gr_list exists will help us to know.
-            // If this is NOT found, there is still a theoretical possibility that another user accessible page would display a link, so maybe the resume of such a document here may be unjustified hidden. But better safe than sorry.
-            if ($this->isTableUsed('index_grlist')) {
-                $res = $this->getDatabaseConnection()->exec_SELECTquery('phash', 'index_grlist', 'phash=' . (int)$row['phash_t3'] . ' AND gr_list=' . $this->getDatabaseConnection()->fullQuoteStr($this->frontendUserGroupList, 'index_grlist'));
-            } else {
-                $res = false;
-            }
-            if ($res && $this->getDatabaseConnection()->sql_num_rows($res)) {
-                return true;
-            } else {
+            // "phash_t3" is the phash of the parent TYPO3 page row which initiated the indexing of the documents
+            // in this section. So, selecting for the grlist records belonging to the parent phash-row where the
+            // current users gr_list exists will help us to know. If this is NOT found, there is still a theoretical
+            // possibility that another user accessible page would display a link, so maybe the resume of such a
+            // document here may be unjustified hidden. But better safe than sorry.
+            if (!$this->isTableUsed('index_grlist')) {
                 return false;
             }
+
+            return (bool)$connection->count(
+                'phash',
+                'index_grlist',
+                [
+                    'phash' => (int)$row['phash_t3'],
+                    'gr_list' => $this->frontendUserGroupList
+                ]
+            );
         } else {
             // Ordinary TYPO3 pages:
             if ((string)$row['gr_list'] !== (string)$this->frontendUserGroupList) {
-                // Selecting for the grlist records belonging to the phash-row where the current users gr_list exists. If it is found it is proof that this user has direct access to the phash-rows content although he did not himself initiate the indexing...
-                if ($this->isTableUsed('index_grlist')) {
-                    $res = $this->getDatabaseConnection()->exec_SELECTquery('phash', 'index_grlist', 'phash=' . (int)$row['phash'] . ' AND gr_list=' . $this->getDatabaseConnection()->fullQuoteStr($this->frontendUserGroupList, 'index_grlist'));
-                } else {
-                    $res = false;
-                }
-                if ($res && $this->getDatabaseConnection()->sql_num_rows($res)) {
-                    return true;
-                } else {
+                // Selecting for the grlist records belonging to the phash-row where the current users gr_list exists.
+                // If it is found it is proof that this user has direct access to the phash-rows content although
+                // he did not himself initiate the indexing...
+                if (!$this->isTableUsed('index_grlist')) {
                     return false;
                 }
+
+                return (bool)$connection->count(
+                    'phash',
+                    'index_grlist',
+                    [
+                        'phash' => (int)$row['phash'],
+                        'gr_list' => $this->frontendUserGroupList
+                    ]
+                );
             } else {
                 return true;
             }
@@ -924,16 +1054,6 @@ class IndexSearchRepository
     public function getJoinPagesForQuery()
     {
         return $this->joinPagesForQuery;
-    }
-
-    /**
-     * Returns the database connection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**

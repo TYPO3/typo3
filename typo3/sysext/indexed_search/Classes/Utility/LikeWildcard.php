@@ -13,6 +13,8 @@ namespace TYPO3\CMS\IndexedSearch\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Enumeration object for LikeWildcard
@@ -40,21 +42,16 @@ class LikeWildcard extends \TYPO3\CMS\Core\Type\Enumeration
      * @param string $fieldName The name of the field to query with LIKE.
      * @param string $likeValue The value for the LIKE clause operation.
      * @return string
-     * @throws \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException
      */
     public function getLikeQueryPart($tableName, $fieldName, $likeValue)
     {
-        $databaseConnection = $GLOBALS['TYPO3_DB'];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($tableName);
 
-        $likeValue = $databaseConnection->quoteStr(
-            $databaseConnection->escapeStrForLike($likeValue, $tableName),
-            $tableName
-        );
+        $string = ($this->value & self::LEFT ? '%' : '')
+            . $queryBuilder->escapeLikeWildcards($likeValue)
+            . ($this->value & self::RIGHT ? '%' : '');
 
-        return $fieldName . ' LIKE \''
-            . ($this->value & self::LEFT ? '%' : '')
-            . $likeValue
-            . ($this->value & self::RIGHT ? '%' : '')
-            . '\'';
+        return $queryBuilder->expr()->like($fieldName, $queryBuilder->quote($string));
     }
 }

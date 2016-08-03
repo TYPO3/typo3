@@ -1581,30 +1581,22 @@ class Indexer
      */
     public function removeOldIndexedPages($phash)
     {
-        // Removing old registrations for all tables. Because the pages are TYPO3 pages there can be nothing else than 1-1 relations here.
-        $tableArray = explode(',', 'index_phash,index_section,index_grlist,index_fulltext,index_debug');
+        // Removing old registrations for all tables. Because the pages are TYPO3 pages
+        // there can be nothing else than 1-1 relations here.
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $tableArray = ['index_phash', 'index_section', 'index_grlist', 'index_fulltext', 'index_debug'];
         foreach ($tableArray as $table) {
             if (IndexedSearchUtility::isTableUsed($table)) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable($table);
-                $queryBuilder
-                    ->delete($table)
-                    ->where(
-                        $queryBuilder->expr()->eq('phash', (int)$phash)
-                    )
-                    ->execute();
+                $connectionPool->getConnectionForTable($table)->delete($table, ['phash' => (int)$phash]);
             }
         }
-        // Removing all index_section records with hash_t3 set to this hash (this includes such records set for external media on the page as well!). The re-insert of these records are done in indexRegularDocument($file).
+
+        // Removing all index_section records with hash_t3 set to this hash (this includes such
+        // records set for external media on the page as well!). The re-insert of these records
+        // are done in indexRegularDocument($file).
         if (IndexedSearchUtility::isTableUsed('index_section')) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('index_section');
-            $queryBuilder
-                ->delete('index_section')
-                ->where(
-                    $queryBuilder->expr()->eq('phash_t3', (int)$phash)
-                )
-                ->execute();
+            $connectionPool->getConnectionForTable('index_section')
+                ->delete('index_section', ['phash_t3' => (int)$phash]);
         }
     }
 
@@ -1705,11 +1697,32 @@ class Indexer
     public function submitFile_grlist($hash)
     {
         // Testing if there is a gr_list record for a non-logged in user and if so, there is no need to place another one.
-        if (IndexedSearchUtility::isTableUsed('index_grlist')) {
-            $count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_grlist', 'phash=' . (int)$hash . ' AND (hash_gr_list=' . IndexedSearchUtility::md5inthash($this->defaultGrList) . ' OR hash_gr_list=' . IndexedSearchUtility::md5inthash($this->conf['gr_list']) . ')');
-            if ($count == 0) {
-                $this->submit_grlist($hash, $hash);
-            }
+        if (!IndexedSearchUtility::isTableUsed('index_grlist')) {
+            return;
+        }
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('index_grlist');
+        $count = (int)$queryBuilder->count('*')
+            ->from('index_grlist')
+            ->where(
+                $queryBuilder->expr()->eq('phash', (int)$hash),
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->eq(
+                        'hash_gr_list',
+                        IndexedSearchUtility::md5inthash($this->defaultGrList)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'hash_gr_list',
+                        IndexedSearchUtility::md5inthash($this->conf['gr_list'])
+                    )
+                )
+            )
+            ->execute()
+            ->fetchColumn();
+
+        if ($count === 0) {
+            $this->submit_grlist($hash, $hash);
         }
     }
 
@@ -1722,11 +1735,23 @@ class Indexer
     public function submitFile_section($hash)
     {
         // Testing if there is already a section
-        if (IndexedSearchUtility::isTableUsed('index_section')) {
-            $count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_section', 'phash=' . (int)$hash . ' AND page_id=' . (int)$this->conf['id']);
-            if ($count == 0) {
-                $this->submit_section($hash, $this->hash['phash']);
-            }
+        if (!IndexedSearchUtility::isTableUsed('index_section')) {
+            return;
+        }
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('index_section');
+        $count = (int)$queryBuilder->count('phash')
+            ->from('index_section')
+            ->where(
+                $queryBuilder->expr()->eq('phash', (int)$hash),
+                $queryBuilder->expr()->eq('page_id', (int)$this->conf['id'])
+            )
+            ->execute()
+            ->fetchColumn();
+
+        if ($count === 0) {
+            $this->submit_section($hash, $this->hash['phash']);
         }
     }
 
@@ -1738,19 +1763,14 @@ class Indexer
      */
     public function removeOldIndexedFiles($phash)
     {
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         // Removing old registrations for tables.
-        $tableArray = explode(',', 'index_phash,index_grlist,index_fulltext,index_debug');
+        $tableArray = ['index_phash', 'index_grlist', 'index_fulltext', 'index_debug'];
         foreach ($tableArray as $table) {
-            if (IndexedSearchUtility::isTableUsed($table)) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable($table);
-                $queryBuilder
-                    ->delete($table)
-                    ->where(
-                        $queryBuilder->expr()->eq('phash', (int)$phash)
-                    )
-                    ->execute();
+            if (!IndexedSearchUtility::isTableUsed($table)) {
+                continue;
             }
+            $connectionPool->getConnectionForTable($table)->delete($table, ['phash' => (int)$phash]);
         }
     }
 
@@ -1773,9 +1793,18 @@ class Indexer
             // Not indexed (not in index_phash)
             $result = 4;
         } else {
-            $row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('item_mtime,tstamp', 'index_phash', 'phash=' . (int)$phash);
+            $row = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_phash')
+                ->select(
+                    ['item_mtime', 'tstamp'],
+                    'index_phash',
+                    ['phash' => (int)$phash],
+                    [],
+                    [],
+                    1
+                )
+                ->fetch();
             // If there was an indexing of the page...:
-            if ($row) {
+            if (!empty($row)) {
                 if ($this->tstamp_maxAge && $row['tstamp'] + $this->tstamp_maxAge < $GLOBALS['EXEC_TIME']) {
                     // If max age is exceeded, index the page
                     // The configured max-age was exceeded for the document and thus it's indexed.
@@ -1826,8 +1855,21 @@ class Indexer
         // With this query the page will only be indexed if it's content is different from the same "phash_grouping" -page.
         $result = true;
         if (IndexedSearchUtility::isTableUsed('index_phash')) {
-            $row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('phash', 'index_phash', 'phash_grouping=' . (int)$this->hash['phash_grouping'] . ' AND contentHash=' . (int)$this->content_md5h);
-            if ($row) {
+            $row = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_phash')
+                ->select(
+                    ['item_mtime', 'tstamp'],
+                    'index_phash',
+                    [
+                        'phash_grouping' => (int)$this->hash['phash_grouping'],
+                        'contentHash' => (int)$this->content_md5h
+                    ],
+                    [],
+                    [],
+                    1
+                )
+                ->fetch();
+
+            if (!empty($row)) {
                 $result = $row;
             }
         }
@@ -1846,8 +1888,18 @@ class Indexer
     {
         $result = true;
         if (IndexedSearchUtility::isTableUsed('index_phash')) {
-            $count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'index_phash', 'phash_grouping=' . (int)$hashGr . ' AND contentHash=' . (int)$content_md5h);
-            $result = $count == 0;
+            $count = (int)GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('index_phash')
+                ->count(
+                    '*',
+                    'index_phash',
+                    [
+                        'phash_grouping' => (int)$hashGr,
+                        'contentHash' => (int)$content_md5h
+                    ]
+                );
+
+            $result = $count === 0;
         }
         return $result;
     }
@@ -1862,7 +1914,14 @@ class Indexer
     {
         $result = false;
         if (IndexedSearchUtility::isTableUsed('index_grlist')) {
-            $count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash_x', 'index_grlist', 'phash_x=' . (int)$phash_x);
+            $count = (int)GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('index_grlist')
+                ->count(
+                    'phash_x',
+                    'index_grlist',
+                    ['phash_x' => (int)$phash_x]
+                );
+
             $result = $count > 0;
         }
         return $result;
@@ -1879,8 +1938,18 @@ class Indexer
     public function update_grlist($phash, $phash_x)
     {
         if (IndexedSearchUtility::isTableUsed('index_grlist')) {
-            $count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_grlist', 'phash=' . (int)$phash . ' AND hash_gr_list=' . IndexedSearchUtility::md5inthash($this->conf['gr_list']));
-            if ($count == 0) {
+            $count = (int)GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('index_grlist')
+                ->count(
+                    'phash',
+                    'index_grlist',
+                    [
+                        'phash' => (int)$phash,
+                        'hash_gr_list' => IndexedSearchUtility::md5inthash($this->conf['gr_list'])
+                    ]
+                );
+
+            if ($count === 0) {
                 $this->submit_grlist($phash, $phash_x);
                 $this->log_setTSlogMessage('Inserted gr_list \'' . $this->conf['gr_list'] . '\' for phash \'' . $phash . '\'', 1);
             }
@@ -1896,15 +1965,27 @@ class Indexer
      */
     public function updateTstamp($phash, $mtime = 0)
     {
-        if (IndexedSearchUtility::isTableUsed('index_phash')) {
-            $updateFields = array(
-                'tstamp' => $GLOBALS['EXEC_TIME']
-            );
-            if ($mtime) {
-                $updateFields['item_mtime'] = (int)$mtime;
-            }
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_phash', 'phash=' . (int)$phash, $updateFields);
+        if (!IndexedSearchUtility::isTableUsed('index_phash')) {
+            return;
         }
+
+        $updateFields = [
+            'tstamp' => $GLOBALS['EXEC_TIME']
+        ];
+
+        if ($mtime) {
+            $updateFields['item_mtime'] = (int)$mtime;
+        }
+
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('index_phash')
+            ->update(
+                'index_phash',
+                $updateFields,
+                [
+                    'phash' => (int)$phash
+                ]
+            );
     }
 
     /**
@@ -1915,12 +1996,21 @@ class Indexer
      */
     public function updateSetId($phash)
     {
-        if (IndexedSearchUtility::isTableUsed('index_phash')) {
-            $updateFields = array(
-                'freeIndexSetId' => (int)$this->conf['freeIndexSetId']
-            );
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_phash', 'phash=' . (int)$phash, $updateFields);
+        if (!IndexedSearchUtility::isTableUsed('index_phash')) {
+            return;
         }
+
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('index_phash')
+            ->update(
+                'index_phash',
+                [
+                    'freeIndexSetId' => (int)$this->conf['freeIndexSetId']
+                ],
+                [
+                    'phash' => (int)$phash
+                ]
+            );
     }
 
     /**
@@ -1932,12 +2022,21 @@ class Indexer
      */
     public function updateParsetime($phash, $parsetime)
     {
-        if (IndexedSearchUtility::isTableUsed('index_phash')) {
-            $updateFields = array(
-                'parsetime' => (int)$parsetime
-            );
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_phash', 'phash=' . (int)$phash, $updateFields);
+        if (!IndexedSearchUtility::isTableUsed('index_phash')) {
+            return;
         }
+
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('index_phash')
+            ->update(
+                'index_phash',
+                [
+                    'parsetime' => (int)$parsetime
+                ],
+                [
+                    'phash' => (int)$phash
+                ]
+            );
     }
 
     /**
@@ -1947,11 +2046,22 @@ class Indexer
      */
     public function updateRootline()
     {
-        if (IndexedSearchUtility::isTableUsed('index_section')) {
-            $updateFields = array();
-            $this->getRootLineFields($updateFields);
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_section', 'page_id=' . (int)$this->conf['id'], $updateFields);
+        if (!IndexedSearchUtility::isTableUsed('index_section')) {
+            return;
         }
+
+        $updateFields = [];
+        $this->getRootLineFields($updateFields);
+
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('index_section')
+            ->update(
+                'index_section',
+                $updateFields,
+                [
+                    'page_id' => (int)$this->conf['id']
+                ]
+            );
     }
 
     /**
@@ -1996,34 +2106,50 @@ class Indexer
      */
     public function checkWordList($wordListArray)
     {
-        if (IndexedSearchUtility::isTableUsed('index_words')) {
-            if (!empty($wordListArray)) {
-                $phashArray = array();
-                foreach ($wordListArray as $value) {
-                    $phashArray[] = (int)$value['hash'];
-                }
-                $cwl = implode(',', $phashArray);
-                $count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('baseword', 'index_words', 'wid IN (' . $cwl . ')');
-                $wordListArrayCount = count($wordListArray);
-                if ($count !== $wordListArrayCount) {
-                    $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('baseword', 'index_words', 'wid IN (' . $cwl . ')');
-                    $this->log_setTSlogMessage('Inserting words: ' . ($wordListArrayCount - $count), 1);
-                    while (false != ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
-                        unset($wordListArray[$row['baseword']]);
-                    }
-                    $GLOBALS['TYPO3_DB']->sql_free_result($res);
-                    foreach ($wordListArray as $key => $val) {
-                        $insertFields = array(
-                            'wid' => $val['hash'],
-                            'baseword' => $key,
-                            'metaphone' => $val['metaphone']
-                        );
-                        // A duplicate-key error will occur here if a word is NOT unset in the unset() line. However as long as the words in $wl are NOT longer as 60 chars (the baseword varchar is 60 characters...) this is not a problem.
-                        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-                            ->getConnectionForTable('index_words');
-                        $connection->insert('index_words', $insertFields);
-                    }
-                }
+        if (!IndexedSearchUtility::isTableUsed('index_words') || empty($wordListArray)) {
+            return;
+        }
+
+        $wordListArrayCount = count($wordListArray);
+        $phashArray = array_map('intval', array_column($wordListArray, 'hash'));
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_words');
+        $count = (int)$queryBuilder->count('baseword')
+            ->from('index_words')
+            ->where(
+                $queryBuilder->expr()->in('wid', $phashArray)
+            )
+            ->execute()
+            ->fetchColumn();
+
+        if ($count !== $wordListArrayCount) {
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_words');
+            $queryBuilder = $connection->createQueryBuilder();
+
+            $result = $queryBuilder->select('baseword')
+                ->from('index_words')
+                ->where(
+                    $queryBuilder->expr()->in('wid', $phashArray)
+                )
+                ->execute();
+
+            $this->log_setTSlogMessage('Inserting words: ' . ($wordListArrayCount - $count), 1);
+            while ($row = $result->fetch()) {
+                unset($wordListArray[$row['baseword']]);
+            }
+
+            foreach ($wordListArray as $key => $val) {
+                // A duplicate-key error will occur here if a word is NOT unset in the unset() line. However as
+                // long as the words in $wl are NOT longer as 60 chars (the baseword varchar is 60 characters...)
+                // this is not a problem.
+                $connection->insert(
+                    'index_words',
+                    [
+                        'wid' => $val['hash'],
+                        'baseword' => $key,
+                        'metaphone' => $val['metaphone']
+                    ]
+                );
             }
         }
     }
@@ -2037,36 +2163,43 @@ class Indexer
      */
     public function submitWords($wordList, $phash)
     {
-        if (IndexedSearchUtility::isTableUsed('index_rel')) {
-            $stopWords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('wid', 'index_words', 'is_stopword != 0', '', '', '', 'wid');
-
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('index_rel');
-            $queryBuilder
-                ->delete('index_rel')
-                ->where(
-                    $queryBuilder->expr()->eq('phash', (int)$phash)
-                )
-                ->execute();
-            $fields = array('phash', 'wid', 'count', 'first', 'freq', 'flags');
-            $rows = array();
-            foreach ($wordList as $val) {
-                if (isset($stopWords[$val['hash']])) {
-                    continue;
-                }
-                $rows[] = array(
-                    (int)$phash,
-                    (int)$val['hash'],
-                    (int)$val['count'],
-                    (int)$val['first'],
-                    $this->freqMap($val['count'] / $this->wordcount),
-                    $val['cmp'] & $this->flagBitMask
-                );
-            }
-            GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('index_rel')
-                ->bulkInsert('index_rel', $rows, $fields);
+        if (!IndexedSearchUtility::isTableUsed('index_rel')) {
+            return;
         }
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('index_words');
+        $result = $queryBuilder->select('wid')
+            ->from('index_words')
+            ->where(
+                $queryBuilder->expr()->neq('is_stopword', 0)
+            )
+            ->groupBy('wid')
+            ->execute();
+
+        $stopWords = [];
+        while ($row = $result->fetch()) {
+            $stopWords[$row['wid']] = $row;
+        }
+
+        $connectionPool->getConnectionForTable('index_rel')->delete('index_rel', ['phash' => (int)$phash]);
+
+        $fields = ['phash', 'wid', 'count', 'first', 'freq', 'flags'];
+        $rows = [];
+        foreach ($wordList as $val) {
+            if (isset($stopWords[$val['hash']])) {
+                continue;
+            }
+            $rows[] = [
+                (int)$phash,
+                (int)$val['hash'],
+                (int)$val['count'],
+                (int)$val['first'],
+                $this->freqMap($val['count'] / $this->wordcount),
+                $val['cmp'] & $this->flagBitMask
+            ];
+        }
+
+        $connectionPool->getConnectionForTable('index_rel')->bulkInsert('index_rel', $rows, $fields);
     }
 
     /**

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
 
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -258,7 +259,15 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             // Create header if we are searching more than one indexing configuration
             if (count($indexCfgs) > 1) {
                 if ($freeIndexUid > 0) {
-                    $indexCfgRec = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('title', 'index_config', 'uid=' . (int)$freeIndexUid . $GLOBALS['TSFE']->cObj->enableFields('index_config'));
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getQueryBuilderForTable('index_config');
+                    $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+                    $indexCfgRec = $queryBuilder
+                        ->select('*')
+                        ->from('index_config')
+                        ->where($queryBuilder->expr()->eq('uid', (int)$freeIndexUid))
+                        ->execute()
+                        ->fetch();
                     $categoryTitle = $indexCfgRec['title'];
                 } else {
                     $categoryTitle = LocalizationUtility::translate('indexingConfigurationHeader.' . $freeIndexUid, 'IndexedSearch');
@@ -1042,11 +1051,16 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $blindSettings = $this->settings['blind'];
         if (!$blindSettings['languageUid']) {
             // Add search languages
-            $res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'sys_language', '1=1' . $GLOBALS['TSFE']->cObj->enableFields('sys_language'));
-            if ($res) {
-                while ($lang = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
-                    $allOptions[$lang['uid']] = $lang['title'];
-                }
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('sys_language');
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+            $result = $queryBuilder
+                ->select('uid', 'title')
+                ->from('sys_language')
+                ->execute();
+
+            while ($lang = $result->fetch()) {
+                $allOptions[$lang['uid']] = $lang['title'];
             }
             // disable single entries by TypoScript
             $allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['languageUid']);
@@ -1123,11 +1137,17 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             // add an additional index configuration
             if ($this->settings['defaultFreeIndexUidList']) {
                 $uidList = GeneralUtility::intExplode(',', $this->settings['defaultFreeIndexUidList']);
-                $indexCfgRecords = $this->getDatabaseConnection()->exec_SELECTgetRows('uid,title', 'index_config', 'uid IN (' . implode(',', $uidList) . ')' . $GLOBALS['TSFE']->cObj->enableFields('index_config'), '', '', '', 'uid');
-                foreach ($uidList as $uidValue) {
-                    if (is_array($indexCfgRecords[$uidValue])) {
-                        $allOptions[$uidValue] = $indexCfgRecords[$uidValue]['title'];
-                    }
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('index_config');
+                $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+                $result = $queryBuilder
+                    ->select('uid', 'title')
+                    ->from('index_config')
+                    ->where($queryBuilder->expr()->in('uid', $uidList))
+                    ->execute();
+
+                while ($row = $result->fetch()) {
+                    $allOptions[$row['uid']]= $row['title'];
                 }
             }
             // disable single entries by TypoScript
@@ -1299,11 +1319,18 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         if ($this->settings['displayLevelxAllTypes']) {
             $menu = array();
-            $res = $this->getDatabaseConnection()->exec_SELECTquery('title,uid', 'pages', 'pid=' . (int)$pageUid . $GLOBALS['TSFE']->cObj->enableFields('pages'), '', 'sorting');
-            while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+            $result = $queryBuilder
+                ->select('uid', 'title')
+                ->from('pages')
+                ->where($queryBuilder->expr()->eq('pid', (int)$pageUid))
+                ->orderBy('sorting')
+                ->execute();
+
+            while ($row = $result->fetch()) {
                 $menu[$row['uid']] = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
             }
-            $this->getDatabaseConnection()->sql_free_result($res);
         } else {
             $menu = $GLOBALS['TSFE']->sys_page->getMenu($pageUid);
         }
@@ -1365,8 +1392,17 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     protected function getFirstSysDomainRecordForPage($id)
     {
-        $res = $this->getDatabaseConnection()->exec_SELECTquery('domainName', 'sys_domain', 'pid=' . (int)$id . $GLOBALS['TSFE']->cObj->enableFields('sys_domain'), '', 'sorting');
-        $row = $this->getDatabaseConnection()->sql_fetch_assoc($res);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_domain');
+        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+        $row = $queryBuilder
+            ->select('domainName')
+            ->from('sys_domain')
+            ->where($queryBuilder->expr()->eq('pid', (int)$id))
+            ->orderBy('sorting')
+            ->setMaxResults(1)
+            ->execute()
+            ->fetch();
+
         return rtrim($row['domainName'], '/');
     }
 
@@ -1418,16 +1454,6 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected function multiplePagesType($item_type)
     {
         return is_object($this->externalParsers[$item_type]) && $this->externalParsers[$item_type]->isMultiplePageExtension($item_type);
-    }
-
-    /**
-     * Getter for database connection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**

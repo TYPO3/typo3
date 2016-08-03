@@ -13,27 +13,16 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Tests\FunctionalTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
 
 /**
  * This class contains unit tests for the LikeQueryUtility
  */
-class LikeWildcardTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class LikeWildcardTest extends FunctionalTestCase
 {
-    /**
-     * Sets up this test case.
-     */
-    protected function setUp()
-    {
-        /** @var $databaseConnectionMock \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject */
-        $databaseConnectionMock = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)
-            ->setMethods(array('quoteStr'))
-            ->getMock();
-        $databaseConnectionMock->method('quoteStr')
-            ->will($this->returnArgument(0));
-        $GLOBALS['TYPO3_DB'] = $databaseConnectionMock;
-    }
-
     /**
      * @test
      * @param string $tableName
@@ -45,7 +34,9 @@ class LikeWildcardTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getLikeQueryPart($tableName, $fieldName, $likeValue, $wildcard, $expected)
     {
-        $subject = \TYPO3\CMS\IndexedSearch\Utility\LikeWildcard::cast($wildcard);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
+        $subject = LikeWildcard::cast($wildcard);
+        $expected = $connection->quoteIdentifier($fieldName) . ' ' . $expected;
         $this->assertSame($expected, $subject->getLikeQueryPart($tableName, $fieldName, $likeValue));
     }
 
@@ -68,49 +59,49 @@ class LikeWildcardTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'body',
                 'searchstring',
                 LikeWildcard::NONE,
-                'body LIKE \'searchstring\''
+                "LIKE 'searchstring'"
             ],
             'no placeholders and left wildcard mode' => [
                 'tt_content',
                 'body',
                 'searchstring',
                 LikeWildcard::LEFT,
-                'body LIKE \'%searchstring\''
+                "LIKE '%searchstring'"
             ],
             'no placeholders and right wildcard mode' => [
                 'tt_content',
                 'body',
                 'searchstring',
                 LikeWildcard::RIGHT,
-                'body LIKE \'searchstring%\''
+                "LIKE 'searchstring%'"
             ],
             'no placeholders and both wildcards mode' => [
                 'tt_content',
                 'body',
                 'searchstring',
                 LikeWildcard::BOTH,
-                'body LIKE \'%searchstring%\''
+                "LIKE '%searchstring%'"
             ],
             'underscore placeholder and left wildcard mode' => [
                 'tt_content',
                 'body',
                 'search_string',
                 LikeWildcard::LEFT,
-                'body LIKE \'%search\\_string\''
+                "LIKE '%search\\\\_string'"
             ],
             'percent placeholder and right wildcard mode' => [
                 'tt_content',
                 'body',
                 'search%string',
                 LikeWildcard::RIGHT,
-                'body LIKE \'search\\%string%\''
+                "LIKE 'search\\\\%string%'"
             ],
             'percent and underscore placeholder and both wildcards mode' => [
                 'tt_content',
                 'body',
                 '_search%string_',
                 LikeWildcard::RIGHT,
-                'body LIKE \'\\_search\\%string\\_%\''
+                "LIKE '\\\\_search\\\\%string\\\\_%'"
             ],
         ];
     }
