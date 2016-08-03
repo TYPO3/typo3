@@ -245,7 +245,7 @@ class SuggestWizardDefaultReceiver
             $this->queryBuilder->andWhere($expressionBuilder->orX($searchClause));
         }
         if (!empty($this->allowedPages)) {
-            $pidList = $GLOBALS['TYPO3_DB']->cleanIntArray($this->allowedPages);
+            $pidList = array_map('intval', $this->allowedPages);
             if (!empty($pidList)) {
                 $this->queryBuilder->andWhere(
                     $expressionBuilder->in('pid', $pidList)
@@ -276,7 +276,7 @@ class SuggestWizardDefaultReceiver
         // fetch all
         while ($depth - $level > 0 && !empty($pageIds)) {
             ++$level;
-            $pidList = $GLOBALS['TYPO3_DB']->cleanIntArray($pageIds);
+            $pidList = array_map('intval', $pageIds);
             $rows = $queryBuilder->where($queryBuilder->expr()->in('pid', $pidList))
                 ->execute()
                 ->fetchAll();

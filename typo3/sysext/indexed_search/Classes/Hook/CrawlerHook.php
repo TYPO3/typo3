@@ -667,7 +667,7 @@ class CrawlerHook
             foreach ($oldPhashRows as $pHashRow) {
                 $pHashesToDelete[] = $pHashRow['phash'];
             }
-            $where_clause = 'phash IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($pHashesToDelete)) . ')';
+            $where_clause = 'phash IN (' . implode(',', array_map('intval', $pHashesToDelete)) . ')';
             $tables = array(
                 'index_debug',
                 'index_fulltext',

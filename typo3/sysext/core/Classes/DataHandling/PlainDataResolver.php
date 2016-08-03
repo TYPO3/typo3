@@ -324,7 +324,7 @@ class PlainDataResolver
      */
     protected function intImplode($delimiter, array $values)
     {
-        return implode($delimiter, $this->getDatabaseConnection()->cleanIntArray($values));
+        return implode($delimiter, array_map('intval', $values));
     }
 
     /**

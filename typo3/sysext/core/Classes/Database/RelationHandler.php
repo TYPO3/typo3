@@ -1170,7 +1170,7 @@ class RelationHandler
      */
     protected function purgeVersionedIds($tableName, array $ids)
     {
-        $ids = $this->getDatabaseConnection()->cleanIntArray($ids);
+        $ids = array_map('intval', $ids);
         $ids = array_combine($ids, $ids);
 
         $versions = $this->getDatabaseConnection()->exec_SELECTgetRows(
@@ -1202,7 +1202,7 @@ class RelationHandler
      */
     protected function purgeLiveVersionedIds($tableName, array $ids)
     {
-        $ids = $this->getDatabaseConnection()->cleanIntArray($ids);
+        $ids = array_map('intval', $ids);
         $ids = array_combine($ids, $ids);
 
         $versions = $this->getDatabaseConnection()->exec_SELECTgetRows(
@@ -1235,7 +1235,7 @@ class RelationHandler
      */
     protected function purgeDeletePlaceholder($tableName, array $ids)
     {
-        $ids = $this->getDatabaseConnection()->cleanIntArray($ids);
+        $ids = array_map('intval', $ids);
         $ids = array_combine($ids, $ids);
 
         $versions = $this->getDatabaseConnection()->exec_SELECTgetRows(

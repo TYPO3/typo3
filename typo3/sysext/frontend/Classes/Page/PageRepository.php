@@ -405,7 +405,7 @@ class PageRepository
                 $res = $db->exec_SELECTquery(
                     implode(',', $fieldArr),
                     'pages_language_overlay',
-                    'pid IN(' . implode(',', $db->cleanIntArray($page_ids)) . ')'
+                    'pid IN(' . implode(',', array_map('intval', $page_ids)) . ')'
                     . ' AND sys_language_uid=' . (int)$lUid . $this->enableFields('pages_language_overlay')
                 );
                 $overlays = array();
@@ -608,7 +608,7 @@ class PageRepository
         $db = $this->getDatabaseConnection();
 
         $whereStatement = $relationField . ' IN ('
-            . implode(',', $db->cleanIntArray($pageIds)) . ')'
+            . implode(',', array_map('intval', $pageIds)) . ')'
             . $this->where_hid_del
             . $this->where_groupAccess
             . ' '

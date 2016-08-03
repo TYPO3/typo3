@@ -31,7 +31,7 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
     public function findByUidList(array $uidList)
     {
         $query = $this->createQuery();
-        return $query->matching($query->in('uid', $GLOBALS['TYPO3_DB']->cleanIntArray($uidList)))->execute();
+        return $query->matching($query->in('uid', array_map('intval', $uidList)))->execute();
     }
 
     /**

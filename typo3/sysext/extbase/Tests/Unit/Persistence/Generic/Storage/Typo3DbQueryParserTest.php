@@ -489,7 +489,6 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, array('dummy'), array(), '', false);
         $mockFrontendVariableCache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class);
         $mockDatabaseHandle = $this->prophesize(DatabaseConnection::class);
-        $mockDatabaseHandle->cleanIntArray(Argument::cetera())->willReturnArgument(0);
         $mockTypo3DbQueryParser->_set('databaseHandle', $mockDatabaseHandle->reveal());
         $mockTypo3DbQueryParser->_set('tableColumnCache', $mockFrontendVariableCache);
         $mockFrontendVariableCache->expects($this->once())->method('get')->will($this->returnValue(array('pid' => '42')));

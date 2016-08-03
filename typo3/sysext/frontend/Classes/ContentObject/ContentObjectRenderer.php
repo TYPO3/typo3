@@ -7601,7 +7601,7 @@ class ContentObjectRenderer
             if (count($listArr) === 1) {
                 $comparison = '=' . (int)$listArr[0];
             } else {
-                $comparison = ' IN (' . implode(',', $this->getDatabaseConnection()->cleanIntArray($listArr)) . ')';
+                $comparison = ' IN (' . implode(',', $listArr) . ')';
             }
             // If move placeholder shall be considered, select via t3ver_move_id
             if ($considerMovePlaceholders) {
