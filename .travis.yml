@@ -71,8 +71,8 @@ script:
 
   - >
     if [[ "$FUNCTIONAL_TESTS" == "yes" ]]; then
-      ./typo3/sysext/core/Build/Scripts/splitFunctionalTests.sh 6
-      parallel -a <(seq 0 5) --gnu './bin/phpunit -c typo3/sysext/core/Build/FunctionalTests-Job-{}.xml'
+      ./typo3/sysext/core/Build/Scripts/splitFunctionalTests.sh 10
+      parallel --jobs 4 -a <(seq 0 9) --gnu './bin/phpunit -c typo3/sysext/core/Build/FunctionalTests-Job-{}.xml'
     fi
 
   - >
