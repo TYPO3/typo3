@@ -167,7 +167,7 @@ class SuggestWizard
                         $replacement['###PAGE_TSCONFIG_ID###'] = (int)$fieldTSconfig['PAGE_TSCONFIG_ID'];
                     }
                     if (isset($fieldTSconfig['PAGE_TSCONFIG_IDLIST'])) {
-                        $replacement['###PAGE_TSCONFIG_IDLIST###'] = $GLOBALS['TYPO3_DB']->cleanIntList($fieldTSconfig['PAGE_TSCONFIG_IDLIST']);
+                        $replacement['###PAGE_TSCONFIG_IDLIST###'] =  implode(',', GeneralUtility::intExplode(',', $fieldTSconfig['PAGE_TSCONFIG_IDLIST']));
                     }
                     if (isset($fieldTSconfig['PAGE_TSCONFIG_STR'])) {
                         $replacement['###PAGE_TSCONFIG_STR###'] = $GLOBALS['TYPO3_DB']->quoteStr($fieldTSconfig['PAGE_TSCONFIG_STR'], $fieldConfig['foreign_table']);

@@ -281,7 +281,7 @@ abstract class AbstractMenuContentObject
             }
             // 'not in menu' doktypes
             if ($this->conf['excludeDoktypes']) {
-                $this->doktypeExcludeList = $this->getDatabaseConnection()->cleanIntList($this->conf['excludeDoktypes']);
+                $this->doktypeExcludeList = implode(',', GeneralUtility::intExplode(',', $this->conf['excludeDoktypes']));
             }
             // EntryLevel
             $this->entryLevel = $this->parent_cObj->getKey(

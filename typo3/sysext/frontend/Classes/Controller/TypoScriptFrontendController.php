@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -991,7 +990,7 @@ class TypoScriptFrontendController
         $this->fe_user->lifetime = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'];
         // List of pid's acceptable
         $pid = GeneralUtility::_GP('pid');
-        $this->fe_user->checkPid_value = $pid ? $this->getDatabaseConnection()->cleanIntList($pid) : 0;
+        $this->fe_user->checkPid_value = $pid ? implode(',', GeneralUtility::intExplode(',', $pid)) : 0;
         // Check if a session is transferred:
         if (GeneralUtility::_GP('FE_SESSION_KEY')) {
             $fe_sParts = explode('-', GeneralUtility::_GP('FE_SESSION_KEY'));

@@ -512,7 +512,7 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
             return array();
         }
 
-        $backendUserList = $this->getDatabaseConnection()->cleanIntList($backendUserList);
+        $backendUserList = implode(',', GeneralUtility::intExplode(',', $backendUserList));
         $backendUsers = BackendUtility::getUserNames(
             'username, uid, email, realName',
             'AND uid IN (' . $backendUserList . ')' . BackendUtility::BEenableFields('be_users')
