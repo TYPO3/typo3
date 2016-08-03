@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\DataHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -23,6 +24,7 @@ use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
@@ -3498,57 +3500,68 @@ class DataHandler
         if ($theNewRootID) {
             foreach ($copyTablesArray as $table) {
                 // All records under the page is copied.
-                if ($table && is_array($GLOBALS['TCA'][$table]) && $table != 'pages') {
-                    $fields = 'uid';
+                if ($table && is_array($GLOBALS['TCA'][$table]) && $table !== 'pages') {
+                    $fields = ['uid'];
                     $languageField = null;
                     $transOrigPointerField = null;
                     if (BackendUtility::isTableLocalizable($table)) {
                         $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
                         $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
-                        $fields .= ',' . $languageField . ',' . $transOrigPointerField;
+                        $fields[] = $languageField;
+                        $fields[] = $transOrigPointerField;
                     }
-                    if (!BackendUtility::isTableWorkspaceEnabled($table)) {
-                        $workspaceStatement = '';
-                    } elseif ((int)$this->BE_USER->workspace === 0) {
-                        $workspaceStatement = ' AND t3ver_wsid=0';
-                    } else {
-                        $workspaceStatement = ' AND t3ver_wsid IN (0,' . (int)$this->BE_USER->workspace . ')';
+                    $isTableWorkspaceEnabled = BackendUtility::isTableWorkspaceEnabled($table);
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                    $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+                    $queryBuilder
+                        ->select(...$fields)
+                        ->from($table)
+                        ->where($queryBuilder->expr()->eq('pid', (int)$uid));
+                    if ($isTableWorkspaceEnabled && (int)$this->BE_USER->workspace === 0) {
+                        // Table is workspace enabled, user is in default ws -> add t3ver_wsid=0 restriction
+                        $queryBuilder->andWhere($queryBuilder->expr()->eq('t3ver_wsid', 0));
+                    } elseif ($isTableWorkspaceEnabled) {
+                        // Table is workspace enabled, user has a ws selected -> select wsid=0 and selected wsid rows
+                        $queryBuilder->andWhere($queryBuilder->expr()->in('t3ver_wsid', [0, (int)$this->BE_USER->workspace]));
                     }
-                    // Fetch records
-                    $rows = $this->databaseConnection->exec_SELECTgetRows(
-                        $fields,
-                        $table,
-                        'pid=' . (int)$uid . $this->deleteClause($table) . $workspaceStatement,
-                        '',
-                        (!empty($GLOBALS['TCA'][$table]['ctrl']['sortby']) ? $GLOBALS['TCA'][$table]['ctrl']['sortby'] . ' DESC' : ''),
-                        '',
-                        'uid'
-                    );
-                    // Resolve placeholders of workspace versions
-                    if (!empty($rows) && (int)$this->BE_USER->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
-                        $rows = array_reverse(
-                            $this->resolveVersionedRecords(
-                                $table,
-                                $fields,
-                                $GLOBALS['TCA'][$table]['ctrl']['sortby'],
-                                array_keys($rows)
-                            ),
-                            true
-                        );
+                    if (!empty($GLOBALS['TCA'][$table]['ctrl']['sortby'])) {
+                        $queryBuilder->orderBy($GLOBALS['TCA'][$table]['ctrl']['sortby'], 'DESC');
                     }
-                    if (is_array($rows)) {
-                        foreach ($rows as $row) {
-                            // Skip localized records that will be processed in
-                            // copyL10nOverlayRecords() on copying the default language record
-                            $transOrigPointer = $row[$transOrigPointerField];
-                            if ($row[$languageField] > 0 && $transOrigPointer > 0 && isset($rows[$transOrigPointer])) {
-                                continue;
-                            }
-                            // Copying each of the underlying records...
-                            $this->copyRecord($table, $row['uid'], $theNewRootID);
+                    try {
+                        $result = $queryBuilder->execute();
+                        $rows = [];
+                        while ($row = $result->fetch()) {
+                            $rows[$row['uid']] = $row;
                         }
-                    } elseif ($this->enableLogging) {
-                        $this->log($table, $uid, 5, 0, 1, 'An SQL error occurred: ' . $this->databaseConnection->sql_error());
+                        // Resolve placeholders of workspace versions
+                        if (!empty($rows) && (int)$this->BE_USER->workspace !== 0 && $isTableWorkspaceEnabled) {
+                            $rows = array_reverse(
+                                $this->resolveVersionedRecords(
+                                    $table,
+                                    implode(',', $fields),
+                                    $GLOBALS['TCA'][$table]['ctrl']['sortby'],
+                                    array_keys($rows)
+                                ),
+                                true
+                            );
+                        }
+                        if (is_array($rows)) {
+                            foreach ($rows as $row) {
+                                // Skip localized records that will be processed in
+                                // copyL10nOverlayRecords() on copying the default language record
+                                $transOrigPointer = $row[$transOrigPointerField];
+                                if ($row[$languageField] > 0 && $transOrigPointer > 0 && isset($rows[$transOrigPointer])) {
+                                    continue;
+                                }
+                                // Copying each of the underlying records...
+                                $this->copyRecord($table, $row['uid'], $theNewRootID);
+                            }
+                        }
+                    } catch (DBALException $e) {
+                        if ($this->enableLogging) {
+                            $databaseErrorMessage = $e->getPrevious()->getMessage();
+                            $this->log($table, $uid, 5, 0, 1, 'An SQL error occurred: ' . $databaseErrorMessage);
+                        }
                     }
                 }
             }
@@ -3965,14 +3978,21 @@ class DataHandler
             $this->fileFunc = GeneralUtility::makeInstance(BasicFileUtility::class);
         }
         // Select all RTEmagic files in the reference table from the table/ID
-        $where = join(' AND ', array(
-            'ref_table=' . $this->databaseConnection->fullQuoteStr('_FILE', 'sys_refindex'),
-            'ref_string LIKE ' . $this->databaseConnection->fullQuoteStr('%/RTEmagic%', 'sys_refindex'),
-            'softref_key=' . $this->databaseConnection->fullQuoteStr('images', 'sys_refindex'),
-            'tablename=' . $this->databaseConnection->fullQuoteStr($table, 'sys_refindex'),
-            'recuid=' . (int)$theNewSQLID,
-        ));
-        $rteFileRecords = $this->databaseConnection->exec_SELECTgetRows('*', 'sys_refindex', $where, '', 'sorting DESC');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder->getRestrictions()->removeAll();
+        $rteFileRecords = $queryBuilder
+            ->select('*')
+            ->from('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('_FILE')),
+                $queryBuilder->expr()->like('ref_string', $queryBuilder->createNamedParameter('%/RTEmagic%')),
+                $queryBuilder->expr()->eq('softref_key', $queryBuilder->createNamedParameter('images')),
+                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
+                $queryBuilder->expr()->eq('recuid', (int)$theNewSQLID)
+            )
+            ->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetchAll();
         // Traverse the files found and copy them:
         if (!is_array($rteFileRecords)) {
             return;
@@ -4223,7 +4243,9 @@ class DataHandler
                 // Check for child records that have also to be moved
                 $this->moveRecord_procFields($table, $uid, $destPid);
                 // Create query for update:
-                $this->databaseConnection->exec_UPDATEquery($table, 'uid=' . (int)$uid, $updateFields);
+                GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable($table)
+                    ->update($table, $updateFields, ['uid' => (int)$uid]);
                 // Check for the localizations of that element
                 $this->moveL10nOverlayRecords($table, $uid, $destPid, $destPid);
                 // Call post processing hooks:
@@ -4278,7 +4300,9 @@ class DataHandler
                         // Check for child records that have also to be moved
                         $this->moveRecord_procFields($table, $uid, $destPid);
                         // Create query for update:
-                        $this->databaseConnection->exec_UPDATEquery($table, 'uid=' . (int)$uid, $updateFields);
+                        GeneralUtility::makeInstance(ConnectionPool::class)
+                            ->getConnectionForTable($table)
+                            ->update($table, $updateFields, ['uid' => (int)$uid]);
                         // Check for the localizations of that element
                         $this->moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid);
                         // Call post processing hooks:
@@ -4865,6 +4889,7 @@ class DataHandler
         list($parentUid) = BackendUtility::getTSCpid($table, $uid, '');
         $this->registerRecordIdForPageCacheClearing($table, $uid, $parentUid);
         $deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'];
+        $databaseErrorMessage = '';
         if ($deleteField && !$forceHardDelete) {
             $updateFields = array(
                 $deleteField => $undeleteRecord ? 0 : 1
@@ -4878,10 +4903,16 @@ class DataHandler
             }
             // before (un-)deleting this record, check for child records or references
             $this->deleteRecord_procFields($table, $uid, $undeleteRecord);
-            $this->databaseConnection->exec_UPDATEquery($table, 'uid=' . (int)$uid, $updateFields);
-            // Delete all l10n records as well, impossible during undelete because it might bring too many records back to life
-            if (!$undeleteRecord) {
-                $this->deleteL10nOverlayRecords($table, $uid);
+            try {
+                GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable($table)
+                    ->update($table, $updateFields, ['uid' => (int)$uid]);
+                // Delete all l10n records as well, impossible during undelete because it might bring too many records back to life
+                if (!$undeleteRecord) {
+                    $this->deleteL10nOverlayRecords($table, $uid);
+                }
+            } catch (DBALException $e) {
+                $databaseErrorMessage = $e->getPrevious()->getMessage();
             }
         } else {
             // Fetches all fields with flexforms and look for files to delete:
@@ -4897,8 +4928,14 @@ class DataHandler
             // Fetches all fields that holds references to files
             $fileFieldArr = $this->extFileFields($table);
             if (!empty($fileFieldArr)) {
-                $mres = $this->databaseConnection->exec_SELECTquery(implode(',', $fileFieldArr), $table, 'uid=' . (int)$uid);
-                if ($row = $this->databaseConnection->sql_fetch_assoc($mres)) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                $queryBuilder->getRestrictions()->removeAll();
+                $result = $queryBuilder
+                    ->select(...$fileFieldArr)
+                    ->from($table)
+                    ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+                    ->execute();
+                if ($row = $result->fetch()) {
                     $fArray = $fileFieldArr;
                     // MISSING: Support for MM file relations!
                     foreach ($fArray as $theField) {
@@ -4908,16 +4945,21 @@ class DataHandler
                 } elseif ($this->enableLogging) {
                     $this->log($table, $uid, 3, 0, 100, 'Delete: Zero rows in result when trying to read filenames from record which should be deleted');
                 }
-                $this->databaseConnection->sql_free_result($mres);
             }
             // Delete the hard way...:
-            $this->databaseConnection->exec_DELETEquery($table, 'uid=' . (int)$uid);
-            $this->deleteL10nOverlayRecords($table, $uid);
+            try {
+                GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable($table)
+                    ->delete($table, ['uid' => (int)$uid]);
+                $this->deleteL10nOverlayRecords($table, $uid);
+            } catch (DBALException $e) {
+                $databaseErrorMessage = $e->getPrevious()->getMessage();
+            }
         }
         if ($this->enableLogging) {
             // 1 means insert, 3 means delete
             $state = $undeleteRecord ? 1 : 3;
-            if (!$this->databaseConnection->sql_error()) {
+            if ($databaseErrorMessage === '') {
                 if ($forceHardDelete) {
                     $message = 'Record \'%s\' (%s) was deleted unrecoverable from page \'%s\' (%s)';
                 } else {
@@ -4933,7 +4975,7 @@ class DataHandler
                     $propArr['pid']
                 ), $propArr['event_pid']);
             } else {
-                $this->log($table, $uid, $state, 0, 100, $this->databaseConnection->sql_error());
+                $this->log($table, $uid, $state, 0, 100, $databaseErrorMessage);
             }
         }
         // Update reference index:
@@ -5377,9 +5419,22 @@ class DataHandler
         }
 
         // Look for next version number:
-        $res = $this->databaseConnection->exec_SELECTquery('t3ver_id', $table, '((pid=-1 && t3ver_oid=' . $id . ') OR uid=' . $id . ')' . $this->deleteClause($table), '', 't3ver_id DESC', '1');
-        list($highestVerNumber) = $this->databaseConnection->sql_fetch_row($res);
-        $this->databaseConnection->sql_free_result($res);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+        $highestVerNumber = $queryBuilder
+            ->select('t3ver_id')
+            ->from($table)
+            ->where($queryBuilder->expr()->orX(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('pid', -1),
+                    $queryBuilder->expr()->eq('t3ver_oid', $id)
+                ),
+                $queryBuilder->expr()->eq('uid', $id)
+            ))
+            ->orderBy('t3ver_id', 'DESC')
+            ->setMaxResults(1)
+            ->execute()
+            ->fetchColumn(0);
         // Look for version number of the current:
         $subVer = $row['t3ver_id'] . '.' . ($highestVerNumber + 1);
         // Set up the values to override when making a raw-copy:
@@ -5753,7 +5808,9 @@ class DataHandler
                     $updateValues = array('pid' => $thePidToUpdate);
                     foreach ($originalItemArray as $v) {
                         if ($v['id'] && $v['table'] && is_null(BackendUtility::getLiveVersionIdOfRecord($v['table'], $v['id']))) {
-                            $this->databaseConnection->exec_UPDATEquery($v['table'], 'uid=' . (int)$v['id'], $updateValues);
+                            GeneralUtility::makeInstance(ConnectionPool::class)
+                                ->getConnectionForTable($v['table'])
+                                ->update($v['table'], $updateValues, ['uid' => (int)$v['id']]);
                         }
                     }
                 }
@@ -6245,16 +6302,22 @@ class DataHandler
         $isWebMountRestrictionIgnored = BackendUtility::isWebMountRestrictionIgnored($table);
         if (is_array($GLOBALS['TCA'][$table]) && $id > 0 && ($isWebMountRestrictionIgnored || $this->isRecordInWebMount($table, $id) || $this->admin)) {
             if ($table != 'pages') {
-                // Find record without checking page:
-                $mres = $this->databaseConnection->exec_SELECTquery('uid,pid', $table, 'uid=' . (int)$id . $this->deleteClause($table));
-                // THIS SHOULD CHECK FOR editlock I think!
-                $output = $this->databaseConnection->sql_fetch_assoc($mres);
+                // Find record without checking page
+                // @todo: Thist should probably check for editlock
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+                $output = $queryBuilder
+                    ->select('uid', 'pid')
+                    ->from($table)
+                    ->where($queryBuilder->expr()->eq('uid', (int)$id))
+                    ->execute()
+                    ->fetch();
                 BackendUtility::fixVersioningPid($table, $output, true);
                 // If record found, check page as well:
                 if (is_array($output)) {
                     // Looking up the page for record:
-                    $mres = $this->doesRecordExist_pageLookUp($output['pid'], $perms);
-                    $pageRec = $this->databaseConnection->sql_fetch_assoc($mres);
+                    $queryBuilder = $this->doesRecordExist_pageLookUp($output['pid'], $perms);
+                    $pageRec = $queryBuilder->select('uid')->execute()->fetch();
                     // Return TRUE if either a page was found OR if the PID is zero AND the user is ADMIN (in which case the record is at root-level):
                     $isRootLevelRestrictionIgnored = BackendUtility::isRootLevelRestrictionIgnored($table);
                     if (is_array($pageRec) || !$output['pid'] && ($isRootLevelRestrictionIgnored || $this->admin)) {
@@ -6263,8 +6326,8 @@ class DataHandler
                 }
                 return false;
             } else {
-                $mres = $this->doesRecordExist_pageLookUp($id, $perms);
-                return $this->databaseConnection->sql_num_rows($mres);
+                $queryBuilder = $this->doesRecordExist_pageLookUp($id, $perms);
+                return $queryBuilder->count('uid')->execute()->fetchColumn(0);
             }
         }
         return false;
@@ -6275,13 +6338,27 @@ class DataHandler
      *
      * @param int $id Page id
      * @param int $perms Permission integer
-     * @return bool|\mysqli_result|object MySQLi result object / DBAL object (from exec_SELECTquery())
+     * @return QueryBuilder
      * @access private
      * @see doesRecordExist()
      */
-    public function doesRecordExist_pageLookUp($id, $perms)
+    protected function doesRecordExist_pageLookUp($id, $perms)
     {
-        return $this->databaseConnection->exec_SELECTquery('uid', 'pages', 'uid=' . (int)$id . $this->deleteClause('pages') . ($perms && !$this->admin ? ' AND ' . $this->BE_USER->getPagePermsClause($perms) : '') . (!$this->admin && $GLOBALS['TCA']['pages']['ctrl']['editlock'] && $perms & Permission::PAGE_EDIT + Permission::PAGE_DELETE + Permission::CONTENT_EDIT ? ' AND ' . $GLOBALS['TCA']['pages']['ctrl']['editlock'] . '=0' : ''));
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+        $queryBuilder
+            ->select('uid')
+            ->from('pages')
+            ->where($queryBuilder->expr()->eq('uid', (int)$id));
+        if ($perms && !$this->admin) {
+            $queryBuilder->andWhere($this->BE_USER->getPagePermsClause($perms));
+        }
+        if (!$this->admin && $GLOBALS['TCA']['pages']['ctrl']['editlock'] &&
+            $perms & Permission::PAGE_EDIT + Permission::PAGE_DELETE + Permission::CONTENT_EDIT
+        ) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq($GLOBALS['TCA']['pages']['ctrl']['editlock'], 0));
+        }
+        return $queryBuilder;
     }
 
     /**
@@ -6302,8 +6379,15 @@ class DataHandler
         $pid = (int)$pid;
         $perms = (int)$perms;
         if ($pid >= 0) {
-            $mres = $this->databaseConnection->exec_SELECTquery('uid, perms_userid, perms_groupid, perms_user, perms_group, perms_everybody', 'pages', 'pid=' . (int)$pid . $this->deleteClause('pages'), '', 'sorting');
-            while ($row = $this->databaseConnection->sql_fetch_assoc($mres)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+            $result = $queryBuilder
+                ->select('uid', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody')
+                ->from('pages')
+                ->where($queryBuilder->expr()->eq('pid', (int)$pid))
+                ->orderBy('sorting')
+                ->execute();
+            while ($row = $result->fetch()) {
                 // IF admin, then it's OK
                 if ($this->admin || $this->BE_USER->doesUserHaveAccess($row, $perms)) {
                     $inList .= $row['uid'] . ',';
@@ -6319,7 +6403,6 @@ class DataHandler
                     return -1;
                 }
             }
-            $this->databaseConnection->sql_free_result($mres);
         }
         return $inList;
     }
@@ -6366,8 +6449,14 @@ class DataHandler
         }
         while ($destinationId !== 0 && $loopCheck > 0) {
             $loopCheck--;
-            $res = $this->databaseConnection->exec_SELECTquery('pid, uid, t3ver_oid,t3ver_wsid', 'pages', 'uid=' . $destinationId . $this->deleteClause('pages'));
-            if ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+            $result = $queryBuilder
+                ->select('pid', 'uid', 't3ver_oid', 't3ver_wsid')
+                ->from('pages')
+                ->where($queryBuilder->expr()->eq('uid', (int)$destinationId))
+                ->execute();
+            if ($row = $result->fetch()) {
                 BackendUtility::fixVersioningPid('pages', $row);
                 if ($row['pid'] == $id) {
                     return false;
@@ -6377,7 +6466,6 @@ class DataHandler
             } else {
                 return false;
             }
-            $this->databaseConnection->sql_free_result($res);
         }
         return true;
     }
@@ -6429,7 +6517,14 @@ class DataHandler
         foreach ($GLOBALS['TCA'] as $table => $_) {
             // If the table is not in the allowed list, check if there are records...
             if (!in_array($table, $allowedArray, true)) {
-                $count = $this->databaseConnection->exec_SELECTcountRows('uid', $table, 'pid=' . (int)$page_uid);
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                $queryBuilder->getRestrictions()->removeAll();
+                $count = $queryBuilder
+                    ->count('uid')
+                    ->from($table)
+                    ->where($queryBuilder->expr()->eq('pid', (int)$page_uid))
+                    ->execute()
+                    ->fetchColumn(0);
                 if ($count) {
                     $tableList[] = $table;
                 }
@@ -6454,11 +6549,17 @@ class DataHandler
     public function pageInfo($id, $field)
     {
         if (!isset($this->pageCache[$id])) {
-            $res = $this->databaseConnection->exec_SELECTquery('*', 'pages', 'uid=' . (int)$id);
-            if ($this->databaseConnection->sql_num_rows($res)) {
-                $this->pageCache[$id] = $this->databaseConnection->sql_fetch_assoc($res);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()->removeAll();
+            $row = $queryBuilder
+                ->select('*')
+                ->from('pages')
+                ->where($queryBuilder->expr()->eq('uid', (int)$id))
+                ->execute()
+                ->fetch();
+            if ($row) {
+                $this->pageCache[$id] = $row;
             }
-            $this->databaseConnection->sql_free_result($res);
         }
         return $this->pageCache[$id][$field];
     }
@@ -6478,7 +6579,14 @@ class DataHandler
         if ((int)$id === 0 || !isset($GLOBALS['TCA'][$table])) {
             return null;
         }
-        $result = $this->databaseConnection->exec_SELECTgetSingleRow($fieldList, $table, 'uid=' . (int)$id);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll();
+        $result = $queryBuilder
+            ->select(...GeneralUtility::trimExplode(',', $fieldList))
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('uid', (int)$id))
+            ->execute()
+            ->fetch();
         return $result ?: null;
     }
 
@@ -6558,9 +6666,16 @@ class DataHandler
             if (!empty($fieldArray)) {
                 $fieldArray = $this->insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray);
                 // Execute the UPDATE query:
-                $this->databaseConnection->exec_UPDATEquery($table, 'uid=' . (int)$id, $fieldArray);
+                $updateErrorMessage = '';
+                try {
+                    GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getConnectionForTable($table)
+                        ->update($table, $fieldArray, ['uid' => (int)$id]);
+                } catch (DBALException $e) {
+                    $updateErrorMessage = $e->getPrevious()->getMessage();
+                }
                 // If succeeds, do...:
-                if (!$this->databaseConnection->sql_error()) {
+                if ($updateErrorMessage === '') {
                     // Update reference index:
                     $this->updateRefIndex($table, $id);
                     if ($this->enableLogging) {
@@ -6581,7 +6696,7 @@ class DataHandler
                         unset($this->pageCache[$id]);
                     }
                 } elseif ($this->enableLogging) {
-                    $this->log($table, $id, 2, 0, 2, 'SQL error: \'%s\' (%s)', 12, array($this->databaseConnection->sql_error(), $table . ':' . $id));
+                    $this->log($table, $id, 2, 0, 2, 'SQL error: \'%s\' (%s)', 12, [$updateErrorMessage, $table . ':' . $id]);
                 }
             }
         }
@@ -6614,19 +6729,27 @@ class DataHandler
                     // When the value of ->suggestedInsertUids[...] is "DELETE" it will try to remove the previous record
                     if ($this->suggestedInsertUids[$table . ':' . $suggestedUid] === 'DELETE') {
                         // DELETE:
-                        $this->databaseConnection->exec_DELETEquery($table, 'uid=' . (int)$suggestedUid);
+                        GeneralUtility::makeInstance(ConnectionPool::class)
+                            ->getConnectionForTable($table)
+                            ->delete($table, ['uid' => (int)$suggestedUid]);
                     }
                     $fieldArray['uid'] = $suggestedUid;
                 }
                 $fieldArray = $this->insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray);
-                // Execute the INSERT query:
-                $this->databaseConnection->exec_INSERTquery($table, $fieldArray);
+                $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+                $insertErrorMessage = '';
+                try {
+                    // Execute the INSERT query:
+                    $connection->insert($table, $fieldArray);
+                } catch (DBALException $e) {
+                    $insertErrorMessage = $e->getPrevious()->getMessage();
+                }
                 // If succees, do...:
-                if (!$this->databaseConnection->sql_error()) {
+                if ($insertErrorMessage === '') {
                     // Set mapping for NEW... -> real uid:
                     // the NEW_id now holds the 'NEW....' -id
                     $NEW_id = $id;
-                    $id = $this->databaseConnection->sql_insert_id();
+                    $id = $connection->lastInsertId();
                     if (!$dontSetNewIdIndex) {
                         $this->substNEWwithIDs[$NEW_id] = $id;
                         $this->substNEWwithIDs_table[$NEW_id] = $table;
@@ -6654,7 +6777,7 @@ class DataHandler
                     }
                     return $id;
                 } elseif ($this->enableLogging) {
-                    $this->log($table, $id, 1, 0, 2, 'SQL error: \'%s\' (%s)', 12, array($this->databaseConnection->sql_error(), $table . ':' . $id));
+                    $this->log($table, $id, 1, 0, 2, 'SQL error: \'%s\' (%s)', 12, array($insertErrorMessage, $table . ':' . $id));
                 }
             }
         }
@@ -7396,22 +7519,28 @@ class DataHandler
     public function int_pageTreeInfo($CPtable, $pid, $counter, $rootID)
     {
         if ($counter) {
-            if ((int)$this->BE_USER->workspace === 0) {
-                $workspaceStatement = ' AND t3ver_wsid=0';
-            } else {
-                $workspaceStatement = ' AND t3ver_wsid IN (0,' . (int)$this->BE_USER->workspace . ')';
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $restrictions = $queryBuilder->getRestrictions()->removeAll();
+            $this->addDeleteRestriction($restrictions);
+            $queryBuilder
+                ->select('uid')
+                ->from('pages')
+                ->where($queryBuilder->expr()->eq('pid', (int)$pid))
+                ->orderBy('sorting', 'DESC');
+            if (!$this->admin) {
+                $queryBuilder->andWhere($this->BE_USER->getPagePermsClause($this->pMap['show']));
             }
+            if ((int)$this->BE_USER->workspace === 0) {
+                $queryBuilder->andWhere($queryBuilder->expr()->eq('t3ver_wsid', 0));
+            } else {
+                $queryBuilder->andWhere($queryBuilder->expr()->in('t3ver_wsid', [0, (int)$this->BE_USER->workspace]));
+            }
+            $result = $queryBuilder->execute();
 
-            $addW = !$this->admin ? ' AND ' . $this->BE_USER->getPagePermsClause($this->pMap['show']) : '';
-            $pages = $this->databaseConnection->exec_SELECTgetRows(
-                'uid',
-                'pages',
-                'pid=' . (int)$pid . $this->deleteClause('pages') . $workspaceStatement . $addW,
-                '',
-                'sorting DESC',
-                '',
-                'uid'
-            );
+            $pages = [];
+            while ($row = $result->fetch()) {
+                $pages[$row['uid']] = $row;
+            }
 
             // Resolve placeholders of workspace versions
             if (!empty($pages) && (int)$this->BE_USER->workspace !== 0) {
@@ -7613,7 +7742,17 @@ class DataHandler
         }
         // Do check:
         if ($prevTitle != $checkTitle || $count < 100) {
-            $rowCount = $this->databaseConnection->exec_SELECTcountRows('uid', $table, 'pid=' . (int)$pid . ' AND ' . $field . '=' . $this->databaseConnection->fullQuoteStr($checkTitle, $table) . $this->deleteClause($table));
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+            $rowCount = $queryBuilder
+                ->count('uid')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq('pid', (int)$pid),
+                    $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($checkTitle))
+                )
+                ->execute()
+                ->fetchColumn(0);
             if ($rowCount) {
                 return $this->getCopyHeader($table, $pid, $field, $value, $count + 1, $checkTitle);
             }
@@ -8162,8 +8301,21 @@ class DataHandler
      */
     public function printLogErrorMessages($redirect)
     {
-        $res_log = $this->databaseConnection->exec_SELECTquery('*', 'sys_log', 'type=1 AND action<256 AND userid=' . (int)$this->BE_USER->user['uid'] . ' AND tstamp=' . (int)$GLOBALS['EXEC_TIME'] . '	AND error<>0');
-        while ($row = $this->databaseConnection->sql_fetch_assoc($res_log)) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
+        $queryBuilder->getRestrictions()->removeAll();
+        $result = $queryBuilder
+            ->select('*')
+            ->from('sys_log')
+            ->where(
+                $queryBuilder->expr()->eq('type', 1),
+                $queryBuilder->expr()->lt('action', 256),
+                $queryBuilder->expr()->eq('userid', (int)$this->BE_USER->user['uid']),
+                $queryBuilder->expr()->eq('tstamp', (int)$GLOBALS['EXEC_TIME']),
+                $queryBuilder->expr()->neq('error', 0)
+            )
+            ->execute();
+
+        while ($row = $result->fetch()) {
             $log_data = unserialize($row['log_data']);
             $msg = $row['error'] . ': ' . sprintf($row['details'], $log_data[0], $log_data[1], $log_data[2], $log_data[3], $log_data[4]);
             /** @var FlashMessage $flashMessage */
@@ -8173,7 +8325,6 @@ class DataHandler
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }
-        $this->databaseConnection->sql_free_result($res_log);
     }
 
     /*****************************

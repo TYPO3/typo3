@@ -403,10 +403,6 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function processDatamapWhenEditingRecordInWorkspaceCreatesNewRecordInWorkspace()
     {
-        // Unset possible hooks on method under test
-        // @TODO: Can be removed if unit test boostrap is fixed to not load LocalConfiguration anymore
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] = array();
-
         $GLOBALS['TCA'] = array(
             'pages' => array(
                 'columns' => array(),
@@ -415,7 +411,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         /** @var $subject DataHandler|\PHPUnit_Framework_MockObject_MockObject */
         $subject = $this->getMockBuilder(DataHandler::class)
-            ->setMethods(array('newlog', 'checkModifyAccessList', 'tableReadOnly', 'checkRecordUpdateAccess'))
+            ->setMethods(array('newlog', 'checkModifyAccessList', 'tableReadOnly', 'checkRecordUpdateAccess', 'recordInfo'))
             ->getMock();
 
         $subject->bypassWorkspaceRestrictions = false;
@@ -426,6 +422,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 )
             )
         );
+        $subject->expects($this->once())->method('recordInfo')->will($this->returnValue(null));
         $subject->expects($this->once())->method('checkModifyAccessList')->with('pages')->will($this->returnValue(true));
         $subject->expects($this->once())->method('tableReadOnly')->with('pages')->will($this->returnValue(false));
         $subject->expects($this->once())->method('checkRecordUpdateAccess')->will($this->returnValue(true));
