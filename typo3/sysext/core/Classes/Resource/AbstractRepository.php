@@ -13,14 +13,17 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
 
 /**
  * Abstract repository implementing the basic repository methods
  */
-abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, \TYPO3\CMS\Core\SingletonInterface
+abstract class AbstractRepository implements RepositoryInterface, SingletonInterface
 {
     /**
      * @var string
@@ -129,19 +132,27 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
      */
     public function findAll()
     {
-        $db = $this->getDatabaseConnection();
-        $itemList = array();
-        $whereClause = '1=1';
-        if ($this->type != '') {
-            $whereClause .= ' AND ' . $this->typeField . ' = ' . $db->fullQuoteStr($this->type, $this->table) . ' ';
+        $items = [];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+        if ($this->getEnvironmentMode() === 'FE') {
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
         }
-        $whereClause .= $this->getWhereClauseForEnabledFields();
-        $res = $db->exec_SELECTquery('*', $this->table, $whereClause);
-        while ($row = $db->sql_fetch_assoc($res)) {
-            $itemList[] = $this->createDomainObject($row);
+        $queryBuilder
+            ->select('*')
+            ->from($this->table);
+
+        if (!empty($this->type)) {
+            $queryBuilder->where(
+                $queryBuilder->expr()->eq($this->typeField, $queryBuilder->createNamedParameter($this->type))
+            );
         }
-        $db->sql_free_result($res);
-        return $itemList;
+        $result = $queryBuilder->execute();
+
+        // fetch all records and create objects out of them
+        while ($row = $result->fetch()) {
+            $items[] = $this->createDomainObject($row);
+        }
+        return $items;
     }
 
     /**
@@ -189,31 +200,22 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
         if (!MathUtility::canBeInterpretedAsInteger($uid)) {
             throw new \InvalidArgumentException('The UID has to be an integer. UID given: "' . $uid . '"', 1316779798);
         }
-        $row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', $this->table, 'uid=' . (int)$uid . $this->getWhereClauseForEnabledFields());
-        if (empty($row) || !is_array($row)) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+        if ($this->getEnvironmentMode() === 'FE') {
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+        }
+        $row = $queryBuilder
+            ->select('*')
+            ->from($this->table)
+            ->where(
+                $queryBuilder->expr()->eq('uid', (int)$uid)
+            )
+            ->execute()
+            ->fetch();
+        if (!is_array($row)) {
             throw new \RuntimeException('Could not find row with UID "' . $uid . '" in table "' . $this->table . '"', 1314354065);
         }
         return $this->createDomainObject($row);
-    }
-
-    /**
-     * get the WHERE clause for the enabled fields of this TCA table
-     * depending on the context
-     *
-     * @return string the additional where clause, something like " AND deleted=0 AND hidden=0"
-     */
-    protected function getWhereClauseForEnabledFields()
-    {
-        if ($this->getEnvironmentMode() === 'FE' && $GLOBALS['TSFE']->sys_page) {
-            // frontend context
-            $whereClause = $GLOBALS['TSFE']->sys_page->enableFields($this->table);
-            $whereClause .= $GLOBALS['TSFE']->sys_page->deleteClause($this->table);
-        } else {
-            // backend context
-            $whereClause = BackendUtility::BEenableFields($this->table);
-            $whereClause .= BackendUtility::deleteClause($this->table);
-        }
-        return $whereClause;
     }
 
     /**
@@ -307,13 +309,5 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
     protected function getEnvironmentMode()
     {
         return TYPO3_MODE;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

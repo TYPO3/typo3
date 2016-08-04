@@ -13,11 +13,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Doctrine\DBAL\Driver\Statement;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Resource\AbstractRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -26,11 +28,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\Resource\AbstractRepository
+     * @var AbstractRepository
      */
     protected $subject;
-
-    protected $mockedDb;
 
     protected function createDatabaseMock()
     {
@@ -46,13 +46,12 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $connectionPoolProphet->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
-        $this->mockedDb = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB'] = $this->mockedDb;
+        return $queryBuilderProphet;
     }
 
     protected function setUp()
     {
-        $this->subject = $this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\AbstractRepository::class, array(), '', false);
+        $this->subject = $this->getMockForAbstractClass(AbstractRepository::class, [], '', false);
     }
 
     /**
@@ -70,63 +69,15 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function findByUidAcceptsNumericUidInString()
     {
-        $this->createDatabaseMock();
-        $this->mockedDb->expects($this->once())->method('exec_SELECTgetSingleRow')->with($this->anything(), $this->anything(), $this->stringContains('uid=' . 123))->will($this->returnValue(array('uid' => 123)));
+        $statementProphet = $this->prophesize(Statement::class);
+        $statementProphet->fetch()->shouldBeCalled()->willReturn(['uid' => 123]);
+
+        $queryBuilderProphet = $this->createDatabaseMock();
+        $queryBuilderProphet->select('*')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->from('')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->where('uid = 123')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->execute()->shouldBeCalled()->willReturn($statementProphet->reveal());
+
         $this->subject->findByUid('123');
-    }
-
-    /**
-     * test runs on a concrete implementation of AbstractRepository
-     * to ease the pain of testing a protected method. Feel free to improve.
-     *
-     * @test
-     */
-    public function getWhereClauseForEnabledFieldsIncludesDeletedCheckInBackend()
-    {
-        $this->createDatabaseMock();
-
-        $GLOBALS['TCA'] = array(
-            'sys_file_storage' => array(
-                'ctrl' => array(
-                    'delete' => 'deleted',
-                ),
-            ),
-        );
-        /** @var \TYPO3\CMS\Core\Resource\StorageRepository|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $storageRepositoryMock */
-        $storageRepositoryMock = $this->getAccessibleMock(
-            \TYPO3\CMS\Core\Resource\StorageRepository::class,
-            array('dummy'),
-            array(),
-            '',
-            false
-        );
-        $result = $storageRepositoryMock->_call('getWhereClauseForEnabledFields');
-        $this->assertContains('sys_file_storage.deleted = 0', $result);
-    }
-
-    /**
-     * test runs on a concrete implementation of AbstractRepository
-     * to ease the pain of testing a protected method. Feel free to improve.
-     *
-     * @test
-     */
-    public function getWhereClauseForEnabledFieldsCallsSysPageForDeletedFlagInFrontend()
-    {
-        $GLOBALS['TSFE'] = new \stdClass();
-        $sysPageMock = $this->createMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
-        $GLOBALS['TSFE']->sys_page = $sysPageMock;
-        $sysPageMock
-            ->expects($this->once())
-            ->method('deleteClause')
-            ->with('sys_file_storage');
-        $storageRepositoryMock = $this->getAccessibleMock(
-            \TYPO3\CMS\Core\Resource\StorageRepository::class,
-            array('getEnvironmentMode'),
-            array(),
-            '',
-            false
-        );
-        $storageRepositoryMock->expects($this->any())->method('getEnvironmentMode')->will($this->returnValue('FE'));
-        $storageRepositoryMock->_call('getWhereClauseForEnabledFields');
     }
 }
