@@ -67,11 +67,6 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
     /**
      * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
      */
-    protected $tableColumnCache;
-
-    /**
-     * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
-     */
     protected $queryCache;
 
     /**
@@ -154,7 +149,6 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      */
     public function initializeObject()
     {
-        $this->tableColumnCache = $this->cacheManager->getCache('extbase_typo3dbbackend_tablecolumns');
         $this->queryCache = $this->cacheManager->getCache('extbase_typo3dbbackend_queries');
     }
 

@@ -46,16 +46,6 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
     protected $pageRepository;
 
     /**
-     * @var \TYPO3\CMS\Core\Cache\CacheManager
-     */
-    protected $cacheManager;
-
-    /**
-     * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
-     */
-    protected $tableColumnCache;
-
-    /**
      * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
      */
     protected $environmentService;
@@ -66,14 +56,6 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
     public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper)
     {
         $this->dataMapper = $dataMapper;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
-     */
-    public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager)
-    {
-        $this->cacheManager = $cacheManager;
     }
 
     /**
@@ -100,16 +82,6 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
     public function __construct()
     {
         $this->databaseHandle = $GLOBALS['TYPO3_DB'];
-    }
-
-    /**
-     * Lifecycle method
-     *
-     * @return void
-     */
-    public function initializeObject()
-    {
-        $this->tableColumnCache = $this->cacheManager->getCache('extbase_typo3dbbackend_tablecolumns');
     }
 
     /**
@@ -753,38 +725,33 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getPageIdStatement($tableName, $tableAlias, array $storagePageIds)
     {
-        $pageIdStatement = '';
-        $tableColumns = $this->tableColumnCache->get($tableName);
-        if ($tableColumns === false) {
-            $tableColumns = $this->databaseHandle->admin_get_fields($tableName);
-            $this->tableColumnCache->set($tableName, $tableColumns);
+        if (!isset($GLOBALS['TCA'][$tableName]['ctrl'])) {
+            return '';
         }
-        if (is_array($GLOBALS['TCA'][$tableName]['ctrl']) && array_key_exists('pid', $tableColumns)) {
-            $rootLevel = (int)$GLOBALS['TCA'][$tableName]['ctrl']['rootLevel'];
-            switch ($rootLevel) {
-                // Only in pid 0
-                case 1:
+
+        $rootLevel = (int)$GLOBALS['TCA'][$tableName]['ctrl']['rootLevel'];
+        switch ($rootLevel) {
+            // Only in pid 0
+            case 1:
+                return $tableAlias . '.pid = 0';
+            // Pid 0 and pagetree
+            case -1:
+                if (empty($storagePageIds)) {
                     return $tableAlias . '.pid = 0';
-                // Pid 0 and pagetree
-                case -1:
-                    if (empty($storagePageIds)) {
-                        return $tableAlias . '.pid = 0';
-                    }
-                    $storagePageIds[] = 0;
-                    break;
-                // Only pagetree or not set
-                case 0:
-                    if (empty($storagePageIds)) {
-                        throw new InconsistentQuerySettingsException('Missing storage page ids.', 1365779762);
-                    }
-                    break;
-                // Invalid configuration
-                default:
-                    return '';
-            }
-            $pageIdStatement = $tableAlias . '.pid IN (' . implode(',', $this->databaseHandle->cleanIntArray($storagePageIds)) . ')';
+                }
+                $storagePageIds[] = 0;
+                break;
+            // Only pagetree or not set
+            case 0:
+                if (empty($storagePageIds)) {
+                    throw new InconsistentQuerySettingsException('Missing storage page ids.', 1365779762);
+                }
+                break;
+            // Invalid configuration
+            default:
+                return '';
         }
-        return $pageIdStatement;
+        return $tableAlias . '.pid IN (' . implode(',', $this->databaseHandle->cleanIntArray($storagePageIds)) . ')';
     }
 
     /**
