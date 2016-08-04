@@ -48,21 +48,23 @@ class ClearCacheService
             ->initializeCachingFramework()
             ->initializePackageManagement(\TYPO3\CMS\Core\Package\PackageManager::class);
 
-        // Get all table names starting with 'cf_' and truncate them
-        $database = $this->getDatabaseConnection();
-        $tables = $database->admin_get_tables();
+        // Get all table names from Default connection starting with 'cf_' and truncate them
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $connection = $connectionPool->getConnectionByName('Default');
+        $tables = $connection->getSchemaManager()->listTables();
         foreach ($tables as $table) {
-            $tableName = $table['Name'];
-            if (substr($tableName, 0, 3) === 'cf_') {
-                GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable($tableName)
-                    ->truncate($tableName);
-            } elseif ($tableName === 'cache_treelist') {
-                // cache_treelist is not implemented in the caching framework.
-                // clear this table manually
-                GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable('cache_treelist')
-                    ->truncate('cache_treelist');
+            if (strpos($table->getName(), 'cf_') === 0 || $table->getName() === 'cache_treelist') {
+                $connection->truncate($table->getName());
+            }
+        }
+
+        // check tables on other connections
+        $remappedTables = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'])
+            ? array_keys((array)$GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'])
+            : [];
+        foreach ($remappedTables as $tableName) {
+            if (strpos((string)$tableName, 'cf_') === 0 || $tableName === 'cache_treelist') {
+                $connectionPool->getConnectionForTable($tableName)->truncate($tableName);
             }
         }
 
@@ -85,29 +87,5 @@ class ClearCacheService
         $cacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
         $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
         $cacheManager->flushCaches();
-    }
-
-    /**
-     * Get a database instance.
-     *
-     * @TODO: This method is a copy from AbstractAction. Review them and extract to service
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        static $database;
-        if (!is_object($database)) {
-            /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
-            $database = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
-            $database->setDatabaseUsername($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['user']);
-            $database->setDatabasePassword($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['password']);
-            $database->setDatabaseHost($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['host']);
-            $database->setDatabasePort($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['port']);
-            $database->setDatabaseSocket($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['unix_socket']);
-            $database->setDatabaseName($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['dbname']);
-            $database->initialize();
-            $database->connectDB();
-        }
-        return $database;
     }
 }
