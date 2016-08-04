@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -7303,12 +7304,15 @@ class ContentObjectRenderer
                     $theList[] = $addId;
                 }
             }
-            $db->exec_INSERTquery('cache_treelist', [
-                'md5hash' => $requestHash,
-                'pid' => $id,
-                'treelist' => implode(',', $theList),
-                'tstamp' => $GLOBALS['EXEC_TIME']
-            ]);
+            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('cache_treelist')->insert(
+                'cache_treelist',
+                [
+                    'md5hash' => $requestHash,
+                    'pid' => $id,
+                    'treelist' => implode(',', $theList),
+                    'tstamp' => $GLOBALS['EXEC_TIME']
+                ]
+            );
         }
 
         return implode(',', $theList);

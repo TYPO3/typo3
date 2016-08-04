@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests;
  */
 
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -627,9 +628,6 @@ class Testbase
             );
         }
 
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
-        $database = $GLOBALS['TYPO3_DB'];
-
         $fileContent = file_get_contents($path);
         // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
         $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
@@ -659,16 +657,14 @@ class Testbase
             }
 
             $tableName = $table->getName();
-            $result = $database->exec_INSERTquery($tableName, $insertArray);
-            if ($result === false) {
-                throw new Exception(
-                    'Error when processing fixture file: ' . $path . ' Can not insert data to table ' . $tableName . ': ' . $database->sql_error(),
-                    1376746262
-                );
-            }
+            $connection = (new ConnectionPool())->getConnectionForTable($tableName);
+            $connection->insert(
+                $tableName,
+                $insertArray
+            );
             if (isset($table['id'])) {
                 $elementId = (string)$table['id'];
-                $foreignKeys[$tableName][$elementId] = $database->sql_insert_id();
+                $foreignKeys[$tableName][$elementId] = $connection->lastInsertId();
             }
         }
     }

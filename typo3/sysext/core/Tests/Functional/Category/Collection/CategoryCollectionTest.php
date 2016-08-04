@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Category\Collection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -242,7 +243,10 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             $values = array(
                 'title' => $this->getUniqueId('title')
             );
-            $this->database->exec_INSERTquery($this->tableName, $values);
+            (new ConnectionPool())->getConnectionForTable($this->tableName)->insert(
+                $this->tableName,
+                $values
+            );
         }
     }
 
@@ -260,7 +264,10 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'tablenames' => $this->tableName,
                 'fieldname' => 'categories'
             );
-            $this->database->exec_INSERTquery('sys_category_record_mm', $values);
+            (new ConnectionPool())->getConnectionForTable('sys_category_record_mm')->insert(
+                'sys_category_record_mm',
+                $values
+            );
         }
     }
 
@@ -310,7 +317,11 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'description' => '',
             'is_dummy_record' => 1
         );
-        $this->database->exec_INSERTquery('sys_category', $values);
-        $this->categoryUid = $this->database->sql_insert_id();
+        $connection = (new ConnectionPool())->getConnectionForTable('sys_category');
+        $connection->insert(
+            'sys_category',
+            $values
+        );
+        $this->categoryUid = $connection->lastInsertId();
     }
 }

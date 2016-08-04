@@ -14,11 +14,14 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\ApplicationContext;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\File;
@@ -1821,6 +1824,11 @@ class ContentObjectRendererTest extends UnitTestCase
     public function getTreeListReturnsChildPageUids()
     {
         $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->with('treelist')->will($this->returnValue(null));
+        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+        $connectionProphecy = $this->prophesize(Connection::class);
+        $connectionPoolProphecy->getConnectionForTable('cache_treelist')->willReturn($connectionProphecy->reveal());
+        $connectionProphecy->insert(Argument::cetera())->shouldBeCalled();
         $GLOBALS['TSFE']->sys_page
             ->expects($this->any())
             ->method('getRawRecord')
@@ -1863,6 +1871,11 @@ class ContentObjectRendererTest extends UnitTestCase
     public function getTreeListReturnsChildPageUidsAndOriginalPidForNegativeValue()
     {
         $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->with('treelist')->will($this->returnValue(null));
+        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+        $connectionProphecy = $this->prophesize(Connection::class);
+        $connectionPoolProphecy->getConnectionForTable('cache_treelist')->willReturn($connectionProphecy->reveal());
+        $connectionProphecy->insert(Argument::cetera())->shouldBeCalled();
         $GLOBALS['TSFE']->sys_page
             ->expects($this->any())
             ->method('getRawRecord')

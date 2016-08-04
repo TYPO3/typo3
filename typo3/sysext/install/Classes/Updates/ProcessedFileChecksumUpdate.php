@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -86,7 +87,13 @@ This can either happen on demand, when the processed file is first needed, or by
 
             if ($storage->getDriverType() !== 'Local') {
                 // non-local storage, we can't treat this, skip the record and mark it done
-                $db->exec_INSERTquery('sys_registry', array('entry_namespace' => 'ProcessedFileChecksumUpdate', 'entry_key' => $processedFileRow['uid']));
+                GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_registry')->insert(
+                    'sys_registry',
+                    [
+                        'entry_namespace' => 'ProcessedFileChecksumUpdate',
+                        'entry_key' => $processedFileRow['uid']
+                    ]
+                );
                 continue;
             }
 
@@ -132,8 +139,13 @@ This can either happen on demand, when the processed file is first needed, or by
                 // if the rename of the file failed, keep the record, but do not bother with it again
             }
 
-            // remember we finished this record
-            $db->exec_INSERTquery('sys_registry', array('entry_namespace' => 'ProcessedFileChecksumUpdate', 'entry_key' => $processedFileRow['uid']));
+            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_registry')->insert(
+                'sys_registry',
+                [
+                    'entry_namespace' => 'ProcessedFileChecksumUpdate',
+                    'entry_key' => $processedFileRow['uid']
+                ]
+            );
         }
 
         $db->exec_DELETEquery('sys_registry', 'entry_namespace = \'ProcessedFileChecksumUpdate\'');

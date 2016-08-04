@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\DBALException;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\DataSet;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -113,13 +115,14 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 
         foreach ($dataSet->getTableNames() as $tableName) {
             foreach ($dataSet->getElements($tableName) as $element) {
-                $this->getDatabaseConnection()->exec_INSERTquery(
-                    $tableName,
-                    $element
-                );
-                $sqlError = $this->getDatabaseConnection()->sql_error();
-                if (!empty($sqlError)) {
-                    $this->fail('SQL Error for table "' . $tableName . '": ' . LF . $sqlError);
+                $connection = (new ConnectionPool())->getConnectionForTable($tableName);
+                try {
+                    $connection->insert(
+                        $tableName,
+                        $element
+                    );
+                } catch (DBALException $e) {
+                    $this->fail('SQL Error for table "' . $tableName . '": ' . LF . $e->getMessage());
                 }
             }
         }
