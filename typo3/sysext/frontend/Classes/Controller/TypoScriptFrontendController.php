@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -1347,8 +1349,24 @@ class TypoScriptFrontendController
     protected function determineIdIsHiddenPage()
     {
         $field = MathUtility::canBeInterpretedAsInteger($this->id) ? 'uid' : 'alias';
-        $pageSelectCondition = $field . '=' . $this->getDatabaseConnection()->fullQuoteStr($this->id, 'pages');
-        $page = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid,hidden,starttime,endtime', 'pages', $pageSelectCondition . ' AND pid>=0 AND deleted=0');
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $page = $queryBuilder
+            ->select('uid', 'hidden', 'starttime', 'endtime')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($this->id)),
+                $queryBuilder->expr()->gte('pid', 0)
+            )
+            ->setMaxResults(1)
+            ->execute()
+            ->fetch();
 
         $workspace = $this->whichWorkspace();
         if ($workspace !== 0 && $workspace !== false) {
@@ -4550,15 +4568,18 @@ class TypoScriptFrontendController
         if ($runtimeCache->has($entryIdentifier)) {
             $sysDomainData = $runtimeCache->get($entryIdentifier);
         } else {
-            $domainRecords = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                'uid, pid, domainName, forced',
-                'sys_domain',
-                'redirectTo=\'\' ' . $this->sys_page->enableFields('sys_domain', 0),
-                '',
-                'sorting ASC'
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_domain');
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+            $result = $queryBuilder
+                ->select('uid', 'pid', 'domainName', 'forced')
+                ->from('sys_domain')
+                ->where(
+                    $queryBuilder->expr()->eq('redirectTo', $queryBuilder->createNamedParameter(''))
+                )
+                ->orderBy('sorting', 'ASC')
+                ->execute();
 
-            foreach ($domainRecords as $row) {
+            while ($row = $result->fetch()) {
                 // if there is already an entry for this pid, check if we should overwrite it
                 if (isset($sysDomainData[$row['pid']])) {
                     // There is already a "forced" entry, which must not be overwritten

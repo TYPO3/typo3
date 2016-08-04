@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -129,84 +127,6 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
                 'example.com',
             ),
         );
-    }
-
-    /**
-     * @param string $currentDomain
-     * @test
-     * @dataProvider getSysDomainCacheDataProvider
-     */
-    public function getSysDomainCacheReturnsCurrentDomainRecord($currentDomain)
-    {
-        $_SERVER['HTTP_HOST'] = $currentDomain;
-        $domainRecords = array(
-            'typo3.org' => array(
-                'uid' => '1',
-                'pid' => '1',
-                'domainName' => 'typo3.org',
-                'forced' => 0,
-            ),
-            'foo.bar' => array(
-                'uid' => '2',
-                'pid' => '1',
-                'domainName' => 'foo.bar',
-                'forced' => 0,
-            ),
-            'example.com' => array(
-                'uid' => '3',
-                'pid' => '1',
-                'domainName' => 'example.com',
-                'forced' => 0,
-            ),
-        );
-        $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(DatabaseConnection::class)
-            ->setMethods(array('exec_SELECTgetRows'))
-            ->getMock();
-        $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetRows')->willReturn($domainRecords);
-        GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime')->flush();
-        $expectedResult = array(
-            $domainRecords[$currentDomain]['pid'] => $domainRecords[$currentDomain],
-        );
-        $this->assertEquals($expectedResult, $this->subject->_call('getSysDomainCache'));
-    }
-
-    /**
-     * @param string $currentDomain
-     * @test
-     * @dataProvider getSysDomainCacheDataProvider
-     */
-    public function getSysDomainCacheReturnsForcedDomainRecord($currentDomain)
-    {
-        $_SERVER['HTTP_HOST'] = $currentDomain;
-        $domainRecords = array(
-            'typo3.org' => array(
-                'uid' => '1',
-                'pid' => '1',
-                'domainName' => 'typo3.org',
-                'forced' => 0,
-            ),
-            'foo.bar' => array(
-                'uid' => '2',
-                'pid' => '1',
-                'domainName' => 'foo.bar',
-                'forced' => 1,
-            ),
-            'example.com' => array(
-                'uid' => '3',
-                'pid' => '1',
-                'domainName' => 'example.com',
-                'forced' => 0,
-            ),
-        );
-        $GLOBALS['TYPO3_DB'] = $this->getMockBuilder(DatabaseConnection::class)
-            ->setMethods(array('exec_SELECTgetRows'))
-            ->getMock();
-        $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetRows')->willReturn($domainRecords);
-        GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime')->flush();
-        $expectedResult = array(
-            $domainRecords[$currentDomain]['pid'] => $domainRecords['foo.bar'],
-        );
-        $this->assertEquals($expectedResult, $this->subject->_call('getSysDomainCache'));
     }
 
     /**

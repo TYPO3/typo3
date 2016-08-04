@@ -14,7 +14,10 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -32,6 +35,7 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
         parent::setUp();
         $this->importDataSet(__DIR__ . '/fixtures.xml');
 
+        $GLOBALS['TSFE']->gr_list = '';
         $this->tsFrontendController = $this->getAccessibleMock(
             TypoScriptFrontendController::class,
             array('dummy'),
@@ -82,6 +86,100 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
     }
 
     /**
+     * @param string $currentDomain
+     * @test
+     * @dataProvider getSysDomainCacheDataProvider
+     */
+    public function getSysDomainCacheReturnsCurrentDomainRecord($currentDomain)
+    {
+        GeneralUtility::flushInternalRuntimeCaches();
+
+        $_SERVER['HTTP_HOST'] = $currentDomain;
+        $domainRecords = array(
+            'typo3.org' => array(
+                'uid' => '1',
+                'pid' => '1',
+                'domainName' => 'typo3.org',
+                'forced' => 0,
+            ),
+            'foo.bar' => array(
+                'uid' => '2',
+                'pid' => '1',
+                'domainName' => 'foo.bar',
+                'forced' => 0,
+            ),
+            'example.com' => array(
+                'uid' => '3',
+                'pid' => '1',
+                'domainName' => 'example.com',
+                'forced' => 0,
+            ),
+        );
+
+        foreach ($domainRecords as $domainRecord) {
+            (new ConnectionPool())->getConnectionForTable('sys_domain')->insert(
+                'sys_domain',
+                $domainRecord
+            );
+        }
+
+        GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime')->flush();
+        $expectedResult = array(
+            $domainRecords[$currentDomain]['pid'] => $domainRecords[$currentDomain],
+        );
+
+        $actualResult = $this->tsFrontendController->_call('getSysDomainCache');
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @param string $currentDomain
+     * @test
+     * @dataProvider getSysDomainCacheDataProvider
+     */
+    public function getSysDomainCacheReturnsForcedDomainRecord($currentDomain)
+    {
+        GeneralUtility::flushInternalRuntimeCaches();
+
+        $_SERVER['HTTP_HOST'] = $currentDomain;
+        $domainRecords = array(
+            'typo3.org' => array(
+                'uid' => '1',
+                'pid' => '1',
+                'domainName' => 'typo3.org',
+                'forced' => 0,
+            ),
+            'foo.bar' => array(
+                'uid' => '2',
+                'pid' => '1',
+                'domainName' => 'foo.bar',
+                'forced' => 1,
+            ),
+            'example.com' => array(
+                'uid' => '3',
+                'pid' => '1',
+                'domainName' => 'example.com',
+                'forced' => 0,
+            ),
+        );
+
+        foreach ($domainRecords as $domainRecord) {
+            (new ConnectionPool())->getConnectionForTable('sys_domain')->insert(
+                'sys_domain',
+                $domainRecord
+            );
+        }
+
+        GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime')->flush();
+        $expectedResult = array(
+            $domainRecords[$currentDomain]['pid'] => $domainRecords['foo.bar'],
+        );
+        $actualResult = $this->tsFrontendController->_call('getSysDomainCache');
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
      * @param string $tablePid
      * @param int $now
      * @return int
@@ -89,5 +187,23 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
     public function getFirstTimeValueForRecordCall($tablePid, $now)
     {
         return $this->tsFrontendController->_call('getFirstTimeValueForRecord', $tablePid, $now);
+    }
+
+    /**
+     * @return array
+     */
+    public function getSysDomainCacheDataProvider()
+    {
+        return array(
+            'typo3.org' => array(
+                'typo3.org',
+            ),
+            'foo.bar' => array(
+                'foo.bar',
+            ),
+            'example.com' => array(
+                'example.com',
+            ),
+        );
     }
 }
