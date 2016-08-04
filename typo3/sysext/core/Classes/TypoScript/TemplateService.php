@@ -1397,10 +1397,11 @@ class TemplateService
      *
      * @param string $fileName Absolute filepath to record
      * @return NULL|string The content returned
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::fileResource(), GeneralUtility::getUrl()
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use $this->getFileName() and file_get_contents directly
      */
     public function fileContent($fileName)
     {
+        GeneralUtility::logDeprecatedFunction();
         $fileName = $this->getFileName($fileName);
         if ($fileName) {
             return GeneralUtility::getUrl($fileName);

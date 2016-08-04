@@ -1501,7 +1501,7 @@ class ContentObjectRenderer
                 $imgInfo = @getimagesize($imgFile);
                 return '<img src="' . htmlspecialchars($tsfe->absRefPrefix . $imgFile) . '" width="' . (int)$imgInfo[0] . '" height="' . (int)$imgInfo[1] . '"' . $this->getBorderAttr(' border="0"') . ' ' . $addParams . ' />';
             } elseif (filesize($incFile) < 1024 * 1024) {
-                return $tsfe->tmpl->fileContent($incFile);
+                return file_get_contents($incFile);
             }
         }
         return '';
