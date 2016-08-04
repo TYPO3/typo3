@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Scheduler\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Doctrine\DBAL\DBALException;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Remove old entries from tables.
@@ -23,7 +26,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']
  * See ext_localconf.php of scheduler extension for an example
  */
-class TableGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+class TableGarbageCollectionTask extends AbstractTask
 {
     /**
      * @var bool True if all tables should be cleaned up
@@ -48,7 +51,7 @@ class TableGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     public function execute()
     {
-        $tableConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables'];
+        $tableConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TableGarbageCollectionTask::class]['options']['tables'];
         $tableHandled = false;
         foreach ($tableConfigurations as $tableName => $configuration) {
             if ($this->allTables || $tableName === $this->table) {
@@ -57,7 +60,7 @@ class TableGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
             }
         }
         if (!$tableHandled) {
-            throw new \RuntimeException(\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class . ' misconfiguration: ' . $this->table . ' does not exist in configuration', 1308354399);
+            throw new \RuntimeException(TableGarbageCollectionTask::class . ' misconfiguration: ' . $this->table . ' does not exist in configuration', 1308354399);
         }
         return true;
     }
@@ -72,29 +75,37 @@ class TableGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     protected function handleTable($table, array $configuration)
     {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->delete($table);
         if (!empty($configuration['expireField'])) {
             $field = $configuration['expireField'];
             $dateLimit = $GLOBALS['EXEC_TIME'];
             // If expire field value is 0, do not delete
             // Expire field = 0 means no expiration
-            $where = $field . ' <= \'' . $dateLimit . '\' AND ' . $field . ' > \'0\'';
+            $queryBuilder->where(
+                $queryBuilder->expr()->lte($field, $dateLimit),
+                $queryBuilder->expr()->gt($field, 0)
+            );
         } elseif (!empty($configuration['dateField'])) {
             if (!$this->allTables) {
                 $deleteTimestamp = strtotime('-' . $this->numberOfDays . 'days');
             } else {
                 if (!isset($configuration['expirePeriod'])) {
-                    throw new \RuntimeException(\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class . ' misconfiguration: No expirePeriod defined for table ' . $table, 1308355095);
+                    throw new \RuntimeException(TableGarbageCollectionTask::class . ' misconfiguration: No expirePeriod defined for table ' . $table, 1308355095);
                 }
                 $deleteTimestamp = strtotime('-' . $configuration['expirePeriod'] . 'days');
             }
-            $where = $configuration['dateField'] . ' < ' . $deleteTimestamp;
+            $queryBuilder->where(
+                $queryBuilder->expr()->lt($configuration['dateField'], $deleteTimestamp)
+            );
         } else {
-            throw new \RuntimeException(\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class . ' misconfiguration: Either expireField or dateField must be defined for table ' . $table, 1308355268);
+            throw new \RuntimeException(TableGarbageCollectionTask::class . ' misconfiguration: Either expireField or dateField must be defined for table ' . $table, 1308355268);
         }
-        $GLOBALS['TYPO3_DB']->exec_DELETEquery($table, $where);
-        $error = $GLOBALS['TYPO3_DB']->sql_error();
-        if ($error) {
-            throw new \RuntimeException(\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class . ' failed for table ' . $this->table . ' with error: ' . $error, 1308255491);
+
+        try {
+            $queryBuilder->execute();
+        } catch (DBALException $e) {
+            throw new \RuntimeException(TableGarbageCollectionTask::class . ' failed for table ' . $this->table . ' with error: ' . $e->getMessage(), 1308255491);
         }
         return true;
     }
