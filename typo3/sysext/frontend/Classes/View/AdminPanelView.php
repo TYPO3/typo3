@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Frontend\View;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -394,20 +397,34 @@ class AdminPanelView
 
             $options = '';
 
-            $res = $this->getDatabaseConnection()->exec_SELECTquery(
-                'fe_groups.uid, fe_groups.title',
-                'fe_groups,pages',
-                'pages.uid=fe_groups.pid AND pages.deleted=0 ' . BackendUtility::deleteClause('fe_groups') . ' AND ' . $this->getBackendUser()->getPagePermsClause(1),
-                '',
-                'fe_groups.title ASC'
-            );
-            while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
-                $options .= '<option value="' . $row['uid'] . '"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['preview_simulateUserGroup'] == $row['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars(($row['title'] . ' [' . $row['uid'] . ']')) . '</option>';
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('fe_groups');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+            $result = $queryBuilder->select('fe_groups.uid', 'fe_groups.title')
+               ->from('fe_groups')
+               ->from('pages')
+               ->where(
+                   $queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('fe_groups.pid')),
+                   $this->getBackendUser()->getPagePermsClause(1)
+               )
+               ->orderBy('fe_groups.title')
+               ->execute();
+
+            while ($row = $result->fetch()) {
+                $options .= '<option value="' . $row['uid'] . '"'
+                    . ($this->getBackendUser()->uc['TSFE_adminConfig']['preview_simulateUserGroup'] == $row['uid'] ? ' selected="selected"' : '')
+                    . '>' . htmlspecialchars(($row['title'] . ' [' . $row['uid'] . ']')) . '</option>';
             }
-            $this->getDatabaseConnection()->sql_free_result($res);
             if ($options) {
                 $options = '<option value="0">&nbsp;</option>' . $options;
-                $out .= $this->extGetItem('preview_simulateUserGroup', '<select id="preview_simulateUserGroup" name="TSFE_ADMIN_PANEL[preview_simulateUserGroup]">' . $options . '</select>');
+                $out .= $this->extGetItem(
+                    'preview_simulateUserGroup',
+                    '<select id="preview_simulateUserGroup" name="TSFE_ADMIN_PANEL[preview_simulateUserGroup]">'
+                        . $options . '</select>'
+                );
             }
         }
         return $out;
@@ -693,13 +710,23 @@ class AdminPanelView
             ));
             $toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($url) . '">' . $icon . '</a>';
             if ($tsfe->sys_language_uid && $langAllowed) {
-                $row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-                    'uid,pid,t3ver_state',
-                    'pages_language_overlay',
-                    'pid=' . (int)$id .
-                    ' AND sys_language_uid=' . $tsfe->sys_language_uid .
-                    $tsfe->sys_page->enableFields('pages_language_overlay')
-                );
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('pages_language_overlay');
+                $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+                $row = $queryBuilder
+                    ->select('uid', 'pid', 't3ver_state')
+                    ->from('pages_language_overlay')
+                    ->where(
+                        $queryBuilder->expr()->eq('pid', (int)$id),
+                        $queryBuilder->expr()->eq(
+                            'sys_language_uid',
+                            (int)$tsfe->sys_language_uid
+                        )
+                    )
+                    ->setMaxResults(1)
+                    ->execute()
+                    ->fetch();
+
                 $tsfe->sys_page->versionOL('pages_language_overlay', $row);
                 if (is_array($row)) {
                     $icon = '<span title="' . $this->extGetLL('edit_editPageOverlay', true) . '">'
