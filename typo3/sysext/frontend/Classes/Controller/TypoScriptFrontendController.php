@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
@@ -1906,7 +1907,13 @@ class TypoScriptFrontendController
      */
     public function setSysPageWhereClause()
     {
-        $this->sys_page->where_hid_del .= ' AND pages.doktype<200';
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('pages')
+            ->getExpressionBuilder();
+        $this->sys_page->where_hid_del = ' AND ' . (string)$expressionBuilder->andX(
+            QueryHelper::stripLogicalOperatorPrefix($this->sys_page->where_hid_del),
+            $expressionBuilder->lt('pages.doktype', 200)
+        );
         $this->sys_page->where_groupAccess = $this->sys_page->getMultipleGroupsWhereClause('pages.fe_group', 'pages');
     }
 

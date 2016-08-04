@@ -14,8 +14,12 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Frontend\Page\PageRepositoryGetPageHookInterface;
 
 /**
  * Test case
@@ -32,6 +36,7 @@ class PageRepositoryTest extends FunctionalTestCase
     protected function setUp()
     {
         parent::setUp();
+        $GLOBALS['TSFE']->gr_list = '';
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
         $this->pageRepo = new PageRepository();
         $this->pageRepo->init(false);
@@ -279,6 +284,256 @@ class PageRepositoryTest extends FunctionalTestCase
         $row = $rows[2];
         $this->assertOverlayRow($row);
         $this->assertEquals('Attrappe 1-3-9', $row['title']);
+    }
+
+    /**
+     * Tests whether the getPage Hook is called correctly.
+     *
+     * @test
+     */
+    public function isGetPageHookCalled()
+    {
+        // Create a hook mock object
+        $getPageHookProphet = $this->prophesize(\stdClass::class);
+        $getPageHookProphet->willImplement(PageRepositoryGetPageHookInterface::class);
+        $getPageHookProphet->getPage_preProcess(42, false, Argument::type(PageRepository::class))->shouldBeCalled();
+        $getPageHookMock = $getPageHookProphet->reveal();
+        $className = get_class($getPageHookMock);
+
+        // Register hook mock object
+        GeneralUtility::addInstance($className, $getPageHookMock);
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'][] = $className;
+        $this->pageRepo->getPage(42, false);
+    }
+
+    /**
+     * @test
+     */
+    public function initSetsPublicPropertyCorrectlyForWorkspacePreview()
+    {
+        $this->pageRepo->versioningPreview = true;
+        $this->pageRepo->versioningWorkspaceId = 2;
+        $this->pageRepo->init(false);
+
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
+
+        $expectedSQL = sprintf(
+            ' AND (%s = 0) AND ((%s = 0) OR (%s = 2))',
+            $connection->quoteIdentifier('pages.deleted'),
+            $connection->quoteIdentifier('pages.t3ver_wsid'),
+            $connection->quoteIdentifier('pages.t3ver_wsid')
+        );
+
+        $this->assertSame($expectedSQL, $this->pageRepo->where_hid_del);
+    }
+
+    /**
+     * @test
+     */
+    public function initSetsPublicPropertyCorrectlyForLive()
+    {
+        $GLOBALS['SIM_ACCESS_TIME'] = 123;
+
+        $this->pageRepo->versioningPreview = false;
+        $this->pageRepo->versioningWorkspaceId = 0;
+        $this->pageRepo->init(false);
+
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
+        $expectedSQL = sprintf(
+            ' AND (%s = 0) AND (%s <= 0) AND (%s = 0) AND (%s <= 123) AND ((%s = 0) OR (%s > 123))',
+            $connection->quoteIdentifier('pages.deleted'),
+            $connection->quoteIdentifier('pages.t3ver_state'),
+            $connection->quoteIdentifier('pages.hidden'),
+            $connection->quoteIdentifier('pages.starttime'),
+            $connection->quoteIdentifier('pages.endtime'),
+            $connection->quoteIdentifier('pages.endtime')
+        );
+
+        $this->assertSame($expectedSQL, $this->pageRepo->where_hid_del);
+    }
+
+    ////////////////////////////////
+    // Tests concerning workspaces
+    ////////////////////////////////
+
+    /**
+     * @test
+     */
+    public function noPagesFromWorkspaceAreShownLive()
+    {
+        // initialization
+        $wsid = 987654321;
+
+        // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fetch_the_id()
+        $this->pageRepo->versioningPreview = false;
+        $this->pageRepo->versioningWorkspaceId = $wsid;
+        $this->pageRepo->init(false);
+
+        $this->assertSame([], $this->pageRepo->getPage(11));
+    }
+
+    /**
+     * @test
+     */
+    public function previewShowsPagesFromLiveAndCurrentWorkspace()
+    {
+        // initialization
+        $wsid = 987654321;
+
+        // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fetch_the_id()
+        $this->pageRepo->versioningPreview = true;
+        $this->pageRepo->versioningWorkspaceId = $wsid;
+        $this->pageRepo->init(false);
+
+        $pageRec = $this->pageRepo->getPage(11);
+
+        $this->assertSame(11, $pageRec['uid']);
+        $this->assertSame(11, $pageRec['t3ver_oid']);
+        $this->assertSame(987654321, $pageRec['t3ver_wsid']);
+        $this->assertSame(-1, $pageRec['t3ver_state']);
+        $this->assertSame('First draft version', $pageRec['t3ver_label']);
+    }
+
+    /**
+     * @test
+     */
+    public function getWorkspaceVersionReturnsTheCorrectMethod()
+    {
+        // initialization
+        $wsid = 987654321;
+
+        // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fetch_the_id()
+        $this->pageRepo->versioningPreview = true;
+        $this->pageRepo->versioningWorkspaceId = $wsid;
+        $this->pageRepo->init(false);
+
+        $pageRec = $this->pageRepo->getWorkspaceVersionOfRecord($wsid, 'pages', 11);
+
+        $this->assertSame(12, $pageRec['uid']);
+        $this->assertSame(11, $pageRec['t3ver_oid']);
+        $this->assertSame(987654321, $pageRec['t3ver_wsid']);
+        $this->assertSame(-1, $pageRec['t3ver_state']);
+        $this->assertSame('First draft version', $pageRec['t3ver_label']);
+    }
+
+    ////////////////////////////////
+    // Tests concerning versioning
+    ////////////////////////////////
+
+    /**
+     * @test
+     */
+    public function enableFieldsHidesVersionedRecordsAndPlaceholders()
+    {
+        $table = $this->getUniqueId('aTable');
+        $GLOBALS['TCA'][$table] = [
+            'ctrl' => [
+                'versioningWS' => true
+            ]
+        ];
+
+        $this->pageRepo->versioningPreview = false;
+        $this->pageRepo->init(false);
+
+        $conditions = $this->pageRepo->enableFields($table);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+
+        $this->assertThat(
+            $conditions,
+            $this->stringContains(' AND (' . $connection->quoteIdentifier($table . '.t3ver_state') . ' <= 0)'),
+            'Versioning placeholders'
+        );
+        $this->assertThat(
+            $conditions,
+            $this->stringContains(' AND (' . $connection->quoteIdentifier($table . '.pid') . ' <> -1)'),
+            'Records from page -1'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function enableFieldsDoesNotHidePlaceholdersInPreview()
+    {
+        $table = $this->getUniqueId('aTable');
+        $GLOBALS['TCA'][$table] = [
+            'ctrl' => [
+                'versioningWS' => true
+            ]
+        ];
+
+        $this->pageRepo->versioningPreview = true;
+        $this->pageRepo->init(false);
+
+        $conditions = $this->pageRepo->enableFields($table);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+
+        $this->assertThat(
+            $conditions,
+            $this->logicalNot($this->stringContains(' AND (' . $connection->quoteIdentifier($table . '.t3ver_state') . ' <= 0)')),
+            'No versioning placeholders'
+        );
+        $this->assertThat(
+            $conditions,
+            $this->stringContains(' AND (' . $connection->quoteIdentifier($table . '.pid') . ' <> -1)'),
+            'Records from page -1'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function enableFieldsDoesFilterToCurrentAndLiveWorkspaceForRecordsInPreview()
+    {
+        $table = $this->getUniqueId('aTable');
+        $GLOBALS['TCA'][$table] = [
+            'ctrl' => [
+                'versioningWS' => true
+            ]
+        ];
+
+        $this->pageRepo->versioningPreview = true;
+        $this->pageRepo->versioningWorkspaceId = 2;
+        $this->pageRepo->init(false);
+
+        $conditions = $this->pageRepo->enableFields($table);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+
+        $this->assertThat(
+            $conditions,
+            $this->stringContains(' AND ((' . $connection->quoteIdentifier($table . '.t3ver_wsid') . ' = 0) OR (' . $connection->quoteIdentifier($table . '.t3ver_wsid') . ' = 2))'),
+            'No versioning placeholders'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function enableFieldsDoesNotHideVersionedRecordsWhenCheckingVersionOverlays()
+    {
+        $table = $this->getUniqueId('aTable');
+        $GLOBALS['TCA'][$table] = [
+            'ctrl' => [
+                'versioningWS' => true
+            ]
+        ];
+
+        $this->pageRepo->versioningPreview = true;
+        $this->pageRepo->init(false);
+
+        $conditions = $this->pageRepo->enableFields($table, -1, [], true);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+
+        $this->assertThat(
+            $conditions,
+            $this->logicalNot($this->stringContains(' AND (' . $connection->quoteIdentifier($table . '.t3ver_state') . ' <= 0)')),
+            'No versioning placeholders'
+        );
+        $this->assertThat(
+            $conditions,
+            $this->logicalNot($this->stringContains(' AND (' . $connection->quoteIdentifier($table . '.pid') . ' <> -1)')),
+            'No necords from page -1'
+        );
     }
 
     protected function assertOverlayRow($row)

@@ -289,8 +289,8 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'in be: respect enable fields and do not include deleted' => array('BE', false, array(), false, 'tx_foo_table.disabled_column=0 AND (tx_foo_table.starttime_column<=123456789) AND tx_foo_table.deleted_column = 0'),
             'in fe: include all' => array('FE', true, array(), true, ''),
             'in fe: ignore enable fields but do not include deleted' => array('FE', true, array(), false, 'tx_foo_table.deleted_column=0'),
-            'in fe: ignore only starttime and do not include deleted' => array('FE', true, array('starttime'), false, 'tx_foo_table.deleted_column=0 AND tx_foo_table.disabled_column=0'),
-            'in fe: respect enable fields and do not include deleted' => array('FE', false, array(), false, 'tx_foo_table.deleted_column=0 AND tx_foo_table.disabled_column=0 AND tx_foo_table.starttime_column<=123456789')
+            'in fe: ignore only starttime and do not include deleted' => array('FE', true, array('starttime'), false, '(tx_foo_table.deleted_column = 0) AND (tx_foo_table.disabled_column = 0)'),
+            'in fe: respect enable fields and do not include deleted' => array('FE', false, array(), false, '(tx_foo_table.deleted_column = 0) AND (tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 123456789)')
         );
     }
 
@@ -321,7 +321,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         );
 
         $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphet->getQueryBuilderForTable($tableName)->willReturn($queryBuilderProphet->reveal());
+        $connectionPoolProphet->getQueryBuilderForTable(Argument::any($tableName, 'pages'))->willReturn($queryBuilderProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         $mockQuerySettings = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)
@@ -351,7 +351,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'in be: respectEnableFields=false' => array('BE', false, ''),
             'in be: respectEnableFields=true' => array('BE', true, 'tx_foo_table.disabled_column=0 AND (tx_foo_table.starttime_column<=123456789) AND tx_foo_table.deleted_column = 0'),
             'in FE: respectEnableFields=false' => array('FE', false, ''),
-            'in FE: respectEnableFields=true' => array('FE', true, 'tx_foo_table.deleted_column=0 AND tx_foo_table.disabled_column=0 AND tx_foo_table.starttime_column<=123456789')
+            'in FE: respectEnableFields=true' => array('FE', true, '(tx_foo_table.deleted_column = 0) AND (tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 123456789)')
         );
     }
 
@@ -382,7 +382,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         );
 
         $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphet->getQueryBuilderForTable($tableName)->willReturn($queryBuilderProphet->reveal());
+        $connectionPoolProphet->getQueryBuilderForTable(Argument::any($tableName, 'pages'))->willReturn($queryBuilderProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $mockQuerySettings */
