@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -487,11 +486,6 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'rootLevel' => $rootLevel
         );
         $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, array('dummy'), array(), '', false);
-        $mockFrontendVariableCache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class);
-        $mockDatabaseHandle = $this->prophesize(DatabaseConnection::class);
-        $mockTypo3DbQueryParser->_set('databaseHandle', $mockDatabaseHandle->reveal());
-        $mockTypo3DbQueryParser->_set('tableColumnCache', $mockFrontendVariableCache);
-        $mockFrontendVariableCache->expects($this->once())->method('get')->will($this->returnValue(array('pid' => '42')));
         $sql = $mockTypo3DbQueryParser->_callRef('getPageIdStatement', $table, $table, $storagePageIds);
 
         $this->assertSame($expectedSql, $sql);

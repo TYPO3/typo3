@@ -190,11 +190,6 @@ return array(
                     ),
                     'groups' => array('system')
                 ),
-                'extbase_typo3dbbackend_tablecolumns' => array(
-                    'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
-                    'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-                    'groups' => array('system'),
-                ),
                 'extbase_typo3dbbackend_queries' => array(
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,

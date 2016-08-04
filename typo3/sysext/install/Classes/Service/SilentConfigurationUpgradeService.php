@@ -81,6 +81,8 @@ class SilentConfigurationUpgradeService
         'BE/compactFlexFormXML',
         // #75625
         'SYS/clearCacheSystem',
+        // #77411
+        'SYS/caching/cacheConfigurations/extbase_typo3dbbackend_tablecolumns'
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)
