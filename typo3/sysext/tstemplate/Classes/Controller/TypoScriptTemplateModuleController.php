@@ -483,7 +483,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             $previousPage['aHref'] = BackendUtility::getModuleUrl('web_ts', $urlParameters);
             $moduleContent['previousPage'] = $previousPage;
         }
-        $view = $this->getFluidTemplateObject('tstemplate', 'NoTemplate');
+        $view = $this->getFluidTemplateObject('tstemplate', 'Main');
         $view->assign('partialName', 'NoTemplate');
         $view->assign('content', $moduleContent);
         return $view->render();
