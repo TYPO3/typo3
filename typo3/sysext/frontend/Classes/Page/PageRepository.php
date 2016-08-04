@@ -836,9 +836,11 @@ class PageRepository
      * @param int $len The max length of each title from the rootline.
      * @return string The path in the form "/page title/This is another pageti.../Another page
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getConfigArray()
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function getPathFromRootline($rl, $len = 20)
     {
+        GeneralUtility::logDeprecatedFunction();
         $path = '';
         if (is_array($rl)) {
             $c = count($rl);
