@@ -14,12 +14,17 @@ namespace TYPO3\CMS\Core\Integrity;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class holds functions used by the TYPO3 backend to check the integrity of the database (The DBint module, 'lowlevel' extension)
  *
- * Depends on: Depends on \TYPO3\CMS\Core\Database\RelationHandler
+ * Depends on \TYPO3\CMS\Core\Database\RelationHandler
  *
  * @todo Need to really extend this class when the tcemain library has been updated and the whole API is better defined. There are some known bugs in this library. Further it would be nice with a facility to not only analyze but also clean up!
  * @see \TYPO3\CMS\Lowlevel\View\DatabaseIntegrityView::func_relations(), \TYPO3\CMS\Lowlevel\View\DatabaseIntegrityView::func_records()
@@ -40,11 +45,6 @@ class DatabaseIntegrityCheck
      * @var bool If set, genTree() includes records from pages.
      */
     public $genTree_includeRecords = false;
-
-    /**
-     * @var string Extra where-clauses for the tree-selection
-     */
-    public $perms_clause = '';
 
     /**
      * @var array Will hold id/rec pairs from genTree()
@@ -101,15 +101,28 @@ class DatabaseIntegrityCheck
      */
     public function genTree($theID, $depthData = '', $versions = false)
     {
-        if ($versions) {
-            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,doktype,deleted,t3ver_wsid,t3ver_id,t3ver_count,hidden', 'pages', 'pid=-1 AND t3ver_oid=' . (int)$theID . ' ' . (!$this->genTree_includeDeleted ? 'AND deleted=0' : '') . $this->perms_clause, '', 'sorting');
-        } else {
-            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,doktype,deleted,hidden', 'pages', 'pid=' . (int)$theID . ' ' . (!$this->genTree_includeDeleted ? 'AND deleted=0' : '') . $this->perms_clause, '', 'sorting');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+        if (!$this->genTree_includeDeleted) {
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         }
-        // Traverse the records selected:
-        $a = 0;
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-            $a++;
+        $queryBuilder->select('uid', 'title', 'doktype', 'deleted', 'hidden')
+            ->from('pages')
+            ->orderBy('sorting');
+        if ($versions) {
+            $queryBuilder->addSelect('t3ver_wsid', 't3ver_id', 't3ver_count');
+            $queryBuilder->where(
+                $queryBuilder->expr()->eq('pid', -1),
+                $queryBuilder->expr()->eq('t3ver_oid', (int)$theID)
+            );
+        } else {
+            $queryBuilder->where(
+                $queryBuilder->expr()->eq('pid', (int)$theID)
+            );
+        }
+        $result = $queryBuilder->execute();
+        // Traverse the records selected
+        while ($row = $result->fetch()) {
             $newID = $row['uid'];
             // Register various data for this item:
             $this->page_idArray[$newID] = $row;
@@ -142,7 +155,6 @@ class DatabaseIntegrityCheck
                 $this->genTree($newID, '', true);
             }
         }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
     }
 
     /**
@@ -154,25 +166,29 @@ class DatabaseIntegrityCheck
      */
     public function genTree_records($theID, $_ = '', $table = '', $versions = false)
     {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll();
+        if (!$this->genTree_includeDeleted) {
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        }
+        $queryBuilder
+            ->select(...explode(',', BackendUtility::getCommonSelectFields($table)))
+            ->from($table);
+
+        // Select all records from table pointing to this page
         if ($versions) {
-            // Select all records from table pointing to this page:
-            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-                BackendUtility::getCommonSelectFields($table),
-                $table,
-                'pid=-1 AND t3ver_oid=' . (int)$theID . (!$this->genTree_includeDeleted ? BackendUtility::deleteClause($table) : '')
+            $queryBuilder->where(
+                $queryBuilder->expr()->eq('pid', -1),
+                $queryBuilder->expr()->eq('t3ver_oid', (int)$theID)
             );
         } else {
-            // Select all records from table pointing to this page:
-            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-                BackendUtility::getCommonSelectFields($table),
-                $table,
-                'pid=' . (int)$theID . (!$this->genTree_includeDeleted ? BackendUtility::deleteClause($table) : '')
+            $queryBuilder->where(
+                $queryBuilder->expr()->eq('pid', (int)$theID)
             );
         }
-        // Traverse selected:
-        $a = 0;
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-            $a++;
+        $queryResult = $queryBuilder->execute();
+        // Traverse selected
+        while ($row = $queryResult->fetch()) {
             $newID = $row['uid'];
             // Register various data for this item:
             $this->rec_idArray[$table][$newID] = $row;
@@ -188,7 +204,6 @@ class DatabaseIntegrityCheck
                 $this->genTree_records($newID, '', $table, true);
             }
         }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
     }
 
     /**
@@ -200,24 +215,32 @@ class DatabaseIntegrityCheck
     public function lostRecords($pid_list)
     {
         $this->lostPagesList = '';
-        if ($pid_list) {
+        $pageIds = GeneralUtility::intExplode(',', $pid_list);
+        if (is_array($pageIds)) {
             foreach ($GLOBALS['TCA'] as $table => $tableConf) {
-                $pid_list_tmp = $pid_list;
-                if (!isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) || !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-                    // Remove preceding "-1," for non-versioned tables
-                    $pid_list_tmp = preg_replace('/^\\-1,/', '', $pid_list_tmp);
+                $pageIdsForTable = $pageIds;
+                // Remove preceding "-1," for non-versioned tables
+                if (!BackendUtility::isTableWorkspaceEnabled($table)) {
+                    $pageIdsForTable = array_combine($pageIdsForTable, $pageIdsForTable);
+                    unset($pageIdsForTable[-1]);
                 }
-                $garbage = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,' . $GLOBALS['TCA'][$table]['ctrl']['label'], $table, 'pid NOT IN (' . $pid_list_tmp . ')');
-                $lostIdList = array();
-                while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($garbage)) {
-                    $this->lRecords[$table][$row['uid']] = array(
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                $queryBuilder->getRestrictions()->removeAll();
+                $queryResult = $queryBuilder->select('uid', 'pid', $GLOBALS['TCA'][$table]['ctrl']['label'])
+                    ->from($table)
+                    ->where(
+                        $queryBuilder->expr()->notIn('pid', $pageIdsForTable)
+                    )
+                    ->execute();
+                $lostIdList = [];
+                while ($row = $queryResult->fetch()) {
+                    $this->lRecords[$table][$row['uid']] = [
                         'uid' => $row['uid'],
                         'pid' => $row['pid'],
                         'title' => strip_tags(BackendUtility::getRecordTitle($table, $row))
-                    );
+                    ];
                     $lostIdList[] = $row['uid'];
                 }
-                $GLOBALS['TYPO3_DB']->sql_free_result($garbage);
                 if ($table == 'pages') {
                     $this->lostPagesList = implode(',', $lostIdList);
                 }
@@ -236,13 +259,16 @@ class DatabaseIntegrityCheck
     public function fixLostRecord($table, $uid)
     {
         if ($table && $GLOBALS['TCA'][$table] && $uid && is_array($this->lRecords[$table][$uid]) && $GLOBALS['BE_USER']->user['admin']) {
-            $updateFields = array();
-            $updateFields['pid'] = 0;
+            $updateFields = [
+                'pid' => 0
+            ];
             // If possible a lost record restored is hidden as default
             if ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']) {
                 $updateFields[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']] = 1;
             }
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$uid, $updateFields);
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($table)
+                ->update($table, $updateFields, ['uid' => (int)$uid]);
             return true;
         } else {
             return false;
@@ -257,26 +283,44 @@ class DatabaseIntegrityCheck
      */
     public function countRecords($pid_list)
     {
-        $list = array();
-        $list_n = array();
-        if ($pid_list) {
+        $list = [];
+        $list_n = [];
+        $pageIds = GeneralUtility::intExplode(',', $pid_list);
+        if (!empty($pageIds)) {
             foreach ($GLOBALS['TCA'] as $table => $tableConf) {
-                $pid_list_tmp = $pid_list;
-                if (!isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) || !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-                    // Remove preceding "-1," for non-versioned tables
-                    $pid_list_tmp = preg_replace('/^\\-1,/', '', $pid_list_tmp);
+                $pageIdsForTable = $pageIds;
+                // Remove preceding "-1," for non-versioned tables
+                if (!BackendUtility::isTableWorkspaceEnabled($table)) {
+                    $pageIdsForTable = array_combine($pageIdsForTable, $pageIdsForTable);
+                    unset($pageIdsForTable[-1]);
                 }
-                $count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 'pid IN (' . $pid_list_tmp . ')');
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                $queryBuilder->getRestrictions()->removeAll();
+                $count = $queryBuilder->count('uid')
+                    ->from($table)
+                    ->where($queryBuilder->expr()->in('pid', $pageIds))
+                    ->execute()
+                    ->fetchColumn(0);
                 if ($count) {
                     $list[$table] = $count;
                 }
-                $count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 'pid IN (' . $pid_list_tmp . ')' . BackendUtility::deleteClause($table));
+
+                // same query excluding all deleted records
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                $count = $queryBuilder->count('uid')
+                    ->from($table)
+                    ->where($queryBuilder->expr()->in('pid', $pageIdsForTable))
+                    ->execute()
+                    ->fetchColumn(0);
                 if ($count) {
                     $list_n[$table] = $count;
                 }
             }
         }
-        return array('all' => $list, 'non_deleted' => $list_n);
+        return ['all' => $list, 'non_deleted' => $list_n];
     }
 
     /**
@@ -361,32 +405,51 @@ class DatabaseIntegrityCheck
     public function selectNonEmptyRecordsWithFkeys($fkey_arrays)
     {
         if (is_array($fkey_arrays)) {
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
             foreach ($fkey_arrays as $table => $field_list) {
                 if ($GLOBALS['TCA'][$table] && trim($field_list)) {
-                    $fieldArr = explode(',', $field_list);
-                    if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal')) {
-                        $fields = $GLOBALS['TYPO3_DB']->admin_get_fields($table);
-                        $field = array_shift($fieldArr);
-                        $cl_fl = $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'I' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'N' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'R' ? $field . '<>0' : $field . '<>\'\'';
-                        foreach ($fieldArr as $field) {
-                            $cl_fl .= $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'I' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'N' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'R' ? ' OR ' . $field . '<>0' : ' OR ' . $field . '<>\'\'';
+                    $schemaManager = $connectionPool->getConnectionForTable($table)->getSchemaManager();
+                    $tableColumns = $schemaManager->listTableColumns($table);
+
+                    $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
+                    $queryBuilder->getRestrictions()->removeAll();
+
+                    $fields = GeneralUtility::trimExplode(',', $field_list, true);
+
+                    $queryBuilder->select('uid')
+                        ->from($table);
+                    $whereClause = [];
+                    foreach ($fields as $fieldName) {
+                        // The array index of $tableColumns is the lowercased column name!
+                        $fieldType = $tableColumns[strtolower($fieldName)]->getType()->getName();
+                        if (in_array(
+                            $fieldType,
+                            [Type::BIGINT, Type::INTEGER, Type::SMALLINT, Type::DECIMAL, Type::FLOAT],
+                            true
+                        )) {
+                            $whereClause[] = $queryBuilder->expr()->andX(
+                                $queryBuilder->expr()->isNotNull($fieldName),
+                                $queryBuilder->expr()->neq($fieldName, 0)
+                            );
+                        } elseif (in_array($fieldType, [Type::STRING, Type::TEXT], true)) {
+                            $whereClause[] = $queryBuilder->expr()->andX(
+                                $queryBuilder->expr()->isNotNull($fieldName),
+                                $queryBuilder->expr()->neq($fieldName, $queryBuilder->quote(''))
+                            );
                         }
-                        unset($fields);
-                    } else {
-                        $cl_fl = implode('<>\'\' OR ', $fieldArr) . '<>\'\'';
                     }
-                    $mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,' . $field_list, $table, $cl_fl);
-                    while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
-                        foreach ($fieldArr as $field) {
+                    $queryResult = $queryBuilder->orWhere(...$whereClause)->execute();
+
+                    while ($row = $queryResult->fetch()) {
+                        foreach ($fields as $field) {
                             if (trim($row[$field])) {
                                 $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
                                 if ($fieldConf['type'] == 'group') {
                                     if ($fieldConf['internal_type'] == 'file') {
                                         // Files...
                                         if ($fieldConf['MM']) {
-                                            $tempArr = array();
-                                            /** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
-                                            $dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
+                                            $tempArr = [];
+                                            $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
                                             $dbAnalysis->start('', 'files', $fieldConf['MM'], $row['uid']);
                                             foreach ($dbAnalysis->itemArray as $somekey => $someval) {
                                                 if ($someval['id']) {
@@ -404,18 +467,30 @@ class DatabaseIntegrityCheck
                                         }
                                     }
                                     if ($fieldConf['internal_type'] == 'db') {
-                                        /** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
-                                        $dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
-                                        $dbAnalysis->start($row[$field], $fieldConf['allowed'], $fieldConf['MM'], $row['uid'], $table, $fieldConf);
+                                        $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
+                                        $dbAnalysis->start(
+                                            $row[$field],
+                                            $fieldConf['allowed'],
+                                            $fieldConf['MM'],
+                                            $row['uid'],
+                                            $table,
+                                            $fieldConf
+                                        );
                                         foreach ($dbAnalysis->itemArray as $tempArr) {
                                             $this->checkGroupDBRefs[$tempArr['table']][$tempArr['id']] += 1;
                                         }
                                     }
                                 }
                                 if ($fieldConf['type'] == 'select' && $fieldConf['foreign_table']) {
-                                    /** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
-                                    $dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
-                                    $dbAnalysis->start($row[$field], $fieldConf['foreign_table'], $fieldConf['MM'], $row['uid'], $table, $fieldConf);
+                                    $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
+                                    $dbAnalysis->start(
+                                        $row[$field],
+                                        $fieldConf['foreign_table'],
+                                        $fieldConf['MM'],
+                                        $row['uid'],
+                                        $table,
+                                        $fieldConf
+                                    );
                                     foreach ($dbAnalysis->itemArray as $tempArr) {
                                         if ($tempArr['id'] > 0) {
                                             $this->checkGroupDBRefs[$fieldConf['foreign_table']][$tempArr['id']] += 1;
@@ -425,7 +500,6 @@ class DatabaseIntegrityCheck
                             }
                         }
                     }
-                    $GLOBALS['TYPO3_DB']->sql_free_result($mres);
                 }
             }
         }
@@ -519,18 +593,28 @@ class DatabaseIntegrityCheck
         $result = '';
         foreach ($theArray as $table => $dbArr) {
             if ($GLOBALS['TCA'][$table]) {
-                $idlist = array_keys($dbArr);
-                $theList = implode(',', $idlist);
-                if ($theList) {
-                    $mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'uid IN (' . $theList . ')' . BackendUtility::deleteClause($table));
-                    while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
+                $ids = array_keys($dbArr);
+                $ids = array_map('intval', $ids);
+                if (!empty($ids)) {
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getQueryBuilderForTable($table);
+                    $queryBuilder->getRestrictions()
+                        ->removeAll()
+                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                    $queryResult = $queryBuilder
+                        ->select('uid')
+                        ->from($table)
+                        ->where(
+                            $queryBuilder->expr()->in('uid', $ids)
+                        )
+                        ->execute();
+                    while ($row = $queryResult->fetch()) {
                         if (isset($dbArr[$row['uid']])) {
                             unset($dbArr[$row['uid']]);
                         } else {
                             $result .= 'Strange Error. ...<br />';
                         }
                     }
-                    $GLOBALS['TYPO3_DB']->sql_free_result($mres);
                     foreach ($dbArr as $theId => $theC) {
                         $result .= 'There are ' . $theC . ' records pointing to this missing or deleted record; [' . $table . '][' . $theId . ']<br />';
                     }
@@ -553,25 +637,40 @@ class DatabaseIntegrityCheck
     {
         // Gets tables / Fields that reference to files
         $fileFields = $this->getDBFields($searchTable);
-        $theRecordList = array();
+        $theRecordList = [];
         foreach ($fileFields as $info) {
-            $table = $info[0];
-            $field = $info[1];
-            $mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,' . $GLOBALS['TCA'][$table]['ctrl']['label'] . ',' . $field, $table, $field . ' LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($id, $table) . '%\'');
-            while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
-                // Now this is the field, where the reference COULD come from. But we're not garanteed, so we must carefully examine the data.
+            list($table, $field) = $info;
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()->removeAll();
+            $queryResult = $queryBuilder
+                ->select('uid', 'pid', $GLOBALS['TCA'][$table]['ctrl']['label'], $field)
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->like(
+                        $field,
+                        $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards($id) . '%')
+                    )
+                )
+                ->execute();
+
+            while ($row = $queryResult->fetch()) {
+                // Now this is the field, where the reference COULD come from.
+                // But we're not guaranteed, so we must carefully examine the data.
                 $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
                 $allowedTables = $fieldConf['type'] == 'group' ? $fieldConf['allowed'] : $fieldConf['foreign_table'];
-                /** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
-                $dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
+                $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
                 $dbAnalysis->start($row[$field], $allowedTables, $fieldConf['MM'], $row['uid'], $table, $fieldConf);
                 foreach ($dbAnalysis->itemArray as $tempArr) {
                     if ($tempArr['table'] == $searchTable && $tempArr['id'] == $id) {
-                        $theRecordList[] = array('table' => $table, 'uid' => $row['uid'], 'field' => $field, 'pid' => $row['pid']);
+                        $theRecordList[] = [
+                            'table' => $table,
+                            'uid' => $row['uid'],
+                            'field' => $field,
+                            'pid' => $row['pid']
+                        ];
                     }
                 }
             }
-            $GLOBALS['TYPO3_DB']->sql_free_result($mres);
         }
         return $theRecordList;
     }
@@ -579,31 +678,45 @@ class DatabaseIntegrityCheck
     /**
      * Finding all references to file based on uploadfolder / filename
      *
-     * @param string $uploadfolder Upload folder where file is found
+     * @param string $uploadFolder Upload folder where file is found
      * @param string $filename Filename to search for
      * @return array Array with other arrays containing information about where references was found
      */
-    public function whereIsFileReferenced($uploadfolder, $filename)
+    public function whereIsFileReferenced($uploadFolder, $filename)
     {
         // Gets tables / Fields that reference to files
-        $fileFields = $this->getFileFields($uploadfolder);
-        $theRecordList = array();
+        $fileFields = $this->getFileFields($uploadFolder);
+        $theRecordList = [];
         foreach ($fileFields as $info) {
-            $table = $info[0];
-            $field = $info[1];
-            $mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,' . $GLOBALS['TCA'][$table]['ctrl']['label'] . ',' . $field, $table, $field . ' LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($filename, $table) . '%\'');
-            while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
+            list($table, $field) = $info;
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()->removeAll();
+            $queryResult = $queryBuilder
+                ->select('uid', 'pid', $GLOBALS['TCA'][$table]['ctrl']['label'], $field)
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->like(
+                        $field,
+                        $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards($filename) . '%')
+                    )
+                )
+                ->execute();
+            while ($row = $queryResult->fetch()) {
                 // Now this is the field, where the reference COULD come from.
                 // But we're not guaranteed, so we must carefully examine the data.
                 $tempArr = explode(',', trim($row[$field]));
                 foreach ($tempArr as $file) {
                     $file = trim($file);
                     if ($file == $filename) {
-                        $theRecordList[] = array('table' => $table, 'uid' => $row['uid'], 'field' => $field, 'pid' => $row['pid']);
+                        $theRecordList[] = [
+                            'table' => $table,
+                            'uid' => $row['uid'],
+                            'field' => $field,
+                            'pid' => $row['pid']
+                        ];
                     }
                 }
             }
-            $GLOBALS['TYPO3_DB']->sql_free_result($mres);
         }
         return $theRecordList;
     }
