@@ -631,8 +631,14 @@ $(function() {
 	});
 	$('#configSearch').keyup(function() {
 		var typedQuery = $(this).val();
-		$('div.item:contains(' + typedQuery + ')').removeClass('hidden').addClass('searchhit');
-		$('div.item').not(':contains(' + typedQuery + ')').removeClass('searchhit').addClass('hidden');
+		$('div.item').each(function() {
+			var $item = $(this);
+			if ($(':contains(' + typedQuery + ')', $item).length > 0 || $('input[value*="' + typedQuery + '"]', $item).length > 0) {
+				$item.removeClass('hidden').addClass('searchhit');
+			} else {
+				$item.removeClass('searchhit').addClass('hidden');
+			}
+		});
 		$('.searchhit').parent().collapse('show');
 	});
 	var $searchFields = $('#configSearch');
