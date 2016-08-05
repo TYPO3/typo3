@@ -59,7 +59,6 @@ It is recommended to also grant the following privileges:
 
 * memory_limit set to at least 64M
 * max_execution_time set to at least 30s (240s recommended)
-* register_globals disabled
 * AllowOverride in the Apache configuration includes "Indexes" and "FileInfo"
   (see FAQ below)
 

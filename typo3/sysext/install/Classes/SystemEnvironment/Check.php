@@ -112,7 +112,6 @@ class Check
         $status[] = $this->checkGdLibJpgSupport();
         $status[] = $this->checkGdLibPngSupport();
         $status[] = $this->checkGdLibFreeTypeSupport();
-        $status[] = $this->checkRegisterGlobals();
 
         return $status;
     }
@@ -1135,35 +1134,6 @@ class Check
                 ' to render fonts on images. This support is missing' .
                 ' in your environment. Install it.'
             );
-        }
-        return $status;
-    }
-
-    /**
-     * Check register globals
-     *
-     * @return Status\StatusInterface
-     */
-    protected function checkRegisterGlobals()
-    {
-        $registerGlobalsEnabled = filter_var(
-            ini_get('register_globals'),
-            FILTER_VALIDATE_BOOLEAN,
-            array(FILTER_REQUIRE_SCALAR, FILTER_NULL_ON_FAILURE)
-        );
-        if ($registerGlobalsEnabled === true) {
-            $status = new Status\ErrorStatus();
-            $status->setTitle('PHP register globals on');
-            $status->setMessage(
-                'register_globals=' . ini_get('register_globals') . LF .
-                'TYPO3 requires PHP setting "register_globals" set to off.' .
-                ' This ancient PHP setting is a big security problem and should' .
-                ' never be enabled:' . LF .
-                'register_globals=Off'
-            );
-        } else {
-            $status = new Status\OkStatus();
-            $status->setTitle('PHP register globals off');
         }
         return $status;
     }
