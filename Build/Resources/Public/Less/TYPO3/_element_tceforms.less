@@ -241,6 +241,11 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 		filter: alpha(opacity=50);
 	}
 }
+// z-index must be higher as .t3-form-field-disable z-index
+// this is required for the eval=null field checkbox
+.t3-form-field-eval-null-checkbox {
+	z-index: 9000;
+}
 .t3-form-palette-field-label {
 	text-indent: 2px;
 }

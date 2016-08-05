@@ -226,13 +226,13 @@ class SingleFieldContainer extends AbstractContainer
             $nullValueWrap = array();
             $nullValueWrap[] = '<div class="' . implode(' ', $fieldItemClasses) . '">';
             $nullValueWrap[] =    '<div class="t3-form-field-disable"></div>';
-            $nullValueWrap[] =    '<div class="checkbox">';
+            $nullValueWrap[] =    '<div class="checkbox t3-form-field-eval-null-checkbox">';
             $nullValueWrap[] =        '<label>';
             $nullValueWrap[] =            '<input type="hidden"' . $nullControlNameAttribute . ' value="0" />';
             $nullValueWrap[] =            '<input type="checkbox"' . $nullControlNameAttribute . ' value="1" onchange="' . $onChange . '"' . $checked . ' /> &nbsp;';
             $nullValueWrap[] =        '</label>';
-            $nullValueWrap[] =        $html;
             $nullValueWrap[] =    '</div>';
+            $nullValueWrap[] =    $html;
             $nullValueWrap[] = '</div>';
 
             $html = implode(LF, $nullValueWrap);
