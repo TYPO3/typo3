@@ -157,7 +157,7 @@ class AjaxRequestHandler implements RequestHandlerInterface
     {
         /** @var Response $response */
         $response = GeneralUtility::makeInstance(Response::class, 'php://temp', 200, [
-            'Content-type' => 'application/json; charset=utf-8',
+            'Content-Type' => 'application/json; charset=utf-8',
             'X-JSON' => 'true'
         ]);
 

@@ -212,10 +212,10 @@ Note: If you're working on a server where you have both internal and external ac
       This is additional headers. You separate each header by a vertical line "|".  Normally TYPO3 does not send any headers with the Header()-function in PHP.
 
 Examples:
-Content-type: text/vnd.wap.wml
+Content-Type: text/vnd.wap.wml
 (this will sent a content-header for a WAP-site)
 
-Content-type: image/gif | Expires: Mon, 26 Jul 1997 05:00:00 GMT
+Content-Type: image/gif | Expires: Mon, 26 Jul 1997 05:00:00 GMT
 (this will sent a content-header for a GIF-file and a Expires header)
 
 Location: www.typo3.org
@@ -332,7 +332,7 @@ Use this feature in templates supplying other content-types than HTML. That coul
 			<default><![CDATA[false]]></default>
 		</property>
 		<property name="disableCharsetHeader" type="boolean">
-			<description><![CDATA[By default a HTTP header "content-type:text/html; charset..." is sent. This option will disable that.]]></description>
+			<description><![CDATA[By default a HTTP header "Content-Type: text/html; charset..." is sent. This option will disable that.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>

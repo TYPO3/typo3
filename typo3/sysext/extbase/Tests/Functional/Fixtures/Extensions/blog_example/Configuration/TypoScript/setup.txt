@@ -56,7 +56,7 @@ tx_blogexample_plaintext {
 		admPanel = 0
 		no_cache = 1
 		disableAllHeaderCode = 1
-		additionalHeaders = Content-type:text/plain
+		additionalHeaders = Content-Type: text/plain
 		defaultGetVars {
 			tx_blogexample_postlist.format = txt
 		}

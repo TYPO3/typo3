@@ -404,7 +404,7 @@ class SystemEnvironmentBuilder
     {
         $headers = [
             \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500,
-            'Content-type: text/plain'
+            'Content-Type: text/plain'
         ];
         if (!headers_sent()) {
             foreach ($headers as $header) {
