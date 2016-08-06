@@ -78,16 +78,40 @@ class ImportantActions extends Action\AbstractAction
             ->assign('composerMode', Bootstrap::usesComposerClassLoading())
             ->assign('operatingSystem', $operatingSystem)
             ->assign('cgiDetected', GeneralUtility::isRunningOnCgiServerApi())
-            ->assign('databaseName', $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['dbname'])
-            ->assign('databaseUsername', $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['user'])
-            ->assign('databaseHost', $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['host'])
-            ->assign('databasePort', $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['port'])
-            ->assign('databaseSocket', $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['unix_socket'])
-            ->assign('databaseNumberOfTables', count($this->getDatabaseConnection()->admin_get_tables()))
             ->assign('extensionCompatibilityTesterProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/assets/ExtensionCompatibilityTester.txt')
             ->assign('extensionCompatibilityTesterErrorProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/assets/ExtensionCompatibilityTesterErrors.json')
             ->assign('extensionCompatibilityTesterMessages', $this->getExtensionCompatibilityTesterMessages())
             ->assign('listOfOpcodeCaches', $opcodeCacheService->getAllActive());
+
+        $connectionInfos = [];
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        foreach ($connectionPool->getConnectionNames() as $connectionName) {
+            $connection = $connectionPool->getConnectionByName($connectionName);
+            $connectionParameters = $connection->getParams();
+            $connectionInfo = [
+                'connectionName' => $connectionName,
+                'version' => $connection->getServerVersion(),
+                'databaseName' => $connection->getDatabase(),
+                'username' => $connection->getUsername(),
+                'host' => $connection->getHost(),
+                'port' => $connection->getPort(),
+                'socket' => $connectionParameters['unix_socket'] ?? '',
+                'numberOfTables' => count($connection->getSchemaManager()->listTables()),
+                'numberOfMappedTables' => 0,
+            ];
+            if (isset($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'])
+                && is_array($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'])
+            ) {
+                // Count number of array keys having $connectionName as value
+                $connectionInfo['numberOfMappedTables'] = count(array_intersect(
+                    $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'],
+                    [$connectionName]
+                ));
+            }
+            $connectionInfos[] = $connectionInfo;
+        }
+
+        $this->view->assign('connections', $connectionInfos);
 
         return $this->view->render();
     }
