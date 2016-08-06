@@ -94,6 +94,7 @@ class Typo3QuerySettings implements QuerySettingsInterface
      * Flag whether the query should use a prepared statement
      *
      * @var bool
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 9, this option is handled automatically now in the database abstraction
      */
     protected $usePreparedStatement = false;
 
@@ -340,18 +341,22 @@ class Typo3QuerySettings implements QuerySettingsInterface
     /**
      * @param bool $usePreparedStatement
      * @return QuerySettingsInterface
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 9, this option is handled automatically now in the database abstraction
      */
     public function usePreparedStatement($usePreparedStatement)
     {
+        GeneralUtility::logDeprecatedFunction();
         $this->usePreparedStatement = $usePreparedStatement;
         return $this;
     }
 
     /**
      * @return bool
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 9, this option is handled automatically now in the database abstraction
      */
     public function getUsePreparedStatement()
     {
+        GeneralUtility::logDeprecatedFunction();
         return (bool)$this->usePreparedStatement;
     }
 

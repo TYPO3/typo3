@@ -370,7 +370,8 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         if ($statement instanceof Qom\Statement) {
             $rows = $this->getObjectDataByRawQuery($statement);
         } else {
-            $rows = $this->getRowsByStatementParts($query);
+            list($statementParts) = $this->getStatementParts($query);
+            $rows = $this->getRowsFromDatabase($statementParts);
         }
 
         $rows = $this->doLanguageAndWorkspaceOverlay($query->getSource(), $rows, $query->getQuerySettings());
@@ -408,25 +409,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     }
 
     /**
-     * Determines whether to use prepared statement or not and returns the rows from the corresponding method
-     *
-     * @param QueryInterface $query
-     * @return array
-     */
-    protected function getRowsByStatementParts(QueryInterface $query)
-    {
-        if ($query->getQuerySettings()->getUsePreparedStatement()) {
-            list($statementParts, $parameters) = $this->getStatementParts($query, false);
-            $rows = $this->getRowsFromPreparedDatabase($statementParts, $parameters);
-        } else {
-            list($statementParts) = $this->getStatementParts($query);
-            $rows = $this->getRowsFromDatabase($statementParts);
-        }
-
-        return $rows;
-    }
-
-    /**
      * Fetches the rows directly from the database, not using prepared statement
      *
      * @param array $statementParts
@@ -445,32 +427,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         );
         $this->checkSqlErrors();
 
-        return $rows;
-    }
-
-    /**
-     * Fetches the rows from the database, using prepared statement
-     *
-     * @param array $statementParts
-     * @param array $parameters
-     * @return array the result
-     */
-    protected function getRowsFromPreparedDatabase(array $statementParts, array $parameters)
-    {
-        $queryCommandParameters = $this->createQueryCommandParametersFromStatementParts($statementParts);
-        $preparedStatement = $this->databaseHandle->prepare_SELECTquery(
-            $queryCommandParameters['selectFields'],
-            $queryCommandParameters['fromTable'],
-            $queryCommandParameters['whereClause'],
-            '',
-            $queryCommandParameters['orderBy'],
-            $queryCommandParameters['limit']
-        );
-
-        $preparedStatement->execute($parameters);
-        $rows = $preparedStatement->fetchAll();
-
-        $preparedStatement->free();
         return $rows;
     }
 
