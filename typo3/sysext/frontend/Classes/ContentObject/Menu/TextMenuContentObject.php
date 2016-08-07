@@ -43,7 +43,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
     /**
      * Traverses the ->result array of menu items configuration (made by ->generate()) and renders each item.
      * During the execution of this function many internal methods prefixed "extProc_" from this class is called and
-     * many of these are for now dummy functions. But they can be used for processing as they are used by the TMENU_LAYERS
+     * many of these are for now dummy functions.
      * An instance of ContentObjectRenderer is also made and for each menu item rendered it is loaded with
      * the record for that page so that any stdWrap properties that applies will have the current menu items record available.
      *

@@ -495,12 +495,6 @@ config.inlineStyle2TempFile = 1]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="insertDmailerBoundaries" type="boolean">
-			<description><![CDATA[If set, boundary marks will be set around all records inserted on the page with cObjects CONTENT and RECORD. They are inserted as HTML-comments and do no harm.
-Used by the Direct Mail module in TYPO3 to segmentize a page by categories.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="intTarget" type="string">
 			<description><![CDATA[default internal target. Used by typolink if no target is set]]></description>
 			<default><![CDATA[
@@ -1316,11 +1310,6 @@ The maximum filesize of documents to be read is set to 1024 kb internally!]]></d
 label string will be wrapped in <label for="formname[fieldname-hash]"> ... </label>All form elements will have an id-attribute carrying the formname with the md5-hashed fieldname appended
 
 Notice: In TYPO3 4.0 and later, CSS Styled Content is configured to produce accessible forms by default.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="arrayReturnMode" type="boolean">
-			<description><![CDATA[If set, the <form> tags and the form content will be returned in an array as separate elements including other pratical values. This mode is for use in extensions where the array return value can be more useful.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -2904,7 +2893,7 @@ The result can be seen in the image below (applied on the testsite package):
 
 
 
-Applies to GMENU, TMENU, GMENU_LAYERS, TMENU_LAYERS and GMENU_FOLDOUT on >= 2nd level in a menu.]]></description>
+Applies to GMENU, TMENU on >= 2nd level in a menu.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3188,7 +3177,7 @@ The result can be seen in the image below (applied on the testsite package):
 
 
 
-Applies to GMENU, TMENU, GMENU_LAYERS, TMENU_LAYERS and GMENU_FOLDOUT on >= 2nd level in a menu.]]></description>
+Applies to GMENU, TMENU on >= 2nd level in a menu.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3275,332 +3264,6 @@ For details, see typolink->additionalParams]]></description>
 ]]></default>
 		</property>
 	</type>
-	<type id="GMENU_FOLDOUT" extends="GMENU">
-		<property name="adjustItemsH" type="int">
-			<description><![CDATA[Adjusts the height calculation of the menulayers of the first level (called Top)
-
-Example:
--10
-
-This value will substract 10 pixels from the height of the layer in calculations.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="adjustSubItemsH" type="int">
-			<description><![CDATA[Adjusts the height calculation of the menulayers of the second level (subitems, called Sub)
-See above]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="arrowImgParams" type="string">
-			<description><![CDATA[<img> params
-			Parameters to the arrow-image.
-
-Example:
-hspace=5 vspace=7]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="arrowNO" type="imgResource">
-			<description><![CDATA[If both arrowNO and arrowACT is defined and valid imgResources then these images are use as "traditional arrows" that indicates whether an item is expanded (active) or not.
-NO is normal, ACT is expanded
-The image is inserted just before the menuitem. If you want to change the position, put the marker ###ARROW_IMAGE### into the wrap of the item and the image will be put there instead.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="bottomContent" type="cObj">
-			<description><![CDATA[Content for the bottom layer that covers the end of the menu. ]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="bottomHeight" type="int">
-			<description><![CDATA[pixels
-			Sets the height of the bottom layer. Is important if the bottomlayer  contains either content or a background color: Else the layer will be clipped.]]></description>
-			<default><![CDATA[100]]></default>
-		</property>
-		<property name="displayActiveOnLoad" type="boolean">
-			<description><![CDATA[If set, then the active menu items will fold out "onLoad"]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="dontLinkIfSubmenu" type="boolean">
-			<description><![CDATA[If set, items that has a submenu is not linked. Items without a submenu are always linked in the regular ways.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="dontWrapInTable" type="boolean">
-			<description><![CDATA[By default every menuitem on the first level is wrapped in a table:
-<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0><TR><TD>
-[menu item HTML here..]
-</TD></TR></TABLE>
-Doing this ensures that the layers renders equally in the supported browsers. However you might need to disable that which is what you can do by setting this flag.
-Note: Using <TBODY> in this tables seems to break Netscape 4+]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="foldSpeed" type="int">
-			<description><![CDATA[int, range 1-100
-
-			How many steps in an animation? Choose 1 for no animation.]]></description>
-			<default><![CDATA[1]]></default>
-		</property>
-		<property name="foldTimer" type="int">
-			<description><![CDATA[The timeout in the animation, these are milliseconds.]]></description>
-			<default><![CDATA[40]]></default>
-		</property>
-		<property name="JSWindow" type="boolean">
-			<description><![CDATA[If set, the links of the menu-items will open by JavaScript in a pop-up window.
-
-.newWindow boolean, that lets every menuitem open in its own window opposite to opening in the same window for each click.
-
-.params is the list of parameters sent to the JavaScript open-window function, eg:
-width=200,height=300,status=0,menubar=0
-
-NOTE: Does not work with JSMENU's]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="menuBackColor" type="string">
-			<description><![CDATA[HTML-color
-
-			Background color behind menu. If not set, transparent (which will not work very well in case .foldSpeed is set to something else than 1. But see for yourself)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="menuHeight" type="int">
-			<description><![CDATA[Height of the whole menulayer. Seems to be not so important.]]></description>
-			<default><![CDATA[400]]></default>
-		</property>
-		<property name="menuOffset" type="string">
-			<description><![CDATA[x,y
-
-			Offset of the menu main layer on the page. From upperleft corner]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="menuWidth" type="int">
-			<description><![CDATA[pixels
-			Width of the whole menu main layer. Important to set, especially for the bottomlayer as it is clipped by this value. Always try to set this to the width in pixels of the menu]]></description>
-			<default><![CDATA[170]]></default>
-		</property>
-		<property name="stayFolded" type="boolean">
-			<description><![CDATA[Stay open when you click a new toplink? (Level 1)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="submenuObjSuffixes" type="string">
-			<description><![CDATA[Defines a suffix for alternative sub-level menu objects. Useful to create special submenus depending on their parent menu element. See example below.
-
-Example:
-This example will generate a menu where the menu objects for the second level will differ depending on the number of the first level item for which the submenu is rendered. The second level objects used are "2" (the default), "2a" and "2b" (the alternatives). Which of them is used is defined by "1.submenuObjSuffixes" which has the configuration "a |*| |*| b". This configuration means that the first menu element will use configuration "2a" and the last will use "2b" while anything in between will use "2" (no suffix applied)
-
-page.200 = HMENU
-page.200 {
-  1 = TMENU
-  1.wrap = <div style="width:200px; border: 1px solid;">|</div>
-  1.expAll = 1
-  1.submenuObjSuffixes = a |*|  |*| b
-  1.NO.allWrap = <b>|</b><br/>
-
-  2 = TMENU
-  2.NO.allWrap = <div style="background:red;">|</div>
-
-  2a = TMENU
-  2a.NO.allWrap = <div style="background:yellow;">|</div>
-
-  2b = TMENU
-  2b.NO.allWrap = <div style="background:green;">|</div>
-}
-
-The result can be seen in the image below (applied on the testsite package):
-
-
-
-Applies to GMENU, TMENU, GMENU_LAYERS, TMENU_LAYERS and GMENU_FOLDOUT on >= 2nd level in a menu.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="subMenuOffset" type="string">
-			<description><![CDATA[x,y
-			Offset of the submenu for each menuitem. This is important because if you don't set this value the items will appear ontop of their "parent"]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
-	<type id="MENU_LAYERS">
-		<property name="blankStrEqFalse" type="boolean">
-			<description><![CDATA[If set, then the properties topOffset,leftOffset, xPosOffset, yPosOffset are considered "blank" if they are really blank strings - not just "zero". You should enable this if you wish to be able to work with zero offsets. This is typically the case if you use relative positioning.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="bordersWithin" type="string">
-			<description><![CDATA[l,t,r,b,l,t
-			Keep borders of the layer within these limits in pixels. Zero is 'not set'
-(Syntax: List of integers, evaluated clockwise: Left, Top, Right, Bottom, Left, Top)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="directionLeft" type="boolean">
-			<description><![CDATA[Set this, if you want the items to be right-aligned (pop's out towards the left).
-Does not work with Opera at this time because I don't know how to make Opera read the width of each layer.
-If you set the width of the menu-layers in .layerStyles this might work no matter what.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="directionUp" type="boolean">
-			<description><![CDATA[Set this, if you want the items to be bottom-aligned (pop's out upwards instead of downwards).]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="displayActiveOnLoad" type="boolean">
-			<description><![CDATA[If set, the submenu-layer of the active menuitem is opened at page-load. If .freezeMouseover is also set and there is RO defined for the main menu items, the menuitem belonging to the displayed submenu is also shown.
-
-Properties:
-.onlyOnLoad (boolean)
-If set, then the display of the active item will happen only when the page is loaded. The display will not be restored on mouseout of other items.
-
-Warning: If you are cascading GMENU_LAYER objects make sure that all elements before this element (for which you set this attribute) also has this attribute set!]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="dontFollowMouse" type="boolean">
-			<description><![CDATA[If set and lockPosition is blank (so that the menu layer follows the mouse) then the menu will NOT follow the mouse but still it will appear where the mouse cursor hit the trigger-element. Useful if you don't know the exact positions of elements.
-
-Warning: You should not set displayActiveOnLoad for menus with this feature enabled (because the absolute position of the layer is not known).]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="dontHideOnMouseUp" type="boolean">
-			<description><![CDATA[If set, the menu will not hide it's layers when the mouse botton is clicked. Useful if your menuitems loads the pages in another frame]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="freezeMouseover" type="boolean">
-			<description><![CDATA[If set, any mouseout effect of main menuitems is removed not on roll-out but when another element is rolled over (or the layer is hidden/default layer restored)
-
-Properties:
-.alwaysKeep (boolean)
-If set, the freezed element will always stay, even if the submenu is hidden.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="hideMenuTimer" type="int">
-			<description><![CDATA[int+
-
-			This is the number of milliseconds to wait before the submenu will disappear if hideMenuWhenNotOver  is set]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="hideMenuWhenNotOver" type="int">
-			<description><![CDATA[int+
-
-			If set (> 1) then the menu will hide it self whenever a user moves the cursor away from the menu. The value of this parameter determines the width (pixels) of the zone around the element until the mousepointer is considered to be far enough away to hide the layer.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="JSWindow" type="boolean">
-			<description><![CDATA[If set, the links of the menu-items will open by JavaScript in a pop-up window.
-
-.newWindow boolean, that lets every menuitem open in its own window opposite to opening in the same window for each click.
-
-.params is the list of parameters sent to the JavaScript open-window function, eg:
-width=200,height=300,status=0,menubar=0
-
-NOTE: Does not work with JSMENU's]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="layerStyle" type="&lt;DIV&gt;-tag params">
-			<description><![CDATA[Parameters for the <DIV>-layer-tags in the HTML-document. You might probably not need change this.
-
-Example:
-position:absolute; VISIBILITY: hidden; ]]></description>
-			<default><![CDATA[position:absolute; visibility: hidden; ]]></default>
-		</property>
-		<property name="layer_menu_id" type="string">
-			<description><![CDATA[If you want to specifically name a menu on a page. Probably you don't need that!
-
-Warning: Don't use underscore and special characters in this string. Stick to alpha-numeric.]]></description>
-			<default><![CDATA[[random 6 char hashstring]]]></default>
-		</property>
-		<property name="leftOffset" type="int">
-			<description><![CDATA[The offset of menuitems from left border of browser. Should be set rather than defining it in the .layerStyle property. Must be set in order to use directionLeft.
-Used with either lockPosition=y or yPosOffset defined.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="lockPosition" type="string">
-			<description><![CDATA["x" / "y" / ""
-
-			If this is set to "x" or "y" the menu on the layers is locked and does not follow the mouse-cursor (which it does if this is not set).
-"x" or "y" defines respectively that the summed width (x) or height (y) is added to the x or y offset of the menu. That means that you should set this value to "x" if you have a horizontal GMENU_LAYERS and to "y" if you have a verical menu.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="lockPosition_addSelf" type="boolean">
-			<description><![CDATA[Normally the width and height of the items (+lockPosition_adjust) are summed up after the item has been rendered. This is good if the direction of the menulayers is right- og downwards.
-But if you use directionLeft/directionUp, you might want to add the width of the items before.
-If so, set this flag.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="lockPosition_adjust" type="int">
-			<description><![CDATA[A number which is added to the width/height of the menuitems in order  to compensate for eg. hspace or other things between the images in the GMENU_LAYERS]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="relativeToParentLayer" type="boolean">
-			<description><![CDATA[If set, then the layer will be positioned relative to the previous layer (parent) in a cascaded series of xMENU_LAYERS. Basically the relative position of the parent layer is just added to the offset of the current menu.
-
-Warning: This property makes sense only if there really is a previous GMENU_LAYER to get position from! So you must have a cascaded menu!
-
-Additional Properties:
-.addWidth = Adds the width of the parent layer
-.addHeight = Adds the height of the parent layer]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="relativeToTriggerItem" type="boolean">
-			<description><![CDATA[This allows you to position the menu layers relative to the item that triggers it. However you should be aware of the following facts:
-This does not work with Netscape 4 - the position of the trigger layer will be calculated to zero and thus the offset for all menu layers will be 0,0 + your values. This feature will wrap the menu item in some <div>-tags right before the whole item is wrapped by the .wrap code (for GMENU_LAYERS) or .allWrap (for TMENU_LAYERS). The bottom line of this is: 1) If your menu is horizontal, always wrap your menu items in a table so linebreaks does not appear because of the <div>-tags and 2) make sure the wrapping of the table cell is done with the .wrap/.allWrap properties respectively.Works only effectively on the first xMENU_LAYER in a cascade. For succeeding xMENU_LAYERS items please use "relativeToParentLayer".
-If set, properties xPosOffset, yPosOffset and lockPosition* are not functional (properties directionLeft, directionUp, topOffset and leftOffset are still active)
-
-Additional Properties:
-.addWidth = Adds the width of the trigger element
-.addHeight = Adds the height of the trigger element]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="setFixedHeight" type="int">
-			<description><![CDATA[See "setFixedWidth". Same, but for height.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="setFixedWidth" type="int">
-			<description><![CDATA[For GMENU_LAYERS the width and heights of the element is normally known from the graphical item. For TMENU_LAYERS this cannot be known in the same way. Therefore you can use .setFixedWidth and .setFixedHeight to set these values to a number you find reasonable. Of course this may be blasted by the browsers rendering if the font gets out of proportions etc.
-Alternatively you may want to use the property "relativeToTriggerItem" which will position your menu layers relative to the item you roll over. This has some drawbacks though. A middle solution is to use a menu with lockPosition set to blank and dontFollowMouse set to true. Then you need only specify either an x or y coordinate to follow and the item will appear where the mouse hits the element.
-Notice: Active if value is NOT a blank str. Setting this value to zero means that no width is calculated for the items in GMENU_LAYERS.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="topOffset" type="int">
-			<description><![CDATA[The offset of menuitems from top of browser. Should be set rather than defining it in the .layerStyle property. Must be set in order to use directionUp.
-Used with either lockPosition=x or xPosOffset defined.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="xPosOffset" type="int">
-			<description><![CDATA[The offset of the menu from the point where it's "activated" (if lockPosition is false) / from topleft page corner (if lockPosition is set)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="yPosOffset" type="int">
-			<description><![CDATA[As above, but for the y-dimension.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
-	<type id="TMENU_LAYERS" extends="TMENU,MENU_LAYERS"/>
-	<type id="GMENU_LAYERS" extends="GMENU,MENU_LAYERS"/>
 	<type id="IMGMENU" extends="mObj">
 		<property name="ACT" type="IMGMENUITEM">
 			<description><![CDATA[Boolean / (config)
@@ -4268,7 +3931,7 @@ The result can be seen in the image below (applied on the testsite package):
 
 
 
-Applies to GMENU, TMENU, GMENU_LAYERS, TMENU_LAYERS and GMENU_FOLDOUT on >= 2nd level in a menu.]]></description>
+Applies to GMENU, TMENU on >= 2nd level in a menu.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -4311,29 +3974,6 @@ This would use the abstract or description field for the <a title=""> attribute.
 		</property>
 		<property name="RO" type="boolean">
 			<description><![CDATA[if set, rollOver is enabled for this link]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="RO_chBgColor" type="string">
-			<description><![CDATA[If property RO is set (see below) then you can set this property to a certain set of parameters which will allow you to change the background color of eg. the tablecell when the mouse rolls over you text-link.
-
-Syntax:
-[over-color] | [out-color] | [id-prefix]
-
-Example:
-page = PAGE
-page.typeNum = 0
-page.10 = HMENU
-page.10.wrap = <table border=1>|</table>
-page.10.1 = TMENU
-page.10.1.NO {
-  allWrap = <tr><td valign=top id="1tmenu{elementUid}" style="background:#eeeeee;">|</td></tr>
-  subst_elementUid = 1
-  RO_chBgColor = #cccccc | #eeeeee | 1tmenu
-  RO = 1
-}
-
-This example will start out with the table cells in #eeeeee and change them to #cccccc (and back) when rolled over. The "1tmenu" string is a unique id for the menu items. You may not need it (unless the same menu items are more than once on a page), but the important thing is that the id of the table cell has the exact same label before the {elementUid} (red marks). The other important thing is that you DO set a default background color for the cell with the style-attribute (blue marking). If you do not, Mozilla browsers will behave a little strange by not capturing the mouseout event the first time it's triggered. ]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -5015,11 +4655,6 @@ If noRows is set, noCols will be unset. They cannot be set simultaneously.]]></d
 		</property>
 		<property name="noRows" type="stdWrap">
 			<description><![CDATA[If set, the rows are not divided by a table-rows. Thus images are more nicely shown if the height differs a lot (normally the width is the same!)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="noStretchAndMarginCells" type="boolean">
-			<description><![CDATA[If set (1), the cells used to add left and right margins plus stretch out the table will not be added. You will loose the ability to set margins for the object if entered "in text". So it's not recommended, but it has been requested by some people for reasons.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
