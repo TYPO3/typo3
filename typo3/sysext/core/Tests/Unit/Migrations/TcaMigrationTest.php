@@ -1682,4 +1682,72 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
     }
+
+    public function migrateShowIfRTESettingDataProvider()
+    {
+        return [
+            'nothing removed' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aCol' => [
+                                'config' => [
+                                    'type' => 'check'
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aCol' => [
+                                'config' => [
+                                    'type' => 'check'
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'Option removed' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aCol' => [
+                                'config' => [
+                                    'type' => 'check',
+                                    'showIfRTE' => false
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aCol' => [
+                                'config' => [
+                                    'type' => 'check'
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider migrateShowIfRTESettingDataProvider
+     * @param array $givenConfig
+     * @param array $expectedConfig
+     */
+    public function migrateShowIfRTESetting(array $givenConfig, array $expectedConfig)
+    {
+        $subject = new TcaMigration();
+        $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
+    }
 }

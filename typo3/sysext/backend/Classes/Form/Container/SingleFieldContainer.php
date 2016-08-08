@@ -92,8 +92,6 @@ class SingleFieldContainer extends AbstractContainer
         if (// Return if BE-user has no access rights to this field, @todo: another user access rights check!
             $parameterArray['fieldConf']['exclude'] && !$backendUser->check('non_exclude_fields', $table . ':' . $fieldName)
             || $parameterArray['fieldConf']['config']['type'] === 'passthrough'
-            // @todo: Drop option "showIfRTE" ?
-            || !$backendUser->isRTE() && $parameterArray['fieldConf']['config']['showIfRTE']
             // Return if field should not be rendered in translated records
             || $isOverlay && empty($parameterArray['fieldConf']['l10n_display']) && $parameterArray['fieldConf']['l10n_mode'] === 'exclude'
             // @todo: localizationMode still needs handling!

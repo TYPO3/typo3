@@ -56,6 +56,7 @@ class TcaMigration
         $tca = $this->migrateColorPickerWizardToRenderType($tca);
         $tca = $this->migrateSelectTreeOptions($tca);
         $tca = $this->migrateTSconfigSoftReferences($tca);
+        $tca = $this->migrateShowIfRteOption($tca);
         // @todo: if showitem/defaultExtras wizards[xy] is migrated to columnsOverrides here, enableByTypeConfig could be dropped
         return $tca;
     }
@@ -828,6 +829,31 @@ class TcaMigration
                                 . '\'TStemplate\' was removed in TCA ' . $table . '[\'columns\']'
                                 . '[\'' . $fieldName . '\'][\'config\'][\'softref\']';
                         }
+                    }
+                }
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Removes the option "showIfRTE" for TCA type "check"
+     *
+     * @param array $tca Incoming TCA
+     * @return array Migrated TCA
+     */
+    protected function migrateShowIfRteOption(array $tca)
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (isset($fieldConfig['config']) && $fieldConfig['config']['type'] === 'check') {
+                    if (isset($fieldConfig['config']['showIfRTE'])) {
+                        unset($fieldConfig['config']['showIfRTE']);
+                        $this->messages[] = 'The TCA setting \'showIfRTE\' was removed '
+                            . 'in TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']';
                     }
                 }
             }
