@@ -13,6 +13,10 @@ namespace TYPO3\CMS\Scheduler\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Doctrine\DBAL\DBALException;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Perform OPTIMIZE TABLE SQL statements
@@ -21,7 +25,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  * to reduce storage space and improve I/O efficiency when accessing the table. The
  * exact changes made to each table depend on the storage engine used by that table.
  */
-class OptimizeDatabaseTableTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+class OptimizeDatabaseTableTask extends AbstractTask
 {
     /**
      * Database tables that should be cleaned up,
@@ -38,14 +42,20 @@ class OptimizeDatabaseTableTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     public function execute()
     {
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         foreach ($this->selectedTables as $tableName) {
-            $result = $this->getDatabaseConnection()->admin_query('OPTIMIZE TABLE ' . $tableName . ';');
-            if ($result === false) {
-                throw new \RuntimeException(
-                    \TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class . ' failed for: ' . $tableName . ': ' .
-                    $this->getDatabaseConnection()->sql_error(),
-                    1441390263
-                );
+            $connection = $connectionPool->getConnectionForTable($tableName);
+
+            if (StringUtility::beginsWith($connection->getServerVersion(), 'MySQL')) {
+                try {
+                    $connection->exec('OPTIMIZE TABLE ' . $connection->quoteIdentifier($tableName));
+                } catch (DBALException $e) {
+                    throw new \RuntimeException(
+                        TableGarbageCollectionTask::class . ' failed for: ' . $tableName . ': ' .
+                        $e->getPrevious()->getMessage(),
+                        1441390263
+                    );
+                }
             }
         }
 
@@ -60,13 +70,5 @@ class OptimizeDatabaseTableTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     public function getAdditionalInformation()
     {
         return implode(', ', $this->selectedTables);
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

@@ -14,27 +14,40 @@ namespace TYPO3\CMS\Scheduler\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
+use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
+
 /**
  * Additional BE fields for optimize database table task.
  */
-class OptimizeDatabaseTableAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
+class OptimizeDatabaseTableAdditionalFieldProvider implements AdditionalFieldProviderInterface
 {
+    /**
+     * @var string
+     */
+    protected $languageFile = 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf';
+
     /**
      * Add a multi select box with all available database tables.
      *
      * @param array $taskInfo Reference to the array containing the info used in the add/edit form
      * @param AbstractTask|NULL $task When editing, reference to the current task. NULL when adding.
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
+     * @param SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
      * @return array Array containing all the information pertaining to the additional fields
      */
-    public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
+    public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $parentObject)
     {
         // Initialize selected fields
         if (empty($taskInfo['scheduler_optimizeDatabaseTables_selectedTables'])) {
-            $taskInfo['scheduler_optimizeDatabaseTables_selectedTables'] = array();
+            $taskInfo['scheduler_optimizeDatabaseTables_selectedTables'] = [];
             if ($parentObject->CMD === 'add') {
                 // In case of new task, select no tables by default
-                $taskInfo['scheduler_optimizeDatabaseTables_selectedTables'] = array();
+                $taskInfo['scheduler_optimizeDatabaseTables_selectedTables'] = [];
             } elseif ($parentObject->CMD === 'edit') {
                 // In case of editing the task, set to currently selected value
                 $taskInfo['scheduler_optimizeDatabaseTables_selectedTables'] = $task->selectedTables;
@@ -43,13 +56,18 @@ class OptimizeDatabaseTableAdditionalFieldProvider implements \TYPO3\CMS\Schedul
         $fieldName = 'tx_scheduler[scheduler_optimizeDatabaseTables_selectedTables][]';
         $fieldId = 'scheduler_optimizeDatabaseTables_selectedTables';
         $fieldOptions = $this->getDatabaseTableOptions($taskInfo['scheduler_optimizeDatabaseTables_selectedTables']);
-        $fieldHtml = '<select class="form-control" name="' . $fieldName . '" id="' . $fieldId . '" class="from-control" size="10" multiple="multiple">' . $fieldOptions . '</select>';
-        $additionalFields[$fieldId] = array(
+        $fieldHtml = '<select class="form-control" name="' . $fieldName
+            . '" id="' . $fieldId
+            . '" class="from-control" size="10" multiple="multiple">'
+            . $fieldOptions
+            . '</select>';
+        $additionalFields[$fieldId] = [
             'code' => $fieldHtml,
-            'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.optimizeDatabaseTables.selectTables',
+            'label' => $this->languageFile . ':label.optimizeDatabaseTables.selectTables',
             'cshKey' => '_MOD_system_txschedulerM1',
-            'cshLabel' => $fieldId
-        );
+            'cshLabel' => $fieldId,
+        ];
+
         return $additionalFields;
     }
 
@@ -57,23 +75,33 @@ class OptimizeDatabaseTableAdditionalFieldProvider implements \TYPO3\CMS\Schedul
      * Checks that all selected backends exist in available backend list
      *
      * @param array $submittedData Reference to the array containing the data submitted by the user
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
+     * @param SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
      * @return bool TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
      */
-    public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
+    public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $parentObject)
     {
         $validData = true;
-        $availableTables = array_keys($this->getDatabaseTables());
+        $availableTables = $this->getOptimizableTables();
         if (is_array($submittedData['scheduler_optimizeDatabaseTables_selectedTables'])) {
-            $invalidTables = array_diff($submittedData['scheduler_optimizeDatabaseTables_selectedTables'], $availableTables);
+            $invalidTables = array_diff(
+                $submittedData['scheduler_optimizeDatabaseTables_selectedTables'],
+                $availableTables
+            );
             if (!empty($invalidTables)) {
-                $parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.selectionOfNonExistingDatabaseTables'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+                $parentObject->addMessage(
+                    $GLOBALS['LANG']->sL($this->languageFile . ':msg.selectionOfNonExistingDatabaseTables'),
+                    FlashMessage::ERROR
+                );
                 $validData = false;
             }
         } else {
-            $parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noDatabaseTablesSelected'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+            $parentObject->addMessage(
+                $GLOBALS['LANG']->sL($this->languageFile . ':msg.noDatabaseTablesSelected'),
+                FlashMessage::ERROR
+            );
             $validData = false;
         }
+
         return $validData;
     }
 
@@ -81,10 +109,10 @@ class OptimizeDatabaseTableAdditionalFieldProvider implements \TYPO3\CMS\Schedul
      * Save selected backends in task object
      *
      * @param array $submittedData Contains data submitted by the user
-     * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Reference to the current task object
+     * @param AbstractTask $task Reference to the current task object
      * @return void
      */
-    public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task)
+    public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
         $task->selectedTables = $submittedData['scheduler_optimizeDatabaseTables_selectedTables'];
     }
@@ -97,37 +125,98 @@ class OptimizeDatabaseTableAdditionalFieldProvider implements \TYPO3\CMS\Schedul
      */
     protected function getDatabaseTableOptions(array $selectedTables)
     {
-        $options = array();
-        $availableTables = $this->getDatabaseTables();
-        foreach ($availableTables as $tableName => $tableInformation) {
+        $options = [];
+        $availableTables = $this->getOptimizableTables();
+        foreach ($availableTables as $tableName) {
             $selected = in_array($tableName, $selectedTables, true) ? ' selected="selected"' : '';
             $options[] = '<option value="' . $tableName . '"' . $selected . '>' . $tableName . '</option>';
         }
+
         return implode('', $options);
     }
 
     /**
-     * Get all registered caching framework backends
+     * Get all tables that are capable of optimization
      *
-     * @return array Registered backends
+     * @return array Names of table that can be optimized.
      */
-    protected function getDatabaseTables()
+    protected function getOptimizableTables()
     {
-        $tables =  $this->getDatabaseConnection()->admin_get_tables();
-        $tables = array_filter(
-            $tables,
-            function ($table) {
-                return !empty($table['Engine']) && in_array($table['Engine'], array('MyISAM', 'InnoDB', 'ARCHIVE'));
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $defaultConnection = $connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+
+        // Retrieve all optimizable tables for the default connection
+        $optimizableTables = $this->getOptimizableTablesForConnection($defaultConnection);
+
+        // Retrieve additional optimizable tables that have been remapped to a different connection
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'])
+        ) {
+            $tableMap = $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'];
+            // Remove all remapped tables from the list of optimizable tables
+            // These tables will be rechecked and possibly re-added to the list
+            // of optimizable tables. This ensures that no orphaned table from
+            // the default connection gets mistakenly labeled as optimizable.
+            $optimizableTables = array_diff($optimizableTables, array_keys($tableMap));
+
+            // Walk each connection and check all tables that have been
+            // remapped to it for optimization support.
+            $connectionNames = array_keys(array_flip($tableMap));
+            foreach ($connectionNames as $connectionName) {
+                $connection = $connectionPool->getConnectionByName($connectionName);
+                $tablesOnConnection = array_keys(array_filter(
+                    $tableMap,
+                    function ($value) use ($connectionName) {
+                        return $value === $connectionName;
+                    }
+                ));
+                $tables = $this->getOptimizableTablesForConnection($connection, $tablesOnConnection);
+                $optimizableTables = array_merge($optimizableTables, $tables);
             }
-        );
-        return $tables;
+        }
+
+        sort($optimizableTables);
+
+        return $optimizableTables;
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     * Retrieve all optimizable tables for a connection, optionally restricted to the subset
+     * of table names in the $tableNames array.
+     *
+     * @param \TYPO3\CMS\Core\Database\Connection $connection
+     * @param array $tableNames
+     * @return array
      */
-    protected function getDatabaseConnection()
+    protected function getOptimizableTablesForConnection(Connection $connection, array $tableNames = []): array
     {
-        return $GLOBALS['TYPO3_DB'];
+        // Return empty list if the database platform is not MySQL
+        if (!StringUtility::beginsWith($connection->getServerVersion(), 'MySQL')) {
+            return [];
+        }
+
+        // Retrieve all tables from the MySQL informaation schema that have an engine type
+        // that supports the OPTIMIZE TABLE command.
+        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder->select('TABLE_NAME AS Table', 'ENGINE AS Engine')
+            ->from('information_schema.TABLES')
+            ->where(
+                $queryBuilder->expr()->eq('TABLE_TYPE', $queryBuilder->quote('BASE TABLE')),
+                $queryBuilder->expr()->in('ENGINE', [
+                    $queryBuilder->quote('InnoDB'),
+                    $queryBuilder->quote('MyISAM'),
+                    $queryBuilder->quote('ARCHIVE'),
+                ]),
+                $queryBuilder->expr()->eq('TABLE_SCHEMA', $queryBuilder->quote($connection->getDatabase()))
+            );
+
+        if (!empty($tableNames)) {
+            $tableNames = array_map([$queryBuilder, 'quote'], $tableNames);
+            $queryBuilder->andWhere($queryBuilder->expr()->in('TABLE_NAME', $tableNames));
+        }
+
+        $tables = $queryBuilder->execute()->fetchAll();
+
+        return array_column($tables, 'Table');
     }
 }

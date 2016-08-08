@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
  * specific functionality like mapping individual tables to different database
  * connections.
  *
- * getConnectionFotTable() is the only supported way to get a connection that
+ * getConnectionForTable() is the only supported way to get a connection that
  * honors the table mapping configuration.
  */
 class ConnectionPool
