@@ -65,9 +65,18 @@ This can either happen on demand, when the processed file is first needed, or by
     public function performUpdate(array &$databaseQueries, &$customMessages)
     {
         $db = $this->getDatabaseConnection();
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $fileConnection = $connectionPool->getConnectionByName('sys_file_processedfile');
+        $registryConnection = $connectionPool->getConnectionForTable('sys_registry');
 
         // remove all invalid records which hold NULL values
-        $db->exec_DELETEquery('sys_file_processedfile', 'width IS NULL or height IS NULL');
+        $queryBuilder = $fileConnection->createQueryBuilder();
+        $queryBuilder->delete('sys_file_processedfile')
+            ->orWhere(
+                $queryBuilder->expr()->isNull('width'),
+                $queryBuilder->expr()->isNull('height')
+            )
+            ->execute();
 
         $factory = GeneralUtility::makeInstance(ResourceFactory::class);
 
@@ -81,13 +90,13 @@ This can either happen on demand, when the processed file is first needed, or by
             }
             if (!$storage) {
                 // invalid storage, delete record, we can't take care of the associated file
-                $db->exec_DELETEquery('sys_file_processedfile', 'uid=' . $processedFileRow['uid']);
+                $fileConnection->delete('sys_file_processedfile', ['uid' => (int)$processedFileRow['uid']]);
                 continue;
             }
 
             if ($storage->getDriverType() !== 'Local') {
                 // non-local storage, we can't treat this, skip the record and mark it done
-                GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_registry')->insert(
+                $registryConnection->insert(
                     'sys_registry',
                     [
                         'entry_namespace' => 'ProcessedFileChecksumUpdate',
@@ -110,7 +119,7 @@ This can either happen on demand, when the processed file is first needed, or by
             } catch (\Exception $e) {
                 // no original file there anymore, delete local file
                 @unlink($filePath);
-                $db->exec_DELETEquery('sys_file_processedfile', 'uid=' . $processedFileRow['uid']);
+                $fileConnection->delete('sys_file_processedfile', ['uid' => (int)$processedFileRow['uid']]);
                 continue;
             }
 
@@ -139,7 +148,7 @@ This can either happen on demand, when the processed file is first needed, or by
                 // if the rename of the file failed, keep the record, but do not bother with it again
             }
 
-            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_registry')->insert(
+            $registryConnection->insert(
                 'sys_registry',
                 [
                     'entry_namespace' => 'ProcessedFileChecksumUpdate',
@@ -148,7 +157,7 @@ This can either happen on demand, when the processed file is first needed, or by
             );
         }
 
-        $db->exec_DELETEquery('sys_registry', 'entry_namespace = \'ProcessedFileChecksumUpdate\'');
+        $registryConnection->delete('sys_registry', ['entry_namespace' => 'ProcessedFileChecksumUpdate']);
         $this->markWizardAsDone();
         return true;
     }

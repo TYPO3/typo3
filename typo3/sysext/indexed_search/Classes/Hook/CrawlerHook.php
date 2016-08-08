@@ -431,6 +431,17 @@ class CrawlerHook
      */
     public function cleanUpOldRunningConfigurations()
     {
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        // List of tables that store information related to the phash value
+        $tablesToClean = [
+            'index_phash',
+            'index_rel',
+            'index_section',
+            'index_grlist',
+            'index_fulltext',
+            'index_debug'
+        ];
+
         // Lookup running index configurations:
         $runningIndexingConfigurations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,set_id', 'index_config', 'set_id<>0' . BackendUtility::deleteClause('index_config'));
         // For each running configuration, look up how many log entries there are which are scheduled for execution and if none, clear the "set_id" (means; Processing was DONE)
@@ -440,13 +451,14 @@ class CrawlerHook
             if (!$queued_items) {
                 // Lookup old phash rows:
                 $oldPhashRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('phash', 'index_phash', 'freeIndexUid=' . (int)$cfgRec['uid'] . ' AND freeIndexSetId<>' . (int)$cfgRec['set_id']);
-                foreach ($oldPhashRows as $pHashRow) {
-                    // Removing old registrations for all tables (code copied from \TYPO3\CMS\IndexedSearch\Domain\Repository\IndexedPagesController\AdministrationRepository)
-                    $tableArr = array('index_phash', 'index_rel', 'index_section', 'index_grlist', 'index_fulltext', 'index_debug');
-                    foreach ($tableArr as $table) {
-                        $GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'phash=' . (int)$pHashRow['phash']);
-                    }
+                // Removing old registrations for all tables
+                foreach ($tablesToClean as $table) {
+                    $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
+                    $queryBuilder->delete($table)
+                        ->where($queryBuilder->expr()->in('phash', array_column($oldPhashRows, 'phash')))
+                        ->execute();
                 }
+
                 // End process by updating index-config record:
                 $field_array = array(
                     'set_id' => 0,
@@ -663,11 +675,7 @@ class CrawlerHook
         // Lookup old phash rows:
         $oldPhashRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('phash', 'index_section', 'page_id=' . (int)$id);
         if (!empty($oldPhashRows)) {
-            $pHashesToDelete = array();
-            foreach ($oldPhashRows as $pHashRow) {
-                $pHashesToDelete[] = $pHashRow['phash'];
-            }
-            $where_clause = 'phash IN (' . implode(',', array_map('intval', $pHashesToDelete)) . ')';
+            $pHashesToDelete = array_column($oldPhashRows, 'phash');
             $tables = array(
                 'index_debug',
                 'index_fulltext',
@@ -677,7 +685,11 @@ class CrawlerHook
                 'index_section',
             );
             foreach ($tables as $table) {
-                $GLOBALS['TYPO3_DB']->exec_DELETEquery($table, $where_clause);
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($table);
+                $queryBuilder->delete($table)
+                    ->where($queryBuilder->expr()->in('phash', $pHashesToDelete))
+                    ->execute();
             }
         }
     }
