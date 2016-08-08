@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Update backend user setting startModule if set to "help_aboutmodules"
  */
@@ -32,18 +35,31 @@ class BackendUserStartModuleUpdate extends AbstractUpdate
      */
     public function checkForUpdate(&$description)
     {
-        $backendUsersCount = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'be_users');
-        if ($this->isWizardDone() || $backendUsersCount === 0) {
-            return false;
+        $statement = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('be_users')
+            ->select(['uid', 'uc'], 'be_users', []);
+        $needsExecution = false;
+        while ($backendUser = $statement->fetch()) {
+            if ($backendUser['uc'] !== null) {
+                $userConfig = unserialize($backendUser['uc']);
+                if ($userConfig['startModule'] === 'help_aboutmodules'
+                    || $userConfig['startModule'] === 'help_AboutmodulesAboutmodules'
+                ) {
+                    $needsExecution = true;
+                    break;
+                }
+            }
         }
-
-        $description = 'The backend user setting startModule is changed for the extension aboutmodules. Update all backend users that use ext:aboutmodules as startModule.';
-
-        return true;
+        if ($needsExecution) {
+            $description = 'The backend user setting startModule is changed for the extension aboutmodules. Update all'
+                . ' backend users that use ext:aboutmodules as startModule.';
+        }
+        return $needsExecution;
     }
 
     /**
-     * Performs the database update if backend user's startmodule is help_aboutmodules
+     * Performs the database update if backend user's startmodule is
+     * "help_aboutmodules" or "help_AboutmodulesAboutmodules"
      *
      * @param array &$databaseQueries Queries done in this update
      * @param mixed &$customMessages Custom messages
@@ -51,28 +67,26 @@ class BackendUserStartModuleUpdate extends AbstractUpdate
      */
     public function performUpdate(array &$databaseQueries, &$customMessages)
     {
-        $db = $this->getDatabaseConnection();
-        $backendUsers = $db->exec_SELECTgetRows('uid,uc', 'be_users', '1=1');
-        if (!empty($backendUsers)) {
-            foreach ($backendUsers as $backendUser) {
-                if ($backendUser['uc'] !== null) {
-                    $userConfig = unserialize($backendUser['uc']);
-                    if ($userConfig['startModule'] === 'help_aboutmodules') {
-                        $userConfig['startModule'] = 'help_AboutmodulesAboutmodules';
-                        $db->exec_UPDATEquery(
-                            'be_users',
-                            'uid=' . (int)$backendUser['uid'],
-                            array(
-                                'uc' => serialize($userConfig),
-                            )
-                        );
-                        $databaseQueries[] = $db->debug_lastBuiltQuery;
-                    }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $statement = $queryBuilder->select('uid', 'uc')->from('be_users')->execute();
+        while ($backendUser = $statement->fetch()) {
+            if ($backendUser['uc'] !== null) {
+                $userConfig = unserialize($backendUser['uc']);
+                if ($userConfig['startModule'] === 'help_aboutmodules'
+                    || $userConfig['startModule'] === 'help_AboutmodulesAboutmodules'
+                ) {
+                    $userConfig['startModule'] = 'help_AboutAboutmodules';
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+                    $queryBuilder->update('be_users')
+                        ->where($queryBuilder->expr()->eq('uid', (int)$backendUser['uid']))
+                        // Manual quoting and false as third parameter to have the final
+                        // value in $databaseQueries and not a statement placeholder
+                        ->set('uc', $queryBuilder->quote(serialize($userConfig)), false);
+                    $databaseQueries[] = $queryBuilder->getSQL();
+                    $queryBuilder->execute();
                 }
             }
         }
-
-        $this->markWizardAsDone();
         return true;
     }
 }
