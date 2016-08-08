@@ -9328,7 +9328,6 @@ div#contentMenu1 {
 .modal-content {
   transition: margin-top 0.1s ease-in;
   border: none;
-  overflow: hidden;
 }
 .modal-content .loadmessage {
   text-align: center;
@@ -9353,6 +9352,7 @@ div#contentMenu1 {
   color: #FFF;
 }
 .modal.modal-dark .modal-content {
+  overflow: hidden;
   background-color: #212424;
 }
 .modal.modal-dark .modal-header {
