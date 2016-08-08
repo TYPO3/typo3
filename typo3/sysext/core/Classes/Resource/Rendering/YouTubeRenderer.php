@@ -108,7 +108,7 @@ class YouTubeRenderer implements FileRendererInterface
             $urlParams[] = 'loop=1';
         }
         if (!isset($options['enablejsapi']) || !empty($options['enablejsapi'])) {
-            $urlParams[] = 'enablejsapi=1&amp;origin=' . GeneralUtility::getIndpEnv('HTTP_HOST');
+            $urlParams[] = 'enablejsapi=1&amp;origin=' . GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
         }
         $urlParams[] = 'showinfo=' . (int)!empty($options['showinfo']);
 
