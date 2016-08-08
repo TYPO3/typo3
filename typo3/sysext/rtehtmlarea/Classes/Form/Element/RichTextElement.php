@@ -608,7 +608,7 @@ class RichTextElement extends AbstractFormElement
         // Editing area style sheet
         $editedContentCSS = GeneralUtility::createVersionNumberedFilename($skinDirectory . '/htmlarea-edited-content.css');
 
-        return 'require(["TYPO3/CMS/Rtehtmlarea/HTMLArea/HTMLArea", "jquery"], function (HTMLArea, $) {
+        return 'require(["TYPO3/CMS/Rtehtmlarea/HTMLArea/HTMLArea"], function (HTMLArea) {
 			if (typeof RTEarea === "undefined") {
 				RTEarea = new Object();
 				RTEarea[0] = new Object();
@@ -617,7 +617,7 @@ class RichTextElement extends AbstractFormElement
 				RTEarea[0].editorSkin = "' . $skinDirectory . '/";
 				RTEarea[0].editedContentCSS = "' . $editedContentCSS . '";
 				RTEarea.init = function() {
-				    HTMLArea.init();
+					HTMLArea.init();
 				};
 				RTEarea.initEditor = function(editorNumber) {
 					if (typeof HTMLArea === "undefined" || !HTMLArea.isReady) {
