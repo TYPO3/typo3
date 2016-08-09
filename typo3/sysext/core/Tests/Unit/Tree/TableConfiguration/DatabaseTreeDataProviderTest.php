@@ -14,11 +14,18 @@ namespace TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Driver\Statement;
+use Prophecy\Argument;
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider
@@ -47,12 +54,66 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
      */
     protected function setUp()
     {
-        $this->database = $this->getMockBuilder(DatabaseConnection::class)
-            ->setMethods(array('exec_SELECTgetSingleRow'))
-            ->getMock();
-        $this->database->expects($this->any())->method('exec_SELECTgetSingleRow')->will($this->returnValue(array('uid' => 0, 'parent' => '')));
         $this->treeData = new TreeNode();
-        $GLOBALS['TYPO3_DB'] = $this->database;
+    }
+
+    /**
+     * Setup prophecies for database stack
+     *
+     * @param int $instanceCount Number of instances of ConnectionPool::class to register
+     * @return \Prophecy\Prophecy\ObjectProphecy|\TYPO3\CMS\Core\Database\Query\QueryBuilder
+     */
+    protected function setupDatabaseMock(int $instanceCount = 1)
+    {
+        // Prophecies and revelations for a lot of the database stack classes
+        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
+        $queryRestrictionProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
+        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
+        $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
+        $statementProphecy = $this->prophesize(Statement::class);
+
+        $expressionBuilderProphecy->eq(Argument::cetera())->willReturn('1=1');
+
+        // Simulate method call flow on database objects and verify correct query is built
+        $connectionPoolProphecy->getQueryBuilderForTable(Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphecy->reveal());
+        $queryRestrictionProphecy->removeAll()
+            ->shouldBeCalled()
+            ->willReturn($queryRestrictionProphecy->reveal());
+        $queryBuilderProphecy->getRestrictions()
+            ->shouldBeCalled()
+            ->willReturn($queryRestrictionProphecy->reveal());
+        $queryBuilderProphecy->expr()
+            ->shouldBeCalled()
+            ->willReturn($expressionBuilderProphecy->reveal());
+        $queryBuilderProphecy->execute()
+            ->shouldBeCalled()
+            ->willReturn($statementProphecy->reveal());
+
+        $queryBuilderProphecy->select(Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphecy->reveal());
+        $queryBuilderProphecy->from(Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphecy->reveal());
+        $queryBuilderProphecy->where(Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphecy->reveal());
+        $queryBuilderProphecy->setMaxResults(Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn($queryBuilderProphecy->reveal());
+
+        $statementProphecy->fetch()
+            ->shouldBeCalled()
+            ->willReturn(['uid' => 0, 'parent' => '']);
+
+        // Register connection pool revelation in framework, this is the entry point used by system unter test
+        for ($i = 1; $i <= $instanceCount; $i++) {
+            GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+        }
+
+        return $queryBuilderProphecy;
     }
 
     /**
@@ -92,6 +153,8 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
      */
     public function getChildrenOfLevelMaximumSetToOneWorks()
     {
+        $this->setupDatabaseMock();
+
         $expectedTreeNode = new TreeNode();
         $expectedTreeNode->setId(1);
         $expectedStorage = new TreeNodeCollection();
@@ -110,6 +173,8 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
      */
     public function getChildrenOfLevelMaximumSetToTwoWorks()
     {
+        $this->setupDatabaseMock(2);
+
         $expectedStorage = new TreeNodeCollection();
 
         $expectedFirstLevelTreeNode = new TreeNode();

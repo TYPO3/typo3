@@ -15,9 +15,13 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * TCA tree data provider
@@ -88,7 +92,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     protected $generatedTSConfig = array();
 
     /**
-     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @var Dispatcher
      */
     protected $signalSlotDispatcher;
 
@@ -325,9 +329,17 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     {
         $nodeData = null;
         if ($node->getId() !== 0) {
-            $nodeData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->tableName, 'uid=' . $node->getId());
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($this->getTableName());
+            $queryBuilder->getRestrictions()->removeAll();
+            $nodeData = $queryBuilder->select('*')
+                ->from($this->getTableName())
+                ->where($queryBuilder->expr()->eq('uid', $node->getId()))
+                ->setMaxResults(1)
+                ->execute()
+                ->fetch();
         }
-        if ($nodeData == null) {
+        if (empty($nodeData)) {
             $nodeData = array(
                 'uid' => 0,
                 $this->getLookupField() => ''
@@ -421,17 +433,31 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         $value = $row[$this->getLookupField()];
         switch ((string)$this->columnConfiguration['type']) {
             case 'inline':
-
+                // Intentional fall-through
             case 'select':
                 if ($this->columnConfiguration['MM']) {
-                    /** @var $dbGroup \TYPO3\CMS\Core\Database\RelationHandler */
                     $dbGroup = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
-                    $dbGroup->start($value, $this->getTableName(), $this->columnConfiguration['MM'], $uid, $this->getTableName(), $this->columnConfiguration);
+                    $dbGroup->start(
+                        $value,
+                        $this->getTableName(),
+                        $this->columnConfiguration['MM'],
+                        $uid,
+                        $this->getTableName(),
+                        $this->columnConfiguration
+                    );
                     $relatedUids = $dbGroup->tableArray[$this->getTableName()];
                 } elseif ($this->columnConfiguration['foreign_field']) {
-                    $records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $this->getTableName(), $this->columnConfiguration['foreign_field'] . '=' . (int)$uid);
-                    foreach ($records as $record) {
-                        $relatedUids[] = $record['uid'];
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getQueryBuilderForTable($this->getTableName());
+                    $queryBuilder->getRestrictions()->removeAll();
+                    $records = $queryBuilder->select('uid')
+                        ->from($this->getTableName())
+                        ->where($queryBuilder->expr()->eq($this->columnConfiguration['foreign_field'], (int)$uid))
+                        ->execute()
+                        ->fetchAll();
+
+                    if (!empty($records)) {
+                        $relatedUids = array_column($records, 'uid');
                     }
                 } else {
                     $relatedUids = GeneralUtility::intExplode(',', $value, true);
@@ -452,13 +478,28 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      */
     protected function listFieldQuery($fieldName, $queryId)
     {
-        $records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $this->getTableName(), $GLOBALS['TYPO3_DB']->listQuery($fieldName, (int)$queryId, $this->getTableName()) . ((int)$queryId === 0 ? ' OR CAST(' . $fieldName . ' AS CHAR) = \'\'' : ''));
-        $uidArray = array();
-        if (!empty($records)) {
-            foreach ($records as $record) {
-                $uidArray[] = $record['uid'];
-            }
+        $queryId = (int)$queryId;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->getTableName());
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $queryBuilder->select('uid')
+            ->from($this->getTableName())
+            ->where($queryBuilder->expr()->inSet($fieldName, $queryId));
+
+        if ($queryId === 0) {
+            $queryBuilder->orWhere(
+                $queryBuilder->expr()->comparison(
+                    'CAST(' . $queryBuilder->quoteIdentifier($fieldName) . ' AS CHAR)',
+                    ExpressionBuilder::EQ,
+                    $queryBuilder->quote('')
+                )
+            );
         }
+
+        $records = $queryBuilder->execute()->fetchAll();
+        $uidArray = is_array($records) ? array_column($records, 'uid') : [];
+
         return $uidArray;
     }
 
@@ -469,21 +510,22 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      */
     protected function emitPostProcessTreeDataSignal()
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::class,
+        $this->getSignalSlotDispatcher()->dispatch(
+            DatabaseTreeDataProvider::class,
             self::SIGNAL_PostProcessTreeData,
-            array($this, $this->treeData)
+            [$this, $this->treeData]
         );
     }
 
     /**
      * Get the SignalSlot dispatcher
      *
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @return Dispatcher
      */
     protected function getSignalSlotDispatcher()
     {
         if (!isset($this->signalSlotDispatcher)) {
-            $this->signalSlotDispatcher = $this->getObjectManager()->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+            $this->signalSlotDispatcher = $this->getObjectManager()->get(Dispatcher::class);
         }
         return $this->signalSlotDispatcher;
     }
@@ -491,10 +533,10 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     /**
      * Get the ObjectManager
      *
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @return ObjectManager
      */
     protected function getObjectManager()
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 }
