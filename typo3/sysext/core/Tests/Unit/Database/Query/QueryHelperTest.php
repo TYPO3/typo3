@@ -142,6 +142,82 @@ class QueryHelperTest extends UnitTestCase
     }
 
     /**
+     * Test cases for parsing FROM tableList SQL fragments
+     *
+     * @return array
+     */
+    public function parseTableListDataProvider(): array
+    {
+        return [
+            'single table' => [
+                'aTable',
+                [
+                    ['aTable', null],
+                ],
+            ],
+            'single table with leading whitespace' => [
+                ' aTable',
+                [
+                    ['aTable', null],
+                ],
+            ],
+            'prefixed single table' => [
+                'FROM aTable',
+                [
+                    ['aTable', null],
+                ],
+            ],
+            'prefixed single table with leading whitespace' => [
+                ' FROM aTable',
+                [
+                    ['aTable', null],
+                ],
+            ],
+            'single table with alias' => [
+                'aTable a',
+                [
+                    ['aTable', 'a'],
+                ],
+            ],
+            'multiple tables' => [
+                'aTable,anotherTable, aThirdTable',
+                [
+                    ['aTable', null],
+                    ['anotherTable', null],
+                    ['aThirdTable', null]
+                ],
+            ],
+            'multiple tables with aliases' => [
+                'aTable a,anotherTable, aThirdTable AS c',
+                [
+                    ['aTable', 'a'],
+                    ['anotherTable', null],
+                    ['aThirdTable', 'c']
+                ],
+            ],
+            'prefixed multiple tables with aliases' => [
+                'FROM aTable a,anotherTable, aThirdTable AS c',
+                [
+                    ['aTable', 'a'],
+                    ['anotherTable', null],
+                    ['aThirdTable', 'c']
+                ],
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider parseTableListDataProvider
+     * @param string $input
+     * @param array $expectedResult
+     */
+    public function parseTableListTest(string $input, array $expectedResult)
+    {
+        $this->assertSame($expectedResult, QueryHelper::parseTableList($input));
+    }
+
+    /**
      * Test cases for parsing ORDER BY SQL fragments
      *
      * @return array

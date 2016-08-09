@@ -54,6 +54,38 @@ class QueryHelper
     }
 
     /**
+     * Takes an input, possibly prefixed with FROM, and explodes it into
+     * and array of arrays where each item consists of a tableName and an
+     * optional alias name.
+     *
+     * Each of the resulting pairs can be used with QueryBuilder::from()
+     * to select from one or more tables.
+     *
+     * @param string $input eg . "FROM aTable, anotherTable AS b, aThirdTable c"
+     * @return array|array[] Array of arrays containing tableName/alias pairs
+     */
+    public static function parseTableList(string $input): array
+    {
+        $input = preg_replace('/^(?:FROM[[:space:]]+)+/i', '', trim($input)) ?: '';
+        $tableExpressions = GeneralUtility::trimExplode(',', $input, true);
+
+        return array_map(
+            function ($expression) {
+                list($tableName, $as, $alias) = GeneralUtility::trimExplode(' ', $expression, true);
+
+                if (!empty($as) && strtolower($as) === 'as' && !empty($alias)) {
+                    return [$tableName, $alias];
+                } elseif (!empty($as) && empty($alias)) {
+                    return [$tableName, $as];
+                } else {
+                    return [$tableName, null];
+                }
+            },
+            $tableExpressions
+        );
+    }
+
+    /**
      * Removes the prefix "GROUP BY" from the input string.
      *
      * This function should be used when you can't guarantee that the string

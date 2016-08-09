@@ -14,7 +14,11 @@ namespace TYPO3\CMS\Frontend\Plugin;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Driver\Statement;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -244,8 +248,14 @@ class AbstractPlugin
         if ($this->prefixId) {
             $this->piVars = GeneralUtility::_GPmerged($this->prefixId);
             // cHash mode check
-            // IMPORTANT FOR CACHED PLUGINS (USER cObject): As soon as you generate cached plugin output which depends on parameters (eg. seeing the details of a news item) you MUST check if a cHash value is set.
-            // Background: The function call will check if a cHash parameter was sent with the URL because only if it was the page may be cached. If no cHash was found the function will simply disable caching to avoid unpredictable caching behaviour. In any case your plugin can generate the expected output and the only risk is that the content may not be cached. A missing cHash value is considered a mistake in the URL resulting from either URL manipulation, "realurl" "grayzones" etc. The problem is rare (more frequent with "realurl") but when it occurs it is very puzzling!
+            // IMPORTANT FOR CACHED PLUGINS (USER cObject): As soon as you generate cached plugin output which
+            // depends on parameters (eg. seeing the details of a news item) you MUST check if a cHash value is set.
+            // Background: The function call will check if a cHash parameter was sent with the URL because only if
+            // it was the page may be cached. If no cHash was found the function will simply disable caching to
+            // avoid unpredictable caching behaviour. In any case your plugin can generate the expected output and
+            // the only risk is that the content may not be cached. A missing cHash value is considered a mistake
+            // in the URL resulting from either URL manipulation, "realurl" "grayzones" etc. The problem is rare
+            // (more frequent with "realurl") but when it occurs it is very puzzling!
             if ($this->pi_checkCHash && !empty($this->piVars)) {
                 $this->frontendController->reqCHash();
             }
@@ -714,12 +724,12 @@ class AbstractPlugin
      * $this->pi_list_row() is used for rendering each row
      * Notice that these two functions are typically ALWAYS defined in the extension class of the plugin since they are directly concerned with the specific layout for that plugins purpose.
      *
-     * @param bool|\mysqli_result|object $res Result pointer to a SQL result which can be traversed.
+     * @param Statement $statement Result pointer to a SQL result which can be traversed.
      * @param string $tableParams Attributes for the table tag which is wrapped around the table rows containing the list
      * @return string Output HTML, wrapped in <div>-tags with a class attribute
      * @see pi_list_row(), pi_list_header()
      */
-    public function pi_list_makelist($res, $tableParams = '')
+    public function pi_list_makelist($statement, $tableParams = '')
     {
         // Make list table header:
         $tRows = array();
@@ -727,7 +737,7 @@ class AbstractPlugin
         $tRows[] = $this->pi_list_header();
         // Make list table rows
         $c = 0;
-        while ($this->internal['currentRow'] = $this->databaseConnection->sql_fetch_assoc($res)) {
+        while ($this->internal['currentRow'] = $statement->fetch()) {
             $tRows[] = $this->pi_list_row($c);
             $c++;
         }
@@ -1041,69 +1051,101 @@ class AbstractPlugin
      * @param string $groupBy If set, this is added as a " GROUP BY ...." part of the query.
      * @param string $orderBy If set, this is added as a " ORDER BY ...." part of the query. The default is that an ORDER BY clause is made based on $this->internal['orderBy'] and $this->internal['descFlag'] where the orderBy field must be found in $this->internal['orderByList']
      * @param string $query If set, this is taken as the first part of the query instead of what is created internally. Basically this should be a query starting with "FROM [table] WHERE ... AND ...". The $addWhere clauses and all the other stuff is still added. Only the tables and PID selecting clauses are bypassed. May be deprecated in the future!
-     * @return bool|\mysqli_result|object SQL result pointer
+     * @return Statement
      */
     public function pi_exec_query($table, $count = false, $addWhere = '', $mm_cat = '', $groupBy = '', $orderBy = '', $query = '')
     {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->from($table);
+
         // Begin Query:
         if (!$query) {
+            // This adds WHERE-clauses that ensures deleted, hidden, starttime/endtime/access records are NOT
+            // selected, if they should not! Almost ALWAYS add this to your queries!
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+
             // Fetches the list of PIDs to select from.
             // TypoScript property .pidList is a comma list of pids. If blank, current page id is used.
             // TypoScript property .recursive is an int+ which determines how many levels down from the pids in the pid-list subpages should be included in the select.
-            $pidList = $this->pi_getPidList($this->conf['pidList'], $this->conf['recursive']);
+            $pidList = GeneralUtility::intExplode(',', $this->pi_getPidList($this->conf['pidList'], $this->conf['recursive']), true);
             if (is_array($mm_cat)) {
-                // This adds WHERE-clauses that ensures deleted, hidden, starttime/endtime/access records are NOT
-                // selected, if they should not! Almost ALWAYS add this to your queries!
-                $query = 'FROM ' . $table . ',' . $mm_cat['table'] . ',' . $mm_cat['mmtable'] . LF . ' WHERE ' . $table . '.uid=' . $mm_cat['mmtable'] . '.uid_local AND ' . $mm_cat['table'] . '.uid=' . $mm_cat['mmtable'] . '.uid_foreign ' . LF . (strcmp($mm_cat['catUidList'], '') ? ' AND ' . $mm_cat['table'] . '.uid IN (' . $mm_cat['catUidList'] . ')' : '') . LF . ' AND ' . $table . '.pid IN (' . $pidList . ')' . LF . $this->cObj->enableFields($table) . LF;
+                $queryBuilder->from($mm_cat['table'])
+                    ->from($mm_cat['mmtable'])
+                    ->where(
+                        $queryBuilder->expr()->eq($table . '.uid', $queryBuilder->quoteIdentifier($mm_cat['mmtable'] . '.uid_local')),
+                        $queryBuilder->expr()->eq($mm_cat['table'] . '.uid', $queryBuilder->quoteIdentifier($mm_cat['mmtable'] . '.uid_foreign')),
+                        $queryBuilder->expr()->in($table . '.pid', $pidList)
+                    );
+                if (strcmp($mm_cat['catUidList'], '')) {
+                    $queryBuilder->andWhere(
+                        $queryBuilder->expr()->in(
+                            $mm_cat['table'] . '.uid',
+                            GeneralUtility::intExplode(',', $mm_cat['catUidList'], true)
+                        )
+                    );
+                }
             } else {
-                // This adds WHERE-clauses that ensures deleted, hidden, starttime/endtime/access records are NOT
-                // selected, if they should not! Almost ALWAYS add this to your queries!
-                $query = 'FROM ' . $table . ' WHERE pid IN (' . $pidList . ')' . LF . $this->cObj->enableFields($table) . LF;
+                $queryBuilder->where($queryBuilder->expr()->in('pid', $pidList));
             }
+        } else {
+            // Restrictions need to be handled by the $query parameter!
+            $queryBuilder->getRestrictions()->removeAll();
+
+            // Split the "FROM ... WHERE" string so we get the WHERE part and TABLE names separated...:
+            list($tableListFragment, $whereFragment) = preg_split('/WHERE/i', trim($query), 2);
+            foreach (QueryHelper::parseTableList($tableListFragment) as $tableNameAndAlias) {
+                list($tableName, $tableAlias) = $tableNameAndAlias;
+                $queryBuilder->from($tableName, $tableAlias);
+            }
+            $queryBuilder->where(QueryHelper::stripLogicalOperatorPrefix($whereFragment));
         }
-        // Split the "FROM ... WHERE" string so we get the WHERE part and TABLE names separated...:
-        list($TABLENAMES, $WHERE) = preg_split('/WHERE/i', trim($query), 2);
-        $TABLENAMES = trim(substr(trim($TABLENAMES), 5));
-        $WHERE = trim($WHERE);
+
         // Add '$addWhere'
         if ($addWhere) {
-            $WHERE .= ' ' . $addWhere . LF;
+            $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($addWhere));
         }
         // Search word:
         if ($this->piVars['sword'] && $this->internal['searchFieldList']) {
-            $WHERE .= $this->cObj->searchWhere($this->piVars['sword'], $this->internal['searchFieldList'], $table) . LF;
-        }
-        if ($count) {
-            $queryParts = array(
-                'SELECT' => 'count(*)',
-                'FROM' => $TABLENAMES,
-                'WHERE' => $WHERE,
-                'GROUPBY' => '',
-                'ORDERBY' => '',
-                'LIMIT' => ''
+            $queryBuilder->andWhere(
+                QueryHelper::stripLogicalOperatorPrefix(
+                    $this->cObj->searchWhere($this->piVars['sword'], $this->internal['searchFieldList'], $table)
+                )
             );
+        }
+
+        if ($count) {
+            $queryBuilder->count('*');
         } else {
+            // Add 'SELECT'
+            $fields = $this->pi_prependFieldsWithTable($table, $this->pi_listFields);
+            $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true));
+
             // Order by data:
             if (!$orderBy && $this->internal['orderBy']) {
                 if (GeneralUtility::inList($this->internal['orderByList'], $this->internal['orderBy'])) {
-                    $orderBy = 'ORDER BY ' . $table . '.' . $this->internal['orderBy'] . ($this->internal['descFlag'] ? ' DESC' : '');
+                    $sorting = $this->internal['descFlag'] ? ' DESC' : 'ASC';
+                    $queryBuilder->orderBy($table . '.' . $this->internal['orderBy'], $sorting);
+                }
+            } elseif ($orderBy) {
+                foreach (QueryHelper::parseOrderBy($orderBy) as $fieldNameAndSorting) {
+                    list($fieldName, $sorting) = $fieldNameAndSorting;
+                    $queryBuilder->addOrderBy($fieldName, $sorting);
                 }
             }
+
             // Limit data:
             $pointer = (int)$this->piVars['pointer'];
             $results_at_a_time = MathUtility::forceIntegerInRange($this->internal['results_at_a_time'], 1, 1000);
-            $LIMIT = $pointer * $results_at_a_time . ',' . $results_at_a_time;
-            // Add 'SELECT'
-            $queryParts = array(
-                'SELECT' => $this->pi_prependFieldsWithTable($table, $this->pi_listFields),
-                'FROM' => $TABLENAMES,
-                'WHERE' => $WHERE,
-                'GROUPBY' => $this->databaseConnection->stripGroupBy($groupBy),
-                'ORDERBY' => $this->databaseConnection->stripOrderBy($orderBy),
-                'LIMIT' => $LIMIT
-            );
+            $queryBuilder->setFirstResult($pointer * $results_at_a_time)
+                ->setMaxResults($results_at_a_time);
+
+            // Grouping
+            if (!empty($groupBy)) {
+                $queryBuilder->groupBy(...QueryHelper::parseGroupBy($groupBy));
+            }
         }
-        return $this->databaseConnection->exec_SELECT_queryArray($queryParts);
+
+        return $queryBuilder->execute();
     }
 
     /**
@@ -1177,12 +1219,41 @@ class AbstractPlugin
      */
     public function pi_getCategoryTableContents($table, $pid, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '')
     {
-        $res = $this->databaseConnection->exec_SELECTquery('*', $table, 'pid=' . (int)$pid . $this->cObj->enableFields($table) . ' ' . $whereClause, $groupBy, $orderBy, $limit);
-        $outArr = array();
-        while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+        $queryBuilder->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('pid', (int)$pid),
+                QueryHelper::stripLogicalOperatorPrefix($whereClause)
+            );
+
+        if (!empty($orderBy)) {
+            foreach (QueryHelper::parseOrderBy($orderBy) as $fieldNameAndSorting) {
+                list($fieldName, $sorting) = $fieldNameAndSorting;
+                $queryBuilder->addOrderBy($fieldName, $sorting);
+            }
+        }
+
+        if (!empty($groupBy)) {
+            $queryBuilder->groupBy(...QueryHelper::parseGroupBy($groupBy));
+        }
+
+        if (!empty($limit)) {
+            $limitValues = GeneralUtility::intExplode(',', $limit, true);
+            if (count($limitValues) === 1) {
+                $queryBuilder->setMaxResults($limitValues[0]);
+            } else {
+                $queryBuilder->setFirstResult($limitValues[0])
+                    ->setMaxResults($limitValues[1]);
+            }
+        }
+
+        $result = $queryBuilder->execute();
+        $outArr = [];
+        while ($row = $result->fetch()) {
             $outArr[$row['uid']] = $row;
         }
-        $this->databaseConnection->sql_free_result($res);
         return $outArr;
     }
 
