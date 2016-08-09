@@ -14,14 +14,11 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\ApplicationContext;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\File;
@@ -1609,100 +1606,6 @@ class ContentObjectRendererTest extends UnitTestCase
         $cleanedResult = str_replace(' ', '', $cleanedResult);
 
         $this->assertEquals($expectedResult, $cleanedResult);
-    }
-
-    /**
-     * @test
-     */
-    public function getTreeListReturnsChildPageUids()
-    {
-        $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->with('treelist')->will($this->returnValue(null));
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
-        $connectionProphecy = $this->prophesize(Connection::class);
-        $connectionPoolProphecy->getConnectionForTable('cache_treelist')->willReturn($connectionProphecy->reveal());
-        $connectionProphecy->insert(Argument::cetera())->shouldBeCalled();
-        $GLOBALS['TSFE']->sys_page
-            ->expects($this->any())
-            ->method('getRawRecord')
-            ->will(
-                $this->onConsecutiveCalls(
-                    array('uid' => 17),
-                    array('uid' => 321),
-                    array('uid' => 719),
-                    array('uid' => 42)
-                )
-            );
-
-        $GLOBALS['TSFE']->sys_page->expects($this->any())->method('getMountPointInfo')->will($this->returnValue(null));
-        $GLOBALS['TYPO3_DB']
-            ->expects($this->any())
-            ->method('exec_SELECTgetRows')
-            ->will(
-                $this->onConsecutiveCalls(
-                    array(
-                        array('uid' => 321)
-                    ),
-                    array(
-                        array('uid' => 719)
-                    ),
-                    array(
-                        array('uid' => 42)
-                    )
-                )
-            );
-        // 17 = pageId, 5 = recursionLevel, 0 = begin (entry to recursion, internal), TRUE = do not check enable fields
-        // 17 is positive, we expect 17 NOT to be included in result
-        $result = $this->subject->getTreeList(17, 5, 0, true);
-        $expectedResult = '42,719,321';
-        $this->assertEquals($expectedResult, $result);
-    }
-
-    /**
-     * @test
-     */
-    public function getTreeListReturnsChildPageUidsAndOriginalPidForNegativeValue()
-    {
-        $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->with('treelist')->will($this->returnValue(null));
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
-        $connectionProphecy = $this->prophesize(Connection::class);
-        $connectionPoolProphecy->getConnectionForTable('cache_treelist')->willReturn($connectionProphecy->reveal());
-        $connectionProphecy->insert(Argument::cetera())->shouldBeCalled();
-        $GLOBALS['TSFE']->sys_page
-            ->expects($this->any())
-            ->method('getRawRecord')
-            ->will(
-                $this->onConsecutiveCalls(
-                    array('uid' => 17),
-                    array('uid' => 321),
-                    array('uid' => 719),
-                    array('uid' => 42)
-                )
-            );
-
-        $GLOBALS['TSFE']->sys_page->expects($this->any())->method('getMountPointInfo')->will($this->returnValue(null));
-        $GLOBALS['TYPO3_DB']
-            ->expects($this->any())
-            ->method('exec_SELECTgetRows')
-            ->will(
-                $this->onConsecutiveCalls(
-                    array(
-                        array('uid' => 321)
-                    ),
-                    array(
-                        array('uid' => 719)
-                    ),
-                    array(
-                        array('uid' => 42)
-                    )
-                )
-            );
-        // 17 = pageId, 5 = recursionLevel, 0 = begin (entry to recursion, internal), TRUE = do not check enable fields
-        // 17 is negative, we expect 17 to be included in result
-        $result = $this->subject->getTreeList(-17, 5, 0, true);
-        $expectedResult = '42,719,321,17';
-        $this->assertEquals($expectedResult, $result);
     }
 
     /**

@@ -14,9 +14,13 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -7130,7 +7134,6 @@ class ContentObjectRenderer
         $requestHash = '';
 
         // First level, check id (second level, this is done BEFORE the recursive call)
-        $db = $this->getDatabaseConnection();
         $tsfe = $this->getTypoScriptFrontendController();
         if (!$recursionLevel) {
             // Check tree list cache
@@ -7146,11 +7149,21 @@ class ContentObjectRenderer
                 $tsfe->gr_list
             ];
             $requestHash = md5(serialize($parameters));
-            $cacheEntry = $db->exec_SELECTgetSingleRow(
-                'treelist',
-                'cache_treelist',
-                'md5hash = \'' . $requestHash . '\' AND ( expires > ' . (int)$GLOBALS['EXEC_TIME'] . ' OR expires = 0 )'
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('cache_treelist');
+            $cacheEntry = $queryBuilder->select('treelist')
+                ->from('cache_treelist')
+                ->where(
+                    $queryBuilder->expr()->eq('md5hash', $queryBuilder->createNamedParameter($requestHash)),
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->gt('expires', (int)$GLOBALS['EXEC_TIME']),
+                        $queryBuilder->expr()->eq('expires', 0)
+                    )
+                )
+                ->setMaxResults(1)
+                ->execute()
+                ->fetch();
+
             if (is_array($cacheEntry)) {
                 // Cache hit
                 return $cacheEntry['treelist'];
@@ -7181,79 +7194,93 @@ class ContentObjectRenderer
         }
         // Select sublevel:
         if ($depth > 0) {
-            $rows = $db->exec_SELECTgetRows(
-                $allFields,
-                'pages',
-                'pid = ' . (int)$id . ' AND deleted = 0 ' . $moreWhereClauses,
-                '',
-                'sorting'
-            );
-            if (is_array($rows)) {
-                foreach ($rows as $row) {
-                    /** @var VersionState $versionState */
-                    $versionState = VersionState::cast($row['t3ver_state']);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $queryBuilder->select(...GeneralUtility::trimExplode(',', $allFields, true))
+                ->from('pages')
+                ->where($queryBuilder->expr()->eq('pid', (int)$id))
+                ->orderBy('sorting');
+
+            if (!empty($moreWhereClauses)) {
+                $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($moreWhereClauses));
+            }
+
+            $result = $queryBuilder->execute();
+            while ($row = $result->fetch()) {
+                /** @var VersionState $versionState */
+                $versionState = VersionState::cast($row['t3ver_state']);
+                $tsfe->sys_page->versionOL('pages', $row);
+                if ((int)$row['doktype'] === PageRepository::DOKTYPE_RECYCLER
+                    || (int)$row['doktype'] === PageRepository::DOKTYPE_BE_USER_SECTION
+                    || $versionState->indicatesPlaceholder()
+                ) {
+                    // Doing this after the overlay to make sure changes
+                    // in the overlay are respected.
+                    // However, we do not process pages below of and
+                    // including of type recycler and BE user section
+                    continue;
+                }
+                // Find mount point if any:
+                $next_id = $row['uid'];
+                $mount_info = $tsfe->sys_page->getMountPointInfo($next_id, $row);
+                // Overlay mode:
+                if (is_array($mount_info) && $mount_info['overlay']) {
+                    $next_id = $mount_info['mount_pid'];
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getQueryBuilderForTable('pages');
+                    $queryBuilder->getRestrictions()
+                        ->removeAll()
+                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                    $queryBuilder->select(...GeneralUtility::trimExplode(',', $allFields, true))
+                        ->from('pages')
+                        ->where($queryBuilder->expr()->eq('uid', (int)$next_id))
+                        ->orderBy('sorting')
+                        ->setMaxResults(1);
+
+                    if (!empty($moreWhereClauses)) {
+                        $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($moreWhereClauses));
+                    }
+
+                    $row = $queryBuilder->execute()->fetch();
                     $tsfe->sys_page->versionOL('pages', $row);
                     if ((int)$row['doktype'] === PageRepository::DOKTYPE_RECYCLER
                         || (int)$row['doktype'] === PageRepository::DOKTYPE_BE_USER_SECTION
                         || $versionState->indicatesPlaceholder()
                     ) {
-                        // Doing this after the overlay to make sure changes
-                        // in the overlay are respected.
-                        // However, we do not process pages below of and
-                        // including of type recycler and BE user section
+                        // Doing this after the overlay to make sure
+                        // changes in the overlay are respected.
+                        // see above
                         continue;
                     }
-                    // Find mount point if any:
-                    $next_id = $row['uid'];
-                    $mount_info = $tsfe->sys_page->getMountPointInfo($next_id, $row);
-                    // Overlay mode:
-                    if (is_array($mount_info) && $mount_info['overlay']) {
-                        $next_id = $mount_info['mount_pid'];
-                        $row = $db->exec_SELECTgetSingleRow(
-                            $allFields,
-                            'pages',
-                            'uid = ' . (int)$next_id . ' AND deleted = 0 ' . $moreWhereClauses,
-                            '',
-                            'sorting'
-                        );
-                        $tsfe->sys_page->versionOL('pages', $row);
-                        if ((int)$row['doktype'] === PageRepository::DOKTYPE_RECYCLER
-                            || (int)$row['doktype'] === PageRepository::DOKTYPE_BE_USER_SECTION
-                            || $versionState->indicatesPlaceholder()
-                        ) {
-                            // Doing this after the overlay to make sure
-                            // changes in the overlay are respected.
-                            // see above
-                            continue;
+                }
+                // Add record:
+                if ($dontCheckEnableFields || $tsfe->checkPagerecordForIncludeSection($row)) {
+                    // Add ID to list:
+                    if ($begin <= 0) {
+                        if ($dontCheckEnableFields || $tsfe->checkEnableFields($row)) {
+                            $theList[] = $next_id;
                         }
                     }
-                    // Add record:
-                    if ($dontCheckEnableFields || $tsfe->checkPagerecordForIncludeSection($row)) {
-                        // Add ID to list:
-                        if ($begin <= 0) {
-                            if ($dontCheckEnableFields || $tsfe->checkEnableFields($row)) {
-                                $theList[] = $next_id;
-                            }
+                    // Next level:
+                    if ($depth > 1 && !$row['php_tree_stop']) {
+                        // Normal mode:
+                        if (is_array($mount_info) && !$mount_info['overlay']) {
+                            $next_id = $mount_info['mount_pid'];
                         }
-                        // Next level:
-                        if ($depth > 1 && !$row['php_tree_stop']) {
-                            // Normal mode:
-                            if (is_array($mount_info) && !$mount_info['overlay']) {
-                                $next_id = $mount_info['mount_pid'];
-                            }
-                            // Call recursively, if the id is not in prevID_array:
-                            if (!in_array($next_id, $prevId_array)) {
-                                $theList = array_merge(
-                                    GeneralUtility::intExplode(
-                                        ',',
-                                        $this->getTreeList($next_id, $depth - 1, $begin - 1,
-                                            $dontCheckEnableFields, $addSelectFields, $moreWhereClauses,
-                                            $prevId_array, $recursionLevel + 1),
-                                        true
-                                    ),
-                                    $theList
-                                );
-                            }
+                        // Call recursively, if the id is not in prevID_array:
+                        if (!in_array($next_id, $prevId_array)) {
+                            $theList = array_merge(
+                                GeneralUtility::intExplode(
+                                    ',',
+                                    $this->getTreeList($next_id, $depth - 1, $begin - 1,
+                                        $dontCheckEnableFields, $addSelectFields, $moreWhereClauses,
+                                        $prevId_array, $recursionLevel + 1),
+                                    true
+                                ),
+                                $theList
+                            );
                         }
                     }
                 }
@@ -7286,34 +7313,53 @@ class ContentObjectRenderer
      * Generates a search where clause based on the input search words (AND operation - all search words must be found in record.)
      * Example: The $sw is "content management, system" (from an input form) and the $searchFieldList is "bodytext,header" then the output will be ' AND (bodytext LIKE "%content%" OR header LIKE "%content%") AND (bodytext LIKE "%management%" OR header LIKE "%management%") AND (bodytext LIKE "%system%" OR header LIKE "%system%")'
      *
-     * @param string $sw The search words. These will be separated by space and comma.
+     * @param string $searchWords The search words. These will be separated by space and comma.
      * @param string $searchFieldList The fields to search in
      * @param string $searchTable The table name you search in (recommended for DBAL compliance. Will be prepended field names as well)
      * @return string The WHERE clause.
      */
-    public function searchWhere($sw, $searchFieldList, $searchTable = '')
+    public function searchWhere($searchWords, $searchFieldList, $searchTable = '')
     {
+        if (!$searchWords) {
+            return ' AND 1=1';
+        }
+
+        if (empty($searchTable)) {
+            GeneralUtility::deprecationLog(
+                'Parameter 3 of ContentObjectRenderer::searchWhere() is required can not be omitted anymore. Using Default connection!'
+            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
+                ->createQueryBuilder();
+        } else {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($searchTable);
+        }
+
         $prefixTableName = $searchTable ? $searchTable . '.' : '';
-        $where = '';
-        if ($sw) {
-            $searchFields = explode(',', $searchFieldList);
-            $kw = preg_split('/[ ,]/', $sw);
-            $db = $this->getDatabaseConnection();
-            foreach ($kw as $val) {
-                $val = trim($val);
-                $where_p = [];
-                if (strlen($val) >= 2) {
-                    $val = $db->escapeStrForLike($db->quoteStr($val, $searchTable), $searchTable);
-                    foreach ($searchFields as $field) {
-                        $where_p[] = $prefixTableName . $field . ' LIKE \'%' . $val . '%\'';
-                    }
-                }
-                if (!empty($where_p)) {
-                    $where .= ' AND (' . implode(' OR ', $where_p) . ')';
-                }
+
+        $where = $queryBuilder->expr()->andX();
+        $searchFields = explode(',', $searchFieldList);
+        $searchWords = preg_split('/[ ,]/', $searchWords);
+        foreach ($searchWords as $searchWord) {
+            $searchWord = trim($searchWord);
+            if (strlen($searchWord) < 3) {
+                continue;
+            }
+            $searchWordConstraint = $queryBuilder->expr()->orX();
+            $searchWord = $queryBuilder->escapeLikeWildcards($searchWord);
+            foreach ($searchFields as $field) {
+                $searchWordConstraint->add(
+                    $queryBuilder->expr()->like($prefixTableName . $field, $queryBuilder->quote('%' . $searchWord . '%'))
+                );
+            }
+
+            if ($searchWordConstraint->count()) {
+                $where->add($searchWordConstraint);
             }
         }
-        return $where;
+
+        return ' AND ' . (string)$where;
     }
 
     /**
@@ -7723,16 +7769,26 @@ class ContentObjectRenderer
             return [];
         }
         $outArr = [];
-        $db = $this->getDatabaseConnection();
-        $res = $db->exec_SELECTquery('uid', 'pages', 'uid IN (' . implode(',', $listArr) . ')' . $this->enableFields('pages') . ' AND doktype NOT IN (' . $this->checkPid_badDoktypeList . ')');
-        if ($error = $db->sql_error()) {
-            $this->getTimeTracker()->setTSlogMessage($error . ': ' . $db->debug_lastBuiltQuery, 3);
-        } else {
-            while ($row = $db->sql_fetch_assoc($res)) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+        $queryBuilder->select('uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->in('uid', array_map('intval', $listArr)),
+                $queryBuilder->expr()->notIn(
+                    'doktype',
+                    GeneralUtility::intExplode(',', $this->checkPid_badDoktypeList, true)
+                )
+            );
+        try {
+            $result = $queryBuilder->execute();
+            while ($row = $result->fetch()) {
                 $outArr[] = $row['uid'];
             }
+        } catch (DBALException $e) {
+            $this->getTimeTracker()->setTSlogMessage($e->getMessage() . ': ' . $queryBuilder->getSQL(), 3);
         }
-        $db->sql_free_result($res);
+
         return $outArr;
     }
 
@@ -7748,7 +7804,20 @@ class ContentObjectRenderer
     {
         $uid = (int)$uid;
         if (!isset($this->checkPid_cache[$uid])) {
-            $count = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'pages', 'uid=' . $uid . $this->enableFields('pages') . ' AND doktype NOT IN (' . $this->checkPid_badDoktypeList . ')');
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+            $count = $queryBuilder->count('*')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('uid', $uid),
+                    $queryBuilder->expr()->notIn(
+                        'doktype',
+                        GeneralUtility::intExplode(',', $this->checkPid_badDoktypeList, true)
+                    )
+                )
+                ->execute()
+                ->fetchColumn(0);
+
             $this->checkPid_cache[$uid] = (bool)$count;
         }
         return $this->checkPid_cache[$uid];
@@ -7770,7 +7839,7 @@ class ContentObjectRenderer
             return [];
         }
         // Parse markers and prepare their values
-        $db = $this->getDatabaseConnection();
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
         $markerValues = [];
         foreach ($conf['markers.'] as $dottedMarker => $dummy) {
             $marker = rtrim($dottedMarker, '.');
@@ -7814,17 +7883,17 @@ class ContentObjectRenderer
                             } elseif (preg_match('/^\\"([^\\"]*)\\"$/', $listValue, $matches)) {
                                 $listValue = $matches[1];
                             }
-                            $tempArray[] = $db->fullQuoteStr($listValue, $table);
+                            $tempArray[] = $connection->quote($listValue);
                         }
                     }
                     $markerValues[$marker] = implode(',', $tempArray);
                 } else {
                     // Handle remaining values as string
-                    $markerValues[$marker] = $db->fullQuoteStr($tempValue, $table);
+                    $markerValues[$marker] = $connection->quote($tempValue);
                 }
             } else {
                 // Handle remaining values as string
-                $markerValues[$marker] = $db->fullQuoteStr($tempValue, $table);
+                $markerValues[$marker] = $connection->quote($tempValue);
             }
         }
         return $markerValues;
