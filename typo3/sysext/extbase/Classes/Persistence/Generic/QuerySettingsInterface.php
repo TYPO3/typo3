@@ -162,9 +162,4 @@ interface QuerySettingsInterface
      * @return bool
      */
     public function getIncludeDeleted();
-
-    /**
-     * @return bool
-     */
-    public function getUseQueryCache();
 }

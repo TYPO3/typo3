@@ -102,6 +102,7 @@ class Typo3QuerySettings implements QuerySettingsInterface
      * Flag whether the query should be cached using the caching framework
      *
      * @var bool
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as the database is taking care of query caching
      */
     protected $useQueryCache = true;
 
@@ -362,19 +363,23 @@ class Typo3QuerySettings implements QuerySettingsInterface
 
     /**
      * @param bool $useQueryCache
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as the database is taking care of query caching
      * @return QuerySettingsInterface
      */
     public function useQueryCache($useQueryCache)
     {
+        GeneralUtility::logDeprecatedFunction();
         $this->useQueryCache = (bool)$useQueryCache;
         return $this;
     }
 
     /**
      * @return bool
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as the database is taking care of query caching
      */
     public function getUseQueryCache()
     {
+        GeneralUtility::logDeprecatedFunction();
         return $this->useQueryCache;
     }
 }

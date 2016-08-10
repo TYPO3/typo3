@@ -72,16 +72,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     protected $cacheService;
 
     /**
-     * @var \TYPO3\CMS\Core\Cache\CacheManager
-     */
-    protected $cacheManager;
-
-    /**
-     * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
-     */
-    protected $queryCache;
-
-    /**
      * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
      */
     protected $environmentService;
@@ -90,13 +80,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser
      */
     protected $queryParser;
-
-    /**
-     * A first level cache for queries during runtime
-     *
-     * @var array
-     */
-    protected $queryRuntimeCache = array();
 
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
@@ -123,14 +106,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     }
 
     /**
-     * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
-     */
-    public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager)
-    {
-        $this->cacheManager = $cacheManager;
-    }
-
-    /**
      * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
      */
     public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService)
@@ -153,16 +128,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     {
         $this->databaseHandle = $GLOBALS['TYPO3_DB'];
         $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-    }
-
-    /**
-     * Lifecycle method
-     *
-     * @return void
-     */
-    public function initializeObject()
-    {
-        $this->queryCache = $this->cacheManager->getCache('extbase_typo3dbbackend_queries');
     }
 
     /**
@@ -370,7 +335,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         if ($statement instanceof Qom\Statement) {
             $rows = $this->getObjectDataByRawQuery($statement);
         } else {
-            list($statementParts) = $this->getStatementParts($query);
+            $statementParts = $this->getStatementParts($query);
             $rows = $this->getRowsFromDatabase($statementParts);
         }
 
@@ -475,7 +440,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             throw new \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException('Could not execute count on queries with a constraint of type TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Statement', 1256661045);
         }
 
-        list($statementParts) = $this->getStatementParts($query);
+        $statementParts = $this->getStatementParts($query);
 
         $fields = '*';
         if (isset($statementParts['keywords']['distinct'])) {
@@ -502,35 +467,16 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     }
 
     /**
-     * Looks for the query in cache or builds it up otherwise
+     * Build the query statement parts as SQL
      *
      * @param QueryInterface $query
-     * @param bool $resolveParameterPlaceholders whether to resolve the parameters or leave the placeholders
      * @return array
      * @throws \RuntimeException
      */
-    protected function getStatementParts($query, $resolveParameterPlaceholders = true)
+    protected function getStatementParts($query)
     {
-        /**
-         * The queryParser will preparse the query to get the query's hash and parameters.
-         * If the hash is found in the cache and useQueryCaching is enabled, extbase will
-         * then take the string representation from cache and build a prepared query with
-         * the parameters found.
-         *
-         * Otherwise extbase will parse the complete query, build the string representation
-         * and run a usual query.
-         */
-        list($queryHash, $parameters) = $this->queryParser->preparseQuery($query);
-
-        if ($query->getQuerySettings()->getUseQueryCache()) {
-            $statementParts = $this->getQueryCacheEntry($queryHash);
-            if ($queryHash && !$statementParts) {
-                $statementParts = $this->queryParser->parseQuery($query);
-                $this->setQueryCacheEntry($queryHash, $statementParts);
-            }
-        } else {
-            $statementParts = $this->queryParser->parseQuery($query);
-        }
+        list($_, $parameters) = $this->queryParser->preparseQuery($query);
+        $statementParts = $this->queryParser->parseQuery($query);
 
         if (!$statementParts) {
             throw new \RuntimeException('Your query could not be built.', 1394453197);
@@ -542,11 +488,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         $statementParts['limit'] = ((int)$query->getLimit() ?: null);
         $statementParts['offset'] = ((int)$query->getOffset() ?: null);
 
-        if ($resolveParameterPlaceholders === true) {
-            $statementParts = $this->resolveParameterPlaceholders($statementParts, $parameters);
-        }
-
-        return array($statementParts, $parameters);
+        return $this->resolveParameterPlaceholders($statementParts, $parameters);
     }
 
     /**
@@ -924,32 +866,5 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         foreach ($pageIdsToClear as $pageIdToClear) {
             $this->cacheService->getPageIdStack()->push($pageIdToClear);
         }
-    }
-
-    /**
-     * Finds and returns a variable value from the query cache.
-     *
-     * @param string $entryIdentifier Identifier of the cache entry to fetch
-     * @return mixed The value
-     */
-    protected function getQueryCacheEntry($entryIdentifier)
-    {
-        if (!isset($this->queryRuntimeCache[$entryIdentifier])) {
-            $this->queryRuntimeCache[$entryIdentifier] = $this->queryCache->get($entryIdentifier);
-        }
-        return $this->queryRuntimeCache[$entryIdentifier];
-    }
-
-    /**
-     * Saves the value of a PHP variable in the query cache.
-     *
-     * @param string $entryIdentifier An identifier used for this cache entry
-     * @param mixed $variable The query to cache
-     * @return void
-     */
-    protected function setQueryCacheEntry($entryIdentifier, $variable)
-    {
-        $this->queryRuntimeCache[$entryIdentifier] = $variable;
-        $this->queryCache->set($entryIdentifier, $variable, array(), 0);
     }
 }
