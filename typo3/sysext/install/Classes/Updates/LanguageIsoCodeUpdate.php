@@ -13,7 +13,9 @@ namespace TYPO3\CMS\Install\Updates;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Update sys_language records to use the newly created
@@ -39,15 +41,21 @@ class LanguageIsoCodeUpdate extends AbstractUpdate
             return false;
         }
 
-        $emptyValue = $this->getDatabaseConnection()->fullQuoteStr('', 'sys_language');
-        $migratableLanguageRecords = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'sys_language', 'language_isocode=' . $emptyValue . ' AND CAST(static_lang_isocode AS CHAR) != ' . $emptyValue);
-        if ($migratableLanguageRecords === 0) {
-            return false;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+        $numberOfAffectedRows = $queryBuilder->count('uid')
+            ->from('sys_language')
+            ->where(
+                $queryBuilder->expr()->eq('language_isocode', $queryBuilder->createNamedParameter('')),
+                $queryBuilder->expr()->isNotNull('static_lang_isocode')
+            )
+            ->execute()
+            ->fetchColumn(0);
+        if ((bool)$numberOfAffectedRows) {
+            $description = 'The sys_language records have a new iso code field which removes the dependency of the'
+                . ' TYPO3 CMS Core to the extension "static_info_tables". This upgrade wizard migrates the data of the'
+                . ' existing "static_lang_isocode" field to the new DB field.';
         }
-
-        $description = 'The sys_language records have a new iso code field which removes the dependency of the TYPO3 CMS Core to the extension "static_info_tables". This upgrade wizard migrates the data of the existing "static_lang_isocode" field to the new DB field.';
-
-        return true;
+        return (bool)$numberOfAffectedRows;
     }
 
     /**
@@ -61,24 +69,37 @@ class LanguageIsoCodeUpdate extends AbstractUpdate
      */
     public function performUpdate(array &$databaseQueries, &$customMessages)
     {
-        $emptyValue =  $this->getDatabaseConnection()->fullQuoteStr('', 'sys_language');
-        $migrateableLanguageRecords = $this->getDatabaseConnection()->exec_SELECTgetRows('uid,static_lang_isocode', 'sys_language', 'language_isocode=' . $emptyValue . ' AND CAST(static_lang_isocode AS CHAR) != ' . $emptyValue);
-        if (!empty($migrateableLanguageRecords)) {
-            foreach ($migrateableLanguageRecords as $languageRecord) {
-                $staticLanguageRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'static_languages', 'uid=' . (int)$languageRecord['static_lang_isocode']);
-                if (!empty($staticLanguageRecord['lg_iso_2'])) {
-                    $this->getDatabaseConnection()->exec_UPDATEquery(
-                        'sys_language',
-                        'uid=' . (int)$languageRecord['uid'],
-                        array(
-                            'language_isocode' => strtolower($staticLanguageRecord['lg_iso_2'])
-                        )
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+        $statement = $queryBuilder->select('uid', 'language_isocode', 'static_lang_isocode')
+            ->from('sys_language')
+            ->where(
+                $queryBuilder->expr()->eq('language_isocode', $queryBuilder->createNamedParameter('')),
+                $queryBuilder->expr()->isNotNull('static_lang_isocode')
+            )
+            ->execute();
+        while ($languageRecord = $statement->fetch()) {
+            $staticLanguageRecord = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('static_languages')
+                ->select(
+                    ['lg_iso_2'],
+                    'static_languages',
+                    ['uid' => (int)$languageRecord['static_lang_isocode']]
+                )
+                ->fetch();
+            if (!empty($staticLanguageRecord['lg_iso_2'])) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('sys_language');
+                $queryBuilder->update('sys_language')
+                    ->where($queryBuilder->expr()->eq('uid', (int)$languageRecord['uid']))
+                    ->set(
+                        'language_isocode',
+                        $queryBuilder->quote(strtolower($staticLanguageRecord['lg_iso_2'])),
+                        false
                     );
-                    $databaseQueries[] = $this->getDatabaseConnection()->debug_lastBuiltQuery;
-                }
+                $databaseQueries[] = $queryBuilder->getSQL();
+                $queryBuilder->execute();
             }
         }
-
         $this->markWizardAsDone();
         return true;
     }
