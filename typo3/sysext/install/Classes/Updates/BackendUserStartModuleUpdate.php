@@ -41,7 +41,7 @@ class BackendUserStartModuleUpdate extends AbstractUpdate
         $needsExecution = false;
         while ($backendUser = $statement->fetch()) {
             if ($backendUser['uc'] !== null) {
-                $userConfig = unserialize($backendUser['uc']);
+                $userConfig = unserialize($backendUser['uc'], ['allowed_classes' => false]);
                 if ($userConfig['startModule'] === 'help_aboutmodules'
                     || $userConfig['startModule'] === 'help_AboutmodulesAboutmodules'
                 ) {
@@ -71,7 +71,7 @@ class BackendUserStartModuleUpdate extends AbstractUpdate
         $statement = $queryBuilder->select('uid', 'uc')->from('be_users')->execute();
         while ($backendUser = $statement->fetch()) {
             if ($backendUser['uc'] !== null) {
-                $userConfig = unserialize($backendUser['uc']);
+                $userConfig = unserialize($backendUser['uc'], ['allowed_classes' => false]);
                 if ($userConfig['startModule'] === 'help_aboutmodules'
                     || $userConfig['startModule'] === 'help_AboutmodulesAboutmodules'
                 ) {
