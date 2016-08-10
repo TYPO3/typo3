@@ -412,7 +412,6 @@ class ExtendedTemplateService extends TemplateService
     public function ext_getObjTree($arr, $depth_in, $depthData, $parentType = '', $parentValue = '', $alphaSort = '0')
     {
         $HTML = '';
-        $a = 0;
         if ($alphaSort == '1') {
             ksort($arr);
         }
@@ -433,19 +432,15 @@ class ExtendedTemplateService extends TemplateService
         }
         ksort($keyArr_num);
         $keyArr = $keyArr_num + $keyArr_alpha;
-        $c = count($keyArr);
         if ($depth_in) {
             $depth_in = $depth_in . '.';
         }
         foreach ($keyArr as $key => $value) {
-            $a++;
             $depth = $depth_in . $key;
             // This excludes all constants starting with '_' from being shown.
             if ($this->bType !== 'const' || $depth[0] !== '_') {
                 $goto = substr(md5($depth), 0, 6);
                 $deeper = is_array($arr[$key . '.']) && ($this->tsbrowser_depthKeys[$depth] || $this->ext_expandAllNotes) ? 1 : 0;
-                $LN = $a == $c ? 'blank' : 'line';
-                $BTM = $a == $c ? 'bottom' : '';
                 $PM = is_array($arr[$key . '.']) && !$this->ext_noPMicons ? ($deeper ? 'minus' : 'plus') : 'join';
                 $HTML .= $depthData . '<li>';
                 if ($PM !== 'join') {
@@ -673,7 +668,6 @@ class ExtendedTemplateService extends TemplateService
         }
         $a = 0;
         $c = count($keyArr);
-        static $i = 0;
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         foreach ($keyArr as $key => $value) {
