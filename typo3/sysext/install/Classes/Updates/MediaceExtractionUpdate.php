@@ -14,7 +14,11 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Installs and downloads EXT:mediace if needed
@@ -37,7 +41,8 @@ class MediaceExtractionUpdate extends AbstractDownloadExtensionUpdate
     protected $extensionDetails = [
         'mediace' => [
             'title' => 'Media Content Element',
-            'description' => 'The media functionality from TYPO3 6.2 and earlier can be found here. This extension provides ContentObjects and Content Elements.',
+            'description' => 'The media functionality from TYPO3 6.2 and earlier can be found here.'
+                . ' This extension provides ContentObjects and Content Elements.',
             'versionString' => '7.6.3',
         ]
     ];
@@ -50,26 +55,33 @@ class MediaceExtractionUpdate extends AbstractDownloadExtensionUpdate
      */
     public function checkForUpdate(&$description)
     {
-        $updateNeeded = true;
-
+        $needsExecution = true;
         if ($this->isWizardDone() || ExtensionManagementUtility::isLoaded('mediace')) {
-            $updateNeeded = false;
+            $needsExecution = false;
         } else {
-            $amountOfMediaElements = $this->getDatabaseConnection()->exec_SELECTcountRows(
-                'uid',
-                'tt_content',
-                'CType IN (\'media\', \'multimedia\') AND deleted=0'
-            );
-
-            if ($amountOfMediaElements === 0) {
-                $updateNeeded = false;
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+            $queryBuilder->getRestrictions()->removeAll()
+                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $numberOfRecords = $queryBuilder->count('uid')
+                ->from('tt_content')
+                ->where($queryBuilder->expr()->in(
+                    'CType',
+                    $queryBuilder->createNamedParameter(['media', 'multimedia'], Connection::PARAM_STR_ARRAY)
+                ))
+                ->execute()
+                ->fetchColumn(0);
+            if ($numberOfRecords === 0) {
+                $needsExecution = false;
             }
         }
 
-        $description = 'The extension "mediace" (Media Content Element) was extracted into the TYPO3 Extension Repository. ' .
-            'This update checks if media content elements are used and downloads the TYPO3 Extension from the TER.';
+        if ($needsExecution) {
+            $description = 'The extension "mediace" (Media Content Element) was extracted into the'
+                . ' TYPO3 Extension Repository. This update checks if media content elements are used'
+                . ' and downloads the TYPO3 Extension from the TER.';
+        }
 
-        return $updateNeeded;
+        return $needsExecution;
     }
 
     /**
@@ -85,6 +97,6 @@ class MediaceExtractionUpdate extends AbstractDownloadExtensionUpdate
         if ($updateSuccessful) {
             $this->markWizardAsDone();
         }
-        return true;
+        return $updateSuccessful;
     }
 }
