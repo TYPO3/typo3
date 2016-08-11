@@ -17,7 +17,7 @@
  * automatic checks of coding guidelines
  * Install @fabpot's great php-cs-fixer tool via
  *
- *  $ composer global require fabpot/php-cs-fixer
+ *  $ composer global require friendsofphp/php-cs-fixer
  *
  * And then simply run
  *
