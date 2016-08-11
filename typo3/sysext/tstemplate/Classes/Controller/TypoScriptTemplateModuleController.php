@@ -483,8 +483,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             $previousPage['aHref'] = BackendUtility::getModuleUrl('web_ts', $urlParameters);
             $moduleContent['previousPage'] = $previousPage;
         }
-        $view = $this->getFluidTemplateObject('tstemplate', 'Main');
-        $view->assign('partialName', 'NoTemplate');
+        $view = $this->getFluidTemplateObject('tstemplate', 'NoTemplate');
         $view->assign('content', $moduleContent);
         return $view->render();
     }
@@ -674,8 +673,7 @@ page.10.value = HELLO WORLD!
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName($extensionName);
         $view->getRenderingContext()->setControllerAction($templateName);
-        // @TODO: not sure this should stay; this value should in any case be a *proper* extension name!
-        $view->getRequest()->setControllerExtensionName('web_ts');
+        $view->getRequest()->setControllerExtensionName('tstemplate');
         return $view;
     }
 
