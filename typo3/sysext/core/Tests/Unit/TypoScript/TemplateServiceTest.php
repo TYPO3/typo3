@@ -14,9 +14,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for \TYPO3\CMS\Core\TypoScript\TemplateService
@@ -78,6 +82,11 @@ class TemplateServiceTest extends UnitTestCase
      */
     public function extensionStaticFilesAreNotProcessedIfNotExplicitlyRequested()
     {
+        $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
+        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
+        $connectionPoolProphet->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+
         $identifier = $this->getUniqueId('test');
         $GLOBALS['TYPO3_LOADED_EXT'] = array(
             $identifier => array(
@@ -98,6 +107,11 @@ class TemplateServiceTest extends UnitTestCase
      */
     public function extensionStaticsAreProcessedIfExplicitlyRequested()
     {
+        $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
+        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
+        $connectionPoolProphet->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+
         $identifier = $this->getUniqueId('test');
         $GLOBALS['TYPO3_LOADED_EXT'] = array(
             $identifier => array(

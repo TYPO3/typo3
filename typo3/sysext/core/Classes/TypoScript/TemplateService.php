@@ -16,7 +16,11 @@ namespace TYPO3\CMS\Core\TypoScript;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\AbstractRestrictionContainer;
+use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -327,6 +331,12 @@ class TemplateService
     protected $processIncludesHasBeenRun = false;
 
     /**
+     * Contains the restrictions about deleted, and some frontend related topics
+     * @var AbstractRestrictionContainer
+     */
+    protected $queryBuilderRestrictions;
+
+    /**
      * @return bool
      */
     public function getProcessExtensionStatics()
@@ -360,17 +370,13 @@ class TemplateService
      */
     public function init()
     {
-        // $this->whereClause is used only to select templates from sys_template.
-        // $GLOBALS['SIM_ACCESS_TIME'] is used so that we're able to simulate a later time as a test...
-        $this->whereClause = 'AND deleted=0 ';
-        if (!$this->getTypoScriptFrontendController()->showHiddenRecords) {
-            $this->whereClause .= 'AND hidden=0 ';
-        }
-        if ($this->getTypoScriptFrontendController()->showHiddenRecords || $GLOBALS['SIM_ACCESS_TIME'] != $GLOBALS['ACCESS_TIME']) {
+        $this->initializeDatabaseQueryRestrictions();
+
+        if ($this->getTypoScriptFrontendController()->showHiddenRecords || $GLOBALS['SIM_ACCESS_TIME'] !== $GLOBALS['ACCESS_TIME']) {
             // Set the simulation flag, if simulation is detected!
             $this->simulationHiddenOrTime = 1;
         }
-        $this->whereClause .= 'AND (starttime<=' . $GLOBALS['SIM_ACCESS_TIME'] . ') AND (endtime=0 OR endtime>' . $GLOBALS['SIM_ACCESS_TIME'] . ')';
+
         // Sets the paths from where TypoScript resources are allowed to be used:
         $this->allowedPaths = array(
             $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
@@ -387,6 +393,28 @@ class TemplateService
                 // Once checked for path, but as this may run from typo3/mod/web/ts/ dir, that'll not work!! So the paths ar uncritically included here.
                 $this->allowedPaths[] = $p;
             }
+        }
+    }
+
+    /**
+     * $this->whereclause is kept for backwards compatibility
+     */
+    protected function initializeDatabaseQueryRestrictions()
+    {
+        // $this->whereClause is used only to select templates from sys_template.
+        // $GLOBALS['SIM_ACCESS_TIME'] is used so that we're able to simulate a later time as a test...
+        $this->whereClause = 'AND deleted=0 ';
+        if (!$this->getTypoScriptFrontendController()->showHiddenRecords) {
+            $this->whereClause .= 'AND hidden=0 ';
+        }
+        $this->whereClause .= 'AND (starttime<=' . $GLOBALS['SIM_ACCESS_TIME'] . ') AND (endtime=0 OR endtime>' . $GLOBALS['SIM_ACCESS_TIME'] . ')';
+
+        // set up the query builder restrictions
+        $this->queryBuilderRestrictions = GeneralUtility::makeInstance(DefaultRestrictionContainer::class);
+
+        if ($this->getTypoScriptFrontendController()->showHiddenRecords) {
+            $this->queryBuilderRestrictions
+                ->removeByType(HiddenRestriction::class);
         }
     }
 
@@ -575,34 +603,49 @@ class TemplateService
 
         reset($this->absoluteRootLine);
         $c = count($this->absoluteRootLine);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_template');
         for ($a = 0; $a < $c; $a++) {
             // If some template loaded before has set a template-id for the next level, then load this template first!
             if ($this->nextLevel) {
-                $res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'sys_template', 'uid=' . (int)$this->nextLevel . ' ' . $this->whereClause);
+                $queryBuilder->setRestrictions($this->queryBuilderRestrictions);
+                $queryResult = $queryBuilder
+                    ->select('*')
+                    ->from('sys_template')
+                    ->where($queryBuilder->expr()->eq('uid', (int)$this->nextLevel))
+                    ->execute();
                 $this->nextLevel = 0;
-                if ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+                if ($row = $queryResult->fetch()) {
                     $this->versionOL($row);
                     if (is_array($row)) {
                         $this->processTemplate($row, 'sys_' . $row['uid'], $this->absoluteRootLine[$a]['uid'], 'sys_' . $row['uid']);
                         $this->outermostRootlineIndexWithTemplate = $a;
                     }
                 }
-                $this->getDatabaseConnection()->sql_free_result($res);
             }
-            $addC = '';
+
+            $where = [
+                $queryBuilder->expr()->eq('pid', (int)$this->absoluteRootLine[$a]['uid'])
+            ];
             // If first loop AND there is set an alternative template uid, use that
-            if ($a == $c - 1 && $start_template_uid) {
-                $addC = ' AND uid=' . (int)$start_template_uid;
+            if ($a === $c - 1 && $start_template_uid) {
+                $where[] = $queryBuilder->expr()->eq('uid', (int)$start_template_uid);
             }
-            $res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'sys_template', 'pid=' . (int)$this->absoluteRootLine[$a]['uid'] . $addC . ' ' . $this->whereClause, '', 'root DESC, sorting', 1);
-            if ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+            $queryBuilder->setRestrictions($this->queryBuilderRestrictions);
+            $queryResult = $queryBuilder
+                ->select('*')
+                ->from('sys_template')
+                ->where(...$where)
+                ->orderBy('root', 'DESC')
+                ->addOrderBy('sorting')
+                ->setMaxResults(1)
+                ->execute();
+            if ($row = $queryResult->fetch()) {
                 $this->versionOL($row);
                 if (is_array($row)) {
                     $this->processTemplate($row, 'sys_' . $row['uid'], $this->absoluteRootLine[$a]['uid'], 'sys_' . $row['uid']);
                     $this->outermostRootlineIndexWithTemplate = $a;
                 }
             }
-            $this->getDatabaseConnection()->sql_free_result($res);
             $this->rootLine[] = $this->absoluteRootLine[$a];
         }
 
@@ -676,7 +719,20 @@ class TemplateService
                 }
             }
             if (!empty($basedOnIds)) {
-                $subTemplates = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'sys_template', 'uid IN (' . implode(',', $basedOnIds) . ') ' . $this->whereClause, '', '', '', 'uid');
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_template');
+                $queryBuilder->setRestrictions($this->queryBuilderRestrictions);
+                $queryResult = $queryBuilder
+                    ->select('*')
+                    ->from('sys_template')
+                    ->where(
+                        $queryBuilder->expr()->in('uid', $basedOnIds)
+                    )
+                    ->execute();
+                // make it an associative array with the UID as key
+                $subTemplates = [];
+                while ($row = $queryResult->fetch()) {
+                    $subTemplates[(int)$row['uid']] = $row;
+                }
                 // Traversing list again to ensure the sorting of the templates
                 foreach ($basedOnIds as $id) {
                     if (is_array($subTemplates[$id])) {
@@ -973,7 +1029,7 @@ class TemplateService
         $this->parserErrors['constants'] = $constants->errors;
         // Then flatten the structure from a multi-dim array to a single dim array with all constants listed as key/value pairs (ready for substitution)
         $this->flatSetup = array();
-        $this->flattenSetup($constants->setup, '', '');
+        $this->flattenSetup($constants->setup, '');
         // ***********************************************
         // Parse TypoScript Setup (here called "config")
         // ***********************************************
@@ -1633,8 +1689,19 @@ class TemplateService
         if ($id && $level < 20) {
             $nextLevelAcc = array();
             // Select and traverse current level pages:
-            $res = $this->getDatabaseConnection()->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol', 'pages', 'pid=' . (int)$id . ' AND deleted=0 AND doktype<>' . PageRepository::DOKTYPE_RECYCLER . ' AND doktype<>' . PageRepository::DOKTYPE_BE_USER_SECTION);
-            while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $queryResult = $queryBuilder
+                ->select('uid', 'pid', 'doktype', 'mount_pid', 'mount_pid_ol')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('pid', (int)$id),
+                    $queryBuilder->expr()->neq('doktype', PageRepository::DOKTYPE_RECYCLER),
+                    $queryBuilder->expr()->neq('doktype', PageRepository::DOKTYPE_BE_USER_SECTION)
+                )->execute();
+            while ($row = $queryResult->fetch()) {
                 // Find mount point if any:
                 $next_id = $row['uid'];
                 $next_MP_array = $MP_array;
@@ -1657,7 +1724,6 @@ class TemplateService
                     $nextLevelAcc[] = array($next_id, $next_MP_array);
                 }
             }
-            $this->getDatabaseConnection()->sql_free_result($res);
             // Call recursively, if any:
             foreach ($nextLevelAcc as $pSet) {
                 $this->initMPmap_create($pSet[0], $pSet[1], $level + 1);
@@ -1703,14 +1769,6 @@ class TemplateService
             array_unshift($this->hierarchyInfo, $defaultTemplateInfo);
             $this->isDefaultTypoScriptAdded = true;
         }
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
