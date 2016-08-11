@@ -697,16 +697,19 @@ class PageRepository
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
 
-        $result = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
+        $res = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->in($relationField, array_map('intval', $pageIds)),
                 QueryHelper::stripLogicalOperatorPrefix($this->where_hid_del),
                 QueryHelper::stripLogicalOperatorPrefix($this->where_groupAccess),
                 QueryHelper::stripLogicalOperatorPrefix($additionalWhereClause)
-            )
-            ->orderBy($sortField)
-            ->execute();
+            );
+
+        if (!empty($sortField)) {
+            $res->orderBy($sortField);
+        }
+        $result = $res->execute();
 
         while ($page = $result->fetch()) {
             $originalUid = $page['uid'];
