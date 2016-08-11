@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Migrate backend shortcut urls
  */
@@ -32,14 +35,16 @@ class MigrateShortcutUrlsAgainUpdate extends AbstractUpdate
      */
     public function checkForUpdate(&$description)
     {
-        $shortcutsCount = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'sys_be_shortcuts');
-        if ($this->isWizardDone() || $shortcutsCount === 0) {
+        if ($this->isWizardDone()) {
             return false;
         }
-
-        $description = 'Migrate old shortcut urls to the new module urls.';
-
-        return true;
+        $shortcutsCount = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_be_shortcuts')
+            ->count('uid', 'sys_be_shortcuts', []);
+        if ($shortcutsCount > 0) {
+            $description = 'Migrate old shortcut urls to the new module urls.';
+        }
+        return (bool)$shortcutsCount;
     }
 
     /**
@@ -51,40 +56,34 @@ class MigrateShortcutUrlsAgainUpdate extends AbstractUpdate
      */
     public function performUpdate(array &$databaseQueries, &$customMessages)
     {
-        $db = $this->getDatabaseConnection();
-        $shortcuts = $db->exec_SELECTgetRows('uid,url', 'sys_be_shortcuts', '1=1');
-        if (!empty($shortcuts)) {
-            foreach ($shortcuts as $shortcut) {
-                $decodedUrl = urldecode($shortcut['url']);
-                $encodedUrl = str_replace(
-                    array(
-                        '/typo3/sysext/cms/layout/db_layout.php?&',
-                        '/typo3/sysext/cms/layout/db_layout.php?',
-                        '/typo3/file_edit.php?&',
-                        // From 7.2 to 7.4
-                        'mod.php',
-                    ),
-                    array(
-                        '/typo3/index.php?&M=web_layout&',
-                        urlencode('/typo3/index.php?&M=web_layout&'),
-                        '/typo3/index.php?&M=file_edit&',
-                        // From 7.2 to 7.4
-                        'index.php',
-                    ),
-                    $decodedUrl
-                );
-
-                $db->exec_UPDATEquery(
-                    'sys_be_shortcuts',
-                    'uid=' . (int)$shortcut['uid'],
-                    array(
-                        'url' => $encodedUrl,
-                    )
-                );
-                $databaseQueries[] = $db->debug_lastBuiltQuery;
-            }
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_be_shortcuts');
+        $statement = $connection->select(['uid', 'url'], 'sys_be_shortcuts', []);
+        while ($shortcut = $statement->fetch()) {
+            $decodedUrl = urldecode($shortcut['url']);
+            $encodedUrl = str_replace(
+                [
+                    '/typo3/sysext/cms/layout/db_layout.php?&',
+                    '/typo3/sysext/cms/layout/db_layout.php?',
+                    '/typo3/file_edit.php?&',
+                    // From 7.2 to 7.4
+                    'mod.php',
+                ],
+                [
+                    '/typo3/index.php?&M=web_layout&',
+                    urlencode('/typo3/index.php?&M=web_layout&'),
+                    '/typo3/index.php?&M=file_edit&',
+                    // From 7.2 to 7.4
+                    'index.php',
+                ],
+                $decodedUrl
+            );
+            $queryBuilder = $connection->createQueryBuilder();
+            $queryBuilder->update('sys_be_shortcuts')
+                ->set('url', $queryBuilder->quote($encodedUrl), false)
+                ->where($queryBuilder->expr()->eq('uid', (int)$shortcut['uid']));
+            $databaseQueries[] = $queryBuilder->getSQL();
+            $queryBuilder->execute();
         }
-
         $this->markWizardAsDone();
         return true;
     }
