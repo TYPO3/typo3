@@ -337,7 +337,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         if ($statement instanceof Qom\Statement) {
             $rows = $this->getObjectDataByRawQuery($statement);
         } else {
-            $statementParts = $this->getStatementParts($query);
+            $statementParts = $this->queryParser->parseQuery($query);
             $rows = $this->getRowsFromDatabase($statementParts);
         }
 
@@ -442,7 +442,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             throw new \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException('Could not execute count on queries with a constraint of type TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Statement', 1256661045);
         }
 
-        $statementParts = $this->getStatementParts($query);
+        $statementParts = $this->queryParser->parseQuery($query);
 
         $fields = '*';
         if (isset($statementParts['keywords']['distinct'])) {
@@ -466,62 +466,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         }
 
         return (int)max(0, $count);
-    }
-
-    /**
-     * Build the query statement parts as SQL
-     *
-     * @param QueryInterface $query
-     * @return array
-     * @throws \RuntimeException
-     */
-    protected function getStatementParts($query)
-    {
-        list($_, $parameters) = $this->queryParser->preparseQuery($query);
-        $statementParts = $this->queryParser->parseQuery($query);
-
-        if (!$statementParts) {
-            throw new \RuntimeException('Your query could not be built.', 1394453197);
-        }
-
-        $this->queryParser->addDynamicQueryParts($query->getQuerySettings(), $statementParts);
-
-        // Limit and offset are not cached to allow caching of pagebrowser queries.
-        $statementParts['limit'] = ((int)$query->getLimit() ?: null);
-        $statementParts['offset'] = ((int)$query->getOffset() ?: null);
-
-        return $this->resolveParameterPlaceholders($statementParts, $parameters);
-    }
-
-    /**
-     * Replaces the parameters in the queryStructure with given values
-     *
-     * @param array $statementParts
-     * @param array $parameters
-     * @return array
-     */
-    protected function resolveParameterPlaceholders(array $statementParts, array $parameters)
-    {
-        $tableName = reset($statementParts['tables']) ?: 'foo';
-
-        foreach ($parameters as $parameterPlaceholder => $parameter) {
-            $parameter = $this->dataMapper->getPlainValue($parameter, null, array($this, 'quoteTextValueCallback'), array('tablename' => $tableName));
-            $statementParts['where'] = str_replace($parameterPlaceholder, $parameter, $statementParts['where']);
-        }
-
-        return $statementParts;
-    }
-
-    /**
-     * Will be called by the data mapper to quote string values.
-     *
-     * @param string $value The value to be quoted.
-     * @param array $parameters Additional parameters array currently containing the "tablename" key.
-     * @return string The quoted string.
-     */
-    public function quoteTextValueCallback($value, $parameters)
-    {
-        return $this->databaseHandle->fullQuoteStr($value, $parameters['tablename']);
     }
 
     /**

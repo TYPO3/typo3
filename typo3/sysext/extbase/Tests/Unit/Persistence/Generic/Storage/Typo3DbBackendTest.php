@@ -173,35 +173,6 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * @return array
-     */
-    public function resolveParameterPlaceholdersReplacesValuesDataProvider()
-    {
-        return array(
-            'string' => array('bar', '123', '123'),
-            'array' => array('bar', array(1,2,3), '1,2,3'),
-        );
-    }
-
-    /**
-     * @param $parameter
-     * @param $value
-     * @param $expected
-     * @test
-     * @dataProvider resolveParameterPlaceholdersReplacesValuesDataProvider
-     */
-    public function resolveParameterPlaceholdersReplacesValues($parameter, $value, $expected)
-    {
-        $mock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend::class, array('quoteTextValueCallback'));
-        $mock->expects($this->any())->method('quoteTextValueCallback')->will($this->returnArgument(0));
-        $mock->_set('dataMapper', self::$dataMapper);
-        $stmtParts = array('tables' => array('foo'), 'where' => $parameter);
-        $parameters = array($parameter => $value);
-        $result = $mock->_call('resolveParameterPlaceholders', $stmtParts, $parameters);
-        $this->assertSame($expected, $result['where']);
-    }
-
-    /**
      * @test
      * @return void
      */
@@ -210,11 +181,9 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $querySettingsProphecy = $this->prophesize(QuerySettingsInterface::class);
         $queryInterfaceProphecy = $this->prophesize(QueryInterface::class);
         $queryParserProphecy = $this->prophesize(Typo3DbQueryParser::class);
-        $queryParserProphecy->preparseQuery($queryInterfaceProphecy->reveal())->willReturn([123, []]);
         $queryParserProphecy->parseQuery($queryInterfaceProphecy->reveal())->willReturn(
-            ['tables' => ['tt_content']]
+            ['tables' => ['tt_content'], 'offset' => 10, 'limit' => null]
         );
-        $queryParserProphecy->addDynamicQueryParts(\Prophecy\Argument::cetera())->willReturn();
         $queryInterfaceProphecy->getQuerySettings()->willReturn($querySettingsProphecy->reveal());
         $queryInterfaceProphecy->getConstraint()->willReturn();
         $queryInterfaceProphecy->getLimit()->willReturn();
@@ -223,8 +192,8 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1465223252);
 
-        $typo3DbQueryParser = new Typo3DbBackend();
-        $typo3DbQueryParser->injectQueryParser($queryParserProphecy->reveal());
-        $typo3DbQueryParser->getObjectCountByQuery($queryInterfaceProphecy->reveal());
+        $typo3DbBackend = new Typo3DbBackend();
+        $typo3DbBackend->injectQueryParser($queryParserProphecy->reveal());
+        $typo3DbBackend->getObjectCountByQuery($queryInterfaceProphecy->reveal());
     }
 }

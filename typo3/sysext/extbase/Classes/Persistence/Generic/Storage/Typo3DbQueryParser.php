@@ -87,108 +87,6 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Preparses the query and returns the query's hash and the parameters
-     *
-     * @param QueryInterface $query The query
-     * @return array the hash and the parameters
-     */
-    public function preparseQuery(QueryInterface $query)
-    {
-        list($parameters, $operators) = $this->preparseComparison($query->getConstraint());
-        $hashPartials = array(
-            $query->getQuerySettings(),
-            $query->getSource(),
-            array_keys($parameters),
-            $operators,
-            $query->getOrderings(),
-        );
-        $hash = md5(serialize($hashPartials));
-
-        return array($hash, $parameters);
-    }
-
-    /**
-     * Walks through the qom's constraints and extracts the properties and values.
-     *
-     * In the qom the query structure and values are glued together. This walks through the
-     * qom and only extracts the parts necessary for generating the hash and filling the
-     * statement. It leaves out the actual statement generation, as it is the most time
-     * consuming.
-     *
-     * @param Qom\ConstraintInterface $comparison The constraint. Could be And-, Or-, Not- or ComparisonInterface
-     * @param string $qomPath current position of the child in the qom
-     * @return array Array of parameters and operators
-     * @throws \Exception
-     */
-    protected function preparseComparison($comparison, $qomPath = '')
-    {
-        $parameters = array();
-        $operators = array();
-        $objectsToParse = array();
-
-        $delimiter = '';
-        if ($comparison instanceof Qom\AndInterface) {
-            $delimiter = 'AND';
-            $objectsToParse = array($comparison->getConstraint1(), $comparison->getConstraint2());
-        } elseif ($comparison instanceof Qom\OrInterface) {
-            $delimiter = 'OR';
-            $objectsToParse = array($comparison->getConstraint1(), $comparison->getConstraint2());
-        } elseif ($comparison instanceof Qom\NotInterface) {
-            $delimiter = 'NOT';
-            $objectsToParse = array($comparison->getConstraint());
-        } elseif ($comparison instanceof Qom\ComparisonInterface) {
-            $operand1 = $comparison->getOperand1();
-            $parameterIdentifier = $this->normalizeParameterIdentifier($qomPath . $operand1->getPropertyName());
-            $comparison->setParameterIdentifier($parameterIdentifier);
-            $operator = $comparison->getOperator();
-            $operand2 = $comparison->getOperand2();
-            if ($operator === QueryInterface::OPERATOR_IN) {
-                $items = array();
-                foreach ($operand2 as $value) {
-                    $value = $this->dataMapper->getPlainValue($value);
-                    if ($value !== null) {
-                        $items[] = $value;
-                    }
-                }
-                $parameters[$parameterIdentifier] = $items;
-            } else {
-                $parameters[$parameterIdentifier] = $operand2;
-            }
-            $operators[] = $operator;
-        } elseif (!is_object($comparison)) {
-            $parameters = array(array(), $comparison);
-            return array($parameters, $operators);
-        } else {
-            throw new \Exception('Can not hash Query Component "' . get_class($comparison) . '".', 1392840462);
-        }
-
-        $childObjectIterator = 0;
-        foreach ($objectsToParse as $objectToParse) {
-            list($preparsedParameters, $preparsedOperators) = $this->preparseComparison($objectToParse, $qomPath . $delimiter . $childObjectIterator++);
-            if (!empty($preparsedParameters)) {
-                $parameters = array_merge($parameters, $preparsedParameters);
-            }
-            if (!empty($preparsedOperators)) {
-                $operators = array_merge($operators, $preparsedOperators);
-            }
-        }
-
-        return array($parameters, $operators);
-    }
-
-    /**
-     * normalizes the parameter's identifier
-     *
-     * @param string $identifier
-     * @return string
-     * @todo come on, clean up that method!
-     */
-    public function normalizeParameterIdentifier($identifier)
-    {
-        return ':' . preg_replace('/[^A-Za-z0-9]/', '', $identifier);
-    }
-
-    /**
      * Parses the query and returns the SQL statement parts.
      *
      * @param QueryInterface $query The query
@@ -221,30 +119,15 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
 
-        return $sql;
-    }
-
-    /**
-     * Add query parts that MUST NOT be cached.
-     * Call this function for any query
-     *
-     * @param QuerySettingsInterface $querySettings
-     * @param array $sql
-     * @throws \InvalidArgumentException
-     * @return void
-     */
-    public function addDynamicQueryParts(QuerySettingsInterface $querySettings, array &$sql)
-    {
-        if (!isset($sql['additionalWhereClause'])) {
-            throw new \InvalidArgumentException('Invalid statement given.', 1399512421);
-        }
         foreach ($sql['tableAliasMap'] as $tableAlias => $tableName) {
-            $statement = $this->getVisibilityConstraintStatement($querySettings, $tableName, $tableAlias);
+            $statement = $this->getVisibilityConstraintStatement($query->getQuerySettings(), $tableName, $tableAlias);
             if ($statement !== '') {
                 $statement = $this->addNullConditionToStatementIfRequired($sql, $statement, $tableAlias);
                 $sql['additionalWhereClause'][] = $statement;
             }
         }
+
+        return $sql;
     }
 
     /**
@@ -374,17 +257,14 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function parseComparison(Qom\ComparisonInterface $comparison, Qom\SourceInterface $source, array &$sql)
     {
-        $parameterIdentifier = $this->normalizeParameterIdentifier($comparison->getParameterIdentifier());
-
         $operator = $comparison->getOperator();
         $operand2 = $comparison->getOperand2();
         if ($operator === QueryInterface::OPERATOR_IN) {
             $hasValue = false;
             foreach ($operand2 as $value) {
-                $value = $this->dataMapper->getPlainValue($value);
-                if ($value !== null) {
-                    $parameters[] = $value;
+                if ($this->dataMapper->getPlainValue($value) !== null) {
                     $hasValue = true;
+                    break;
                 }
             }
             if ($hasValue === false) {
@@ -396,6 +276,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
             if ($operand2 === null) {
                 $sql['where'][] = '1<>1';
             } else {
+                $value = $this->dataMapper->getPlainValue($operand2);
                 if (!$source instanceof Qom\SelectorInterface) {
                     throw new \RuntimeException('Source is not of type "SelectorInterface"', 1395362539);
                 }
@@ -414,14 +295,14 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
                 if ($typeOfRelation === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
                     $relationTableName = $columnMap->getRelationTableName();
                     $additionalWhereForMatchFields = $this->getAdditionalMatchFieldsStatement($columnMap, $relationTableName, $relationTableName);
-                    $sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=' . $parameterIdentifier . $additionalWhereForMatchFields . ')';
+                    $sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=' . $this->databaseHandle->fullQuoteStr($value, $relationTableName) . $additionalWhereForMatchFields . ')';
                 } elseif ($typeOfRelation === ColumnMap::RELATION_HAS_MANY) {
                     $parentKeyFieldName = $columnMap->getParentKeyFieldName();
                     if (isset($parentKeyFieldName)) {
                         $childTableName = $columnMap->getChildTableName();
-                        $sql['where'][] = $tableName . '.uid=(SELECT ' . $childTableName . '.' . $parentKeyFieldName . ' FROM ' . $childTableName . ' WHERE ' . $childTableName . '.uid=' . $parameterIdentifier . ')';
+                        $sql['where'][] = $tableName . '.uid=(SELECT ' . $childTableName . '.' . $parentKeyFieldName . ' FROM ' . $childTableName . ' WHERE ' . $childTableName . '.uid=' . $this->databaseHandle->fullQuoteStr($value, $childTableName) . ')';
                     } else {
-                        $sql['where'][] = 'FIND_IN_SET(' . $parameterIdentifier . ', ' . $tableName . '.' . $columnName . ')';
+                        $sql['where'][] = 'FIND_IN_SET(' . $this->databaseHandle->fullQuoteStr($value, $tableName) . ', ' . $tableName . '.' . $columnName . ')';
                     }
                 } else {
                     throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException('Unsupported or non-existing property name "' . $propertyName . '" used in relation matching.', 1327065745);
@@ -442,16 +323,28 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function parseDynamicOperand(Qom\ComparisonInterface $comparison, Qom\SourceInterface $source, array &$sql)
     {
+        // workaround to find a suitable tablename
+        $tableName = reset($sql['tables']) ?: 'foo';
         $operator = $this->resolveOperator($comparison->getOperator());
         $operand = $comparison->getOperand1();
+        $operand2 = $comparison->getOperand2();
 
         $constraintSQL = $this->parseOperand($operand, $source, $sql) . ' ' . $operator . ' ';
-
-        $parameterIdentifier = $this->normalizeParameterIdentifier($comparison->getParameterIdentifier());
-        if ($operator === 'IN') {
-            $parameterIdentifier = '(' . $parameterIdentifier . ')';
+        if ($comparison->getOperator() === QueryInterface::OPERATOR_IN) {
+            $constraintSQL .= '(';
+            $values = [];
+            foreach ($operand2 as $value) {
+                $values[] = $this->databaseHandle->fullQuoteStr($this->dataMapper->getPlainValue($value), $tableName);
+            }
+            $constraintSQL .= implode(',', $values);
+            $constraintSQL .= ')';
+        } else {
+            if ($operand2 === null) {
+                $constraintSQL .= $this->dataMapper->getPlainValue($operand2);
+            } else {
+                $constraintSQL .= $this->databaseHandle->fullQuoteStr($this->dataMapper->getPlainValue($operand2), $tableName);
+            }
         }
-        $constraintSQL .= $parameterIdentifier;
 
         $sql['where'][] = $constraintSQL;
     }

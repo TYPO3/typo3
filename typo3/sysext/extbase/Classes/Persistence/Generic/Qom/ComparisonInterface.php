@@ -81,15 +81,4 @@ interface ComparisonInterface extends ConstraintInterface
      * @return StaticOperandInterface the operand; non-null
      */
     public function getOperand2();
-
-    /**
-     * @param string $parameterIdentifier
-     * @return void
-     */
-    public function setParameterIdentifier($parameterIdentifier);
-
-    /**
-     * @return string
-     */
-    public function getParameterIdentifier();
 }
