@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Utility\File;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
@@ -392,20 +394,22 @@ class ExtendedFileUtility extends BasicFileUtility
 
             return false;
         }
-        // @todo implement the recycler feature which has been removed from the original implementation
         // checks to delete the file
         if ($fileObject instanceof File) {
             // check if the file still has references
             // Exclude sys_file_metadata records as these are no use references
-            $databaseConnection = $this->getDatabaseConnection();
-            $table = 'sys_refindex';
-            $refIndexRecords = $databaseConnection->exec_SELECTgetRows(
-                '*',
-                $table,
-                'deleted=0 AND ref_table=' . $databaseConnection->fullQuoteStr('sys_file', $table)
-                . ' AND ref_uid=' . (int)$fileObject->getUid()
-                . ' AND tablename != ' . $databaseConnection->fullQuoteStr('sys_file_metadata', $table)
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $refIndexRecords = $queryBuilder
+                ->select('tablename', 'recuid', 'ref_uid')
+                ->from('sys_refindex')
+                ->where(
+                    $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('sys_file')),
+                    $queryBuilder->expr()->eq('ref_uid', (int)$fileObject->getUid()),
+                    $queryBuilder->expr()->neq('tablename', $queryBuilder->createNamedParameter('sys_file_metadata'))
+                )
+                ->execute()
+                ->fetchAll();
             $deleteFile = true;
             if (!empty($refIndexRecords)) {
                 $shortcutContent = array();
@@ -532,11 +536,17 @@ class ExtendedFileUtility extends BasicFileUtility
         foreach ($files as $file) {
             $fileUids[] = $file->getUid();
         }
-        $numberOfReferences = $this->getDatabaseConnection()->exec_SELECTcountRows(
-            '*',
-            'sys_refindex',
-            'deleted=0 AND ref_table="sys_file" AND ref_uid IN (' . implode(',', $fileUids) . ') AND tablename<>"sys_file_metadata"'
-        );
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $numberOfReferences = $queryBuilder
+            ->count('uid')
+            ->from('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('sys_file')),
+                $queryBuilder->expr()->in('ref_uid', $fileUids),
+                $queryBuilder->expr()->neq('tablename', $queryBuilder->createNamedParameter('sys_file_metadata'))
+            )->execute()->fetchColumn(0);
 
         $hasReferences = $numberOfReferences > 0;
         if ($hasReferences) {
@@ -563,11 +573,17 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     protected function transformFileReferenceToRecordReference(array $referenceRecord)
     {
-        $fileReference = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-            '*',
-            'sys_file_reference',
-            'uid=' . (int)$referenceRecord['recuid']
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder->getRestrictions()->removeAll();
+        $fileReference = $queryBuilder
+            ->select('recuid', 'uid_foreign', 'tablenames', 'fieldname', 'sorting_foreign')
+            ->from('sys_file_reference')
+            ->where(
+                $queryBuilder->expr()->eq('uid', (int)$referenceRecord['recuid'])
+            )
+            ->execute()
+            ->fetch();
+
         return array(
             'recuid' => $fileReference['uid_foreign'],
             'tablename' => $fileReference['tablenames'],
@@ -1177,16 +1193,6 @@ class ExtendedFileUtility extends BasicFileUtility
     protected function getIndexer(ResourceStorage $storage)
     {
         return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\Indexer::class, $storage);
-    }
-
-    /**
-     * Get database connection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
