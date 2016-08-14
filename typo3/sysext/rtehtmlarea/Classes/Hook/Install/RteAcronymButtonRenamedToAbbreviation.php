@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Rtehtmlarea\Hook\Install;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\DBALException;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\Updates\AbstractUpdate;
 
 /**
@@ -37,7 +41,7 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
     {
         $result = false;
 
-        $pages = $this->getPagesWithDeprecatedRteProperties($dbQueries, $customMessages);
+        $pages = $this->getPagesWithDeprecatedRteProperties($customMessages);
         $pagesCount = count($pages);
         $description = '<p>The RTE "acronym" button is deprecated and replaced by the "abbreviation" button since TYPO3 CMS 7.0.</p>' . LF . '<p>Page TSconfig currently includes the string "acronym" on <strong>' . strval($pagesCount) . '&nbsp;pages</strong>  (including deleted and hidden pages).</p>' . LF;
         if ($pagesCount) {
@@ -78,7 +82,7 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
     public function performUpdate(array &$dbQueries, &$customMessages)
     {
         $customMessages = '';
-        $pages = $this->getPagesWithDeprecatedRteProperties($dbQueries, $customMessages);
+        $pages = $this->getPagesWithDeprecatedRteProperties($customMessages);
         if (empty($customMessages)) {
             $pagesCount = count($pages);
             if ($pagesCount) {
@@ -103,26 +107,37 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
     /**
      * Gets the pages with deprecated RTE properties in TSconfig column
      *
-     * @param array $dbQueries Pointer where to insert all DB queries made, so they can be shown to the user if wanted
      * @param string $customMessages Pointer to output custom messages
      * @return array uid and inclusion string for the pages with deprecated RTE properties in TSconfig column
      */
-    protected function getPagesWithDeprecatedRteProperties(&$dbQueries, &$customMessages)
+    protected function getPagesWithDeprecatedRteProperties(&$customMessages)
     {
-        $db = $this->getDatabaseConnection();
-        $fields = 'uid, TSconfig';
-        $table = 'pages';
-        $where = 'TSconfig LIKE BINARY ' . $db->fullQuoteStr('%acronym%', 'pages');
-        $res = $db->exec_SELECTquery($fields, $table, $where);
-        $dbQueries[] = str_replace(LF, ' ', $db->debug_lastBuiltQuery);
-        if ($db->sql_error()) {
-            $customMessages = 'SQL-ERROR: ' . htmlspecialchars($db->sql_error());
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $isMySQL = StringUtility::beginsWith($queryBuilder->getConnection()->getServerVersion(), 'MySQL');
+        if ($isMySQL) {
+            $whereClause = $queryBuilder->expr()->comparison(
+                $queryBuilder->quoteIdentifier('TSconfig'),
+                'LIKE BINARY',
+                $queryBuilder->createNamedParameter('%acronym%')
+            );
+        } else {
+            $whereClause = $queryBuilder->expr()->like('TSconfig', $queryBuilder->createNamedParameter('%acronym%'));
         }
-        $pages = array();
-        while ($row = $db->sql_fetch_assoc($res)) {
-            $pages[] = $row;
+
+        try {
+            return $queryBuilder
+                ->select('uid', 'TSconfig')
+                ->from('pages')
+                ->where($whereClause)
+                ->execute()
+                ->fetchAll();
+        } catch (DBALException $e) {
+            $customMessages = 'SQL-ERROR: ' . htmlspecialchars($e->getPrevious()->getMessage());
         }
-        return $pages;
+
+        return [];
     }
 
     /**
@@ -135,7 +150,7 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
     {
         foreach ($pages as $index => $page) {
             $updatedPageTSConfig = str_replace('acronym', 'abbreviation', $page['TSconfig']);
-            if ($updatedPageTSConfig == $page['TSconfig']) {
+            if ($updatedPageTSConfig === $page['TSconfig']) {
                 unset($pages[$index]);
             } else {
                 $pages[$index]['TSconfig'] = $updatedPageTSConfig;
@@ -153,18 +168,17 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
      */
     protected function updatePages($pages, &$dbQueries, &$customMessages)
     {
-        $db = $this->getDatabaseConnection();
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         foreach ($pages as $page) {
-            $table = 'pages';
-            $where = 'uid =' . $page['uid'];
-            $field_values = array(
-                'TSconfig' => $page['TSconfig']
-            );
-            $db->exec_UPDATEquery($table, $where, $field_values);
-            $dbQueries[] = str_replace(LF, ' ', $db->debug_lastBuiltQuery);
-            if ($db->sql_error()) {
-                $customMessages .= 'SQL-ERROR: ' . htmlspecialchars($db->sql_error()) . LF . LF;
+            try {
+                $queryBuilder->update('pages')
+                    ->where($queryBuilder->expr()->eq('uid', (int)$page['uid']))
+                    ->set('TSconfig', $queryBuilder->quote($page['TSconfig']), false)
+                    ->execute();
+            } catch (DBALException $e) {
+                $customMessages .= 'SQL-ERROR: ' . htmlspecialchars($e->getPrevious()->getMessage()) . LF . LF;
             }
+            $dbQueries[] = str_replace(LF, ' ', $queryBuilder->getSQL());
         }
     }
 }
