@@ -51,6 +51,16 @@ class ActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Abstr
         ]);
 
         // there should be one relation in the live WS and one in the draft WS pointing to the file field.
-        $this->assertEquals(2, $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'sys_file_reference', 'uid_local = 20'));
+        $queryBuilder = $this->getConnectionPool()
+            ->getQueryBuilderForTable('sys_file_reference');
+        $queryBuilder->getRestrictions()->removeAll();
+        $referenceCount = $queryBuilder
+            ->count('uid')
+            ->from('sys_file_reference')
+            ->where($queryBuilder->expr()->eq('uid_local', 20))
+            ->execute()
+            ->fetchColumn(0);
+
+        $this->assertEquals(2, $referenceCount);
     }
 }

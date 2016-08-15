@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -35,7 +36,10 @@ class BackendUserHandler implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         $backendUser = $this->createBackendUser();
-        $backendUser->user = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'be_users', 'uid=' . $backendUserId);
+        $backendUser->user = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('be_users')
+            ->select(['*'], 'be_users', ['uid' => $backendUserId])
+            ->fetch();
         $backendUser->setTemporaryWorkspace($workspaceId);
         $frontendController->beUserLogin = true;
 
@@ -51,13 +55,5 @@ class BackendUserHandler implements \TYPO3\CMS\Core\SingletonInterface
         return GeneralUtility::makeInstance(
             \TYPO3\CMS\Backend\FrontendBackendUserAuthentication::class
         );
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

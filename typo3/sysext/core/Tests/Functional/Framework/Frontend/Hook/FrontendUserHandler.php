@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -32,20 +33,15 @@ class FrontendUserHandler implements \TYPO3\CMS\Core\SingletonInterface
         $frontendUserId = (int)GeneralUtility::_GP('frontendUserId');
         $frontendController->fe_user->checkPid = 0;
 
-        $frontendUser = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'fe_users', 'uid =' . $frontendUserId);
+        $frontendUser = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('fe_users')
+            ->select(['*'], 'fe_users', ['uid' => $frontendUserId])
+            ->fetch();
         if (is_array($frontendUser)) {
             $frontendController->loginUser = 1;
             $frontendController->fe_user->createUserSession($frontendUser);
             $frontendController->fe_user->user = $GLOBALS['TSFE']->fe_user->fetchUserSession();
             $frontendController->initUserGroups();
         }
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

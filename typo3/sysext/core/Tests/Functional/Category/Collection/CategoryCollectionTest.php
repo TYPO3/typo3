@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\Category\Collection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Types\Type;
+use TYPO3\CMS\Core\Category\Collection\CategoryCollection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -23,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\Category\Collection\CategoryCollection
+     * @var CategoryCollection
      */
     private $subject;
 
@@ -53,11 +55,6 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     private $numberOfRecords = 5;
 
     /**
-     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    private $database;
-
-    /**
      * Sets up this test suite.
      *
      * @return void
@@ -65,8 +62,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->database = $this->getDatabaseConnection();
-        $this->subject = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Category\Collection\CategoryCollection::class, $this->tableName);
+        $this->subject = GeneralUtility::makeInstance(CategoryCollection::class, $this->tableName);
         $this->collectionRecord = array(
             'uid' => 0,
             'title' => $this->getUniqueId('title'),
@@ -79,6 +75,16 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->populateDummyTable();
         $this->prepareTables();
         $this->makeRelationBetweenCategoryAndDummyTable();
+    }
+
+    /**
+     * Tears down this test suite.
+     */
+    protected function tearDown()
+    {
+        $this->purgePreparedTables();
+        $this->dropDummyTable();
+        parent::tearDown();
     }
 
     /**
@@ -103,8 +109,8 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function canCreateDummyCollection()
     {
-        $collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::create($this->collectionRecord);
-        $this->assertInstanceOf(\TYPO3\CMS\Core\Category\Collection\CategoryCollection::class, $collection);
+        $collection = CategoryCollection::create($this->collectionRecord);
+        $this->assertInstanceOf(CategoryCollection::class, $collection);
     }
 
     /**
@@ -114,8 +120,8 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function canCreateDummyCollectionAndFillItems()
     {
-        $collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::create($this->collectionRecord, true);
-        $this->assertInstanceOf(\TYPO3\CMS\Core\Category\Collection\CategoryCollection::class, $collection);
+        $collection = CategoryCollection::create($this->collectionRecord, true);
+        $this->assertInstanceOf(CategoryCollection::class, $collection);
     }
 
     /**
@@ -125,7 +131,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function getCollectedRecordsReturnsEmptyRecordSet()
     {
-        $method = new \ReflectionMethod(\TYPO3\CMS\Core\Category\Collection\CategoryCollection::class, 'getCollectedRecords');
+        $method = new \ReflectionMethod(CategoryCollection::class, 'getCollectedRecords');
         $method->setAccessible(true);
         $records = $method->invoke($this->subject);
         $this->assertInternalType('array', $records);
@@ -139,7 +145,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function isStorageTableNameEqualsToSysCategory()
     {
-        $this->assertEquals('sys_category', \TYPO3\CMS\Core\Category\Collection\CategoryCollection::getStorageTableName());
+        $this->assertEquals('sys_category', CategoryCollection::getStorageTableName());
     }
 
     /**
@@ -149,7 +155,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function isStorageItemsFieldEqualsToItems()
     {
-        $this->assertEquals('items', \TYPO3\CMS\Core\Category\Collection\CategoryCollection::getStorageItemsField());
+        $this->assertEquals('items', CategoryCollection::getStorageItemsField());
     }
 
     /**
@@ -158,12 +164,20 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function canLoadADummyCollectionFromDatabase()
     {
-        /** @var $collection \TYPO3\CMS\Core\Category\Collection\CategoryCollection */
-        $collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::load($this->categoryUid, true, $this->tableName);
+        /** @var $collection CategoryCollection */
+        $collection = CategoryCollection::load($this->categoryUid, true, $this->tableName);
         // Check the number of record
         $this->assertEquals($this->numberOfRecords, $collection->count());
         // Check that the first record is the one expected
-        $record = $this->database->exec_SELECTgetSingleRow('*', $this->tableName, 'uid=1');
+        $queryBuilder = $this->getConnectionPool()
+            ->getQueryBuilderForTable($this->tableName);
+        $queryBuilder->getRestrictions()->removeAll();
+        $statement = $queryBuilder
+            ->select('*')
+            ->from($this->tableName)
+            ->where($queryBuilder->expr()->eq('uid', 1))
+            ->execute();
+        $record = $statement->fetch();
         $collection->rewind();
         $this->assertEquals($record, $collection->current());
         // Add a new record
@@ -184,7 +198,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function canLoadADummyCollectionFromDatabaseAndAddRecord()
     {
-        $collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::load($this->categoryUid, true, $this->tableName);
+        $collection = CategoryCollection::load($this->categoryUid, true, $this->tableName);
         // Add a new record
         $fakeRecord = array(
             'uid' => $this->numberOfRecords + 1,
@@ -203,8 +217,8 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function canLoadADummyCollectionWithoutContentFromDatabase()
     {
-        /** @var $collection \TYPO3\CMS\Core\Category\Collection\CategoryCollection */
-        $collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::load($this->categoryUid, false, $this->tableName);
+        /** @var $collection CategoryCollection */
+        $collection = CategoryCollection::load($this->categoryUid, false, $this->tableName);
         // Check the number of record
         $this->assertEquals(0, $collection->count());
     }
@@ -219,13 +233,11 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $fakeName = array(
             'tablenames' => $this->getUniqueId('name')
         );
-        $this->database->exec_UPDATEquery(
-            'sys_category_record_mm',
-            'uid_foreign = 1',
-            $fakeName
-        );
+        $this->getConnectionPool()
+            ->getConnectionForTable('sys_category_record_mm')
+            ->update('sys_category_record_mm', $fakeName, ['uid_foreign' => 1]);
         // Check the number of records
-        $collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::load($this->categoryUid, true, $this->tableName);
+        $collection = CategoryCollection::load($this->categoryUid, true, $this->tableName);
         $this->assertEquals($this->numberOfRecords - 1, $collection->count());
     }
 
@@ -243,10 +255,9 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             $values = array(
                 'title' => $this->getUniqueId('title')
             );
-            (new ConnectionPool())->getConnectionForTable($this->tableName)->insert(
-                $this->tableName,
-                $values
-            );
+            $this->getConnectionPool()
+                ->getConnectionForTable($this->tableName)
+                ->insert($this->tableName, $values);
         }
     }
 
@@ -264,10 +275,9 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'tablenames' => $this->tableName,
                 'fieldname' => 'categories'
             );
-            (new ConnectionPool())->getConnectionForTable('sys_category_record_mm')->insert(
-                'sys_category_record_mm',
-                $values
-            );
+            $this->getConnectionPool()
+                ->getConnectionForTable('sys_category_record_mm')
+                ->insert('sys_category_record_mm', $values);
         }
     }
 
@@ -278,14 +288,23 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     private function createDummyTable()
     {
-        $sql = 'CREATE TABLE ' . $this->tableName . ' (' . LF . TAB .
-            'uid int(11) auto_increment,' . LF . TAB .
-            'pid int(11) unsigned DEFAULT \'0\' NOT NULL,' . LF . TAB .
-            'title tinytext,' . LF . TAB .
-            'tcategories int(11) unsigned DEFAULT \'0\' NOT NULL,' . LF . TAB .
-            'sys_category_is_dummy_record int(11) unsigned DEFAULT \'0\' NOT NULL,' . LF . LF . TAB .
-            'PRIMARY KEY (uid)' . LF . ');';
-        $this->database->sql_query($sql);
+        $connection = $this->getConnectionPool()
+            ->getConnectionForTable($this->tableName);
+        $currentSchema = $connection->getSchemaManager()->createSchema();
+        $targetSchema = clone $currentSchema;
+
+        $table = $targetSchema->createTable($this->tableName);
+        $table->addColumn('uid', Type::INTEGER, ['length' => 11, 'unsigned' => true, 'autoincrement' => true]);
+        $table->addColumn('pid', Type::INTEGER, ['length' => 11, 'notnull' => true, 'default' => 0]);
+        $table->addColumn('title', Type::STRING);
+        $table->addColumn('tcategories', Type::INTEGER, ['length' => 11, 'unsigned' => true, 'notnull' => true, 'default' => 0]);
+        $table->addColumn('sys_category_is_dummy_record', Type::INTEGER, ['length' => 11, 'unsigned' => true, 'notnull' => true, 'default' => 0]);
+        $table->setPrimaryKey(['uid']);
+
+        $queries = $currentSchema->getMigrateToSql($targetSchema, $connection->getDatabasePlatform());
+        foreach ($queries as $query) {
+            $connection->query($query);
+        }
     }
 
     /**
@@ -295,8 +314,17 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     private function dropDummyTable()
     {
-        $sql = 'DROP TABLE ' . $this->tableName . ';';
-        $this->database->sql_query($sql);
+        $connection = $this->getConnectionPool()
+            ->getConnectionForTable($this->tableName);
+        $currentSchema = $connection->getSchemaManager()->createSchema();
+        $targetSchema = clone $currentSchema;
+
+        $targetSchema->dropTable($this->tableName);
+
+        $queries = $currentSchema->getMigrateToSql($targetSchema, $connection->getDatabasePlatform());
+        foreach ($queries as $query) {
+            $connection->query($query);
+        }
     }
 
     /**
@@ -306,22 +334,55 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     private function prepareTables()
     {
-        $sql = 'ALTER TABLE %s ADD is_dummy_record tinyint(1) unsigned DEFAULT \'0\' NOT NULL';
+        $connection = $this->getConnectionPool()
+            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $currentSchema = $connection->getSchemaManager()->createSchema();
+        $targetSchema = clone $currentSchema;
+
+        $columnOptions = ['length' => 1, 'unsigned' => true, 'notnull' => true, 'default' => 0];
         foreach ($this->tables as $table) {
-            $_sql = sprintf($sql, $table);
-            $this->database->sql_query($_sql);
+            $targetSchema
+                ->getTable($table)
+                ->addColumn('is_dummy_record', Type::SMALLINT, $columnOptions);
         }
+
+        $queries = $currentSchema->getMigrateToSql($targetSchema, $connection->getDatabasePlatform());
+        foreach ($queries as $query) {
+            $connection->query($query);
+        }
+
         $values = array(
             'title' => $this->getUniqueId('title'),
             'l10n_diffsource' => '',
             'description' => '',
             'is_dummy_record' => 1
         );
-        $connection = (new ConnectionPool())->getConnectionForTable('sys_category');
-        $connection->insert(
-            'sys_category',
-            $values
-        );
+
+        $connection->insert('sys_category', $values);
         $this->categoryUid = $connection->lastInsertId();
+    }
+
+    /**
+     * Drops previously added dummy columns from core tables.
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @see prepareTables()
+     */
+    private function purgePreparedTables()
+    {
+        $connection = $this->getConnectionPool()
+            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $currentSchema = $connection->getSchemaManager()->createSchema();
+        $targetSchema = clone $currentSchema;
+
+        foreach ($this->tables as $table) {
+            $targetSchema->getTable($table)->dropColumn('is_dummy_record');
+        }
+
+        $queries = $currentSchema->getMigrateToSql($targetSchema, $connection->getDatabasePlatform());
+        foreach ($queries as $query) {
+            $connection->query($query);
+        }
     }
 }

@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -436,12 +438,21 @@ class ActionService
         $versionedId = null;
         $liveUid = (int)$liveUid;
         $workspaceId = (int)$this->getBackendUser()->workspace;
-        $row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-            'uid',
-            $tableName,
-            'pid=-1 AND t3ver_oid=' . $liveUid . ' AND t3ver_wsid=' . $workspaceId .
-            ($useDeleteClause ? \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableName) : '')
-        );
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()->removeAll();
+        $statement = $queryBuilder
+            ->select('uid')
+            ->from($tableName)
+            ->where(
+                $queryBuilder->expr()->eq('pid', -1),
+                $queryBuilder->expr()->eq('t3ver_oid', $liveUid),
+                $queryBuilder->expr()->eq('t3ver_wsid', $workspaceId)
+            )
+            ->execute();
+
+        $row = $statement->fetch();
         if (!empty($row['uid'])) {
             $versionedId = (int)$row['uid'];
         }
@@ -453,7 +464,7 @@ class ActionService
      */
     protected function createDataHandler()
     {
-        $this->dataHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(DataHandler::class);
+        $this->dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $backendUser = $this->getBackendUser();
         if (isset($backendUser->uc['copyLevels'])) {
             $this->dataHandler->copyTree = $backendUser->uc['copyLevels'];
@@ -466,7 +477,7 @@ class ActionService
      */
     protected function getWorkspaceService()
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        return GeneralUtility::makeInstance(
             \TYPO3\CMS\Workspaces\Service\WorkspaceService::class
         );
     }
@@ -477,13 +488,5 @@ class ActionService
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
