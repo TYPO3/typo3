@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -369,7 +368,7 @@ class SetupModuleController extends AbstractModule
             BackendUtility::setUpdateSignal('updatePageTree');
         }
         // Start page:
-        $this->moduleTemplate->loadJavascriptLib(ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/JavaScript/md5.js');
+        $this->moduleTemplate->getPageRenderer()->addJsFile('EXT:backend/Resources/Public/JavaScript/md5.js');
         // Use a wrapper div
         $this->content .= '<div id="user-setup-wrapper">';
         // Load available backend modules

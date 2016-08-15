@@ -113,18 +113,17 @@ class BackendController
         $this->pageRenderer->addJsInlineCode('consoleOverrideWithDebugPanel', '//already done', false);
         $this->pageRenderer->addExtDirectCode();
         // Add default BE javascript
-        $backendRelPath = ExtensionManagementUtility::extRelPath('backend');
         $this->jsFiles = [
             'locallang' => $this->getLocalLangFileName(),
-            'md5' => $backendRelPath . 'Resources/Public/JavaScript/md5.js',
-            'modulemenu' => $backendRelPath . 'Resources/Public/JavaScript/modulemenu.js',
-            'evalfield' => $backendRelPath . 'Resources/Public/JavaScript/jsfunc.evalfield.js',
-            'notifications' => $backendRelPath . 'Resources/Public/JavaScript/notifications.js',
-            'backend' => $backendRelPath . 'Resources/Public/JavaScript/backend.js',
-            'viewport' => $backendRelPath . 'Resources/Public/JavaScript/extjs/viewport.js',
-            'iframepanel' => $backendRelPath . 'Resources/Public/JavaScript/iframepanel.js',
-            'backendcontentiframe' => $backendRelPath . 'Resources/Public/JavaScript/extjs/backendcontentiframe.js',
-            'viewportConfiguration' => $backendRelPath . 'Resources/Public/JavaScript/extjs/viewportConfiguration.js',
+            'md5' => 'EXT:backend/Resources/Public/JavaScript/md5.js',
+            'modulemenu' => 'EXT:backend/Resources/Public/JavaScript/modulemenu.js',
+            'evalfield' => 'EXT:backend/Resources/Public/JavaScript/jsfunc.evalfield.js',
+            'notifications' => 'EXT:backend/Resources/Public/JavaScript/notifications.js',
+            'backend' => 'EXT:backend/Resources/Public/JavaScript/backend.js',
+            'viewport' => 'EXT:backend/Resources/Public/JavaScript/extjs/viewport.js',
+            'iframepanel' => 'EXT:backend/Resources/Public/JavaScript/iframepanel.js',
+            'backendcontentiframe' => 'EXT:backend/Resources/Public/JavaScript/extjs/backendcontentiframe.js',
+            'viewportConfiguration' => 'EXT:backend/Resources/Public/JavaScript/extjs/viewportConfiguration.js',
         ];
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LoginRefresh', 'function(LoginRefresh) {
 			LoginRefresh.setLoginFramesetUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('login_frameset')) . ');

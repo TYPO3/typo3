@@ -2140,7 +2140,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             $this->extOnReadyCode = [];
             // Include TYPO3.l10n object
             if (TYPO3_MODE === 'BE') {
-                $out .= '<script src="' . $this->processJsFile(ExtensionManagementUtility::extRelPath('lang') . 'Resources/Public/JavaScript/Typo3Lang.js') . '" type="text/javascript" charset="utf-8"></script>' . LF;
+                $out .= '<script src="' . $this->processJsFile('EXT:lang/Resources/Public/JavaScript/Typo3Lang.js') . '" type="text/javascript" charset="utf-8"></script>' . LF;
             }
             if ($this->extJScss) {
                 if (isset($GLOBALS['TBE_STYLES']['extJS']['all'])) {
@@ -2276,8 +2276,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $cssFiles = '';
         if (!empty($this->cssLibs)) {
             foreach ($this->cssLibs as $file => $properties) {
-                $file = GeneralUtility::resolveBackPath($file);
-                $file = GeneralUtility::createVersionNumberedFilename($file);
+                $file = $this->getStreamlinedFileName($file);
                 $tag = '<link rel="' . htmlspecialchars($properties['rel'])
                     . '" type="text/css" href="' . htmlspecialchars($file)
                     . '" media="' . htmlspecialchars($properties['media']) . '"'
@@ -2308,8 +2307,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $cssFiles = '';
         if (!empty($this->cssFiles)) {
             foreach ($this->cssFiles as $file => $properties) {
-                $file = GeneralUtility::resolveBackPath($file);
-                $file = GeneralUtility::createVersionNumberedFilename($file);
+                $file = $this->getStreamlinedFileName($file);
                 $tag = '<link rel="' . htmlspecialchars($properties['rel'])
                     . '" type="text/css" href="' . htmlspecialchars($file)
                     . '" media="' . htmlspecialchars($properties['media']) . '"'
@@ -2363,8 +2361,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $jsFooterLibs = '';
         if (!empty($this->jsLibs)) {
             foreach ($this->jsLibs as $properties) {
-                $properties['file'] = GeneralUtility::resolveBackPath($properties['file']);
-                $properties['file'] = GeneralUtility::createVersionNumberedFilename($properties['file']);
+                $properties['file'] = $this->getStreamlinedFileName($properties['file']);
                 $async = ($properties['async']) ? ' async="async"' : '';
                 $integrity = ($properties['integrity']) ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
                 $tag = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . htmlspecialchars($properties['type']) . '"' . $async . $integrity . '></script>';
@@ -2406,8 +2403,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $jsFooterFiles = '';
         if (!empty($this->jsFiles)) {
             foreach ($this->jsFiles as $file => $properties) {
-                $file = GeneralUtility::resolveBackPath($file);
-                $file = GeneralUtility::createVersionNumberedFilename($file);
+                $file = $this->getStreamlinedFileName($file);
                 $async = ($properties['async']) ? ' async="async"' : '';
                 $integrity = ($properties['integrity']) ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
                 $tag = '<script src="' . htmlspecialchars($file) . '" type="' . htmlspecialchars($properties['type']) . '"' . $async . $integrity . '></script>';
@@ -2725,13 +2721,42 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function processJsFile($filename)
     {
+        $filename = $this->getStreamlinedFileName($filename, false);
         if ($this->compressJavascript) {
-            return $this->getCompressor()->compressJsFile($filename);
+            $filename = $this->getCompressor()->compressJsFile($filename);
         } elseif (TYPO3_MODE === 'FE') {
-            return GeneralUtility::createVersionNumberedFilename($filename);
-        } else {
-            return $filename;
+            $filename = GeneralUtility::createVersionNumberedFilename($filename);
         }
+        return PathUtility::getAbsoluteWebPath($filename);
+    }
+
+    /**
+     * This function acts as a wrapper to allow relative and paths starting with EXT: to be dealt with
+     * in this very case to always return the absolute web path to be included directly before output.
+     *
+     * This is mainly added so the EXT: syntax can be resolved for PageRenderer in one central place,
+     * and hopefully removed in the future by one standard API call.
+     *
+     * @param string $file the filename to process
+     * @param bool $prepareForOutput whether the file should be prepared as version numbered file and prefixed as absolute webpath
+     * @return string
+     * @internal
+     */
+    protected function getStreamlinedFileName($file, $prepareForOutput = true)
+    {
+        if (substr($file, 0, 4) === 'EXT:') {
+            $file = GeneralUtility::getFileAbsFileName($file);
+            // as the path is now absolute, make it "relative" to the current script to stay compatible
+            $file = PathUtility::getRelativePathTo($file);
+            $file = rtrim($file, '/');
+        } else {
+            $file = GeneralUtility::resolveBackPath($file);
+        }
+        if ($prepareForOutput) {
+            $file = GeneralUtility::createVersionNumberedFilename($file);
+            $file = PathUtility::getAbsoluteWebPath($file);
+        }
+        return $file;
     }
 
     /**

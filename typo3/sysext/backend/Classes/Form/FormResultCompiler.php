@@ -205,12 +205,11 @@ class FormResultCompiler
     protected function JSbottom($formname = 'forms[0]')
     {
         $languageService = $this->getLanguageService();
-        $jsFile = [];
+        $pageRenderer = $this->getPageRenderer();
 
         // @todo: this is messy here - "additional hidden fields" should be handled elsewhere
         $html = implode(LF, $this->hiddenFieldAccum);
-        $backendRelPath = ExtensionManagementUtility::extRelPath('backend');
-        $this->loadJavascriptLib($backendRelPath . 'Resources/Public/JavaScript/md5.js');
+        $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/md5.js');
         // load the main module for FormEngine with all important JS functions
         $this->requireJsModules['TYPO3/CMS/Backend/FormEngine'] = 'function(FormEngine) {
 			FormEngine.setBrowserUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser')) . ');
@@ -220,7 +219,6 @@ class FormResultCompiler
 			FormEngineValidation.registerReady();
 		}';
 
-        $pageRenderer = $this->getPageRenderer();
         foreach ($this->requireJsModules as $moduleName => $callbacks) {
             if (!is_array($callbacks)) {
                 $callbacks = [$callbacks];
@@ -231,7 +229,7 @@ class FormResultCompiler
         }
         $pageRenderer->loadJquery();
         $pageRenderer->loadExtJS();
-        $pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/notifications.js');
+        $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/notifications.js');
         $beUserAuth = $this->getBackendUserAuthentication();
 
         // define the window size of the element browser etc.
@@ -268,7 +266,7 @@ class FormResultCompiler
         ];
         $pageRenderer->addInlineSettingArray('Popup', $popupSettings);
 
-        $this->loadJavascriptLib($backendRelPath . 'Resources/Public/JavaScript/jsfunc.tbe_editor.js');
+        $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ValueSlider');
         // Needed for FormEngine manipulation (date picker)
         $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? ['MM-DD-YYYY', 'HH:mm MM-DD-YYYY'] : ['DD-MM-YYYY', 'HH:mm DD-MM-YYYY']);
@@ -284,15 +282,12 @@ class FormResultCompiler
         }
         // Load codemirror for T3Editor
         if (ExtensionManagementUtility::isLoaded('t3editor')) {
-            $this->loadJavascriptLib(ExtensionManagementUtility::extRelPath('t3editor') . 'Resources/Public/JavaScript/Contrib/codemirror/js/codemirror.js');
+            $pageRenderer->addJsFile('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/js/codemirror.js');
         }
         // We want to load jQuery-ui inside our js. Enable this using requirejs.
-        $this->loadJavascriptLib($backendRelPath . 'Resources/Public/JavaScript/jsfunc.inline.js');
+        $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.inline.js');
         $out = '
 		inline.setNoTitleString(' . GeneralUtility::quoteJSvalue(BackendUtility::getNoRecordTitle(true)) . ');
-		';
-
-        $out .= '
 		TBE_EDITOR.formname = "' . $formname . '";
 		TBE_EDITOR.formnameUENC = "' . rawurlencode($formname) . '";
 		TBE_EDITOR.isPalettedoc = null;
@@ -324,23 +319,7 @@ class FormResultCompiler
         }
         $out .= LF . implode(LF, $this->additionalJS_post) . LF . $this->extJSCODE;
 
-        $spacer = LF . TAB;
-        $out = $html . $spacer . implode($spacer, $jsFile) . GeneralUtility::wrapJS($out);
-
-        return $out;
-    }
-
-    /**
-     * Includes a javascript library that exists in the core /typo3/ directory. The
-     * backpath is automatically applied.
-     *
-     * @param string $lib Library name. Call it with the full path like "sysext/core/Resources/Public/JavaScript/QueryGenerator.js" to load it
-     * @return void
-     */
-    protected function loadJavascriptLib($lib)
-    {
-        $pageRenderer = $this->getPageRenderer();
-        $pageRenderer->addJsFile($lib);
+        return $html . LF . TAB . GeneralUtility::wrapJS($out);
     }
 
     /**

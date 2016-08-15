@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 
@@ -253,7 +252,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
             $this->isAccessibleForCurrentUser = true;
         }
 
-        $this->doc->addStyleSheet('module', ExtensionManagementUtility::extRelPath('linkvalidator') . 'Resources/Public/Css/linkvalidator.css');
+        $this->getPageRenderer()->addCssFile('EXT:linkvalidator/Resources/Public/Css/linkvalidator.css', 'stylesheet', 'screen');
         $this->getPageRenderer()->loadJquery();
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Linkvalidator/Linkvalidator');
 

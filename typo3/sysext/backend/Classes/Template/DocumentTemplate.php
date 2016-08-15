@@ -615,7 +615,7 @@ function jumpToUrl(URL) {
         // add docstyles
         $this->docStyle();
         if ($this->extDirectStateProvider) {
-            $this->pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/JavaScript/ExtDirect.StateProvider.js');
+            $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/ExtDirect.StateProvider.js');
         }
         $this->pageRenderer->addHeaderData($this->JScode);
         foreach ($this->JScodeArray as $name => $code) {
@@ -631,7 +631,7 @@ function jumpToUrl(URL) {
         // Note: please do not reference "bootstrap" outside of the TYPO3 Core (not in your own extensions)
         // as this is preliminary as long as Twitter bootstrap does not support AMD modules
         // this logic will be changed once Twitter bootstrap 4 is included
-        $this->pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('core') . 'Resources/Public/JavaScript/Contrib/bootstrap/bootstrap.js');
+        $this->pageRenderer->addJsFile('EXT:core/Resources/Public/JavaScript/Contrib/bootstrap/bootstrap.js');
 
         // hook for additional headerData
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preHeaderRenderHook'])) {

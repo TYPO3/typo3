@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Form\View\Wizard\Element;
  */
 
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Service\TypoScriptService;
@@ -157,18 +156,11 @@ class FormWizardElement extends AbstractFormElement
     }
 
     /**
-     * @see \TYPO3\CMS\Form\View\Wizard\WizardView::loadCss
+     * Load the wizards css
      */
     protected function resultAddWizardCss()
     {
-        $cssFiles = [
-            'form.css'
-        ];
-        $baseUrl = ExtensionManagementUtility::extRelPath('form') . 'Resources/Public/Css/';
-        // Load the wizards css
-        foreach ($cssFiles as $cssFile) {
-            $this->resultArray['stylesheetFiles'][] = $baseUrl . $cssFile;
-        }
+        $this->resultArray['stylesheetFiles'][] = 'EXT:form/Resources/Public/Css/form.css';
     }
 
     /**

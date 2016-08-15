@@ -21,7 +21,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Taskcenter\TaskInterface;
@@ -316,14 +315,9 @@ class TaskModuleController extends BaseScriptClass
                 // Check for custom icon
                 if (!empty($item['icon'])) {
                     if (strpos($item['icon'], '<img ') === false) {
-                        $absIconPath = GeneralUtility::getFileAbsFileName($item['icon']);
-                        // If the file indeed exists, assemble relative path to it
-                        if (file_exists($absIconPath)) {
-                            $icon = '../' . str_replace(PATH_site, '', $absIconPath);
-                            $icon = '<img src="' . $icon . '" title="' . $title . '" alt="' . $title . '" />';
-                        }
-                        if (@is_file($icon)) {
-                            $icon = '<img src="' . PathUtility::getAbsoluteWebPath($icon) . '" width="16" height="16" title="' . $title . '" alt="' . $title . '" />';
+                        $iconFile = GeneralUtility::getFileAbsFileName($item['icon']);
+                        if (@is_file($iconFile)) {
+                            $icon = '<img src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($iconFile)) . '" width="16" height="16" title="' . $title . '" alt="' . $title . '" />';
                         }
                     } else {
                         $icon = $item['icon'];
@@ -387,7 +381,7 @@ class TaskModuleController extends BaseScriptClass
     {
         $content = '';
         $tasks = [];
-        $icon = ExtensionManagementUtility::extRelPath('taskcenter') . 'Resources/Public/Icons/module-taskcenter.svg';
+        $defaultIcon = 'EXT:taskcenter/Resources/Public/Icons/module-taskcenter.svg';
         // Render the tasks only if there are any available
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']) && !empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'] as $extKey => $extensionReports) {
@@ -398,10 +392,7 @@ class TaskModuleController extends BaseScriptClass
                     $link = BackendUtility::getModuleUrl('user_task') . '&SET[function]=' . $extKey . '.' . $taskClass;
                     $taskTitle = $this->getLanguageService()->sL($task['title']);
                     $taskDescriptionHtml = '';
-                    // Check for custom icon
-                    if (!empty($task['icon'])) {
-                        $icon = GeneralUtility::getFileAbsFileName($task['icon']);
-                    }
+
                     if (class_exists($taskClass)) {
                         $taskInstance = GeneralUtility::makeInstance($taskClass, $this);
                         if ($taskInstance instanceof TaskInterface) {
@@ -414,7 +405,7 @@ class TaskModuleController extends BaseScriptClass
                         'title' => $taskTitle,
                         'descriptionHtml' => $taskDescriptionHtml,
                         'description' => $this->getLanguageService()->sL($task['description']),
-                        'icon' => $icon,
+                        'icon' => !empty($task['icon']) ? $task['icon'] : $defaultIcon,
                         'link' => $link,
                         'uid' => $extKey . '.' . $taskClass
                     ];

@@ -19,7 +19,6 @@ use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -65,10 +64,9 @@ class PreviewController extends AbstractController
     protected function initializeAction()
     {
         parent::initializeAction();
-        $backendRelPath = ExtensionManagementUtility::extRelPath('backend');
         $this->stageService = GeneralUtility::makeInstance(StagesService::class);
         $this->workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
-        $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/ExtDirect.StateProvider.js');
+        $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/ExtDirect.StateProvider.js');
         $this->pageRenderer->loadExtJS(false, false);
         // Load  JavaScript:
         $this->pageRenderer->addExtDirectCode([

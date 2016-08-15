@@ -158,7 +158,7 @@ class T3editorElement extends AbstractFormElement
      */
     protected function initJavascriptCode()
     {
-        $this->resultArray['stylesheetFiles'][] = $this->relExtPath . 'Resources/Public/Css/t3editor.css';
+        $this->resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/Css/t3editor.css';
         if ($this->mode === self::MODE_TYPOSCRIPT) {
             foreach ($this->codeCompletionComponents as $codeCompletionComponent) {
                 $this->resultArray['requireJsModules'][] = 'TYPO3/CMS/T3editor/Plugins/CodeCompletion/' . $codeCompletionComponent;
