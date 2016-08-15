@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -35,24 +37,27 @@ class TableFlexFormToTtContentFieldsUpdate extends AbstractUpdate
      */
     public function checkForUpdate(&$description)
     {
-        $flexFormCount = $this->getDatabaseConnection()->exec_SELECTcountRows(
-            'uid',
-            'tt_content',
-            'CType=\'table\' AND pi_flexform IS NOT NULL AND deleted = 0'
-        );
-
-        if (
-            $this->isWizardDone() || $flexFormCount === 0
-            || ExtensionManagementUtility::isLoaded('css_styled_content')
-        ) {
+        if ($this->isWizardDone() || ExtensionManagementUtility::isLoaded('css_styled_content')) {
             return false;
         }
 
-        $description = 'The extension "frontend" uses regular database fields in the tt_content table ' .
-            'for the CType "table". Before this was a FlexForm.<br /><br />' .
-            'This update wizard migrates these FlexForms to regular database fields.';
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $flexFormCount = $queryBuilder->count('uid')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('table')),
+                $queryBuilder->expr()->isNotNull('pi_flexform')
+            )
+            ->execute()->fetchColumn(0);
 
-        return true;
+        if ($flexFormCount) {
+            $description = 'The extension "frontend" uses regular database fields in the tt_content table '
+                . 'for the CType "table". Before this was a FlexForm.<br /><br />'
+                . 'This update wizard migrates these FlexForms to regular database fields.';
+        }
+
+        return (bool)$flexFormCount;
     }
 
     /**
@@ -64,37 +69,33 @@ class TableFlexFormToTtContentFieldsUpdate extends AbstractUpdate
      */
     public function performUpdate(array &$databaseQueries, &$customMessages)
     {
-        $databaseConnection = $this->getDatabaseConnection();
-
-        $databaseResult = $databaseConnection->exec_SELECTquery(
-            'uid, pi_flexform',
-            'tt_content',
-            'CType=\'table\' AND pi_flexform IS NOT NULL AND deleted = 0'
-        );
-
-        while ($tableRecord = $databaseConnection->sql_fetch_assoc($databaseResult)) {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
+        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $statement = $queryBuilder->select('uid', 'pi_flexform')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq('Ctype', $queryBuilder->createNamedParameter('table')),
+                $queryBuilder->expr()->isNotNull('pi_flexform')
+            )
+            ->execute();
+        while ($tableRecord = $statement->fetch()) {
             $flexForm = $this->initializeFlexForm($tableRecord['pi_flexform']);
-
             if (is_array($flexForm)) {
                 $fields = $this->mapFieldsFromFlexForm($flexForm);
-
-                // Set pi_flexform to NULL
-                $fields['pi_flexform'] = null;
-
-                $databaseConnection->exec_UPDATEquery(
-                    'tt_content',
-                    'uid=' . (int)$tableRecord['uid'],
-                    $fields
-                );
-
-                $databaseQueries[] = $databaseConnection->debug_lastBuiltQuery;
+                $queryBuilder = $connection->createQueryBuilder();
+                $queryBuilder->update('tt_content')
+                    ->where($queryBuilder->expr()->eq('uid', (int)$tableRecord['uid']))
+                    ->set('pi_flexform', 'null', false);
+                foreach ($fields as $identifier => $value) {
+                    $queryBuilder->set($identifier, $queryBuilder->quote($value), false);
+                }
+                $databaseQueries[] = $queryBuilder->getSQL();
+                $queryBuilder->execute();
             }
         }
 
-        $databaseConnection->sql_free_result($databaseResult);
-
         $this->markWizardAsDone();
-
         return true;
     }
 
