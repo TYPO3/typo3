@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -80,7 +81,9 @@ class ExtensionManagerTables extends AbstractUpdate
         $updateStatements = $this->getUpdateStatements();
         if (empty($updateStatements)) {
             // Get count of rows in repository database table
-            $count = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_extensionmanager_domain_model_repository');
+            $count = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('tx_extensionmanager_domain_model_repository')
+                ->count('*', 'tx_extensionmanager_domain_model_repository', []);
             if ($count === 0) {
                 $result = true;
             }
