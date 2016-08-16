@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\DBALException;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Migrate CTypes 'textmedia' to use 'assets' field instead of 'media'
  */
@@ -32,29 +36,32 @@ class MigrateMediaToAssetsForTextMediaCe extends AbstractUpdate
      */
     public function checkForUpdate(&$description)
     {
-        $updateNeeded = true;
-
         if ($this->isWizardDone()) {
-            $updateNeeded = false;
-        } else {
-            // No need to join the sys_file_references table here as we can rely on the reference
-            // counter to check if the wizards has any textmedia content elements to upgrade.
-            $textmediaCount = $this->getDatabaseConnection()->exec_SELECTcountRows(
-                'uid',
-                'tt_content',
-                'CType = \'textmedia\' AND media > 0'
-            );
-
-            if ($textmediaCount === 0) {
-                $updateNeeded = false;
-                $this->markWizardAsDone();
-            }
+            return false;
         }
 
-        $description = 'The extension "fluid_styled_content" is using a new database field for mediafile references. ' .
-            'This update wizard migrates these old references to use the new database field.';
+        // No need to join the sys_file_references table here as we can rely on the reference
+        // counter to check if the wizards has any textmedia content elements to upgrade.
+        $queryBuilder= GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll();
+        $numberOfUpgradeableRecords = $queryBuilder->count('uid')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->gt('media', 0),
+                $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('textmedia'))
+            )
+            ->execute()
+            ->fetchColumn(0);
 
-        return $updateNeeded;
+        if ($numberOfUpgradeableRecords > 0) {
+            $description = 'The extension "fluid_styled_content" is using a new database field for mediafile'
+                . ' references. This update wizard migrates these old references to use the new database field.';
+        } else {
+            $this->markWizardAsDone();
+        }
+
+        return (bool)$numberOfUpgradeableRecords;
     }
 
     /**
@@ -66,34 +73,64 @@ class MigrateMediaToAssetsForTextMediaCe extends AbstractUpdate
      */
     public function performUpdate(array &$databaseQueries, &$customMessages)
     {
-        $databaseConnection = $this->getDatabaseConnection();
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll();
+        $statement = $queryBuilder->select('uid', 'media')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->gt('media', 0),
+                $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('textmedia'))
+            )
+            ->execute();
 
-        // Update 'textmedia'
-        $query = '
-			UPDATE sys_file_reference
-			LEFT JOIN tt_content
-			ON sys_file_reference.uid_foreign = tt_content.uid
-			AND sys_file_reference.tablenames =\'tt_content\'
-			AND sys_file_reference.fieldname = \'media\'
-			SET tt_content.assets = tt_content.media,
-			tt_content.media = 0,
-			sys_file_reference.fieldname = \'assets\'
-			WHERE
-			tt_content.CType = \'textmedia\'
-			AND tt_content.media > 0
-		';
-        $databaseConnection->sql_query($query);
+        while ($content = $statement->fetch()) {
+            $queryStack = [];
+            // we will split the update in two separate queries, since the two tables
+            // can possibly be on two different databases. We therefore have to care for
+            // a possible rollback
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('tt_content');
+            $queryBuilder->update('tt_content')
+                ->where($queryBuilder->expr()->eq('uid', (int)$content['uid']))
+                ->set('media', 0, false)
+                ->set('assets', (int)$content['media'], false);
+            $queryStack[] = $queryBuilder->getSQL();
+            try {
+                $queryBuilder->execute();
+            } catch (DBALException $e) {
+                $customMessages = 'MySQL-Error: ' . $queryBuilder->getConnection()->errorInfo();
+                return false;
+            }
 
-        // Store last executed query
-        $databaseQueries[] = str_replace(chr(10), ' ', $query);
-        // Check for errors
-        if ($databaseConnection->sql_error()) {
-            $customMessages = 'SQL-ERROR: ' . htmlspecialchars($databaseConnection->sql_error());
-            return false;
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('sys_file_reference');
+            $queryBuilder->update('sys_file_reference')
+                ->where(
+                    $queryBuilder->expr()->eq('uid_foreign', (int)$content['uid']),
+                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->quote('tt_content')),
+                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->quote('media'))
+                )
+                ->set('fieldname', $queryBuilder->quote('assets'), false);
+            $queryStack[] = $queryBuilder->getSQL();
+            try {
+                $queryBuilder->execute();
+            } catch (DBALException $e) {
+                $customMessages = 'MySQL-Error: ' . $queryBuilder->getConnection()->errorInfo();
+                // if the second query is not successful but the first was we'll have
+                // to get back to a consistent state by rolling back the first query.
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('tt_content');
+                $queryBuilder->update('tt_content')
+                    ->where($queryBuilder->expr()->eq('uid', (int)$content['uid']))
+                    ->set('media', (int)$content['media'], false)
+                    ->execute();
+                return false;
+            }
+            // only if both queries were successful, we add them to the databaseQuery array.
+            $databaseQueries = array_merge($databaseQueries, $queryStack);
         }
-
         $this->markWizardAsDone();
-
         return true;
     }
 }
