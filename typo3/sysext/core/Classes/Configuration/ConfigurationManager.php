@@ -270,7 +270,7 @@ class ConfigurationManager
     public function canWriteConfiguration()
     {
         $fileLocation = $this->getLocalConfigurationFileLocation();
-        return @is_writable($this->pathTypo3Conf) && (!file_exists($fileLocation) || @is_writable($fileLocation));
+        return @is_writable(file_exists($fileLocation) ? $fileLocation : $this->pathTypo3Conf);
     }
 
     /**
