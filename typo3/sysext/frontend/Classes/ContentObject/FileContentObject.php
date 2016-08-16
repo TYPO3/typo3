@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Contains FILE class object.
@@ -27,8 +29,21 @@ class FileContentObject extends AbstractContentObject
      */
     public function render($conf = [])
     {
+        $theValue = '';
         $file = isset($conf['file.']) ? $this->cObj->stdWrap($conf['file'], $conf['file.']) : $conf['file'];
-        $theValue = $this->cObj->fileResource($file, trim($this->cObj->getAltParam($conf, false)));
+        $file = $this->getTypoScriptFrontendController()->tmpl->getFileName($file);
+        if ($file !== null && file_exists($file)) {
+            $fileInfo = GeneralUtility::split_fileref($file);
+            $extension = $fileInfo['fileext'];
+            if ($extension === 'jpg' || $extension === 'jpeg' || $extension === 'gif' || $extension === 'png') {
+                $imgInfo = @getimagesize($file);
+                $altParameters = trim($this->cObj->getAltParam($conf, false));
+                $theValue = '<img src="' . htmlspecialchars($this->getTypoScriptFrontendController()->absRefPrefix . $file) . '" width="' . (int)$imgInfo[0] . '" height="' . (int)$imgInfo[1] . '"' . $this->cObj->getBorderAttr(' border="0"') . ' ' . $altParameters . ' />';
+            } elseif (filesize($file) < 1024 * 1024) {
+                $theValue = file_get_contents($file);
+            }
+        }
+
         $linkWrap = isset($conf['linkWrap.']) ? $this->cObj->stdWrap($conf['linkWrap'], $conf['linkWrap.']) : $conf['linkWrap'];
         if ($linkWrap) {
             $theValue = $this->cObj->linkWrap($theValue, $linkWrap);
@@ -41,5 +56,13 @@ class FileContentObject extends AbstractContentObject
             $theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
         }
         return $theValue;
+    }
+
+    /**
+     * @return TypoScriptFrontendController
+     */
+    protected function getTypoScriptFrontendController()
+    {
+        return $GLOBALS['TSFE'];
     }
 }

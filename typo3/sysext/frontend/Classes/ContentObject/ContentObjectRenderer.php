@@ -1496,9 +1496,11 @@ class ContentObjectRenderer
      * @param string $addParams Additional parameters (attributes). Default is empty alt and title tags.
      * @return string If jpg,gif,jpeg,png: returns image_tag with picture in. If html,txt: returns content string
      * @see FILE()
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use file_get_contents() directly
      */
     public function fileResource($fName, $addParams = 'alt="" title=""')
     {
+        GeneralUtility::logDeprecatedFunction();
         $tsfe = $this->getTypoScriptFrontendController();
         $incFile = $tsfe->tmpl->getFileName($fName);
         if ($incFile && file_exists($incFile)) {

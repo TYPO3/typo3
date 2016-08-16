@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\IndexedSearch\Utility;
 
 /**
@@ -375,7 +376,10 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $this->wholeSiteIdList = implode(',', GeneralUtility::intExplode(',', $this->conf['search.']['rootPidList']));
         }
         // Load the template
-        $this->templateCode = $this->cObj->fileResource($this->conf['templateFile']);
+        $template = $this->getTypoScriptFrontendController()->tmpl->getFileName($this->conf['templateFile']);
+        if ($template !== null && file_exists($template)) {
+            $this->templateCode = file_get_contents($template);
+        }
         // Add search languages:
         $res = $this->databaseConnection->exec_SELECTquery('*', 'sys_language', '1=1' . $this->cObj->enableFields('sys_language'));
         while (false !== ($data = $this->databaseConnection->sql_fetch_assoc($res))) {
@@ -2654,5 +2658,15 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             10, 400, 60
         );
         $this->conf['results.']['hrefInSummaryCropSignifier'] = $this->cObj->stdWrap($this->conf['results.']['hrefInSummaryCropSignifier'], $this->conf['results.']['hrefInSummaryCropSignifier.']);
+    }
+
+    /**
+     * Get TypoScriptFrontendController
+     *
+     * @return TypoScriptFrontendController
+     */
+    protected function getTypoScriptFrontendController()
+    {
+        return $GLOBALS['TSFE'];
     }
 }

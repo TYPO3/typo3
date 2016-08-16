@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Plugin 'Website User Login' for the 'felogin' extension.
@@ -141,7 +142,10 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $this->redirectUrl = $this->validateRedirectUrl($this->redirectUrl);
         // Get Template
         $templateFile = $this->conf['templateFile'] ?: 'EXT:felogin/Resources/Private/Templates/FrontendLogin.html';
-        $this->template = $this->cObj->fileResource($templateFile);
+        $template = $this->getTypoScriptFrontendController()->tmpl->getFileName($templateFile);
+        if ($template !== null && file_exists($template)) {
+            $this->template = file_get_contents($template);
+        }
         // Is user logged in?
         $this->userIsLoggedIn = $this->frontendController->loginUser;
         // Redirect
@@ -1102,5 +1106,15 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
         }
         return false;
+    }
+
+    /**
+     * Get TypoScriptFrontendController
+     *
+     * @return TypoScriptFrontendController
+     */
+    protected function getTypoScriptFrontendController()
+    {
+        return $GLOBALS['TSFE'];
     }
 }
