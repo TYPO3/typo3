@@ -4540,6 +4540,7 @@ class DataHandler
         }
         // Set exclude Fields:
         foreach ($GLOBALS['TCA'][$Ttable]['columns'] as $fN => $fCfg) {
+            $translateToMsg = '';
             // Check if we are just prefixing:
             if ($fCfg['l10n_mode'] == 'prefixLangTitle') {
                 if (($fCfg['config']['type'] == 'text' || $fCfg['config']['type'] == 'input') && (string)$row[$fN] !== '') {
