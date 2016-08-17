@@ -51,6 +51,8 @@ class ExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
     public function initializeArguments()
     {
         parent::initializeArguments();
+        $this->registerArgument('uri', 'string', 'The URI that will be put in the href attribute of the rendered link tag', true);
+        $this->registerArgument('defaultScheme', 'string', 'Scheme the href attribute will be prefixed with if specified $uri does not contain a scheme already', false, 'http');
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
         $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
@@ -59,13 +61,14 @@ class ExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
     }
 
     /**
-     * @param string $uri the URI that will be put in the href attribute of the rendered link tag
-     * @param string $defaultScheme scheme the href attribute will be prefixed with if specified $uri does not contain a scheme already
      * @return string Rendered link
      * @api
      */
-    public function render($uri, $defaultScheme = 'http')
+    public function render()
     {
+        $uri = $this->arguments['uri'];
+        $defaultScheme = $this->arguments['defaultScheme'];
+
         $scheme = parse_url($uri, PHP_URL_SCHEME);
         if ($scheme === null && $defaultScheme !== '') {
             $uri = $defaultScheme . '://' . $uri;

@@ -43,7 +43,6 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
             ->setMethods(array('renderChildren'))
             ->getMock();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->initializeArguments();
     }
 
     /**
@@ -59,8 +58,14 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
         $mockTagBuilder->expects($this->once())->method('setContent')->with('some content');
         $this->viewHelper->_set('tag', $mockTagBuilder);
         $this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue('some content'));
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'email' => 'some@email.tld',
+            ]
+        );
         $this->viewHelper->initialize();
-        $this->viewHelper->render('some@email.tld');
+        $this->viewHelper->render();
     }
 
     /**
@@ -74,8 +79,14 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
         $mockTagBuilder->expects($this->once())->method('setContent')->with('some@email.tld');
         $this->viewHelper->_set('tag', $mockTagBuilder);
         $this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue(null));
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'email' => 'some@email.tld',
+            ]
+        );
         $this->viewHelper->initialize();
-        $this->viewHelper->render('some@email.tld');
+        $this->viewHelper->render();
     }
 
     /**
@@ -145,10 +156,13 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
             ->getMock();
         $viewHelper->expects($this->once())->method('isFrontendAvailable')->willReturn(true);
         $viewHelper->expects($this->once())->method('renderChildren')->willReturn(null);
+        $viewHelper->setArguments([
+            'email' => $email,
+        ]);
         $viewHelper->initialize();
         $this->assertSame(
             $expected,
-            $viewHelper->render($email)
+            $viewHelper->render()
         );
     }
 }

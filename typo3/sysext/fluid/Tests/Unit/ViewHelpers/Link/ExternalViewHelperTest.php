@@ -16,12 +16,12 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
- * Test for \TYPO3\CMS\Fluid\ViewHelpers\Link\EmailViewHelper
+ * Test for \TYPO3\CMS\Fluid\ViewHelpers\Link\ExternalViewHelper
  */
 class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase
 {
     /**
-     * @var \TYPO3\CMS\Fluid\ViewHelpers\Link\EmailViewHelper
+     * @var \TYPO3\CMS\Fluid\ViewHelpers\Link\ExternalViewHelper
      */
     protected $viewHelper;
 
@@ -30,7 +30,6 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
         parent::setUp();
         $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Link\ExternalViewHelper::class, array('renderChildren'));
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->initializeArguments();
     }
 
     /**
@@ -48,8 +47,14 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
 
         $this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue('some content'));
 
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'uri' => 'http://www.some-domain.tld',
+            ]
+        );
         $this->viewHelper->initialize();
-        $this->viewHelper->render('http://www.some-domain.tld');
+        $this->viewHelper->render();
     }
 
     /**
@@ -67,8 +72,14 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
 
         $this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue('some content'));
 
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'uri' => 'www.some-domain.tld',
+            ]
+        );
         $this->viewHelper->initialize();
-        $this->viewHelper->render('www.some-domain.tld');
+        $this->viewHelper->render();
     }
 
     /**
@@ -86,8 +97,15 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
 
         $this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue('some content'));
 
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'uri' => 'some-domain.tld',
+                'defaultScheme' => 'ftp',
+            ]
+        );
         $this->viewHelper->initialize();
-        $this->viewHelper->render('some-domain.tld', 'ftp');
+        $this->viewHelper->render();
     }
 
     /**
@@ -105,7 +123,14 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
 
         $this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue('some content'));
 
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'uri' => 'some-domain.tld',
+                'defaultScheme' => '',
+            ]
+        );
         $this->viewHelper->initialize();
-        $this->viewHelper->render('some-domain.tld', '');
+        $this->viewHelper->render();
     }
 }

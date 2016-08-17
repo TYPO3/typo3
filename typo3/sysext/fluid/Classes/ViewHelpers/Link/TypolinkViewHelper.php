@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -57,28 +58,30 @@ class TypolinkViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * Render
+     * Initialize ViewHelper arguments
      *
-     * @param string $parameter stdWrap.typolink style parameter string
-     * @param string $target
-     * @param string $class
-     * @param string $title
-     * @param string $additionalParams
-     * @param array $additionalAttributes
+     * @throws Exception
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('parameter', 'string', 'stdWrap.typolink style parameter string', true);
+        $this->registerArgument('target', 'string', '', false, '');
+        $this->registerArgument('class', 'string', '', false, '');
+        $this->registerArgument('title', 'string', '', false, '');
+        $this->registerArgument('additionalParams', 'string', '', false, '');
+        $this->registerArgument('additionalAttributes', 'array', '', false, []);
+    }
+
+    /**
+     * Render
      *
      * @return string
      */
-    public function render($parameter, $target = '', $class = '', $title = '', $additionalParams = '', $additionalAttributes = array())
+    public function render()
     {
         return static::renderStatic(
-            array(
-                'parameter' => $parameter,
-                'target' => $target,
-                'class' => $class,
-                'title' => $title,
-                'additionalParams' => $additionalParams,
-                'additionalAttributes' => $additionalAttributes
-            ),
+            $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

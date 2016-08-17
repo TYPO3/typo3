@@ -53,24 +53,15 @@ class ShortcutViewHelper extends AbstractBackendViewHelper
     protected $escapeOutput = false;
 
     /**
-     * Renders a shortcut button as known from the TYPO3 backend
+     * Initialize arguments.
      *
-     * @param array $getVars list of GET variables to store. By default the current id, module and all module arguments will be stored
-     * @param array $setVars list of SET[] variables to store. See DocumentTemplate::makeShortcutIcon(). Normally won't be used by Extbase modules
-     *
-     * @return string the rendered shortcut button
-     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::makeShortcutIcon()
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
-    public function render(array $getVars = array(), array $setVars = array())
+    public function initializeArguments()
     {
-        return static::renderStatic(
-            array(
-                'getVars' => $getVars,
-                'setVars' => $setVars
-            ),
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        parent::initializeArguments();
+        $this->registerArgument('getVars', 'array', 'List of GET variables to store. By default the current id, module and all module arguments will be stored', false, []);
+        $this->registerArgument('setVars', 'array', 'List of SET[] variables to store. See DocumentTemplate::makeShortcutIcon(). Normally won\'t be used by Extbase modules', false, []);
     }
 
     /**

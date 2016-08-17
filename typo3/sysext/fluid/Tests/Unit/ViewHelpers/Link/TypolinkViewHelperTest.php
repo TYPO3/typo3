@@ -35,7 +35,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         $this->subject = $this->getAccessibleMock(TypolinkViewHelper::class, array('renderChildren'));
-        /** @var RenderingContext  $renderingContext */
+        /** @var RenderingContext $renderingContext */
         $renderingContext = $this->createMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class);
         $this->subject->setRenderingContext($renderingContext);
     }
@@ -46,10 +46,18 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
     public function renderReturnsResultOfContentObjectRenderer()
     {
         $this->subject->expects($this->any())->method('renderChildren')->will($this->returnValue('innerContent'));
+        $this->subject->setArguments([
+            'parameter' => '42',
+            'target' => '',
+            'class' => '',
+            'title' => '',
+            'additionalParams' => '',
+            'additionalAttributes' => [],
+        ]);
         $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
         $contentObjectRendererMock->expects($this->once())->method('stdWrap')->will($this->returnValue('foo'));
         GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
-        $this->assertEquals('foo', $this->subject->render('42'));
+        $this->assertEquals('foo', $this->subject->render());
     }
 
     /**

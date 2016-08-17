@@ -50,6 +50,7 @@ class EmailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
     public function initializeArguments()
     {
         parent::initializeArguments();
+        $this->registerArgument('email', 'string', 'The email address to be turned into a link', true);
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
         $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
@@ -58,11 +59,12 @@ class EmailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
     }
 
     /**
-     * @param string $email The email address to be turned into a link.
      * @return string Rendered email link
      */
-    public function render($email)
+    public function render()
     {
+        $email = $this->arguments['email'];
+
         if ($this->isFrontendAvailable()) {
             list($linkHref, $linkText) = $GLOBALS['TSFE']->cObj->getMailTo($email, '');
             $escapeSpecialCharacters = !isset($GLOBALS['TSFE']->spamProtectEmailAddresses) || $GLOBALS['TSFE']->spamProtectEmailAddresses !== 'ascii';
