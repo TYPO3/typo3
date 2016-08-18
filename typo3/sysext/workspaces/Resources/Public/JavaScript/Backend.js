@@ -1119,7 +1119,7 @@ define([
 			])
 		).done(function(response) {
 			var result = response[0].result,
-				$list = $('<dl />');
+			$list = $('<dl />');
 
 			$.each(result, function(language, url) {
 				$list.append(
@@ -1142,7 +1142,8 @@ define([
 					trigger: function() {
 						Modal.currentModal.trigger('modal-dismiss');
 					}
-				}]
+				}],
+				['modal-inner-scroll']
 			);
 		});
 	};
