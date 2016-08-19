@@ -2819,7 +2819,12 @@ class TypoScriptFrontendController
             // @see https://bugs.php.net/bug.php?id=53711
             $locale = setlocale(LC_COLLATE, $this->config['config']['locale_all']);
             if ($locale) {
-                setlocale(LC_CTYPE, $this->config['config']['locale_all']);
+                // As str_* methods are locale aware and turkish has no upper case I
+                // Class autoloading and other checks depending on case changing break with turkish locale LC_CTYPE
+                // @see http://bugs.php.net/bug.php?id=35050
+                if (substr($this->config['config']['locale_all'], 0, 2) != 'tr') {
+                    setlocale(LC_CTYPE, $this->config['config']['locale_all']);
+                }
                 setlocale(LC_MONETARY, $this->config['config']['locale_all']);
                 setlocale(LC_TIME, $this->config['config']['locale_all']);
                 $this->localeCharset = $this->csConvObj->get_locale_charset($this->config['config']['locale_all']);
