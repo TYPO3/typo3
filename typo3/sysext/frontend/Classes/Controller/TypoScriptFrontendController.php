@@ -2766,7 +2766,12 @@ class TypoScriptFrontendController
             // @see https://bugs.php.net/bug.php?id=53711
             $locale = setlocale(LC_COLLATE, ...$availableLocales);
             if ($locale) {
-                setlocale(LC_CTYPE, ...$availableLocales);
+                // As str_* methods are locale aware and turkish has no upper case I
+                // Class autoloading and other checks depending on case changing break with turkish locale LC_CTYPE
+                // @see http://bugs.php.net/bug.php?id=35050
+                if (substr($this->config['config']['locale_all'], 0, 2) != 'tr') {
+                    setlocale(LC_CTYPE, ...$availableLocales);
+                }
                 setlocale(LC_MONETARY, ...$availableLocales);
                 setlocale(LC_TIME, ...$availableLocales);
             } else {
