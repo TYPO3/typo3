@@ -14,7 +14,10 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Migrate the workspaces notification settings to the enhanced schema.
@@ -34,30 +37,28 @@ class WorkspacesNotificationSettingsUpdate extends AbstractUpdate
      */
     public function checkForUpdate(&$description)
     {
-        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
+        if (!ExtensionManagementUtility::isLoaded('workspaces') || $this->isWizardDone()) {
             return false;
         }
 
-        if ($this->isWizardDone()) {
-            return false;
-        }
-
-        $workspacesCount = $this->getDatabaseConnection()->exec_SELECTcountRows(
-            'uid',
-            'sys_workspace',
-            'deleted=0'
-        );
-
-        $stagesCount = $this->getDatabaseConnection()->exec_SELECTcountRows(
-            'uid',
-            'sys_workspace_stage',
-            'deleted=0'
-        );
-
+        $workspacesCount = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_workspace')
+            ->count(
+                'uid',
+                'sys_workspace',
+                ['deleted' => 0]
+            );
+        $stagesCount = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_workspace_stage')
+            ->count(
+                'uid',
+                'sys_workspace_stage',
+                ['deleted' => 0]
+            );
         if ($workspacesCount + $stagesCount > 0) {
             $description = 'The workspaces notification settings have been extended'
                 . ' and need to be migrated to the new definitions. This update wizard'
-                . ' upgrades the accordant settings in the availble workspaces and stages.';
+                . ' upgrades the accordant settings in the available workspaces and stages.';
             return true;
         } else {
             $this->markWizardAsDone();
@@ -75,23 +76,39 @@ class WorkspacesNotificationSettingsUpdate extends AbstractUpdate
      */
     public function performUpdate(array &$databaseQueries, &$customMessages)
     {
-        $databaseConnection = $this->getDatabaseConnection();
-
-        $workspaceRecords = $databaseConnection->exec_SELECTgetRows('*', 'sys_workspace', 'deleted=0');
-        foreach ($workspaceRecords as $workspaceRecord) {
+        $workspaceConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_workspace');
+        $queryBuilder = $workspaceConnection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $statement = $queryBuilder->select('*')->from('sys_workspace')->execute();
+        while ($workspaceRecord = $statement->fetch()) {
             $update = $this->prepareWorkspaceUpdate($workspaceRecord);
             if ($update !== null) {
-                $databaseConnection->exec_UPDATEquery('sys_workspace', 'uid=' . (int)$workspaceRecord['uid'], $update);
-                $databaseQueries[] = $databaseConnection->debug_lastBuiltQuery;
+                $queryBuilder = $workspaceConnection->createQueryBuilder();
+                $queryBuilder->update('sys_workspace')
+                    ->where($queryBuilder->expr()->eq('uid', (int)$workspaceRecord['uid']));
+                foreach ($update as $field => $value) {
+                    $queryBuilder->set($field, $queryBuilder->quote($value), false);
+                }
+                $databaseQueries[] = $queryBuilder->getSQL();
+                $queryBuilder->execute();
             }
         }
 
-        $stageRecords = $databaseConnection->exec_SELECTgetRows('*', 'sys_workspace_stage', 'deleted=0');
-        foreach ($stageRecords as $stageRecord) {
+        $stageConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_workspace_stage');
+        $queryBuilder = $stageConnection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $statement = $queryBuilder->select('*')->from('sys_workspace_stage')->execute();
+        while ($stageRecord = $statement->fetch()) {
             $update = $this->prepareStageUpdate($stageRecord);
             if ($update !== null) {
-                $databaseConnection->exec_UPDATEquery('sys_workspace_stage', 'uid=' . (int)$stageRecord['uid'], $update);
-                $databaseQueries[] = $databaseConnection->debug_lastBuiltQuery;
+                $queryBuilder = $workspaceConnection->createQueryBuilder();
+                $queryBuilder->update('sys_workspace_stage')
+                    ->where($queryBuilder->expr()->eq('uid', (int)$stageRecord['uid']));
+                foreach ($update as $field => $value) {
+                    $queryBuilder->set($field, $queryBuilder->quote($value), false);
+                }
+                $databaseQueries[] = $queryBuilder->getSQL();
+                $queryBuilder->execute();
             }
         }
 
