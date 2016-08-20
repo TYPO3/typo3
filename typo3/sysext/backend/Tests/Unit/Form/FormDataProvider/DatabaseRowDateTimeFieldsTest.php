@@ -14,10 +14,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Prophecy\Argument;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
@@ -25,53 +22,6 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  */
 class DatabaseRowDateTimeFieldsTest extends UnitTestCase
 {
-    /**
-     * @var DatabaseRowDateTimeFields
-     */
-    protected $subject;
-
-    /**
-     * @var DatabaseConnection | ObjectProphecy
-     */
-    protected $dbProphecy;
-
-    /**
-     * @var array Date formats
-     */
-    protected $dateFormats = array(
-        'date' => [
-            'empty' => '0000-00-00',
-            'format' => 'Y-m-d'
-        ],
-        'datetime' => [
-            'empty' => '0000-00-00 00:00:00',
-            'format' => 'Y-m-d H:i:s'
-        ],
-    );
-
-    protected function setUp()
-    {
-        $this->subject = new DatabaseRowDateTimeFields();
-        $this->dbProphecy = $this->prophesize(DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
-    }
-
-    /**
-     * @test
-     */
-    public function addDataCallsDatabaseConnectionForDateTimeFormats()
-    {
-        $tableName = 'aTable';
-        $input = [
-            'tableName' => $tableName,
-            'processedTca' => [
-                'columns' => [],
-            ],
-        ];
-        $this->dbProphecy->getDateTimeFormats($tableName)->shouldBeCalled();
-        $this->subject->addData($input);
-    }
-
     /**
      * @test
      */
@@ -91,8 +41,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['databaseRow']['aField'] = 0;
-        $this->dbProphecy->getDateTimeFormats(Argument::cetera())->willReturn($this->dateFormats);
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
     }
 
     /**
@@ -114,8 +63,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['databaseRow']['aField'] = 0;
-        $this->dbProphecy->getDateTimeFormats(Argument::cetera())->willReturn($this->dateFormats);
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
     }
 
     /**
@@ -142,8 +90,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['databaseRow']['aField'] = 1437955200; // 27.07.2015 0:00 UTC
-        $this->dbProphecy->getDateTimeFormats(Argument::cetera())->willReturn($this->dateFormats);
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
         date_default_timezone_set($oldTimezone);
     }
 
@@ -171,8 +118,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['databaseRow']['aField'] = 1438010732; // 27.07.2015 15:25:32 UTC
-        $this->dbProphecy->getDateTimeFormats(Argument::cetera())->willReturn($this->dateFormats);
-        $this->assertEquals($expected, $this->subject->addData($input));
+        $this->assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
         date_default_timezone_set($oldTimezone);
     }
 }

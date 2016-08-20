@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -168,22 +169,6 @@ class DatabaseConnection
      * @var array<PreProcessQueryHookInterface>
      */
     protected $postProcessHookObjects = array();
-
-    /**
-     * the date and time formats compatible with the database in general
-     *
-     * @var array
-     */
-    protected static $dateTimeFormats = array(
-        'date' => array(
-            'empty' => '0000-00-00',
-            'format' => 'Y-m-d'
-        ),
-        'datetime' => array(
-            'empty' => '0000-00-00 00:00:00',
-            'format' => 'Y-m-d H:i:s'
-        )
-    );
 
     /**
      * Initialize the database connection
@@ -988,7 +973,7 @@ class DatabaseConnection
      */
     public function getDateTimeFormats($table)
     {
-        return self::$dateTimeFormats;
+        return QueryHelper::getDateTimeFormats();
     }
 
     /**

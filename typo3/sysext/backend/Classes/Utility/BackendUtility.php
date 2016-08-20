@@ -2238,7 +2238,6 @@ class BackendUtility
             }
         }
         $l = '';
-        $db = static::getDatabaseConnection();
         $lang = static::getLanguageService();
         switch ((string)$theColConf['type']) {
             case 'radio':
@@ -2497,7 +2496,7 @@ class BackendUtility
                     if (GeneralUtility::inList($theColConf['eval'], 'date')) {
                         // Handle native date field
                         if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'date') {
-                            $dateTimeFormats = $db->getDateTimeFormats($table);
+                            $dateTimeFormats = QueryHelper::getDateTimeFormats();
                             $emptyValue = $dateTimeFormats['date']['empty'];
                             $value = $value !== $emptyValue ? strtotime($value) : 0;
                         }
@@ -2532,7 +2531,7 @@ class BackendUtility
                     } elseif (GeneralUtility::inList($theColConf['eval'], 'datetime')) {
                         // Handle native date/time field
                         if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'datetime') {
-                            $dateTimeFormats = $db->getDateTimeFormats($table);
+                            $dateTimeFormats = QueryHelper::getDateTimeFormats();
                             $emptyValue = $dateTimeFormats['datetime']['empty'];
                             $value = $value !== $emptyValue ? strtotime($value) : 0;
                         }

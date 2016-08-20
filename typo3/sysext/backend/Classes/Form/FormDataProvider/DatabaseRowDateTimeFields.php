@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 
 /**
  * Migrate date and datetime db field values to timestamp
@@ -30,7 +30,7 @@ class DatabaseRowDateTimeFields implements FormDataProviderInterface
      */
     public function addData(array $result)
     {
-        $dateTimeFormats = $this->getDatabase()->getDateTimeFormats($result['tableName']);
+        $dateTimeFormats = QueryHelper::getDateTimeFormats();
         foreach ($result['processedTca']['columns'] as $column => $columnConfig) {
             if (isset($columnConfig['config']['dbType'])
                 && ($columnConfig['config']['dbType'] === 'date' || $columnConfig['config']['dbType'] === 'datetime')
@@ -47,13 +47,5 @@ class DatabaseRowDateTimeFields implements FormDataProviderInterface
             }
         }
         return $result;
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabase()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
@@ -995,7 +996,7 @@ class DataHandler
                 $theRealPid = null;
 
                 // Handle native date/time fields
-                $dateTimeFormats = $this->databaseConnection->getDateTimeFormats($table);
+                $dateTimeFormats = QueryHelper::getDateTimeFormats();
                 foreach ($GLOBALS['TCA'][$table]['columns'] as $column => $config) {
                     if (isset($incomingFieldArray[$column])) {
                         if (isset($config['config']['dbType']) && ($config['config']['dbType'] === 'date' || $config['config']['dbType'] === 'datetime')) {
@@ -1763,7 +1764,7 @@ class DataHandler
                 $value = 0;
             } else {
                 $isDateOrDateTimeField = true;
-                $dateTimeFormats = $this->databaseConnection->getDateTimeFormats($table);
+                $dateTimeFormats = QueryHelper::getDateTimeFormats();
                 // Convert the date/time into a timestamp for the sake of the checks
                 $emptyValue = $dateTimeFormats[$tcaFieldConf['dbType']]['empty'];
                 $format = $dateTimeFormats[$tcaFieldConf['dbType']]['format'];

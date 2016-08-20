@@ -114,4 +114,25 @@ class QueryHelper
     {
         return preg_replace('/^(?:(AND|OR)[[:space:]]*)+/i', '', trim($constraint)) ?: '';
     }
+
+    /**
+     * Returns the date and time formats compatible with the given database.
+     *
+     * This simple method should probably be deprecated and removed later.
+     *
+     * @return array
+     */
+    public static function getDateTimeFormats()
+    {
+        return [
+            'date' => [
+                'empty' => '0000-00-00',
+                'format' => 'Y-m-d'
+            ],
+            'datetime' => [
+                'empty' => '0000-00-00 00:00:00',
+                'format' => 'Y-m-d H:i:s'
+            ]
+        ];
+    }
 }
