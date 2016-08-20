@@ -14,8 +14,11 @@ namespace TYPO3\CMS\Core\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -71,11 +74,6 @@ class QueryView
     protected $tableArray = [];
 
     /**
-     * @var DatabaseConnection
-     */
-    protected $databaseConnection;
-
-    /**
      * @var LanguageService
      */
     protected $languageService;
@@ -91,7 +89,6 @@ class QueryView
     public function __construct()
     {
         $this->backendUserAuthentication = $GLOBALS['BE_USER'];
-        $this->databaseConnection = $GLOBALS['TYPO3_DB'];
         $this->languageService = $GLOBALS['LANG'];
         $this->languageService->includeLLFile('EXT:lang/locallang_t3lib_fullsearch.xlf');
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -131,9 +128,15 @@ class QueryView
         }
         // Actions:
         if (ExtensionManagementUtility::isLoaded('sys_action') && $this->backendUserAuthentication->isAdmin()) {
-            $rows = $this->databaseConnection->exec_SELECTgetRows('*', 'sys_action', 'type=2', '', 'title');
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_action');
+            $queryBuilder->getRestrictions()->removeAll();
+            $statement = $queryBuilder->select('uid', 'title')
+                ->from('sys_action')
+                ->where($queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(2)))
+                ->orderBy('title')
+                ->execute();
             $opt[] = '<option value="0">__Save to Action:__</option>';
-            foreach ($rows as $row) {
+            while ($row = $statement->fetch()) {
                 $opt[] = '<option value="-' . (int)$row['uid'] . '">' . htmlspecialchars(($row['title']
                         . ' [' . (int)$row['uid'] . ']')) . '</option>';
             }
@@ -223,33 +226,35 @@ class QueryView
             foreach ($keyArr as $k) {
                 $saveArr[$k] = $GLOBALS['SOBE']->MOD_SETTINGS[$k];
             }
-            $qOK = 0;
             // Show query
             if ($saveArr['queryTable']) {
                 /** @var \TYPO3\CMS\Core\Database\QueryGenerator */
-                $qGen = GeneralUtility::makeInstance(QueryGenerator::class);
-                $qGen->init('queryConfig', $saveArr['queryTable']);
-                $qGen->makeSelectorTable($saveArr);
-                $qGen->enablePrefix = 1;
-                $qString = $qGen->getQuery($qGen->queryConfig);
-                $qCount = $this->databaseConnection->SELECTquery('count(*)', $qGen->table, $qString
-                    . BackendUtility::deleteClause($qGen->table));
-                $qSelect = $qGen->getSelectQuery($qString);
-                $res = @$this->databaseConnection->sql_query($qCount);
-                if (!$this->databaseConnection->sql_error()) {
-                    $this->databaseConnection->sql_free_result($res);
-                    $dA = array();
-                    $dA['t2_data'] = serialize(array(
-                        'qC' => $saveArr,
-                        'qCount' => $qCount,
-                        'qSelect' => $qSelect,
-                        'qString' => $qString
-                    ));
-                    $this->databaseConnection->exec_UPDATEquery('sys_action', 'uid=' . (int)$uid, $dA);
-                    $qOK = 1;
-                }
+                $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
+                $queryGenerator->init('queryConfig', $saveArr['queryTable']);
+                $queryGenerator->makeSelectorTable($saveArr);
+                $queryGenerator->enablePrefix = 1;
+                $queryString = $queryGenerator->getQuery($queryGenerator->queryConfig);
+
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($queryGenerator->table);
+                $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                $rowCount = $queryBuilder->count('*')
+                    ->from($queryGenerator->table)
+                    ->where(QueryHelper::stripLogicalOperatorPrefix($queryString))
+                    ->execute()->fetchColumn(0);
+
+                $t2DataValue = [
+                    'qC' => $saveArr,
+                    'qCount' => $rowCount,
+                    'qSelect' => $queryGenerator->getSelectQuery($queryString),
+                    'qString' => $queryString
+                ];
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_action');
+                $queryBuilder->update('sys_action')
+                    ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+                    ->set('t2_data', serialize($t2DataValue))
+                    ->execute();
             }
-            return $qOK;
+            return 1;
         }
         return null;
     }
@@ -394,47 +399,57 @@ class QueryView
             $output .= $msg;
         }
         // Query Maker:
-        $qGen = GeneralUtility::makeInstance(QueryGenerator::class);
-        $qGen->init('queryConfig', $GLOBALS['SOBE']->MOD_SETTINGS['queryTable']);
+        $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
+        $queryGenerator->init('queryConfig', $GLOBALS['SOBE']->MOD_SETTINGS['queryTable']);
         if ($this->formName) {
-            $qGen->setFormName($this->formName);
+            $queryGenerator->setFormName($this->formName);
         }
-        $tmpCode = $qGen->makeSelectorTable($GLOBALS['SOBE']->MOD_SETTINGS);
+        $tmpCode = $queryGenerator->makeSelectorTable($GLOBALS['SOBE']->MOD_SETTINGS);
         $output .= '<div id="query"></div>' . '<h2>Make query</h2><div>' . $tmpCode . '</div>';
         $mQ = $GLOBALS['SOBE']->MOD_SETTINGS['search_query_makeQuery'];
         // Make form elements:
-        if ($qGen->table && is_array($GLOBALS['TCA'][$qGen->table])) {
+        if ($queryGenerator->table && is_array($GLOBALS['TCA'][$queryGenerator->table])) {
             if ($mQ) {
                 // Show query
-                $qGen->enablePrefix = 1;
-                $qString = $qGen->getQuery($qGen->queryConfig);
-                switch ($mQ) {
-                    case 'count':
-                        $qExplain = $this->databaseConnection->SELECTquery(
-                            'count(*)',
-                            $qGen->table,
-                            $qString . BackendUtility::deleteClause($qGen->table)
-                        );
-                        break;
-                    default:
-                        $qExplain = $qGen->getSelectQuery($qString);
-                        if ($mQ == 'explain') {
-                            $qExplain = 'EXPLAIN ' . $qExplain;
-                        }
-                }
-                if (!$this->backendUserAuthentication->userTS['mod.']['dbint.']['disableShowSQLQuery']) {
-                    $output .= '<h2>SQL query</h2><div>' . $this->tableWrap(htmlspecialchars($qExplain)) . '</div>';
-                }
-                $res = @$this->databaseConnection->sql_query($qExplain);
-                if ($this->databaseConnection->sql_error()) {
+                $queryGenerator->enablePrefix = 1;
+                $queryString = $queryGenerator->getQuery($queryGenerator->queryConfig);
+                $selectQueryString = $queryGenerator->getSelectQuery($queryString);
+                $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($queryGenerator->table);
+
+                $isConnectionMysql = (bool)(strpos($connection->getServerVersion(), 'MySQL') === 0);
+                $fullQueryString = '';
+                try {
+                    if ($mQ === 'explain' && $isConnectionMysql) {
+                        // EXPLAIN is no ANSI SQL, for now this is only executed on mysql
+                        // @todo: Move away from getSelectQuery() or model differently
+                        $fullQueryString = 'EXPLAIN ' . $selectQueryString;
+                        $dataRows = $connection->executeQuery('EXPLAIN ' . $selectQueryString)->fetchAll();
+                    } elseif ($mQ === 'count') {
+                        $queryBuilder = $connection->createQueryBuilder();
+                        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                        $dataRows = $queryBuilder->count('*')
+                            ->from($queryGenerator->table)
+                            ->where(QueryHelper::stripLogicalOperatorPrefix($queryString));
+                        $fullQueryString = $queryBuilder->getSQL();
+                        $queryBuilder->execute()->fetchColumn(0);
+                        $dataRows = [$dataRows];
+                    } else {
+                        $fullQueryString = $selectQueryString;
+                        $dataRows = $connection->executeQuery($selectQueryString)->fetchAll();
+                    }
+                    if (!$this->backendUserAuthentication->userTS['mod.']['dbint.']['disableShowSQLQuery']) {
+                        $output .= '<h2>SQL query</h2><div><pre>' . htmlspecialchars($fullQueryString) . '</pre></div>';
+                    }
+                    $cPR = $this->getQueryResultCode($mQ, $dataRows, $queryGenerator->table);
+                    $output .= '<h2>' . $cPR['header'] . '</h2><div>' . $cPR['content'] . '</div>';
+                } catch (DBALException $e) {
+                    if (!$this->backendUserAuthentication->userTS['mod.']['dbint.']['disableShowSQLQuery']) {
+                        $output .= '<h2>SQL query</h2><div><pre>' . htmlspecialchars($fullQueryString) . '</pre></div>';
+                    }
                     $out = '<p><strong>Error: <span class="text-danger">'
-                        . $this->databaseConnection->sql_error()
+                        . $e->getMessage()
                         . '</span></strong></p>';
                     $output .= '<h2>SQL error</h2><div>' . $out . '</div>';
-                } else {
-                    $cPR = $this->getQueryResultCode($mQ, $res, $qGen->table);
-                    $this->databaseConnection->sql_free_result($res);
-                    $output .= '<h2>' . $cPR['header'] . '</h2><div>' . $cPR['content'] . '</div>';
                 }
             }
         }
@@ -444,27 +459,25 @@ class QueryView
     /**
      * Get query result code
      *
-     * @param string $mQ
-     * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
+     * @param string $type
+     * @param array $dataRows Rows to display
      * @param string $table
      * @return string
      */
-    public function getQueryResultCode($mQ, $res, $table)
+    public function getQueryResultCode($type, array $dataRows, $table)
     {
         $out = '';
-        $cPR = array();
-        switch ($mQ) {
+        $cPR = [];
+        switch ($type) {
             case 'count':
-                $row = $this->databaseConnection->sql_fetch_row($res);
                 $cPR['header'] = 'Count';
-                $cPR['content'] = '<BR><strong>' . $row[0] . '</strong> records selected.';
+                $cPR['content'] = '<BR><strong>' . $dataRows[0] . '</strong> records selected.';
                 break;
             case 'all':
-                $rowArr = array();
-                $lrow = null;
-                while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
-                    $rowArr[] = $this->resultRowDisplay($row, $GLOBALS['TCA'][$table], $table);
-                    $lrow = $row;
+                $rowArr = [];
+                $dataRow = null;
+                foreach ($dataRows as $dataRow) {
+                    $rowArr[] = $this->resultRowDisplay($dataRow, $GLOBALS['TCA'][$table], $table);
                 }
                 if (is_array($this->hookArray['beforeResultTable'])) {
                     foreach ($this->hookArray['beforeResultTable'] as $_funcRef) {
@@ -473,7 +486,7 @@ class QueryView
                 }
                 if (!empty($rowArr)) {
                     $out .= '<table class="table table-striped table-hover">'
-                        . $this->resultRowTitles($lrow, $GLOBALS['TCA'][$table], $table) . implode(LF, $rowArr)
+                        . $this->resultRowTitles($dataRow, $GLOBALS['TCA'][$table], $table) . implode(LF, $rowArr)
                         . '</table>';
                 }
                 if (!$out) {
@@ -489,14 +502,14 @@ class QueryView
                 $cPR['content'] = $out;
                 break;
             case 'csv':
-                $rowArr = array();
+                $rowArr = [];
                 $first = 1;
-                while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
+                foreach ($dataRows as $dataRow) {
                     if ($first) {
-                        $rowArr[] = $this->csvValues(array_keys($row), ',', '');
+                        $rowArr[] = $this->csvValues(array_keys($dataRow), ',', '');
                         $first = 0;
                     }
-                    $rowArr[] = $this->csvValues($row, ',', '"', $GLOBALS['TCA'][$table], $table);
+                    $rowArr[] = $this->csvValues($dataRow, ',', '"', $GLOBALS['TCA'][$table], $table);
                 }
                 if (!empty($rowArr)) {
                     $out .= '<textarea name="whatever" rows="20" class="text-monospace" style="width:100%">'
@@ -508,6 +521,7 @@ class QueryView
                             . '\';">';
                     }
                     // Downloads file:
+                    // @todo: args. routing anyone?
                     if (GeneralUtility::_GP('download_file')) {
                         $filename = 'TYPO3_' . $table . '_export_' . date('dmy-Hi') . '.csv';
                         $mimeType = 'application/octet-stream';
@@ -525,8 +539,8 @@ class QueryView
                 break;
             case 'explain':
             default:
-                while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
-                    $out .= '<br />' . DebugUtility::viewArray($row);
+                foreach ($dataRows as $dataRow) {
+                    $out .= '<br />' . DebugUtility::viewArray($dataRow);
                 }
                 $cPR['header'] = 'Explain SQL query';
                 $cPR['content'] = $out;
@@ -560,9 +574,11 @@ class QueryView
      *
      * @param string $str
      * @return string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function tableWrap($str)
     {
+        GeneralUtility::logDeprecatedFunction();
         return '<pre>' . $str . '</pre>';
     }
 
@@ -576,7 +592,6 @@ class QueryView
         $SET = $GLOBALS['SOBE']->MOD_SETTINGS;
         $swords = $SET['sword'];
         $out = '';
-        $limit = 200;
         if ($swords) {
             foreach ($GLOBALS['TCA'] as $table => $value) {
                 // Get fields list
@@ -585,39 +600,49 @@ class QueryView
                 if (empty($conf['columns'])) {
                     continue;
                 }
-                $fieldsInDatabase = $this->databaseConnection->admin_get_fields($table);
-                $list = array_intersect(array_keys($conf['columns']), array_keys($fieldsInDatabase));
-                // Get query
-                $qp = $this->databaseConnection->searchQuery(array($swords), $list, $table);
-                // Count:
-                $count = $this->databaseConnection->exec_SELECTcountRows(
-                    '*',
-                    $table,
-                    $qp . BackendUtility::deleteClause($table)
-                );
-                if ($count) {
-                    $rowArr = array();
-                    $res = $this->databaseConnection->exec_SELECTquery(
-                        'uid,' . $conf['ctrl']['label'],
-                        $table,
-                        $qp . BackendUtility::deleteClause($table),
-                        '',
-                        '',
-                        $limit
-                    );
-                    $lrow = null;
-                    while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
-                        $rowArr[] = $this->resultRowDisplay($row, $conf, $table);
-                        $lrow = $row;
+                $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+                $tableColumns = $connection->getSchemaManager()->listTableColumns($table);
+                $fieldsInDatabase = [];
+                foreach ($tableColumns as $column) {
+                    $fieldsInDatabase[] = $column->getName();
+                }
+                $fields = array_intersect(array_keys($conf['columns']), $fieldsInDatabase);
+
+                $queryBuilder = $connection->createQueryBuilder();
+                $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                $queryBuilder->count('*')->from($table);
+                $likes = [];
+                $excapedLikeString = '%' . $queryBuilder->escapeLikeWildcards($swords) . '%';
+                foreach ($fields as $field) {
+                    $likes[] = $queryBuilder->expr()->like($field, $queryBuilder->createNamedParameter($excapedLikeString));
+                }
+                $count = $queryBuilder->orWhere(...$likes)->execute()->fetchColumn(0);
+
+                if ($count > 0) {
+                    $queryBuilder = $connection->createQueryBuilder();
+                    $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                    $queryBuilder->select('uid', $conf['ctrl']['label'])
+                        ->from($table)
+                        ->setMaxResults(200);
+                    $likes = [];
+                    foreach ($fields as $field) {
+                        $likes[] = $queryBuilder->expr()->like($field, $queryBuilder->createNamedParameter($excapedLikeString));
                     }
-                    $this->databaseConnection->sql_free_result($res);
+                    $statement = $queryBuilder->orWhere(...$likes)->execute();
+                    $lastRow = null;
+                    $rowArr = [];
+                    while ($row = $statement->fetch()) {
+                        $rowArr[] = $this->resultRowDisplay($row, $conf, $table);
+                        $lastRow = $row;
+                    }
                     $markup = [];
                     $markup[] = '<div class="panel panel-default">';
                     $markup[] = '  <div class="panel-heading">';
                     $markup[] = htmlspecialchars($this->languageService->sL($conf['ctrl']['title'])) . ' (' . $count . ')';
                     $markup[] = '  </div>';
                     $markup[] = '  <table class="table table-striped table-hover">';
-                    $markup[] = $this->resultRowTitles($lrow, $conf, $table);
+                    $markup[] = $this->resultRowTitles($lastRow, $conf, $table);
+                    $markup[] = implode(LF, $rowArr);
                     $markup[] = '  </table>';
                     $markup[] = '</div>';
 
@@ -853,13 +878,16 @@ class QueryView
             $theList = '';
         }
         if ($id && $depth > 0) {
-            $res = $this->databaseConnection->exec_SELECTquery(
-                'uid',
-                'pages',
-                'pid=' . $id . ' ' . BackendUtility::deleteClause('pages') . ' AND ' .
-                $permsClause
-            );
-            while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $statement = $queryBuilder->select('uid')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('pid', (int)$id),
+                    QueryHelper::stripLogicalOperatorPrefix($permsClause)
+                )
+                ->execute();
+            while ($row = $statement->fetch()) {
                 if ($begin <= 0) {
                     $theList .= ',' . $row['uid'];
                 }
@@ -867,7 +895,6 @@ class QueryView
                     $theList .= $this->getTreeList($row['uid'], $depth - 1, $begin - 1, $permsClause);
                 }
             }
-            $this->databaseConnection->sql_free_result($res);
         }
         return $theList;
     }
@@ -959,28 +986,23 @@ class QueryView
                 $from_table_Arr = explode(',', $fieldSetup['allowed']);
                 $useTablePrefix = 1;
                 if (!$fieldSetup['prepend_tname']) {
-                    $checkres = $this->databaseConnection->exec_SELECTquery(
-                        $fieldName,
-                        $table,
-                        'uid ' . BackendUtility::deleteClause($table)
-                    );
-                    if ($checkres) {
-                        while ($row = $this->databaseConnection->sql_fetch_assoc($checkres)) {
-                            if (stristr($row[$fieldName], ',')) {
-                                $checkContent = explode(',', $row[$fieldName]);
-                                foreach ($checkContent as $singleValue) {
-                                    if (!stristr($singleValue, '_')) {
-                                        $dontPrefixFirstTable = 1;
-                                    }
-                                }
-                            } else {
-                                $singleValue = $row[$fieldName];
-                                if ($singleValue !== '' && !stristr($singleValue, '_')) {
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                    $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                    $statement = $queryBuilder->select($fieldName)->from($table)->execute();
+                    while ($row = $statement->fetch()) {
+                        if (stristr($row[$fieldName], ',')) {
+                            $checkContent = explode(',', $row[$fieldName]);
+                            foreach ($checkContent as $singleValue) {
+                                if (!stristr($singleValue, '_')) {
                                     $dontPrefixFirstTable = 1;
                                 }
                             }
+                        } else {
+                            $singleValue = $row[$fieldName];
+                            if ($singleValue !== '' && !stristr($singleValue, '_')) {
+                                $dontPrefixFirstTable = 1;
+                            }
                         }
-                        $this->databaseConnection->sql_free_result($checkres);
                     }
                 }
             } else {
@@ -1027,49 +1049,47 @@ class QueryView
                         }
                         $useAltSelectLabels = 1;
                     }
-                    $altLabelFieldSelect = $altLabelField ? ',' . $altLabelField : '';
-                    $select_fields = 'uid,' . $labelField . $altLabelFieldSelect;
-                    if (!$this->backendUserAuthentication->isAdmin()
-                        && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) {
-                        $webMounts = $this->backendUserAuthentication->returnWebmounts();
-                        $perms_clause = $this->backendUserAuthentication->getPagePermsClause(1);
-                        $webMountPageTree = '';
-                        $webMountPageTreePrefix = '';
-                        foreach ($webMounts as $key => $val) {
-                            if ($webMountPageTree) {
-                                $webMountPageTreePrefix = ',';
-                            }
-                            $webMountPageTree .= $webMountPageTreePrefix
-                                . $this->getTreeList($val, 999, ($begin = 0), $perms_clause);
-                        }
-                        if ($from_table == 'pages') {
-                            $where_clause = 'uid IN (' . $webMountPageTree . ') '
-                                . BackendUtility::deleteClause($from_table) . ' AND ' . $perms_clause;
-                        } else {
-                            $where_clause = 'pid IN (' . $webMountPageTree . ') '
-                                . BackendUtility::deleteClause($from_table);
-                        }
-                    } else {
-                        $where_clause = 'uid' . BackendUtility::deleteClause($from_table);
-                    }
-                    $orderBy = 'uid';
-                    $res = null;
+
                     if (!$this->tableArray[$from_table]) {
-                        $res = $this->databaseConnection->exec_SELECTquery(
-                            $select_fields,
-                            $from_table,
-                            $where_clause,
-                            ($groupBy = ''),
-                            $orderBy
-                        );
-                        $this->tableArray[$from_table] = array();
-                    }
-                    if ($res) {
-                        while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
+                        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($from_table);
+                        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                        $selectFields = ['uid', $labelField];
+                        if ($altLabelField) {
+                            $selectFields[] = $altLabelField;
+                        }
+                        $queryBuilder->select(...$selectFields)
+                            ->from($from_table)
+                            ->orderBy('uid');
+                        if (!$this->backendUserAuthentication->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) {
+                            $webMounts = $this->backendUserAuthentication->returnWebmounts();
+                            $perms_clause = $this->backendUserAuthentication->getPagePermsClause(1);
+                            $webMountPageTree = '';
+                            $webMountPageTreePrefix = '';
+                            foreach ($webMounts as $webMount) {
+                                if ($webMountPageTree) {
+                                    $webMountPageTreePrefix = ',';
+                                }
+                                $webMountPageTree .= $webMountPageTreePrefix
+                                    . $this->getTreeList($webMount, 999, ($begin = 0), $perms_clause);
+                            }
+                            if ($from_table === 'pages') {
+                                $queryBuilder->where(
+                                    QueryHelper::stripLogicalOperatorPrefix($perms_clause),
+                                    $queryBuilder->expr()->in('uid', GeneralUtility::intExplode(',', $webMountPageTree))
+                                );
+                            } else {
+                                $queryBuilder->where(
+                                    $queryBuilder->expr()->in('pid', GeneralUtility::intExplode(',', $webMountPageTree))
+                                );
+                            }
+                        }
+                        $statement = $queryBuilder->execute();
+                        $this->tableArray[$from_table] = [];
+                        while ($row = $statement->fetch()) {
                             $this->tableArray[$from_table][] = $row;
                         }
-                        $this->databaseConnection->sql_free_result($res);
                     }
+
                     foreach ($this->tableArray[$from_table] as $key => $val) {
                         $GLOBALS['SOBE']->MOD_SETTINGS['labels_noprefix'] =
                             $GLOBALS['SOBE']->MOD_SETTINGS['labels_noprefix'] == 1

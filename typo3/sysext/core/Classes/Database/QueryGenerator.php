@@ -847,7 +847,7 @@ class QueryGenerator
                 $from_table_Arr = explode(',', $fieldSetup['allowed']);
                 $useTablePrefix = 1;
                 if (!$fieldSetup['prepend_tname']) {
-                    $checkres = $databaseConnection->exec_SELECTquery($fieldName, $table, BackendUtility::deleteClause($table), ($groupBy = ''), ($orderBy = ''), ($limit = ''));
+                    $checkres = $databaseConnection->exec_SELECTquery($fieldName, $table, '1=1' . BackendUtility::deleteClause($table), ($groupBy = ''), ($orderBy = ''), ($limit = ''));
                     if ($checkres) {
                         while ($row = $databaseConnection->sql_fetch_assoc($checkres)) {
                             if (stristr($row[$fieldName], ',')) {
@@ -1289,6 +1289,9 @@ class QueryGenerator
             }
             $qsTmp = str_replace('#VALUE#', $inputVal, $qsTmp);
         } else {
+            if (is_array($inputVal)) {
+                $inputVal = $inputVal[0];
+            }
             $qsTmp = str_replace('#VALUE#', $databaseConnection->quoteStr($inputVal, $this->table), $qsTmp);
         }
         if ($conf['comparison'] === 37 || $conf['comparison'] === 36 || $conf['comparison'] === 66 || $conf['comparison'] === 67 || $conf['comparison'] === 100 || $conf['comparison'] === 101) {

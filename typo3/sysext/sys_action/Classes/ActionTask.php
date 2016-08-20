@@ -14,6 +14,7 @@ namespace TYPO3\CMS\SysAction;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -823,20 +824,22 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                 $sqlQuery = $sql_query['qSelect'];
                 $queryIsEmpty = false;
                 if ($sqlQuery) {
-                    $res = $this->getDatabaseConnection()->sql_query($sqlQuery);
-                    if (!$this->getDatabaseConnection()->sql_error()) {
+                    try {
+                        $dataRows = GeneralUtility::makeInstance(ConnectionPool::class)
+                            ->getConnectionForTable($sql_query['qC']['queryTable'])
+                            ->executeQuery($sqlQuery)->fetchAll();
                         $fullsearch->formW = 48;
                         // Additional configuration
                         $GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels'] = 1;
                         $GLOBALS['SOBE']->MOD_SETTINGS['queryFields'] = $sql_query['qC']['queryFields'];
-                        $cP = $fullsearch->getQueryResultCode($type, $res, $sql_query['qC']['queryTable']);
+                        $cP = $fullsearch->getQueryResultCode($type, $dataRows, $sql_query['qC']['queryTable']);
                         $actionContent = $cP['content'];
                         // If the result is rendered as csv or xml, show a download link
                         if ($type === 'csv' || $type === 'xml') {
                             $actionContent .= '<a href="' . GeneralUtility::getIndpEnv('REQUEST_URI') . '&download_file=1"><strong>' . $this->getLanguageService()->getLL('action_download_file') . '</strong></a>';
                         }
-                    } else {
-                        $actionContent .= $this->getDatabaseConnection()->sql_error();
+                    } catch (DBALException $e) {
+                        $actionContent .= $e->getMessage();
                     }
                 } else {
                     // Query is empty (not built)
@@ -851,7 +854,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                 // Admin users are allowed to see and edit the query
                 if ($this->getBackendUser()->isAdmin()) {
                     if (!$queryIsEmpty) {
-                        $actionContent .= '<div class="panel panel-default"><div class="panel-body">' . $fullsearch->tableWrap($sql_query['qSelect']) . '</div></div>';
+                        $actionContent .= '<div class="panel panel-default"><div class="panel-body"><pre>' . $sql_query['qSelect'] . '</pre></div></div>';
                     }
                     $actionContent .= '<a title="' . $this->getLanguageService()->getLL('action_editQuery') . '" class="btn btn-default" href="'
                         . htmlspecialchars(BackendUtility::getModuleUrl('system_dbint')
