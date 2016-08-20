@@ -14,7 +14,10 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Migrate CTypes 'text', 'image' and 'textpic' to 'textmedia' for extension 'frontend'
@@ -34,33 +37,39 @@ class ContentTypesToTextMediaUpdate extends AbstractUpdate
      */
     public function checkForUpdate(&$description)
     {
-        $updateNeeded = true;
-
         if (
             !ExtensionManagementUtility::isLoaded('fluid_styled_content')
             || ExtensionManagementUtility::isLoaded('css_styled_content')
             || $this->isWizardDone()
         ) {
-            $updateNeeded = false;
-        } else {
-            $nonTextmediaCount = $this->getDatabaseConnection()->exec_SELECTcountRows(
-                'uid',
-                'tt_content',
-                'CType IN (\'text\', \'image\', \'textpic\')'
-            );
-
-            if ($nonTextmediaCount === 0) {
-                $updateNeeded = false;
-            }
+            return false;
         }
 
-        $description = 'The extension "fluid_styled_content" is using a new CType, textmedia, ' .
-            'which replaces the CTypes text, image and textpic. ' .
-            'This update wizard migrates these old CTypes to the new one in the database. ' .
-            'If backend groups have the explicit deny/allow flag set for any of the old CTypes, ' .
-            'the according flag for the CType textmedia is set as well.';
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll();
+        $nonTextmediaCount = $queryBuilder->count('uid')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->in(
+                    'CType',
+                    $queryBuilder->createNamedParameter(
+                        ['text', 'image', 'textpic'],
+                        Connection::PARAM_STR_ARRAY
+                    )
+                )
+            )
+            ->execute()->fetchColumn(0);
 
-        return $updateNeeded;
+        if ((bool)$nonTextmediaCount) {
+            $description = 'The extension "fluid_styled_content" is using a new CType, textmedia, ' .
+                'which replaces the CTypes text, image and textpic. ' .
+                'This update wizard migrates these old CTypes to the new one in the database. ' .
+                'If backend groups have the explicit deny/allow flag set for any of the old CTypes, ' .
+                'the according flag for the CType textmedia is set as well.';
+        }
+
+        return (bool)$nonTextmediaCount;
     }
 
     /**
@@ -72,85 +81,98 @@ class ContentTypesToTextMediaUpdate extends AbstractUpdate
      */
     public function performUpdate(array &$databaseQueries, &$customMessages)
     {
-        $databaseConnection = $this->getDatabaseConnection();
-        $databaseConnection->store_lastBuiltQuery = true;
+        $ttContentConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
+        $falConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_reference');
 
-        // Update 'text' records
-        $databaseConnection->exec_UPDATEquery(
-            'tt_content',
-            'tt_content.CType=' . $databaseConnection->fullQuoteStr('text', 'tt_content'),
-            [
-                'CType' => 'textmedia',
-            ]
-        );
-
-        // Store last executed query
-        $databaseQueries[] = str_replace(chr(10), ' ', $databaseConnection->debug_lastBuiltQuery);
-        // Check for errors
-        if ($databaseConnection->sql_error()) {
-            $customMessages = 'SQL-ERROR: ' . htmlspecialchars($databaseConnection->sql_error());
-            return false;
-        }
+        // Update text to textmedia
+        $queryBuilder = $ttContentConnection->createQueryBuilder();
+        $queryBuilder->update('tt_content')
+            ->where($queryBuilder->expr()->eq('CType', $queryBuilder->quote('text')))
+            ->set('CType', $queryBuilder->quote('textmedia'), false);
+        $databaseQueries[] = $queryBuilder->getSQL();
+        $queryBuilder->execute();
 
         // Update 'textpic' and 'image' records
-        $query = '
-            UPDATE tt_content
-            LEFT JOIN sys_file_reference
-            ON sys_file_reference.uid_foreign=tt_content.uid
-            AND sys_file_reference.tablenames=' . $databaseConnection->fullQuoteStr('tt_content', 'sys_file_reference')
-            . ' AND sys_file_reference.fieldname=' . $databaseConnection->fullQuoteStr('image', 'sys_file_reference')
-            . ' SET tt_content.CType=' . $databaseConnection->fullQuoteStr('textmedia', 'tt_content')
-            . ', tt_content.assets=tt_content.image,
-            tt_content.image=0,
-            sys_file_reference.fieldname=' . $databaseConnection->fullQuoteStr('assets', 'tt_content')
-            . ' WHERE
-            tt_content.CType=' . $databaseConnection->fullQuoteStr('textpic', 'tt_content')
-            . ' OR tt_content.CType=' . $databaseConnection->fullQuoteStr('image', 'tt_content');
-        $databaseConnection->sql_query($query);
+        $queryBuilder = $ttContentConnection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+        $statement = $queryBuilder->select('uid', 'image', 'CType')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('textpic')),
+                    $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('image'))
+                )
+            )->execute();
+        while ($ttContentRow = $statement->fetch()) {
+            $falQueryBuilder = $falConnection->createQueryBuilder();
+            $falQueryBuilder->update('sys_file_reference')
+                ->where(
+                    $queryBuilder->expr()->eq('uid_foreign', (int)$ttContentRow['uid']),
+                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->quote('tt_content')),
+                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->quote('image'))
+                )
+                ->set('fieldname', $queryBuilder->quote('assets'), false);
+            $databaseQueries[] = $falQueryBuilder->getSQL();
+            $falQueryBuilder->execute();
 
-        // Store last executed query
-        $databaseQueries[] = str_replace(chr(10), ' ', $query);
-        // Check for errors
-        if ($databaseConnection->sql_error()) {
-            $customMessages = 'SQL-ERROR: ' . htmlspecialchars($databaseConnection->sql_error());
-            return false;
+            $ttContentQueryBuilder = $ttContentConnection->createQueryBuilder();
+            $ttContentQueryBuilder->update('tt_content')
+                ->where($queryBuilder->expr()->eq('uid', (int)$ttContentRow['uid']))
+                ->set('CType', $queryBuilder->quote('textmedia'), false)
+                ->set('assets', $queryBuilder->quote((int)$ttContentRow['image']), false)
+                ->set('image', $queryBuilder->quote(0), false);
+            $databaseQueries[] = $ttContentQueryBuilder->getSQL();
+            $ttContentQueryBuilder->execute();
         }
 
         // Update explicitDeny - ALLOW
-        $databaseConnection->exec_UPDATEquery(
-            'be_groups',
-            '(explicit_allowdeny LIKE ' . $databaseConnection->fullQuoteStr('%' . $databaseConnection->escapeStrForLike('tt_content:CType:textpic:ALLOW', 'tt_content') . '%', 'tt_content')
-                . ' OR explicit_allowdeny LIKE ' . $databaseConnection->fullQuoteStr('%' . $databaseConnection->escapeStrForLike('tt_content:CType:image:ALLOW', 'tt_content') . '%', 'tt_content')
-                . ' OR explicit_allowdeny LIKE ' . $databaseConnection->fullQuoteStr('%' . $databaseConnection->escapeStrForLike('tt_content:CType:text:ALLOW', 'tt_content') . '%', 'tt_content')
-                . ') AND explicit_allowdeny NOT LIKE ' . $databaseConnection->fullQuoteStr('%' . $databaseConnection->escapeStrForLike('tt_content:CType:textmedia:ALLOW', 'tt_content') . '%', 'tt_content'),
-            [
-                'explicit_allowdeny' => 'CONCAT(explicit_allowdeny,' . $databaseConnection->fullQuoteStr(',tt_content:CType:textmedia:ALLOW', 'tt_content') . ')',
-            ],
-            [
-                'explicit_allowdeny',
-            ]
-        );
-
-        // Store last executed query
-        $databaseQueries[] = str_replace(chr(10), ' ', $databaseConnection->debug_lastBuiltQuery);
+        $beGroupsConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_groups');
+        $queryBuilder = $beGroupsConnection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+        $statement = $queryBuilder->select('uid', 'explicit_allowdeny')
+            ->from('be_groups')
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->notLike('explicit_allowdeny', $queryBuilder->quote('%tt_content:CType:textmedia:ALLOW%')),
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->like('explicit_allowdeny', $queryBuilder->quote('%tt_content:CType:textpic:ALLOW%')),
+                        $queryBuilder->expr()->like('explicit_allowdeny', $queryBuilder->quote('%tt_content:CType:image:ALLOW%')),
+                        $queryBuilder->expr()->like('explicit_allowdeny', $queryBuilder->quote('%tt_content:CType:text:ALLOW%'))
+                    )
+                )
+            )->execute();
+        while ($beGroupsRow = $statement->fetch()) {
+            $queryBuilder = $beGroupsConnection->createQueryBuilder();
+            $queryBuilder->update('be_groups')
+                ->where($queryBuilder->expr()->eq('uid', (int)$beGroupsRow['uid']))
+                ->set('explicit_allowdeny', $queryBuilder->quote($beGroupsRow['explicit_allowdeny'] . ',tt_content:CType:textmedia:ALLOW'), false);
+            $databaseQueries[] = $queryBuilder->getSQL();
+            $queryBuilder->execute();
+        }
 
         // Update explicitDeny - DENY
-        $databaseConnection->exec_UPDATEquery(
-            'be_groups',
-            '(explicit_allowdeny LIKE ' . $databaseConnection->fullQuoteStr('%' . $databaseConnection->escapeStrForLike('tt_content:CType:textpic:DENY', 'tt_content') . '%', 'tt_content')
-                . ' OR explicit_allowdeny LIKE ' . $databaseConnection->fullQuoteStr('%' . $databaseConnection->escapeStrForLike('tt_content:CType:image:DENY', 'tt_content') . '%', 'tt_content')
-                . ' OR explicit_allowdeny LIKE ' . $databaseConnection->fullQuoteStr('%' . $databaseConnection->escapeStrForLike('tt_content:CType:text:DENY', 'tt_content') . '%', 'tt_content')
-                . ') AND explicit_allowdeny NOT LIKE ' . $databaseConnection->fullQuoteStr('%' . $databaseConnection->escapeStrForLike('tt_content:CType:textmedia:DENY', 'tt_content') . '%', 'tt_content'),
-            [
-                'explicit_allowdeny' => 'CONCAT(explicit_allowdeny,' . $databaseConnection->fullQuoteStr(',tt_content:CType:textmedia:DENY', 'tt_content') . ')',
-            ],
-            [
-                'explicit_allowdeny',
-            ]
-        );
-
-        // Store last executed query
-        $databaseQueries[] = str_replace(chr(10), ' ', $databaseConnection->debug_lastBuiltQuery);
+        $queryBuilder = $beGroupsConnection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+        $statement = $queryBuilder->select('uid', 'explicit_allowdeny')
+            ->from('be_groups')
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->notLike('explicit_allowdeny', $queryBuilder->quote('%tt_content:CType:textmedia:DENY%')),
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->like('explicit_allowdeny', $queryBuilder->quote('%tt_content:CType:textpic:DENY%')),
+                        $queryBuilder->expr()->like('explicit_allowdeny', $queryBuilder->quote('%tt_content:CType:image:DENY%')),
+                        $queryBuilder->expr()->like('explicit_allowdeny', $queryBuilder->quote('%tt_content:CType:text:DENY%'))
+                    )
+                )
+            )->execute();
+        while ($beGroupsRow = $statement->fetch()) {
+            $queryBuilder = $beGroupsConnection->createQueryBuilder();
+            $queryBuilder->update('be_groups')
+                ->where($queryBuilder->expr()->eq('uid', (int)$beGroupsRow['uid']))
+                ->set('explicit_allowdeny', $queryBuilder->quote($beGroupsRow['explicit_allowdeny'] . ',tt_content:CType:textmedia:DENY'), false);
+            $databaseQueries[] = $queryBuilder->getSQL();
+            $queryBuilder->execute();
+        }
 
         $this->markWizardAsDone();
 
