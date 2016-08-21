@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -964,13 +965,14 @@ abstract class AbstractMenuContentObject
         if ($kw && $startUid) {
             $bA = MathUtility::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0, 100);
             $id_list = $this->parent_cObj->getTreeList(-1 * $startUid, $depth - 1 + $bA, $bA - 1);
-            $kwArr = explode(',', $kw);
+            $kwArr = GeneralUtility::trimExplode(',', $kw, true);
             $keyWordsWhereArr = array();
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             foreach ($kwArr as $word) {
-                $word = trim($word);
-                if ($word) {
-                    $keyWordsWhereArr[] = $kfield . ' LIKE \'%' . $this->getDatabaseConnection()->quoteStr($word, 'pages') . '%\'';
-                }
+                $keyWordsWhereArr[] = $queryBuilder->expr()->like(
+                    $kfield,
+                    $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($word) . '%')
+                );
             }
             $where = empty($keyWordsWhereArr) ? '' : '(' . implode(' OR ', $keyWordsWhereArr) . ')';
             $res = $this->parent_cObj->exec_getQuery('pages', array(

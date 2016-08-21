@@ -286,43 +286,4 @@ class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->subject->__construct(42, '47-11,48-12', $this->pageContextMock);
         $this->assertTrue($cacheFrontendMock->isValidEntryIdentifier($this->subject->getCacheIdentifier()));
     }
-
-    /**
-     * @test
-     */
-    public function enrichWithRelationFieldsCreatesWhereClauseForDisabledField()
-    {
-        $mockDatabaseConnection = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)
-            ->setMethods(array('exec_SELECTgetRows'))
-            ->disableOriginalConstructor()
-            ->getMock();
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Utility\RootlineUtility::class, array('columnHasRelationToResolve'), array(1, '', $this->pageContextMock));
-        $subject->_set('databaseConnection', $mockDatabaseConnection);
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields'] = '';
-        $foreign_table = $this->getUniqueId('foreign_table');
-        $foreign_field = $this->getUniqueId('foreign_field');
-        $GLOBALS['TCA'][$foreign_table]['ctrl']['enablecolumns']['disabled'] = $this->getUniqueId('disabled');
-        $GLOBALS['TCA']['pages']['columns'] = array(
-            'test' => array(
-                'config' => array(
-                    'foreign_table' => $foreign_table,
-                    'foreign_field' => $foreign_field
-                )
-            )
-        );
-        $expected = array(
-            $foreign_field . ' = 0',
-            $foreign_table . '.' . $GLOBALS['TCA'][$foreign_table]['ctrl']['enablecolumns']['disabled'] . ' = 0'
-        );
-        $this->pageContextMock->expects($this->once())->method('deleteClause')->will($this->returnValue(''));
-        $mockDatabaseConnection->expects(
-            $this->once())->
-            method('exec_SELECTgetRows')->
-            with('uid', $foreign_table, implode(' AND ', $expected), '', '', '', '')->
-            // the return value does not matter much, it is only here to prevent error messages from further code execution
-            will($this->returnValue(array('uid' => 17))
-        );
-        $subject->expects($this->once())->method('columnHasRelationToResolve')->will($this->returnValue(true));
-        $subject->_call('enrichWithRelationFields', 17, array());
-    }
 }

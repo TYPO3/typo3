@@ -410,17 +410,6 @@ class LiveSearch
     }
 
     /**
-     * Safely retrieve the queryString.
-     *
-     * @param string $tableName
-     * @return string
-     */
-    public function getQueryString($tableName = '')
-    {
-        return $GLOBALS['TYPO3_DB']->quoteStr($this->queryString, $tableName);
-    }
-
-    /**
      * Setter for limit value.
      *
      * @param int $limitCount

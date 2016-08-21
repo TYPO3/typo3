@@ -14,8 +14,10 @@ namespace TYPO3\CMS\Core\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -112,11 +114,6 @@ class RootlineUtility
     protected static $pageRecordCache = array();
 
     /**
-     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected $databaseConnection;
-
-    /**
      * @param int $uid
      * @param string $mountPointParameter
      * @param \TYPO3\CMS\Frontend\Page\PageRepository $context
@@ -161,7 +158,6 @@ class RootlineUtility
         }
         self::$rootlineFields = array_merge(self::$rootlineFields, GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'], true));
         self::$rootlineFields = array_unique(self::$rootlineFields);
-        $this->databaseConnection = $GLOBALS['TYPO3_DB'];
 
         $this->cacheIdentifier = $this->getCacheIdentifier();
     }
@@ -286,6 +282,8 @@ class RootlineUtility
     protected function enrichWithRelationFields($uid, array $pageRecord)
     {
         $pageOverlayFields = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields']);
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+
         foreach ($GLOBALS['TCA']['pages']['columns'] as $column => $configuration) {
             if ($this->columnHasRelationToResolve($configuration)) {
                 $configuration = $configuration['config'];
@@ -306,32 +304,41 @@ class RootlineUtility
                 } else {
                     $columnIsOverlaid = in_array($column, $pageOverlayFields, true);
                     $table = $configuration['foreign_table'];
-                    $field = $configuration['foreign_field'];
-                    $whereClauseParts = array($field . ' = ' . (int)($columnIsOverlaid ? $uid : $pageRecord['uid']));
+
+                    $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
+                    $queryBuilder->getRestrictions()->removeAll()
+                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                        ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
+                    $queryBuilder->select('uid')
+                        ->from($table)
+                        ->where(
+                            $queryBuilder->expr()->eq($configuration['foreign_field'], (int)($columnIsOverlaid ? $uid : $pageRecord['uid']))
+                        );
+
                     if (isset($configuration['foreign_match_fields']) && is_array($configuration['foreign_match_fields'])) {
                         foreach ($configuration['foreign_match_fields'] as $field => $value) {
-                            $whereClauseParts[] = $field . ' = ' . $this->databaseConnection->fullQuoteStr($value, $table);
+                            $queryBuilder->andWhere(
+                                $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($value))
+                            );
                         }
                     }
                     if (isset($configuration['foreign_table_field'])) {
-                        if ((int)$this->languageUid > 0 && $columnIsOverlaid) {
-                            $whereClauseParts[] = trim($configuration['foreign_table_field']) . ' = \'pages_language_overlay\'';
-                        } else {
-                            $whereClauseParts[] = trim($configuration['foreign_table_field']) . ' = \'pages\'';
-                        }
+                        $queryBuilder->andWhere(
+                            $queryBuilder->expr()->eq(
+                                trim($configuration['foreign_table_field']),
+                                $queryBuilder->createNamedParameter((int)$this->languageUid > 0 && $columnIsOverlaid ? 'pages_language_overlay' : 'pages'))
+                        );
                     }
-                    if (isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'])) {
-                        $whereClauseParts[] = $table . '.' . $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] . ' = 0';
+                    if (isset($configuration['foreign_sortby'])) {
+                        $queryBuilder->orderBy($configuration['foreign_sortby']);
                     }
-                    $whereClause = implode(' AND ', $whereClauseParts);
-                    $whereClause .= $this->pageContext->deleteClause($table);
-                    $orderBy = isset($configuration['foreign_sortby']) ? $configuration['foreign_sortby'] : '';
-                    $rows = $this->databaseConnection->exec_SELECTgetRows('uid', $table, $whereClause, '', $orderBy);
-                    if (!is_array($rows)) {
-                        throw new \RuntimeException('Could to resolve related records for page ' . $uid . ' and foreign_table ' . htmlspecialchars($configuration['foreign_table']), 1343589452);
+                    try {
+                        $statement = $queryBuilder->execute();
+                    } catch (DBALException $e) {
+                        throw new \RuntimeException('Could to resolve related records for page ' . $uid . ' and foreign_table ' . htmlspecialchars($table), 1343589452);
                     }
-                    $relatedUids = array();
-                    foreach ($rows as $row) {
+                    $relatedUids = [];
+                    while ($row = $statement->fetch()) {
                         $relatedUids[] = $row['uid'];
                     }
                 }
