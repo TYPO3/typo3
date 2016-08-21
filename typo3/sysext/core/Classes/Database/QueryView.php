@@ -716,7 +716,7 @@ class QueryView
                 'returnUrl' => GeneralUtility::linkThisScript()
             ];
             $redirectUrl = BackendUtility::getModuleUrl('record_edit', $formEngineParameters);
-            $out .= '<a class="btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db'), [
+            $out .= '<a class="btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db', [
                     'cmd' => [
                         $table => [
                             $row['uid'] => [
@@ -725,7 +725,7 @@ class QueryView
                         ]
                     ],
                     'redirect' => $redirectUrl
-                ]) . '" title="' . htmlspecialchars($this->languageService->getLL('undelete_and_edit')) . '">';
+                ])) . '" title="' . htmlspecialchars($this->languageService->getLL('undelete_and_edit')) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore-edit', Icon::SIZE_SMALL)->render() . '</a>';
         }
         $_params = array($table => $row);

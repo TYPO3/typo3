@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Core\Database;
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Lang\LanguageService;
@@ -826,7 +828,6 @@ class QueryGenerator
             }
         }
         if ($fieldSetup['type'] === 'relation') {
-            $databaseConnection = $this->getDatabaseConnection();
             $useTablePrefix = 0;
             $dontPrefixFirstTable = 0;
             if ($fieldSetup['items']) {
@@ -847,24 +848,25 @@ class QueryGenerator
                 $from_table_Arr = explode(',', $fieldSetup['allowed']);
                 $useTablePrefix = 1;
                 if (!$fieldSetup['prepend_tname']) {
-                    $checkres = $databaseConnection->exec_SELECTquery($fieldName, $table, '1=1' . BackendUtility::deleteClause($table), ($groupBy = ''), ($orderBy = ''), ($limit = ''));
-                    if ($checkres) {
-                        while ($row = $databaseConnection->sql_fetch_assoc($checkres)) {
-                            if (stristr($row[$fieldName], ',')) {
-                                $checkContent = explode(',', $row[$fieldName]);
-                                foreach ($checkContent as $singleValue) {
-                                    if (!stristr($singleValue, '_')) {
-                                        $dontPrefixFirstTable = 1;
-                                    }
-                                }
-                            } else {
-                                $singleValue = $row[$fieldName];
-                                if ($singleValue !== '' && !stristr($singleValue, '_')) {
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                    $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                    $statement = $queryBuilder->select($fieldName)
+                        ->from($table)
+                        ->execute();
+                    while ($row = $statement->fetch()) {
+                        if (stristr($row[$fieldName], ',')) {
+                            $checkContent = explode(',', $row[$fieldName]);
+                            foreach ($checkContent as $singleValue) {
+                                if (!stristr($singleValue, '_')) {
                                     $dontPrefixFirstTable = 1;
                                 }
                             }
+                        } else {
+                            $singleValue = $row[$fieldName];
+                            if ($singleValue !== '' && !stristr($singleValue, '_')) {
+                                $dontPrefixFirstTable = 1;
+                            }
                         }
-                        $databaseConnection->sql_free_result($checkres);
                     }
                 }
             } else {
@@ -913,45 +915,51 @@ class QueryGenerator
                         }
                         $useAltSelectLabels = true;
                     }
-                    $altLabelFieldSelect = $altLabelField ? ',' . $altLabelField : '';
-                    $select_fields = 'uid,' . $labelField . $altLabelFieldSelect;
-                    if (!$backendUserAuthentication->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) {
-                        $webMounts = $backendUserAuthentication->returnWebmounts();
-                        $perms_clause = $backendUserAuthentication->getPagePermsClause(1);
-                        $webMountPageTreePrefix = '';
-                        foreach ($webMounts as $key => $val) {
-                            if ($webMountPageTree) {
-                                $webMountPageTreePrefix = ',';
-                            }
-                            $webMountPageTree .= $webMountPageTreePrefix . $this->getTreeList($val, 999, ($begin = 0), $perms_clause);
-                        }
-                        if ($from_table === 'pages') {
-                            $where_clause = 'uid IN (' . $webMountPageTree . ') ';
-                            if (!$module->MOD_SETTINGS['show_deleted']) {
-                                $where_clause .= BackendUtility::deleteClause($from_table) . ' AND' . $perms_clause;
-                            }
-                        } else {
-                            $where_clause = 'pid IN (' . $webMountPageTree . ') ';
-                            if (!$module->MOD_SETTINGS['show_deleted']) {
-                                $where_clause .= BackendUtility::deleteClause($from_table);
-                            }
-                        }
-                    } else {
-                        $where_clause = 'uid';
-                        if (!$module->MOD_SETTINGS['show_deleted']) {
-                            $where_clause .= BackendUtility::deleteClause($from_table);
-                        }
-                    }
-                    $orderBy = 'uid';
+
                     if (!$this->tableArray[$from_table]) {
-                        $res = $databaseConnection->exec_SELECTquery($select_fields, $from_table, $where_clause, ($groupBy = ''), $orderBy, ($limit = ''));
-                        if ($res) {
-                            while ($row = $databaseConnection->sql_fetch_assoc($res)) {
-                                $this->tableArray[$from_table][] = $row;
+                        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($from_table);
+                        if ($module->MOD_SETTINGS['show_deleted']) {
+                            $queryBuilder->getRestrictions()->removeAll();
+                        } else {
+                            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                        }
+                        $selectFields = ['uid', $labelField];
+                        if ($altLabelField) {
+                            $selectFields[] = $altLabelField;
+                        }
+                        $queryBuilder->select(...$selectFields)
+                            ->from($from_table)
+                            ->orderBy('uid');
+                        if (!$backendUserAuthentication->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) {
+                            $webMounts = $backendUserAuthentication->returnWebmounts();
+                            $perms_clause = $backendUserAuthentication->getPagePermsClause(1);
+                            $webMountPageTree = '';
+                            $webMountPageTreePrefix = '';
+                            foreach ($webMounts as $webMount) {
+                                if ($webMountPageTree) {
+                                    $webMountPageTreePrefix = ',';
+                                }
+                                $webMountPageTree .= $webMountPageTreePrefix
+                                    . $this->getTreeList($webMount, 999, ($begin = 0), $perms_clause);
                             }
-                            $databaseConnection->sql_free_result($res);
+                            if ($from_table === 'pages') {
+                                $queryBuilder->where(
+                                    QueryHelper::stripLogicalOperatorPrefix($perms_clause),
+                                    $queryBuilder->expr()->in('uid', GeneralUtility::intExplode(',', $webMountPageTree))
+                                );
+                            } else {
+                                $queryBuilder->where(
+                                    $queryBuilder->expr()->in('pid', GeneralUtility::intExplode(',', $webMountPageTree))
+                                );
+                            }
+                        }
+                        $statement = $queryBuilder->execute();
+                        $this->tableArray[$from_table] = [];
+                        while ($row = $statement->fetch()) {
+                            $this->tableArray[$from_table][] = $row;
                         }
                     }
+
                     foreach ($this->tableArray[$from_table] as $key => $val) {
                         if ($useSelectLabels) {
                             $outArray[$tablePrefix . $val['uid']] = htmlspecialchars($labelFieldSelect[$val[$labelField]]);
@@ -1266,7 +1274,7 @@ class QueryGenerator
     public function getQuerySingle($conf, $first)
     {
         $qs = '';
-        $databaseConnection = $this->getDatabaseConnection();
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
         $prefix = $this->enablePrefix ? $this->table . '.' : '';
         if (!$first) {
             // Is it OK to insert the AND operator if none is set?
@@ -1292,12 +1300,12 @@ class QueryGenerator
             if (is_array($inputVal)) {
                 $inputVal = $inputVal[0];
             }
-            $qsTmp = str_replace('#VALUE#', $databaseConnection->quoteStr($inputVal, $this->table), $qsTmp);
+            $qsTmp = str_replace('#VALUE#', trim($queryBuilder->quote($inputVal), '\''), $qsTmp);
         }
         if ($conf['comparison'] === 37 || $conf['comparison'] === 36 || $conf['comparison'] === 66 || $conf['comparison'] === 67 || $conf['comparison'] === 100 || $conf['comparison'] === 101) {
             // between:
             $inputVal = $this->cleanInputVal($conf, '1');
-            $qsTmp = str_replace('#VALUE1#', $databaseConnection->quoteStr($inputVal, $this->table), $qsTmp);
+            $qsTmp = str_replace('#VALUE1#', trim($queryBuilder->quote($inputVal), '\''), $qsTmp);
         }
         $qs .= trim($qsTmp);
         return $qs;
@@ -1517,10 +1525,10 @@ class QueryGenerator
      * @param int $id
      * @param int $depth
      * @param int $begin
-     * @param string $perms_clause
+     * @param string $permClause
      * @return string
      */
-    public function getTreeList($id, $depth, $begin = 0, $perms_clause)
+    public function getTreeList($id, $depth, $begin = 0, $permClause)
     {
         $depth = (int)$depth;
         $begin = (int)$begin;
@@ -1534,17 +1542,23 @@ class QueryGenerator
             $theList = '';
         }
         if ($id && $depth > 0) {
-            $databaseConnection = $this->getDatabaseConnection();
-            $res = $databaseConnection->exec_SELECTquery('uid', 'pages', 'pid=' . $id . ' ' . BackendUtility::deleteClause('pages') . ' AND ' . $perms_clause);
-            while ($row = $databaseConnection->sql_fetch_assoc($res)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $statement = $queryBuilder->select('uid')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('pid', (int)$id),
+                    QueryHelper::stripLogicalOperatorPrefix($permClause)
+                )
+                ->execute();
+            while ($row = $statement->fetch()) {
                 if ($begin <= 0) {
                     $theList .= ',' . $row['uid'];
                 }
                 if ($depth > 1) {
-                    $theList .= $this->getTreeList($row['uid'], $depth - 1, $begin - 1, $perms_clause);
+                    $theList .= $this->getTreeList($row['uid'], $depth - 1, $begin - 1, $permClause);
                 }
             }
-            $databaseConnection->sql_free_result($res);
         }
         return $theList;
     }
@@ -1553,39 +1567,66 @@ class QueryGenerator
      * Get select query
      *
      * @param string $qString
-     * @param string $fieldName
      * @return bool|\mysqli_result|object
      */
-    public function getSelectQuery($qString = '', $fieldName = '')
+    public function getSelectQuery($qString = '')
     {
         $backendUserAuthentication = $this->getBackendUserAuthentication();
-        if (!$qString) {
-            $qString = $this->getQuery($this->queryConfig);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+        if ($this->getModule()->MOD_SETTINGS['show_deleted']) {
+            $queryBuilder->getRestrictions()->removeAll();
+        } else {
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         }
-        $qString = '(' . $qString . ')';
+        $fieldList = GeneralUtility::trimExplode(',', $this->extFieldLists['queryFields']
+            . ',pid'
+            . ($GLOBALS['TCA'][$this->table]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$this->table]['ctrl']['delete'] : '')
+        );
+        $queryBuilder->select(...$fieldList)
+            ->from($this->table);
+
+        if ($this->extFieldLists['queryGroup']) {
+            $queryBuilder->groupBy(...QueryHelper::parseGroupBy($this->extFieldLists['queryGroup']));
+        }
+        if ($this->extFieldLists['queryOrder']) {
+            foreach (QueryHelper::parseOrderBy($this->extFieldLists['queryOrder_SQL']) as $orderPair) {
+                list($fieldName, $order) = $orderPair;
+                $queryBuilder->addOrderBy($fieldName, $order);
+            }
+        }
+        if ($this->extFieldLists['queryLimit']) {
+            $queryBuilder->setMaxResults((int)$this->extFieldLists['queryLimit']);
+        }
+
         if (!$backendUserAuthentication->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) {
             $webMounts = $backendUserAuthentication->returnWebmounts();
             $perms_clause = $backendUserAuthentication->getPagePermsClause(1);
             $webMountPageTree = '';
             $webMountPageTreePrefix = '';
-            foreach ($webMounts as $key => $val) {
+            foreach ($webMounts as $webMount) {
                 if ($webMountPageTree) {
                     $webMountPageTreePrefix = ',';
                 }
-                $webMountPageTree .= $webMountPageTreePrefix . $this->getTreeList($val, 999, ($begin = 0), $perms_clause);
+                $webMountPageTree .= $webMountPageTreePrefix
+                    . $this->getTreeList($webMount, 999, ($begin = 0), $perms_clause);
             }
             if ($this->table === 'pages') {
-                $qString .= ' AND uid IN (' . $webMountPageTree . ')';
+                $queryBuilder->where(
+                    QueryHelper::stripLogicalOperatorPrefix($perms_clause),
+                    $queryBuilder->expr()->in('uid', GeneralUtility::intExplode(',', $webMountPageTree))
+                );
             } else {
-                $qString .= ' AND pid IN (' . $webMountPageTree . ')';
+                $queryBuilder->where(
+                    $queryBuilder->expr()->in('pid', GeneralUtility::intExplode(',', $webMountPageTree))
+                );
             }
         }
-        $fieldList = $this->extFieldLists['queryFields'] . ',pid' . ($GLOBALS['TCA'][$this->table]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$this->table]['ctrl']['delete'] : '');
-        if (!$this->getModule()->MOD_SETTINGS['show_deleted']) {
-            $qString .= BackendUtility::deleteClause($this->table);
+        if (!$qString) {
+            $qString = $this->getQuery($this->queryConfig);
         }
-        $query = $this->getDatabaseConnection()->SELECTquery($fieldList, $this->table, $qString, trim($this->extFieldLists['queryGroup']), $this->extFieldLists['queryOrder'] ? trim($this->extFieldLists['queryOrder_SQL']) : '', $this->extFieldLists['queryLimit']);
-        return $query;
+        $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($qString));
+
+        return $queryBuilder->getSQL();
     }
 
     /**
@@ -1622,14 +1663,6 @@ class QueryGenerator
     public function setFormName($formName)
     {
         $this->formName = trim($formName);
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
