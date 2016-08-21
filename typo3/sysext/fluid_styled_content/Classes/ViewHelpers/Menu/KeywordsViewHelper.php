@@ -13,7 +13,9 @@ namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Menu;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A view helper which returns pages with one of the same keywords as the given pages
@@ -109,9 +111,9 @@ class KeywordsViewHelper extends AbstractMenuViewHelper
 
         $keywordConstraints = array();
         if ($filteredKeywords) {
-            $db = $this->getDatabaseConnection();
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             foreach ($filteredKeywords as $keyword) {
-                $keyword = $db->fullQuoteStr('%' . $db->escapeStrForLike($keyword, 'pages') . '%', 'pages');
+                $keyword = $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($keyword) . '%');
                 $keywordConstraints[] = 'keywords LIKE ' . $keyword;
             }
             $constraints .= ' AND (' . implode(' OR ', $keywordConstraints) . ')';
@@ -151,13 +153,5 @@ class KeywordsViewHelper extends AbstractMenuViewHelper
         $keywordList = preg_split('/[,;' . LF . ']/', $keywords);
 
         return array_filter(array_map('trim', $keywordList));
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

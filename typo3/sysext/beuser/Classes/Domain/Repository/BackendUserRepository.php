@@ -50,9 +50,10 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
         // Username
         if ($demand->getUserName() !== '') {
             $searchConstraints = array();
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
             foreach (array('userName', 'uid', 'realName') as $field) {
                 $searchConstraints[] = $query->like(
-                    $field, '%' . $GLOBALS['TYPO3_DB']->escapeStrForLike($demand->getUserName(), 'be_users') . '%'
+                    $field, '%' . $queryBuilder->escapeLikeWildcards($demand->getUserName()) . '%'
                 );
             }
             $constraints[] = $query->logicalOr($searchConstraints);
