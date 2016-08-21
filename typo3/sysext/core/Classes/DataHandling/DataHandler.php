@@ -1881,7 +1881,7 @@ class DataHandler
         // Handle native date/time fields
         if ($isDateOrDateTimeField) {
             // Convert the timestamp back to a date/time
-            $res['value'] = $res['value'] ? date($format, $res['value']) : $emptyValue;
+            $res['value'] = $res['value'] ? gmdate($format, $res['value']) : $emptyValue;
         }
         return $res;
     }

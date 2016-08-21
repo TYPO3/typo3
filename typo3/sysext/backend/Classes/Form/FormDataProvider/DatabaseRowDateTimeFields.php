@@ -39,7 +39,7 @@ class DatabaseRowDateTimeFields implements FormDataProviderInterface
                     &&  $result['databaseRow'][$column] !== $dateTimeFormats[$columnConfig['config']['dbType']]['empty']
                 ) {
                     // Create a timestamp from current field data
-                    $result['databaseRow'][$column] = strtotime($result['databaseRow'][$column]);
+                    $result['databaseRow'][$column] = strtotime($result['databaseRow'][$column]) + date('Z');
                 } else {
                     // Set to 0 timestamp
                     $result['databaseRow'][$column] = 0;

@@ -2504,7 +2504,7 @@ class BackendUtility
                         if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'date') {
                             $dateTimeFormats = $db->getDateTimeFormats($table);
                             $emptyValue = $dateTimeFormats['date']['empty'];
-                            $value = $value !== $emptyValue ? strtotime($value) : 0;
+                            $value = $value !== $emptyValue ? strtotime($value) + date('Z') : 0;
                         }
                         if (!empty($value)) {
                             $ageSuffix = '';

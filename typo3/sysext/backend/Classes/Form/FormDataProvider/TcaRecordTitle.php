@@ -324,7 +324,7 @@ class TcaRecordTitle implements FormDataProviderInterface
         } elseif (GeneralUtility::inList($fieldConfig['eval'], 'datetime')) {
             // Handle native date/time field
             if (isset($fieldConfig['dbType']) && $fieldConfig['dbType'] === 'datetime') {
-                $value = $value === '0000-00-00 00:00:00' ? 0 : (int)strtotime($value);
+                $value = $value === '0000-00-00 00:00:00' ? 0 : (int)strtotime($value) + date('Z');
             } else {
                 $value = (int)$value;
             }
