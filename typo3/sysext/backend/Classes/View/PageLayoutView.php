@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -2034,19 +2035,50 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     {
         if ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')) {
             // First, select all
-            $res = $this->getPageLayoutController()->exec_languageQuery(0);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+            $queryBuilder->getRestrictions()->removeAll();
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
+            $statement = $queryBuilder->select('uid', 'title')
+                ->from('sys_language')
+                ->orderBy('title')
+                ->execute();
             $langSelItems = array();
             $langSelItems[0] = '
 						<option value="0"></option>';
-            while ($row = $this->getDatabase()->sql_fetch_assoc($res)) {
+            while ($row = $statement->fetch()) {
                 if ($this->getBackendUser()->checkLanguageAccess($row['uid'])) {
                     $langSelItems[$row['uid']] = '
 							<option value="' . $row['uid'] . '">' . htmlspecialchars($row['title']) . '</option>';
                 }
             }
             // Then, subtract the languages which are already on the page:
-            $res = $this->getPageLayoutController()->exec_languageQuery($id);
-            while ($row = $this->getDatabase()->sql_fetch_assoc($res)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+            $queryBuilder->getRestrictions()->removeAll();
+            $queryBuilder->select('sys_language.uid AS uid', 'sys_language.title AS title')
+                ->from('sys_language')
+                ->join(
+                    'sys_language',
+                    'pages_language_overlay',
+                    'pages_language_overlay',
+                    $queryBuilder->expr()->eq('sys_language.uid', $queryBuilder->quoteIdentifier('pages_language_overlay.sys_language_uid'))
+                )
+                ->where(
+                    $queryBuilder->expr()->eq('pages_language_overlay.deleted', 0),
+                    $queryBuilder->expr()->eq('pages_language_overlay.pid', (int)$this->id),
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->gte('pages_language_overlay.t3ver_state', (int)(new VersionState(VersionState::DEFAULT_STATE))),
+                        $queryBuilder->expr()->eq('pages_language_overlay.t3ver_wsid', (int)$this->getBackendUser()->workspace)
+                    )
+                )
+                ->groupBy('pages_language_overlay.sys_language_uid', 'sys_language.uid', 'sys_language.pid',
+                    'sys_language.tstamp', 'sys_language.hidden', 'sys_language.title',
+                    'sys_language.language_isocode', 'sys_language.static_lang_isocode', 'sys_language.flag')
+                ->orderBy('sys_language.title');
+            if (!$this->getBackendUser()->isAdmin()) {
+                $queryBuilder->andWhere($queryBuilder->expr()->eq('sys_language.hidden', 0));
+            }
+            $statement = $queryBuilder->execute();
+            while ($row = $statement->fetch()) {
                 unset($langSelItems[$row['uid']]);
             }
             // Remove disallowed languages

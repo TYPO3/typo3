@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -282,14 +283,6 @@ class PageLayoutController
     protected $languagesInColumnCache = array();
 
     /**
-     * Caches the amount of content elements as a matrix
-     *
-     * @var array
-     * @internal
-     */
-    public $contentElementCache = array();
-
-    /**
      * @var IconFactory
      */
     protected $iconFactory;
@@ -402,10 +395,43 @@ class PageLayoutController
             }
         }
         // First, select all pages_language_overlay records on the current page. Each represents a possibility for a language on the page. Add these to language selector.
-        $res = $this->exec_languageQuery($this->id);
-        while ($lRow = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+        $queryBuilder->getRestrictions()->removeAll();
+        if ($this->id) {
+            $queryBuilder->select('sys_language.uid AS uid', 'sys_language.title AS title')
+                ->from('sys_language')
+                ->join(
+                    'sys_language',
+                    'pages_language_overlay',
+                    'pages_language_overlay',
+                    $queryBuilder->expr()->eq('sys_language.uid', $queryBuilder->quoteIdentifier('pages_language_overlay.sys_language_uid'))
+                )
+                ->where(
+                    $queryBuilder->expr()->eq('pages_language_overlay.deleted', 0),
+                    $queryBuilder->expr()->eq('pages_language_overlay.pid', (int)$this->id),
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->gte('pages_language_overlay.t3ver_state', (int)(new VersionState(VersionState::DEFAULT_STATE))),
+                        $queryBuilder->expr()->eq('pages_language_overlay.t3ver_wsid', (int)$this->getBackendUser()->workspace)
+                    )
+                )
+                ->groupBy('pages_language_overlay.sys_language_uid', 'sys_language.uid', 'sys_language.pid',
+                    'sys_language.tstamp', 'sys_language.hidden', 'sys_language.title',
+                    'sys_language.language_isocode', 'sys_language.static_lang_isocode', 'sys_language.flag')
+                ->orderBy('sys_language.title');
+            if (!$this->getBackendUser()->isAdmin()) {
+                $queryBuilder->andWhere($queryBuilder->expr()->eq('sys_language.hidden', 0));
+            }
+            $statement = $queryBuilder->execute();
+        } else {
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
+            $statement = $queryBuilder->select('uid', 'title')
+                ->from('sys_language')
+                ->orderBy('title')
+                ->execute();
+        }
+        while ($lRow = $statement->fetch()) {
             if ($this->getBackendUser()->checkLanguageAccess($lRow['uid'])) {
-                $this->MOD_MENU['language'][$lRow['uid']] = $lRow['hidden'] ? '(' . $lRow['title'] . ')' : $lRow['title'];
+                $this->MOD_MENU['language'][$lRow['uid']] = $lRow['title'];
             }
         }
         // Setting alternative default label:
@@ -712,16 +738,31 @@ class PageLayoutController
      */
     public function renderQuickEdit()
     {
-        $databaseConnection = $this->getDatabaseConnection();
         $beUser = $this->getBackendUser();
         $lang = $this->getLanguageService();
         // Set the edit_record value for internal use in this function:
         $edit_record = $this->edit_record;
         // If a command to edit all records in a column is issue, then select all those elements, and redirect to FormEngine
         if (substr($edit_record, 0, 9) == '_EDIT_COL') {
-            $res = $databaseConnection->exec_SELECTquery('*', 'tt_content', 'pid=' . (int)$this->id . ' AND colPos=' . (int)substr($edit_record, 10) . ' AND sys_language_uid=' . (int)$this->current_sys_language . ($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : BackendUtility::BEenableFields('tt_content')) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+            if ($this->MOD_SETTINGS['tt_content_showHidden']) {
+                $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            }
+            $statement = $queryBuilder->select('*')
+                ->from('tt_content')
+                ->orderBy('sorting')
+                ->where(
+                    $queryBuilder->expr()->eq('pid', (int)$this->id),
+                    $queryBuilder->expr()->eq('colPos', (int)substr($edit_record, 10)),
+                    $queryBuilder->expr()->eq('sys_language_uid', (int)$this->current_sys_language),
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->gte('t3ver_state', (int)(new VersionState(VersionState::DEFAULT_STATE))),
+                        $queryBuilder->expr()->eq('t3ver_wsid', (int)$beUser->workspace)
+                    )
+                )
+                ->execute();
             $idListA = array();
-            while ($cRow = $databaseConnection->sql_fetch_assoc($res)) {
+            while ($cRow = $statement->fetch()) {
                 $idListA[] = $cRow['uid'];
             }
             $url = BackendUtility::getModuleUrl('record_edit', array(
@@ -732,8 +773,16 @@ class PageLayoutController
         }
         // If the former record edited was the creation of a NEW record, this will look up the created records uid:
         if ($this->new_unique_uid) {
-            $res = $databaseConnection->exec_SELECTquery('*', 'sys_log', 'userid=' . (int)$beUser->user['uid'] . ' AND NEWid=' . $databaseConnection->fullQuoteStr($this->new_unique_uid, 'sys_log'));
-            $sys_log_row = $databaseConnection->sql_fetch_assoc($res);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
+            $queryBuilder->getRestrictions()->removeAll();
+            $sys_log_row = $queryBuilder->select('tablename', 'recuid')
+                ->from('sys_log')
+                ->where(
+                    $queryBuilder->expr()->eq('userid', (int)$beUser->user['uid']),
+                    $queryBuilder->expr()->eq('NEWid', $queryBuilder->createNamedParameter($this->new_unique_uid))
+                )
+                ->execute()
+                ->fetch();
             if (is_array($sys_log_row)) {
                 $edit_record = $sys_log_row['tablename'] . ':' . $sys_log_row['recuid'];
             }
@@ -746,8 +795,19 @@ class PageLayoutController
         $this->deleteButton = MathUtility::canBeInterpretedAsInteger($this->eRParts[1]) && $edit_record && ($tableName !== 'pages' && $this->EDIT_CONTENT || $tableName === 'pages' && $this->CALC_PERMS & Permission::PAGE_DELETE);
         // If undo-button should be rendered (depends on available items in sys_history)
         $this->undoButton = false;
-        $undoRes = $databaseConnection->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $databaseConnection->fullQuoteStr($tableName, 'sys_history') . ' AND recuid=' . (int)$this->eRParts[1], '', 'tstamp DESC', '1');
-        if ($this->undoButtonR = $databaseConnection->sql_fetch_assoc($undoRes)) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_history');
+        $queryBuilder->getRestrictions()->removeAll();
+        $this->undoButtonR = $queryBuilder->select('tstamp')
+            ->from('sys_history')
+            ->where(
+                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
+                $queryBuilder->expr()->eq('recuid', (int)$this->eRParts[1])
+            )
+            ->orderBy('tstamp', 'DESC')
+            ->setMaxResults(1)
+            ->execute()
+            ->fetch();
+        if ($this->undoButtonR) {
             $this->undoButton = true;
         }
         // Setting up the Return URL for coming back to THIS script (if links take the user to another script)
@@ -1339,87 +1399,6 @@ class PageLayoutController
     }
 
     /**
-     * Returns a SQL query for selecting sys_language records.
-     *
-     * @param int $id Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
-     * @return string Return query string.
-     */
-    public function exec_languageQuery($id)
-    {
-        if ($id) {
-            $exQ = BackendUtility::deleteClause('pages_language_overlay') .
-                ($this->getBackendUser()->isAdmin() ? '' : ' AND sys_language.hidden=0');
-            return $this->getDatabaseConnection()->exec_SELECTquery(
-                'sys_language.*',
-                'pages_language_overlay,sys_language',
-                'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . (int)$id . $exQ .
-                BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
-                'pages_language_overlay.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.language_isocode,sys_language.static_lang_isocode,sys_language.flag',
-                'sys_language.title'
-            );
-        } else {
-            return $this->getDatabaseConnection()->exec_SELECTquery(
-                'sys_language.*',
-                'sys_language',
-                'sys_language.hidden=0',
-                '',
-                'sys_language.title'
-            );
-        }
-    }
-
-    /**
-     * Check if a column of a page for a language is empty. Translation records are ignored here!
-     *
-     * @param int $colPos
-     * @param int $languageId
-     * @return bool
-     */
-    public function isColumnEmpty($colPos, $languageId)
-    {
-        foreach ($this->contentElementCache[$languageId][$colPos] as $uid => $row) {
-            if ((int)$row['l18n_parent'] === 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Get elements for a column and a language
-     *
-     * @param int $pageId
-     * @param int $colPos
-     * @param int $languageId
-     * @return array
-     */
-    public function getElementsFromColumnAndLanguage($pageId, $colPos, $languageId)
-    {
-        if (!isset($this->contentElementCache[$languageId][$colPos])) {
-            $languageId = (int)$languageId;
-            $whereClause = 'tt_content.pid=' . (int)$pageId . ' AND tt_content.colPos=' . (int)$colPos . ' AND tt_content.sys_language_uid=' . $languageId . BackendUtility::deleteClause('tt_content');
-            if ($languageId > 0) {
-                $whereClause .= ' AND tt_content.l18n_parent=0 AND sys_language.uid=' . $languageId . ($this->getBackendUser()->isAdmin() ? '' : ' AND sys_language.hidden=0');
-            }
-
-            $databaseConnection = $this->getDatabaseConnection();
-            $res = $databaseConnection->exec_SELECTquery(
-                'tt_content.uid',
-                'tt_content,sys_language',
-                $whereClause
-            );
-            while ($row = $databaseConnection->sql_fetch_assoc($res)) {
-                $this->contentElementCache[$languageId][$colPos][$row['uid']] = $row;
-            }
-            $databaseConnection->sql_free_result($res);
-        }
-        if (is_array($this->contentElementCache[$languageId][$colPos])) {
-            return array_keys($this->contentElementCache[$languageId][$colPos]);
-        }
-        return array();
-    }
-
-    /**
      * Check if page can be edited by current user
      *
      * @return bool
@@ -1460,16 +1439,6 @@ class PageLayoutController
     }
 
     /**
-     * Returns the database connection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
-    /**
      * Returns current PageRenderer
      *
      * @return PageRenderer
@@ -1487,7 +1456,6 @@ class PageLayoutController
     protected function makeQuickEditMenu($edit_record)
     {
         $lang = $this->getLanguageService();
-        $databaseConnection = $this->getDatabaseConnection();
         $beUser = $this->getBackendUser();
 
         $quickEditMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
@@ -1530,17 +1498,33 @@ class PageLayoutController
                 ->setActive($edit_record == $inValue);
             $quickEditMenu->addMenuItem($menuItem);
         }
-        // Selecting all content elements from this language and allowed colPos:
-        $whereClause = 'pid=' . (int)$this->id . ' AND sys_language_uid=' . (int)$this->current_sys_language . ' AND colPos IN (' . $this->colPosList . ')' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : BackendUtility::BEenableFields('tt_content')) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content');
-        if (!$this->getBackendUser()->user['admin']) {
-            $whereClause .= ' AND editlock = 0';
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        if ($this->MOD_SETTINGS['tt_content_showHidden']) {
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         }
-        $res = $databaseConnection->exec_SELECTquery('*', 'tt_content', $whereClause, '', 'colPos,sorting');
+        $queryBuilder->select('*')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq('pid', (int)$this->id),
+                $queryBuilder->expr()->eq('sys_language_uid', (int)$this->current_sys_language),
+                $queryBuilder->expr()->in('colPos', GeneralUtility::intExplode(',', $this->colPosList)),
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->gte('t3ver_state', (int)(new VersionState(VersionState::DEFAULT_STATE))),
+                    $queryBuilder->expr()->eq('t3ver_wsid', (int)$beUser->workspace)
+                )
+            )
+            ->orderBy('colPos')
+            ->addOrderBy('sorting');
+        if (!$beUser->user['admin']) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('editlock', 0));
+        }
+        $statement = $queryBuilder->execute();
         $colPos = null;
         $first = 1;
         // Page is the pid if no record to put this after.
         $prev = $this->id;
-        while ($cRow = $databaseConnection->sql_fetch_assoc($res)) {
+        while ($cRow = $statement->fetch()) {
             BackendUtility::workspaceOL('tt_content', $cRow);
             if (is_array($cRow)) {
                 if ($first) {
