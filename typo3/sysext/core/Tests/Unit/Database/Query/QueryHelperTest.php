@@ -67,6 +67,10 @@ class QueryHelperTest extends UnitTestCase
     public function parseOrderByDataProvider(): array
     {
         return [
+            'empty string' => [
+                '',
+                [],
+            ],
             'single field' => [
                 'aField',
                 [

@@ -486,12 +486,22 @@ class RelationHandler
             if ($uidList) {
                 $this->itemArray = array();
                 $this->tableArray = array();
-                $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'uid IN (' . $uidList . ')', '', $sortby);
-                while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                $queryBuilder->getRestrictions()->removeAll();
+                $queryBuilder->select('uid')
+                    ->from($table)
+                    ->where(
+                        $queryBuilder->expr()->in('uid', GeneralUtility::intExplode(',', $uidList))
+                    );
+                foreach (QueryHelper::parseOrderBy((string)$sortby) as $orderPair) {
+                    list($fieldName, $order) = $orderPair;
+                    $queryBuilder->addOrderBy($fieldName, $order);
+                }
+                $statement = $queryBuilder->execute();
+                while ($row = $statement->fetch()) {
                     $this->itemArray[] = array('id' => $row['uid'], 'table' => $table);
                     $this->tableArray[$table][] = $row['uid'];
                 }
-                $GLOBALS['TYPO3_DB']->sql_free_result($res);
             }
         }
     }
@@ -507,21 +517,27 @@ class RelationHandler
     public function readMM($tableName, $uid)
     {
         $key = 0;
-        $additionalWhere = '';
         $theTable = null;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->select('*')->from($tableName);
         // In case of a reverse relation
         if ($this->MM_is_foreign) {
             $uidLocal_field = 'uid_foreign';
             $uidForeign_field = 'uid_local';
             $sorting_field = 'sorting_foreign';
             if ($this->MM_isMultiTableRelationship) {
-                $additionalWhere .= ' AND ( tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->currentTable, $tableName);
                 // Be backwards compatible! When allowing more than one table after
                 // having previously allowed only one table, this case applies.
                 if ($this->currentTable == $this->MM_isMultiTableRelationship) {
-                    $additionalWhere .= ' OR tablenames=\'\'';
+                    $expression = $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter($this->currentTable)),
+                        $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter(''))
+                    );
+                } else {
+                    $expression = $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter($this->currentTable));
                 }
-                $additionalWhere .= ' ) ';
+                $queryBuilder->andWhere($expression);
             }
             $theTable = $this->MM_oppositeTable;
         } else {
@@ -531,15 +547,21 @@ class RelationHandler
             $sorting_field = 'sorting';
         }
         if ($this->MM_table_where) {
-            $additionalWhere .= LF . str_replace('###THIS_UID###', (int)$uid, $this->MM_table_where);
+            $queryBuilder->andWhere(
+                QueryHelper::stripLogicalOperatorPrefix(str_replace('###THIS_UID###', (int)$uid, $this->MM_table_where))
+            );
         }
         foreach ($this->MM_match_fields as $field => $value) {
-            $additionalWhere .= ' AND ' . $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableName);
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($value))
+            );
         }
-        // Select all MM relations:
-        $where = $uidLocal_field . '=' . (int)$uid . $additionalWhere;
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $tableName, $where, '', $sorting_field);
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->eq($uidLocal_field, (int)$uid)
+        );
+        $queryBuilder->orderBy($sorting_field);
+        $statement = $queryBuilder->execute();
+        while ($row = $statement->fetch()) {
             // Default
             if (!$this->MM_is_foreign) {
                 // If tablesnames columns exists and contain a name, then this value is the table, else it's the firstTable...
@@ -556,7 +578,6 @@ class RelationHandler
             }
             $key++;
         }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
     }
 
     /**
@@ -800,23 +821,31 @@ class RelationHandler
         // If there are tables...
         $tableC = count($this->tableArray);
         if ($tableC) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($MM_tableName);
+            $queryBuilder->update($MM_tableName)
+                ->set($uidLocal_field, (int)$newUid)
+                ->where($queryBuilder->expr()->eq($uidLocal_field, (int)$uid));
             // Boolean: does the field "tablename" need to be filled?
             $prep = $tableC > 1 || $prependTableName || $this->MM_isMultiTableRelationship;
             $additionalWhere_tablenames = '';
             if ($this->MM_is_foreign && $prep) {
-                $additionalWhere_tablenames = ' AND tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->currentTable, $MM_tableName);
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter($this->currentTable))
+                );
             }
-            $additionalWhere = '';
             // Add WHERE clause if configured
             if ($this->MM_table_where) {
-                $additionalWhere .= LF . str_replace('###THIS_UID###', (int)$uid, $this->MM_table_where);
+                $queryBuilder->andWhere(
+                    QueryHelper::stripLogicalOperatorPrefix(str_replace('###THIS_UID###', (int)$uid, $this->MM_table_where))
+                );
             }
             // Select, update or delete only those relations that match the configured fields
             foreach ($this->MM_match_fields as $field => $value) {
-                $additionalWhere .= ' AND ' . $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $MM_tableName);
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($value))
+                );
             }
-            $where = $uidLocal_field . '=' . (int)$uid . $additionalWhere_tablenames . $additionalWhere;
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery($MM_tableName, $where, array($uidLocal_field => $newUid));
+            $queryBuilder->execute();
         }
     }
 
@@ -1028,7 +1057,16 @@ class RelationHandler
                         if ($isOnSymmetricSide && isset($conf['symmetric_sortby']) && $conf['symmetric_sortby']) {
                             $sortby = $conf['symmetric_sortby'];
                         } else {
-                            $sortby = $GLOBALS['TYPO3_DB']->stripOrderBy($sortby);
+                            $tempSortBy = [];
+                            foreach (QueryHelper::parseOrderBy($sortby) as $orderPair) {
+                                list($fieldName, $order) = $orderPair;
+                                if ($order !== null) {
+                                    $tempSortBy[] = implode(' ', $orderPair);
+                                } else {
+                                    $tempSortBy[] = $fieldName;
+                                }
+                            }
+                            $sortby = implode(',', $tempSortBy);
                         }
                         if ($sortby) {
                             $updateValues[$sortby] = ++$c;
@@ -1061,15 +1099,26 @@ class RelationHandler
                             $updateValues[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
                         }
                     }
-
-                    $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$uid, $updateValues);
+                    GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getConnectionForTable($table)
+                        ->update(
+                            $table,
+                            $updateValues,
+                            ['uid' => (int)$uid]
+                        );
                     $this->updateRefIndex($table, $uid);
                 }
                 // Update accordant fields in the database for workspaces overlays/placeholders:
                 if ($considerWorkspaces) {
                     // It's the specific versioned record -> update placeholder (if any)
                     if (!empty($row['t3ver_oid']) && VersionState::cast($row['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER_VERSION)) {
-                        $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$row['t3ver_oid'], $updateValues);
+                        GeneralUtility::makeInstance(ConnectionPool::class)
+                            ->getConnectionForTable($table)
+                            ->update(
+                                $table,
+                                $updateValues,
+                                ['uid' => (int)$row['t3ver_oid']]
+                            );
                     }
                 }
             }
@@ -1111,32 +1160,39 @@ class RelationHandler
     public function getFromDB()
     {
         // Traverses the tables listed:
-        foreach ($this->tableArray as $key => $val) {
+        foreach ($this->tableArray as $table => $val) {
             if (is_array($val)) {
                 $itemList = implode(',', $val);
                 if ($itemList) {
                     if ($this->fetchAllFields) {
-                        $from = '*';
+                        $fields = '*';
                     } else {
-                        $from = 'uid,pid';
-                        if ($GLOBALS['TCA'][$key]['ctrl']['label']) {
+                        $fields = 'uid,pid';
+                        if ($GLOBALS['TCA'][$table]['ctrl']['label']) {
                             // Titel
-                            $from .= ',' . $GLOBALS['TCA'][$key]['ctrl']['label'];
+                            $fields .= ',' . $GLOBALS['TCA'][$table]['ctrl']['label'];
                         }
-                        if ($GLOBALS['TCA'][$key]['ctrl']['label_alt']) {
+                        if ($GLOBALS['TCA'][$table]['ctrl']['label_alt']) {
                             // Alternative Title-Fields
-                            $from .= ',' . $GLOBALS['TCA'][$key]['ctrl']['label_alt'];
+                            $fields .= ',' . $GLOBALS['TCA'][$table]['ctrl']['label_alt'];
                         }
-                        if ($GLOBALS['TCA'][$key]['ctrl']['thumbnail']) {
+                        if ($GLOBALS['TCA'][$table]['ctrl']['thumbnail']) {
                             // Thumbnail
-                            $from .= ',' . $GLOBALS['TCA'][$key]['ctrl']['thumbnail'];
+                            $fields .= ',' . $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
                         }
                     }
-                    $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($from, $key, 'uid IN (' . $itemList . ')' . $this->additionalWhere[$key]);
-                    while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-                        $this->results[$key][$row['uid']] = $row;
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                    $queryBuilder->getRestrictions()->removeAll();
+                    $queryBuilder->select(...(GeneralUtility::trimExplode(',', $fields, true)))
+                        ->from($table)
+                        ->where($queryBuilder->expr()->in('uid', GeneralUtility::intExplode(',', $itemList)));
+                    if ($this->additionalWhere[$table]) {
+                        $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($this->additionalWhere[$table]));
                     }
-                    $GLOBALS['TYPO3_DB']->sql_free_result($res);
+                    $statement = $queryBuilder->execute();
+                    while ($row = $statement->fetch()) {
+                        $this->results[$table][$row['uid']] = $row;
+                    }
                 }
             }
         }
@@ -1285,13 +1341,18 @@ class RelationHandler
         $ids = array_map('intval', $ids);
         $ids = array_combine($ids, $ids);
 
-        $versions = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'uid,t3ver_oid,t3ver_state',
-            $tableName,
-            'pid=-1 AND t3ver_oid IN (' . implode(',', $ids) . ') AND t3ver_wsid<>0',
-            '',
-            't3ver_state DESC'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()->removeAll();
+        $versions = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
+            ->from($tableName)
+            ->where(
+                $queryBuilder->expr()->eq('pid', -1),
+                $queryBuilder->expr()->in('t3ver_oid', $ids),
+                $queryBuilder->expr()->neq('t3ver_wsid', 0)
+            )
+            ->orderBy('t3ver_state', 'DESC')
+            ->execute()
+            ->fetchAll();
 
         if (!empty($versions)) {
             foreach ($versions as $version) {
@@ -1317,13 +1378,18 @@ class RelationHandler
         $ids = array_map('intval', $ids);
         $ids = array_combine($ids, $ids);
 
-        $versions = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'uid,t3ver_oid,t3ver_state',
-            $tableName,
-            'pid=-1 AND t3ver_oid IN (' . implode(',', $ids) . ') AND t3ver_wsid<>0',
-            '',
-            't3ver_state DESC'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()->removeAll();
+        $versions = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
+            ->from($tableName)
+            ->where(
+                $queryBuilder->expr()->eq('pid', -1),
+                $queryBuilder->expr()->in('t3ver_oid', $ids),
+                $queryBuilder->expr()->neq('t3ver_wsid', 0)
+            )
+            ->orderBy('t3ver_state', 'DESC')
+            ->execute()
+            ->fetchAll();
 
         if (!empty($versions)) {
             foreach ($versions as $version) {
@@ -1350,12 +1416,18 @@ class RelationHandler
         $ids = array_map('intval', $ids);
         $ids = array_combine($ids, $ids);
 
-        $versions = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'uid,t3ver_oid,t3ver_state',
-            $tableName,
-            'pid=-1 AND t3ver_oid IN (' . implode(',', $ids) . ') AND t3ver_wsid=' . $this->getWorkspaceId() .
-                ' AND t3ver_state=' . VersionState::cast(VersionState::DELETE_PLACEHOLDER)
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()->removeAll();
+        $versions = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
+            ->from($tableName)
+            ->where(
+                $queryBuilder->expr()->eq('pid', -1),
+                $queryBuilder->expr()->in('t3ver_oid', $ids),
+                $queryBuilder->expr()->neq('t3ver_wsid', (int)$this->getWorkspaceId()),
+                $queryBuilder->expr()->eq('t3ver_state', (int)VersionState::cast(VersionState::DELETE_PLACEHOLDER))
+            )
+            ->execute()
+            ->fetchAll();
 
         if (!empty($versions)) {
             foreach ($versions as $version) {
@@ -1460,13 +1532,5 @@ class RelationHandler
         $resolver->setKeepDeletePlaceholder(true);
         $resolver->setKeepLiveIds($this->useLiveReferenceIds);
         return $resolver;
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
