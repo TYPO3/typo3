@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Core\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract implementation of a RecordCollection
@@ -326,11 +329,13 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      */
     public static function load($id, $fillItems = false)
     {
-        $collectionRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-            '*',
-            static::$storageTableName,
-            'uid=' . (int)$id . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause(static::$storageTableName)
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(static::$storageTableName);
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $collectionRecord = $queryBuilder->select('*')
+            ->from(static::$storageTableName)
+            ->where($queryBuilder->expr()->eq('uid', (int)$id))
+            ->execute()
+            ->fetch();
         return self::create($collectionRecord, $fillItems);
     }
 

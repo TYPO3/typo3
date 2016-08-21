@@ -15,7 +15,9 @@ namespace TYPO3\CMS\Core\Resource;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -290,9 +292,14 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
         if (!$this->collectionInstances[$uid]) {
             // Get mount data if not already supplied as argument to this function
             if (empty($recordData) || $recordData['uid'] !== $uid) {
-                /** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
-                $recordData = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'sys_file_collection', 'uid=' . (int)$uid . ' AND deleted=0');
-                if (!is_array($recordData)) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_collection');
+                $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                $recordData = $queryBuilder->select('*')
+                    ->from('sys_file_collection')
+                    ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+                    ->execute()
+                    ->fetch();
+                if (empty($recordData)) {
                     throw new \InvalidArgumentException('No collection found for given UID: "' . $uid . '"', 1314085992);
                 }
             }
@@ -643,8 +650,13 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
         } elseif (!$raw && is_object($GLOBALS['TSFE'])) {
             $fileReferenceData = $GLOBALS['TSFE']->sys_page->checkRecord('sys_file_reference', $uid);
         } else {
-            /** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
-            $fileReferenceData = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . (int)$uid . ' AND deleted=0');
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $fileReferenceData = $queryBuilder->select('*')
+                ->from('sys_file_reference')
+                ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+                ->execute()
+                ->fetch();
         }
         return $fileReferenceData;
     }

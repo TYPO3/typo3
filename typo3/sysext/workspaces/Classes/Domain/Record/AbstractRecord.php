@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Workspaces\Domain\Record;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 
@@ -28,7 +31,13 @@ abstract class AbstractRecord
 
     protected static function fetch($tableName, $uid)
     {
-        $record = static::getDatabaseConnection()->exec_SELECTgetSingleRow('*', $tableName, 'deleted=0 AND uid=' . (int)$uid);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $record = $queryBuilder->select('*')
+            ->from($tableName)
+            ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+            ->execute()
+            ->fetch();
         if (empty($record)) {
             throw new \RuntimeException('Record "' . $tableName . ': ' . $uid . '" not found');
         }

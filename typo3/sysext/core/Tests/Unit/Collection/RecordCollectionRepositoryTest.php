@@ -97,51 +97,6 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function doesFindByUidReturnNull()
-    {
-        $testUid = rand(1, 1000);
-        $this->databaseMock->expects($this->once())->method('exec_SELECTgetSingleRow')->will($this->returnCallback(array($this, 'getSingleRowCallback')));
-        $this->getSingleRowCallbackReturnValue = null;
-        $object = $this->subject->findByUid($testUid);
-        $this->assertNull($object);
-    }
-
-    /**
-     * @test
-     */
-    public function doesFindByUidReturnObject()
-    {
-        $testUid = rand(1, 1000);
-        $this->databaseMock->expects($this->once())->method('exec_SELECTgetSingleRow')->will($this->returnCallback(array($this, 'getSingleRowCallback')));
-        $this->getSingleRowCallbackReturnValue = array(
-            'uid' => $testUid,
-            'type' => \TYPO3\CMS\Core\Collection\RecordCollectionRepository::TYPE_Static,
-            'table_name' => $this->testTableName
-        );
-        $object = $this->subject->findByUid($testUid);
-        $this->assertInstanceOf(\TYPO3\CMS\Core\Collection\StaticRecordCollection::class, $object);
-    }
-
-    /**
-     * @test
-     */
-    public function doesFindByUidThrowException()
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1328646798);
-
-        $testUid = rand(1, 1000);
-        $this->databaseMock->expects($this->once())->method('exec_SELECTgetSingleRow')->will($this->returnCallback(array($this, 'getSingleRowCallback')));
-        $this->getSingleRowCallbackReturnValue = array(
-            'uid' => $testUid,
-            'type' => $this->getUniqueId('unknown')
-        );
-        $object = $this->subject->findByUid($testUid);
-    }
-
-    /**
-     * @test
-     */
     public function doesFindByTypeReturnNull()
     {
         $type = \TYPO3\CMS\Core\Collection\RecordCollectionRepository::TYPE_Static;

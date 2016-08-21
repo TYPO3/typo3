@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Core\Collection;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Implements the repository for record collections.
@@ -52,11 +55,13 @@ class RecordCollectionRepository
     public function findByUid($uid)
     {
         $result = null;
-        $data = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-            '*',
-            $this->table,
-            'uid=' . (int)$uid . BackendUtility::deleteClause($this->table)
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $data = $queryBuilder->select('*')
+            ->from($this->table)
+            ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+            ->execute()
+            ->fetch();
         if (is_array($data)) {
             $result = $this->createDomainObject($data);
         }

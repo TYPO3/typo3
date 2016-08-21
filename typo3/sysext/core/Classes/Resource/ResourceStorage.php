@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
@@ -399,7 +400,13 @@ class ResourceStorage implements ResourceStorageInterface
     {
         if ($this->getUid() > 0) {
             // @todo: move this to the storage repository
-            $this->getDatabaseConnection()->exec_UPDATEquery('sys_file_storage', 'uid=' . (int)$this->getUid(), array('is_online' => 0));
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('sys_file_storage')
+                ->update(
+                    'sys_file_storage',
+                    ['is_online' => 0],
+                    ['uid' => (int)$this->getUid()]
+                );
         }
         $this->storageRecord['is_online'] = 0;
         $this->isOnline = false;

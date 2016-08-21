@@ -290,47 +290,6 @@ class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function getRecordArrayFetchesTranslationWhenLanguageIdIsSet()
-    {
-        $pageData = array(
-            'uid' => 1,
-            'title' => 'Original',
-        );
-        $pageDataTranslated = array(
-            'uid' => 1,
-            'title' => 'Translated',
-            '_PAGES_OVERLAY_UID' => '2',
-        );
-
-        $this->subject
-            ->expects($this->any())
-            ->method('enrichWithRelationFields')
-            ->with(2, $pageDataTranslated)
-            ->will($this->returnArgument(1));
-
-        $databaseConnectionMock = $this->createMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
-        $databaseConnectionMock
-            ->expects($this->once())
-            ->method('exec_SELECTgetSingleRow')
-            ->will(
-                $this->returnValue($pageData)
-            );
-        $this->subject->_set('databaseConnection',
-            $databaseConnectionMock
-        );
-
-        $this->pageContextMock
-                ->expects($this->any())
-                ->method('getPageOverlay')
-                ->will($this->returnValue($pageDataTranslated));
-
-        $this->subject->_set('languageUid', 1);
-        $this->assertSame($pageDataTranslated, $this->subject->_call('getRecordArray', 1));
-    }
-
-    /**
-     * @test
-     */
     public function enrichWithRelationFieldsCreatesWhereClauseForDisabledField()
     {
         $mockDatabaseConnection = $this->getMockBuilder(\TYPO3\CMS\Core\Database\DatabaseConnection::class)

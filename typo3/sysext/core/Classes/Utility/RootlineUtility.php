@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -244,7 +246,16 @@ class RootlineUtility
     {
         $currentCacheIdentifier = $this->getCacheIdentifier($uid);
         if (!isset(self::$pageRecordCache[$currentCacheIdentifier])) {
-            $row = $this->databaseConnection->exec_SELECTgetSingleRow(implode(',', self::$rootlineFields), 'pages', 'uid = ' . (int)$uid . ' AND pages.deleted = 0 AND pages.doktype <> ' . PageRepository::DOKTYPE_RECYCLER);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $row = $queryBuilder->select(...self::$rootlineFields)
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('uid', (int)$uid),
+                    $queryBuilder->expr()->neq('doktype', (int)PageRepository::DOKTYPE_RECYCLER)
+                )
+                ->execute()
+                ->fetch();
             if (empty($row)) {
                 throw new \RuntimeException('Could not fetch page data for uid ' . $uid . '.', 1343589451);
             }
