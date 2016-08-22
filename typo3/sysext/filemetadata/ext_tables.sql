@@ -20,7 +20,7 @@ CREATE TABLE sys_file_metadata (
 	ranking int(11) unsigned DEFAULT '0',
 	content_creation_date int(11) unsigned DEFAULT '0',
 	content_modification_date int(11) unsigned DEFAULT '0',
-	note text NOT NULL,
+	note text,
 
 	# px,mm,cm,m,p, ...
 	unit char(3) DEFAULT '',
