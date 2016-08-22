@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\Status;
 
 /**
@@ -40,28 +42,31 @@ class DatabaseCheck
     /**
      * Get all status information as array with status objects
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return \TYPO3\CMS\Install\Status\StatusInterface[]
      */
     public function getStatus()
     {
         $statusArray = array();
-        if ($this->isDbalEnabled() || !$this->getDatabaseConnection()) {
+        $defaultConnection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        if (!StringUtility::beginsWith($defaultConnection->getServerVersion(), 'MySQL')) {
             return $statusArray;
         }
-        $statusArray[] = $this->checkMysqlVersion();
-        $statusArray[] = $this->checkInvalidSqlModes();
-        $statusArray[] = $this->checkMysqlDatabaseUtf8Status();
+        $statusArray[] = $this->checkMysqlVersion($defaultConnection);
+        $statusArray[] = $this->checkInvalidSqlModes($defaultConnection);
+        $statusArray[] = $this->checkMysqlDatabaseUtf8Status($defaultConnection);
         return $statusArray;
     }
 
     /**
      * Check if any SQL mode is set which is not compatible with TYPO3
      *
+     * @param Connection Connection to the database to be checked
      * @return Status\StatusInterface
      */
-    protected function checkInvalidSqlModes()
+    protected function checkInvalidSqlModes($connection)
     {
-        $detectedIncompatibleSqlModes = $this->getIncompatibleSqlModes();
+        $detectedIncompatibleSqlModes = $this->getIncompatibleSqlModes($connection);
         if (!empty($detectedIncompatibleSqlModes)) {
             $status = new Status\ErrorStatus();
             $status->setTitle('Incompatible SQL modes found!');
@@ -83,19 +88,14 @@ class DatabaseCheck
     /**
      * Check minimum MySQL version
      *
+     * @param Connection Connection to the database to be checked
      * @return Status\StatusInterface
      */
-    protected function checkMysqlVersion()
+    protected function checkMysqlVersion($connection)
     {
         $minimumMysqlVersion = '5.5.0';
-        $currentMysqlVersion = '';
-        $resource = $this->getDatabaseConnection()->sql_query('SHOW VARIABLES LIKE \'version\';');
-        if ($resource !== false) {
-            $result = $this->getDatabaseConnection()->sql_fetch_row($resource);
-            if (isset($result[1])) {
-                $currentMysqlVersion = $result[1];
-            }
-        }
+        preg_match('/MySQL ((\d+\.)*(\d+\.)*\d+)/', $connection->getServerVersion(), $match);
+        $currentMysqlVersion = $match[1];
         if (version_compare($currentMysqlVersion, $minimumMysqlVersion) < 0) {
             $status = new Status\ErrorStatus();
             $status->setTitle('MySQL version too low');
@@ -114,87 +114,45 @@ class DatabaseCheck
     /**
      * Checks the character set of the database and reports an error if it is not utf-8.
      *
+     * @param Connection Connection to the database to be checked
      * @return Status\StatusInterface
      */
-    protected function checkMysqlDatabaseUtf8Status()
+    protected function checkMysqlDatabaseUtf8Status($connection)
     {
-        $result = $this->getDatabaseConnection()->admin_query('SHOW VARIABLES LIKE "character_set_database"');
-        $row = $this->getDatabaseConnection()->sql_fetch_assoc($result);
-
-        $key = $row['Variable_name'];
-        $value = $row['Value'];
-
-        if ($key !== 'character_set_database') {
+        $queryBuilder = $connection->createQueryBuilder();
+        $defaultDatabaseCharset = (string)$queryBuilder->select('DEFAULT_CHARACTER_SET_NAME')
+            ->from('information_schema.SCHEMATA')
+            ->where(
+                $queryBuilder->expr()->eq('SCHEMA_NAME', $queryBuilder->quote($connection->getDatabase()))
+            )
+            ->setMaxResults(1)
+            ->execute()
+            ->fetchColumn();
+        // also allow utf8mb4
+        if (!StringUtility::beginsWith($defaultDatabaseCharset, 'utf8')) {
             $status = new Status\ErrorStatus();
             $status->setTitle('MySQL database character set check failed');
             $status->setMessage(
-                'Checking database character set failed, got key "' . $key . '" instead of "character_set_database"'
-            );
-        }
-        // also allow utf8mb4
-        if (substr($value, 0, 4) !== 'utf8') {
-            $status = new Status\ErrorStatus();
-            $status->setTitle('MySQL database character set wrong');
-            $status->setMessage(
-                'Your database uses character set "' . $value . '", but only "utf8" is supported with TYPO3.'
+                'Checking database character set failed, got key "'
+                . $defaultDatabaseCharset . '" instead of "utf8" or "utf8mb4"'
             );
         } else {
             $status = new Status\OkStatus();
             $status->setTitle('Your database uses utf-8. All good.');
         }
-
         return $status;
     }
 
     /**
      * Returns an array with the current sql mode settings
      *
+     * @param Connection Connection to the database to be checked
      * @return array Contains all configured SQL modes that are incompatible
      */
-    protected function getIncompatibleSqlModes()
+    protected function getIncompatibleSqlModes($connection)
     {
-        $sqlModes = array();
-        $resource = $this->getDatabaseConnection()->sql_query('SELECT @@SESSION.sql_mode;');
-        if ($resource !== false) {
-            $result = $this->getDatabaseConnection()->sql_fetch_row($resource);
-            if (isset($result[0])) {
-                $sqlModes = explode(',', $result[0]);
-            }
-        }
+        $sqlModes = explode(',', $connection->executeQuery('SELECT @@SESSION.sql_mode;')
+            ->fetch(0)['@@SESSION.sql_mode']);
         return array_intersect($this->incompatibleSqlModes, $sqlModes);
-    }
-
-    /**
-     * Get database instance.
-     * Will be initialized if it does not exist yet.
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        static $database;
-        if (!is_object($database)) {
-            /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
-            $database = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
-            $database->setDatabaseUsername($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['user']);
-            $database->setDatabasePassword($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['password']);
-            $database->setDatabaseHost($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['host']);
-            $database->setDatabasePort($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['port']);
-            $database->setDatabaseSocket($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['unix_socket']);
-            $database->setDatabaseName($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['dbname']);
-            $database->initialize();
-            $database->connectDB();
-        }
-        return $database;
-    }
-
-    /**
-     * Checks if DBAL is enabled for the database connection
-     *
-     * @return bool
-     */
-    protected function isDbalEnabled()
-    {
-        return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal');
     }
 }
