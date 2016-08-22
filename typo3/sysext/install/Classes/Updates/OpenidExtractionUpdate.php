@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Installs and downloads EXT:openid if needed
  */
@@ -53,12 +56,17 @@ class OpenidExtractionUpdate extends AbstractDownloadExtensionUpdate
         if (!$this->isWizardDone()) {
             $columnsExists = false;
 
-            $columns = $this->getDatabaseConnection()->admin_get_fields('fe_users');
-            if (isset($columns['tx_openid_openid'])) {
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            $schemaManager = $connectionPool->getConnectionForTable('fe_users')->getSchemaManager();
+
+            if ($schemaManager->listTableDetails('fe_users')->hasColumn('tx_openid_openid')) {
                 $columnsExists = true;
             }
-            $columns = $this->getDatabaseConnection()->admin_get_fields('be_users');
-            if (isset($columns['tx_openid_openid'])) {
+
+            // Reinitialize schemaManager, since be_users could be on another connection
+            $schemaManager = $connectionPool->getConnectionForTable('be_users')->getSchemaManager();
+
+            if ($schemaManager->listTableDetails('be_users')->hasColumn('tx_openid_openid')) {
                 $columnsExists = true;
             }
             if ($columnsExists) {
