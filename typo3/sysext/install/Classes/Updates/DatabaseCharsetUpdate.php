@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\DBALException;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
+
 /**
  * Move "wizard done" flags to system registry
  */
@@ -29,21 +34,25 @@ class DatabaseCharsetUpdate extends AbstractUpdate
      *
      * @param string &$description The description for the update
      * @return bool Whether an update is needed (TRUE) or not (FALSE)
+     * @throws \InvalidArgumentException
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function checkForUpdate(&$description)
     {
+        if ($this->isWizardDone() || !$this->isDefaultConnectionMySQL()) {
+            return false;
+        }
+
         $result = false;
-        $description = 'Sets the default database charset to utf-8 to ensure new tables are created with correct charset.
+        $description = 'Sets the default database charset to utf-8 to'
+            . ' ensure new tables are created with correct charset.
         WARNING: This will NOT convert any existing data.';
 
-        if ($this->isDbalEnabled()) {
-            return $result;
-        }
-        // check if database charset is utf-8
-        $defaultDatabaseCharset = $this->getDefaultDatabaseCharset();
-        // also allow utf8mb4
-        if (substr($defaultDatabaseCharset, 0, 4) !== 'utf8') {
+        // check if database charset is utf-8, also allows utf8mb4
+        if (!StringUtility::beginsWith($this->getDefaultDatabaseCharset(), 'utf8')) {
             $result = true;
+        } else {
+            $this->markWizardAsDone();
         }
 
         return $result;
@@ -55,55 +64,63 @@ class DatabaseCharsetUpdate extends AbstractUpdate
      * @param array &$dbQueries Queries done in this update
      * @param mixed &$customMessages Custom messages
      * @return bool Whether everything went smoothly or not
+     * @throws \InvalidArgumentException
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function performUpdate(array &$dbQueries, &$customMessages)
     {
-        $result = true;
-        $db = $this->getDatabaseConnection();
-        $query = 'ALTER DATABASE `' . $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['dbname'] . '` DEFAULT CHARACTER SET utf8';
-        $db->admin_query($query);
-        $dbQueries[] = $query;
-        if ($db->sql_error()) {
-            $customMessages = 'SQL-ERROR: ' . htmlspecialchars($db->sql_error());
-            $result = false;
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $sql = 'ALTER DATABASE ' . $connection->quoteIdentifier($connection->getDatabase()) . ' CHARACTER SET utf8';
+
+        try {
+            $connection->exec($sql);
+        } catch (DBALException $e) {
+            $customMessages = 'SQL-ERROR: ' . htmlspecialchars($e->getPrevious()->getMessage());
+            return false;
         }
-        return $result;
+        $dbQueries[] = $sql;
+        $this->markWizardAsDone();
+
+        return true;
     }
 
     /**
-     * Return TRUE if dbal and adodb extension is loaded
+     * Return TRUE if this TYPO3 instance runs on a MySQL compatible databasa instance
      *
-     * @return bool TRUE if dbal and adodb is loaded
+     * @return bool
+     * @throws \InvalidArgumentException
+     * @throws \Doctrine\DBAL\DBALException
      */
-    protected function isDbalEnabled()
+    protected function isDefaultConnectionMySQL(): bool
     {
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('adodb')
-            && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal')
-        ) {
-            return true;
-        }
-        return false;
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+
+        return StringUtility::beginsWith($connection->getServerVersion(), 'MySQL');
     }
 
     /**
      * Retrieves the default character set of the database.
      *
      * @return string
+     * @throws \InvalidArgumentException
+     * @throws \Doctrine\DBAL\DBALException
      */
-    protected function getDefaultDatabaseCharset()
+    protected function getDefaultDatabaseCharset(): string
     {
-        $db = $this->getDatabaseConnection();
-        $result = $db->admin_query('SHOW VARIABLES LIKE "character_set_database"');
-        $row = $db->sql_fetch_assoc($result);
-
-        $key = $row['Variable_name'];
-        $value = $row['Value'];
-        $databaseCharset = '';
-
-        if ($key == 'character_set_database') {
-            $databaseCharset = $value;
-        }
-
-        return $databaseCharset;
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $queryBuilder = $connection->createQueryBuilder();
+        return (string)$queryBuilder->select('DEFAULT_CHARACTER_SET_NAME')
+            ->from('information_schema.SCHEMATA')
+            ->where(
+                $queryBuilder
+                ->expr()
+                ->eq('SCHEMA_NAME', $queryBuilder->quote($connection->getDatabase()))
+            )
+            ->setMaxResults(1)
+            ->execute()
+            ->fetchColumn();
     }
 }
