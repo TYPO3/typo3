@@ -585,45 +585,6 @@ class WorkspaceService implements SingletonInterface
     }
 
     /**
-     * Trivial check to see if the user already migrated his workspaces
-     * to the new style (either manually or with the migrator scripts)
-     *
-     * @return bool
-     */
-    public static function isOldStyleWorkspaceUsed()
-    {
-        $cacheKey = 'workspace-oldstyleworkspace-notused';
-        $cacheResult = $GLOBALS['BE_USER']->getSessionData($cacheKey);
-        if (!$cacheResult) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('sys_workspace');
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $count = (int)$queryBuilder->count('uid')
-                ->from('sys_workspace')
-                ->where(
-                    $queryBuilder->expr()->neq('adminusers', $queryBuilder->quote('')),
-                    $queryBuilder->expr()->notLike(
-                        'adminusers',
-                        $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards('be_users') . '%')
-                    ),
-                    $queryBuilder->expr()->notLike(
-                        'adminusers',
-                        $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards('be_groups') . '%')
-                    )
-                )
-                ->execute()
-                ->fetchColumn(0);
-            $oldStyleWorkspaceIsUsed = $count > 0;
-            $GLOBALS['BE_USER']->setAndSaveSessionData($cacheKey, !$oldStyleWorkspaceIsUsed);
-        } else {
-            $oldStyleWorkspaceIsUsed = !$cacheResult;
-        }
-        return $oldStyleWorkspaceIsUsed;
-    }
-
-    /**
      * Determine whether a specific page is new and not yet available in the LIVE workspace
      *
      * @param int $id Primary key of the page to check

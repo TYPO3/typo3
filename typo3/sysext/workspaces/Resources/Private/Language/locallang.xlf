@@ -249,12 +249,6 @@
 			<trans-unit id="error.getStageTitle.stageNotFound">
 				<source>Stage not found</source>
 			</trans-unit>
-			<trans-unit id="warning.oldStyleWorkspaceInUser" xml:space="preserve">
-				<source>It seems that you're still using old-style workspace. Please use the update scripts in the TYPO3
-					Install Tool to run the necessary updates. If you continue using this module without migrating your
-					workspace you might loose data.
-				</source>
-			</trans-unit>
 			<trans-unit id="info.newpage">
 				<source>New Page!</source>
 			</trans-unit>
