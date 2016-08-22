@@ -1190,7 +1190,7 @@ class ContentObjectRenderer
                 } else {
                     $pixelDensity = 1;
                 }
-                $dimensionKeys = ['width', 'height', 'maxW', 'minW', 'maxH', 'minH'];
+                $dimensionKeys = ['width', 'height', 'maxW', 'minW', 'maxH', 'minH', 'maxWidth', 'maxHeight', 'XY'];
                 foreach ($dimensionKeys as $dimensionKey) {
                     $dimension = $this->stdWrap($sourceConfiguration[$dimensionKey], $sourceConfiguration[$dimensionKey . '.']);
                     if (!$dimension) {
@@ -1202,6 +1202,12 @@ class ContentObjectRenderer
                             $dimension = ((int)$dimensionParts[0] * $pixelDensity) . 'c';
                             if ($dimensionParts[1]) {
                                 $dimension .= $dimensionParts[1];
+                            }
+                        } elseif ($dimensionKey === 'XY') {
+                            $dimensionParts = GeneralUtility::intExplode(',', $dimension, false, 2);
+                            $dimension = $dimensionParts[0] * $pixelDensity;
+                            if ($dimensionParts[1]) {
+                                $dimension .= ',' . $dimensionParts[1] * $pixelDensity;
                             }
                         } else {
                             $dimension = (int)$dimension * $pixelDensity;
