@@ -151,7 +151,42 @@ return array(
         'media' => array(
             'exclude' => 1,
             'label' => $GLOBALS['TCA']['pages']['columns']['media']['label'],
-            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('media')
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('media', array(
+                    // Use the imageoverlayPalette instead of the basicoverlayPalette
+                    'foreign_types' => array(
+                        '0' => array(
+                            'showitem' => '
+								--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+								--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+                            'showitem' => '
+								--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+								--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+                            'showitem' => '
+								--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+								--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+                            'showitem' => '
+								--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.audioOverlayPalette;audioOverlayPalette,
+								--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+                            'showitem' => '
+								--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.videoOverlayPalette;videoOverlayPalette,
+								--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+                            'showitem' => '
+								--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+								--palette--;;filePalette'
+                        )
+                    )
+                )
+            )
         ),
         'url' => array(
             'exclude' => 1,
