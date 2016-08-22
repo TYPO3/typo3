@@ -16,12 +16,12 @@ namespace TYPO3\CMS\Reports\Report\Status;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Reports\Status as ReportStatus;
 use TYPO3\CMS\Reports\StatusProviderInterface;
@@ -267,49 +267,55 @@ class ConfigurationStatus implements StatusProviderInterface
     }
 
     /**
-     * Verifies that MySQL is used.
+     * Checks if the default connection is a MySQL compatible database instance.
      *
      * @return bool
      */
     protected function isMysqlUsed()
     {
-        return get_class($this->getDatabaseConnection()) == DatabaseConnection::class;
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+
+        return StringUtility::beginsWith($connection->getServerVersion(), 'MySQL');
     }
 
     /**
-     * Checks the character set of the database and reports an error if it is not utf-8.
+     * Checks the character set of the default database and reports an error if it is not utf-8.
      *
      * @return ReportStatus
      */
     protected function getMysqlDatabaseUtf8Status()
     {
-        $result = $this->getDatabaseConnection()->admin_query('SHOW VARIABLES LIKE "character_set_database"');
-        $row = $this->getDatabaseConnection()->sql_fetch_assoc($result);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $queryBuilder = $connection->createQueryBuilder();
+        $defaultDatabaseCharset = (string)$queryBuilder->select('DEFAULT_CHARACTER_SET_NAME')
+            ->from('information_schema.SCHEMATA')
+            ->where(
+                $queryBuilder->expr()->eq('SCHEMA_NAME', $queryBuilder->quote($connection->getDatabase()))
+            )
+            ->setMaxResults(1)
+            ->execute()
+            ->fetchColumn();
 
-        $key = $row['Variable_name'];
-        $value = $row['Value'];
-
-        $message = '';
         $severity = ReportStatus::OK;
         $statusValue = $this->getLanguageService()->getLL('status_ok');
-
-        if ($key !== 'character_set_database') {
-            $message = sprintf($this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_CheckFailed'), $key);
-            $severity = ReportStatus::WARNING;
-            $statusValue = $this->getLanguageService()->getLL('status_checkFailed');
-        }
         // also allow utf8mb4
-        if (substr($value, 0, 4) !== 'utf8') {
-            $message = sprintf($this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_Unsupported'), $value);
+        if (!StringUtility::beginsWith($defaultDatabaseCharset, 'utf8')) {
+            $message = sprintf($this->getLanguageService()
+                ->getLL('status_MysqlDatabaseCharacterSet_Unsupported'), $defaultDatabaseCharset);
             $severity = ReportStatus::ERROR;
             $statusValue = $this->getLanguageService()->getLL('status_wrongValue');
         } else {
             $message = $this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_Ok');
         }
 
-        return GeneralUtility::makeInstance(ReportStatus::class,
+        return GeneralUtility::makeInstance(
+            ReportStatus::class,
             $this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet'),
-            $statusValue, $message, $severity
+            $statusValue,
+            $message,
+            $severity
         );
     }
 
@@ -361,13 +367,5 @@ class ConfigurationStatus implements StatusProviderInterface
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
