@@ -186,7 +186,8 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
     }
 
     /**
-     * Re-create the old pipe based syntax of selected nodes for the ExtJS rendering part
+     * Make sure to only keep the selected nodes that are really available in the database and for the user
+     * (e.g. after permissions etc)
      *
      * @param array $itemArray
      * @param array $databaseValues
@@ -200,7 +201,7 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
             foreach ($databaseValues as $selectedNode) {
                 foreach ($itemArray as $possibleSelectBoxItem) {
                     if ((string)$possibleSelectBoxItem[1] === (string)$selectedNode) {
-                        $selectedNodes[] = $selectedNode . '|' . rawurlencode($possibleSelectBoxItem[0]);
+                        $selectedNodes[] = $selectedNode;
                     }
                 }
             }

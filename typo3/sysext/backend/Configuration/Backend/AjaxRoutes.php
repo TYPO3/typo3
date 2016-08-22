@@ -58,6 +58,12 @@ return [
         'target' => \TYPO3\CMS\Backend\Form\Wizard\SuggestWizard::class . '::searchAction'
     ],
 
+    // Fetch the tree-structured data from a record for the tree selection
+    'record_tree_data' => [
+        'path' => '/record/tree/fetchData',
+        'target' => Controller\SelectTreeController::class . '::fetchDataAction'
+    ],
+
     // Get shortcut edit form
     'shortcut_editform' => [
         'path' => '/shortcut/editform',

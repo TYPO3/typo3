@@ -8038,6 +8038,21 @@ button.close {
 .minicolors-swatch.selected {
   border-color: #000;
 }
+.svg-tree-wrapper {
+  overflow-y: scroll;
+}
+.svg-tree-wrapper path.link {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke: #ddd;
+  stroke-width: 1;
+}
+.svg-tree-wrapper .node .chevron {
+  cursor: pointer;
+}
+.svg-tree-wrapper .tree-check {
+  cursor: pointer;
+}
 /*!
  * Datetimepicker for Bootstrap 3
  * version : 4.17.37

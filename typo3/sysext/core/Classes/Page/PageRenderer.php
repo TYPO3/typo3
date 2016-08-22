@@ -1597,6 +1597,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             'taboverride' => $corePath . 'taboverride.min',
             'twbs/bootstrap-slider' => $corePath . 'bootstrap-slider.min',
             'jquery/autocomplete' => $corePath . 'jquery.autocomplete',
+            'd3' => $corePath . 'd3/d3'
         );
 
         foreach ($loadedExtensions as $packageName) {

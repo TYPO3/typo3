@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Backend\Tree;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Imaging\Icon;
 
 /**
  * Representation Tree Node
@@ -72,7 +73,7 @@ class TreeRepresentationNode extends \TYPO3\CMS\Backend\Tree\TreeNode
     }
 
     /**
-     * @param string $icon
+     * @param string|Icon $icon
      * @return void
      */
     public function setIcon($icon)
@@ -81,7 +82,7 @@ class TreeRepresentationNode extends \TYPO3\CMS\Backend\Tree\TreeNode
     }
 
     /**
-     * @return string
+     * @return string|Icon
      */
     public function getIcon()
     {

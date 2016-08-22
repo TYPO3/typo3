@@ -156,23 +156,11 @@ If you click the folder title in the Folder Tree you will see the sub-module loa
 			<trans-unit id="tcatree.collapseAll">
 				<source>Collapse All</source>
 			</trans-unit>
-			<trans-unit id="tcatree">
-				<source>TYPO3 TCA tree</source>
-			</trans-unit>
 			<trans-unit id="tcatree.expandAll">
 				<source>Expand All</source>
 			</trans-unit>
 			<trans-unit id="tcatree.findItem">
 				<source>Find Item</source>
-			</trans-unit>
-			<trans-unit id="tcatree.filter.startsWith">
-				<source>starts with</source>
-			</trans-unit>
-			<trans-unit id="tcatree.filter.contains">
-				<source>contains</source>
-			</trans-unit>
-			<trans-unit id="tcatree.enableRecursiveSelection">
-				<source>enable recursive selection</source>
 			</trans-unit>
 			<trans-unit id="list_module.alttitle">
 				<source>The Web&gt;List module</source>

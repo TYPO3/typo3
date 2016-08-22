@@ -228,7 +228,7 @@ module.exports = function(grunt) {
 						see https://github.com/devbridge/jQuery-Autocomplete/pull/387
 					'jquery.autocomplete.js': 'devbridge-autocomplete/src/jquery.autocomplete.js',
 					 */
-
+					'd3/d3.js': 'd3/d3.min.js',
 					/**
 					 * copy needed parts of jquery
 					 */

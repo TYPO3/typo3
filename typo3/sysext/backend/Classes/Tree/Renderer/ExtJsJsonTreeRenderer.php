@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Backend\Tree\Renderer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 
 /**
  * Renderer for unordered lists
@@ -53,12 +54,22 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
      */
     protected function getNodeArray(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node)
     {
+        $overlayIcon  = '';
+        if (is_object($node->getIcon()->getOverlayIcon())) {
+            $overlayIcon = $node->getIcon()->getOverlayIcon()->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE);
+        }
         $nodeArray = array(
-            'iconTag' => $node->getIcon(),
+            'iconTag' => $node->getIcon()->render(),
             'text' => htmlspecialchars($node->getLabel()),
             'leaf' => !$node->hasChildNodes(),
             'id' => htmlspecialchars($node->getId()),
-            'uid' => htmlspecialchars($node->getId())
+            'uid' => htmlspecialchars($node->getId()),
+
+            //svgtree
+            'icon' => $node->getIcon()->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE),
+            'overlayIcon' => $overlayIcon,
+            'identifier' => htmlspecialchars($node->getId()),
+            'name' => htmlspecialchars($node->getLabel()),
         );
 
         return $nodeArray;
