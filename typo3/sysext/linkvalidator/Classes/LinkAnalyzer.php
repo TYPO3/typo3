@@ -137,9 +137,9 @@ class LinkAnalyzer
     public function getLinkStatistics($checkOptions = array(), $considerHidden = false)
     {
         $results = [];
-        if (!empty($checkOptions)) {
+        $pidList = GeneralUtility::intExplode(',', $this->pidList, true);
+        if (!empty($checkOptions) && !empty($pidList)) {
             $checkKeys = array_keys($checkOptions);
-            $pidList = GeneralUtility::intExplode(',', $this->pidList, true);
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('tx_linkvalidator_link');
