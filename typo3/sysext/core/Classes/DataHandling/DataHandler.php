@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\DataHandling;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Types\IntegerType;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -7228,20 +7229,25 @@ class DataHandler
      */
     public function compareFieldArrayWithCurrentAndUnset($table, $id, $fieldArray)
     {
-        // Fetch the original record:
-        $res = $this->databaseConnection->exec_SELECTquery('*', $table, 'uid=' . (int)$id);
-        $currentRecord = $this->databaseConnection->sql_fetch_assoc($res);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+        $currentRecord = $queryBuilder->select('*')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('uid', (int)$id))
+            ->execute()
+            ->fetch();
         // If the current record exists (which it should...), begin comparison:
         if (is_array($currentRecord)) {
-            // Read all field types:
-            $c = 0;
-            $cRecTypes = array();
-            foreach ($currentRecord as $col => $val) {
-                $cRecTypes[$col] = $this->databaseConnection->sql_field_type($res, $c);
-                $c++;
+            $tableDetails = $connection->getSchemaManager()->listTableDetails($table);
+            $columnRecordTypes = array();
+            foreach ($currentRecord as $columnName => $_) {
+                $columnRecordTypes[$columnName] = '';
+                $type = $tableDetails->getColumn($columnName)->getType();
+                if ($type instanceof IntegerType) {
+                    $columnRecordTypes[$columnName] = 'int';
+                }
             }
-            // Free result:
-            $this->databaseConnection->sql_free_result($res);
             // Unset the fields which are similar:
             foreach ($fieldArray as $col => $val) {
                 $fieldConfiguration = $GLOBALS['TCA'][$table]['columns'][$col]['config'];
@@ -7249,7 +7255,7 @@ class DataHandler
 
                 // Unset fields if stored and submitted values are equal - except the current field holds MM relations.
                 // In general this avoids to store superfluous data which also will be visualized in the editing history.
-                if (!$fieldConfiguration['MM'] && $this->isSubmittedValueEqualToStoredValue($val, $currentRecord[$col], $cRecTypes[$col], $isNullField)) {
+                if (!$fieldConfiguration['MM'] && $this->isSubmittedValueEqualToStoredValue($val, $currentRecord[$col], $columnRecordTypes[$col], $isNullField)) {
                     unset($fieldArray[$col]);
                 } else {
                     if (!isset($this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$col])) {
