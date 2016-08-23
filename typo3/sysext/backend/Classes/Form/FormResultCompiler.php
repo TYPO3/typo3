@@ -231,8 +231,6 @@ class FormResultCompiler
         }
         $pageRenderer->loadJquery();
         $pageRenderer->loadExtJS();
-        // Load tree stuff here
-        $pageRenderer->addInlineLanguageLabelFile('EXT:lang/locallang_csh_corebe.xlf', 'tcatree');
         $pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/notifications.js');
         $beUserAuth = $this->getBackendUserAuthentication();
 

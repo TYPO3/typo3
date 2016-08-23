@@ -83,6 +83,10 @@ class SelectTreeElement extends AbstractFormElement
 
         $resultArray['html'] = implode(LF, $html);
 
+        // add necessary labels for tree header
+        if ($showHeader) {
+            $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:lang/locallang_csh_corebe.xlf';
+        }
         $resultArray['requireJsModules']['selectTreeElement'] = 'TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement';
 
         return $resultArray;

@@ -54,13 +54,13 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine/Eleme
             '<div class="tree-toolbar btn-toolbar">'+
                 '<div class="input-group">' +
                     '<span class="input-group-addon input-group-icon filter"></span>' +
-                    '<input type="text" class="form-control search-input" placeholder="' + TYPO3.l10n.localize('tcatree.findItem') + '">' +
+                    '<input type="text" class="form-control search-input" placeholder="' + TYPO3.lang['tcatree.findItem'] + '">' +
                 '</div>' +
                 '<div class="btn-group">' +
-                    '<button type="button" class="btn btn-default expand-all-btn" title="' + TYPO3.l10n.localize('tcatree.expandAll') + '"></button>' +
+                    '<button type="button" class="btn btn-default expand-all-btn" title="' + TYPO3.lang['tcatree.expandAll'] + '"></button>' +
                 '</div>' +
                 '<div class="btn-group">' +
-                    '<button type="button" class="btn btn-default collapse-all-btn" title="' + TYPO3.l10n.localize('tcatree.collapseAll') + '"></button>' +
+                    '<button type="button" class="btn btn-default collapse-all-btn" title="' + TYPO3.lang['tcatree.collapseAll'] + '"></button>' +
                 '</div>' +
             '</div>'
         )
