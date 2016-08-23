@@ -260,7 +260,6 @@ function evalFunc_input(type,inVal) {
 	value = this.caseSwitch(type,value);
 	if (value=="") {
 		return "";
-		return 0;	// Why would I ever return a zero??? (20/12/01)
 	}
 	switch (type) {
 		case "datetime":
