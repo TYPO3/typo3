@@ -660,7 +660,10 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         }
         $pageIdsToClear = array();
         $storagePage = null;
-        $columns = $this->databaseHandle->admin_get_fields($tableName);
+        $columns = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($tableName)
+            ->getSchemaManager()
+            ->listTableColumns($tableName);
         if (array_key_exists('pid', $columns)) {
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
             $queryBuilder->getRestrictions()->removeAll();
