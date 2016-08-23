@@ -702,9 +702,18 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             'FROM' => $table,
             'WHERE' => $this->getPageIdConstraint($table) . ' ' . $pC . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table) . ' ' . $addWhere . ' ' . $search,
             'GROUPBY' => '',
-            'ORDERBY' => $this->getDatabaseConnection()->stripOrderBy($orderBy),
             'LIMIT' => $limit
         );
+        $tempOrderBy = [];
+        foreach (QueryHelper::parseOrderBy($orderBy) as $orderPair) {
+            list($fieldName, $order) = $orderPair;
+            if ($order !== null) {
+                $tempOrderBy[] = implode(' ', $orderPair);
+            } else {
+                $tempOrderBy[] = $fieldName;
+            }
+        }
+        $queryParts['ORDERBY'] = implode(',', $tempOrderBy);
         // Filter out records that are translated, if TSconfig mod.web_list.hideTranslations is set
         if ((in_array($table, GeneralUtility::trimExplode(',', $this->hideTranslations)) || $this->hideTranslations === '*') && !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) && $table !== 'pages_language_overlay') {
             $queryParts['WHERE'] .= ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=0 ';
