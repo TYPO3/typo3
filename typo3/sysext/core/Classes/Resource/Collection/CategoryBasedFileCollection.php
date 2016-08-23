@@ -13,7 +13,10 @@ namespace TYPO3\CMS\Core\Resource\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A collection containing a set files belonging to certain categories.
@@ -48,31 +51,36 @@ class CategoryBasedFileCollection extends AbstractFileCollection
      */
     public function loadContents()
     {
-        $resource = $this->getDatabaseConnection()->exec_SELECT_mm_query(
-            'sys_file_metadata.file',
-            'sys_category',
-            'sys_category_record_mm',
-            'sys_file_metadata',
-            'AND sys_category.uid=' . (int)$this->getItemsCriteria() .
-            ' AND sys_category_record_mm.tablenames = \'sys_file_metadata\''
-        );
-
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_category');
+        $queryBuilder->getRestrictions()->removeAll();
+        $statement = $queryBuilder->select('sys_file_metadata.file')
+            ->from('sys_category')
+            ->join(
+                'sys_category',
+                'sys_category_record_mm',
+                'sys_category_record_mm',
+                $queryBuilder->expr()->eq(
+                    'sys_category_record_mm.uid_local',
+                    $queryBuilder->quoteIdentifier('sys_category.uid')
+                )
+            )
+            ->join(
+                'sys_category_record_mm',
+                'sys_file_metadata',
+                'sys_file_metadata',
+                $queryBuilder->expr()->eq(
+                    'sys_category_record_mm.uid_foreign',
+                    $queryBuilder->quoteIdentifier('sys_file_metadata.uid')
+                )
+            )
+            ->where(
+                $queryBuilder->expr()->eq('sys_category.uid', (int)$this->getItemsCriteria()),
+                $queryBuilder->expr()->eq('sys_category_record_mm.tablenames', $queryBuilder->createNamedParameter('sys_file_metadata'))
+            )
+            ->execute();
         $resourceFactory = ResourceFactory::getInstance();
-        if ($resource) {
-            while (($record = $this->getDatabaseConnection()->sql_fetch_assoc($resource)) !== false) {
-                $this->add($resourceFactory->getFileObject((int)$record['file']));
-            }
-            $this->getDatabaseConnection()->sql_free_result($resource);
+        while ($record = $statement->fetch()) {
+            $this->add($resourceFactory->getFileObject((int)$record['file']));
         }
-    }
-
-    /**
-     * Gets the database object.
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
