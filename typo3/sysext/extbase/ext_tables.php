@@ -1,8 +1,6 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['extbase'][] = \TYPO3\CMS\Extbase\Utility\ExtbaseRequirementsCheckUtility::class;
-
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Extbase\Scheduler\Task::class] = [
     'extension' => 'extbase',
     'title' => 'LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:task.name',
