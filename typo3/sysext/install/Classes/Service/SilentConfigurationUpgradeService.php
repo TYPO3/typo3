@@ -102,8 +102,6 @@ class SilentConfigurationUpgradeService
         'BE/flexFormXMLincludeDiffBase',
         // #71110
         'BE/maxFileSize',
-        // #77411
-        'SYS/caching/cacheConfigurations/extbase_typo3dbbackend_tablecolumns'
     );
 
     /**
