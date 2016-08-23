@@ -171,7 +171,10 @@ class MetaDataRepository implements SingletonInterface
     public function update($fileUid, array $data)
     {
         if (empty($this->tableFields)) {
-            $this->tableFields = $this->getDatabaseConnection()->admin_get_fields($this->tableName);
+            $this->tableFields = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($this->tableName)
+                ->getSchemaManager()
+                ->listTableColumns($this->tableName);
         }
         $updateRow = array_intersect_key($data, $this->tableFields);
         if (array_key_exists('uid', $updateRow)) {
