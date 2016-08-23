@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Core\Collection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Implementation of a RecordCollection for static TCA-Records
  */
@@ -30,7 +33,7 @@ class StaticRecordCollection extends AbstractRecordCollection implements Editabl
     public static function create(array $collectionRecord, $fillItems = false)
     {
         /** @var $collection StaticRecordCollection */
-        $collection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $collection = GeneralUtility::makeInstance(
             StaticRecordCollection::class,
             $collectionRecord['table_name']
         );
@@ -162,19 +165,35 @@ class StaticRecordCollection extends AbstractRecordCollection implements Editabl
      */
     protected function getCollectedRecords()
     {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::$storageTableName);
+        $queryBuilder->getRestrictions()->removeAll();
+        $statement = $queryBuilder->select($this->getItemTableName() . '.*')
+            ->from(self::$storageTableName)
+            ->join(
+                self::$storageTableName,
+                'sys_collection_entries',
+                'sys_collection_entries_join',
+                $queryBuilder->expr()->eq(
+                    'sys_collection_entries_join.uid_local',
+                    $queryBuilder->quoteIdentifier(self::$storageTableName . '.uid')
+                )
+            )
+            ->join(
+                'sys_collection_entries_join',
+                $this->getItemTableName(),
+                $this->getItemTableName() . '_join',
+                $queryBuilder->expr()->eq(
+                    'sys_collection_entries_join.uid_local',
+                    $queryBuilder->quoteIdentifier($this->getItemTableName() . '_join.uid')
+                )
+            )
+            ->where(
+                $queryBuilder->expr()->eq(self::$storageTableName . '.uid', (int)$this->getIdentifier())
+            )
+            ->execute();
         $relatedRecords = array();
-        $resource = $this->getDatabaseConnection()->exec_SELECT_mm_query(
-            $this->getItemTableName() . '.*',
-            self::$storageTableName,
-            'sys_collection_entries',
-            $this->getItemTableName(),
-            'AND ' . self::$storageTableName . '.uid=' . (int)$this->getIdentifier()
-        );
-        if ($resource) {
-            while ($record = $this->getDatabaseConnection()->sql_fetch_assoc($resource)) {
-                $relatedRecords[] = $record;
-            }
-            $this->getDatabaseConnection()->sql_free_result($resource);
+        while ($record = $statement->fetch()) {
+            $relatedRecords[] = $record;
         }
         return $relatedRecords;
     }
