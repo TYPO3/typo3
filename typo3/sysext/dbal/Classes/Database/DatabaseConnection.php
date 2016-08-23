@@ -2697,7 +2697,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
         // Getting real list of tables:
         switch ($this->handlerCfg['_DEFAULT']['type']) {
             case 'native':
-                $tables_result = $this->query('SHOW TABLE STATUS FROM `' . TYPO3_db . '`');
+                $tables_result = $this->query('SHOW TABLE STATUS FROM `' . $this->handlerCfg['_DEFAULT']['config']['database'] . '`');
                 if (!$this->sql_error()) {
                     while ($theTable = $this->sql_fetch_assoc($tables_result)) {
                         $whichTables[$theTable['Name']] = $theTable;
