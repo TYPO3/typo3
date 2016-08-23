@@ -133,21 +133,22 @@ class LinkAnalyzer
     public function getLinkStatistics($checkOptions = array(), $considerHidden = false)
     {
         $results = array();
-        if (!empty($checkOptions)) {
+        $pidList = implode(',', GeneralUtility::intExplode(',', $this->pidList, true));
+        if (!empty($checkOptions) && !empty($pidList)) {
             $checkKeys = array_keys($checkOptions);
             $checkLinkTypeCondition = ' AND link_type IN (\'' . implode('\',\'', $checkKeys) . '\')';
             $this->getDatabaseConnection()->exec_DELETEquery(
                 'tx_linkvalidator_link',
-                '(record_pid IN (' . $this->pidList . ')' .
-                    ' OR ( record_uid IN (' . $this->pidList . ') AND table_name like \'pages\'))' .
+                '(record_pid IN (' . $pidList . ')' .
+                    ' OR ( record_uid IN (' . $pidList . ') AND table_name like \'pages\'))' .
                     $checkLinkTypeCondition
             );
             // Traverse all configured tables
             foreach ($this->searchFields as $table => $fields) {
                 if ($table === 'pages') {
-                    $where = 'uid IN (' . $this->pidList . ')';
+                    $where = 'uid IN (' . $pidList . ')';
                 } else {
-                    $where = 'pid IN (' . $this->pidList . ')';
+                    $where = 'pid IN (' . $pidList . ')';
                 }
                 $where .= BackendUtility::deleteClause($table);
                 if (!$considerHidden) {
