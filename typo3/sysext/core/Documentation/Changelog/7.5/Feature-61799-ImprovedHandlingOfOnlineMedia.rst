@@ -87,7 +87,7 @@ online media file can be used throughout the backend every where all media files
 .. code-block:: php
 
     // Register your own online video service (the used key is also the bind file extension name)
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['OnlineMediaHelpers']['myvideo'] = \MyCompany\Myextension\Helpers\MyVideoHelper::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['onlineMediaHelpers']['myvideo'] = \MyCompany\Myextension\Helpers\MyVideoHelper::class;
 
     $rendererRegistry = \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance();
     $rendererRegistry->registerRendererClass(
@@ -112,4 +112,4 @@ for these services, you could create an own helper class which provides more met
 .. code-block:: php
 
     // Register your own online custom youtube helper class
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['OnlineMediaHelpers']['youtube'] = \MyCompany\Myextension\Helpers\YouTubeHelper::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['onlineMediaHelpers']['youtube'] = \MyCompany\Myextension\Helpers\YouTubeHelper::class;
