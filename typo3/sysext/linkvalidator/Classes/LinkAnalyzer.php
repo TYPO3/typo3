@@ -121,21 +121,22 @@ class LinkAnalyzer {
 	 */
 	public function getLinkStatistics($checkOptions = array(), $considerHidden = FALSE) {
 		$results = array();
-		if (count($checkOptions) > 0) {
+		$pidList = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->pidList, true));
+		if (count($checkOptions) > 0 && !empty($pidList)) {
 			$checkKeys = array_keys($checkOptions);
 			$checkLinkTypeCondition = ' AND link_type IN (\'' . implode('\',\'', $checkKeys) . '\')';
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 				'tx_linkvalidator_link',
-				'(record_pid IN (' . $this->pidList . ')' .
-					' OR ( record_uid IN (' . $this->pidList . ') AND table_name like \'pages\'))' .
+				'(record_pid IN (' . $pidList . ')' .
+					' OR ( record_uid IN (' . $pidList . ') AND table_name like \'pages\'))' .
 					$checkLinkTypeCondition
 			);
 			// Traverse all configured tables
 			foreach ($this->searchFields as $table => $fields) {
 				if ($table === 'pages') {
-					$where = 'deleted = 0 AND uid IN (' . $this->pidList . ')';
+					$where = 'deleted = 0 AND uid IN (' . $pidList . ')';
 				} else {
-					$where = 'deleted = 0 AND pid IN (' . $this->pidList . ')';
+					$where = 'deleted = 0 AND pid IN (' . $pidList . ')';
 				}
 				if (!$considerHidden) {
 					$where .= BackendUtility::BEenableFields($table);
