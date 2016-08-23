@@ -29,8 +29,9 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/TextAreaContainer',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
-	'TYPO3/CMS/Backend/FormEngine'],
-	function (UserAgent, Util, Ajax, Dom, Event, Selection, BookMark, Node, Typo3, Framework, Toolbar, Iframe, TextAreaContainer, StatusBar, FormEngine) {
+	'TYPO3/CMS/Backend/FormEngine',
+	'TYPO3/CMS/Backend/Notification'],
+	function (UserAgent, Util, Ajax, Dom, Event, Selection, BookMark, Node, Typo3, Framework, Toolbar, Iframe, TextAreaContainer, StatusBar, FormEngine, Notification) {
 
 	/**
 	 * Editor constructor method
@@ -347,10 +348,10 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 					this.document.body.innerHTML = this.getHTML();
 				} catch(e) {
 					this.appendToLog('HTMLArea.Editor', 'setMode', 'The HTML document is not well-formed.', 'warn');
-					TYPO3.Dialog.ErrorDialog({
-						title: 'htmlArea RTE',
-						msg: HTMLArea.localize('HTML-document-not-well-formed')
-					});
+					Notification.error(
+						'htmlArea RTE',
+						HTMLArea.localize('HTML-document-not-well-formed')
+					);
 					break;
 				}
 				this.textAreaContainer.hide();

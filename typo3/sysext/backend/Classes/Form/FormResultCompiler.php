@@ -229,7 +229,6 @@ class FormResultCompiler
         }
         $pageRenderer->loadJquery();
         $pageRenderer->loadExtJS();
-        $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/notifications.js');
         $beUserAuth = $this->getBackendUserAuthentication();
 
         // define the window size of the element browser etc.

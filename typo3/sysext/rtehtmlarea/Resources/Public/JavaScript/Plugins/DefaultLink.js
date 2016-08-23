@@ -108,10 +108,10 @@ define([
 				case 'CreateLink':
 					if (!this.link) {
 						if (this.editor.getSelection().isEmpty()) {
-							TYPO3.Dialog.InformationDialog({
-								title: this.getButton(buttonId).tooltip,
-								msg: this.localize('Select some text')
-							});
+							Notification.info(
+								this.getButton(buttonId).tooltip,
+								this.localize('Select some text')
+							);
 							break;
 						}
 						this.parameters = {

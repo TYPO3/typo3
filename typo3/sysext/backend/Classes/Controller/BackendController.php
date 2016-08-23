@@ -118,7 +118,6 @@ class BackendController
             'md5' => 'EXT:backend/Resources/Public/JavaScript/md5.js',
             'modulemenu' => 'EXT:backend/Resources/Public/JavaScript/modulemenu.js',
             'evalfield' => 'EXT:backend/Resources/Public/JavaScript/jsfunc.evalfield.js',
-            'notifications' => 'EXT:backend/Resources/Public/JavaScript/notifications.js',
             'backend' => 'EXT:backend/Resources/Public/JavaScript/backend.js',
             'viewport' => 'EXT:backend/Resources/Public/JavaScript/extjs/viewport.js',
             'iframepanel' => 'EXT:backend/Resources/Public/JavaScript/iframepanel.js',

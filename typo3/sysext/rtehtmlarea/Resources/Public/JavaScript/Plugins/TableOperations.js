@@ -1012,10 +1012,10 @@ define([
 						// Internet Explorer, WebKit and Opera
 						cell = this.editor.getSelection().getFirstAncestorOfType(['td', 'th']);
 						if (!cell) {
-							TYPO3.Dialog.InformationDialog({
-								title: this.getButton('TO-cell-merge').tooltip,
-								msg: this.localize('Please click into some cell')
-							});
+							Notification.info(
+								this.getButton('TO-cell-merge').tooltip,
+								this.localize('Please click into some cell')
+							);
 							break;
 						}
 						tr = cell.parentNode;
