@@ -643,11 +643,12 @@ class RichTextElement extends AbstractFormElement
         $backendUser = $this->getBackendUserAuthentication();
 
         $jsArray = array();
+        $jsArray[] = 'var HTMLArea = HTMLArea || {};';
         $jsArray[] = 'if (typeof configureEditorInstance === "undefined") {';
         $jsArray[] = '	configureEditorInstance = new Object();';
         $jsArray[] = '}';
         $jsArray[] = 'configureEditorInstance[' . GeneralUtility::quoteJSvalue($this->domIdentifier) . '] = function() {';
-        $jsArray[] = 'if (typeof RTEarea === "undefined" || typeof HTMLArea === "undefined") {';
+        $jsArray[] = 'if (typeof RTEarea === "undefined") {';
         $jsArray[] = '	window.setTimeout("configureEditorInstance[' . GeneralUtility::quoteJSvalue($this->domIdentifier) . ']();", 40);';
         $jsArray[] = '} else {';
         $jsArray[] = 'editornumber = ' . GeneralUtility::quoteJSvalue($this->domIdentifier) . ';';
@@ -993,11 +994,7 @@ class RichTextElement extends AbstractFormElement
                 $labelArray[$pluginId] = $newLabels;
             }
         }
-        $javaScriptString = 'TYPO3.jQuery(function() {';
-        $javaScriptString .= 'HTMLArea.I18N = new Object();' . LF;
-        $javaScriptString .= 'HTMLArea.I18N = ' . json_encode($labelArray);
-        $javaScriptString .= '});';
-        $this->resultArray['additionalJavaScriptPost'][] = $javaScriptString;
+        $this->resultArray['additionalJavaScriptPost'][] = 'HTMLArea.I18N = ' . json_encode($labelArray);
     }
 
     /**

@@ -234,12 +234,6 @@ class FormResultCompiler
         // Load tree stuff here
         $pageRenderer->addInlineLanguageLabelFile('EXT:lang/locallang_csh_corebe.xlf', 'tcatree');
         $pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/notifications.js');
-        if (ExtensionManagementUtility::isLoaded('rtehtmlarea')) {
-            // This js addition is hackish ... it will always load this file even if not RTE
-            // is added here. But this simplifies RTE initialization a lot and is thus kept for now.
-            $pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('rtehtmlarea') . 'Resources/Public/JavaScript/HTMLArea/NameSpace/NameSpace.js');
-        }
-
         $beUserAuth = $this->getBackendUserAuthentication();
 
         // define the window size of the element browser etc.
