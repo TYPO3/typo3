@@ -465,7 +465,6 @@ return [
                 'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'size' => 20,
-                // @todo: *must* be set, otherwise invalid upon checking first item?!
                 'maxitems' => 4,
                 'treeConfig' => [
                     'parentField' => 'pid',
@@ -483,7 +482,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
-                // @todo: *must* be set, otherwise invalid upon checking first item?!
                 'maxitems' => 4,
                 'size' => 10,
                 'treeConfig' => [
@@ -498,14 +496,14 @@ return [
         ],
         'select_tree_3' => [
             'exclude' => 1,
-            'label' => 'select_tree_3 pages, maxLevels=1',
+            'label' => 'select_tree_3 pages, maxLevels=1, minitems=1, maxitems=2',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'size' => 20,
-                // @todo: *must* be set, otherwise invalid upon checking first item?!
-                'maxitems' => 4,
+                'minitems' => 1,
+                'maxitems' => 2,
                 'treeConfig' => [
                     'parentField' => 'pid',
                     'appearance' => [
@@ -524,7 +522,6 @@ return [
                 'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'size' => 20,
-                // @todo: *must* be set, otherwise invalid upon checking first item?!
                 'maxitems' => 4,
                 'treeConfig' => [
                     'parentField' => 'pid',
