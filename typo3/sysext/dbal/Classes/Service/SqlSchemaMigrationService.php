@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\Service;
+namespace TYPO3\CMS\Dbal\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,13 +14,9 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Doctrine\DBAL\DBALException;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
- * Verify TYPO3 DB table structure. Mainly used in install tool
- * compare wizard and extension manager.
+ * XCLASS of ext:install SqlSchemaMigrationService containing
+ * a couple of ext:dbal specifics.
  */
 class SqlSchemaMigrationService
 {
@@ -35,7 +31,7 @@ class SqlSchemaMigrationService
     protected $deletedPrefixKey = 'zzz_deleted_';
 
     /**
-     * @var array Caching output "SHOW CHARACTER SET"
+     * @var array Caching output of $GLOBALS['TYPO3_DB']->admin_get_charsets()
      */
     protected $character_sets = [];
 
@@ -67,7 +63,7 @@ class SqlSchemaMigrationService
      */
     public function getFieldDefinitions_fileContent($fileContent)
     {
-        $lines = GeneralUtility::trimExplode(LF, $fileContent, true);
+        $lines = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $fileContent, true);
         $table = '';
         $total = [];
         foreach ($lines as $value) {
@@ -76,7 +72,7 @@ class SqlSchemaMigrationService
                 continue;
             }
             if ($table === '') {
-                $parts = GeneralUtility::trimExplode(' ', $value, true);
+                $parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $value, true);
                 if (strtoupper($parts[0]) === 'CREATE' && strtoupper($parts[1]) === 'TABLE') {
                     $table = str_replace('`', '', $parts[2]);
                     // tablenames are always lowercase on windows!
@@ -100,7 +96,7 @@ class SqlSchemaMigrationService
                             // Note: Keywords "DEFAULT CHARSET" and "CHARSET" are the same, so "DEFAULT" can just be ignored
                             $charset = $tcharset[2];
                         } else {
-                            $charset = 'utf8';
+                            $charset = $this->getDatabaseConnection()->default_charset;
                         }
                         $total[$table]['extra']['COLLATE'] = $this->getCollationForCharset($charset);
                     }
@@ -161,11 +157,12 @@ class SqlSchemaMigrationService
     {
         // Load character sets, if not cached already
         if (empty($this->character_sets)) {
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionByName('Default');
-            $statement = $connection->query('SHOW CHARACTER SET');
-            $this->character_sets = [];
-            while ($row = $statement->fetch()) {
-                $this->character_sets[$row['Charset']] = $row;
+            $databaseConnection = $this->getDatabaseConnection();
+            if (method_exists($databaseConnection, 'admin_get_charsets')) {
+                $this->character_sets = $databaseConnection->admin_get_charsets();
+            } else {
+                // Add empty element to avoid that the check will be repeated
+                $this->character_sets[$charset] = [];
             }
         }
         $collation = '';
@@ -185,28 +182,18 @@ class SqlSchemaMigrationService
         $total = [];
         $tempKeys = [];
         $tempKeysPrefix = [];
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionByName('Default');
-        $statement = $connection->query('SHOW TABLE STATUS FROM `' . $connection->getDatabase() . '`');
-        $tables = [];
-        while ($theTable = $statement->fetch()) {
-            $tables[$theTable['Name']] = $theTable;
-        }
+        $databaseConnection = $this->getDatabaseConnection();
+        $databaseConnection->connectDB();
+        echo $databaseConnection->sql_error();
+        $tables = $databaseConnection->admin_get_tables();
         foreach ($tables as $tableName => $tableStatus) {
             // Fields
-            $statement = $connection->query('SHOW FULL COLUMNS FROM `' . $tableName . '`');
-            $fieldInformation = [];
-            while ($fieldRow = $statement->fetch()) {
-                $fieldInformation[$fieldRow['Field']] = $fieldRow;
-            }
+            $fieldInformation = $databaseConnection->admin_get_fields($tableName);
             foreach ($fieldInformation as $fN => $fieldRow) {
                 $total[$tableName]['fields'][$fN] = $this->assembleFieldDefinition($fieldRow);
             }
             // Keys
-            $statement = $connection->query('SHOW KEYS FROM `' . $tableName . '`');
-            $keyInformation = [];
-            while ($keyRow = $statement->fetch()) {
-                $keyInformation[] = $keyRow;
-            }
+            $keyInformation = $databaseConnection->admin_get_keys($tableName);
             foreach ($keyInformation as $keyRow) {
                 $keyName = $keyRow['Key_name'];
                 $colName = $keyRow['Column_name'];
@@ -271,7 +258,7 @@ class SqlSchemaMigrationService
         $diffArr = [];
         if (is_array($FDsrc)) {
             foreach ($FDsrc as $table => $info) {
-                if ($onlyTableList === '' || GeneralUtility::inList($onlyTableList, $table)) {
+                if ($onlyTableList === '' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($onlyTableList, $table)) {
                     if (!isset($FDcomp[$table])) {
                         // If the table was not in the FDcomp-array, the result array is loaded with that table.
                         $extraArr[$table] = $info;
@@ -282,6 +269,9 @@ class SqlSchemaMigrationService
                             if (is_array($info[$theKey])) {
                                 foreach ($info[$theKey] as $fieldN => $fieldC) {
                                     $fieldN = str_replace('`', '', $fieldN);
+                                    if ($this->isDbalEnabled() && $fieldN === 'ENGINE') {
+                                        continue;
+                                    }
                                     if ($fieldN == 'COLLATE') {
                                         // @todo collation support is currently disabled (needs more testing)
                                         continue;
@@ -304,6 +294,25 @@ class SqlSchemaMigrationService
                                             $fieldC
                                         );
 
+                                        if ($this->isDbalEnabled()) {
+                                            // Ignore nonstandard MySQL numeric field attributes UNSIGNED and ZEROFILL
+                                            if (preg_match('/^(TINYINT|SMALLINT|MEDIUMINT|INT|INTEGER|BIGINT|REAL|DOUBLE|FLOAT|DECIMAL|NUMERIC)\([^\)]+\)\s+(UNSIGNED|ZEROFILL)/i', $fieldC)) {
+                                                $fieldC = str_ireplace([' UNSIGNED', ' ZEROFILL'], '', $fieldC);
+                                                $FDcomp[$table][$theKey][$fieldN] = str_ireplace([' UNSIGNED', ' ZEROFILL'], '', $FDcomp[$table][$theKey][$fieldN]);
+                                            }
+
+                                            // Replace field and index definitions with functionally equivalent statements
+                                            if ($fieldC !== $FDcomp[$table][$theKey][$fieldN]) {
+                                                switch ($theKey) {
+                                                    case 'fields':
+                                                        $fieldC = $this->getDatabaseConnection()->getEquivalentFieldDefinition($fieldC);
+                                                        break;
+                                                    case 'keys':
+                                                        $fieldC = $this->getDatabaseConnection()->getEquivalentIndexDefinition($fieldC);
+                                                        break;
+                                                }
+                                            }
+                                        }
                                         if ($ignoreNotNullWhenComparing) {
                                             $fieldC = str_replace(' NOT NULL', '', $fieldC);
                                             $FDcomp[$table][$theKey][$fieldN] = str_replace(' NOT NULL', '', $FDcomp[$table][$theKey][$fieldN]);
@@ -368,9 +377,11 @@ class SqlSchemaMigrationService
                                     // The field can only be set "auto_increment" if there exists a PRIMARY key of that field already.
                                     // The check does not look up which field is primary but just assumes it must be the field with the auto_increment value...
                                     if (isset($info['keys']['PRIMARY'])) {
-                                        // Combine adding the field and the primary key into a single statement
-                                        $fV .= ', ADD PRIMARY KEY (' . $fN . ')';
-                                        unset($info['keys']['PRIMARY']);
+                                        if (!$this->isDbalEnabled()) {
+                                            // Combine adding the field and the primary key into a single statement
+                                            $fV .= ', ADD PRIMARY KEY (' . $fN . ')';
+                                            unset($info['keys']['PRIMARY']);
+                                        }
                                     } else {
                                         // In the next step, attempt to clear the table once again (2 = force)
                                         $info['extra']['CLEAR'] = 2;
@@ -463,9 +474,7 @@ class SqlSchemaMigrationService
                                 $statements['drop_table'][md5($statement)] = $statement;
                             }
                             // Count
-                            $count = GeneralUtility::makeInstance(ConnectionPool::class)
-                                ->getConnectionByName('Default')
-                                ->count('*', $table, []);
+                            $count = $this->getDatabaseConnection()->exec_SELECTcountRows('*', $table);
                             $statements['tables_count'][md5($statement)] = $count ? 'Records in table: ' . $count : '';
                         } else {
                             $statement = 'CREATE TABLE ' . $table . ' (
@@ -490,7 +499,6 @@ class SqlSchemaMigrationService
                 }
             }
         }
-
         return $statements;
     }
 
@@ -635,13 +643,14 @@ class SqlSchemaMigrationService
     {
         $result = [];
         if (is_array($arr)) {
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionByName('Default');
+            $databaseConnection = $this->getDatabaseConnection();
             foreach ($arr as $key => $string) {
                 if (isset($keyArr[$key]) && $keyArr[$key]) {
-                    try {
-                        $statement = $connection->query($string);
-                    } catch (DBALException $e) {
-                        $result[$key] = $e->getMessage();
+                    $res = $databaseConnection->admin_query($string);
+                    if ($res === false) {
+                        $result[$key] = $databaseConnection->sql_error();
+                    } elseif (is_resource($res) || is_a($res, '\\mysqli_result')) {
+                        $databaseConnection->sql_free_result($res);
                     }
                 }
             }
@@ -661,16 +670,29 @@ class SqlSchemaMigrationService
      */
     public function getListOfTables()
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionByName('Default');
-        $statement = $connection->query('SHOW TABLE STATUS FROM `' . $connection->getDatabase() . '`');
-        $tables = [];
-        while ($theTable = $statement->fetch()) {
-            $tables[$theTable['Name']] = $theTable;
-        }
-        foreach ($tables as $key => &$value) {
+        $whichTables = $this->getDatabaseConnection()->admin_get_tables();
+        foreach ($whichTables as $key => &$value) {
             $value = $key;
         }
         unset($value);
-        return $tables;
+        return $whichTables;
+    }
+
+    /**
+     * Checks if DBAL is enabled for the database connection
+     *
+     * @return bool
+     */
+    protected function isDbalEnabled()
+    {
+        return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal');
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection|\TYPO3\CMS\Dbal\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
     }
 }

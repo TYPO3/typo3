@@ -410,10 +410,6 @@ class AbstractController
      */
     protected function loadBaseExtensions()
     {
-        if ($this->isDbalEnabled()) {
-            require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('dbal') . 'ext_localconf.php');
-        }
-
         // @todo: Find out if this could be left out
         require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extbase') . 'ext_localconf.php');
 
@@ -428,25 +424,9 @@ class AbstractController
             }
             $cacheConfigurationsWithCachesSetToNullBackend[$cacheName] = $cacheConfiguration;
         }
-
         /** @var $cacheManager \TYPO3\CMS\Core\Cache\CacheManager */
         $cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
         $cacheManager->setCacheConfigurations($cacheConfigurationsWithCachesSetToNullBackend);
-    }
-
-    /**
-     * Return TRUE if dbal and adodb extension is loaded.
-     *
-     * @return bool TRUE if dbal and adodb is loaded
-     */
-    protected function isDbalEnabled()
-    {
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('adodb')
-            && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal')
-        ) {
-            return true;
-        }
-        return false;
     }
 
     /**

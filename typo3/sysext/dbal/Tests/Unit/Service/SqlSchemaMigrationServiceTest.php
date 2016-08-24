@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\Tests\Unit\Service;
+namespace TYPO3\CMS\Dbal\Tests\Unit\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,12 +14,13 @@ namespace TYPO3\CMS\Install\Tests\Unit\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Install\Service\SqlSchemaMigrationService;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Dbal\Service\SqlSchemaMigrationService;
 
 /**
  * Test case
  */
-class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class SqlSchemaMigrationServiceTest extends UnitTestCase
 {
     /**
      * Get a SchemaService instance with mocked DBAL enable database connection, DBAL not enabled
@@ -33,6 +34,52 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(false));
 
         return $subject;
+    }
+
+    /**
+     * Get a SchemaService instance with mocked DBAL enable database connection, DBAL enabled
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     */
+    protected function getDbalEnabledSqlSchemaMigrationService()
+    {
+        /** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $databaseConnection */
+        $databaseConnection = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, ['dummy'], [], '', false);
+        $databaseConnection->_set(
+            'dbmsSpecifics',
+            new \TYPO3\CMS\Dbal\Database\Specifics\PostgresSpecifics()
+        );
+
+        $subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, ['isDbalEnabled', 'getDatabaseConnection'], [], '', false);
+        $subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(true));
+        $subject->expects($this->any())->method('getDatabaseConnection')->will($this->returnValue($databaseConnection));
+
+        return $subject;
+    }
+
+    /**
+     * @test
+     */
+    public function getFieldDefinitionsFileContentHandlesMultipleWhitespacesInFieldDefinitions()
+    {
+        $subject = $this->getSqlSchemaMigrationService();
+        // Multiple whitespaces and tabs in field definition
+        $inputString = 'CREATE table atable (' . LF . 'aFieldName   int(11)' . TAB . TAB . TAB . 'unsigned   DEFAULT \'0\'' . LF . ');';
+        $result = $subject->getFieldDefinitions_fileContent($inputString);
+
+        $this->assertEquals(
+            [
+                'atable' => [
+                    'fields' => [
+                        'aFieldName' => 'int(11) unsigned default \'0\'',
+                    ],
+                    'extra' => [
+                        'COLLATE' => '',
+                    ],
+                ],
+            ],
+            $result
+        );
     }
 
     /**
@@ -396,6 +443,43 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
+    public function getDatabaseExtraExcludesEngineIfDbalIsUsed()
+    {
+        $subject = $this->getDbalEnabledSqlSchemaMigrationService();
+        $differenceArray = $subject->getDatabaseExtra(
+            [
+                'tx_foo' => [
+                    'fields' => [
+                        'foo' => 'INT(11) DEFAULT \'0\' NOT NULL',
+                    ],
+                    'extra' => [
+                        'ENGINE' => 'InnoDB'
+                    ]
+                ]
+            ],
+            [
+                'tx_foo' => [
+                    'fields' => [
+                        'foo' => 'int(11) DEFAULT \'0\' NOT NULL',
+                    ],
+                    'extra' => []
+                ]
+            ]
+        );
+
+        $this->assertSame(
+            $differenceArray,
+            [
+                'extra' => [],
+                'diff' => [],
+                'diff_currentValues' => null,
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
     public function getDatabaseExtraIncludesUnsignedAttributeIfMySQLIsUsed()
     {
         $subject = $this->getSqlSchemaMigrationService();
@@ -440,6 +524,78 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                         ],
                     ]
                 ]
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getDatabaseExtraExcludesUnsignedAttributeIfDbalIsUsed()
+    {
+        $subject = $this->getDbalEnabledSqlSchemaMigrationService();
+        $differenceArray = $subject->getDatabaseExtra(
+            [
+                'tx_foo' => [
+                    'fields' => [
+                        'foo' => 'INT(11) UNSIGNED DEFAULT \'0\' NOT NULL',
+                    ],
+                    'extra' => [
+                        'ENGINE' => 'InnoDB'
+                    ]
+                ]
+            ],
+            [
+                'tx_foo' => [
+                    'fields' => [
+                        'foo' => 'int(11) DEFAULT \'0\' NOT NULL',
+                    ],
+                    'extra' => [
+                        'ENGINE' => 'InnoDB'
+                    ]
+                ]
+            ]
+        );
+
+        $this->assertSame(
+            $differenceArray,
+            [
+                'extra' => [],
+                'diff' => [],
+                'diff_currentValues' => null
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getDatabaseExtraIgnoresIndexPrefixLengthIfDbalIsUsed()
+    {
+        $subject = $this->getDbalEnabledSqlSchemaMigrationService();
+        $differenceArray = $subject->getDatabaseExtra(
+            [
+                'tx_foo' => [
+                    'keys' => [
+                        'foo' => 'KEY foo (foo(199))'
+                    ]
+                ]
+            ],
+            [
+                'tx_foo' => [
+                    'keys' => [
+                        'foo' => 'KEY foo (foo)'
+                    ]
+                ]
+            ]
+        );
+
+        $this->assertSame(
+            $differenceArray,
+            [
+                'extra' => [],
+                'diff' => [],
+                'diff_currentValues' => null,
             ]
         );
     }
