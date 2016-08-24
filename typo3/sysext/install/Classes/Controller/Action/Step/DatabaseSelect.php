@@ -24,8 +24,7 @@ use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Database select step.
- * This step is only rendered if database is mysql. With dbal,
- * database name is submitted by previous step already.
+ * This step is only rendered if database is mysql.
  */
 class DatabaseSelect extends AbstractStepAction
 {

@@ -12,18 +12,5 @@
 		This can be done using tools provided by your host.
 	</p>
 
-	<f:if condition="{isDbalEnabled}">
-		<f:then>
-			<f:render partial="Action/Step/DatabaseConnect/DbalDriverSelection" arguments="{_all}" />
-			<f:if condition="{selectedDbalDriver}">
-				<f:render partial="Action/Step/DatabaseConnect/ConnectDetails" arguments="{_all}" />
-			</f:if>
-			<f:render partial="Action/Step/DatabaseConnect/UnloadDbal" arguments="{_all}" />
-		</f:then>
-
-		<f:else>
-			<f:render partial="Action/Step/DatabaseConnect/ConnectDetails" arguments="{_all}" />
-			<f:render partial="Action/Step/DatabaseConnect/LoadDbal" arguments="{_all}" />
-		</f:else>
-	</f:if>
+	<f:render partial="Action/Step/DatabaseConnect/ConnectDetails" arguments="{_all}" />
 </f:section>

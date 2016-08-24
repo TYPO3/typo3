@@ -103,7 +103,10 @@ class DatabaseData extends AbstractStepAction
      */
     public function needsExecution()
     {
-        $existingTables = $this->getDatabaseConnection()->admin_get_tables();
+        $existingTables = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionByName('Default')
+            ->getSchemaManager()
+            ->listTableNames();
         if (empty($existingTables)) {
             $result = true;
         } else {

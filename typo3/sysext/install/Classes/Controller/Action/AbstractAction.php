@@ -172,21 +172,6 @@ abstract class AbstractAction implements ActionInterface
     }
 
     /**
-     * Return TRUE if dbal and adodb extension is loaded
-     *
-     * @return bool TRUE if dbal and adodb is loaded
-     */
-    protected function isDbalEnabled()
-    {
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('adodb')
-            && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal')
-        ) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Context determines if the install tool is called within backend or standalone
      *
      * @return string Either 'standalone' or 'backend'

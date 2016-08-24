@@ -14,7 +14,8 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use Doctrine\DBAL\DBALException;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -22,13 +23,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * - Needs execution if database credentials are not set or fail to connect
  * - Renders fields for database connection fields
  * - Sets database credentials in LocalConfiguration
- * - Loads / unloads ext:dbal and ext:adodb if requested
  */
 class DatabaseConnect extends AbstractStepAction
 {
     /**
      * Execute database step:
-     * - Load / unload dbal & adodb
      * - Set database connect credentials in LocalConfiguration
      *
      * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
@@ -41,149 +40,101 @@ class DatabaseConnect extends AbstractStepAction
         $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 
         $postValues = $this->postValues['values'];
-        if (isset($postValues['loadDbal'])) {
-            $result[] = $this->executeLoadDbalExtension();
-        } elseif ($postValues['unloadDbal']) {
-            $result[] = $this->executeUnloadDbalExtension();
-        } elseif ($postValues['setDbalDriver']) {
-            $driver = $postValues['setDbalDriver'];
-            switch ($driver) {
-                case 'mssql':
-                case 'odbc_mssql':
-                    $driverConfig = [
-                        'useNameQuote' => true,
-                        'quoteClob' => false,
-                    ];
-                    break;
-                case 'oci8':
-                    $driverConfig = [
-                        'driverOptions' => [
-                            'connectSID' => '',
-                        ],
-                    ];
-                    break;
-            }
-            $config = [
-                '_DEFAULT' => [
-                    'type' => 'adodb',
-                    'config' => [
-                        'driver' => $driver,
-                    ]
-                ]
-            ];
-            if (isset($driverConfig)) {
-                $config['_DEFAULT']['config'] = array_merge($config['_DEFAULT']['config'], $driverConfig);
-            }
-            $configurationManager->setLocalConfigurationValueByPath('EXTCONF/dbal/handlerCfg', $config);
-        } else {
-            $localConfigurationPathValuePairs = [];
 
-            if ($this->isDbalEnabled()) {
-                $config = $configurationManager->getConfigurationValueByPath('EXTCONF/dbal/handlerCfg');
-                $driver = $config['_DEFAULT']['config']['driver'];
-                if ($driver === 'oci8') {
-                    $config['_DEFAULT']['config']['driverOptions']['connectSID'] = ($postValues['type'] === 'sid');
-                    $localConfigurationPathValuePairs['EXTCONF/dbal/handlerCfg'] = $config;
-                }
+        $localConfigurationPathValuePairs = [];
+
+        if (isset($postValues['username'])) {
+            $value = $postValues['username'];
+            if (strlen($value) <= 50) {
+                $localConfigurationPathValuePairs['DB/Connections/Default/user'] = $value;
+            } else {
+                /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
+                $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                $errorStatus->setTitle('Database username not valid');
+                $errorStatus->setMessage('Given username must be shorter than fifty characters.');
+                $result[] = $errorStatus;
             }
+        }
 
-            if (isset($postValues['username'])) {
-                $value = $postValues['username'];
-                if (strlen($value) <= 50) {
-                    $localConfigurationPathValuePairs['DB/Connections/Default/user'] = $value;
-                } else {
-                    /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-                    $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
-                    $errorStatus->setTitle('Database username not valid');
-                    $errorStatus->setMessage('Given username must be shorter than fifty characters.');
-                    $result[] = $errorStatus;
-                }
+        if (isset($postValues['password'])) {
+            $value = $postValues['password'];
+            if (strlen($value) <= 50) {
+                $localConfigurationPathValuePairs['DB/Connections/Default/password'] = $value;
+            } else {
+                /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
+                $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                $errorStatus->setTitle('Database password not valid');
+                $errorStatus->setMessage('Given password must be shorter than fifty characters.');
+                $result[] = $errorStatus;
             }
+        }
 
-            if (isset($postValues['password'])) {
-                $value = $postValues['password'];
-                if (strlen($value) <= 50) {
-                    $localConfigurationPathValuePairs['DB/Connections/Default/password'] = $value;
-                } else {
-                    /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-                    $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
-                    $errorStatus->setTitle('Database password not valid');
-                    $errorStatus->setMessage('Given password must be shorter than fifty characters.');
-                    $result[] = $errorStatus;
-                }
+        if (isset($postValues['host'])) {
+            $value = $postValues['host'];
+            if (preg_match('/^[a-zA-Z0-9_\\.-]+(:.+)?$/', $value) && strlen($value) <= 255) {
+                $localConfigurationPathValuePairs['DB/Connections/Default/host'] = $value;
+            } else {
+                /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
+                $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                $errorStatus->setTitle('Database host not valid');
+                $errorStatus->setMessage('Given host is not alphanumeric (a-z, A-Z, 0-9 or _-.:) or longer than 255 characters.');
+                $result[] = $errorStatus;
             }
+        }
 
-            if (isset($postValues['host'])) {
-                $value = $postValues['host'];
-                if (preg_match('/^[a-zA-Z0-9_\\.-]+(:.+)?$/', $value) && strlen($value) <= 255) {
-                    $localConfigurationPathValuePairs['DB/Connections/Default/host'] = $value;
-                } else {
-                    /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-                    $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
-                    $errorStatus->setTitle('Database host not valid');
-                    $errorStatus->setMessage('Given host is not alphanumeric (a-z, A-Z, 0-9 or _-.:) or longer than 255 characters.');
-                    $result[] = $errorStatus;
-                }
+        if (isset($postValues['port']) && $postValues['host'] !== 'localhost') {
+            $value = $postValues['port'];
+            if (preg_match('/^[0-9]+(:.+)?$/', $value) && $value > 0 && $value <= 65535) {
+                $localConfigurationPathValuePairs['DB/Connections/Default/port'] = (int)$value;
+            } else {
+                /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
+                $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                $errorStatus->setTitle('Database port not valid');
+                $errorStatus->setMessage('Given port is not numeric or within range 1 to 65535.');
+                $result[] = $errorStatus;
             }
+        }
 
-            if (isset($postValues['port']) && $postValues['host'] !== 'localhost') {
-                $value = $postValues['port'];
-                if (preg_match('/^[0-9]+(:.+)?$/', $value) && $value > 0 && $value <= 65535) {
-                    $localConfigurationPathValuePairs['DB/Connections/Default/port'] = (int)$value;
-                } else {
-                    /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-                    $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
-                    $errorStatus->setTitle('Database port not valid');
-                    $errorStatus->setMessage('Given port is not numeric or within range 1 to 65535.');
-                    $result[] = $errorStatus;
-                }
+        if (isset($postValues['socket']) && $postValues['socket'] !== '') {
+            if (@file_exists($postValues['socket'])) {
+                $localConfigurationPathValuePairs['DB/Connections/Default/unix_socket'] = $postValues['socket'];
+            } else {
+                /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
+                $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                $errorStatus->setTitle('Socket does not exist');
+                $errorStatus->setMessage('Given socket location does not exist on server.');
+                $result[] = $errorStatus;
             }
+        }
 
-            if (isset($postValues['socket']) && $postValues['socket'] !== '') {
-                if (@file_exists($postValues['socket'])) {
-                    $localConfigurationPathValuePairs['DB/Connections/Default/unix_socket'] = $postValues['socket'];
-                } else {
-                    /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-                    $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
-                    $errorStatus->setTitle('Socket does not exist');
-                    $errorStatus->setMessage('Given socket location does not exist on server.');
-                    $result[] = $errorStatus;
-                }
+        if (isset($postValues['database'])) {
+            $value = $postValues['database'];
+            if (strlen($value) <= 50) {
+                $localConfigurationPathValuePairs['DB/Connections/Default/dbname'] = $value;
+            } else {
+                /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
+                $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                $errorStatus->setTitle('Database name not valid');
+                $errorStatus->setMessage('Given database name must be shorter than fifty characters.');
+                $result[] = $errorStatus;
             }
+        }
 
-            if (isset($postValues['database'])) {
-                $value = $postValues['database'];
-                if (strlen($value) <= 50) {
-                    $localConfigurationPathValuePairs['DB/Connections/Default/dbname'] = $value;
-                } else {
-                    /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-                    $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
-                    $errorStatus->setTitle('Database name not valid');
-                    $errorStatus->setMessage('Given database name must be shorter than fifty characters.');
-                    $result[] = $errorStatus;
-                }
-            }
+        if (!empty($localConfigurationPathValuePairs)) {
+            $configurationManager->setLocalConfigurationValuesByPathValuePairs($localConfigurationPathValuePairs);
 
-            if (!empty($localConfigurationPathValuePairs)) {
-                $configurationManager->setLocalConfigurationValuesByPathValuePairs($localConfigurationPathValuePairs);
-
-                // After setting new credentials, test again and create an error message if connect is not successful
-                // @TODO: This could be simplified, if isConnectSuccessful could be released from TYPO3_CONF_VARS
-                // and fed with connect values directly in order to obsolete the bootstrap reload.
-                \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-                    ->populateLocalConfiguration()
-                    ->disableCoreCache();
-                if ($this->isDbalEnabled()) {
-                    require(ExtensionManagementUtility::extPath('dbal') . 'ext_localconf.php');
-                    GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-                }
-                if (!$this->isConnectSuccessful()) {
-                    /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-                    $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
-                    $errorStatus->setTitle('Database connect not successful');
-                    $errorStatus->setMessage('Connecting to the database with given settings failed. Please check.');
-                    $result[] = $errorStatus;
-                }
+            // After setting new credentials, test again and create an error message if connect is not successful
+            // @TODO: This could be simplified, if isConnectSuccessful could be released from TYPO3_CONF_VARS
+            // and fed with connect values directly in order to obsolete the bootstrap reload.
+            \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
+                ->populateLocalConfiguration()
+                ->disableCoreCache();
+            if (!$this->isConnectSuccessful()) {
+                /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
+                $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                $errorStatus->setTitle('Database connect not successful');
+                $errorStatus->setMessage('Connecting to the database with given settings failed. Please check.');
+                $result[] = $errorStatus;
             }
         }
 
@@ -201,7 +152,7 @@ class DatabaseConnect extends AbstractStepAction
         if ($this->isConnectSuccessful() && $this->isConfigurationComplete()) {
             return false;
         }
-        if (!$this->isHostConfigured() && !$this->isDbalEnabled()) {
+        if (!$this->isHostConfigured()) {
             $this->useDefaultValuesForNotConfiguredOptions();
             throw new \TYPO3\CMS\Install\Controller\Exception\RedirectException(
                 'Wrote default settings to LocalConfiguration.php, redirect needed',
@@ -218,28 +169,19 @@ class DatabaseConnect extends AbstractStepAction
      */
     protected function executeAction()
     {
-        $isDbalEnabled = $this->isDbalEnabled();
         $this->view
-            ->assign('isDbalEnabled', $isDbalEnabled)
             ->assign('username', $this->getConfiguredUsername())
             ->assign('password', $this->getConfiguredPassword())
             ->assign('host', $this->getConfiguredHost())
             ->assign('port', $this->getConfiguredOrDefaultPort())
             ->assign('database', $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['dbname'] ?: '')
-            ->assign('socket', $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['unix_socket'] ?: '');
+            ->assign('socket', $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['unix_socket'] ?: '')
+            ->assign('renderConnectDetailsUsername', true)
+            ->assign('renderConnectDetailsPassword', true)
+            ->assign('renderConnectDetailsHost', true)
+            ->assign('renderConnectDetailsPort', true)
+            ->assign('renderConnectDetailsSocket', true);
 
-        if ($isDbalEnabled) {
-            $this->view->assign('selectedDbalDriver', $this->getSelectedDbalDriver());
-            $this->view->assign('dbalDrivers', $this->getAvailableDbalDrivers());
-            $this->setDbalInputFieldsToRender();
-        } else {
-            $this->view
-                ->assign('renderConnectDetailsUsername', true)
-                ->assign('renderConnectDetailsPassword', true)
-                ->assign('renderConnectDetailsHost', true)
-                ->assign('renderConnectDetailsPort', true)
-                ->assign('renderConnectDetailsSocket', true);
-        }
         $this->assignSteps();
 
         return $this->view->render();
@@ -254,25 +196,7 @@ class DatabaseConnect extends AbstractStepAction
     {
         $configuredPort = (int)$this->getConfiguredPort();
         if (!$configuredPort) {
-            if ($this->isDbalEnabled()) {
-                $driver = $this->getSelectedDbalDriver();
-                switch ($driver) {
-                    case 'postgres':
-                        $port = 5432;
-                        break;
-                    case 'mssql':
-                    case 'odbc_mssql':
-                        $port = 1433;
-                        break;
-                    case 'oci8':
-                        $port = 1521;
-                        break;
-                    default:
-                        $port = 3306;
-                }
-            } else {
-                $port = 3306;
-            }
+            $port = 3306;
         } else {
             $port = $configuredPort;
         }
@@ -286,26 +210,12 @@ class DatabaseConnect extends AbstractStepAction
      */
     protected function isConnectSuccessful()
     {
-        /** @var $databaseConnection \TYPO3\CMS\Core\Database\DatabaseConnection */
-        $databaseConnection = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
-
-        if ($this->isDbalEnabled()) {
-            // Set additional connect information based on dbal driver. postgres for example needs
-            // database name already for connect.
-            if (isset($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['dbname'])) {
-                $databaseConnection->setDatabaseName($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['dbname']);
-            }
+        try {
+            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionByName('Default')->ping();
+        } catch (DBALException $e) {
+            return false;
         }
-
-        $databaseConnection->setDatabaseUsername($this->getConfiguredUsername());
-        $databaseConnection->setDatabasePassword($this->getConfiguredPassword());
-        $databaseConnection->setDatabaseHost($this->getConfiguredHost());
-        $databaseConnection->setDatabasePort($this->getConfiguredPort());
-        $databaseConnection->setDatabaseSocket($this->getConfiguredSocket());
-
-        $databaseConnection->initialize();
-
-        return (bool)@$databaseConnection->sql_pconnect();
+        return true;
     }
 
     /**
@@ -429,172 +339,6 @@ class DatabaseConnect extends AbstractStepAction
             }
         }
         return $result;
-    }
-
-    /**
-     * Render fields required for successful connect based on dbal driver selection.
-     * Hint: There is a code duplication in handle() and this method. This
-     * is done by intention to keep this code area easy to maintain and understand.
-     *
-     * @return void
-     */
-    protected function setDbalInputFieldsToRender()
-    {
-        $driver = $this->getSelectedDbalDriver();
-        switch ($driver) {
-            case 'mssql':
-            case 'odbc_mssql':
-            case 'postgres':
-                $this->view
-                    ->assign('renderConnectDetailsUsername', true)
-                    ->assign('renderConnectDetailsPassword', true)
-                    ->assign('renderConnectDetailsHost', true)
-                    ->assign('renderConnectDetailsPort', true)
-                    ->assign('renderConnectDetailsDatabase', true);
-                break;
-            case 'oci8':
-                $this->view
-                    ->assign('renderConnectDetailsUsername', true)
-                    ->assign('renderConnectDetailsPassword', true)
-                    ->assign('renderConnectDetailsHost', true)
-                    ->assign('renderConnectDetailsPort', true)
-                    ->assign('renderConnectDetailsDatabase', true)
-                    ->assign('renderConnectDetailsOracleSidConnect', true);
-                $type = isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['handlerCfg']['_DEFAULT']['config']['driverOptions']['connectSID'])
-                    ? $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['handlerCfg']['_DEFAULT']['config']['driverOptions']['connectSID']
-                    : '';
-                if ($type === true) {
-                    $this->view->assign('oracleSidSelected', true);
-                }
-                break;
-        }
-    }
-
-    /**
-     * Returns a list of database drivers that are available on current server.
-     *
-     * @return array
-     */
-    protected function getAvailableDbalDrivers()
-    {
-        $supportedDrivers = $this->getSupportedDbalDrivers();
-        $availableDrivers = [];
-        $selectedDbalDriver = $this->getSelectedDbalDriver();
-        foreach ($supportedDrivers as $abstractionLayer => $drivers) {
-            foreach ($drivers as $driver => $info) {
-                if (isset($info['combine']) && $info['combine'] === 'OR') {
-                    $isAvailable = false;
-                } else {
-                    $isAvailable = true;
-                }
-                // Loop through each PHP module dependency to ensure it is loaded
-                foreach ($info['extensions'] as $extension) {
-                    if (isset($info['combine']) && $info['combine'] === 'OR') {
-                        $isAvailable |= extension_loaded($extension);
-                    } else {
-                        $isAvailable &= extension_loaded($extension);
-                    }
-                }
-                if ($isAvailable) {
-                    if (!isset($availableDrivers[$abstractionLayer])) {
-                        $availableDrivers[$abstractionLayer] = [];
-                    }
-                    $availableDrivers[$abstractionLayer][$driver] = [];
-                    $availableDrivers[$abstractionLayer][$driver]['driver'] = $driver;
-                    $availableDrivers[$abstractionLayer][$driver]['label'] = $info['label'];
-                    $availableDrivers[$abstractionLayer][$driver]['selected'] = false;
-                    if ($selectedDbalDriver === $driver) {
-                        $availableDrivers[$abstractionLayer][$driver]['selected'] = true;
-                    }
-                }
-            }
-        }
-        return $availableDrivers;
-    }
-
-    /**
-     * Returns a list of DBAL supported database drivers, with a
-     * user-friendly name and any PHP module dependency.
-     *
-     * @return array
-     */
-    protected function getSupportedDbalDrivers()
-    {
-        $supportedDrivers = [
-            'Native' => [
-                'mssql' => [
-                    'label' => 'Microsoft SQL Server',
-                    'extensions' => ['mssql']
-                ],
-                'oci8' => [
-                    'label' => 'Oracle OCI8',
-                    'extensions' => ['oci8']
-                ],
-                'postgres' => [
-                    'label' => 'PostgreSQL',
-                    'extensions' => ['pgsql']
-                ]
-            ],
-            'ODBC' => [
-                'odbc_mssql' => [
-                    'label' => 'Microsoft SQL Server',
-                    'extensions' => ['odbc', 'mssql']
-                ]
-            ]
-        ];
-        return $supportedDrivers;
-    }
-
-    /**
-     * Get selected dbal driver if any
-     *
-     * @return string Dbal driver or empty string if not yet selected
-     */
-    protected function getSelectedDbalDriver()
-    {
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['handlerCfg']['_DEFAULT']['config']['driver'])) {
-            return $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['handlerCfg']['_DEFAULT']['config']['driver'];
-        }
-        return '';
-    }
-
-    /**
-     * Adds dbal and adodb to list of loaded extensions
-     *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
-     */
-    protected function executeLoadDbalExtension()
-    {
-        if (!ExtensionManagementUtility::isLoaded('adodb')) {
-            ExtensionManagementUtility::loadExtension('adodb');
-        }
-        if (!ExtensionManagementUtility::isLoaded('dbal')) {
-            ExtensionManagementUtility::loadExtension('dbal');
-        }
-        /** @var $errorStatus \TYPO3\CMS\Install\Status\WarningStatus */
-        $warningStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\WarningStatus::class);
-        $warningStatus->setTitle('Loaded database abstraction layer');
-        return $warningStatus;
-    }
-
-    /**
-     * Remove dbal and adodb from list of loaded extensions
-     *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
-     */
-    protected function executeUnloadDbalExtension()
-    {
-        if (ExtensionManagementUtility::isLoaded('adodb')) {
-            ExtensionManagementUtility::unloadExtension('adodb');
-        }
-        if (ExtensionManagementUtility::isLoaded('dbal')) {
-            ExtensionManagementUtility::unloadExtension('dbal');
-        }
-        // @TODO: Remove configuration from TYPO3_CONF_VARS['EXTCONF']['dbal']
-        /** @var $errorStatus \TYPO3\CMS\Install\Status\WarningStatus */
-        $warningStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\WarningStatus::class);
-        $warningStatus->setTitle('Removed database abstraction layer');
-        return $warningStatus;
     }
 
     /**
