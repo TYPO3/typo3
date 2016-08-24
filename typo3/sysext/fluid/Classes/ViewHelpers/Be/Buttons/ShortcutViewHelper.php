@@ -65,6 +65,21 @@ class ShortcutViewHelper extends AbstractBackendViewHelper
     }
 
     /**
+     * Renders a shortcut button as known from the TYPO3 backend
+     *
+     * @return string the rendered shortcut button
+     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::makeShortcutIcon()
+     */
+    public function render()
+    {
+        return static::renderStatic(
+            $this->arguments,
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
+
+    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
