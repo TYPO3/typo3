@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
 use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
+use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Status\ErrorStatus;
 
@@ -130,54 +132,43 @@ class DatabaseData extends AbstractStepAction
      * Create tables and import static rows
      *
      * @return \TYPO3\CMS\Install\Status\StatusInterface[]
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      */
     protected function importDatabaseData()
     {
-        $result = [];
         // Will load ext_localconf and ext_tables. This is pretty safe here since we are
         // in first install (database empty), so it is very likely that no extension is loaded
         // that could trigger a fatal at this point.
         $this->loadExtLocalconfDatabaseAndExtTables();
 
-        // Import database data
-        $database = $this->getDatabaseConnection();
-        /** @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService $schemaMigrationService */
-        $schemaMigrationService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
-        /** @var \TYPO3\CMS\Install\Service\SqlExpectedSchemaService $expectedSchemaService */
-        $expectedSchemaService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class);
+        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
+        $sqlCode = $sqlReader->getTablesDefinitionString(true);
 
-        // Raw concatenated ext_tables.sql and friends string
-        $expectedSchemaString = $expectedSchemaService->getTablesDefinitionString(true);
-        $statements = $schemaMigrationService->getStatementArray($expectedSchemaString, true);
-        list($_, $insertCount) = $schemaMigrationService->getCreateTables($statements, true);
-        $fieldDefinitionsFile = $schemaMigrationService->getFieldDefinitions_fileContent($expectedSchemaString);
-        $fieldDefinitionsDatabase = $schemaMigrationService->getFieldDefinitions_database();
-        $difference = $schemaMigrationService->getDatabaseExtra($fieldDefinitionsFile, $fieldDefinitionsDatabase);
-        $updateStatements = $schemaMigrationService->getUpdateSuggestions($difference);
+        $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
+        $createTableStatements = $sqlReader->getCreateTableStatementArray($sqlCode);
 
-        foreach (['add', 'change', 'create_table'] as $action) {
-            $updateStatus = $schemaMigrationService->performUpdateQueries($updateStatements[$action], $updateStatements[$action]);
-            if ($updateStatus !== true) {
-                foreach ($updateStatus as $statementIdentifier => $errorMessage) {
-                    $result[$updateStatements[$action][$statementIdentifier]] = $errorMessage;
-                }
-            }
+        $results = $schemaMigrationService->install($createTableStatements);
+
+        // Only keep statements with error messages
+        $results = array_filter($results);
+        if (count($results) === 0) {
+            $insertStatements = $sqlReader->getInsertStatementArray($sqlCode);
+            $results = $schemaMigrationService->importStaticData($insertStatements);
         }
 
-        if (empty($result)) {
-            foreach ($insertCount as $table => $count) {
-                $insertStatements = $schemaMigrationService->getTableInsertStatements($statements, $table);
-                foreach ($insertStatements as $insertQuery) {
-                    $insertQuery = rtrim($insertQuery, ';');
-                    $database->admin_query($insertQuery);
-                    if ($database->sql_error()) {
-                        $result[$insertQuery] = $database->sql_error();
-                    }
-                }
+        foreach ($results as $statement => &$message) {
+            if ($message === '') {
+                unset($results[$statement]);
+                continue;
             }
-        }
 
-        foreach ($result as $statement => &$message) {
             $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
             $errorStatus->setTitle('Database query failed!');
             $errorStatus->setMessage(
@@ -189,7 +180,7 @@ class DatabaseData extends AbstractStepAction
             $message = $errorStatus;
         }
 
-        return array_values($result);
+        return array_values($results);
     }
 
     /**

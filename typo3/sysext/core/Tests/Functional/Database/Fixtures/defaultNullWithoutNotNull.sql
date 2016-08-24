@@ -1,0 +1,3 @@
+CREATE TABLE aTestTable (
+	aTestField DECIMAL (5, 2) UNSIGNED NULL DEFAULT NULL
+);

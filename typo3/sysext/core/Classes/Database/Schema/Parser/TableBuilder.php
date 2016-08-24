@@ -1,0 +1,385 @@
+<?php
+declare(strict_types=1);
+
+namespace TYPO3\CMS\Core\Database\Schema\Parser;
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\Index;
+use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\Type;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateForeignKeyDefinitionItem;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateIndexDefinitionItem;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\IndexColumnName;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\ReferenceDefinition;
+use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
+use TYPO3\CMS\Core\Database\Schema\Types\SetType;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+/**
+ * Converts a CreateTableStatement syntax node into a Doctrine Table
+ * object that represents the table defined in the original SQL statement.
+ */
+class TableBuilder
+{
+    /**
+     * @var Table
+     */
+    protected $table;
+
+    /**
+     * TableBuilder constructor.
+     */
+    public function __construct()
+    {
+        // Register custom data types as no connection might have
+        // been established yet so the types would not be available
+        // when building tables/columns.
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+
+        foreach ($connectionPool->getCustomDoctrineTypes() as $type => $className) {
+            if (!Type::hasType($type)) {
+                Type::addType($type, $className);
+            }
+        }
+    }
+
+    /**
+     * Create a Doctrine Table object based on the parsed MySQL SQL command.
+     *
+     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement $tableStatement
+     * @return \Doctrine\DBAL\Schema\Table
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
+     */
+    public function create(CreateTableStatement $tableStatement): Table
+    {
+        $this->table = GeneralUtility::makeInstance(
+            Table::class,
+            $tableStatement->tableName->schemaObjectName,
+            [],
+            [],
+            [],
+            0,
+            $this->buildTableOptions($tableStatement->tableOptions)
+        );
+
+        foreach ($tableStatement->createDefinition->items as $item) {
+            switch (get_class($item)) {
+                case CreateColumnDefinitionItem::class:
+                    $this->addColumn($item);
+                    break;
+                case CreateIndexDefinitionItem::class:
+                    $this->addIndex($item);
+                    break;
+                case CreateForeignKeyDefinitionItem::class:
+                    $this->addForeignKey($item);
+                    break;
+                default:
+                    throw new \RuntimeException(
+                        'Unknown item definition of type "' . get_class($item) . '" encountered.',
+                        1472044085
+                    );
+            }
+        }
+
+        return $this->table;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem $item
+     * @return \Doctrine\DBAL\Schema\Column
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws \RuntimeException
+     */
+    protected function addColumn(CreateColumnDefinitionItem $item): Column
+    {
+        $column = $this->table->addColumn(
+            $item->columnName->schemaObjectName,
+            $this->getDoctrineColumnTypeName($item->dataType)
+        );
+
+        $column->setNotnull(!$item->allowNull);
+        $column->setAutoincrement((bool)$item->autoIncrement);
+        $column->setComment($item->comment);
+
+        // Set default value (unless it's an auto increment column)
+        if ($item->hasDefaultValue && !$column->getAutoincrement()) {
+            $column->setDefault($item->defaultValue);
+        }
+
+        if ($item->dataType->getLength()) {
+            $column->setLength($item->dataType->getLength());
+        }
+
+        if ($item->dataType->getPrecision() >= 0) {
+            $column->setPrecision($item->dataType->getPrecision());
+        }
+
+        if ($item->dataType->getScale() >= 0) {
+            $column->setScale($item->dataType->getScale());
+        }
+
+        if ($item->dataType->isUnsigned()) {
+            $column->setUnsigned(true);
+        }
+
+        // Select CHAR/VARCHAR or BINARY/VARBINARY
+        if ($item->dataType->isFixed()) {
+            $column->setFixed(true);
+        }
+
+        if ($item->dataType instanceof DataType\EnumDataType
+            || $item->dataType instanceof DataType\SetDataType
+        ) {
+            $column->setPlatformOption('unquotedValues', $item->dataType->getValues());
+        }
+
+        if ($item->index) {
+            $this->table->addIndex([$item->columnName->schemaObjectName]);
+        }
+
+        if ($item->unique) {
+            $this->table->addUniqueIndex([$item->columnName->schemaObjectName]);
+        }
+
+        if ($item->primary) {
+            $this->table->setPrimaryKey([$item->columnName->schemaObjectName]);
+        }
+
+        if ($item->reference !== null) {
+            $this->addForeignKeyConstraint(
+                [$item->columnName->schemaObjectName],
+                $item->reference
+            );
+        }
+
+        return $column;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateIndexDefinitionItem $item
+     * @return \Doctrine\DBAL\Schema\Index
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     */
+    protected function addIndex(CreateIndexDefinitionItem $item): Index
+    {
+        $indexName = $item->indexName->schemaObjectName;
+
+        $columnNames = array_map(
+            function (IndexColumnName $columnName) {
+                return $columnName->columnName->schemaObjectName;
+            },
+            $item->columnNames
+        );
+
+        if ($item->isPrimary) {
+            $this->table->setPrimaryKey($columnNames);
+        } elseif ($item->isUnique) {
+            $this->table->addUniqueIndex($columnNames, $indexName);
+        } elseif ($item->isFulltext) {
+            $this->table->addIndex($columnNames, $indexName, ['fulltext']);
+        } elseif ($item->isSpatial) {
+            $this->table->addIndex($columnNames, $indexName, ['spatial']);
+        } else {
+            $this->table->addIndex($columnNames, $indexName);
+        }
+
+        $index = $item->isPrimary ? $this->table->getPrimaryKey() : $this->table->getIndex($indexName);
+
+        return $index;
+    }
+
+    /**
+     * Prepare a explicit foreign key definition item to be added to the table being built.
+     *
+     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateForeignKeyDefinitionItem $item
+     */
+    protected function addForeignKey(CreateForeignKeyDefinitionItem $item)
+    {
+        $indexName = $item->indexName->schemaObjectName ?: null;
+        $localColumnNames = array_map(
+            function (IndexColumnName $columnName) {
+                return $columnName->columnName->schemaObjectName;
+            },
+            $item->columnNames
+        );
+        $this->addForeignKeyConstraint($localColumnNames, $item->reference, $indexName);
+    }
+
+    /**
+     * Add a foreign key constraint to the table being built.
+     *
+     * @param string[] $localColumnNames
+     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\ReferenceDefinition $referenceDefinition
+     * @param string $indexName
+     */
+    protected function addForeignKeyConstraint(
+        array $localColumnNames,
+        ReferenceDefinition $referenceDefinition,
+        string $indexName = null
+    ) {
+        $foreignTableName = $referenceDefinition->tableName->schemaObjectName;
+        $foreignColumNames = array_map(
+            function (IndexColumnName $columnName) {
+                return $columnName->columnName->schemaObjectName;
+            },
+            $referenceDefinition->columnNames
+        );
+
+        $options = [
+            'onDelete' => $referenceDefinition->onDelete,
+            'onUpdate' => $referenceDefinition->onUpdate,
+        ];
+
+        $this->table->addForeignKeyConstraint(
+            $foreignTableName,
+            $localColumnNames,
+            $foreignColumNames,
+            $options,
+            $indexName
+        );
+    }
+
+    /**
+     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\AbstractDataType $dataType
+     * @return string
+     * @throws \RuntimeException
+     */
+    protected function getDoctrineColumnTypeName(DataType\AbstractDataType $dataType): string
+    {
+        $doctrineType = null;
+        switch (get_class($dataType)) {
+            case DataType\TinyIntDataType::class:
+                // TINYINT is MySQL specific and mapped to a standard SMALLINT
+            case DataType\SmallIntDataType::class:
+                $doctrineType = Type::SMALLINT;
+                break;
+            case DataType\MediumIntDataType::class:
+                // MEDIUMINT is MySQL specific and mapped to a standard INT
+            case DataType\IntegerDataType::class:
+                $doctrineType = Type::INTEGER;
+                break;
+            case DataType\BigIntDataType::class:
+                $doctrineType = Type::BIGINT;
+                break;
+            case DataType\BinaryDataType::class:
+            case DataType\VarBinaryDataType::class:
+                // CHAR/VARCHAR is determined by "fixed" column property
+                $doctrineType = Type::BINARY;
+                break;
+            case DataType\TinyBlobDataType::class:
+            case DataType\MediumBlobDataType::class:
+            case DataType\BlobDataType::class:
+            case DataType\LongBlobDataType::class:
+                // Actual field type is determined by field length
+                $doctrineType = Type::BLOB;
+                break;
+            case DataType\DateDataType::class:
+                $doctrineType = Type::DATE;
+                break;
+            case DataType\TimestampDataType::class:
+            case DataType\DateTimeDataType::class:
+                // TIMESTAMP or DATETIME are determined by "version" column property
+                $doctrineType = Type::DATETIME;
+                break;
+            case DataType\NumericDataType::class:
+            case DataType\DecimalDataType::class:
+                $doctrineType = Type::DECIMAL;
+                break;
+            case DataType\RealDataType::class:
+            case DataType\FloatDataType::class:
+            case DataType\DoubleDataType::class:
+                $doctrineType = Type::FLOAT;
+                break;
+            case DataType\TimeDataType::class:
+                $doctrineType = Type::TIME;
+                break;
+            case DataType\TinyTextDataType::class:
+            case DataType\MediumTextDataType::class:
+            case DataType\TextDataType::class:
+            case DataType\LongTextDataType::class:
+                $doctrineType = Type::TEXT;
+                break;
+            case DataType\CharDataType::class:
+            case DataType\VarCharDataType::class:
+                $doctrineType = Type::STRING;
+                break;
+            case DataType\EnumDataType::class:
+                $doctrineType = EnumType::TYPE;
+                break;
+            case DataType\SetDataType::class:
+                $doctrineType = SetType::TYPE;
+                break;
+            case DataType\JsonDataType::class:
+                // JSON is not supported in Doctrine 2.5, mapping to the more generic TEXT type
+                $doctrineType = SetType::TEXT;
+                break;
+            case DataType\YearDataType::class:
+                // The YEAR data type is MySQL specific and offers little to no benefit.
+                // The two-digit year logic implemented in this data type (1-69 mapped to
+                // 2001-2069, 70-99 mapped to 1970-1999) can be easily implemented in the
+                // application and for all other accounts it's an integer with a valid
+                // range of 1901 to 2155.
+                // Using a SMALLINT covers the value range and ensures database compatibility.
+                $doctrineType = SetType::SMALLINT;
+                break;
+            default:
+                throw new \RuntimeException(
+                    'Unsupported data type: ' . get_class($dataType) . '!',
+                    1472046376
+                );
+        }
+
+        return $doctrineType;
+    }
+
+    /**
+     * Build the table specific options as far as they are supported by Doctrine.
+     *
+     * @param array $tableOptions
+     * @return array
+     */
+    protected function buildTableOptions(array $tableOptions): array
+    {
+        $options = [];
+
+        if (!empty($tableOptions['engine'])) {
+            $options['engine'] = (string)$tableOptions['engine'];
+        }
+        if (!empty($tableOptions['character_set'])) {
+            $options['charset'] = (string)$tableOptions['character_set'];
+        }
+        if (!empty($tableOptions['collation'])) {
+            $options['collate'] = (string)$tableOptions['collation'];
+        }
+        if (!empty($tableOptions['auto_increment'])) {
+            $options['auto_increment'] = (string)$tableOptions['auto_increment'];
+        }
+        if (!empty($tableOptions['comment'])) {
+            $options['comment'] = (string)$tableOptions['comment'];
+        }
+        if (!empty($tableOptions['row_format'])) {
+            $options['row_format'] = (string)$tableOptions['row_format'];
+        }
+
+        return $options;
+    }
+}

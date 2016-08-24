@@ -14,7 +14,11 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Schema\ColumnDiff;
+use Doctrine\DBAL\Schema\Index;
+use Doctrine\DBAL\Schema\SchemaDiff;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\ContextService;
 
 /**
  * Contains the update class to create and alter tables, fields and keys to comply to the database schema
@@ -35,80 +39,64 @@ class FinalDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
      *
      * @param string &$description The description for the update
      * @return bool TRUE if an update is needed, FALSE otherwise
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    public function checkForUpdate(&$description)
+    public function checkForUpdate(&$description): bool
     {
-        $contextService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\ContextService::class);
+        $contextService = GeneralUtility::makeInstance(ContextService::class);
         $description = 'There are tables or fields in the database which need to be changed.<br /><br />' .
-        'This update wizard can be run only when there are no other update wizards left to make sure they have all needed fields unchanged.<br /><br />' .
-        'If you want to apply changes selectively, <a href="Install.php?install[action]=importantActions&amp;install[context]=' . $contextService->getContextString() . '&amp;install[controller]=tool">go to Database Analyzer</a>.';
+        'This update wizard can be run only when there are no other update wizards left to make sure they have ' .
+        'all needed fields unchanged.<br /><br />If you want to apply changes selectively, ' .
+        '<a href="Install.php?install[action]=importantActions&amp;install[context]=' .
+        $contextService->getContextString() .
+        '&amp;install[controller]=tool">go to Database Analyzer</a>.';
 
         $databaseDifferences = $this->getDatabaseDifferences();
-        $updateSuggestions = $this->schemaMigrationService->getUpdateSuggestions($databaseDifferences);
+        foreach ($databaseDifferences as $schemaDiff) {
+            // A change for a table is required
+            if (count($schemaDiff->changedTables) !== 0) {
+                return true;
+            }
+        }
 
-        return isset($updateSuggestions['change']);
+        return false;
     }
 
     /**
      * Second step: Show tables, fields and keys to create or update
      *
-     * @param string $inputPrefix input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
+     * @param string $inputPrefix input prefix, all names of form fields are prefixed with this
      * @return string HTML output
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
     public function getUserInput($inputPrefix)
     {
         $result = '';
+        $changedFieldItems = '';
+        $changedIndexItems = '';
 
         $databaseDifferences = $this->getDatabaseDifferences();
-        $updateSuggestions = $this->schemaMigrationService->getUpdateSuggestions($databaseDifferences);
-
-        if (!isset($updateSuggestions['change'])) {
-            return $result;
+        foreach ($databaseDifferences as $schemaDiff) {
+            $changedFieldItems .= $this->getChangedFieldInformation($schemaDiff);
+            $changedIndexItems .= $this->getChangedIndexInformation($schemaDiff);
         }
 
-        $fieldsList = '
-			<p>
-				Change the following fields in tables:
-			</p>
-			<fieldset>
-				<ol class="t3-install-form-label-after">%s</ol>
-			</fieldset>';
-        $keysList = '
-			<p>
-				Change the following keys in tables:
-			</p>
-			<fieldset>
-				<ol class="t3-install-form-label-after">%s</ol>
-			</fieldset>';
-        $item = '
-			<li class="labelAfter">
-				<label><strong>%1$s</strong>: %2$s</label>
-			</li>';
-
-        $fieldItems = [];
-        $keyItems = [];
-        foreach ($databaseDifferences['diff'] as $tableName => $difference) {
-            if ($difference['fields']) {
-                $fieldNames = [];
-                foreach ($difference['fields'] as $fieldName => $sql) {
-                    $fieldNames[] = $fieldName;
-                }
-                $fieldItems[] = sprintf($item, $tableName, implode(', ', $fieldNames));
-            }
-            if ($difference['keys']) {
-                $keyNames = [];
-                foreach ($difference['keys'] as $keyName => $sql) {
-                    $keyNames[] = $keyName;
-                }
-                $keyItems[] = sprintf($item, $tableName, implode(', ', $keyNames));
-            }
-        }
-        if (!empty($fieldItems)) {
-            $result .= sprintf($fieldsList, implode('', $fieldItems));
-        }
-        if (!empty($keyItems)) {
-            $result .= sprintf($keysList, implode('', $keyItems));
-        }
+        $result .= $this->renderList('Change the following fields in tables:', $changedFieldItems);
+        $result .= $this->renderList('Change the following keys in tables:', $changedIndexItems);
 
         return $result;
     }
@@ -119,28 +107,84 @@ class FinalDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
      * @param array &$dbQueries Queries done in this update
      * @param mixed &$customMessages Custom messages
      * @return bool TRUE on success, FALSE on error
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
     public function performUpdate(array &$dbQueries, &$customMessages)
     {
-        // First perform all add update statements to database
-        $databaseDifferences = $this->getDatabaseDifferences();
-        $updateStatements = $this->schemaMigrationService->getUpdateSuggestions($databaseDifferences);
+        $statements = $this->getDatabaseDefinition();
+        $result = $this->schemaMigrationService->install($statements, false);
 
-        $db = $this->getDatabaseConnection();
-        $customMessagesArray = [];
-        foreach ((array)$updateStatements['change'] as $query) {
-            $db->admin_query($query);
-            $dbQueries[] = $query;
-            if ($db->sql_error()) {
-                $customMessagesArray[] = 'SQL-ERROR: ' . htmlspecialchars($db->sql_error());
-            }
+        // Extract all statements stored in the keys, independent of error status
+        $dbQueries = array_merge($dbQueries, array_keys($result));
+
+        // Only keep error messages
+        $result = array_filter($result);
+
+        $customMessages = implode(
+            LF,
+            array_map(
+                function (string $message) {
+                    return 'SQL-ERROR: ' . htmlspecialchars($message);
+                },
+                $result
+            )
+        );
+
+        return count($result) === 0;
+    }
+
+    /**
+     * Return HTML list items for fields added to tables
+     *
+     * @param \Doctrine\DBAL\Schema\SchemaDiff $schemaDiff
+     * @return string
+     */
+    protected function getChangedFieldInformation(SchemaDiff $schemaDiff): string
+    {
+        $items = [];
+
+        foreach ($schemaDiff->changedTables as $changedTable) {
+            $columns = array_map(
+                function (ColumnDiff $columnDiff) use ($changedTable) {
+                    return $this->renderFieldListItem($changedTable->name, $columnDiff->column->getName());
+                },
+                $changedTable->changedColumns
+            );
+
+            $items[] = implode(LF, $columns);
         }
 
-        if (!empty($customMessagesArray)) {
-            $customMessages = 'Update process not fully processed. This can happen because of dependencies of table fields and ' .
-                'indexes. Please repeat this step! Following errors occurred:' . LF . LF . implode(LF, $customMessagesArray);
+        return trim(implode(LF, $items));
+    }
+
+    /**
+     * Return HTML list items for changed indexes on tables
+     *
+     * @param \Doctrine\DBAL\Schema\SchemaDiff $schemaDiff
+     * @return string
+     */
+    protected function getChangedIndexInformation(SchemaDiff $schemaDiff): string
+    {
+        $items = [];
+
+        foreach ($schemaDiff->changedTables as $changedTable) {
+            $indexes = array_map(
+                function (Index $index) use ($changedTable) {
+                    return $this->renderFieldListItem($changedTable->name, $index->getName());
+                },
+                $changedTable->changedIndexes
+            );
+
+            $items[] = implode(LF, $indexes);
         }
 
-        return empty($customMessagesArray);
+        return trim(implode(LF, $items));
     }
 }

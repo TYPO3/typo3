@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
+use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -470,21 +472,12 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function updateDbWithExtTablesSql($rawDefinitions)
     {
-        $fieldDefinitionsFromFile = $this->installToolSqlParser->getFieldDefinitions_fileContent($rawDefinitions);
-        if (!empty($fieldDefinitionsFromFile)) {
-            $fieldDefinitionsFromCurrentDatabase = $this->installToolSqlParser->getFieldDefinitions_database();
-            $diff = $this->installToolSqlParser->getDatabaseExtra($fieldDefinitionsFromFile, $fieldDefinitionsFromCurrentDatabase);
-            $updateStatements = $this->installToolSqlParser->getUpdateSuggestions($diff);
-            $db = $this->getDatabaseConnection();
-            foreach ((array)$updateStatements['add'] as $string) {
-                $db->admin_query($string);
-            }
-            foreach ((array)$updateStatements['change'] as $string) {
-                $db->admin_query($string);
-            }
-            foreach ((array)$updateStatements['create_table'] as $string) {
-                $db->admin_query($string);
-            }
+        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
+        $statements = $sqlReader->getCreateTableStatementArray($rawDefinitions);
+
+        if (count($statements) !== 0) {
+            $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
+            $schemaMigrationService->install($statements);
         }
     }
 
@@ -496,20 +489,11 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function importStaticSql($rawDefinitions)
     {
-        $statements = $this->installToolSqlParser->getStatementArray($rawDefinitions, 1);
-        list($statementsPerTable, $insertCount) = $this->installToolSqlParser->getCreateTables($statements, 1);
-        $db = $this->getDatabaseConnection();
-        // Traverse the tables
-        foreach ($statementsPerTable as $table => $query) {
-            $db->admin_query('DROP TABLE IF EXISTS ' . $table);
-            $db->admin_query($query);
-            if ($insertCount[$table]) {
-                $insertStatements = $this->installToolSqlParser->getTableInsertStatements($statements, $table);
-                foreach ($insertStatements as $statement) {
-                    $db->admin_query($statement);
-                }
-            }
-        }
+        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
+        $statements = $sqlReader->getStatementArray($rawDefinitions);
+
+        $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
+        $schemaMigrationService->importStaticData($statements, true);
     }
 
     /**

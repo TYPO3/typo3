@@ -499,6 +499,7 @@ class SqlSchemaMigrationService
                 }
             }
         }
+
         return $statements;
     }
 

@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Install\Updates;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
+use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -29,41 +31,46 @@ class ExtensionManagerTables extends AbstractUpdate
     protected $title = 'Add the default Extension Manager database tables';
 
     /**
-     * @var NULL|\TYPO3\CMS\Install\Service\SqlSchemaMigrationService
-     */
-    protected $installToolSqlParser = null;
-
-    /**
-     * @return \TYPO3\CMS\Install\Service\SqlSchemaMigrationService
-     */
-    protected function getInstallToolSqlParser()
-    {
-        if ($this->installToolSqlParser === null) {
-            $this->installToolSqlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
-        }
-
-        return $this->installToolSqlParser;
-    }
-
-    /**
      * Gets all create, add and change queries from ext_tables.sql
      *
      * @return array
+     * @throws \BadFunctionCallException
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
     protected function getUpdateStatements()
     {
         $updateStatements = [];
 
-        // Get all necessary statements for ext_tables.sql file
-        $rawDefinitions = file_get_contents(ExtensionManagementUtility::extPath('extensionmanager', 'ext_tables.sql'));
-        $fieldDefinitionsFromFile = $this->getInstallToolSqlParser()->getFieldDefinitions_fileContent($rawDefinitions);
-        if (count($fieldDefinitionsFromFile)) {
-            $fieldDefinitionsFromCurrentDatabase = $this->getInstallToolSqlParser()->getFieldDefinitions_database();
-            $diff = $this->getInstallToolSqlParser()->getDatabaseExtra($fieldDefinitionsFromFile, $fieldDefinitionsFromCurrentDatabase);
-            $updateStatements = $this->getInstallToolSqlParser()->getUpdateSuggestions($diff);
+        $emTableStatements = $this->getTableStatements();
+
+        if (count($emTableStatements)) {
+            $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
+            $updateSuggestions = $schemaMigrationService->getUpdateSuggestions($emTableStatements);
+            $updateStatements = array_merge_recursive(...array_values($updateSuggestions));
         }
 
         return $updateStatements;
+    }
+
+    /**
+     * Get all CREATE TABLE statements from the ext_tables.sql file
+     *
+     * @return string[]
+     * @throws \BadFunctionCallException
+     * @throws \InvalidArgumentException
+     */
+    protected function getTableStatements(): array
+    {
+        $rawDefinitions = file_get_contents(ExtensionManagementUtility::extPath('extensionmanager', 'ext_tables.sql'));
+        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
+        return $sqlReader->getCreateTableStatementArray($rawDefinitions);
     }
 
     /**
@@ -71,6 +78,15 @@ class ExtensionManagerTables extends AbstractUpdate
      *
      * @param string &$description The description for the update
      * @return bool Whether an update is needed (TRUE) or not (FALSE)
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws \RuntimeException
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \BadFunctionCallException
+     * @throws \InvalidArgumentException
      */
     public function checkForUpdate(&$description)
     {
@@ -78,32 +94,17 @@ class ExtensionManagerTables extends AbstractUpdate
         $description = 'Creates necessary database tables and adds static data for the Extension Manager.';
 
         // First check necessary database update
-        $updateStatements = $this->getUpdateStatements();
-        if (empty($updateStatements)) {
+        $updateStatements = array_filter($this->getUpdateStatements());
+        if (count($updateStatements) === 0) {
             // Get count of rows in repository database table
             $count = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('tx_extensionmanager_domain_model_repository')
                 ->count('*', 'tx_extensionmanager_domain_model_repository', []);
+
             if ($count === 0) {
                 $result = true;
             }
         } else {
-            $result = true;
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param mixed &$customMessages Custom messages
-     *
-     * @return bool
-     */
-    protected function hasError(&$customMessages)
-    {
-        $result = false;
-        if ($this->getDatabaseConnection()->sql_error()) {
-            $customMessages .= '<br /><br />SQL-ERROR: ' . htmlspecialchars($this->getDatabaseConnection()->sql_error());
             $result = true;
         }
 
@@ -116,40 +117,44 @@ class ExtensionManagerTables extends AbstractUpdate
      * @param array &$dbQueries Queries done in this update
      * @param mixed &$customMessages Custom messages
      * @return bool Whether it worked (TRUE) or not (FALSE)
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws \RuntimeException
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \InvalidArgumentException
+     * @throws \BadFunctionCallException
      */
     public function performUpdate(array &$dbQueries, &$customMessages)
     {
-        $result = false;
+        $result = true;
+
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
+        $createTableStatements = $this->getTableStatements();
 
         // First perform all create, add and change queries
-        $updateStatements = $this->getUpdateStatements();
-        foreach ((array)$updateStatements['add'] as $string) {
-            $this->getDatabaseConnection()->admin_query($string);
-            $dbQueries[] = $string;
-            $result = ($result || $this->hasError($customMessages));
-        }
-        foreach ((array)$updateStatements['change'] as $string) {
-            $this->getDatabaseConnection()->admin_query($string);
-            $dbQueries[] = $string;
-            $result = ($result || $this->hasError($customMessages));
-        }
-        foreach ((array)$updateStatements['create_table'] as $string) {
-            $this->getDatabaseConnection()->admin_query($string);
-            $dbQueries[] = $string;
-            $result = ($result || $this->hasError($customMessages));
-        }
+        $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
+        $schemaMigrationService->install($createTableStatements);
 
-        // Perform statics import anyway
-        $rawDefinitions = file_get_contents(ExtensionManagementUtility::extPath('extensionmanager', 'ext_tables_static+adt.sql'));
-        $statements = $this->getInstallToolSqlParser()->getStatementArray($rawDefinitions, 1);
-        foreach ($statements as $statement) {
-            if (trim($statement) !== '') {
-                $this->getDatabaseConnection()->admin_query($statement);
-                $dbQueries[] = $statement;
-                $result = ($result || $this->hasError($customMessages));
+        // Perform import of static data
+        $rawDefinitions = file_get_contents(
+            ExtensionManagementUtility::extPath('extensionmanager', 'ext_tables_static+adt.sql')
+        );
+
+        $insertStatements = $sqlReader->getInsertStatementArray($rawDefinitions);
+        $results = $schemaMigrationService->importStaticData($insertStatements);
+
+        foreach ($results as $statement => $errorMessage) {
+            $dbQueries[] = $statement;
+            if ($errorMessage) {
+                $result = false;
+                $customMessages .= '<br /><br />SQL-ERROR: ' . htmlspecialchars($errorMessage);
             }
         }
 
-        return !$result;
+        return $result;
     }
 }

@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\Index;
+use Doctrine\DBAL\Schema\SchemaDiff;
+use Doctrine\DBAL\Schema\Table;
+
 /**
  * Contains the update class to create tables, fields and keys to comply to the database schema
  */
@@ -33,100 +38,70 @@ class InitialDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
      *
      * @param string &$description The description for the update
      * @return bool TRUE if an update is needed, FALSE otherwise
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
     public function checkForUpdate(&$description)
     {
         $description = 'There are tables or fields in the database which need to be created.<br /><br />' .
-        'You have to run this update wizard before you can run any other update wizard to make sure all needed tables and fields are present.';
+        'You have to run this update wizard before you can run any other update wizard to make sure all ' .
+        'needed tables and fields are present.';
 
         $databaseDifferences = $this->getDatabaseDifferences();
-        $updateSuggestions = $this->schemaMigrationService->getUpdateSuggestions($databaseDifferences);
+        foreach ($databaseDifferences as $schemaDiff) {
+            // A new table is required, early return
+            if (count($schemaDiff->newTables) !== 0) {
+                return true;
+            }
 
-        return isset($updateSuggestions['create_table']) || isset($updateSuggestions['add']);
+            // A new field or index is required
+            foreach ($schemaDiff->changedTables as $changedTable) {
+                if (count($changedTable->addedColumns) !== 0 || count($changedTable->addedIndexes) !== 0) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
      * Second step: Show tables, fields and keys to be created
      *
-     * @param string $inputPrefix input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
+     * @param string $inputPrefix input prefix, all names of form fields are prefixed with this
      * @return string HTML output
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    public function getUserInput($inputPrefix)
+    public function getUserInput($inputPrefix): string
     {
         $result = '';
+        $addedTables = '';
+        $addedFields = '';
+        $addedIndexes = '';
 
         $databaseDifferences = $this->getDatabaseDifferences();
-        $updateSuggestions = $this->schemaMigrationService->getUpdateSuggestions($databaseDifferences);
-
-        if (isset($updateSuggestions['create_table'])) {
-            $list = '
-				<p>
-					Add the following tables:
-				</p>
-				<fieldset>
-					<ol class="t3-install-form-label-after">%s</ol>
-				</fieldset>';
-            $item = '
-				<li class="labelAfter">
-					<label><strong>%1$s</strong></label>
-				</li>';
-
-            $items = [];
-            foreach ($databaseDifferences['extra'] as $tableName => $difference) {
-                if ($difference['whole_table'] == 1) {
-                    $items[] = sprintf($item, $tableName);
-                }
-            }
-            $result .= sprintf($list, implode('', $items));
+        foreach ($databaseDifferences as $schemaDiff) {
+            $addedTables .= $this->getAddedTableInformation($schemaDiff);
+            $addedFields .= $this->getAddedFieldInformation($schemaDiff);
+            $addedIndexes .= $this->getAddedIndexInformation($schemaDiff);
         }
 
-        if (isset($updateSuggestions['add'])) {
-            $fieldsList = '
-				<p>
-					Add the following fields to tables:
-				</p>
-				<fieldset>
-					<ol class="t3-install-form-label-after">%s</ol>
-				</fieldset>';
-            $keysList = '
-				<p>
-					Add the following keys to tables:
-				</p>
-				<fieldset>
-					<ol class="t3-install-form-label-after">%s</ol>
-				</fieldset>';
-            $item = '
-				<li class="labelAfter">
-					<label><strong>%1$s</strong>: %2$s</label>
-				</li>';
-
-            $fieldItems = [];
-            $keyItems = [];
-            foreach ($databaseDifferences['extra'] as $tableName => $difference) {
-                if ($difference['whole_table'] != 1) {
-                    if ($difference['fields']) {
-                        $fieldNames = [];
-                        foreach ($difference['fields'] as $fieldName => $sql) {
-                            $fieldNames[] = $fieldName;
-                        }
-                        $fieldItems[] = sprintf($item, $tableName, implode(', ', $fieldNames));
-                    }
-                    if ($difference['keys']) {
-                        $keyNames = [];
-                        foreach ($difference['keys'] as $keyName => $sql) {
-                            $keyNames[] = $keyName;
-                        }
-                        $keyItems[] = sprintf($item, $tableName, implode(', ', $keyNames));
-                    }
-                }
-            }
-            if (!empty($fieldItems)) {
-                $result .= sprintf($fieldsList, implode('', $fieldItems));
-            }
-            if (!empty($keyItems)) {
-                $result .= sprintf($keysList, implode('', $keyItems));
-            }
-        }
+        $result .= $this->renderList('Add the following tables:', $addedTables);
+        $result .= $this->renderList('Add the following fields to tables:', $addedFields);
+        $result .= $this->renderList('Add the following keys to tables:', $addedIndexes);
 
         return $result;
     }
@@ -137,33 +112,102 @@ class InitialDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
      * @param array &$dbQueries Queries done in this update
      * @param mixed &$customMessages Custom messages
      * @return bool TRUE on success, FALSE on error
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    public function performUpdate(array &$dbQueries, &$customMessages)
+    public function performUpdate(array &$dbQueries, &$customMessages): bool
     {
+        $statements = $this->getDatabaseDefinition();
+        $result = $this->schemaMigrationService->install($statements, true);
 
-        // First perform all add update statements to database
-        $databaseDifferences = $this->getDatabaseDifferences();
-        $updateStatements = $this->schemaMigrationService->getUpdateSuggestions($databaseDifferences);
+        // Extract all statements stored in the keys, independent of error status
+        $dbQueries = array_merge($dbQueries, array_keys($result));
 
-        $db = $this->getDatabaseConnection();
-        foreach ((array)$updateStatements['create_table'] as $query) {
-            $db->admin_query($query);
-            $dbQueries[] = $query;
-            if ($db->sql_error()) {
-                $customMessages = 'SQL-ERROR: ' . htmlspecialchars($db->sql_error());
-                return false;
-            }
+        // Only keep error messages
+        $result = array_filter($result);
+
+        $customMessages = implode(
+            LF,
+            array_map(
+                function (string $message) {
+                    return 'SQL-ERROR: ' . htmlspecialchars($message);
+                },
+                $result
+            )
+        );
+
+        return count($result) === 0;
+    }
+
+    /**
+     * Return HTML list items for added tables
+     *
+     * @param \Doctrine\DBAL\Schema\SchemaDiff $schemaDiff
+     * @return string
+     */
+    protected function getAddedTableInformation(SchemaDiff $schemaDiff): string
+    {
+        $items = array_map(
+            function (Table $table) {
+                return $this->renderTableListItem($table->getName());
+            },
+            $schemaDiff->newTables
+        );
+
+        return trim(implode(LF, $items));
+    }
+
+    /**
+     * Return HTML list items for fields added to tables
+     *
+     * @param \Doctrine\DBAL\Schema\SchemaDiff $schemaDiff
+     * @return string
+     */
+    protected function getAddedFieldInformation(SchemaDiff $schemaDiff): string
+    {
+        $items = [];
+
+        foreach ($schemaDiff->changedTables as $changedTable) {
+            $columns = array_map(
+                function (Column $column) use ($changedTable) {
+                    return $this->renderFieldListItem($changedTable->name, $column->getName());
+                },
+                $changedTable->addedColumns
+            );
+
+            $items[] = implode(LF, $columns);
         }
 
-        foreach ((array)$updateStatements['add'] as $query) {
-            $db->admin_query($query);
-            $dbQueries[] = $query;
-            if ($db->sql_error()) {
-                $customMessages = 'SQL-ERROR: ' . htmlspecialchars($db->sql_error());
-                return false;
-            }
+        return trim(implode(LF, $items));
+    }
+
+    /**
+     * Return HTML list items for indexes added to tables
+     *
+     * @param \Doctrine\DBAL\Schema\SchemaDiff $schemaDiff
+     * @return string
+     */
+    protected function getAddedIndexInformation(SchemaDiff $schemaDiff): string
+    {
+        $items = [];
+
+        foreach ($schemaDiff->changedTables as $changedTable) {
+            $indexes = array_map(
+                function (Index $index) use ($changedTable) {
+                    return $this->renderFieldListItem($changedTable->name, $index->getName());
+                },
+                $changedTable->addedIndexes
+            );
+
+            $items[] = implode(LF, $indexes);
         }
 
-        return true;
+        return trim(implode(LF, $items));
     }
 }

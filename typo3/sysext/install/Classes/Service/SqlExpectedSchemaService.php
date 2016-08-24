@@ -51,6 +51,7 @@ class SqlExpectedSchemaService
         // Remove comments
         $cleanedExpectedSchemaString = implode(LF, $schemaMigrationService->getStatementArray($expectedSchemaString, true, '^CREATE TABLE '));
         $expectedSchema = $schemaMigrationService->getFieldDefinitions_fileContent($cleanedExpectedSchemaString);
+
         return $expectedSchema;
     }
 

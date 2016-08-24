@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
+use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Action;
@@ -302,46 +304,22 @@ class ImportantActions extends Action\AbstractAction
             return $messages;
         }
 
-        /** @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService $schemaMigrationService */
-        $schemaMigrationService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
-        /** @var \TYPO3\CMS\Install\Service\SqlExpectedSchemaService $expectedSchemaService */
-        $expectedSchemaService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class);
-        $expectedSchema = $expectedSchemaService->getExpectedDatabaseSchema();
-        $currentSchema = $schemaMigrationService->getFieldDefinitions_database();
+        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
+        $sqlStatements = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString());
+        $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
 
         $statementHashesToPerform = $this->postValues['values'];
 
-        $results = [];
-
-        // Difference from expected to current
-        $addCreateChange = $schemaMigrationService->getDatabaseExtra($expectedSchema, $currentSchema);
-        $addCreateChange = $schemaMigrationService->getUpdateSuggestions($addCreateChange);
-        $results[] = $schemaMigrationService->performUpdateQueries($addCreateChange['add'], $statementHashesToPerform);
-        $results[] = $schemaMigrationService->performUpdateQueries($addCreateChange['change'], $statementHashesToPerform);
-        $results[] = $schemaMigrationService->performUpdateQueries($addCreateChange['create_table'], $statementHashesToPerform);
-
-        // Difference from current to expected
-        $dropRename = $schemaMigrationService->getDatabaseExtra($currentSchema, $expectedSchema);
-        $dropRename = $schemaMigrationService->getUpdateSuggestions($dropRename, 'remove');
-        $results[] = $schemaMigrationService->performUpdateQueries($dropRename['change'], $statementHashesToPerform);
-        $results[] = $schemaMigrationService->performUpdateQueries($dropRename['drop'], $statementHashesToPerform);
-        $results[] = $schemaMigrationService->performUpdateQueries($dropRename['change_table'], $statementHashesToPerform);
-        $results[] = $schemaMigrationService->performUpdateQueries($dropRename['drop_table'], $statementHashesToPerform);
+        $results = $schemaMigrationService->migrate($sqlStatements, $statementHashesToPerform);
 
         // Create error flash messages if any
-        foreach ($results as $resultSet) {
-            if (is_array($resultSet)) {
-                foreach ($resultSet as $errorMessage) {
-                    /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-                    $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
-                    $message->setTitle('Database update failed');
-                    $message->setMessage('Error: ' . $errorMessage);
-                    $messages[] = $message;
-                }
-            }
+        foreach ($results as $errorMessage) {
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+            $message->setTitle('Database update failed');
+            $message->setMessage('Error: ' . $errorMessage);
+            $messages[] = $message;
         }
 
-        /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
         $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
         $message->setTitle('Executed database updates');
         $messages[] = $message;
@@ -352,25 +330,28 @@ class ImportantActions extends Action\AbstractAction
     /**
      * "Compare" action of analyzer
      *
-     * @TODO: The SchemaMigration API is a mess and should be refactored
-     * @TODO: Refactoring this should aim to make EM and dbal independent from ext:install by moving SchemaMigration to ext:core
      * @return \TYPO3\CMS\Install\Status\StatusInterface
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws \InvalidArgumentException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
+     * @throws \RuntimeException
      */
     protected function databaseAnalyzerAnalyze()
     {
-        /** @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService $schemaMigrationService */
-        $schemaMigrationService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
-        /** @var \TYPO3\CMS\Install\Service\SqlExpectedSchemaService $expectedSchemaService */
-        $expectedSchemaService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class);
-        $expectedSchema = $expectedSchemaService->getExpectedDatabaseSchema();
-
-        $currentSchema = $schemaMigrationService->getFieldDefinitions_database();
-
         $databaseAnalyzerSuggestion = [];
 
-        // Difference from expected to current
-        $addCreateChange = $schemaMigrationService->getDatabaseExtra($expectedSchema, $currentSchema);
-        $addCreateChange = $schemaMigrationService->getUpdateSuggestions($addCreateChange);
+        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
+        $sqlStatements = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString());
+        $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
+
+        $addCreateChange = $schemaMigrationService->getUpdateSuggestions($sqlStatements);
+        // Aggregate the per-connection statements into one flat array
+        $addCreateChange = array_merge_recursive(...array_values($addCreateChange));
+
         if (isset($addCreateChange['create_table'])) {
             $databaseAnalyzerSuggestion['addTable'] = [];
             foreach ($addCreateChange['create_table'] as $hash => $statement) {
@@ -403,8 +384,9 @@ class ImportantActions extends Action\AbstractAction
         }
 
         // Difference from current to expected
-        $dropRename = $schemaMigrationService->getDatabaseExtra($currentSchema, $expectedSchema);
-        $dropRename = $schemaMigrationService->getUpdateSuggestions($dropRename, 'remove');
+        $dropRename = $schemaMigrationService->getUpdateSuggestions($sqlStatements, true);
+        // Aggregate the per-connection statements into one flat array
+        $dropRename = array_merge_recursive(...array_values($dropRename));
         if (isset($dropRename['change_table'])) {
             $databaseAnalyzerSuggestion['renameTableToUnused'] = [];
             foreach ($dropRename['change_table'] as $hash => $statement) {

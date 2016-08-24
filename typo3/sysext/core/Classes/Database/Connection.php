@@ -307,7 +307,7 @@ class Connection extends \Doctrine\DBAL\Connection
             $query->andWhere($query->expr()->eq($identifier, $query->createNamedParameter($value)));
         }
 
-        return $query->execute()->fetchColumn(0);
+        return (int)$query->execute()->fetchColumn(0);
     }
 
     /**
