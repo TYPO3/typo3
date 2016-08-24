@@ -8,7 +8,7 @@ CREATE TABLE tx_blogexample_domain_model_blog (
 	title varchar(255) DEFAULT '' NOT NULL,
 	description text NOT NULL,
 	logo tinyblob NOT NULL,
-	administrator varchar(255) DEFAULT '',
+	administrator int(11) DEFAULT '0' NOT NULL,
 
 	posts varchar(255) DEFAULT '' NOT NULL,
 

@@ -43,6 +43,7 @@
 	</tx_blogexample_domain_model_blog>
 	<tx_blogexample_domain_model_blog>
 		<uid>5</uid>
+		<administrator>3</administrator>
 		<pid>0</pid>
 		<title>Blog5Deleted</title>
 		<description>Blog5 Description</description>

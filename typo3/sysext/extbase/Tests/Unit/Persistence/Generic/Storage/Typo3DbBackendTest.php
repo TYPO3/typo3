@@ -21,10 +21,6 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
-use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
-use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend;
-use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
-use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 
 /**
@@ -170,30 +166,5 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockTypo3DbBackend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend::class, ['dummy'], [], '', false);
         $mockTypo3DbBackend->_set('pageRepository', $pageRepositoryMock);
         $this->assertSame([$comparisonRow], $mockTypo3DbBackend->_call('doLanguageAndWorkspaceOverlay', $sourceMock, [$row], $mockQuerySettings, $workspaceUid));
-    }
-
-    /**
-     * @test
-     * @return void
-     */
-    public function getObjectCountByQueryThrowsExceptionIfOffsetWithoutLimitIsUsed()
-    {
-        $querySettingsProphecy = $this->prophesize(QuerySettingsInterface::class);
-        $queryInterfaceProphecy = $this->prophesize(QueryInterface::class);
-        $queryParserProphecy = $this->prophesize(Typo3DbQueryParser::class);
-        $queryParserProphecy->parseQuery($queryInterfaceProphecy->reveal())->willReturn(
-            ['tables' => ['tt_content'], 'offset' => 10, 'limit' => null]
-        );
-        $queryInterfaceProphecy->getQuerySettings()->willReturn($querySettingsProphecy->reveal());
-        $queryInterfaceProphecy->getConstraint()->willReturn();
-        $queryInterfaceProphecy->getLimit()->willReturn();
-        $queryInterfaceProphecy->getOffset()->willReturn(10);
-
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1465223252);
-
-        $typo3DbBackend = new Typo3DbBackend();
-        $typo3DbBackend->injectQueryParser($queryParserProphecy->reveal());
-        $typo3DbBackend->getObjectCountByQuery($queryInterfaceProphecy->reveal());
     }
 }

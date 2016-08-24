@@ -16,25 +16,25 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * QueryParser, converting the qom to string representation
  */
-class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
+class Typo3DbQueryParser
 {
-    /**
-     * The TYPO3 database object
-     *
-     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected $databaseHandle;
-
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
      */
@@ -43,7 +43,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * The TYPO3 page repository. Used for language and workspace overlay
      *
-     * @var \TYPO3\CMS\Frontend\Page\PageRepository
+     * @var PageRepository
      */
     protected $pageRepository;
 
@@ -51,6 +51,43 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
      */
     protected $environmentService;
+
+    /**
+     * Instance of the Doctrine query builder
+     *
+     * @var QueryBuilder
+     */
+    protected $queryBuilder;
+
+    /**
+     * Maps domain model properties to their corresponding table aliases that are used in the query, e.g.:
+     *
+     * 'property1' => 'tableName',
+     * 'property1.property2' => 'tableName1',
+     *
+     * @var array
+     */
+    protected $tablePropertyMap = [];
+
+    /**
+     * Maps tablenames to their aliases to be used in where clauses etc.
+     * Mainly used for joins on the same table etc.
+     *
+     * @var array
+     */
+    protected $tableAliasMap = [];
+
+    /**
+     * Stores all tables used in for SQL joins
+     *
+     * @var array
+     */
+    protected $unionTableAliasCache = [];
+
+    /**
+     * @var string
+     */
+    protected $tableName = '';
 
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
@@ -69,105 +106,67 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Maps domain model properties to their corresponding table aliases that are used in the query, e.g.:
+     * Returns a ready to be executed QueryBuilder object, based on the query
      *
-     * 'property1' => 'tableName',
-     * 'property1.property2' => 'tableName1',
-     *
-     * @var array
+     * @param QueryInterface $query
+     * @return QueryBuilder
      */
-    protected $tablePropertyMap = [];
-
-    /**
-     * Constructor. takes the database handle from $GLOBALS['TYPO3_DB']
-     */
-    public function __construct()
+    public function convertQueryToDoctrineQueryBuilder(QueryInterface $query)
     {
-        $this->databaseHandle = $GLOBALS['TYPO3_DB'];
-    }
-
-    /**
-     * Parses the query and returns the SQL statement parts.
-     *
-     * @param QueryInterface $query The query
-     * @return array The SQL statement parts
-     */
-    public function parseQuery(QueryInterface $query)
-    {
+        // Reset all properties
         $this->tablePropertyMap = [];
-        $sql = [];
-        $sql['keywords'] = [];
-        $sql['tables'] = [];
-        $sql['unions'] = [];
-        $sql['fields'] = [];
-        $sql['where'] = [];
-        $sql['additionalWhereClause'] = [];
-        $sql['orderings'] = [];
-        $sql['limit'] = ((int)$query->getLimit() ?: null);
-        $sql['offset'] = ((int)$query->getOffset() ?: null);
-        $sql['tableAliasMap'] = [];
+        $this->tableAliasMap = [];
+        $this->unionTableAliasCache = [];
+        $this->tableName = '';
+        // Find the right table name
         $source = $query->getSource();
-        $this->parseSource($source, $sql);
-        $this->parseConstraint($query->getConstraint(), $source, $sql);
-        $this->parseOrderings($query->getOrderings(), $source, $sql);
+        $this->initializeQueryBuilder($source);
+        $wherePredicates = $this->parseConstraint($query->getConstraint(), $source);
+        $this->queryBuilder->andWhere($wherePredicates);
+        $this->parseOrderings($query->getOrderings(), $source);
+        $this->addTypo3Constraints($query);
 
-        foreach ($sql['tableAliasMap'] as $tableAlias => $tableName) {
-            $additionalWhereClause = $this->getAdditionalWhereClause($query->getQuerySettings(), $tableName, $tableAlias);
-            if ($additionalWhereClause !== '') {
-                $additionalWhereClause = $this->addNullConditionToStatementIfRequired($sql, $additionalWhereClause, $tableAlias);
-                $sql['additionalWhereClause'][] = $additionalWhereClause;
-            }
-        }
-
-        foreach ($sql['tableAliasMap'] as $tableAlias => $tableName) {
-            $statement = $this->getVisibilityConstraintStatement($query->getQuerySettings(), $tableName, $tableAlias);
-            if ($statement !== '') {
-                $statement = $this->addNullConditionToStatementIfRequired($sql, $statement, $tableAlias);
-                $sql['additionalWhereClause'][] = $statement;
-            }
-        }
-
-        return $sql;
+        return $this->queryBuilder;
     }
 
     /**
-     * If the given table alias is used in a UNION statement it is required to
-     * add an additional condition that allows the fields of the joined table
-     * to be NULL. Otherwise the condition would be too strict and filter out
-     * records that are actually valid.
-     *
-     * @param array $sql The current SQL query parts.
-     * @param string $statement The SQL statement to which the NULL condition should be added.
-     * @param string $tableAlias The table alias used in the SQL statement.
-     * @return string The statement including the NULL condition or the original statement.
-     */
-    protected function addNullConditionToStatementIfRequired(array $sql, $statement, $tableAlias)
-    {
-        if (isset($sql['unions'][$tableAlias])) {
-            $statement = '((' . $statement . ') OR ' . $tableAlias . '.uid' . ' IS NULL)';
-        }
-
-        return $statement;
-    }
-
-    /**
-     * Transforms a Query Source into SQL and parameter arrays
+     * Creates the queryBuilder object whether it is a regular select or a JOIN
      *
      * @param Qom\SourceInterface $source The source
-     * @param array &$sql
      * @return void
      */
-    protected function parseSource(Qom\SourceInterface $source, array &$sql)
+    protected function initializeQueryBuilder(Qom\SourceInterface $source)
     {
         if ($source instanceof Qom\SelectorInterface) {
             $className = $source->getNodeTypeName();
             $tableName = $this->dataMapper->getDataMap($className)->getTableName();
-            $this->addRecordTypeConstraint($className, $sql);
-            $tableName = $this->getUniqueAlias($sql, $tableName);
-            $sql['fields'][$tableName] = $tableName . '.*';
-            $sql['tables'][$tableName] = $tableName;
+            $this->tableName = $tableName;
+
+            $this->queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($tableName);
+
+            $this->queryBuilder
+                ->getRestrictions()
+                ->removeAll();
+
+            $tableAlias = $this->getUniqueAlias($tableName);
+
+            $this->queryBuilder
+                ->select($tableAlias . '.*')
+                ->from($tableName, $tableAlias);
+
+            $this->addRecordTypeConstraint($className);
         } elseif ($source instanceof Qom\JoinInterface) {
-            $this->parseJoin($source, $sql);
+            $leftSource = $source->getLeft();
+            $leftTableName = $leftSource->getSelectorName();
+
+            $this->queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($leftTableName);
+            $leftTableAlias = $this->getUniqueAlias($leftTableName);
+            $this->queryBuilder
+                ->select($leftTableAlias . '.*')
+                ->from($leftTableName, $leftTableAlias);
+            $this->parseJoin($source, $leftTableAlias);
         }
     }
 
@@ -176,29 +175,26 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param Qom\ConstraintInterface $constraint The constraint
      * @param Qom\SourceInterface $source The source
-     * @param array &$sql The query parts
-     * @return void
+     * @return CompositeExpression|string
      */
-    protected function parseConstraint(Qom\ConstraintInterface $constraint = null, Qom\SourceInterface $source, array &$sql)
+    protected function parseConstraint(Qom\ConstraintInterface $constraint = null, Qom\SourceInterface $source)
     {
         if ($constraint instanceof Qom\AndInterface) {
-            $sql['where'][] = '(';
-            $this->parseConstraint($constraint->getConstraint1(), $source, $sql);
-            $sql['where'][] = ' AND ';
-            $this->parseConstraint($constraint->getConstraint2(), $source, $sql);
-            $sql['where'][] = ')';
+            return $this->queryBuilder->expr()->andX(
+                $this->parseConstraint($constraint->getConstraint1(), $source),
+                $this->parseConstraint($constraint->getConstraint2(), $source)
+            );
         } elseif ($constraint instanceof Qom\OrInterface) {
-            $sql['where'][] = '(';
-            $this->parseConstraint($constraint->getConstraint1(), $source, $sql);
-            $sql['where'][] = ' OR ';
-            $this->parseConstraint($constraint->getConstraint2(), $source, $sql);
-            $sql['where'][] = ')';
+            return $this->queryBuilder->expr()->orX(
+                $this->parseConstraint($constraint->getConstraint1(), $source),
+                $this->parseConstraint($constraint->getConstraint2(), $source)
+            );
         } elseif ($constraint instanceof Qom\NotInterface) {
-            $sql['where'][] = 'NOT (';
-            $this->parseConstraint($constraint->getConstraint(), $source, $sql);
-            $sql['where'][] = ')';
+            return ' NOT(' . $this->parseConstraint($constraint->getConstraint(), $source) . ')';
         } elseif ($constraint instanceof Qom\ComparisonInterface) {
-            $this->parseComparison($constraint, $source, $sql);
+            return $this->parseComparison($constraint, $source);
+        } else {
+            // exception?
         }
     }
 
@@ -207,40 +203,61 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param array $orderings An array of orderings (Qom\Ordering)
      * @param Qom\SourceInterface $source The source
-     * @param array &$sql The query parts
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException
+     * @throws UnsupportedOrderException
      * @return void
      */
-    protected function parseOrderings(array $orderings, Qom\SourceInterface $source, array &$sql)
+    protected function parseOrderings(array $orderings, Qom\SourceInterface $source)
     {
         foreach ($orderings as $propertyName => $order) {
-            switch ($order) {
-                case QueryInterface::ORDER_ASCENDING:
-                    $order = 'ASC';
-                    break;
-                case QueryInterface::ORDER_DESCENDING:
-                    $order = 'DESC';
-                    break;
-                default:
-                    throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException('Unsupported order encountered.', 1242816074);
+            if ($order !== QueryInterface::ORDER_ASCENDING && $order !== QueryInterface::ORDER_DESCENDING) {
+                throw new UnsupportedOrderException('Unsupported order encountered.', 1242816074);
             }
-            $className = '';
+            $className = null;
             $tableName = '';
             if ($source instanceof Qom\SelectorInterface) {
                 $className = $source->getNodeTypeName();
                 $tableName = $this->dataMapper->convertClassNameToTableName($className);
                 $fullPropertyPath = '';
                 while (strpos($propertyName, '.') !== false) {
-                    $this->addUnionStatement($className, $tableName, $propertyName, $sql, $fullPropertyPath);
+                    $this->addUnionStatement($className, $tableName, $propertyName, $fullPropertyPath);
                 }
             } elseif ($source instanceof Qom\JoinInterface) {
                 $tableName = $source->getLeft()->getSelectorName();
             }
             $columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
             if ($tableName !== '') {
-                $sql['orderings'][] = $tableName . '.' . $columnName . ' ' . $order;
+                $this->queryBuilder->addOrderBy($tableName . '.' . $columnName, $order);
             } else {
-                $sql['orderings'][] = $columnName . ' ' . $order;
+                $this->queryBuilder->addOrderBy($columnName, $order);
+            }
+        }
+    }
+
+    /**
+     * add TYPO3 Constraints for all tables to the queryBuilder
+     *
+     * @param QueryInterface $query
+     * @return void
+     */
+    protected function addTypo3Constraints(QueryInterface $query)
+    {
+        foreach ($this->tableAliasMap as $tableAlias => $tableName) {
+            $additionalWhereClauses = $this->getAdditionalWhereClause($query->getQuerySettings(), $tableName, $tableAlias);
+            $statement = $this->getVisibilityConstraintStatement($query->getQuerySettings(), $tableName, $tableAlias);
+            if ($statement !== '') {
+                $additionalWhereClauses[] = $statement;
+            }
+            if (!empty($additionalWhereClauses)) {
+                if (in_array($tableAlias, $this->unionTableAliasCache, true)) {
+                    $this->queryBuilder->andWhere(
+                        $this->queryBuilder->expr()->orX(
+                            $this->queryBuilder->expr()->andX(...$additionalWhereClauses),
+                            $this->queryBuilder->expr()->isNull($tableAlias . '.uid')
+                        )
+                    );
+                } else {
+                    $this->queryBuilder->andWhere(...$additionalWhereClauses);
+                }
             }
         }
     }
@@ -250,33 +267,17 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param Qom\ComparisonInterface $comparison The comparison to parse
      * @param Qom\SourceInterface $source The source
-     * @param array &$sql SQL query parts to add to
      * @throws \RuntimeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException
-     * @return void
+     * @return string
      */
-    protected function parseComparison(Qom\ComparisonInterface $comparison, Qom\SourceInterface $source, array &$sql)
+    protected function parseComparison(Qom\ComparisonInterface $comparison, Qom\SourceInterface $source)
     {
-        $operator = $comparison->getOperator();
-        $operand2 = $comparison->getOperand2();
-        if ($operator === QueryInterface::OPERATOR_IN) {
-            $hasValue = false;
-            foreach ($operand2 as $value) {
-                if ($this->dataMapper->getPlainValue($value) !== null) {
-                    $hasValue = true;
-                    break;
-                }
-            }
-            if ($hasValue === false) {
-                $sql['where'][] = '1<>1';
+        if ($comparison->getOperator() === QueryInterface::OPERATOR_CONTAINS) {
+            if ($comparison->getOperand2() === null) {
+                return '1<>1';
             } else {
-                $this->parseDynamicOperand($comparison, $source, $sql);
-            }
-        } elseif ($operator === QueryInterface::OPERATOR_CONTAINS) {
-            if ($operand2 === null) {
-                $sql['where'][] = '1<>1';
-            } else {
-                $value = $this->dataMapper->getPlainValue($operand2);
+                $value = $this->dataMapper->getPlainValue($comparison->getOperand2());
                 if (!$source instanceof Qom\SelectorInterface) {
                     throw new \RuntimeException('Source is not of type "SelectorInterface"', 1395362539);
                 }
@@ -286,7 +287,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
                 $propertyName = $operand1->getPropertyName();
                 $fullPropertyPath = '';
                 while (strpos($propertyName, '.') !== false) {
-                    $this->addUnionStatement($className, $tableName, $propertyName, $sql, $fullPropertyPath);
+                    $this->addUnionStatement($className, $tableName, $propertyName, $fullPropertyPath);
                 }
                 $columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
                 $dataMap = $this->dataMapper->getDataMap($className);
@@ -294,22 +295,62 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
                 $typeOfRelation = $columnMap instanceof ColumnMap ? $columnMap->getTypeOfRelation() : null;
                 if ($typeOfRelation === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
                     $relationTableName = $columnMap->getRelationTableName();
-                    $additionalWhereForMatchFields = $this->getAdditionalMatchFieldsStatement($columnMap, $relationTableName, $relationTableName);
-                    $sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=' . $this->databaseHandle->fullQuoteStr($value, $relationTableName) . $additionalWhereForMatchFields . ')';
+                    $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
+                    $queryBuilderForSubselect
+                        ->select($columnMap->getParentKeyFieldName())
+                        ->from($relationTableName)
+                        ->where(
+                            $queryBuilderForSubselect->expr()->eq(
+                                $columnMap->getChildKeyFieldName(),
+                                $this->queryBuilder->createNamedParameter($value)
+                            )
+                        );
+                    $additionalWhereForMatchFields = $this->getAdditionalMatchFieldsStatement($queryBuilderForSubselect->expr(), $columnMap, $relationTableName, $relationTableName);
+                    if ($additionalWhereForMatchFields) {
+                        $queryBuilderForSubselect->andWhere($additionalWhereForMatchFields);
+                    }
+
+                    $this->queryBuilder->andWhere(
+                        $this->queryBuilder->expr()->comparison(
+                            $this->queryBuilder->quoteIdentifier($tableName . '.uid'),
+                            'IN',
+                            '(' . $queryBuilderForSubselect->getSQL() . ')'
+                        )
+                    );
                 } elseif ($typeOfRelation === ColumnMap::RELATION_HAS_MANY) {
                     $parentKeyFieldName = $columnMap->getParentKeyFieldName();
                     if (isset($parentKeyFieldName)) {
                         $childTableName = $columnMap->getChildTableName();
-                        $sql['where'][] = $tableName . '.uid=(SELECT ' . $childTableName . '.' . $parentKeyFieldName . ' FROM ' . $childTableName . ' WHERE ' . $childTableName . '.uid=' . $this->databaseHandle->fullQuoteStr($value, $childTableName) . ')';
+
+                        // Build the SQL statement of the subselect
+                        $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
+                        $queryBuilderForSubselect
+                            ->select($parentKeyFieldName)
+                            ->from($childTableName)
+                            ->where(
+                                $queryBuilderForSubselect->expr()->eq(
+                                    'uid',
+                                    (int)$value
+                                )
+                            );
+
+                        // Add it to the main query
+                        return $this->queryBuilder->expr()->eq(
+                            $tableName . '.uid',
+                            $queryBuilderForSubselect->getSQL()
+                        );
                     } else {
-                        $sql['where'][] = 'FIND_IN_SET(' . $this->databaseHandle->fullQuoteStr($value, $tableName) . ', ' . $tableName . '.' . $columnName . ')';
+                        return $this->queryBuilder->expr()->inSet(
+                            $tableName . '.' . $columnName,
+                            $this->queryBuilder->createNamedParameter($value)
+                        );
                     }
                 } else {
                     throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException('Unsupported or non-existing property name "' . $propertyName . '" used in relation matching.', 1327065745);
                 }
             }
         } else {
-            $this->parseDynamicOperand($comparison, $source, $sql);
+            return $this->parseDynamicOperand($comparison, $source);
         }
     }
 
@@ -318,66 +359,108 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param Qom\ComparisonInterface $comparison
      * @param Qom\SourceInterface $source The source
-     * @param array &$sql The query parts
-     * @return void
+     * @return string
+     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
      */
-    protected function parseDynamicOperand(Qom\ComparisonInterface $comparison, Qom\SourceInterface $source, array &$sql)
+    protected function parseDynamicOperand(Qom\ComparisonInterface $comparison, Qom\SourceInterface $source)
     {
-        // workaround to find a suitable tablename
-        $tableName = reset($sql['tables']) ?: 'foo';
-        $operator = $this->resolveOperator($comparison->getOperator());
-        $operand = $comparison->getOperand1();
-        $operand2 = $comparison->getOperand2();
-
-        $constraintSQL = $this->parseOperand($operand, $source, $sql) . ' ' . $operator . ' ';
-        if ($comparison->getOperator() === QueryInterface::OPERATOR_IN) {
-            $constraintSQL .= '(';
-            $values = [];
-            foreach ($operand2 as $value) {
-                $values[] = $this->databaseHandle->fullQuoteStr($this->dataMapper->getPlainValue($value), $tableName);
-            }
-            $constraintSQL .= implode(',', $values);
-            $constraintSQL .= ')';
-        } else {
-            if ($operand2 === null) {
-                $constraintSQL .= $this->dataMapper->getPlainValue($operand2);
-            } else {
-                $constraintSQL .= $this->databaseHandle->fullQuoteStr($this->dataMapper->getPlainValue($operand2), $tableName);
-            }
+        $value = $comparison->getOperand2();
+        $fieldName = $this->parseOperand($comparison->getOperand1(), $source);
+        $expr = null;
+        $exprBuilder = $this->queryBuilder->expr();
+        switch ($comparison->getOperator()) {
+            case QueryInterface::OPERATOR_IN:
+                $hasValue = false;
+                $plainValues = [];
+                foreach ($value as $singleValue) {
+                    $plainValue = $this->dataMapper->getPlainValue($singleValue);
+                    if ($plainValue !== null) {
+                        $hasValue = true;
+                        $plainValues[] = $plainValue;
+                    }
+                }
+                if ($hasValue) {
+                    $expr = $exprBuilder->comparison($fieldName, 'IN', '(' . implode(', ', $plainValues) . ')');
+                } else {
+                    $expr = '1<>1';
+                }
+                break;
+            case QueryInterface::OPERATOR_EQUAL_TO:
+                if ($value === null) {
+                    $expr = $fieldName . ' IS NULL';
+                } else {
+                    $value = $this->queryBuilder->createNamedParameter($this->dataMapper->getPlainValue($value));
+                    $expr = $exprBuilder->comparison($fieldName, $exprBuilder::EQ, $value);
+                }
+                break;
+            case QueryInterface::OPERATOR_EQUAL_TO_NULL:
+                $expr = $fieldName . ' IS NULL';
+                break;
+            case QueryInterface::OPERATOR_NOT_EQUAL_TO:
+                if ($value === null) {
+                    $expr = $fieldName . ' IS NOT NULL';
+                } else {
+                    $value = $this->queryBuilder->createNamedParameter($this->dataMapper->getPlainValue($value));
+                    $expr = $exprBuilder->comparison($fieldName, $exprBuilder::NEQ, $value);
+                }
+                break;
+            case QueryInterface::OPERATOR_NOT_EQUAL_TO_NULL:
+                $expr = $fieldName . ' IS NOT NULL';
+                break;
+            case QueryInterface::OPERATOR_LESS_THAN:
+                $value = $this->queryBuilder->createNamedParameter($this->dataMapper->getPlainValue($value), \PDO::PARAM_INT);
+                $expr = $exprBuilder->comparison($fieldName, $exprBuilder::LT, $value);
+                break;
+            case QueryInterface::OPERATOR_LESS_THAN_OR_EQUAL_TO:
+                $value = $this->queryBuilder->createNamedParameter($this->dataMapper->getPlainValue($value), \PDO::PARAM_INT);
+                $expr = $exprBuilder->comparison($fieldName, $exprBuilder::LTE, $value);
+                break;
+            case QueryInterface::OPERATOR_GREATER_THAN:
+                $value = $this->queryBuilder->createNamedParameter($this->dataMapper->getPlainValue($value), \PDO::PARAM_INT);
+                $expr = $exprBuilder->comparison($fieldName, $exprBuilder::GT, $value);
+                break;
+            case QueryInterface::OPERATOR_GREATER_THAN_OR_EQUAL_TO:
+                $value = $this->queryBuilder->createNamedParameter($this->dataMapper->getPlainValue($value), \PDO::PARAM_INT);
+                $expr = $exprBuilder->comparison($fieldName, $exprBuilder::GTE, $value);
+                break;
+            case QueryInterface::OPERATOR_LIKE:
+                $value = $this->queryBuilder->createNamedParameter($this->dataMapper->getPlainValue($value));
+                $expr = $exprBuilder->comparison($fieldName, 'LIKE', $value);
+                break;
+            default:
+                throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('Unsupported operator encountered.', 1242816073);
         }
-
-        $sql['where'][] = $constraintSQL;
+        return $expr;
     }
 
     /**
      * @param Qom\DynamicOperandInterface $operand
      * @param Qom\SourceInterface $source The source
-     * @param array &$sql The query parts
      * @return string
      * @throws \InvalidArgumentException
      */
-    protected function parseOperand(Qom\DynamicOperandInterface $operand, Qom\SourceInterface $source, array &$sql)
+    protected function parseOperand(Qom\DynamicOperandInterface $operand, Qom\SourceInterface $source)
     {
         if ($operand instanceof Qom\LowerCaseInterface) {
-            $constraintSQL = 'LOWER(' . $this->parseOperand($operand->getOperand(), $source, $sql) . ')';
+            $constraintSQL = 'LOWER(' . $this->parseOperand($operand->getOperand(), $source) . ')';
         } elseif ($operand instanceof Qom\UpperCaseInterface) {
-            $constraintSQL = 'UPPER(' . $this->parseOperand($operand->getOperand(), $source, $sql) . ')';
+            $constraintSQL = 'UPPER(' . $this->parseOperand($operand->getOperand(), $source) . ')';
         } elseif ($operand instanceof Qom\PropertyValueInterface) {
             $propertyName = $operand->getPropertyName();
             $className = '';
             if ($source instanceof Qom\SelectorInterface) {
-                // @todo Only necessary to differ from  Join
                 $className = $source->getNodeTypeName();
                 $tableName = $this->dataMapper->convertClassNameToTableName($className);
                 $fullPropertyPath = '';
                 while (strpos($propertyName, '.') !== false) {
-                    $this->addUnionStatement($className, $tableName, $propertyName, $sql, $fullPropertyPath);
+                    $this->addUnionStatement($className, $tableName, $propertyName, $fullPropertyPath);
                 }
             } elseif ($source instanceof Qom\JoinInterface) {
                 $tableName = $source->getJoinCondition()->getSelector1Name();
             }
             $columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
             $constraintSQL = (!empty($tableName) ? $tableName . '.' : '') . $columnName;
+            $constraintSQL = $this->queryBuilder->getConnection()->quoteIdentifier($constraintSQL);
         } else {
             throw new \InvalidArgumentException('Given operand has invalid type "' . get_class($operand) . '".', 1395710211);
         }
@@ -388,10 +471,9 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      * Add a constraint to ensure that the record type of the returned tuples is matching the data type of the repository.
      *
      * @param string $className The class name
-     * @param array &$sql The query parts
      * @return void
      */
-    protected function addRecordTypeConstraint($className, &$sql)
+    protected function addRecordTypeConstraint($className)
     {
         if ($className !== null) {
             $dataMap = $this->dataMapper->getDataMap($className);
@@ -410,9 +492,14 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
                     $recordTypeStatements = [];
                     foreach ($recordTypes as $recordType) {
                         $tableName = $dataMap->getTableName();
-                        $recordTypeStatements[] = $tableName . '.' . $dataMap->getRecordTypeColumnName() . '=' . $this->databaseHandle->fullQuoteStr($recordType, $tableName);
+                        $recordTypeStatements[] = $this->queryBuilder->expr()->eq(
+                            $tableName . '.' . $dataMap->getRecordTypeColumnName(),
+                            $this->queryBuilder->createNamedParameter($recordType)
+                        );
                     }
-                    $sql['additionalWhereClause'][] = '(' . implode(' OR ', $recordTypeStatements) . ')';
+                    $this->queryBuilder->andWhere(
+                        $this->queryBuilder->expr()->orX(...$recordTypeStatements)
+                    );
                 }
             }
         }
@@ -422,33 +509,34 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      * Builds a condition for filtering records by the configured match field,
      * e.g. MM_match_fields, foreign_match_fields or foreign_table_field.
      *
+     * @param ExpressionBuilder $exprBuilder
      * @param ColumnMap $columnMap The column man for which the condition should be build.
-     * @param string $childTableName The real name of the child record table.
      * @param string $childTableAlias The alias of the child record table used in the query.
      * @param string $parentTable The real name of the parent table (used for building the foreign_table_field condition).
      * @return string The match field conditions or an empty string.
      */
-    protected function getAdditionalMatchFieldsStatement($columnMap, $childTableName, $childTableAlias, $parentTable = null)
+    protected function getAdditionalMatchFieldsStatement($exprBuilder, $columnMap, $childTableAlias, $parentTable = null)
     {
-        $additionalWhereForMatchFields = '';
-
+        $additionalWhereForMatchFields = [];
         $relationTableMatchFields = $columnMap->getRelationTableMatchFields();
         if (is_array($relationTableMatchFields) && !empty($relationTableMatchFields)) {
-            $additionalWhere = [];
             foreach ($relationTableMatchFields as $fieldName => $value) {
-                $additionalWhere[] = $childTableAlias . '.' . $fieldName . ' = ' . $this->databaseHandle->fullQuoteStr($value, $childTableName);
+                $additionalWhereForMatchFields[] = $exprBuilder->eq($childTableAlias . '.' . $fieldName, $this->queryBuilder->createNamedParameter($value));
             }
-            $additionalWhereForMatchFields .= ' AND ' . implode(' AND ', $additionalWhere);
         }
 
         if (isset($parentTable)) {
             $parentTableFieldName = $columnMap->getParentTableFieldName();
-            if (isset($parentTableFieldName) && $parentTableFieldName !== '') {
-                $additionalWhereForMatchFields .= ' AND ' . $childTableAlias . '.' . $parentTableFieldName . ' = ' . $this->databaseHandle->fullQuoteStr($parentTable, $childTableAlias);
+            if (!empty($parentTableFieldName)) {
+                $additionalWhereForMatchFields[] = $exprBuilder->eq($childTableAlias . '.' . $parentTableFieldName, $this->queryBuilder->createNamedParameter($parentTable));
             }
         }
 
-        return $additionalWhereForMatchFields;
+        if (!empty($additionalWhereForMatchFields)) {
+            return $exprBuilder->andX(...$additionalWhereForMatchFields);
+        } else {
+            return '';
+        }
     }
 
     /**
@@ -457,26 +545,17 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      * @param QuerySettingsInterface $querySettings The TYPO3 CMS specific query settings
      * @param string $tableName The table name to add the additional where clause for
      * @param string $tableAlias The table alias used in the query.
-     * @return string
+     * @return array
      */
     protected function getAdditionalWhereClause(QuerySettingsInterface $querySettings, $tableName, $tableAlias = null)
     {
-        $sysLanguageStatement = '';
+        $whereClause = [];
         if ($querySettings->getRespectSysLanguage()) {
-            $sysLanguageStatement = $this->getSysLanguageStatement($tableName, $tableAlias, $querySettings);
+            $whereClause[] = $this->getSysLanguageStatement($tableName, $tableAlias, $querySettings);
         }
 
-        $pageIdStatement = '';
         if ($querySettings->getRespectStoragePage()) {
-            $pageIdStatement = $this->getPageIdStatement($tableName, $tableAlias, $querySettings->getStoragePageIds());
-        }
-
-        if ($sysLanguageStatement !== '' && $pageIdStatement !== '') {
-            $whereClause = $sysLanguageStatement . ' AND ' . $pageIdStatement;
-        } elseif ($sysLanguageStatement !== '') {
-            $whereClause = $sysLanguageStatement;
-        } else {
-            $whereClause = $pageIdStatement;
+            $whereClause[] = $this->getPageIdStatement($tableName, $tableAlias, $querySettings->getStoragePageIds());
         }
 
         return $whereClause;
@@ -569,44 +648,76 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getSysLanguageStatement($tableName, $tableAlias, $querySettings)
     {
-        $sysLanguageStatement = '';
         if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
             if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])) {
                 // Select all entries for the current language
-                $additionalWhereClause = $tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (' . (int)$querySettings->getLanguageUid() . ',-1)';
                 // If any language is set -> get those entries which are not translated yet
                 // They will be removed by \TYPO3\CMS\Frontend\Page\PageRepository::getRecordOverlay if not matching overlay mode
+                $languageField = $GLOBALS['TCA'][$tableName]['ctrl']['languageField'];
+
                 if (isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
                     && $querySettings->getLanguageUid() > 0
                 ) {
                     $mode = $querySettings->getLanguageMode();
-                    if ($mode === 'strict') {
-                        $additionalWhereClause = $tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=-1' .
-                            ' OR (' . $tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' = ' . (int)$querySettings->getLanguageUid() .
-                            ' AND ' . $tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] . '=0' .
-                            ') OR (' . $tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0' .
-                            ' AND ' . $tableAlias . '.uid IN (SELECT ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] .
-                            ' FROM ' . $tableName .
-                            ' WHERE ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] . '>0' .
-                            ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=' . (int)$querySettings->getLanguageUid();
-                    } else {
-                        $additionalWhereClause .= ' OR (' . $tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0' .
-                            ' AND ' . $tableAlias . '.uid NOT IN (SELECT ' . $tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] .
-                            ' FROM ' . $tableName .
-                            ' WHERE ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] . '>0' .
-                            ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=' . (int)$querySettings->getLanguageUid();
-                    }
 
-                    // Add delete clause to ensure all entries are loaded
-                    if (isset($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
-                        $additionalWhereClause .= ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . '=0';
+                    if ($mode === 'strict') {
+                        $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
+                        $queryBuilderForSubselect
+                            ->select($tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
+                            ->from($tableName)
+                            ->where(
+                                $queryBuilderForSubselect->expr()->andX(
+                                    $queryBuilderForSubselect->expr()->gt($tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'], 0),
+                                    $queryBuilderForSubselect->expr()->eq($tableName . '.' . $languageField, (int)$querySettings->getLanguageUid())
+                                )
+                            );
+                        return $this->queryBuilder->expr()->orX(
+                            $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, -1),
+                            $this->queryBuilder->expr()->andX(
+                                $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, (int)$querySettings->getLanguageUid()),
+                                $this->queryBuilder->expr()->eq($tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'], 0)
+                            ),
+                            $this->queryBuilder->expr()->andX(
+                                $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, 0),
+                                $this->queryBuilder->expr()->in(
+                                    $tableAlias . '.uid',
+                                    $queryBuilderForSubselect->getSQL()
+
+                                )
+                            )
+                        );
+                    } else {
+                        $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
+                        $queryBuilderForSubselect
+                            ->select($tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
+                            ->from($tableName)
+                            ->where(
+                                $queryBuilderForSubselect->expr()->andX(
+                                    $queryBuilderForSubselect->expr()->gt($tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'], 0),
+                                    $queryBuilderForSubselect->expr()->eq($tableName . '.' . $languageField, (int)$querySettings->getLanguageUid())
+                                )
+                            );
+                        return $this->queryBuilder->expr()->orX(
+                            $this->queryBuilder->expr()->in($tableAlias . '.' . $languageField, [(int)$querySettings->getLanguageUid(), -1]),
+                            $this->queryBuilder->expr()->andX(
+                                $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, 0),
+                                $this->queryBuilder->expr()->notIn(
+                                    $tableAlias . '.uid',
+                                    $queryBuilderForSubselect->getSQL()
+
+                                )
+                            )
+                        );
                     }
-                    $additionalWhereClause .= '))';
+                } else {
+                    return $this->queryBuilder->expr()->in(
+                        $tableAlias . '.' . $languageField,
+                        [(int)$querySettings->getLanguageUid(), -1]
+                    );
                 }
-                $sysLanguageStatement = '(' . $additionalWhereClause . ')';
             }
         }
-        return $sysLanguageStatement;
+        return '';
     }
 
     /**
@@ -628,13 +739,15 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
         switch ($rootLevel) {
             // Only in pid 0
             case 1:
-                return $tableAlias . '.pid = 0';
+                $storagePageIds = [0];
+                break;
             // Pid 0 and pagetree
             case -1:
                 if (empty($storagePageIds)) {
-                    return $tableAlias . '.pid = 0';
+                    $storagePageIds = [0];
+                } else {
+                    $storagePageIds[] = 0;
                 }
-                $storagePageIds[] = 0;
                 break;
             // Only pagetree or not set
             case 0:
@@ -647,23 +760,25 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
                 return '';
         }
         $storagePageIds = array_map('intval', $storagePageIds);
-
-        return $tableAlias . '.pid IN (' . implode(',', $storagePageIds) . ')';
+        if (count($storagePageIds) === 1) {
+            return $this->queryBuilder->expr()->eq($tableAlias . '.pid', reset($storagePageIds));
+        } else {
+            return $this->queryBuilder->expr()->in($tableAlias . '.pid', $storagePageIds);
+        }
     }
 
     /**
      * Transforms a Join into SQL and parameter arrays
      *
      * @param Qom\JoinInterface $join The join
-     * @param array &$sql The query parts
+     * @param string $leftTableAlias The alias from the table to main
      * @return void
      */
-    protected function parseJoin(Qom\JoinInterface $join, array &$sql)
+    protected function parseJoin(Qom\JoinInterface $join, $leftTableAlias)
     {
         $leftSource = $join->getLeft();
         $leftClassName = $leftSource->getNodeTypeName();
-        $leftTableName = $leftSource->getSelectorName();
-        $this->addRecordTypeConstraint($leftClassName, $sql);
+        $this->addRecordTypeConstraint($leftClassName);
         $rightSource = $join->getRight();
         if ($rightSource instanceof Qom\JoinInterface) {
             $left = $rightSource->getLeft();
@@ -672,21 +787,25 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
         } else {
             $rightClassName = $rightSource->getNodeTypeName();
             $rightTableName = $rightSource->getSelectorName();
-            $sql['fields'][$leftTableName] = $rightTableName . '.*';
+            $this->queryBuilder->addSelect($rightTableName . '.*');
         }
-        $this->addRecordTypeConstraint($rightClassName, $sql);
-        $leftTableName = $this->getUniqueAlias($sql, $leftTableName);
-        $sql['tables'][$leftTableName] = $leftTableName;
-        $rightTableName = $this->getUniqueAlias($sql, $rightTableName);
-        $sql['unions'][$rightTableName] = 'LEFT JOIN ' . $rightTableName;
+        $this->addRecordTypeConstraint($rightClassName);
+        $rightTableAlias = $this->getUniqueAlias($rightTableName);
         $joinCondition = $join->getJoinCondition();
+        $joinConditionExpression = null;
+        $this->unionTableAliasCache[] = $rightTableAlias;
         if ($joinCondition instanceof Qom\EquiJoinCondition) {
             $column1Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty1Name(), $leftClassName);
             $column2Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty2Name(), $rightClassName);
-            $sql['unions'][$rightTableName] .= ' ON ' . $leftTableName . '.' . $column1Name . ' = ' . $rightTableName . '.' . $column2Name;
+
+            $joinConditionExpression =  $this->queryBuilder->expr()->eq(
+                $leftTableAlias . '.' . $column1Name,
+                $rightTableAlias . '.' . $column2Name
+            );
         }
+        $this->queryBuilder->leftJoin($leftTableAlias, $rightTableName, $rightTableAlias, $joinConditionExpression);
         if ($rightSource instanceof Qom\JoinInterface) {
-            $this->parseJoin($rightSource, $sql);
+            $this->parseJoin($rightSource, $rightTableAlias);
         }
     }
 
@@ -694,12 +813,11 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      * Generates a unique alias for the given table and the given property path.
      * The property path will be mapped to the generated alias in the tablePropertyMap.
      *
-     * @param array $sql The SQL satement parts, will be filled with the tableAliasMap.
      * @param string $tableName The name of the table for which the alias should be generated.
      * @param string $fullPropertyPath The full property path that is related to the given table.
      * @return string The generated table alias.
      */
-    protected function getUniqueAlias(array &$sql, $tableName, $fullPropertyPath = null)
+    protected function getUniqueAlias($tableName, $fullPropertyPath = null)
     {
         if (isset($fullPropertyPath) && isset($this->tablePropertyMap[$fullPropertyPath])) {
             return $this->tablePropertyMap[$fullPropertyPath];
@@ -707,12 +825,12 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
 
         $alias = $tableName;
         $i = 0;
-        while (isset($sql['tableAliasMap'][$alias])) {
+        while (isset($this->tableAliasMap[$alias])) {
             $alias = $tableName . $i;
             $i++;
         }
 
-        $sql['tableAliasMap'][$alias] = $tableName;
+        $this->tableAliasMap[$alias] = $tableName;
 
         if (isset($fullPropertyPath)) {
             $this->tablePropertyMap[$fullPropertyPath] = $alias;
@@ -728,13 +846,12 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      * @param string &$className The name of the parent class, will be set to the child class after processing.
      * @param string &$tableName The name of the parent table, will be set to the table alias that is used in the union statement.
      * @param array &$propertyPath The remaining property path, will be cut of by one part during the process.
-     * @param array &$sql The SQL statement parts, will be filled with the union statements.
      * @param string $fullPropertyPath The full path the the current property, will be used to make table names unique.
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException
+     * @throws InvalidRelationConfigurationException
+     * @throws MissingColumnMapException
      */
-    protected function addUnionStatement(&$className, &$tableName, &$propertyPath, array &$sql, &$fullPropertyPath)
+    protected function addUnionStatement(&$className, &$tableName, &$propertyPath, &$fullPropertyPath)
     {
         $explodedPropertyPath = explode('.', $propertyPath, 2);
         $propertyName = $explodedPropertyPath[0];
@@ -744,53 +861,82 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
         $columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
 
         if ($columnMap === null) {
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException('The ColumnMap for property "' . $propertyName . '" of class "' . $className . '" is missing.', 1355142232);
+            throw new MissingColumnMapException('The ColumnMap for property "' . $propertyName . '" of class "' . $className . '" is missing.', 1355142232);
         }
 
         $parentKeyFieldName = $columnMap->getParentKeyFieldName();
         $childTableName = $columnMap->getChildTableName();
 
         if ($childTableName === null) {
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException('The relation information for property "' . $propertyName . '" of class "' . $className . '" is missing.', 1353170925);
+            throw new InvalidRelationConfigurationException('The relation information for property "' . $propertyName . '" of class "' . $className . '" is missing.', 1353170925);
         }
 
         $fullPropertyPath .= ($fullPropertyPath === '') ? $propertyName : '.' . $propertyName;
-        $childTableAlias = $this->getUniqueAlias($sql, $childTableName, $fullPropertyPath);
+        $childTableAlias = $this->getUniqueAlias($childTableName, $fullPropertyPath);
 
         // If there is already exists a union with the current identifier we do not need to build it again and exit early.
-        if (isset($sql['unions'][$childTableAlias])) {
-            $propertyPath = $explodedPropertyPath[1];
-            $tableName = $childTableAlias;
-            $className = $this->dataMapper->getType($className, $propertyName);
+        if (in_array($childTableAlias, $this->unionTableAliasCache, true)) {
             return;
         }
 
         if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_ONE) {
             if (isset($parentKeyFieldName)) {
-                $sql['unions'][$childTableAlias] = 'LEFT JOIN ' . $childTableName . ' AS ' . $childTableAlias . ' ON ' . $tableName . '.uid=' . $childTableAlias . '.' . $parentKeyFieldName;
+                // @todo: no test for this part yet
+                $joinConditionExpression = $this->queryBuilder->expr()->eq(
+                    $tableName . '.uid',
+                    $childTableAlias . '.' . $parentKeyFieldName
+                );
             } else {
-                $sql['unions'][$childTableAlias] = 'LEFT JOIN ' . $childTableName . ' AS ' . $childTableAlias . ' ON ' . $tableName . '.' . $columnName . '=' . $childTableAlias . '.uid';
+                $joinConditionExpression = $this->queryBuilder->expr()->eq(
+                    $tableName . '.' . $columnName,
+                    $childTableAlias . '.uid'
+                );
             }
-            $sql['unions'][$childTableAlias] .= $this->getAdditionalMatchFieldsStatement($columnMap, $childTableName, $childTableAlias, $realTableName);
+            $this->queryBuilder->leftJoin($tableName, $childTableName, $childTableAlias, $joinConditionExpression);
+            $this->unionTableAliasCache[] = $childTableAlias;
+            $this->queryBuilder->andWhere(
+                $this->getAdditionalMatchFieldsStatement($this->queryBuilder->expr(), $columnMap, $childTableAlias, $realTableName)
+            );
         } elseif ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
+            // @todo: no tests for this part yet
             if (isset($parentKeyFieldName)) {
-                $sql['unions'][$childTableAlias] = 'LEFT JOIN ' . $childTableName . ' AS ' . $childTableAlias . ' ON ' . $tableName . '.uid=' . $childTableAlias . '.' . $parentKeyFieldName;
+                $joinConditionExpression = $this->queryBuilder->expr()->eq(
+                    $tableName . '.uid',
+                    $childTableAlias . '.' . $parentKeyFieldName
+                );
             } else {
-                $onStatement = '(FIND_IN_SET(' . $childTableAlias . '.uid, ' . $tableName . '.' . $columnName . '))';
-                $sql['unions'][$childTableAlias] = 'LEFT JOIN ' . $childTableName . ' AS ' . $childTableAlias . ' ON ' . $onStatement;
+                $joinConditionExpression = $this->queryBuilder->expr()->inSet(
+                    $tableName . '.' . $columnName,
+                    $childTableAlias . '.uid'
+                );
             }
-            $sql['unions'][$childTableAlias] .= $this->getAdditionalMatchFieldsStatement($columnMap, $childTableName, $childTableAlias, $realTableName);
+            $this->queryBuilder->leftJoin($tableName, $childTableName, $childTableAlias, $joinConditionExpression);
+            $this->unionTableAliasCache[] = $childTableAlias;
+            $this->queryBuilder->andWhere(
+                $this->getAdditionalMatchFieldsStatement($this->queryBuilder->expr(), $columnMap, $childTableAlias, $realTableName)
+            );
         } elseif ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
             $relationTableName = $columnMap->getRelationTableName();
-            $relationTableAlias = $relationTableAlias = $this->getUniqueAlias($sql, $relationTableName, $fullPropertyPath . '_mm');
-            $sql['unions'][$relationTableAlias] = 'LEFT JOIN ' . $relationTableName . ' AS ' . $relationTableAlias . ' ON ' . $tableName . '.uid=' . $relationTableAlias . '.' . $columnMap->getParentKeyFieldName();
-            $sql['unions'][$childTableAlias] = 'LEFT JOIN ' . $childTableName . ' AS ' . $childTableAlias . ' ON ' . $relationTableAlias . '.' . $columnMap->getChildKeyFieldName() . '=' . $childTableAlias . '.uid';
-            $sql['unions'][$childTableAlias] .= $this->getAdditionalMatchFieldsStatement($columnMap, $relationTableName, $relationTableAlias, $realTableName);
+            $relationTableAlias = $relationTableAlias = $this->getUniqueAlias($relationTableName, $fullPropertyPath . '_mm');
+
+            $joinConditionExpression = $this->queryBuilder->expr()->eq(
+                $tableName . '.uid',
+                $relationTableAlias . '.' . $columnMap->getParentKeyFieldName()
+            );
+            $this->queryBuilder->leftJoin($tableName, $relationTableName, $relationTableAlias, $joinConditionExpression);
+            $joinConditionExpression = $this->queryBuilder->expr()->eq(
+                $relationTableAlias . '.' . $columnMap->getChildKeyFieldName(),
+                $childTableAlias . '.uid'
+            );
+            $this->queryBuilder->leftJoin($relationTableAlias, $childTableName, $childTableAlias, $joinConditionExpression);
+            $this->queryBuilder->andWhere(
+                $this->getAdditionalMatchFieldsStatement($this->queryBuilder->expr(), $columnMap, $relationTableAlias, $realTableName)
+            );
+            $this->unionTableAliasCache[] = $childTableAlias;
+            $this->queryBuilder->addGroupBy($this->tableName . '.uid');
         } else {
             throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('Could not determine type of relation.', 1252502725);
         }
-        // @todo check if there is another solution for this
-        $sql['keywords']['distinct'] = 'DISTINCT';
         $propertyPath = $explodedPropertyPath[1];
         $tableName = $childTableAlias;
         $className = $this->dataMapper->getType($className, $propertyName);
@@ -810,10 +956,10 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
         if ($tableAlias !== $tableName) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
             $quotedTableName = $connection->quoteIdentifier($tableName);
-            $quotedTableAliase = $connection->quoteIdentifier($tableAlias);
+            $quotedTableAlias = $connection->quoteIdentifier($tableAlias);
             $statement = str_replace(
                 [$tableName . '.', $quotedTableName . '.'],
-                [$tableAlias . '.', $quotedTableAliase . '.'],
+                [$tableAlias . '.', $quotedTableAlias . '.'],
                 $statement
             );
         }
@@ -822,61 +968,15 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Returns the SQL operator for the given JCR operator type.
-     *
-     * @param string $operator One of the JCR_OPERATOR_* constants
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
-     * @return string an SQL operator
-     */
-    protected function resolveOperator($operator)
-    {
-        switch ($operator) {
-            case QueryInterface::OPERATOR_IN:
-                $operator = 'IN';
-                break;
-            case QueryInterface::OPERATOR_EQUAL_TO:
-                $operator = '=';
-                break;
-            case QueryInterface::OPERATOR_EQUAL_TO_NULL:
-                $operator = 'IS';
-                break;
-            case QueryInterface::OPERATOR_NOT_EQUAL_TO:
-                $operator = '!=';
-                break;
-            case QueryInterface::OPERATOR_NOT_EQUAL_TO_NULL:
-                $operator = 'IS NOT';
-                break;
-            case QueryInterface::OPERATOR_LESS_THAN:
-                $operator = '<';
-                break;
-            case QueryInterface::OPERATOR_LESS_THAN_OR_EQUAL_TO:
-                $operator = '<=';
-                break;
-            case QueryInterface::OPERATOR_GREATER_THAN:
-                $operator = '>';
-                break;
-            case QueryInterface::OPERATOR_GREATER_THAN_OR_EQUAL_TO:
-                $operator = '>=';
-                break;
-            case QueryInterface::OPERATOR_LIKE:
-                $operator = 'LIKE';
-                break;
-            default:
-                throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('Unsupported operator encountered.', 1242816073);
-        }
-        return $operator;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Frontend\Page\PageRepository
+     * @return PageRepository
      */
     protected function getPageRepository()
     {
-        if (!$this->pageRepository instanceof \TYPO3\CMS\Frontend\Page\PageRepository) {
+        if (!$this->pageRepository instanceof PageRepository) {
             if ($this->environmentService->isEnvironmentInFrontendMode() && is_object($GLOBALS['TSFE'])) {
                 $this->pageRepository = $GLOBALS['TSFE']->sys_page;
             } else {
-                $this->pageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+                $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
             }
         }
 

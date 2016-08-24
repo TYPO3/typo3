@@ -2,7 +2,7 @@
 <dataset>
 	<fe_groups>
 		<uid>1</uid>
-		<pid>1</pid>
+		<pid>0</pid>
 		<title>Group A</title>
 		<subgroup></subgroup>
 		<TSconfig></TSconfig>
@@ -11,7 +11,7 @@
 	</fe_groups>
 	<fe_groups>
 		<uid>2</uid>
-		<pid>1</pid>
+		<pid>0</pid>
 		<title>Group B</title>
 		<subgroup></subgroup>
 		<TSconfig></TSconfig>

@@ -104,6 +104,23 @@ class TranslationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     /**
      * @test
      */
+    public function countReturnsCorrectNumberOfPostsInEnglishLanguageForStrictMode()
+    {
+        $query = $this->postRepository->createQuery();
+
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setStoragePageIds([1]);
+        $querySettings->setRespectSysLanguage(true);
+        $querySettings->setLanguageUid(1);
+        $querySettings->setLanguageMode('strict');
+
+        $postCount = $query->execute()->count();
+        $this->assertSame(2, $postCount);
+    }
+
+    /**
+     * @test
+     */
     public function countReturnsCorrectNumberOfPostsInEnglishLanguage()
     {
         $query = $this->postRepository->createQuery();

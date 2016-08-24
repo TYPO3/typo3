@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class QueryParserTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 {
+
     /**
      * @var array
      */
@@ -45,11 +46,16 @@ class QueryParserTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     {
         parent::setUp();
 
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/categories.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags-mm.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/persons.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/post-tag-mm.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/category-mm.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/fe_users.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/fe_groups.xml');
 
         $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $this->blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
@@ -72,8 +78,78 @@ class QueryParserTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 )
             )
         );
+
         $result = $query->execute()->toArray();
         $this->assertEquals(3, count($result));
+    }
+
+    /**
+     * Test ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY
+     *
+     * @test
+     */
+    public function queryWithRelationHasAndBelongsToManyReturnsExpectedResult()
+    {
+        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
+        $postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+        $query = $postRepository->createQuery();
+        $query->matching(
+            $query->equals('tags.name', 'Tag12')
+        );
+        $result = $query->execute()->toArray();
+        $this->assertEquals(2, count($result));
+    }
+
+    /**
+     * Test ColumnMap::RELATION_HAS_MANY
+     *
+     * @test
+     */
+    public function queryWithRelationHasManyWithoutParentKeyFieldNameReturnsExpectedResult()
+    {
+        /** @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository */
+        $frontendUserRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
+        $query = $frontendUserRepository->createQuery();
+
+        $result = $query->matching(
+            $query->equals('usergroup.title', 'Group A')
+        )->execute();
+        $this->assertSame(2, count($result));
+    }
+
+    /**
+     * Test ColumnMap::RELATION_HAS_ONE, ColumnMap::ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY
+     *
+     * @test
+     */
+    public function queryWithRelationHasOneAndHasAndBelongsToManyWithoutParentKeyFieldNameReturnsExpectedResult()
+    {
+        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
+        $postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+        $query = $postRepository->createQuery();
+        $query->matching(
+            $query->equals('author.firstname', 'Author')
+        );
+        $result = $query->execute()->toArray();
+        $this->assertEquals(2, count($result));
+    }
+
+    /**
+     * @test
+     */
+    public function orReturnsExpectedResult()
+    {
+        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
+        $postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+        $query = $postRepository->createQuery();
+        $query->matching(
+            $query->logicalOr(
+                $query->equals('tags.name', 'Tag12'),
+                $query->equals('tags.name', 'Tag11')
+            )
+        );
+        $result = $query->execute()->toArray();
+        $this->assertEquals(2, count($result));
     }
 
     /**
@@ -93,5 +169,31 @@ class QueryParserTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         );
         $result = $query->execute()->toArray();
         $this->assertEquals(1, count($result));
+    }
+
+    /**
+     * @test
+     */
+    public function queryWithFindInSetReturnsExpectedResult()
+    {
+        /** @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository */
+        $frontendUserRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
+        $query = $frontendUserRepository->createQuery();
+
+        $result = $query->matching(
+                $query->contains('usergroup', 1)
+        )->execute();
+        $this->assertSame(2, count($result));
+    }
+
+    /**
+     * @test
+     */
+    public function queryForPostWithCategoriesReturnsPostWithCategories()
+    {
+        $postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+        $query = $postRepository->createQuery();
+        $post = $query->matching($query->equals('uid', 1))->execute()->current();
+        $this->assertSame(3, count($post->getCategories()));
     }
 }
