@@ -20,7 +20,7 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'requestUpdate' => 'select_requestUpdate_1',
+        'requestUpdate' => 'select_requestUpdate_1,select_tree_4',
     ],
 
 
@@ -459,18 +459,17 @@ return [
 
         'select_tree_1' => [
             'exclude' => 1,
-            'label' => 'select_tree_1 pages',
+            'label' => 'select_tree_1 pages, showHeader=true, expandAll=true, size=20, maxitems=4',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'size' => 20,
-                // @todo: *must* be set, otherwise invalid upon checking first item?!
                 'maxitems' => 4,
                 'treeConfig' => [
-                    'expandAll' => true,
                     'parentField' => 'pid',
                     'appearance' => [
+                        'expandAll' => true,
                         'showHeader' => true,
                     ],
                 ],
@@ -478,18 +477,17 @@ return [
         ],
         'select_tree_2' => [
             'exclude' => 1,
-            'label' => 'select_tree_2 pages, showHeader=false, nonSelectableLevels=0,1, allowRecursiveMode=true, width=400',
+            'label' => 'select_tree_2 pages, showHeader=false, nonSelectableLevels=0,1, maxitems=4, size=10',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
-                // @todo: *must* be set, otherwise invalid upon checking first item?!
                 'maxitems' => 4,
                 'size' => 10,
                 'treeConfig' => [
-                    'expandAll' => true,
                     'parentField' => 'pid',
                     'appearance' => [
+                        'expandAll' => true,
                         'showHeader' => false,
                         'nonSelectableLevels' => '0,1'
                     ],
@@ -498,19 +496,19 @@ return [
         ],
         'select_tree_3' => [
             'exclude' => 1,
-            'label' => 'select_tree_3 pages, maxLevels=1',
+            'label' => 'select_tree_3 pages, maxLevels=1, minitems=1, maxitems=2',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'size' => 20,
-                // @todo: *must* be set, otherwise invalid upon checking first item?!
-                'maxitems' => 4,
+                'minitems' => 1,
+                'maxitems' => 2,
                 'treeConfig' => [
-                    'expandAll' => true,
                     'parentField' => 'pid',
                     'appearance' => [
                         'showHeader' => true,
+                        'expandAll' => true,
                         'maxLevels' => 1,
                     ],
                 ],
@@ -518,20 +516,38 @@ return [
         ],
         'select_tree_4' => [
             'exclude' => 1,
-            'label' => 'select_tree_4 pages, maxLevels=2',
+            'label' => 'select_tree_4 pages, maxLevels=2, requestUpdate, expandAll=false',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'size' => 20,
-                // @todo: *must* be set, otherwise invalid upon checking first item?!
                 'maxitems' => 4,
                 'treeConfig' => [
-                    'expandAll' => true,
+                    'parentField' => 'pid',
+                    'appearance' => [
+                        'expandAll' => false,
+                        'showHeader' => true,
+                        'maxLevels' => 2,
+                    ],
+                ],
+            ],
+        ],
+        'select_tree_5' => [
+            'exclude' => 1,
+            'label' => 'select_tree_5 pages, readOnly, showHeader=true',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectTree',
+                'foreign_table' => 'pages',
+                'size' => 20,
+                'readOnly' => true,
+                'maxitems' => 4,
+                'treeConfig' => [
                     'parentField' => 'pid',
                     'appearance' => [
                         'showHeader' => true,
-                        'maxLevels' => 2,
+                        'expandAll' => true,
                     ],
                 ],
             ],
@@ -760,7 +776,7 @@ return [
                     select_multiplesidebyside_1, select_multiplesidebyside_2, select_multiplesidebyside_3,
                     select_multiplesidebyside_4, select_multiplesidebyside_5, select_multiplesidebyside_6,
                 --div--;renderType=selectTree,
-                    select_tree_1, select_tree_2, select_tree_3, select_tree_4,
+                    select_tree_1, select_tree_2, select_tree_3, select_tree_4, select_tree_5,
                 --div--;in flex,
                     flex_1,
                 --div--;requestUpdate,
