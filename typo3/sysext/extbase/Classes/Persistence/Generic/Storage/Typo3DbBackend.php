@@ -402,6 +402,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      *
      * @param Qom\Statement $statement
      * @return array
+     * @throws SqlErrorException when the raw SQL statement fails in the database
      */
     protected function getObjectDataByRawQuery(Qom\Statement $statement)
     {
@@ -414,16 +415,22 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
 
             $realStatement->free();
         } else {
-            $result = $this->databaseHandle->sql_query($realStatement);
-            $this->checkSqlErrors();
+            // Do a real raw query. This is very stupid, as it does not allow to use DBAL's real power if
+            // several tables are on different databases, so this is used with caution and could be removed
+            // in the future
+            try {
+                $connection = $this->connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+                $statement = $connection->executeQuery($realStatement);
+            } catch (DBALException $e) {
+                throw new SqlErrorException($e->getPrevious()->getMessage(), 1472064775);
+            }
 
             $rows = [];
-            while ($row = $this->databaseHandle->sql_fetch_assoc($result)) {
+            while ($row = $statement->fetch()) {
                 if (is_array($row)) {
                     $rows[] = $row;
                 }
             }
-            $this->databaseHandle->sql_free_result($result);
         }
 
         return $rows;
