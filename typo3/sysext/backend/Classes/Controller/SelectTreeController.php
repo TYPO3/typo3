@@ -44,7 +44,7 @@ class SelectTreeController
         $formDataCompilerInput = [
             'tableName' => $request->getQueryParams()['table'],
             'vanillaUid' => (int)$request->getQueryParams()['uid'],
-            'command' => 'edit',
+            'command' => $request->getQueryParams()['command'],
         ];
         $fieldName = $request->getQueryParams()['field'];
         $formData = $formDataCompiler->compile($formDataCompilerInput);

@@ -29,7 +29,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine/Element/SelectTree'], function (
             var dataParams = {
                 table: treeInput.data('table'),
                 field: treeInput.data('field'),
-                uid: treeInput.data('uid')
+                uid: treeInput.data('uid'),
+                command: treeInput.data('command')
             };
             var $wrapper = treeInput.parent().siblings('.svg-tree-wrapper');
             var dataUrl = TYPO3.settings.ajaxUrls['record_tree_data'] + '&' + TYPO3.jQuery.param(dataParams);

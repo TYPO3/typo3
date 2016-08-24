@@ -69,6 +69,7 @@ class SelectTreeElement extends AbstractFormElement
         $html[] = '           data-table="' . htmlspecialchars($this->data['tableName']) . '"';
         $html[] = '           data-field="' . htmlspecialchars($this->data['fieldName']) . '"';
         $html[] = '           data-uid="' . (int)$this->data['vanillaUid'] . '"';
+        $html[] = '           data-command="' . htmlspecialchars($this->data['command']) . '"';
         $html[] = '           data-read-only="' . $readOnly . '"';
         $html[] = '           data-tree-exclusive-keys="' . htmlspecialchars($exclusiveKeys) . '"';
         $html[] = '           data-tree-expand-up-to-level="' . ($expanded ? '999' : '1') . '"';
