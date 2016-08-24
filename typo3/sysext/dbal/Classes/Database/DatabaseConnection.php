@@ -270,7 +270,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
      */
     protected function getFieldInfoCache()
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_phpcode');
+        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('dbal_phpcode');
     }
 
     /**
