@@ -1425,7 +1425,7 @@ class EditDocumentController extends AbstractModule
                             )
                         )
                         ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                            'actions-edit-undo',
+                            'actions-document-history-open',
                             Icon::SIZE_SMALL
                         ));
                     $buttonBar->addButton($undoButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
