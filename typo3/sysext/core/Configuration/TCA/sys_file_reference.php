@@ -171,7 +171,7 @@ return [
                     'link' => [
                         'type' => 'popup',
                         'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.link',
-                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
+                        'icon' => 'actions-wizard-link',
                         'module' => [
                             'name' => 'wizard_link',
                         ],

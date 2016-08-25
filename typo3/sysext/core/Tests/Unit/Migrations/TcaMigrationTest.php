@@ -71,7 +71,7 @@ class TcaMigrationTest extends UnitTestCase
                                     'type' => 'userFunc',
                                     'userFunc' => 'TYPO3\CMS\T3editor\FormWizard->main',
                                     'title' => 't3editor',
-                                    'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
+                                    'icon' => 'content-table',
                                     'module' => [
                                         'name' => 'wizard_table'
                                     ],
@@ -233,7 +233,7 @@ class TcaMigrationTest extends UnitTestCase
                                     'userFunc' => 'TYPO3\CMS\T3editor\FormWizard->main',
                                     'enableByTypeConfig' => 1,
                                     'title' => 't3editor',
-                                    'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
+                                    'icon' => 'content-table',
                                     'module' => [
                                         'name' => 'wizard_table'
                                     ],
@@ -247,7 +247,7 @@ class TcaMigrationTest extends UnitTestCase
                                     'userFunc' => 'TYPO3\CMS\T3editor\FormWizard->main',
                                     'enableByTypeConfig' => 1,
                                     'title' => 't3editor',
-                                    'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
+                                    'icon' => 'content-table',
                                     'module' => [
                                         'name' => 'wizard_table'
                                     ],
@@ -334,7 +334,7 @@ class TcaMigrationTest extends UnitTestCase
                                     'userFunc' => 'TYPO3\CMS\T3editor\FormWizard->main',
                                     'enableByTypeConfig' => 1,
                                     'title' => 't3editor',
-                                    'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
+                                    'icon' => 'content-table',
                                     'module' => [
                                         'name' => 'wizard_table'
                                     ],
@@ -446,7 +446,7 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'wizards' => [
                                 't3editorHtml' => [
-                                    'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
+                                    'icon' => 'content-table',
                                 ],
                             ],
                         ],

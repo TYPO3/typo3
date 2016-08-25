@@ -351,14 +351,6 @@ class TcaMigration
     /**
      * Migrate core icons for form field wizard to new location
      *
-     * add.gif => EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif
-     * link_popup.gif => EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif
-     * wizard_rte2.gif => EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif
-     * wizard_table.gif => EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif
-     * edit2.gif => EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif
-     * list.gif => EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif
-     * wizard_forms.gif => EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_forms.gif
-     *
      * @param array $tca Incoming TCA
      * @return array Migrated TCA
      */
@@ -366,25 +358,22 @@ class TcaMigration
     {
         $newTca = $tca;
 
-        $oldFileNames = [
-            'add.gif',
-            'link_popup.gif',
-            'wizard_rte2.gif',
-            'wizard_table.gif',
-            'edit2.gif',
-            'list.gif',
-            'wizard_forms.gif',
-        ];
-
         $newFileLocations = [
-            'add.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
-            'link_popup.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
-            'wizard_rte2.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif',
-            'wizard_table.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
-            'edit2.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
-            'list.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif',
+            'add.gif' => 'actions-add',
+            'link_popup.gif' => 'actions-wizard-link',
+            'wizard_rte2.gif' => 'actions-wizard-rte',
+            'wizard_table.gif' => 'content-table',
+            'edit2.gif' => 'actions-open',
+            'list.gif' => 'actions-system-list-open',
             'wizard_forms.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_forms.gif',
+            'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif' => 'actions-add',
+            'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif' => 'content-table',
+            'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif' => 'actions-open',
+            'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif' => 'actions-system-list-open',
+            'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif' => 'actions-wizard-link',
+            'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif' => 'actions-wizard-rte'
         ];
+        $oldFileNames = array_keys($newFileLocations);
 
         foreach ($tca as $table => $tableDefinition) {
             if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {

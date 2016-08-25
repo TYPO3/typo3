@@ -190,7 +190,7 @@ class TcaFlexPrepareTest extends UnitTestCase
                                                                     'type' => 'userFunc',
                                                                     'userFunc' => 'TYPO3\\CMS\\T3editor\\FormWizard->main',
                                                                     'title' => 't3editor',
-                                                                    'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
+                                                                    'icon' => 'content-table',
                                                                     'module' => [
                                                                         'name' => 'wizard_table',
                                                                     ],
@@ -276,7 +276,7 @@ class TcaFlexPrepareTest extends UnitTestCase
                                                                                     'type' => 'userFunc',
                                                                                     'userFunc' => 'TYPO3\CMS\T3editor\FormWizard->main',
                                                                                     'title' => 't3editor',
-                                                                                    'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
+                                                                                    'icon' => 'content-table',
                                                                                     'module' => [
                                                                                         'name' => 'wizard_table',
                                                                                     ],
