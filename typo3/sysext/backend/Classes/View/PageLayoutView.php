@@ -372,7 +372,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             if ($flag) {
                 // Getting children:
                 $theRows = $this->getPageRecordsRecursive($row['uid'], $depth);
-                if ($this->getBackendUser()->doesUserHaveAccess($row, 2)) {
+                if ($this->getBackendUser()->doesUserHaveAccess($row, 2) && $row['uid'] > 0) {
                     $editUids[] = $row['uid'];
                 }
                 $out .= $this->pages_drawItem($row, $this->fieldArray);
@@ -1340,7 +1340,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     $theData[$field] = $row[$field] ? '&nbsp;<strong>x</strong>' : '&nbsp;';
                     break;
                 case 'uid':
-                    if ($this->getBackendUser()->doesUserHaveAccess($row, 2)) {
+                    if ($this->getBackendUser()->doesUserHaveAccess($row, 2) && $row['uid'] > 0) {
                         $urlParameters = [
                             'edit' => [
                                 'pages' => [
