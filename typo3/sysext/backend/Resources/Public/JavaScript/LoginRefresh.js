@@ -17,9 +17,11 @@
  * displays a proper dialog to the user.
  */
 define(['jquery', 'TYPO3/CMS/Backend/Notification', 'TYPO3/CMS/Rsaauth/RsaEncryptionModule', 'bootstrap'], function($, Typo3Notification, RsaEncryption) {
+	'use strict';
+
 	/**
 	 *
-	 * @type {{identifier: {loginrefresh: string, lockedModal: string, loginFormModal: string}, options: {modalConfig: {backdrop: string}}, webNotification: null, intervalId: null, backendIsLocked: boolean, isTimingOut: boolean, $timeoutModal: string, $backendLockedModal: string, $loginForm: string, loginFramesetUrl: string, logoutUrl: string}}
+	 * @type {{identifier: {loginrefresh: string, lockedModal: string, loginFormModal: string}, options: {modalConfig: {backdrop: string}}, webNotification: null, intervalTime: integer, intervalId: null, backendIsLocked: boolean, isTimingOut: boolean, $timeoutModal: string, $backendLockedModal: string, $loginForm: string, loginFramesetUrl: string, logoutUrl: string}}
 	 * @exports TYPO3/CMS/Backend/LoginRefresh
 	 */
 	var LoginRefresh = {
@@ -34,6 +36,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'TYPO3/CMS/Rsaauth/RsaEncryp
 			}
 		},
 		webNotification: null,
+		intervalTime: 60,
 		intervalId: null,
 		backendIsLocked: false,
 		isTimingOut: false,
@@ -53,7 +56,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'TYPO3/CMS/Rsaauth/RsaEncryp
 		}
 
 		// set interval to 60 seconds
-		var interval = 1000 * 60;
+		var interval = 1000 * LoginRefresh.intervalTime;
 		LoginRefresh.intervalId = setInterval(LoginRefresh.checkActiveSession, interval);
 	};
 
@@ -83,6 +86,15 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'TYPO3/CMS/Rsaauth/RsaEncryp
 				)
 			)
 		);
+	};
+
+	/**
+	 * Set interval time
+	 *
+	 * @param {integer} intervalTime
+	 */
+	LoginRefresh.setIntervalTime = function(intervalTime) {
+		LoginRefresh.intervalTime = intervalTime;
 	};
 
 	/**
@@ -452,8 +464,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'TYPO3/CMS/Rsaauth/RsaEncryp
 		});
 	};
 
-	// initialize and return the LoginRefresh object
-	$(function() {
+	LoginRefresh.initialize = function() {
 		LoginRefresh.initializeTimeoutModal();
 		LoginRefresh.initializeBackendLockedModal();
 		LoginRefresh.initializeLoginForm();
@@ -463,7 +474,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'TYPO3/CMS/Rsaauth/RsaEncryp
 		if (typeof Notification !== 'undefined' && Notification.permission !== 'granted') {
 			Notification.requestPermission();
 		}
-	});
+	};
 
 	// expose to global
 	TYPO3.LoginRefresh = LoginRefresh;
