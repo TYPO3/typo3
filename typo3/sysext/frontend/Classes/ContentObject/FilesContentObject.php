@@ -35,6 +35,8 @@ class FilesContentObject extends AbstractContentObject
         if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
             return '';
         }
+        // Store the original "currentFile" within a variable so it can be re-applied later-on
+        $originalFileInContentObject = $this->cObj->getCurrentFile();
 
         $fileCollector = $this->findAndSortFiles($conf);
         $fileObjects = $fileCollector->getFiles();
@@ -77,6 +79,10 @@ class FilesContentObject extends AbstractContentObject
             $content .= $this->cObj->cObjGetSingle($splitConf[$key]['renderObj'], $splitConf[$key]['renderObj.']);
             $fileObjectCounter++;
         }
+
+        // Reset current file within cObj to the original file after rendering output of FILES
+        // so e.g. stdWrap is not working on the last current file applied, thus avoiding side-effects
+        $this->cObj->setCurrentFile($originalFileInContentObject);
 
         return $this->cObj->stdWrap($content, $conf['stdWrap.']);
     }
