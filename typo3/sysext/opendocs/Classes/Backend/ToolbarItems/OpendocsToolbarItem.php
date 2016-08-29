@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Opendocs\Backend\ToolbarItems;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -144,14 +145,16 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     {
         $table = $document[3]['table'];
         $uid = $document[3]['uid'];
-        $record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $uid);
+        $record = BackendUtility::getRecordWSOL($table, $uid);
         if (!is_array($record)) {
             // Record seems to be deleted
             return '';
         }
         $label = htmlspecialchars(strip_tags(htmlspecialchars_decode($document[0])));
         $icon = $this->iconFactory->getIconForRecord($table, $record, Icon::SIZE_SMALL)->render();
-        $link = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('record_edit') . '&' . $document[2];
+        $link = BackendUtility::getModuleUrl('record_edit')
+            . '&' . $document[2]
+            . '&returnUrl=' . rawurlencode(BackendUtility::getModuleUrl('web_list') . '&id=' . (int)$document[3]['pid']);
         $pageId = (int)$document[3]['uid'];
         if ($document[3]['table'] !== 'pages') {
             $pageId = (int)$document[3]['pid'];
