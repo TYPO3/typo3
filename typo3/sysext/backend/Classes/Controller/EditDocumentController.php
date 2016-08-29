@@ -1593,10 +1593,9 @@ class EditDocumentController extends AbstractModule
                     }
                     $languageMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
                     $languageMenu->setIdentifier('_langSelector');
-                    $languageMenu->setLabel($this->getLanguageService()->sL(
-                        'LLL:EXT:lang/locallang_general.xlf:LGL.language',
-                        true
-                    ));
+                    $languageMenu->setLabel(htmlspecialchars($this->getLanguageService()->sL(
+                        'LLL:EXT:lang/locallang_general.xlf:LGL.language'
+                    )));
                     foreach ($langRows as $lang) {
                         if ($this->getBackendUser()->checkLanguageAccess($lang['uid'])) {
                             $newTranslation = isset($rowsByLang[$lang['uid']]) ? '' : ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.new')) . ']';

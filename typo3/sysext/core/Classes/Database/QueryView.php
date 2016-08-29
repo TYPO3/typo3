@@ -1162,9 +1162,9 @@ class QueryView
                 && $fieldName != 'deleted'
             ) {
                 if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels']) {
-                    $title = $this->languageService->sL($conf['columns'][$fieldName]['label']
+                    $title = htmlspecialchars($this->languageService->sL($conf['columns'][$fieldName]['label']
                         ? $conf['columns'][$fieldName]['label']
-                        : $fieldName, true);
+                        : $fieldName));
                 } else {
                     $title = htmlspecialchars($this->languageService->sL($fieldName));
                 }
@@ -1195,17 +1195,17 @@ class QueryView
                 || !$SET['queryFields'] && $fieldName != 'pid') {
                 if (!$out) {
                     if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels']) {
-                        $out = $this->languageService->sL($conf['columns'][$fieldName]['label']
+                        $out = htmlspecialchars($this->languageService->sL($conf['columns'][$fieldName]['label']
                             ? $conf['columns'][$fieldName]['label']
-                            : $fieldName, true);
+                            : $fieldName));
                     } else {
                         $out = htmlspecialchars($this->languageService->sL($fieldName));
                     }
                 } else {
                     if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels']) {
-                        $out .= ',' . $this->languageService->sL(($conf['columns'][$fieldName]['label']
+                        $out .= ',' . htmlspecialchars($this->languageService->sL(($conf['columns'][$fieldName]['label']
                             ? $conf['columns'][$fieldName]['label']
-                            : $fieldName), true);
+                            : $fieldName)));
                     } else {
                         $out .= ',' . htmlspecialchars($this->languageService->sL($fieldName));
                     }

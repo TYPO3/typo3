@@ -1104,10 +1104,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 // Traverse fields, separated by ";" (displayed in a single cell).
                 foreach ($theFields as $fName2) {
                     if ($GLOBALS['TCA'][$table]['columns'][$fName2]) {
-                        $out[$fieldName] .= '<strong>' . $this->getLanguageService()->sL(
-                            $GLOBALS['TCA'][$table]['columns'][$fName2]['label'],
-                            true
-                        ) . '</strong>' . '&nbsp;&nbsp;' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(
+                        $out[$fieldName] .= '<strong>' . htmlspecialchars($this->getLanguageService()->sL(
+                            $GLOBALS['TCA'][$table]['columns'][$fName2]['label']
+                        )) . '</strong>' . '&nbsp;&nbsp;' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(
                             BackendUtility::getProcessedValue($table, $fName2, $row[$fName2], 0, 0, 0, $row['uid']),
                             25
                         )) . '<br />';
@@ -1802,10 +1801,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     } else {
                         $out .= '<strong>' . $this->getLanguageService()->getLL('noPluginSelected') . '</strong>';
                     }
-                    $out .= $this->getLanguageService()->sL(
-                        BackendUtility::getLabelFromItemlist('tt_content', 'pages', $row['pages']),
-                        true
-                    ) . '<br />';
+                    $out .= htmlspecialchars($this->getLanguageService()->sL(
+                            BackendUtility::getLabelFromItemlist('tt_content', 'pages', $row['pages'])
+                        )) . '<br />';
                     break;
                 default:
                     $contentType = $this->CType_labels[$row['CType']];
