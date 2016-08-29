@@ -317,7 +317,7 @@ class ReferenceIndex
 
         // Return if there are no fields which could contain relations
         if ($tableRelationFields === '') {
-            return $this->relations;
+            return array_filter($this->relations);
         }
 
         $deleteField = $GLOBALS['TCA'][$tableName]['ctrl']['delete'];
@@ -383,7 +383,7 @@ class ReferenceIndex
             }
         }
 
-        return $this->relations;
+        return array_filter($this->relations);
     }
 
     /**
@@ -401,16 +401,19 @@ class ReferenceIndex
      * @param int $sort The sorting order of references if many (the "group" or "select" TCA types). -1 if no sorting order is specified.
      * @param string $softref_key If the reference is a soft reference, this is the soft reference parser key. Otherwise empty.
      * @param string $softref_id Soft reference ID for key. Might be useful for replace operations.
-     * @return array Array record to insert into table.
+     * @return array|null Array record to insert into table.
      */
     public function createEntryData($table, $uid, $field, $flexPointer, $deleted, $ref_table, $ref_uid, $ref_string = '', $sort = -1, $softref_key = '', $softref_id = '')
     {
-        if (BackendUtility::isTableWorkspaceEnabled($table)) {
+        if ($this->getWorkspaceId() > 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
             $element = BackendUtility::getRecord($table, $uid, 't3ver_wsid');
-            if ($element !== null && isset($element['t3ver_wsid']) && (int)$element['t3ver_wsid'] !== $this->getWorkspaceId()) {
-                //The given Element is ws-enabled but doesn't live in the selected workspace
-                // => don't add index as it's not actually there
-                return false;
+            if ($element !== null
+                && isset($element['t3ver_wsid'])
+                && (int)$element['t3ver_wsid'] !== $this->getWorkspaceId()
+            ) {
+                // The given element is ws-enabled but doesn't live in the selected workspace
+                // => don't add to index as it's not actually there
+                return null;
             }
         }
         return [
