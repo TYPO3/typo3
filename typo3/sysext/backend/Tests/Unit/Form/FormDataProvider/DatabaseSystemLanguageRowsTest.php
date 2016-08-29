@@ -100,6 +100,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
         $queryBuilderProphecy->select('uid', 'title', 'language_isocode', 'flag')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->from('sys_language')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->orderBy('sorting')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
         $expressionBuilderProphecy->eq('pid', 0)->shouldBeCalled()->willReturn('pid = 0');
         $queryBuilderProphecy->where('pid = 0')->shouldBeCalled()->willReturn($queryBuilderRevelation);
@@ -142,6 +143,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
         $queryBuilderProphecy->select('uid', 'title', 'language_isocode', 'flag')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->from('sys_language')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->orderBy('sorting')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
         $expressionBuilderProphecy->eq('pid', 0)->shouldBeCalled()->willReturn('pid = 0');
         $queryBuilderProphecy->where('pid = 0')->shouldBeCalled()->willReturn($queryBuilderRevelation);
@@ -199,6 +201,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
         $queryBuilderProphecy->select('uid', 'title', 'language_isocode', 'flag')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->from('sys_language')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->orderBy('sorting')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
         $expressionBuilderProphecy->eq('pid', 0)->shouldBeCalled()->willReturn('pid = 0');
         $queryBuilderProphecy->where('pid = 0')->shouldBeCalled()->willReturn($queryBuilderRevelation);
@@ -251,6 +254,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         // Simulate method call flow on database objects and verify correct query is built
         $connectionPoolProphecy->getQueryBuilderForTable('sys_language')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryRestrictionContainerProphecy->removeAll()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
+        $queryBuilderProphecy->orderBy('sorting')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
         $queryBuilderProphecy->select('uid', 'title', 'language_isocode', 'flag')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->from('sys_language')->shouldBeCalled()->willReturn($queryBuilderRevelation);
@@ -317,6 +321,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         $queryBuilderProphecy->getRestrictions()->shouldBeCalled()->willReturn($queryRestrictionContainerRevelation);
         $queryBuilderProphecy->select('uid', 'title', 'language_isocode', 'flag')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->from('sys_language')->shouldBeCalled()->willReturn($queryBuilderRevelation);
+        $queryBuilderProphecy->orderBy('sorting')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionBuilderProphecy->reveal());
         $expressionBuilderProphecy->eq('pid', 0)->shouldBeCalled()->willReturn('pid = 0');
         $queryBuilderProphecy->where('pid = 0')->shouldBeCalled()->willReturn($queryBuilderRevelation);

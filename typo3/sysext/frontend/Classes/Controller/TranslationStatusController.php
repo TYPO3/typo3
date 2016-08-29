@@ -347,7 +347,8 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
             ->removeAll();
         $queryBuilder
             ->select('*')
-            ->from('sys_language');
+            ->from('sys_language')
+            ->orderBy('sorting');
         $res = $queryBuilder->execute();
         $outputArray = [];
         if (is_array($allowed_languages) && !empty($allowed_languages)) {

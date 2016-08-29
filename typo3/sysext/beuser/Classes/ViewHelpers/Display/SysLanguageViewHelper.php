@@ -79,7 +79,7 @@ class SysLanguageViewHelper extends AbstractViewHelper
                     GeneralUtility::intExplode(',', $uids)
                 )
             )
-            ->orderBy('title', 'ASC')
+            ->orderBy('sorting')
             ->execute();
 
         while ($row = $res->fetch()) {

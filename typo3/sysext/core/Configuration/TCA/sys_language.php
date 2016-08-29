@@ -3,7 +3,8 @@ return [
     'ctrl' => [
         'label' => 'title',
         'tstamp' => 'tstamp',
-        'default_sortby' => 'ORDER BY title',
+        'default_sortby' => 'ORDER BY sorting',
+        'sortby' => 'sorting',
         'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_language',
         'adminOnly' => true,
         'rootLevel' => 1,

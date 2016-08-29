@@ -287,7 +287,7 @@ class ViewModuleController extends ActionController
             )
             ->where($queryBuilder->expr()->eq('o.pid', (int)$pageIdToShow))
             ->groupBy('sys_language.uid', 'sys_language.title')
-            ->orderBy('sys_language.title')
+            ->orderBy('sys_language.sorting')
             ->execute();
 
         while ($row = $result->fetch()) {

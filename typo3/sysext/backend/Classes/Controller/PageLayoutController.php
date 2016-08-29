@@ -417,7 +417,7 @@ class PageLayoutController
                 ->groupBy('pages_language_overlay.sys_language_uid', 'sys_language.uid', 'sys_language.pid',
                     'sys_language.tstamp', 'sys_language.hidden', 'sys_language.title',
                     'sys_language.language_isocode', 'sys_language.static_lang_isocode', 'sys_language.flag')
-                ->orderBy('sys_language.title');
+                ->orderBy('sys_language.sorting');
             if (!$this->getBackendUser()->isAdmin()) {
                 $queryBuilder->andWhere($queryBuilder->expr()->eq('sys_language.hidden', 0));
             }
@@ -426,7 +426,7 @@ class PageLayoutController
             $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
             $statement = $queryBuilder->select('uid', 'title')
                 ->from('sys_language')
-                ->orderBy('title')
+                ->orderBy('sorting')
                 ->execute();
         }
         while ($lRow = $statement->fetch()) {
@@ -469,6 +469,7 @@ class PageLayoutController
         $count = $queryBuilder
             ->count('uid')
             ->from('sys_language')
+            ->orderBy('sorting')
             ->execute()
             ->fetchColumn(0);
 

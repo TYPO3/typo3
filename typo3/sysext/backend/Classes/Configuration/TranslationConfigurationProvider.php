@@ -69,6 +69,7 @@ class TranslationConfigurationProvider
         $languageRecords = $queryBuilder
             ->select('*')
             ->from('sys_language')
+            ->orderBy('sorting')
             ->execute()
             ->fetchAll();
         foreach ($languageRecords as $languageRecord) {

@@ -1,0 +1,14 @@
+====================================================
+Feature: #77652 - Make sys_language records sortable
+====================================================
+
+Description
+===========
+
+To improve the usability, the sys_language records are now sortable.
+
+
+Impact
+======
+
+The languages can now be manually sorted instead of an ordering by its name.

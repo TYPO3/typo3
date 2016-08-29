@@ -123,7 +123,7 @@ class LocalizationRepository
             ->from('sys_language')
             ->where(...$constraints)
             ->groupBy('sys_language.uid')
-            ->orderBy('sys_language.title');
+            ->orderBy('sys_language.sorting');
 
         $result = $queryBuilder->execute()->fetchAll();
 
