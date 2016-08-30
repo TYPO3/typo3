@@ -43,10 +43,34 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] = [
     'jpeg' => \TYPO3\CMS\IndexedSearch\FileContentParser::class,
     'tif'  => \TYPO3\CMS\IndexedSearch\FileContentParser::class
 ];
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['use_tables'] = 'index_phash,index_fulltext,index_rel,index_words,index_section,index_grlist,index_stat_search,index_stat_word,index_debug,index_config';
 
 // unserializing the configuration so we can use it here:
-$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'], ['allowed_classes' => false]);
+$extConf = [];
+if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'])) {
+    $extConf = unserialize(
+        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'],
+        ['allowed_classes' => false]
+    );
+}
+
+if (isset($extConf['useMysqlFulltext']) && $extConf['useMysqlFulltext'] === '1') {
+    // Use all index_* tables except "index_rel" and "index_words"
+    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['use_tables'] =
+        'index_phash,index_fulltext,index_section,index_grlist,index_stat_search,index_stat_word,index_debug,index_config';
+    // Register schema analyzer slot to hook in required fulltext index definition
+    $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+    $signalSlotDispatcher->connect(
+        \TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class,
+        'tablesDefinitionIsBeingBuilt',
+        \TYPO3\CMS\IndexedSearch\Service\DatabaseSchemaService::class,
+        'addMysqlFulltextIndex'
+    );
+    unset($signalSlotDispatcher);
+} else {
+    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['use_tables'] =
+        'index_phash,index_fulltext,index_rel,index_words,index_section,index_grlist,index_stat_search,index_stat_word,index_debug,index_config';
+}
+
 // Use the advanced doubleMetaphone parser instead of the internal one (usage of metaphone parsers is generally disabled by default)
 if (isset($extConf['enableMetaphoneSearch']) && (int)$extConf['enableMetaphoneSearch'] == 2) {
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone'] = \TYPO3\CMS\IndexedSearch\Utility\DoubleMetaPhoneUtility::class;

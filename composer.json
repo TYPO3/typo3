@@ -107,7 +107,6 @@
 		"typo3/cms-func-wizards": "self.version",
 		"typo3/cms-impexp": "self.version",
 		"typo3/cms-indexed-search": "self.version",
-		"typo3/cms-indexed-search-mysql": "self.version",
 		"typo3/cms-info": "self.version",
 		"typo3/cms-info-pagetsconfig": "self.version",
 		"typo3/cms-install": "self.version",

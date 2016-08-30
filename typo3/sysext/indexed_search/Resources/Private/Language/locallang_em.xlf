@@ -57,6 +57,9 @@
 			<trans-unit id="indexedsearch.config.indexExternalURLs">
 				<source>Index External HTML URLs: If set, links to external URLs will be indexed if they are of type "text/html".</source>
 			</trans-unit>
+			<trans-unit id="indexedsearch.config.useMysqlFulltext">
+				<source>Use MySQL specific fulltext search - Update database schema in install tool after toggling this flag</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

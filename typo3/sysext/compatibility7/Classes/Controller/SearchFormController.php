@@ -544,10 +544,22 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public function getResultRows($searchWordArray, $freeIndexUid = -1)
     {
+        // unserializing the configuration of indexed_search (!) to see if
+        // the extension is configured to use the mysql fulltext feature
+        $extConf = [];
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'])) {
+            $extConf = unserialize(
+                $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'],
+                ['allowed_classes' => false]
+            );
+        }
+
         // Getting SQL result pointer. This fetches ALL results (1,000,000 if found)
         $this->timeTracker->push('Searching result');
         if ($hookObj = &$this->hookRequest('getResultRows_SQLpointer')) {
             $res = $hookObj->getResultRows_SQLpointer($searchWordArray, $freeIndexUid);
+        } elseif (isset($extConf['useMysqlFulltext']) && $extConf['useMysqlFulltext'] === '1') {
+            $res = $this->getResultRows_SQLpointerMysqlFulltext($searchWordArray, $freeIndexUid);
         } else {
             $res = $this->getResultRows_SQLpointer($searchWordArray, $freeIndexUid);
         }
@@ -656,6 +668,170 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         } else {
             return false;
         }
+    }
+
+    /**
+     * Gets a SQL result pointer to traverse for the search records.
+     *
+     * @param array $searchWordsArray Search words
+     * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+     * @return bool|\mysqli_result|object MySQLi result object / DBAL object
+     */
+    protected function getResultRows_SQLpointerMysqlFulltext($searchWordsArray, $freeIndexUid = -1)
+    {
+        // Build the search string, detect which fulltext index to use, and decide whether boolean search is needed or not
+        $searchData = $this->getSearchString($searchWordsArray);
+        // Perform SQL Search / collection of result rows array:
+        $resource = false;
+        if ($searchData) {
+            /** @var TimeTracker $timeTracker */
+            $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
+            // Do the search:
+            $timeTracker->push('execFinalQuery');
+            $resource = $this->execFinalQuery_fulltext($searchData, $freeIndexUid);
+            $timeTracker->pull();
+        }
+        return $resource;
+    }
+
+    /**
+     * Returns a search string for use with MySQL FULLTEXT query
+     *
+     * @param array $searchWordArray Search word array
+     * @return string Search string
+     */
+    protected function getSearchString($searchWordArray)
+    {
+        // Initialize variables:
+        $count = 0;
+        // Change this to TRUE to force BOOLEAN SEARCH MODE (useful if fulltext index is still empty)
+        $searchBoolean = false;
+        $fulltextIndex = 'index_fulltext.fulltextdata';
+        // This holds the result if the search is natural (doesn't contain any boolean operators)
+        $naturalSearchString = '';
+        // This holds the result if the search is boolen (contains +/-/| operators)
+        $booleanSearchString = '';
+
+        $searchType = (string)$this->getSearchType();
+
+        // Traverse searchwords and prefix them with corresponding operator
+        foreach ($searchWordArray as $searchWordData) {
+            // Making the query for a single search word based on the search-type
+            $searchWord = $searchWordData['sword'];
+            $wildcard = '';
+            if (strstr($searchWord, ' ')) {
+                $searchType = '20';
+            }
+            switch ($searchType) {
+                case '1':
+                case '2':
+                case '3':
+                    // First part of word
+                    $wildcard = '*';
+                    // Part-of-word search requires boolean mode!
+                    $searchBoolean = true;
+                    break;
+                case '10':
+                    $indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
+                    // Initialize the indexer-class
+                    /** @var \TYPO3\CMS\IndexedSearch\Indexer $indexerObj */
+                    $searchWord = $indexerObj->metaphone($searchWord, $indexerObj->storeMetaphoneInfoAsWords);
+                    unset($indexerObj);
+                    $fulltextIndex = 'index_fulltext.metaphonedata';
+                    break;
+                case '20':
+                    $searchBoolean = true;
+                    // Remove existing quotes and fix misplaced quotes.
+                    $searchWord = trim(str_replace('"', ' ', $searchWord));
+                    break;
+            }
+            // Perform search for word:
+            switch ($searchWordData['oper']) {
+                case 'AND NOT':
+                    $booleanSearchString .= ' -' . $searchWord . $wildcard;
+                    $searchBoolean = true;
+                    break;
+                case 'OR':
+                    $booleanSearchString .= ' ' . $searchWord . $wildcard;
+                    $searchBoolean = true;
+                    break;
+                default:
+                    $booleanSearchString .= ' +' . $searchWord . $wildcard;
+                    $naturalSearchString .= ' ' . $searchWord;
+            }
+            $count++;
+        }
+        if ($searchType == '20') {
+            $searchString = '"' . trim($naturalSearchString) . '"';
+        } elseif ($searchBoolean) {
+            $searchString = trim($booleanSearchString);
+        } else {
+            $searchString = trim($naturalSearchString);
+        }
+        return [
+            'searchBoolean' => $searchBoolean,
+            'searchString' => $searchString,
+            'fulltextIndex' => $fulltextIndex
+        ];
+    }
+
+    /**
+     * Execute final query, based on phash integer list. The main point is sorting the result in the right order.
+     *
+     * @param array $searchData Array with search string, boolean indicator, and fulltext index reference
+     * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+     * @return bool|\mysqli_result|object MySQLi result object / DBAL object
+     */
+    protected function execFinalQuery_fulltext($searchData, $freeIndexUid = -1)
+    {
+        // Setting up methods of filtering results based on page types, access, etc.
+        $pageJoin = '';
+        // Indexing configuration clause:
+        $freeIndexUidClause = $this->freeIndexUidWhere($freeIndexUid);
+        // Calling hook for alternative creation of page ID list
+        $searchRootPageIdList = $this->getSearchRootPageIdList();
+        if ($hookObj = &$this->hookRequest('execFinalQuery_idList')) {
+            $pageWhere = $hookObj->execFinalQuery_idList('');
+        } elseif ($this->getJoinPagesForQuery()) {
+            // Alternative to getting all page ids by ->getTreeList() where "excludeSubpages" is NOT respected.
+            $pageJoin = ',
+				pages';
+            $pageWhere = 'pages.uid = ISEC.page_id
+				' . $GLOBALS['TSFE']->cObj->enableFields('pages') . '
+				AND pages.no_search=0
+				AND pages.doktype<200
+			';
+        } elseif ($searchRootPageIdList[0] >= 0) {
+
+            // Collecting all pages IDs in which to search;
+            // filtering out ALL pages that are not accessible due to enableFields. Does NOT look for "no_search" field!
+            $idList = [];
+            foreach ($searchRootPageIdList as $rootId) {
+                /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
+                $cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+                $idList[] = $cObj->getTreeList(-1 * $rootId, 9999);
+            }
+            $pageWhere = ' ISEC.page_id IN (' . implode(',', $idList) . ')';
+        } else {
+            // Disable everything... (select all)
+            $pageWhere = ' 1=1';
+        }
+        $searchBoolean = '';
+        if ($searchData['searchBoolean']) {
+            $searchBoolean = ' IN BOOLEAN MODE';
+        }
+        $resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+            'index_fulltext.*, ISEC.*, IP.*',
+            'index_fulltext, index_section ISEC, index_phash IP' . $pageJoin,
+            'MATCH (' . $searchData['fulltextIndex'] . ')
+                AGAINST (' . $GLOBALS['TYPO3_DB']->fullQuoteStr($searchData['searchString'], 'index_fulltext') . $searchBoolean . ') ' .
+            $this->mediaTypeWhere() . ' ' . $this->languageWhere() . $freeIndexUidClause . '
+                AND index_fulltext.phash = IP.phash
+                AND ISEC.phash = IP.phash
+                AND ' . $pageWhere . $this->sectionTableWhere(),
+            'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,IP.cHashParams,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId'
+        );
+        return $resource;
     }
 
     /**
