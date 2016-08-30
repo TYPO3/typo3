@@ -47,6 +47,7 @@ use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Extbase\Service\FlexFormService;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
@@ -5470,6 +5471,18 @@ class ContentObjectRenderer
                             case 'page':
                                 $retVal = DebugUtility::viewArray($tsfe->page);
                                 break;
+                        }
+                        break;
+                    case 'flexform':
+                        $keyParts = GeneralUtility::trimExplode(':', $key, true);
+                        if (count($keyParts) === 2 && isset($this->data[$keyParts[0]])) {
+                            $flexFormContent = $this->data[$keyParts[0]];
+                            if (!empty($flexFormContent)) {
+                                $flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
+                                $flexFormKey = str_replace('.', '|', $keyParts[1]);
+                                $settings = $flexFormService->convertFlexFormContentToArray($flexFormContent);
+                                $retVal = $this->getGlobal($flexFormKey, $settings);
+                            }
                         }
                         break;
                 }
