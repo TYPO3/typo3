@@ -59,10 +59,10 @@ class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterfa
     public function render($parameter, $additionalParams = '')
     {
         return static::renderStatic(
-            array(
+            [
                 'parameter' => $parameter,
                 'additionalParams' => $additionalParams
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -84,9 +84,9 @@ class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterfa
         if ($parameter) {
             $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $content = $contentObject->typoLink_URL(
-                array(
+                [
                     'parameter' => self::createTypolinkParameterArrayFromArguments($parameter, $additionalParams),
-                )
+                ]
             );
         }
 

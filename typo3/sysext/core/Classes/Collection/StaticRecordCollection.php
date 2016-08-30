@@ -88,13 +88,13 @@ class StaticRecordCollection extends AbstractRecordCollection implements Editabl
      */
     protected function getPersistableDataArray()
     {
-        return array(
+        return [
             'title' => $this->getTitle(),
             'description' => $this->getDescription(),
             'items' => $this->getItemUidList(true),
             'type' => 'static',
             'table_name' => $this->getItemTableName()
-        );
+        ];
     }
 
     /**
@@ -162,7 +162,7 @@ class StaticRecordCollection extends AbstractRecordCollection implements Editabl
      */
     protected function getCollectedRecords()
     {
-        $relatedRecords = array();
+        $relatedRecords = [];
         $resource = $this->getDatabaseConnection()->exec_SELECT_mm_query(
             $this->getItemTableName() . '.*',
             self::$storageTableName,

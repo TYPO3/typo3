@@ -27,10 +27,10 @@ class SystemStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
     public function getStatus()
     {
         $this->executeAdminCommand();
-        $statuses = array(
+        $statuses = [
             'PhpPeakMemory' => $this->getPhpPeakMemoryStatus(),
             'PhpModules' => $this->getMissingPhpModulesOfExtensions()
-        );
+        ];
         return $statuses;
     }
 
@@ -88,14 +88,14 @@ class SystemStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     protected function getMissingPhpModulesOfExtensions()
     {
-        $modules = array();
+        $modules = [];
         if (is_array(${$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['requiredPhpModules']})) {
             foreach (${$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['requiredPhpModules']} as $classData) {
                 $hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classData);
                 $modules = $hookObject->setRequiredPhpModules($modules, $this);
             }
         }
-        $missingPhpModules = array();
+        $missingPhpModules = [];
         foreach ($modules as $module) {
             if (is_array($module)) {
                 $detectedSubmodules = false;

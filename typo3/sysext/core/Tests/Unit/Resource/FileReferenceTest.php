@@ -23,7 +23,7 @@ class FileReferenceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     protected function setUp()
     {
@@ -44,8 +44,8 @@ class FileReferenceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function prepareFixture(array $fileReferenceProperties, array $originalFileProperties)
     {
-        $fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\FileReference::class, array('dummy'), array(), '', false);
-        $originalFileMock = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(), '', false);
+        $fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\FileReference::class, ['dummy'], [], '', false);
+        $originalFileMock = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\File::class, [], [], '', false);
         $originalFileMock->expects($this->any())
             ->method('getProperties')
             ->will($this->returnValue($originalFileProperties)
@@ -61,27 +61,27 @@ class FileReferenceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function propertiesDataProvider()
     {
-        return array(
-            'File properties correctly override file reference properties' => array(
-                array(
+        return [
+            'File properties correctly override file reference properties' => [
+                [
                     'title' => null,
                     'description' => 'fileReferenceDescription',
                     'alternative' => '',
-                ),
-                array(
+                ],
+                [
                     'title' => 'fileTitle',
                     'description' => 'fileDescription',
                     'alternative' => 'fileAlternative',
                     'file_only_property' => 'fileOnlyPropertyValue',
-                ),
-                array(
+                ],
+                [
                     'title' => 'fileTitle',
                     'description' => 'fileReferenceDescription',
                     'alternative' => '',
                     'file_only_property' => 'fileOnlyPropertyValue',
-                ),
-            )
-        );
+                ],
+            ]
+        ];
     }
 
     /**

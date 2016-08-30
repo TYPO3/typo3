@@ -79,13 +79,13 @@ class FluidTemplateContentObject extends AbstractContentObject
      * @param array $conf Array of TypoScript properties
      * @return string The HTML output
      */
-    public function render($conf = array())
+    public function render($conf = [])
     {
         $parentView = $this->view;
         $this->initializeStandaloneViewInstance();
 
         if (!is_array($conf)) {
-            $conf = array();
+            $conf = [];
         }
 
         $this->setFormat($conf);
@@ -163,7 +163,7 @@ class FluidTemplateContentObject extends AbstractContentObject
     protected function setLayoutRootPath(array $conf)
     {
         // Override the default layout path via typoscript
-        $layoutPaths = array();
+        $layoutPaths = [];
         if (isset($conf['layoutRootPath']) || isset($conf['layoutRootPath.'])) {
             $layoutRootPath = isset($conf['layoutRootPath.'])
                 ? $this->cObj->stdWrap($conf['layoutRootPath'], $conf['layoutRootPath.'])
@@ -186,7 +186,7 @@ class FluidTemplateContentObject extends AbstractContentObject
      */
     protected function setPartialRootPath(array $conf)
     {
-        $partialPaths = array();
+        $partialPaths = [];
         if (isset($conf['partialRootPath']) || isset($conf['partialRootPath.'])) {
             $partialRootPath = isset($conf['partialRootPath.'])
                 ? $this->cObj->stdWrap($conf['partialRootPath'], $conf['partialRootPath.'])
@@ -251,8 +251,8 @@ class FluidTemplateContentObject extends AbstractContentObject
      */
     protected function getContentObjectVariables(array $conf)
     {
-        $variables = array();
-        $reservedVariables = array('data', 'current');
+        $variables = [];
+        $reservedVariables = ['data', 'current'];
         // Accumulate the variables to be process and loop them through cObjGetSingle
         $variablesToProcess = (array)$conf['variables.'];
         foreach ($variablesToProcess as $variableName => $cObjType) {

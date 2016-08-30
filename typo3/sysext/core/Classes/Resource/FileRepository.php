@@ -64,7 +64,7 @@ class FileRepository extends AbstractRepository
      */
     public function findByRelation($tableName, $fieldName, $uid)
     {
-        $itemList = array();
+        $itemList = [];
         if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid)) {
             throw new \InvalidArgumentException('UID of related record has to be an integer. UID given: "' . $uid  . '"', 1316789798);
         }
@@ -150,7 +150,7 @@ class FileRepository extends AbstractRepository
 
         $fileRecords = $this->getFileIndexRepository()->findByFolders($folders, false, $fileName);
 
-        $files = array();
+        $files = [];
         foreach ($fileRecords as $fileRecord) {
             try {
                 $files[] = $fileFactory->getFileObject($fileRecord['uid'], $fileRecord);

@@ -48,7 +48,7 @@ class FormProtectionFactory
      *
      * @var array<AbstracFormtProtection>
      */
-    protected static $instances = array();
+    protected static $instances = [];
 
     /**
      * Private constructor to prevent instantiation.

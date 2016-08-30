@@ -38,7 +38,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
     /**
      * @var array Date formats
      */
-    protected $dateFormats = array(
+    protected $dateFormats = [
         'date' => [
             'empty' => '0000-00-00',
             'format' => 'Y-m-d'
@@ -47,7 +47,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
             'empty' => '0000-00-00 00:00:00',
             'format' => 'Y-m-d H:i:s'
         ],
-    );
+    ];
 
     protected function setUp()
     {

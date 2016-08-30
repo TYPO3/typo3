@@ -41,7 +41,7 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
         $pagesCount = count($pages);
         $description = '<p>The RTE "acronym" button is deprecated and replaced by the "abbreviation" button since TYPO3 CMS 7.0.</p>' . LF . '<p>Page TSconfig currently includes the string "acronym" on <strong>' . strval($pagesCount) . '&nbsp;pages</strong>  (including deleted and hidden pages).</p>' . LF;
         if ($pagesCount) {
-            $pagesUids = array();
+            $pagesUids = [];
             foreach ($pages as $page) {
                 $pagesUids[] = $page['uid'];
             }
@@ -118,7 +118,7 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
         if ($db->sql_error()) {
             $customMessages = 'SQL-ERROR: ' . htmlspecialchars($db->sql_error());
         }
-        $pages = array();
+        $pages = [];
         while ($row = $db->sql_fetch_assoc($res)) {
             $pages[] = $row;
         }
@@ -157,9 +157,9 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate
         foreach ($pages as $page) {
             $table = 'pages';
             $where = 'uid =' . $page['uid'];
-            $field_values = array(
+            $field_values = [
                 'TSconfig' => $page['TSconfig']
-            );
+            ];
             $db->exec_UPDATEquery($table, $where, $field_values);
             $dbQueries[] = str_replace(LF, ' ', $db->debug_lastBuiltQuery);
             if ($db->sql_error()) {

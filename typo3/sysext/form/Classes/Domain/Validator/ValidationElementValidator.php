@@ -24,7 +24,7 @@ class ValidationElementValidator extends \TYPO3\CMS\Extbase\Validation\Validator
     /**
      * @var \SplObjectStorage[]
      */
-    protected $propertyValidators = array();
+    protected $propertyValidators = [];
 
     /**
      * @var \TYPO3\CMS\Form\Utility\SessionUtility
@@ -52,7 +52,7 @@ class ValidationElementValidator extends \TYPO3\CMS\Extbase\Validation\Validator
         $this->result = new \TYPO3\CMS\Extbase\Error\Result();
         if ($this->acceptsEmptyValues === false || $this->isEmpty($value) === false) {
             if (!is_object($value)) {
-                $this->addError('Object expected, %1$s given.', 1241099149, array(gettype($value)));
+                $this->addError('Object expected, %1$s given.', 1241099149, [gettype($value)]);
             } elseif ($this->isValidatedAlready($value) === false) {
                 $this->isValid($value);
             }
@@ -220,7 +220,7 @@ class ValidationElementValidator extends \TYPO3\CMS\Extbase\Validation\Validator
     public function getPropertyValidators($propertyName = null)
     {
         if ($propertyName !== null) {
-            return (isset($this->propertyValidators[$propertyName])) ? $this->propertyValidators[$propertyName] : array();
+            return (isset($this->propertyValidators[$propertyName])) ? $this->propertyValidators[$propertyName] : [];
         } else {
             return $this->propertyValidators;
         }

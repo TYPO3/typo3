@@ -25,13 +25,13 @@ class StepController extends AbstractController
     /**
      * @var array List of valid action names that need authentication. Order is important!
      */
-    protected $authenticationActions = array(
+    protected $authenticationActions = [
         'environmentAndFolders',
         'databaseConnect',
         'databaseSelect',
         'databaseData',
         'defaultConfiguration',
-    );
+    ];
 
     /**
      * Index action acts as a dispatcher to different steps
@@ -255,7 +255,7 @@ class StepController extends AbstractController
         $postValues = $this->getPostValues();
 
         $wasExecuted = false;
-        $errorMessagesFromExecute = array();
+        $errorMessagesFromExecute = [];
         if (isset($postValues['action'])
             && $postValues['action'] === 'environmentAndFolders'
         ) {

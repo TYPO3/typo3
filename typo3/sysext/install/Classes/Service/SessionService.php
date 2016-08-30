@@ -69,7 +69,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
         // Start our PHP session early so that hasSession() works
         $sessionSavePath = $this->getSessionSavePath();
         // Register our "save" session handler
-        session_set_save_handler(array($this, 'open'), array($this, 'close'), array($this, 'read'), array($this, 'write'), array($this, 'destroy'), array($this, 'gc'));
+        session_set_save_handler([$this, 'open'], [$this, 'close'], [$this, 'read'], [$this, 'write'], [$this, 'destroy'], [$this, 'gc']);
         session_save_path($sessionSavePath);
         session_name($this->cookieName);
         ini_set('session.cookie_path', GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
@@ -176,7 +176,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function resetSession()
     {
-        $_SESSION = array();
+        $_SESSION = [];
         $_SESSION['active'] = false;
     }
 
@@ -315,7 +315,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
     public function addMessage(\TYPO3\CMS\Install\Status\StatusInterface $message)
     {
         if (!is_array($_SESSION['messages'])) {
-            $_SESSION['messages'] = array();
+            $_SESSION['messages'] = [];
         }
         $_SESSION['messages'][] = $message;
     }
@@ -327,11 +327,11 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getMessagesAndFlush()
     {
-        $messages = array();
+        $messages = [];
         if (is_array($_SESSION['messages'])) {
             $messages = $_SESSION['messages'];
         }
-        $_SESSION['messages'] = array();
+        $_SESSION['messages'] = [];
         return $messages;
     }
 

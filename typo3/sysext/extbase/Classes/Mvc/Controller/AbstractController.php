@@ -103,7 +103,7 @@ abstract class AbstractController implements ControllerInterface
      *
      * @var array
      */
-    protected $supportedRequestTypes = array(\TYPO3\CMS\Extbase\Mvc\Request::class);
+    protected $supportedRequestTypes = [\TYPO3\CMS\Extbase\Mvc\Request::class];
 
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext

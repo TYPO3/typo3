@@ -38,9 +38,9 @@ class Typo3DependencyViewHelper extends AbstractViewHelper implements Compilable
     public function render(Extension $extension)
     {
         return static::renderStatic(
-            array(
+            [
                 'extension' => $extension,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

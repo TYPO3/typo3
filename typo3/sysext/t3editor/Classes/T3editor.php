@@ -69,7 +69,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $codeCompletionComponents = array('TsRef', 'CompletionResult', 'TsParser', 'TsCodeCompletion');
+    protected $codeCompletionComponents = ['TsRef', 'CompletionResult', 'TsParser', 'TsCodeCompletion'];
 
     /**
      * sets the type of code to edit (::MODE_TYPOSCRIPT, ::MODE_JAVASCRIPT)
@@ -213,7 +213,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
         $T3editor_template = GeneralUtility::getUrl(
             GeneralUtility::getFileAbsFileName('EXT:t3editor/Resources/Private/Templates/t3editor.html')
         );
-        return str_replace(array(CR, LF), '', $T3editor_template);
+        return str_replace([CR, LF], '', $T3editor_template);
     }
 
     /**
@@ -227,26 +227,26 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
         switch ($mode) {
             case self::MODE_TYPOSCRIPT:
                 $relPath = '../../../parse_typoscript/';
-                $parserfile = array($relPath . 'tokenizetyposcript.js', $relPath . 'parsetyposcript.js');
+                $parserfile = [$relPath . 'tokenizetyposcript.js', $relPath . 'parsetyposcript.js'];
                 break;
             case self::MODE_JAVASCRIPT:
-                $parserfile = array('tokenizejavascript.js', 'parsejavascript.js');
+                $parserfile = ['tokenizejavascript.js', 'parsejavascript.js'];
                 break;
             case self::MODE_CSS:
-                $parserfile = array('parsecss.js');
+                $parserfile = ['parsecss.js'];
                 break;
             case self::MODE_XML:
-                $parserfile = array('parsexml.js');
+                $parserfile = ['parsexml.js'];
                 break;
             case self::MODE_SPARQL:
-                $parserfile = array('parsesparql.js');
+                $parserfile = ['parsesparql.js'];
                 break;
             case self::MODE_HTML:
-                $parserfile = array('tokenizejavascript.js', 'parsejavascript.js', 'parsecss.js', 'parsexml.js', 'parsehtmlmixed.js');
+                $parserfile = ['tokenizejavascript.js', 'parsejavascript.js', 'parsecss.js', 'parsexml.js', 'parsehtmlmixed.js'];
                 break;
             case self::MODE_PHP:
             case self::MODE_MIXED:
-                $parserfile = array('tokenizejavascript.js', 'parsejavascript.js', 'parsecss.js', 'parsexml.js', '../contrib/php/js/tokenizephp.js', '../contrib/php/js/parsephp.js', '../contrib/php/js/parsephphtmlmixed.js');
+                $parserfile = ['tokenizejavascript.js', 'parsejavascript.js', 'parsecss.js', 'parsexml.js', '../contrib/php/js/tokenizephp.js', '../contrib/php/js/parsephp.js', '../contrib/php/js/parsephphtmlmixed.js'];
                 break;
         }
         return json_encode($parserfile);
@@ -262,31 +262,31 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
     {
         switch ($mode) {
             case self::MODE_TYPOSCRIPT:
-                $stylesheet = array($this->relExtPath . 'Resources/Public/Css/typoscriptcolors.css');
+                $stylesheet = [$this->relExtPath . 'Resources/Public/Css/typoscriptcolors.css'];
                 break;
             case self::MODE_JAVASCRIPT:
-                $stylesheet = array($this->codemirrorPath . '../css/jscolors.css');
+                $stylesheet = [$this->codemirrorPath . '../css/jscolors.css'];
                 break;
             case self::MODE_CSS:
-                $stylesheet = array($this->codemirrorPath . '../css/csscolors.css');
+                $stylesheet = [$this->codemirrorPath . '../css/csscolors.css'];
                 break;
             case self::MODE_XML:
-                $stylesheet = array($this->codemirrorPath . '../css/xmlcolors.css');
+                $stylesheet = [$this->codemirrorPath . '../css/xmlcolors.css'];
                 break;
             case self::MODE_HTML:
-                $stylesheet = array($this->codemirrorPath . '../css/xmlcolors.css', $this->codemirrorPath . '../css/jscolors.css', $this->codemirrorPath . '../css/csscolors.css');
+                $stylesheet = [$this->codemirrorPath . '../css/xmlcolors.css', $this->codemirrorPath . '../css/jscolors.css', $this->codemirrorPath . '../css/csscolors.css'];
                 break;
             case self::MODE_SPARQL:
-                $stylesheet = array($this->codemirrorPath . '../css/sparqlcolors.css');
+                $stylesheet = [$this->codemirrorPath . '../css/sparqlcolors.css'];
                 break;
             case self::MODE_PHP:
-                $stylesheet = array($this->codemirrorPath . '../contrib/php/css/phpcolors.css');
+                $stylesheet = [$this->codemirrorPath . '../contrib/php/css/phpcolors.css'];
                 break;
             case self::MODE_MIXED:
-                $stylesheet = array($this->codemirrorPath . '../css/xmlcolors.css', $this->codemirrorPath . '../css/jscolors.css', $this->codemirrorPath . '../css/csscolors.css', $this->codemirrorPath . '../contrib/php/css/phpcolors.css');
+                $stylesheet = [$this->codemirrorPath . '../css/xmlcolors.css', $this->codemirrorPath . '../css/jscolors.css', $this->codemirrorPath . '../css/csscolors.css', $this->codemirrorPath . '../contrib/php/css/phpcolors.css'];
                 break;
             default:
-                $stylesheet = array();
+                $stylesheet = [];
         }
         $stylesheet[] = $this->relExtPath . 'Resources/Public/Css/t3editor_inner.css';
         return json_encode($stylesheet);
@@ -303,7 +303,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $hiddenfields
      * @return string Generated HTML code for editor
      */
-    public function getCodeEditor($name, $class = '', $content = '', $additionalParams = '', $alt = '', array $hiddenfields = array())
+    public function getCodeEditor($name, $class = '', $content = '', $additionalParams = '', $alt = '', array $hiddenfields = [])
     {
         $code = '';
         $class .= ' t3editor';
@@ -353,23 +353,23 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
             $savingsuccess = false;
             try {
                 if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/t3editor/classes/class.tx_t3editor.php']['ajaxSaveCode'])) {
-                    $_params = array(
+                    $_params = [
                         'pObj' => &$this,
                         'type' => $codeType,
                         'request' => $request,
                         'response' => $response
-                    );
+                    ];
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/t3editor/classes/class.tx_t3editor.php']['ajaxSaveCode'] as $key => $_funcRef) {
                         $savingsuccess = GeneralUtility::callUserFunction($_funcRef, $_params, $this) || $savingsuccess;
                     }
                 }
-                $responseContent = array('result' => $savingsuccess);
+                $responseContent = ['result' => $savingsuccess];
             } catch (\Exception $e) {
-                $responseContent = array(
+                $responseContent = [
                     'result' => false,
                     'exceptionMessage' => htmlspecialchars($e->getMessage()),
                     'exceptionCode' => $e->getCode()
-                );
+                ];
             }
             /** @var \TYPO3\CMS\Core\Http\Response $response */
             $response = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Response::class);
@@ -389,7 +389,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getPlugins(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $result = array();
+        $result = [];
         $plugins = &$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3editor']['plugins'];
         if (is_array($plugins)) {
             $result = array_values($plugins);

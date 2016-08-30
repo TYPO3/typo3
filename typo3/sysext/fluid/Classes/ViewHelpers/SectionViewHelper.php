@@ -79,7 +79,7 @@ class SectionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
     {
         $sectionName = $viewHelperArguments['name']->getText();
         if (!$variableContainer->exists('sections')) {
-            $variableContainer->add('sections', array());
+            $variableContainer->add('sections', []);
         }
         $sections = $variableContainer->get('sections');
         $sections[$sectionName] = $syntaxTreeNode;

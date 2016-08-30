@@ -46,6 +46,6 @@ class CrawlerFilesHook
             $indexerObj->indexRegularDocument($params['document'], true);
         }
         // Return OK:
-        return array('content' => array());
+        return ['content' => []];
     }
 }

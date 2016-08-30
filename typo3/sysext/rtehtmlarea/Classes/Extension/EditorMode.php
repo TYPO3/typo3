@@ -40,9 +40,9 @@ class EditorMode extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'chMode' => 'TextMode'
-    );
+    ];
 
     /**
      * Requiring itself so that it is always loaded.

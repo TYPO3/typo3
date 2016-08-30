@@ -41,7 +41,7 @@ class InlineElements extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'formattext' => 'FormatText',
         'bidioverride' => 'BiDiOverride',
         'big' => 'Big',
@@ -65,14 +65,14 @@ class InlineElements extends RteHtmlAreaApi
         'superscript' => 'Superscript',
         'underline' => 'Underline',
         'variable' => 'Variable'
-    );
+    ];
 
     /**
      * Default list of inline elements
      *
      * @var array
      */
-    protected $defaultInlineElements = array(
+    protected $defaultInlineElements = [
         'none' => 'No markup',
         'b' => 'Bold',
         'bdo' => 'BiDi override',
@@ -96,7 +96,7 @@ class InlineElements extends RteHtmlAreaApi
         'tt' => 'Monospaced text',
         'u' => 'Underline',
         'var' => 'Variable'
-    );
+    ];
 
     /**
      * Default order of inline elements
@@ -111,7 +111,7 @@ class InlineElements extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $buttonToInlineElement = array(
+    protected $buttonToInlineElement = [
         'none' => 'none',
         'bidioverride' => 'bdo',
         'big' => 'big',
@@ -135,7 +135,7 @@ class InlineElements extends RteHtmlAreaApi
         'superscript' => 'sup',
         'underline' => 'u',
         'variable' => 'var'
-    );
+    ];
 
     /**
      * Return JS configuration of the htmlArea plugins registered by the extension
@@ -144,14 +144,14 @@ class InlineElements extends RteHtmlAreaApi
      */
     public function buildJavascriptConfiguration()
     {
-        $jsArray = array();
+        $jsArray = [];
         if (in_array('formattext', $this->toolbar)) {
             if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.']['formattext.'])) {
                 $jsArray[] = 'RTEarea[editornumber].buttons.formattext = new Object();';
             }
             // Default inline elements
-            $hideItems = array();
-            $restrictTo = array('*');
+            $hideItems = [];
+            $restrictTo = ['*'];
             $inlineElementsOrder = $this->defaultInlineElementsOrder;
             $prefixLabelWithTag = false;
             $postfixLabelWithTag = false;
@@ -179,7 +179,7 @@ class InlineElements extends RteHtmlAreaApi
                 $inlineElementsOrder = array_intersect($inlineElementsOrder, $restrictTo);
             }
             // Localizing the options
-            $inlineElementsOptions = array();
+            $inlineElementsOptions = [];
             foreach ($inlineElementsOrder as $item) {
                 $inlineElementsOptions[$this->buttonToInlineElement[$item]] = $this->getLanguageService()->sL(
                     'LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/InlineElements/locallang.xlf:' . $this->defaultInlineElements[$this->buttonToInlineElement[$item]]
@@ -192,10 +192,10 @@ class InlineElements extends RteHtmlAreaApi
                 asort($inlineElementsOptions);
             }
             // Generating the javascript options
-            $JSInlineElements = array();
-            $JSInlineElements[] = array($first, 'none');
+            $JSInlineElements = [];
+            $JSInlineElements[] = [$first, 'none'];
             foreach ($inlineElementsOptions as $item => $label) {
-                $JSInlineElements[] = array($label, $item);
+                $JSInlineElements[] = [$label, $item];
             }
             $jsArray[] = 'RTEarea[editornumber].buttons.formattext.options = ' . json_encode($JSInlineElements) . ';';
         }

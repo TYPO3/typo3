@@ -238,7 +238,7 @@ class PlainDataResolver
         );
 
         if (!is_array($records)) {
-            return array();
+            return [];
         }
 
         $ids = $this->reindex(array_keys($records));
@@ -270,7 +270,7 @@ class PlainDataResolver
         );
 
         if (!is_array($records)) {
-            return array();
+            return [];
         }
 
         foreach ($ids as $id) {

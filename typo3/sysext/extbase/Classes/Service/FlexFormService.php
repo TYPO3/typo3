@@ -33,9 +33,9 @@ class FlexFormService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function convertFlexFormContentToArray($flexFormContent, $languagePointer = 'lDEF', $valuePointer = 'vDEF')
     {
-        $settings = array();
+        $settings = [];
         $flexFormArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($flexFormContent);
-        $flexFormArray = isset($flexFormArray['data']) ? $flexFormArray['data'] : array();
+        $flexFormArray = isset($flexFormArray['data']) ? $flexFormArray['data'] : [];
         foreach (array_values($flexFormArray) as $languages) {
             if (!is_array($languages[$languagePointer])) {
                 continue;
@@ -74,12 +74,12 @@ class FlexFormService implements \TYPO3\CMS\Core\SingletonInterface
     public function walkFlexFormNode($nodeArray, $valuePointer = 'vDEF')
     {
         if (is_array($nodeArray)) {
-            $return = array();
+            $return = [];
             foreach ($nodeArray as $nodeKey => $nodeValue) {
                 if ($nodeKey === $valuePointer) {
                     return $nodeValue;
                 }
-                if (in_array($nodeKey, array('el', '_arrayContainer'))) {
+                if (in_array($nodeKey, ['el', '_arrayContainer'])) {
                     return $this->walkFlexFormNode($nodeValue, $valuePointer);
                 }
                 if ($nodeKey[0] === '_') {
@@ -92,7 +92,7 @@ class FlexFormService implements \TYPO3\CMS\Core\SingletonInterface
                     for ($i = 0; $i < $nodeKeyPartsCount - 1; $i++) {
                         $currentNode = &$currentNode[$nodeKeyParts[$i]];
                     }
-                    $newNode = array(next($nodeKeyParts) => $nodeValue);
+                    $newNode = [next($nodeKeyParts) => $nodeValue];
                     $currentNode = $this->walkFlexFormNode($newNode, $valuePointer);
                 } elseif (is_array($nodeValue)) {
                     if (array_key_exists($valuePointer, $nodeValue)) {

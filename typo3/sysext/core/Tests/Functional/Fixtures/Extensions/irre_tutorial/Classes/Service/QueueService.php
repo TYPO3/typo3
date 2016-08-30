@@ -27,7 +27,7 @@ class QueueService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $values = array();
+    protected $values = [];
 
     /**
      * @var bool

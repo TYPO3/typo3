@@ -50,10 +50,10 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
     public function getStatus()
     {
         $this->executeAdminCommand();
-        $statuses = array(
+        $statuses = [
             'emptyReferenceIndex' => $this->getReferenceIndexStatus(),
             'deprecationLog' => $this->getDeprecationLogStatus()
-        );
+        ];
         if ($this->isMemcachedUsed()) {
             $statuses['memcachedConnection'] = $this->getMemcachedConnectionStatus();
         }
@@ -108,7 +108,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     protected function getConfiguredMemcachedServers()
     {
-        $memcachedServers = array();
+        $memcachedServers = [];
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $table => $conf) {
                 if (is_array($conf)) {
@@ -134,7 +134,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
         $value = $GLOBALS['LANG']->getLL('status_ok');
         $message = '';
         $severity = \TYPO3\CMS\Reports\Status::OK;
-        $failedConnections = array();
+        $failedConnections = [];
         $defaultMemcachedPort = ini_get('memcache.default_port');
         $memcachedServers = $this->getConfiguredMemcachedServers();
         if (function_exists('memcache_connect') && is_array($memcachedServers)) {

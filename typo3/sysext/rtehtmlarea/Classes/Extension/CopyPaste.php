@@ -41,22 +41,22 @@ class CopyPaste extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'copy' => 'Copy',
         'cut' => 'Cut',
         'paste' => 'Paste'
-    );
+    ];
 
     /**
      * Hide buttons not implemented in client browsers
      *
      * @var array
      */
-    protected $hideButtonsFromClient = array(
-        'gecko' => array('copy', 'cut', 'paste'),
-        'webkit' => array('copy', 'cut', 'paste'),
-        'opera' => array('copy', 'cut', 'paste')
-    );
+    protected $hideButtonsFromClient = [
+        'gecko' => ['copy', 'cut', 'paste'],
+        'webkit' => ['copy', 'cut', 'paste'],
+        'opera' => ['copy', 'cut', 'paste']
+    ];
 
     /**
      * Returns TRUE if the plugin is available and correctly initialized

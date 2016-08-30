@@ -44,7 +44,7 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function theConstructorSetsTheMessageArgumentsCorrectly()
     {
-        $messageArguments = array('foo', 'bar');
+        $messageArguments = ['foo', 'bar'];
         $error = new \TYPO3\CMS\Extbase\Error\Message('', 1, $messageArguments);
         $this->assertEquals($messageArguments, $error->getArguments());
     }
@@ -55,7 +55,7 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function theConstructorSetsTheMessageTitleCorrectly()
     {
         $messageTitle = 'Title';
-        $error = new \TYPO3\CMS\Extbase\Error\Message('', 1, array(), $messageTitle);
+        $error = new \TYPO3\CMS\Extbase\Error\Message('', 1, [], $messageTitle);
         $this->assertEquals($messageTitle, $error->getTitle());
     }
 
@@ -73,7 +73,7 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function renderRendersCorrectlyWithArguments()
     {
-        $error = new \TYPO3\CMS\Extbase\Error\Message('Foo is %s and Bar is %s', 1, array('baz', 'qux'));
+        $error = new \TYPO3\CMS\Extbase\Error\Message('Foo is %s and Bar is %s', 1, ['baz', 'qux']);
         $this->assertEquals('Foo is baz and Bar is qux', $error->render());
     }
 
@@ -82,7 +82,7 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function toStringCallsRender()
     {
-        $error = new \TYPO3\CMS\Extbase\Error\Message('Foo is %s and Bar is %s', 1, array('baz', 'qux'));
+        $error = new \TYPO3\CMS\Extbase\Error\Message('Foo is %s and Bar is %s', 1, ['baz', 'qux']);
         $this->assertEquals('Foo is baz and Bar is qux', $error);
     }
 }

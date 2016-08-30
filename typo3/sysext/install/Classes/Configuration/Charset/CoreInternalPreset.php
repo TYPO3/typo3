@@ -34,10 +34,10 @@ class CoreInternalPreset extends Configuration\AbstractPreset
     /**
      * @var array Configuration values handled by this preset
      */
-    protected $configurationValues = array(
+    protected $configurationValues = [
         'SYS/t3lib_cs_convMethod' => '',
         'SYS/t3lib_cs_utils' => '',
-    );
+    ];
 
     /**
      * Internal core handling is always available

@@ -26,7 +26,7 @@ class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->moduleController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Module\ModuleController::class, array('getLanguageService'), array(), '', false);
+        $this->moduleController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Module\ModuleController::class, ['getLanguageService'], [], '', false);
     }
 
     /**
@@ -34,7 +34,7 @@ class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function createEntryFromRawDataGeneratesMenuEntry()
     {
-        $entry = $this->moduleController->_call('createEntryFromRawData', array());
+        $entry = $this->moduleController->_call('createEntryFromRawData', []);
         $this->assertInstanceOf(\TYPO3\CMS\Backend\Domain\Model\Module\BackendModule::class, $entry);
     }
 
@@ -43,19 +43,19 @@ class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function createEntryFromRawDataSetsPropertiesInEntryObject()
     {
-        $rawModule = array(
+        $rawModule = [
             'name' => 'nameTest',
             'title' => 'titleTest',
             'onclick' => 'onclickTest',
-            'icon' => array(
+            'icon' => [
                 'test' => '123'
-            ),
+            ],
             'link' => 'linkTest',
             'description' => 'descriptionTest',
             'navigationComponentId' => 'navigationComponentIdTest'
-        );
+        ];
 
-        $languageServiceMock = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', false);
+        $languageServiceMock = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, [], [], '', false);
         $languageServiceMock->expects($this->once())->method('sL')->will($this->returnValue('titleTest'));
         $this->moduleController->expects($this->once())->method('getLanguageService')->will($this->returnValue($languageServiceMock));
 
@@ -67,7 +67,7 @@ class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertEquals('onclickTest', $entry->getOnClick());
         $this->assertEquals('navigationComponentIdTest', $entry->getNavigationComponentId());
         $this->assertEquals('descriptionTest', $entry->getDescription());
-        $this->assertEquals(array('test' => '123'), $entry->getIcon());
+        $this->assertEquals(['test' => '123'], $entry->getIcon());
     }
 
     /**
@@ -75,9 +75,9 @@ class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function createEntryFromRawDataSetsLinkIfPathIsGivenInEntryObject()
     {
-        $rawModule = array(
+        $rawModule = [
             'path' => 'pathTest'
-        );
+        ];
         /** @var $entry \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule */
         $entry = $this->moduleController->_call('createEntryFromRawData', $rawModule);
         $this->assertEquals('pathTest', $entry->getLink());

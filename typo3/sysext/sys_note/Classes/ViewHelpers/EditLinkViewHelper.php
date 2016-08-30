@@ -33,9 +33,9 @@ class EditLinkViewHelper extends AbstractViewHelper implements CompilableInterfa
     public function render($id)
     {
         return static::renderStatic(
-            array(
+            [
                 'id' => $id
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -52,10 +52,10 @@ class EditLinkViewHelper extends AbstractViewHelper implements CompilableInterfa
     {
         return BackendUtility::getModuleUrl(
             'record_edit',
-            array(
+            [
                 'edit[sys_note][' . $arguments['id'] . ']' => 'edit',
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-            )
+            ]
         );
     }
 }

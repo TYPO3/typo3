@@ -39,9 +39,9 @@ class FormatsViewHelper extends AbstractViewHelper implements CompilableInterfac
     public function render(\TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation)
     {
         return static::renderStatic(
-            array(
+            [
                 'documentTranslation' => $documentTranslation,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -64,11 +64,11 @@ class FormatsViewHelper extends AbstractViewHelper implements CompilableInterfac
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $emptyIcon = $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render();
-        $icons = array(
+        $icons = [
             'html' => '<a class="btn btn-default disabled">' . $emptyIcon . '</a>',
             'pdf' => '<a class="btn btn-default disabled">' . $emptyIcon . '</a>',
             'sxw' => '<a class="btn btn-default disabled">' . $emptyIcon . '</a>'
-        );
+        ];
         $formats = $documentTranslation->getFormats();
 
         foreach ($formats as $format) {

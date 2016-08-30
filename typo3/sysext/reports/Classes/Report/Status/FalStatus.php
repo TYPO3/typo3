@@ -28,9 +28,9 @@ class FalStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     public function getStatus()
     {
-        $statuses = array(
+        $statuses = [
             'MissingFiles' => $this->getMissingFilesStatus(),
-        );
+        ];
         return $statuses;
     }
 
@@ -50,7 +50,7 @@ class FalStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
         /** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
         $storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
         $storageObjects = $storageRepository->findAll();
-        $storages = array();
+        $storages = [];
 
         /** @var $storageObject \TYPO3\CMS\Core\Resource\ResourceStorage */
         foreach ($storageObjects as $storageObject) {

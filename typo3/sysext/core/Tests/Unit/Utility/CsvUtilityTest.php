@@ -26,62 +26,62 @@ class CsvUtilityTest extends UnitTestCase
      */
     public function csvToArrayDataProvider()
     {
-        return array(
-            'Valid data' => array(
+        return [
+            'Valid data' => [
                 'input'  => 'Column A, Column B, Column C' . LF . 'Value, Value2, Value 3',
                 'fieldDelimiter' => ',',
                 'fieldEnclosure' => '"',
                 'maximumColumns' => 0,
-                'expectedResult' => array(
-                    array('Column A', ' Column B', ' Column C'),
-                    array('Value', ' Value2', ' Value 3')
-                )
-            ),
+                'expectedResult' => [
+                    ['Column A', ' Column B', ' Column C'],
+                    ['Value', ' Value2', ' Value 3']
+                ]
+            ],
 
-            'Valid data with enclosed "' => array(
+            'Valid data with enclosed "' => [
                 'input'  => '"Column A", "Column B", "Column C"' . LF . '"Value", "Value2", "Value 3"',
                 'fieldDelimiter' => ',',
                 'fieldEnclosure' => '"',
                 'maximumColumns' => 0,
-                'expectedResult' => array(
-                    array('Column A', 'Column B', 'Column C'),
-                    array('Value', 'Value2', 'Value 3')
-                )
-            ),
+                'expectedResult' => [
+                    ['Column A', 'Column B', 'Column C'],
+                    ['Value', 'Value2', 'Value 3']
+                ]
+            ],
 
-            'Valid data with semicolons and enclosed "' => array(
+            'Valid data with semicolons and enclosed "' => [
                 'input'  => '"Column A"; "Column B"; "Column C"' . LF . '"Value"; "Value2"; "Value 3"',
                 'fieldDelimiter' => ';',
                 'fieldEnclosure' => '"',
                 'maximumColumns' => 0,
-                'expectedResult' => array(
-                    array('Column A', 'Column B', 'Column C'),
-                    array('Value', 'Value2', 'Value 3')
-                )
-            ),
+                'expectedResult' => [
+                    ['Column A', 'Column B', 'Column C'],
+                    ['Value', 'Value2', 'Value 3']
+                ]
+            ],
 
-            'Valid data with semicolons and enclosed " and two columns' => array(
+            'Valid data with semicolons and enclosed " and two columns' => [
                 'input'  => '"Column A"; "Column B"; "Column C"; "Column D"' . LF . '"Value"; "Value2"; "Value 3"',
                 'fieldDelimiter' => ';',
                 'fieldEnclosure' => '"',
                 'maximumColumns' => 2,
-                'expectedResult' => array(
-                    array('Column A', 'Column B'),
-                    array('Value', 'Value2')
-                )
-            ),
+                'expectedResult' => [
+                    ['Column A', 'Column B'],
+                    ['Value', 'Value2']
+                ]
+            ],
 
-            'Data with comma but configured with semicolons and enclosed "' => array(
+            'Data with comma but configured with semicolons and enclosed "' => [
                 'input'  => '"Column A", "Column B", "Column C"' . LF . '"Value", "Value2", "Value 3"',
                 'fieldDelimiter' => ';',
                 'fieldEnclosure' => '"',
                 'maximumColumns' => 0,
-                'expectedResult' => array(
-                    array('Column A, "Column B", "Column C"'),
-                    array('Value, "Value2", "Value 3"')
-                )
-            )
-        );
+                'expectedResult' => [
+                    ['Column A, "Column B", "Column C"'],
+                    ['Value, "Value2", "Value 3"']
+                ]
+            ]
+        ];
     }
 
     /**

@@ -28,7 +28,7 @@ class TemplateCompiler implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $syntaxTreeInstanceCache = array();
+    protected $syntaxTreeInstanceCache = [];
 
     /**
      * @param \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend $templateCache
@@ -83,7 +83,7 @@ class TemplateCompiler implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
         $generatedRenderFunctions .= $this->generateCodeForSection($this->convertListOfSubNodes($parsingState->getRootNode()), 'render', 'Main Render function');
-        $convertedLayoutNameNode = $parsingState->hasLayout() ? $this->convert($parsingState->getLayoutNameNode()) : array('initialization' => '', 'execution' => 'NULL');
+        $convertedLayoutNameNode = $parsingState->hasLayout() ? $this->convert($parsingState->getLayoutNameNode()) : ['initialization' => '', 'execution' => 'NULL'];
 
         $classDefinition = 'class FluidCache_' . $identifier . ' extends \\TYPO3\\CMS\\Fluid\\Core\\Compiler\\AbstractCompiledTemplate';
 
@@ -190,10 +190,10 @@ EOD;
      */
     protected function convertTextNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode $node)
     {
-        return array(
+        return [
             'initialization' => '',
             'execution' => '\'' . $this->escapeTextForUseInSingleQuotes($node->getText()) . '\''
-        );
+        ];
     }
 
     /**
@@ -203,10 +203,10 @@ EOD;
      */
     protected function convertNumericNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NumericNode $node)
     {
-        return array(
+        return [
             'initialization' => '',
             'execution' => $node->getValue()
-        );
+        ];
     }
 
     /**
@@ -225,7 +225,7 @@ EOD;
         $argumentsVariableName = $this->variableName('arguments');
         $initializationPhpCode .= sprintf('%s = array();', $argumentsVariableName) . LF;
 
-        $alreadyBuiltArguments = array();
+        $alreadyBuiltArguments = [];
         foreach ($node->getArguments() as $argumentName => $argumentValue) {
             $converted = $this->convert($argumentValue);
             $initializationPhpCode .= $converted['initialization'];
@@ -249,10 +249,10 @@ EOD;
             $convertedViewHelperExecutionCode = $node->getUninitializedViewHelper()->compile($argumentsVariableName, $renderChildrenClosureVariableName, $viewHelperInitializationPhpCode, $node, $this);
             $initializationPhpCode .= $viewHelperInitializationPhpCode;
             if ($convertedViewHelperExecutionCode !== self::SHOULD_GENERATE_VIEWHELPER_INVOCATION) {
-                return array(
+                return [
                     'initialization' => $initializationPhpCode,
                     'execution' => $convertedViewHelperExecutionCode
-                );
+                ];
             }
         }
 
@@ -267,10 +267,10 @@ EOD;
 
         $initializationPhpCode .= '// End of ViewHelper ' . $node->getViewHelperClassName() . LF;
 
-        return array(
+        return [
             'initialization' => $initializationPhpCode,
             'execution' => sprintf('%s->initializeArgumentsAndRender()', $viewHelperVariableName)
-        );
+        ];
     }
 
     /**
@@ -282,17 +282,17 @@ EOD;
     {
         $objectPathSegments = explode('.', $node->getObjectPath());
         $firstPathElement = array_shift($objectPathSegments);
-        if ($objectPathSegments === array()) {
-            return array(
+        if ($objectPathSegments === []) {
+            return [
                 'initialization' => '',
                 'execution' => sprintf('$currentVariableContainer->getOrNull(\'%s\')', $firstPathElement)
-            );
+            ];
         } else {
             $executionCode = '\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::getPropertyPath($currentVariableContainer->getOrNull(\'%s\'), \'%s\', $renderingContext)';
-            return array(
+            return [
                 'initialization' => '',
                 'execution' => sprintf($executionCode, $firstPathElement, implode('.', $objectPathSegments))
-            );
+            ];
         }
     }
 
@@ -321,10 +321,10 @@ EOD;
                 $initializationPhpCode .= sprintf('%s[\'%s\'] = \'%s\';', $arrayVariableName, $key, $this->escapeTextForUseInSingleQuotes($value)) . LF;
             }
         }
-        return array(
+        return [
             'initialization' => $initializationPhpCode,
             'execution' => $arrayVariableName
-        );
+        ];
     }
 
     /**
@@ -336,10 +336,10 @@ EOD;
     {
         switch (count($node->getChildNodes())) {
             case 0:
-                return array(
+                return [
                     'initialization' => '',
                     'execution' => 'NULL'
-                );
+                ];
             case 1:
                 $converted = $this->convert(current($node->getChildNodes()));
 
@@ -355,10 +355,10 @@ EOD;
                     $initializationPhpCode .= sprintf('%s .= %s;', $outputVariableName, $converted['execution']) . LF;
                 }
 
-                return array(
+                return [
                     'initialization' => $initializationPhpCode,
                     'execution' => $outputVariableName
-                );
+                ];
         }
     }
 
@@ -374,17 +374,17 @@ EOD;
             $convertedLeftSide = $this->convert($node->getLeftSide());
             $convertedRightSide = $this->convert($node->getRightSide());
 
-            return array(
+            return [
                 'initialization' => $initializationPhpCode . $convertedLeftSide['initialization'] . $convertedRightSide['initialization'],
                 'execution' => sprintf(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::class . '::evaluateComparator(\'%s\', %s, %s)', $node->getComparator(), $convertedLeftSide['execution'], $convertedRightSide['execution'])
-            );
+            ];
         } else {
             // simple case, no comparator.
             $converted = $this->convert($node->getSyntaxTreeNode());
-            return array(
+            return [
                 'initialization' => $initializationPhpCode . $converted['initialization'],
                 'execution' => sprintf(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::class . '::convertToBoolean(%s)', $converted['execution'])
-            );
+            ];
         }
     }
 
@@ -394,7 +394,7 @@ EOD;
      */
     protected function escapeTextForUseInSingleQuotes($text)
     {
-        return str_replace(array('\\', '\''), array('\\\\', '\\\''), $text);
+        return str_replace(['\\', '\''], ['\\\\', '\\\''], $text);
     }
 
     /**

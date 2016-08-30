@@ -32,7 +32,7 @@ class NotEmptyValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Val
 
     public function setup()
     {
-        $this->validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'));
+        $this->validator = $this->getMock($this->validatorClassName, ['translateErrorMessage']);
     }
 
     /**
@@ -80,8 +80,8 @@ class NotEmptyValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Val
      */
     public function notEmptyValidatorWorksForEmptyArrays()
     {
-        $this->assertTrue($this->validator->validate(array())->hasErrors());
-        $this->assertFalse($this->validator->validate(array(1 => 2))->hasErrors());
+        $this->assertTrue($this->validator->validate([])->hasErrors());
+        $this->assertFalse($this->validator->validate([1 => 2])->hasErrors());
     }
 
     /**

@@ -55,7 +55,7 @@ class DebugViewHelper extends AbstractViewHelper implements CompilableInterface
     public function render($title = null, $maxDepth = 8, $plainText = false, $ansiColors = false, $inline = false, $blacklistedClassNames = null, $blacklistedPropertyNames = null)
     {
         return static::renderStatic(
-            array(
+            [
                 'title' => $title,
                 'maxDepth' => $maxDepth,
                 'plainText' => $plainText,
@@ -63,7 +63,7 @@ class DebugViewHelper extends AbstractViewHelper implements CompilableInterface
                 'inline' => $inline,
                 'blacklistedClassNames' => $blacklistedClassNames,
                 'blacklistedPropertyNames' => $blacklistedPropertyNames
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

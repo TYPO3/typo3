@@ -66,8 +66,8 @@ class DatabaseLanguageRowsTest extends UnitTestCase
                 'text' => 'bar',
             ],
             'processedTca' => [
-                'ctrl' => array(),
-                'columns' => array(),
+                'ctrl' => [],
+                'columns' => [],
             ],
         ];
         $this->assertEquals($input, $this->subject->addData($input));
@@ -87,15 +87,15 @@ class DatabaseLanguageRowsTest extends UnitTestCase
                 'l10n_parent' => 23,
             ],
             'processedTca' => [
-                'ctrl' => array(
+                'ctrl' => [
                     'languageField' => 'sys_language_uid',
                     'transOrigPointerField' => 'l10n_parent',
-                ),
+                ],
             ],
         ];
 
         // Needed for BackendUtility::getRecord
-        $GLOBALS['TCA']['tt_content'] = array('foo');
+        $GLOBALS['TCA']['tt_content'] = ['foo'];
         $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=23')->shouldBeCalled()->willReturn(null);
 
         $this->setExpectedException(DatabaseDefaultLanguageException::class, $this->anything(), 1438249426);
@@ -117,10 +117,10 @@ class DatabaseLanguageRowsTest extends UnitTestCase
                 'l10n_parent' => 23,
             ],
             'processedTca' => [
-                'ctrl' => array(
+                'ctrl' => [
                     'languageField' => 'sys_language_uid',
                     'transOrigPointerField' => 'l10n_parent',
-                ),
+                ],
             ],
         ];
 
@@ -131,7 +131,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             'sys_language_uid' => 0,
         ];
         // Needed for BackendUtility::getRecord
-        $GLOBALS['TCA']['tt_content'] = array('foo');
+        $GLOBALS['TCA']['tt_content'] = ['foo'];
         $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=23')->shouldBeCalled()->willReturn($defaultLanguageRow);
 
         $expected = $input;
@@ -176,7 +176,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             'sys_language_uid' => 0,
         ];
         // Needed for BackendUtility::getRecord
-        $GLOBALS['TCA']['tt_content'] = array('foo');
+        $GLOBALS['TCA']['tt_content'] = ['foo'];
         $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=23')->shouldBeCalled()->willReturn($defaultLanguageRow);
 
         $expected = $input;
@@ -235,7 +235,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             ],
         ];
         // For BackendUtility::getRecord()
-        $GLOBALS['TCA']['tt_content'] = array('foo');
+        $GLOBALS['TCA']['tt_content'] = ['foo'];
         $recordWsolResult = [
             'uid' => 43,
             'pid' => 32,
@@ -249,7 +249,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             'sys_language_uid' => 0,
         ];
         // Needed for BackendUtility::getRecord
-        $GLOBALS['TCA']['tt_content'] = array('foo');
+        $GLOBALS['TCA']['tt_content'] = ['foo'];
         $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=23')->shouldBeCalled()->willReturn($defaultLanguageRow);
 
         /** @var TranslationConfigurationProvider|ObjectProphecy $translationProphecy */
@@ -326,7 +326,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             ],
         ];
         // For BackendUtility::getRecord()
-        $GLOBALS['TCA']['tt_content'] = array('foo');
+        $GLOBALS['TCA']['tt_content'] = ['foo'];
         $recordWsolResult = [
             'uid' => 43,
             'pid' => 32,
@@ -340,7 +340,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             'sys_language_uid' => 0,
         ];
         // Needed for BackendUtility::getRecord
-        $GLOBALS['TCA']['tt_content'] = array('foo');
+        $GLOBALS['TCA']['tt_content'] = ['foo'];
         $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=23')->shouldBeCalled()->willReturn($defaultLanguageRow);
 
         /** @var TranslationConfigurationProvider|ObjectProphecy $translationProphecy */

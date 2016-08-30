@@ -40,7 +40,7 @@ class CurrencyFilter extends AbstractFilter implements FilterInterface
      *
      * @param array $arguments Filter configuration
      */
-    public function __construct($arguments = array())
+    public function __construct($arguments = [])
     {
         $this->setDecimalsPoint($arguments['decimalPoint']);
         $this->setThousandSeparator($arguments['thousandSeparator']);
@@ -90,14 +90,14 @@ class CurrencyFilter extends AbstractFilter implements FilterInterface
     public function filter($value)
     {
         $value = str_replace(
-            array(
+            [
                 $this->thousandSeparator,
                 $this->decimalsPoint,
-            ),
-            array(
+            ],
+            [
                 '',
                 '.'
-            ),
+            ],
             (string)$value
         );
 

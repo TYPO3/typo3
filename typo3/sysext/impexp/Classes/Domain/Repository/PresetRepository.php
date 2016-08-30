@@ -31,7 +31,7 @@ class PresetRepository
      */
     public function getPresets($pageId)
     {
-        $options = array('');
+        $options = [''];
         $where = '(public>0 OR user_uid=' . (int)$this->getBackendUser()->user['uid'] . ')'
             . ($pageId ? ' AND (item_uid=' . (int)$pageId . ' OR item_uid=0)' : '');
         $presets = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'tx_impexp_presets', $where);
@@ -76,12 +76,12 @@ class PresetRepository
             // Update existing
             if (is_array($preset)) {
                 if ($beUser->isAdmin() || $preset['user_uid'] === $beUser->user['uid']) {
-                    $fields_values = array(
+                    $fields_values = [
                         'public' => $inData['preset']['public'],
                         'title' => $inData['preset']['title'],
                         'item_uid' => $inData['pagetree']['id'],
                         'preset_data' => serialize($inData)
-                    );
+                    ];
                     $this->getDatabaseConnection()->exec_UPDATEquery('tx_impexp_presets', 'uid=' . (int)$preset['uid'], $fields_values);
                     $msg = 'Preset #' . $preset['uid'] . ' saved!';
                 } else {
@@ -90,13 +90,13 @@ class PresetRepository
                 }
             } else {
                 // Insert new:
-                $fields_values = array(
+                $fields_values = [
                     'user_uid' => $beUser->user['uid'],
                     'public' => $inData['preset']['public'],
                     'title' => $inData['preset']['title'],
                     'item_uid' => (int)$inData['pagetree']['id'],
                     'preset_data' => serialize($inData)
-                );
+                ];
                 $this->getDatabaseConnection()->exec_INSERTquery('tx_impexp_presets', $fields_values);
                 $msg = 'New preset "' . htmlspecialchars($inData['preset']['title']) . '" is created';
             }

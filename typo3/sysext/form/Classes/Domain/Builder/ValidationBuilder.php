@@ -39,7 +39,7 @@ class ValidationBuilder
     /**
      * @var array|array[]
      */
-    protected $rules = array();
+    protected $rules = [];
 
     /**
      * @var string
@@ -107,11 +107,11 @@ class ValidationBuilder
      * @param array $rawArgument
      * @return void
      */
-    public function buildRules(array $rawArgument = array())
+    public function buildRules(array $rawArgument = [])
     {
         $userConfiguredFormTyposcript = $this->configuration->getTypoScript();
         $rulesTyposcript = isset($userConfiguredFormTyposcript['rules.']) ? $userConfiguredFormTyposcript['rules.'] : null;
-        $this->rules[$this->configuration->getPrefix()] = array();
+        $this->rules[$this->configuration->getPrefix()] = [];
         if (is_array($rulesTyposcript)) {
             $keys = TemplateService::sortedKeyList($rulesTyposcript);
             foreach ($keys as $key) {
@@ -128,15 +128,15 @@ class ValidationBuilder
                     $fieldName = $this->formUtility->sanitizeNameAttribute($ruleArguments['element']);
                         // remove unsupported validator options
                     $validatorOptions = $ruleArguments;
-                    $validatorOptions['errorMessage'] = array($ruleArguments['error.'], $ruleArguments['error']);
-                    $keysToRemove = array_flip(array(
+                    $validatorOptions['errorMessage'] = [$ruleArguments['error.'], $ruleArguments['error']];
+                    $keysToRemove = array_flip([
                         'breakOnError',
                         'message',
                         'message.',
                         'error',
                         'error.',
                         'showMessage',
-                    ));
+                    ]);
                     $validatorOptions = array_diff_key($validatorOptions, $keysToRemove);
 
                     // Instantiate the validator to check if all required options are assigned
@@ -154,12 +154,12 @@ class ValidationBuilder
                             $mandatoryMessage = null;
                         }
 
-                        $this->rules[$this->configuration->getPrefix()][$fieldName][] = array(
+                        $this->rules[$this->configuration->getPrefix()][$fieldName][] = [
                             'validator' => $validator,
                             'validatorName' => $validatorClassName,
                             'validatorOptions' => $validatorOptions,
                             'mandatoryMessage' => $mandatoryMessage
-                        );
+                        ];
                     } else {
                         throw new \RuntimeException('Class "' . $validatorClassName . '" could not be loaded.');
                     }
@@ -196,7 +196,7 @@ class ValidationBuilder
      * @param array $rule
      * @return void
      */
-    public function setRulesByElementName($key = '', array $rule = array())
+    public function setRulesByElementName($key = '', array $rule = [])
     {
         $this->rules[$this->configuration->getPrefix()][$key] = $rule;
     }
@@ -234,7 +234,7 @@ class ValidationBuilder
      */
     public function getMandatoryValidationMessagesByElementName($key = '')
     {
-        $mandatoryMessages = array();
+        $mandatoryMessages = [];
         if ($this->getRulesByElementName($key)) {
             $rules = $this->getRulesByElementName($key);
             foreach ($rules as $rule) {

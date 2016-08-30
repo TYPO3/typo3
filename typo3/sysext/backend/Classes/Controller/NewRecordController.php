@@ -314,7 +314,7 @@ class NewRecordController extends AbstractModule
             // New page
             if ($this->showNewRecLink('pages')) {
                 $newPageButton = $buttonBar->makeLinkButton()
-                    ->setHref(GeneralUtility::linkThisScript(array('pagesOnly' => '1')))
+                    ->setHref(GeneralUtility::linkThisScript(['pagesOnly' => '1']))
                     ->setTitle($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage'))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-page-new', Icon::SIZE_SMALL));
                 $buttonBar->addButton($newPageButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
@@ -349,11 +349,11 @@ class NewRecordController extends AbstractModule
                 );
             } else {
                 // exclude sysfolders and recycler by default
-                $excludeDokTypes = array(
+                $excludeDokTypes = [
                     PageRepository::DOKTYPE_RECYCLER,
                     PageRepository::DOKTYPE_SYSFOLDER,
                     PageRepository::DOKTYPE_SPACER
-                );
+                ];
             }
             if (!in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, true)) {
                 $viewButton = $buttonBar->makeLinkButton()
@@ -406,7 +406,7 @@ class NewRecordController extends AbstractModule
                     ]
                 ],
                 'returnNewPageId' => 1,
-                'returnUrl' => BackendUtility::getModuleUrl('db_new', array('id' => $this->id, 'pagesOnly' => '1'))
+                'returnUrl' => BackendUtility::getModuleUrl('db_new', ['id' => $this->id, 'pagesOnly' => '1'])
             ];
             $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
             @ob_end_clean();
@@ -423,7 +423,7 @@ class NewRecordController extends AbstractModule
     {
         $lang = $this->getLanguageService();
         // Initialize array for accumulating table rows:
-        $this->tRows = array();
+        $this->tRows = [];
         // Get TSconfig for current page
         $pageTS = BackendUtility::getPagesTSconfig($this->id);
         // Finish initializing new pages options with TSconfig
@@ -442,16 +442,16 @@ class NewRecordController extends AbstractModule
         $v = $GLOBALS['TCA'][$table];
         $pageIcon = $this->moduleTemplate->getIconFactory()->getIconForRecord(
             $table,
-            array(),
+            [],
             Icon::SIZE_SMALL
         )->render();
         $newPageIcon = $this->moduleTemplate->getIconFactory()->getIcon('actions-page-new', Icon::SIZE_SMALL)->render();
         $rowContent = '';
         // New pages INSIDE this pages
-        $newPageLinks = array();
+        $newPageLinks = [];
         if ($displayNewPagesIntoLink && $this->isTableAllowedForThisPage($this->pageinfo, 'pages') && $this->getBackendUserAuthentication()->check('tables_modify', 'pages') && $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ?: $this->id), 'pages')) {
             // Create link to new page inside:
-            $newPageLinks[] = $this->linkWrap($this->moduleTemplate->getIconFactory()->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render() . $lang->sL($v['ctrl']['title'], true) . ' (' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.inside', true) . ')', $table, $this->id);
+            $newPageLinks[] = $this->linkWrap($this->moduleTemplate->getIconFactory()->getIconForRecord($table, [], Icon::SIZE_SMALL)->render() . $lang->sL($v['ctrl']['title'], true) . ' (' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.inside', true) . ')', $table, $this->id);
         }
         // New pages AFTER this pages
         if ($displayNewPagesAfterLink && $this->isTableAllowedForThisPage($this->pidInfo, 'pages') && $this->getBackendUserAuthentication()->check('tables_modify', 'pages') && $this->getBackendUserAuthentication()->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')) {
@@ -460,7 +460,7 @@ class NewRecordController extends AbstractModule
         // New pages at selection position
         if ($this->newPagesSelectPosition && $this->showNewRecLink('pages')) {
             // Link to page-wizard:
-            $newPageLinks[] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('pagesOnly' => 1))) . '">' . $pageIcon . htmlspecialchars($lang->getLL('pageSelectPosition')) . '</a>';
+            $newPageLinks[] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(['pagesOnly' => 1])) . '">' . $pageIcon . htmlspecialchars($lang->getLL('pageSelectPosition')) . '</a>';
         }
         // Assemble all new page links
         $numPageLinks = count($newPageLinks);
@@ -474,8 +474,8 @@ class NewRecordController extends AbstractModule
             $rowContent = '<ul class="list-tree"><li><ul>' . $rowContent . '</li></ul>';
         }
         // Compile table row
-        $startRows = array($rowContent);
-        $iconFile = array();
+        $startRows = [$rowContent];
+        $iconFile = [];
         // New tables (but not pages) INSIDE this pages
         $isAdmin = $this->getBackendUserAuthentication()->isAdmin();
         $newContentIcon = $this->moduleTemplate->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
@@ -490,7 +490,7 @@ class NewRecordController extends AbstractModule
                         && (($v['ctrl']['rootLevel'] xor $this->id) || $v['ctrl']['rootLevel'] == -1)
                         && $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ? $this->pageinfo['_ORIG_uid'] : $this->id), $table)
                     ) {
-                        $newRecordIcon = $this->moduleTemplate->getIconFactory()->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render();
+                        $newRecordIcon = $this->moduleTemplate->getIconFactory()->getIconForRecord($table, [], Icon::SIZE_SMALL)->render();
                         $rowContent = '';
                         $thisTitle = '';
                         // Create new link for record:
@@ -530,7 +530,7 @@ class NewRecordController extends AbstractModule
                                         // If no localisation available, read title from ext_emconf.php
                                         $extEmConfFile = ExtensionManagementUtility::extPath($_EXTKEY) . 'ext_emconf.php';
                                         if (!$thisTitle && is_file($extEmConfFile)) {
-                                            $EM_CONF = array();
+                                            $EM_CONF = [];
                                             include $extEmConfFile;
                                             $thisTitle = $EM_CONF[$_EXTKEY]['title'];
                                         }
@@ -571,9 +571,9 @@ class NewRecordController extends AbstractModule
         if (isset($pageTS['mod.']['wizards.']['newRecord.']['order'])) {
             $this->newRecordSortList = GeneralUtility::trimExplode(',', $pageTS['mod.']['wizards.']['newRecord.']['order'], true);
         }
-        uksort($this->tRows, array($this, 'sortNewRecordsByConfig'));
+        uksort($this->tRows, [$this, 'sortNewRecordsByConfig']);
         // Compile table row:
-        $finalRows = array();
+        $finalRows = [];
         $finalRows[] = implode('', $startRows);
         foreach ($this->tRows as $key => $value) {
             $row = '<li>' . $iconFile[$key] . ' <strong>' . $value['title'] . '</strong><ul>';
@@ -705,7 +705,7 @@ class NewRecordController extends AbstractModule
      *
      * @return bool Returns TRUE if a link for creating new records should be displayed for $table
      */
-    public function showNewRecLink($table, array $allowedNewTables = array(), array $deniedNewTables = array())
+    public function showNewRecLink($table, array $allowedNewTables = [], array $deniedNewTables = [])
     {
         if (!$this->getBackendUserAuthentication()->check('tables_modify', $table)) {
             return false;

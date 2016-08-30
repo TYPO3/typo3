@@ -95,11 +95,11 @@ class LocallangArrayParser implements LocalizationParserInterface
     {
         foreach ($LOCAL_LANG as &$keysLabels) {
             foreach ($keysLabels as &$label) {
-                $label = array(
-                    0 => array(
+                $label = [
+                    0 => [
                         'target' => $label
-                    )
-                );
+                    ]
+                ];
             }
             unset($label);
         }
@@ -132,7 +132,7 @@ class LocallangArrayParser implements LocalizationParserInterface
      */
     protected function generateCacheFile($sourcePath, $languageKey)
     {
-        $LOCAL_LANG = array();
+        $LOCAL_LANG = [];
         // Get PHP data
         include $sourcePath;
         if (!is_array($LOCAL_LANG)) {
@@ -155,9 +155,9 @@ class LocallangArrayParser implements LocalizationParserInterface
         }
         // Cache the content now:
         if (isset($LOCAL_LANG[$languageKey])) {
-            $serContent = array('origFile' => $this->hashSource, 'LOCAL_LANG' => array('default' => $LOCAL_LANG['default'], $languageKey => $LOCAL_LANG[$languageKey]));
+            $serContent = ['origFile' => $this->hashSource, 'LOCAL_LANG' => ['default' => $LOCAL_LANG['default'], $languageKey => $LOCAL_LANG[$languageKey]]];
         } else {
-            $serContent = array('origFile' => $this->hashSource, 'LOCAL_LANG' => array('default' => $LOCAL_LANG['default']));
+            $serContent = ['origFile' => $this->hashSource, 'LOCAL_LANG' => ['default' => $LOCAL_LANG['default']]];
         }
         $res = GeneralUtility::writeFileToTypo3tempDir($this->cacheFileName, serialize($serContent));
         if ($res) {

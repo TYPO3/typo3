@@ -21,7 +21,7 @@ namespace ExtbaseTeam\BlogExample\Domain\Repository;
  */
 class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-    protected $defaultOrderings = array('date' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING);
+    protected $defaultOrderings = ['date' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING];
 
     /**
      * Finds all posts by the specified blog

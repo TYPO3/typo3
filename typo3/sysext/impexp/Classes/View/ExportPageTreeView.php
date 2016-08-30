@@ -87,7 +87,7 @@ class ExportPageTreeView extends BrowseTreeView
         $this->init(' AND ' . $this->BE_USER->getPagePermsClause(1) . $clause);
         // Get stored tree structure:
         $this->stored = unserialize($this->BE_USER->uc['browseTrees']['browsePages']);
-        $treeArr = array();
+        $treeArr = [];
         $idx = 0;
         // Set first:
         $this->bank = $idx;
@@ -101,20 +101,20 @@ class ExportPageTreeView extends BrowseTreeView
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $firstHtml = $iconFactory->getIconForRecord('pages', $rootRec, Icon::SIZE_SMALL)->render();
         } else {
-            $rootRec = array(
+            $rootRec = [
                 'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
                 'uid' => 0
-            );
+            ];
             $firstHtml = $this->getRootIcon($rootRec);
         }
-        $this->tree[] = array('HTML' => $firstHtml, 'row' => $rootRec, 'hasSub' => $isOpen);
+        $this->tree[] = ['HTML' => $firstHtml, 'row' => $rootRec, 'hasSub' => $isOpen];
         if ($isOpen) {
             // Set depth:
             if ($this->addSelfId) {
                 $this->ids[] = $pid;
             }
             $this->getTree($pid, 999, '');
-            $idH = array();
+            $idH = [];
             $idH[$pid]['uid'] = $pid;
             if (!empty($this->buffer_idH)) {
                 $idH[$pid]['subrow'] = $this->buffer_idH;

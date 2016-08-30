@@ -29,7 +29,7 @@ abstract class AbstractTask implements TaskInterface
     /**
      * @var array
      */
-    protected $checksumData = array();
+    protected $checksumData = [];
 
     /**
      * @var Resource\ProcessedFile
@@ -86,11 +86,11 @@ abstract class AbstractTask implements TaskInterface
      */
     protected function getChecksumData()
     {
-        return array(
+        return [
             $this->getSourceFile()->getUid(),
             $this->getType() . '.' . $this->getName() . $this->getSourceFile()->getModificationTime(),
             serialize($this->configuration)
-        );
+        ];
     }
 
     /**

@@ -42,7 +42,7 @@ class ExtensionUtility
      * @throws \InvalidArgumentException
      * @return void
      */
-    public static function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = array(), $pluginType = self::PLUGIN_TYPE_PLUGIN)
+    public static function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = [], $pluginType = self::PLUGIN_TYPE_PLUGIN)
     {
         self::checkPluginNameFormat($pluginName);
         self::checkExtensionNameFormat($extensionName);
@@ -62,10 +62,10 @@ class ExtensionUtility
 
         $pluginSignature = strtolower($extensionName . '_' . $pluginName);
         if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName])) {
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName] = array();
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName] = [];
         }
         foreach ($controllerActions as $controllerName => $actionsList) {
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName] = array('actions' => \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $actionsList));
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName] = ['actions' => \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $actionsList)];
             if (!empty($nonCacheableControllerActions[$controllerName])) {
                 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName]['nonCacheableActions'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $nonCacheableControllerActions[$controllerName]);
             }
@@ -136,7 +136,7 @@ tt_content.' . $pluginSignature . ' {
             : 'list_type';
 
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
-            array($pluginTitle, $pluginSignature, $pluginIconPathAndFilename),
+            [$pluginTitle, $pluginSignature, $pluginIconPathAndFilename],
             $pluginType,
             $extensionKey
         );
@@ -170,7 +170,7 @@ tt_content.' . $pluginSignature . ' {
      * @throws \InvalidArgumentException
      * @return void
      */
-    public static function registerModule($extensionName, $mainModuleName = '', $subModuleName = '', $position = '', array $controllerActions = array(), array $moduleConfiguration = array())
+    public static function registerModule($extensionName, $mainModuleName = '', $subModuleName = '', $position = '', array $controllerActions = [], array $moduleConfiguration = [])
     {
         self::checkExtensionNameFormat($extensionName);
 
@@ -186,12 +186,12 @@ tt_content.' . $pluginSignature . ' {
         }
         $extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
         $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
-        $defaultModuleConfiguration = array(
+        $defaultModuleConfiguration = [
             'access' => 'admin',
             'icon' => 'EXT:extbase/ext_icon.png',
             'labels' => '',
             'extRelPath' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extensionKey) . 'Classes/'
-        );
+        ];
         if ($mainModuleName !== '' && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {
             $mainModuleName = $extensionName . \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($mainModuleName);
         } else {
@@ -213,15 +213,15 @@ tt_content.' . $pluginSignature . ' {
             $moduleConfiguration['vendorName'] = $vendorName;
         }
         $moduleConfiguration['extensionName'] = $extensionName;
-        $moduleConfiguration['configureModuleFunction'] = array(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule');
+        $moduleConfiguration['configureModuleFunction'] = [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'];
         $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
         if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature])) {
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature] = array();
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature] = [];
         }
         foreach ($controllerActions as $controllerName => $actions) {
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature]['controllers'][$controllerName] = array(
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature]['controllers'][$controllerName] = [
                 'actions' => \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $actions)
-            );
+            ];
         }
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule($mainModuleName, $subModuleName, $position);
     }
@@ -236,7 +236,7 @@ tt_content.' . $pluginSignature . ' {
     public static function registerTypeConverter($typeConverterClassName)
     {
         if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'])) {
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'] = array();
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'] = [];
         }
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'][] = $typeConverterClassName;
     }

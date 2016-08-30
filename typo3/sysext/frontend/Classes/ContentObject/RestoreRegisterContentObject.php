@@ -26,7 +26,7 @@ class RestoreRegisterContentObject extends AbstractContentObject
      * @param array $conf Array of TypoScript properties
      * @return string Empty string (the cObject only sets internal data!)
      */
-    public function render($conf = array())
+    public function render($conf = [])
     {
         $GLOBALS['TSFE']->register = array_pop($GLOBALS['TSFE']->registerStack);
         return '';

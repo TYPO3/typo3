@@ -41,7 +41,7 @@ class Configuration
     /**
      * @var array
      */
-    protected $typoScript = array();
+    protected $typoScript = [];
 
     /**
      * @var bool

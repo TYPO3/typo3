@@ -29,9 +29,9 @@ class ContextFeature extends Configuration\AbstractFeature implements Configurat
     /**
      * @var array List of preset classes
      */
-    protected $presetRegistry = array(
+    protected $presetRegistry = [
         \TYPO3\CMS\Install\Configuration\Context\LivePreset::class,
         \TYPO3\CMS\Install\Configuration\Context\DebugPreset::class,
         \TYPO3\CMS\Install\Configuration\Context\CustomPreset::class,
-    );
+    ];
 }

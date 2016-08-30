@@ -58,20 +58,20 @@ class LengthValidatorTest extends AbstractValidatorTest
      */
     public function validLengthProvider()
     {
-        return array(
-            '4 ≤ length(myString) ≤ 8' => array(
-                array(4, 8, 'mäString')
-            ),
-            '8 ≤ length(myString) ≤ 8' => array(
-                array(8, 8, 'möString')
-            ),
-            '4 ≤ length(myString)' => array(
-                array(4, null, 'myString')
-            ),
-            '4 ≤ length(asdf) ≤ 4' => array(
-                array(4, 4, 'asdf')
-            ),
-        );
+        return [
+            '4 ≤ length(myString) ≤ 8' => [
+                [4, 8, 'mäString']
+            ],
+            '8 ≤ length(myString) ≤ 8' => [
+                [8, 8, 'möString']
+            ],
+            '4 ≤ length(myString)' => [
+                [4, null, 'myString']
+            ],
+            '4 ≤ length(asdf) ≤ 4' => [
+                [4, 4, 'asdf']
+            ],
+        ];
     }
 
     /**
@@ -80,7 +80,7 @@ class LengthValidatorTest extends AbstractValidatorTest
      */
     public function validateForValidInputHasEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['minimum'] = $input[0];
         $options['maximum'] = $input[1];
         /** @var LengthValidator $subject */
@@ -97,14 +97,14 @@ class LengthValidatorTest extends AbstractValidatorTest
      */
     public function invalidLengthProvider()
     {
-        return array(
-            '4 ≤ length(my) ≤ 12' => array(
-                array(4, 12, 'my')
-            ),
-            '4 ≤ length(my long string) ≤ 12' => array(
-                array(4, 12, 'my long string')
-            ),
-        );
+        return [
+            '4 ≤ length(my) ≤ 12' => [
+                [4, 12, 'my']
+            ],
+            '4 ≤ length(my long string) ≤ 12' => [
+                [4, 12, 'my long string']
+            ],
+        ];
     }
 
     /**
@@ -113,7 +113,7 @@ class LengthValidatorTest extends AbstractValidatorTest
      */
     public function validateForInvalidInputHasNotEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['minimum'] = $input[0];
         $options['maximum'] = $input[1];
         /** @var LengthValidator $subject */

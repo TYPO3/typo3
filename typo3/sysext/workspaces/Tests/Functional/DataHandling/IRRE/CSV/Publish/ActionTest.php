@@ -237,9 +237,9 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
     {
         parent::moveParentContentToDifferentPageAndChangeSorting();
         $this->actionService->publishRecords(
-            array(
-                self::TABLE_Content => array(self::VALUE_ContentIdFirst, self::VALUE_ContentIdLast),
-            )
+            [
+                self::TABLE_Content => [self::VALUE_ContentIdFirst, self::VALUE_ContentIdLast],
+            ]
         );
         $this->assertAssertionDataSet('moveParentContentToDifferentPageNChangeSorting');
 
@@ -298,10 +298,10 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
     {
         parent::copyPage();
         $this->actionService->publishRecords(
-            array(
-                self::TABLE_Page => array($this->recordIds['newPageId']),
-                self::TABLE_Content => array($this->recordIds['newContentIdFirst'], $this->recordIds['newContentIdLast']),
-            )
+            [
+                self::TABLE_Page => [$this->recordIds['newPageId']],
+                self::TABLE_Content => [$this->recordIds['newContentIdFirst'], $this->recordIds['newContentIdLast']],
+            ]
         );
         $this->assertAssertionDataSet('copyPage');
 
@@ -318,10 +318,10 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
     {
         parent::copyPageWithHotelBeforeParentContent();
         $this->actionService->publishRecords(
-            array(
-                self::TABLE_Page => array($this->recordIds['newPageId']),
-                self::TABLE_Content => array($this->recordIds['newContentIdFirst'], $this->recordIds['newContentIdLast']),
-            )
+            [
+                self::TABLE_Page => [$this->recordIds['newPageId']],
+                self::TABLE_Content => [$this->recordIds['newContentIdFirst'], $this->recordIds['newContentIdLast']],
+            ]
         );
         $this->assertAssertionDataSet('copyPageWHotelBeforeParentContent');
 
@@ -583,10 +583,10 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
     {
         parent::modifyAndDiscardAndModifyParentWithHotelChild();
         $this->actionService->publishRecords(
-            array(
-                self::TABLE_Content => array(self::VALUE_ContentIdFirst),
-                self::TABLE_Hotel => array(3, 4),
-            )
+            [
+                self::TABLE_Content => [self::VALUE_ContentIdFirst],
+                self::TABLE_Hotel => [3, 4],
+            ]
         );
         $this->assertAssertionDataSet('modifyNDiscardNModifyParentWHotelChild');
 

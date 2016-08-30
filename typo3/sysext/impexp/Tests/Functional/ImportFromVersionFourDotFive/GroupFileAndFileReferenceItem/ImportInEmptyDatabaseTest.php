@@ -22,15 +22,15 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
     /**
      * @var array
      */
-    protected $additionalFoldersToCreate = array(
+    protected $additionalFoldersToCreate = [
         '/uploads/tx_impexpgroupfiles'
-    );
+    ];
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array(
+    protected $testExtensionsToLoad = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/impexp_group_files'
-    );
+    ];
 
     /**
      * @var string

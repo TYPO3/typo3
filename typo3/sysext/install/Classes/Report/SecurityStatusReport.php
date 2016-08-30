@@ -33,10 +33,10 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
     public function getStatus()
     {
         $this->executeAdminCommand();
-        $statuses = array(
+        $statuses = [
             'installToolPassword' => $this->getInstallToolPasswordStatus(),
             'installToolProtection' => $this->getInstallToolProtectionStatus()
-        );
+        ];
         return $statuses;
     }
 

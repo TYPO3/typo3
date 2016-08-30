@@ -71,7 +71,7 @@ class ApplicationContext
             $this->parentContext = new ApplicationContext(implode('/', $contextStringParts));
         }
 
-        if (!in_array($this->rootContextString, array('Development', 'Production', 'Testing'))) {
+        if (!in_array($this->rootContextString, ['Development', 'Production', 'Testing'])) {
             throw new \TYPO3\CMS\Core\Exception('The given context "' . $contextString . '" was not valid. Only allowed are Development, Production and Testing, including their sub-contexts', 1335436551);
         }
 

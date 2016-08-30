@@ -42,7 +42,7 @@ class IconFactory
      *
      * @var string[]
      */
-    protected $recordStatusMapping = array();
+    protected $recordStatusMapping = [];
 
     /**
      * Order of priorities for overlays.
@@ -50,7 +50,7 @@ class IconFactory
      *
      * @var string[]
      */
-    protected $overlayPriorities = array();
+    protected $overlayPriorities = [];
 
     /**
      * @param IconRegistry $iconRegistry
@@ -156,7 +156,7 @@ class IconFactory
      */
     public function mapRecordTypeToIconIdentifier($table, array $row)
     {
-        $recordType = array();
+        $recordType = [];
         $ref = null;
 
         if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_column'])) {
@@ -212,7 +212,7 @@ class IconFactory
                     );
                 }
                 if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'])) {
-                    $parameters = array('row' => $row);
+                    $parameters = ['row' => $row];
                     $recordType[6] = GeneralUtility::callUserFunction(
                         $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'],
                         $parameters,
@@ -255,7 +255,7 @@ class IconFactory
     {
         $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
         // Calculate for a given record the actual visibility at the moment
-        $status = array(
+        $status = [
             'hidden' => false,
             'starttime' => false,
             'endtime' => false,
@@ -264,7 +264,7 @@ class IconFactory
             'deleted' => false,
             'protectedSection' => false,
             'nav_hide' => (bool)$row['nav_hide']
-        );
+        ];
         // Icon state based on "enableFields":
         if (is_array($tcaCtrl['enablecolumns'])) {
             $enableColumns = $tcaCtrl['enablecolumns'];
@@ -365,7 +365,7 @@ class IconFactory
         ResourceInterface $resource,
         $size = Icon::SIZE_DEFAULT,
         $overlayIdentifier = null,
-        array $options = array()
+        array $options = []
     ) {
         $iconIdentifier = null;
 
@@ -461,7 +461,7 @@ class IconFactory
      * @param array $iconConfiguration the icon configuration array
      * @return Icon
      */
-    protected function createIcon($identifier, $size, $overlayIdentifier = null, array $iconConfiguration = array())
+    protected function createIcon($identifier, $size, $overlayIdentifier = null, array $iconConfiguration = [])
     {
         $icon = GeneralUtility::makeInstance(Icon::class);
         $icon->setIdentifier($identifier);
@@ -499,11 +499,11 @@ class IconFactory
         $result = $this->getSignalSlotDispatcher()->dispatch(
             IconFactory::class,
             'buildIconForResourceSignal',
-            array($resource, $size, $options, $iconIdentifier, $overlayIdentifier)
+            [$resource, $size, $options, $iconIdentifier, $overlayIdentifier]
         );
         $iconIdentifier = $result[3];
         $overlayIdentifier = $result[4];
-        return array($iconIdentifier, $overlayIdentifier);
+        return [$iconIdentifier, $overlayIdentifier];
     }
 
     /**

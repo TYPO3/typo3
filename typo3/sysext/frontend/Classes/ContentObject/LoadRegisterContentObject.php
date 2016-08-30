@@ -26,11 +26,11 @@ class LoadRegisterContentObject extends AbstractContentObject
      * @param array $conf Array of TypoScript properties
      * @return string Empty string (the cObject only sets internal data!)
      */
-    public function render($conf = array())
+    public function render($conf = [])
     {
         array_push($GLOBALS['TSFE']->registerStack, $GLOBALS['TSFE']->register);
         if (is_array($conf)) {
-            $isExecuted = array();
+            $isExecuted = [];
             foreach ($conf as $theKey => $theValue) {
                 $register = rtrim($theKey, '.');
                 if (!$isExecuted[$register]) {

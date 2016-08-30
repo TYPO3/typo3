@@ -47,7 +47,7 @@ class BackendUserSessionRepository extends Repository
      */
     public function findByBackendUser(BackendUser $backendUser)
     {
-        $sessions = array();
+        $sessions = [];
         $db = $this->getDatabaseConnection();
         $res = $db->exec_SELECTquery(
             'ses_id AS id, ses_iplock AS ip, ses_tstamp AS timestamp',
@@ -57,11 +57,11 @@ class BackendUserSessionRepository extends Repository
             'ses_tstamp ASC'
         );
         while ($row = $db->sql_fetch_assoc($res)) {
-            $sessions[] = array(
+            $sessions[] = [
                 'id' => $row['id'],
                 'ip' => $row['ip'],
                 'timestamp' => $row['timestamp']
-            );
+            ];
         }
         $db->sql_free_result($res);
         return $sessions;
@@ -75,10 +75,10 @@ class BackendUserSessionRepository extends Repository
      */
     public function switchBackToOriginalUser(AbstractUserAuthentication $authentication)
     {
-        $updateData = array(
+        $updateData = [
             'ses_userid' => $authentication->user['ses_backuserid'],
             'ses_backuserid' => 0,
-        );
+        ];
         $db = $this->getDatabaseConnection();
         $db->exec_UPDATEquery(
             'be_sessions',

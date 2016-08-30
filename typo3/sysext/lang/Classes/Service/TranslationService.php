@@ -92,10 +92,10 @@ class TranslationService implements \TYPO3\CMS\Core\SingletonInterface
             } catch (\Exception $exception) {
                 $error = $exception->getMessage();
             }
-            $locales[$locale] = array(
+            $locales[$locale] = [
                 'state'  => $state,
                 'error'  => $error,
-            );
+            ];
         }
         return $locales;
     }
@@ -139,10 +139,10 @@ class TranslationService implements \TYPO3\CMS\Core\SingletonInterface
         $this->signalSlotDispatcher->dispatch(
             __CLASS__,
             'postProcessMirrorUrl',
-            array(
+            [
                 'extensionKey' => $extensionKey,
                 'mirrorUrl' => &$this->mirrorUrl,
-            )
+            ]
         );
 
         return $this->mirrorUrl;

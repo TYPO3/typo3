@@ -41,8 +41,8 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         /** @var $mockRepositoryRepository \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository|\PHPUnit_Framework_MockObject_MockObject */
-        $this->mockRepositoryRepository = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class, array(), array($this->mockObjectManager));
-        $this->mockLanguageService = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', false);
+        $this->mockRepositoryRepository = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class, [], [$this->mockObjectManager]);
+        $this->mockLanguageService = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, [], [], '', false);
     }
 
     /**
@@ -50,7 +50,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extensionStatusImplementsStatusProviderInterface()
     {
-        $reportMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, array(), array(), '', false);
+        $reportMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, [], [], '', false);
         $this->assertInstanceOf(\TYPO3\CMS\Reports\StatusProviderInterface::class, $reportMock);
     }
 
@@ -59,7 +59,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getStatusReturnsArray()
     {
-        $report = $this->getMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, array('getSecurityStatusOfExtensions', 'getMainRepositoryStatus'), array(), '', false);
+        $report = $this->getMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, ['getSecurityStatusOfExtensions', 'getMainRepositoryStatus'], [], '', false);
         $this->assertInternalType('array', $report->getStatus());
     }
 
@@ -68,7 +68,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getStatusReturnArrayContainsFiveEntries()
     {
-        $report = $this->getMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, array('getSecurityStatusOfExtensions', 'getMainRepositoryStatus'), array(), '', false);
+        $report = $this->getMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, ['getSecurityStatusOfExtensions', 'getMainRepositoryStatus'], [], '', false);
         $this->assertSame(5, count($report->getStatus()));
     }
 
@@ -77,9 +77,9 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getStatusReturnArrayContainsInstancesOfReportsStatusStatus()
     {
-        $statusObject = $this->getMock(\TYPO3\CMS\Reports\Status::class, array(), array('title', 'value'));
+        $statusObject = $this->getMock(\TYPO3\CMS\Reports\Status::class, [], ['title', 'value']);
         /** @var \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus $report */
-        $report = $this->getMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, array('getSecurityStatusOfExtensions', 'getMainRepositoryStatus'), array(), '', false);
+        $report = $this->getMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, ['getSecurityStatusOfExtensions', 'getMainRepositoryStatus'], [], '', false);
         $report->expects($this->any())->method('getMainRepositoryStatus')->will($this->returnValue($statusObject));
         $resultStatuses = $report->getStatus();
         foreach ($resultStatuses as $status) {
@@ -104,12 +104,12 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->atLeastOnce())
             ->method('getReviewState')
             ->will($this->returnValue(0));
-        $mockExtensionList = array(
-            'enetcache' => array(
+        $mockExtensionList = [
+            'enetcache' => [
                 'installed' => true,
                 'terObject' => $mockTerObject
-            ),
-        );
+            ],
+        ];
         /** @var $mockListUtility \TYPO3\CMS\Extensionmanager\Utility\ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class);
         $mockListUtility
@@ -118,7 +118,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->will($this->returnValue($mockExtensionList));
 
         /** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject */
-        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, array('getMainRepositoryStatus'), array(), '', false);
+        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, ['getMainRepositoryStatus'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
         $mockReport->_set('listUtility', $mockListUtility);
         $mockReport->_set('languageService', $this->mockLanguageService);
@@ -142,9 +142,9 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->will($this->returnValue(null));
 
         /** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, array('dummy'), array(), '', false);
+        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
-        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, array(), array(), '', false);
+        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, [], [], '', false);
         $this->mockObjectManager
             ->expects($this->once())
             ->method('get')
@@ -175,9 +175,9 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->will($this->returnValue($mockRepository));
 
         /** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, array('dummy'), array(), '', false);
+        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
-        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, array(), array(), '', false);
+        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, [], [], '', false);
         $this->mockObjectManager
             ->expects($this->once())
             ->method('get')
@@ -209,9 +209,9 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->will($this->returnValue($mockRepository));
 
         /** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, array('dummy'), array(), '', false);
+        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
-        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, array(), array(), '', false);
+        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, [], [], '', false);
         $this->mockObjectManager
             ->expects($this->once())
             ->method('get')
@@ -240,12 +240,12 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->atLeastOnce())
             ->method('getReviewState')
             ->will($this->returnValue(0));
-        $mockExtensionList = array(
-            'enetcache' => array(
+        $mockExtensionList = [
+            'enetcache' => [
                 'installed' => true,
                 'terObject' => $mockTerObject
-            ),
-        );
+            ],
+        ];
         /** @var $mockListUtility \TYPO3\CMS\Extensionmanager\Utility\ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class);
         $mockListUtility
@@ -254,9 +254,9 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->will($this->returnValue($mockExtensionList));
 
         /** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, array('dummy'), array(), '', false);
+        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
-        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, array(), array(), '', false);
+        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, [], [], '', false);
         $this->mockObjectManager
             ->expects($this->at(0))
             ->method('get')
@@ -286,12 +286,12 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->atLeastOnce())
             ->method('getReviewState')
             ->will($this->returnValue(-1));
-        $mockExtensionList = array(
-            'enetcache' => array(
+        $mockExtensionList = [
+            'enetcache' => [
                 'installed' => true,
                 'terObject' => $mockTerObject
-            ),
-        );
+            ],
+        ];
         /** @var $mockListUtility \TYPO3\CMS\Extensionmanager\Utility\ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class);
         $mockListUtility
@@ -300,9 +300,9 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->will($this->returnValue($mockExtensionList));
 
         /** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, array('dummy'), array(), '', false);
+        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
-        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, array(), array(), '', false);
+        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, [], [], '', false);
         $this->mockObjectManager
             ->expects($this->at(0))
             ->method('get')
@@ -332,11 +332,11 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->atLeastOnce())
             ->method('getReviewState')
             ->will($this->returnValue(0));
-        $mockExtensionList = array(
-            'enetcache' => array(
+        $mockExtensionList = [
+            'enetcache' => [
                 'terObject' => $mockTerObject
-            ),
-        );
+            ],
+        ];
         /** @var $mockListUtility \TYPO3\CMS\Extensionmanager\Utility\ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class);
         $mockListUtility
@@ -345,9 +345,9 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->will($this->returnValue($mockExtensionList));
 
         /** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, array('dummy'), array(), '', false);
+        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
-        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, array(), array(), '', false);
+        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, [], [], '', false);
         $this->mockObjectManager
             ->expects($this->at(1))
             ->method('get')
@@ -377,11 +377,11 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->atLeastOnce())
             ->method('getReviewState')
             ->will($this->returnValue(-1));
-        $mockExtensionList = array(
-            'enetcache' => array(
+        $mockExtensionList = [
+            'enetcache' => [
                 'terObject' => $mockTerObject
-            ),
-        );
+            ],
+        ];
         /** @var $mockListUtility \TYPO3\CMS\Extensionmanager\Utility\ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class);
         $mockListUtility
@@ -390,9 +390,9 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->will($this->returnValue($mockExtensionList));
 
         /** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, array('dummy'), array(), '', false);
+        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
-        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, array(), array(), '', false);
+        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, [], [], '', false);
         $this->mockObjectManager
             ->expects($this->at(1))
             ->method('get')
@@ -422,12 +422,12 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->atLeastOnce())
             ->method('getReviewState')
             ->will($this->returnValue(0));
-        $mockExtensionList = array(
-            'enetcache' => array(
+        $mockExtensionList = [
+            'enetcache' => [
                 'installed' => true,
                 'terObject' => $mockTerObject
-            ),
-        );
+            ],
+        ];
         /** @var $mockListUtility \TYPO3\CMS\Extensionmanager\Utility\ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class);
         $mockListUtility
@@ -436,9 +436,9 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->will($this->returnValue($mockExtensionList));
 
         /** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, array('dummy'), array(), '', false);
+        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
-        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, array(), array(), '', false);
+        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, [], [], '', false);
         $this->mockObjectManager
             ->expects($this->at(2))
             ->method('get')
@@ -468,12 +468,12 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->atLeastOnce())
             ->method('getReviewState')
             ->will($this->returnValue(-2));
-        $mockExtensionList = array(
-            'enetcache' => array(
+        $mockExtensionList = [
+            'enetcache' => [
                 'installed' => true,
                 'terObject' => $mockTerObject
-            ),
-        );
+            ],
+        ];
         /** @var $mockListUtility \TYPO3\CMS\Extensionmanager\Utility\ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class);
         $mockListUtility
@@ -482,9 +482,9 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->will($this->returnValue($mockExtensionList));
 
         /** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, array('dummy'), array(), '', false);
+        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
-        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, array(), array(), '', false);
+        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, [], [], '', false);
         $this->mockObjectManager
             ->expects($this->at(2))
             ->method('get')
@@ -514,11 +514,11 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->atLeastOnce())
             ->method('getReviewState')
             ->will($this->returnValue(0));
-        $mockExtensionList = array(
-            'enetcache' => array(
+        $mockExtensionList = [
+            'enetcache' => [
                 'terObject' => $mockTerObject
-            ),
-        );
+            ],
+        ];
         /** @var $mockListUtility \TYPO3\CMS\Extensionmanager\Utility\ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class);
         $mockListUtility
@@ -527,9 +527,9 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->will($this->returnValue($mockExtensionList));
 
         /** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, array('dummy'), array(), '', false);
+        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
-        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, array(), array(), '', false);
+        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, [], [], '', false);
         $this->mockObjectManager
             ->expects($this->at(3))
             ->method('get')
@@ -559,11 +559,11 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->atLeastOnce())
             ->method('getReviewState')
             ->will($this->returnValue(-2));
-        $mockExtensionList = array(
-            'enetcache' => array(
+        $mockExtensionList = [
+            'enetcache' => [
                 'terObject' => $mockTerObject
-            ),
-        );
+            ],
+        ];
         /** @var $mockListUtility \TYPO3\CMS\Extensionmanager\Utility\ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class);
         $mockListUtility
@@ -572,9 +572,9 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->will($this->returnValue($mockExtensionList));
 
         /** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, array('dummy'), array(), '', false);
+        $mockReport = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
-        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, array(), array(), '', false);
+        $statusMock = $this->getMock(\TYPO3\CMS\Reports\Status::class, [], [], '', false);
         $this->mockObjectManager
             ->expects($this->at(3))
             ->method('get')

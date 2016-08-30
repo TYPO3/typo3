@@ -31,7 +31,7 @@ class Extractor implements ExtractorInterface
      */
     public function getFileTypeRestrictions()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -42,7 +42,7 @@ class Extractor implements ExtractorInterface
      */
     public function getDriverRestrictions()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -84,7 +84,7 @@ class Extractor implements ExtractorInterface
      * @param array $previousExtractedData optional, contains the array of already extracted data
      * @return array
      */
-    public function extractMetaData(File $file, array $previousExtractedData = array())
+    public function extractMetaData(File $file, array $previousExtractedData = [])
     {
         /** @var OnlineMediaHelperInterface $helper */
         $helper = OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($file);

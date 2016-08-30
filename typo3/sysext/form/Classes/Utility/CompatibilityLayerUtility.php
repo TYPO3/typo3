@@ -41,7 +41,7 @@ class CompatibilityLayerUtility
      *
      * @var array
      */
-    protected $layout = array();
+    protected $layout = [];
 
     /**
      * @var FormBuilder
@@ -51,7 +51,7 @@ class CompatibilityLayerUtility
     /**
      * @var array
      */
-    protected $registeredFormElements = array(
+    protected $registeredFormElements = [
         'TEXTLINE',
         'SUBMIT',
         'RESET',
@@ -69,28 +69,28 @@ class CompatibilityLayerUtility
         'FIELDSET',
         'RADIOGROUP',
         'CHECKBOXGROUP',
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $elementsWithoutLabel = array(
+    protected $elementsWithoutLabel = [
         'HIDDEN',
         'CONTENTELEMENT',
         'TEXTBLOCK',
         'FIELDSET',
         'RADIOGROUP',
         'CHECKBOXGROUP',
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $containerElements = array(
+    protected $containerElements = [
         'FIELDSET',
         'RADIOGROUP',
         'CHECKBOXGROUP',
-    );
+    ];
 
     /**
      * @param FormBuilder $formBuilder
@@ -107,7 +107,7 @@ class CompatibilityLayerUtility
      * @return void
      * @deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8, as the functionality is now done via fluid
      */
-    public function setGlobalLayoutConfiguration($layout = array())
+    public function setGlobalLayoutConfiguration($layout = [])
     {
         GeneralUtility::deprecationLog('EXT:form: Do not use "layout." anymore. Deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8.');
         if (is_array($layout)) {
@@ -267,7 +267,7 @@ class CompatibilityLayerUtility
      * @return void
      * @deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8, as the functionality is now done via fluid
      */
-    public function setElementLayouts(Element $element, array $userConfiguredElementTyposcript = array())
+    public function setElementLayouts(Element $element, array $userConfiguredElementTyposcript = [])
     {
         GeneralUtility::deprecationLog('EXT:form: Do not use "layout." anymore. Deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8.');
         if ($element->getElementType() === 'FORM') {
@@ -403,10 +403,10 @@ class CompatibilityLayerUtility
                 && $elementOuterWrap
             ) {
                 /* If $elementWrap isset and $elementOuterWrap isset */
-                $elementWrap = array(
+                $elementWrap = [
                     $elementOuterWrap[0] . $elementWrap[0],
                     $elementWrap[1] . $elementOuterWrap[1],
-                );
+                ];
                 $layout = $element->getLayout();
                 $layout['elementOuterWrap'] = $elementWrap;
                 $element->setLayout($layout);
@@ -433,7 +433,7 @@ class CompatibilityLayerUtility
                         }
                         $containerWrap = explode($containerWrapReturn['marker'], $containerWrapReturn['html']);
                     } else {
-                        $containerWrap = array('', '');
+                        $containerWrap = ['', ''];
                     }
 
                     $layout = $element->getLayout();
@@ -443,15 +443,15 @@ class CompatibilityLayerUtility
                     $element->setLayout($layout);
                 } else {
                     /* set the wraps */
-                    $containerOuterWrap = array('', '');
+                    $containerOuterWrap = ['', ''];
                     $containerOuterWrap = explode($elementWrap['marker'], $elementWrap['html']);
                     $containerWrapReturn = $this->replaceTagWithMarker('elements', 'body', $this->getGlobalLayoutByElementType('CONTAINERWRAP'));
                     $containerInnerWrap = explode($containerWrapReturn['marker'], $containerWrapReturn['html']);
 
-                    $containerWrap = array(
+                    $containerWrap = [
                         $containerOuterWrap[0] . $containerInnerWrap[0],
                         $containerInnerWrap[1] . $containerOuterWrap[1],
-                    );
+                    ];
 
                     $layout = $element->getLayout();
                     $layout['containerInnerWrap'] = $containerWrap;
@@ -557,12 +557,12 @@ class CompatibilityLayerUtility
             $labelLayout = str_replace($labelValueReturn['marker'], $element->getAdditionalArgument($scope), $labelValueReturn['html']);
         }
 
-        return array(
+        return [
             'labelContainContent' => $labelContainContent,
             'labelLayout' => $labelLayout,
             'errorLayout' => $errorLayout,
             'mandatoryLayout' => $mandatoryLayout
-        );
+        ];
     }
 
     /**
@@ -650,28 +650,28 @@ class CompatibilityLayerUtility
             $tagName === ''
             || $html === ''
         ) {
-            return array(
+            return [
                 'html' => '',
                 'marker' => ''
-            );
+            ];
         }
         $libxmlUseInternalErrors = libxml_use_internal_errors(true);
         $dom = new \DOMDocument('1.0', 'utf-8');
         $dom->preserveWhiteSpace = false;
         if (!$dom->loadHTML('<?xml encoding="utf-8">' . $html)) {
             libxml_use_internal_errors($libxmlUseInternalErrors);
-            return array(
+            return [
                 'html' => '',
                 'marker' => ''
-            );
+            ];
         }
         libxml_use_internal_errors($libxmlUseInternalErrors);
         $nodes = $dom->getElementsByTagName($tagName);
         if (!$nodes->length) {
-            return array(
+            return [
                 'html' => '',
                 'marker' => ''
-            );
+            ];
         }
         $nodeToReplace = $nodes->item(0);
         /* Replace $tagname tag with a unique marker */
@@ -702,10 +702,10 @@ class CompatibilityLayerUtility
                 $html .= $nextParent->ownerDocument->saveHTML($child);
             }
         }
-        return array(
+        return [
             'html' => $html,
             'marker' => $marker
-        );
+        ];
     }
 
     /**

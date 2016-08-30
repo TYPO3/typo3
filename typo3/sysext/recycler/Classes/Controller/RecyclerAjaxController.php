@@ -33,7 +33,7 @@ class RecyclerAjaxController
      *
      * @var array
      */
-    protected $conf = array();
+    protected $conf = [];
 
     /**
      * The constructor of this class
@@ -64,7 +64,7 @@ class RecyclerAjaxController
         $extPath = ExtensionManagementUtility::extPath('recycler');
         /* @var $view StandaloneView */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setPartialRootPaths(array('default' => $extPath . 'Resources/Private/Partials'));
+        $view->setPartialRootPaths(['default' => $extPath . 'Resources/Private/Partials']);
 
         $content = '';
         // Determine the scripts to execute
@@ -100,17 +100,17 @@ class RecyclerAjaxController
                 $view->assign('records', $recordsArray['rows']);
                 $view->assign('allowDelete', $allowDelete);
                 $view->assign('total', $recordsArray['total']);
-                $content = array(
+                $content = [
                     'rows' => $view->render(),
                     'totalItems' => $recordsArray['total']
-                );
+                ];
                 break;
             case 'undoRecords':
                 if (empty($this->conf['records']) || !is_array($this->conf['records'])) {
-                    $content = array(
+                    $content = [
                         'success' => false,
                         'message' => LocalizationUtility::translate('flashmessage.delete.norecordsselected', 'recycler')
-                    );
+                    ];
                     break;
                 }
 
@@ -119,17 +119,17 @@ class RecyclerAjaxController
                 $success = $model->undeleteData($this->conf['records'], $this->conf['recursive']);
                 $affectedRecords = count($this->conf['records']);
                 $messageKey = 'flashmessage.undo.' . ($success ? 'success' : 'failure') . '.' . ($affectedRecords === 1 ? 'singular' : 'plural');
-                $content = array(
+                $content = [
                     'success' => true,
                     'message' => sprintf(LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords)
-                );
+                ];
                 break;
             case 'deleteRecords':
                 if (empty($this->conf['records']) || !is_array($this->conf['records'])) {
-                    $content = array(
+                    $content = [
                         'success' => false,
                         'message' => LocalizationUtility::translate('flashmessage.delete.norecordsselected', 'recycler')
-                    );
+                    ];
                     break;
                 }
 
@@ -138,10 +138,10 @@ class RecyclerAjaxController
                 $success = $model->deleteData($this->conf['records']);
                 $affectedRecords = count($this->conf['records']);
                 $messageKey = 'flashmessage.delete.' . ($success ? 'success' : 'failure') . '.' . ($affectedRecords === 1 ? 'singular' : 'plural');
-                $content = array(
+                $content = [
                     'success' => true,
                     'message' => sprintf(LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords)
-                );
+                ];
                 break;
         }
         $response->getBody()->write(json_encode($content));

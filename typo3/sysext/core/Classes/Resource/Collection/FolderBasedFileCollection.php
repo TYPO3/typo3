@@ -89,13 +89,13 @@ class FolderBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\Abst
      */
     protected function getPersistableDataArray()
     {
-        return array(
+        return [
             'title' => $this->getTitle(),
             'type' => self::$type,
             'description' => $this->getDescription(),
             'folder' => $this->folder->getIdentifier(),
             'storage' => $this->folder->getStorage()->getUid()
-        );
+        ];
     }
 
     /**

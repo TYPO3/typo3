@@ -45,14 +45,14 @@ class DataMap
      *
      * @var array
      */
-    protected $subclasses = array();
+    protected $subclasses = [];
 
     /**
      * An array of column maps configured in $TCA
      *
      * @var array
      */
-    protected $columnMaps = array();
+    protected $columnMaps = [];
 
     /**
      * @var string
@@ -137,7 +137,7 @@ class DataMap
      * @param string $recordType The record type
      * @param array $subclasses The subclasses
      */
-    public function __construct($className, $tableName, $recordType = null, array $subclasses = array())
+    public function __construct($className, $tableName, $recordType = null, array $subclasses = [])
     {
         $this->setClassName($className);
         $this->setTableName($tableName);

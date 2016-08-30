@@ -37,10 +37,10 @@ class Application implements ApplicationInterface
      * All available request handlers that can deal with a Frontend Request
      * @var array
      */
-    protected $availableRequestHandlers = array(
+    protected $availableRequestHandlers = [
         \TYPO3\CMS\Frontend\Http\RequestHandler::class,
         \TYPO3\CMS\Frontend\Http\EidRequestHandler::class
-    );
+    ];
 
     /**
      * Constructor setting up legacy constant and register available Request Handlers

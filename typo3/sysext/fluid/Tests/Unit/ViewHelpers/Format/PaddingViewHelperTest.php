@@ -27,7 +27,7 @@ class PaddingViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getMock(PaddingViewHelper::class, array('renderChildren'));
+        $this->viewHelper = $this->getMock(PaddingViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
     }

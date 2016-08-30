@@ -184,7 +184,7 @@ class TemplateView extends AbstractTemplateView
      */
     public function setTemplateRootPath($templateRootPath)
     {
-        $this->setTemplateRootPaths(array($templateRootPath));
+        $this->setTemplateRootPaths([$templateRootPath]);
     }
 
     /**
@@ -199,7 +199,7 @@ class TemplateView extends AbstractTemplateView
         }
         /** @var $actionRequest \TYPO3\CMS\Extbase\Mvc\Request */
         $actionRequest = $this->controllerContext->getRequest();
-        return array(str_replace('@packageResourcesPath', ExtensionManagementUtility::extPath($actionRequest->getControllerExtensionKey()) . 'Resources/', $this->templateRootPathPattern));
+        return [str_replace('@packageResourcesPath', ExtensionManagementUtility::extPath($actionRequest->getControllerExtensionKey()) . 'Resources/', $this->templateRootPathPattern)];
     }
 
     /**
@@ -226,7 +226,7 @@ class TemplateView extends AbstractTemplateView
      */
     public function setPartialRootPath($partialRootPath)
     {
-        $this->setPartialRootPaths(array($partialRootPath));
+        $this->setPartialRootPaths([$partialRootPath]);
     }
 
     /**
@@ -254,7 +254,7 @@ class TemplateView extends AbstractTemplateView
         }
         /** @var $actionRequest \TYPO3\CMS\Extbase\Mvc\Request */
         $actionRequest = $this->controllerContext->getRequest();
-        return array(str_replace('@packageResourcesPath', ExtensionManagementUtility::extPath($actionRequest->getControllerExtensionKey()) . 'Resources/', $this->partialRootPathPattern));
+        return [str_replace('@packageResourcesPath', ExtensionManagementUtility::extPath($actionRequest->getControllerExtensionKey()) . 'Resources/', $this->partialRootPathPattern)];
     }
 
     /**
@@ -268,7 +268,7 @@ class TemplateView extends AbstractTemplateView
      */
     public function setLayoutRootPath($layoutRootPath)
     {
-        $this->setLayoutRootPaths(array($layoutRootPath));
+        $this->setLayoutRootPaths([$layoutRootPath]);
     }
 
     /**
@@ -296,7 +296,7 @@ class TemplateView extends AbstractTemplateView
         }
         /** @var $actionRequest \TYPO3\CMS\Extbase\Mvc\Request */
         $actionRequest = $this->controllerContext->getRequest();
-        return array(str_replace('@packageResourcesPath', ExtensionManagementUtility::extPath($actionRequest->getControllerExtensionKey()) . 'Resources/', $this->layoutRootPathPattern));
+        return [str_replace('@packageResourcesPath', ExtensionManagementUtility::extPath($actionRequest->getControllerExtensionKey()) . 'Resources/', $this->layoutRootPathPattern)];
     }
 
     /**
@@ -489,7 +489,7 @@ class TemplateView extends AbstractTemplateView
     protected function buildListOfTemplateCandidates($templateName, $paths, $marker)
     {
         $upperCasedTemplateName = $this->ucFileNameInPath($templateName);
-        $possibleFileNames = array();
+        $possibleFileNames = [];
         foreach ($paths as $partialPathAndFilename) {
             $possibleFileNames[] = $this->resolveFileNamePath(str_replace($marker, $upperCasedTemplateName, $partialPathAndFilename));
             if ($templateName !== $upperCasedTemplateName) {
@@ -554,7 +554,7 @@ class TemplateView extends AbstractTemplateView
      */
     protected function expandGenericPathPattern($pattern, $bubbleControllerAndSubpackage, $formatIsOptional)
     {
-        $paths = array($pattern);
+        $paths = [$pattern];
         $this->expandPatterns($paths, '@templateRoot', $this->getTemplateRootPaths());
         $this->expandPatterns($paths, '@partialRoot', $this->getPartialRootPaths());
         $this->expandPatterns($paths, '@layoutRoot', $this->getLayoutRootPaths());
@@ -571,12 +571,12 @@ class TemplateView extends AbstractTemplateView
             }
             $subpackageKeyParts = explode($namespaceSeparator, $subpackageKey);
         } else {
-            $subpackageKeyParts = array();
+            $subpackageKeyParts = [];
         }
         if ($bubbleControllerAndSubpackage) {
             $numberOfPathsBeforeSubpackageExpansion = count($paths);
             $numberOfSubpackageParts = count($subpackageKeyParts);
-            $subpackageReplacements = array();
+            $subpackageReplacements = [];
             for ($i = 0; $i <= $numberOfSubpackageParts; $i++) {
                 $subpackageReplacements[] = implode('/', ($i < 0 ? $subpackageKeyParts : array_slice($subpackageKeyParts, $i)));
             }
@@ -585,20 +585,20 @@ class TemplateView extends AbstractTemplateView
             for ($i = ($numberOfPathsBeforeSubpackageExpansion - 1) * ($numberOfSubpackageParts + 1); $i >= 0; $i -= ($numberOfSubpackageParts + 1)) {
                 array_splice($paths, $i, 0, str_replace('@controller', $controllerName, $paths[$i]));
             }
-            $this->expandPatterns($paths, '@controller', array(''));
+            $this->expandPatterns($paths, '@controller', ['']);
         } else {
             $i = $controllerName === null ? 0 : -1;
-            $this->expandPatterns($paths, '@subpackage', array(implode('/', $i < 0 ? $subpackageKeyParts :
-                array_slice($subpackageKeyParts, $i))));
-            $this->expandPatterns($paths, '@controller', array($controllerName));
+            $this->expandPatterns($paths, '@subpackage', [implode('/', $i < 0 ? $subpackageKeyParts :
+                array_slice($subpackageKeyParts, $i))]);
+            $this->expandPatterns($paths, '@controller', [$controllerName]);
         }
 
         if ($formatIsOptional) {
-            $this->expandPatterns($paths, '.@format', array('.' . $actionRequest->getFormat(), ''));
-            $this->expandPatterns($paths, '@format', array($actionRequest->getFormat(), ''));
+            $this->expandPatterns($paths, '.@format', ['.' . $actionRequest->getFormat(), '']);
+            $this->expandPatterns($paths, '@format', [$actionRequest->getFormat(), '']);
         } else {
-            $this->expandPatterns($paths, '.@format', array('.' . $actionRequest->getFormat()));
-            $this->expandPatterns($paths, '@format', array($actionRequest->getFormat()));
+            $this->expandPatterns($paths, '.@format', ['.' . $actionRequest->getFormat()]);
+            $this->expandPatterns($paths, '@format', [$actionRequest->getFormat()]);
         }
         return array_values(array_unique($paths));
     }
@@ -614,7 +614,7 @@ class TemplateView extends AbstractTemplateView
      */
     protected function expandPatterns(array &$patterns, $search, array $replacements)
     {
-        $patternsWithReplacements = array();
+        $patternsWithReplacements = [];
         foreach ($patterns as $pattern) {
             foreach ($replacements as $replacement) {
                 $patternsWithReplacements[] = GeneralUtility::fixWindowsFilePath(str_replace($search, $replacement, $pattern));

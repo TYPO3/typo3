@@ -52,7 +52,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @var array
      */
-    protected $updateResult = array();
+    protected $updateResult = [];
 
     /**
      * Constructor of the extension model.
@@ -224,13 +224,13 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function toArray()
     {
-        return array(
+        return [
             'key'     => $this->getKey(),
             'title'   => $this->getTitle(),
             'icon'    => $this->getIcon(),
             'version' => $this->getVersion(),
             'width'   => $this->getIconWidth(),
             'height'  => $this->getIconHeight()
-        );
+        ];
     }
 }

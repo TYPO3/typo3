@@ -32,7 +32,7 @@ class DateTimeViewHelper extends AbstractViewHelper implements CompilableInterfa
     public function render()
     {
         return static::renderStatic(
-            array(),
+            [],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

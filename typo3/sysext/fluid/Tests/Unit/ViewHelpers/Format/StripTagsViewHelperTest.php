@@ -26,7 +26,7 @@ class StripTagsViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\StripTagsViewHelper::class, array('renderChildren'));
+        $this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\StripTagsViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
     }
@@ -66,11 +66,11 @@ class StripTagsViewHelperTest extends ViewHelperBaseTestcase
      */
     public function stringsTestDataProvider()
     {
-        return array(
-            array('This is a sample text without special characters.', 'This is a sample text without special characters.'),
-            array('This is a sample text <b>with <i>some</i> tags</b>.', 'This is a sample text with some tags.'),
-            array('This text contains some &quot;&Uuml;mlaut&quot;.', 'This text contains some &quot;&Uuml;mlaut&quot;.')
-        );
+        return [
+            ['This is a sample text without special characters.', 'This is a sample text without special characters.'],
+            ['This is a sample text <b>with <i>some</i> tags</b>.', 'This is a sample text with some tags.'],
+            ['This text contains some &quot;&Uuml;mlaut&quot;.', 'This text contains some &quot;&Uuml;mlaut&quot;.']
+        ];
     }
 
     /**

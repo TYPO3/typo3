@@ -34,9 +34,9 @@ class IsExtensionLoadedViewHelper extends AbstractViewHelper implements Compilab
     public function render($extensionKey)
     {
         return static::renderStatic(
-            array(
+            [
                 'extensionKey' => $extensionKey
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

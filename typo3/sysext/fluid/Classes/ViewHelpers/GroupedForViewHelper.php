@@ -117,7 +117,7 @@ class GroupedForViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
      */
     protected function groupElements(array $elements, $groupBy)
     {
-        $groups = array('keys' => array(), 'values' => array());
+        $groups = ['keys' => [], 'values' => []];
         foreach ($elements as $key => $value) {
             if (is_array($value)) {
                 $currentGroupIndex = isset($value[$groupBy]) ? $value[$groupBy] : null;

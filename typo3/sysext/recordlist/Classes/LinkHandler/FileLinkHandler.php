@@ -267,7 +267,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             /** @var FileExtensionFilter $filter */
             $filter = GeneralUtility::makeInstance(FileExtensionFilter::class);
             $filter->setAllowedFileExtensions($extensionList);
-            $folder->setFileAndFolderNameFilters(array(array($filter, 'filterFileList')));
+            $folder->setFileAndFolderNameFilters([[$filter, 'filterFileList']]);
         }
         return $folder->getFiles();
     }

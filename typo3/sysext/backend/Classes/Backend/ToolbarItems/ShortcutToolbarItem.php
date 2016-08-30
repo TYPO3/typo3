@@ -88,13 +88,13 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         }
 
         // By default, 5 groups are set
-        $this->shortcutGroups = array(
+        $this->shortcutGroups = [
             1 => '1',
             2 => '1',
             3 => '1',
             4 => '1',
             5 => '1'
-        );
+        ];
         $this->shortcutGroups = $this->initShortcutGroups();
         $this->shortcuts = $this->initShortcuts();
 
@@ -227,7 +227,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     public function getAdditionalAttributes()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -259,9 +259,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         );
         // Traverse shortcuts
         $lastGroup = 0;
-        $shortcuts = array();
+        $shortcuts = [];
         while ($row = $databaseConnection->sql_fetch_assoc($res)) {
-            $shortcut = array('raw' => $row);
+            $shortcut = ['raw' => $row];
 
             list($row['module_name'], $row['M_module_name']) = explode('|', $row['module_name']);
 
@@ -378,7 +378,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     protected function getShortcutsByGroup($groupId)
     {
-        $shortcuts = array();
+        $shortcuts = [];
         foreach ($this->shortcuts as $shortcut) {
             if ($shortcut['group'] == $groupId) {
                 $shortcuts[] = $shortcut;
@@ -729,10 +729,10 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $shortcutGroupId = (int)(isset($parsedBody['shortcutGroup']) ? $parsedBody['shortcutGroup'] : $queryParams['shortcutGroup']);
         // Users can only modify their own shortcuts (except admins)
         $addUserWhere = !$backendUser->isAdmin() ? ' AND userid=' . (int)$backendUser->user['uid'] : '';
-        $fieldValues = array(
+        $fieldValues = [
             'description' => $shortcutName,
             'sc_group' => $shortcutGroupId
-        );
+        ];
         if ($fieldValues['sc_group'] < 0 && !$backendUser->isAdmin()) {
             $fieldValues['sc_group'] = 0;
         }
@@ -764,7 +764,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     protected function getGlobalShortcutGroups()
     {
-        $globalGroups = array();
+        $globalGroups = [];
         foreach ($this->shortcutGroups as $groupId => $groupLabel) {
             if ($groupId < 0) {
                 $globalGroups[$groupId] = $groupLabel;
@@ -780,7 +780,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     protected function getGroupsFromShortcuts()
     {
-        $groups = array();
+        $groups = [];
         foreach ($this->shortcuts as $shortcut) {
             $groups[$shortcut['group']] = $this->shortcutGroups[$shortcut['group']];
         }
@@ -829,16 +829,16 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                     // Unique list!
                     $selectFields = array_unique($selectFields);
                     $permissionClause = $table === 'pages' && $this->perms_clause ? ' AND ' . $this->perms_clause : '';
-                    $sqlQueryParts = array(
+                    $sqlQueryParts = [
                         'SELECT' => implode(',', $selectFields),
                         'FROM' => $table,
                         'WHERE' => 'uid IN (' . $recordid . ') ' . $permissionClause . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table)
-                    );
+                    ];
                     $result = $databaseConnection->exec_SELECT_queryArray($sqlQueryParts);
                     $row = $databaseConnection->sql_fetch_assoc($result);
                     $icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIconForRecord($table, (array)$row, Icon::SIZE_SMALL)->render() . '</span>';
                 } elseif ($shortcut['type'] == 'new') {
-                    $icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render() . '</span>';
+                    $icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIconForRecord($table, [], Icon::SIZE_SMALL)->render() . '</span>';
                 }
                 break;
             case 'file_edit':

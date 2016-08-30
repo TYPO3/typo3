@@ -44,7 +44,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      *
      * @var array
      */
-    protected $supportedHashAlgorithms = array('sha1', 'md5');
+    protected $supportedHashAlgorithms = ['sha1', 'md5'];
 
     /**
      * The base URL that points to this driver's storage. As long is this
@@ -60,16 +60,16 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     protected $charsetConversion;
 
     /** @var array */
-    protected $mappingFolderNameToRole = array(
+    protected $mappingFolderNameToRole = [
         '_recycler_' => FolderInterface::ROLE_RECYCLER,
         '_temp_' => FolderInterface::ROLE_TEMPORARY,
         'user_upload' => FolderInterface::ROLE_USERUPLOAD,
-    );
+    ];
 
     /**
      * @param array $configuration
      */
-    public function __construct(array $configuration = array())
+    public function __construct(array $configuration = [])
     {
         parent::__construct($configuration);
         // The capabilities default of this driver. See CAPABILITY_* constants for possible values
@@ -240,7 +240,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             GeneralUtility::mkdir($this->getAbsolutePath($newIdentifier));
         } else {
             $parts = GeneralUtility::trimExplode('/', $newFolderName);
-            $parts = array_map(array($this, 'sanitizeFileName'), $parts);
+            $parts = array_map([$this, 'sanitizeFileName'], $parts);
             $newFolderName = implode('/', $parts);
             $newIdentifier = $parentFolderIdentifier . $newFolderName . '/';
             GeneralUtility::mkdir_deep($this->getAbsolutePath($parentFolderIdentifier) . '/', $newFolderName);
@@ -256,7 +256,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      * @return array
      * @throws \InvalidArgumentException
      */
-    public function getFileInfoByIdentifier($fileIdentifier, array $propertiesToExtract = array())
+    public function getFileInfoByIdentifier($fileIdentifier, array $propertiesToExtract = [])
     {
         $absoluteFilePath = $this->getAbsolutePath($fileIdentifier);
         // don't use $this->fileExists() because we need the absolute path to the file anyways, so we can directly
@@ -287,11 +287,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
                 1314516810
             );
         }
-        return array(
+        return [
             'identifier' => $folderIdentifier,
             'name' => PathUtility::basename($folderIdentifier),
             'storage' => $this->storageUid
-        );
+        ];
     }
 
     /**
@@ -373,13 +373,13 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
         $items = $this->retrieveFileAndFoldersInPath($realPath, $recursive, $includeFiles, $includeDirs, $sort, $sortRev);
         $iterator = new \ArrayIterator($items);
         if ($iterator->count() === 0) {
-            return array();
+            return [];
         }
         $iterator->seek($start);
 
         // $c is the counter for how many items we still have to fetch (-1 is unlimited)
         $c = $numberOfItems > 0 ? $numberOfItems : - 1;
-        $items = array();
+        $items = [];
         while ($iterator->valid() && ($numberOfItems === 0 || $c > 0)) {
             // $iteratorItem is the file or folder name
             $iteratorItem = $iterator->current();
@@ -421,7 +421,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     {
         foreach ($filterMethods as $filter) {
             if (is_callable($filter)) {
-                $result = call_user_func($filter, $itemName, $itemIdentifier, $parentIdentifier, array(), $this);
+                $result = call_user_func($filter, $itemName, $itemIdentifier, $parentIdentifier, [], $this);
                 // We have to use -1 as the „don't include“ return value, as call_user_func() will return FALSE
                 // If calling the method succeeded and thus we can't use that as a return value.
                 if ($result === -1) {
@@ -462,7 +462,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
      * @return array of FileIdentifiers
      */
-    public function getFilesInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = false, array $filenameFilterCallbacks = array(), $sort = '', $sortRev = false)
+    public function getFilesInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = false, array $filenameFilterCallbacks = [], $sort = '', $sortRev = false)
     {
         return $this->getDirectoryItemList($folderIdentifier, $start, $numberOfItems, $filenameFilterCallbacks, true, false, $recursive, $sort, $sortRev);
     }
@@ -475,7 +475,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      * @param array $filenameFilterCallbacks callbacks for filtering the items
      * @return int Number of files in folder
      */
-    public function countFilesInFolder($folderIdentifier, $recursive = false, array $filenameFilterCallbacks = array())
+    public function countFilesInFolder($folderIdentifier, $recursive = false, array $filenameFilterCallbacks = [])
     {
         return count($this->getFilesInFolder($folderIdentifier, 0, 0, $recursive, $filenameFilterCallbacks));
     }
@@ -496,7 +496,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
      * @return array of Folder Identifier
      */
-    public function getFoldersInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = false, array $folderNameFilterCallbacks = array(), $sort = '', $sortRev = false)
+    public function getFoldersInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = false, array $folderNameFilterCallbacks = [], $sort = '', $sortRev = false)
     {
         return $this->getDirectoryItemList($folderIdentifier, $start, $numberOfItems, $folderNameFilterCallbacks, false, true, $recursive, $sort, $sortRev);
     }
@@ -509,7 +509,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      * @param array   $folderNameFilterCallbacks callbacks for filtering the items
      * @return int Number of folders in folder
      */
-    public function countFoldersInFolder($folderIdentifier, $recursive = false, array $folderNameFilterCallbacks = array())
+    public function countFoldersInFolder($folderIdentifier, $recursive = false, array $folderNameFilterCallbacks = [])
     {
         return count($this->getFoldersInFolder($folderIdentifier, 0, 0, $recursive, $folderNameFilterCallbacks));
     }
@@ -542,7 +542,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             $iterator = new \RecursiveDirectoryIterator($path, $iteratorMode);
         }
 
-        $directoryEntries = array();
+        $directoryEntries = [];
         while ($iterator->valid()) {
             /** @var $entry \SplFileInfo */
             $entry = $iterator->current();
@@ -557,11 +557,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             if ($entry->isDir()) {
                 $entryIdentifier .= '/';
             }
-            $entryArray = array(
+            $entryArray = [
                 'identifier' => $entryIdentifier,
                 'name' => $entryName,
                 'type' => $entry->isDir() ? 'dir' : 'file'
-            );
+            ];
             $directoryEntries[$entryIdentifier] = $entryArray;
             $iterator->next();
         }
@@ -583,7 +583,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      */
     protected function sortDirectoryEntries($directoryEntries, $sort = '', $sortRev = false)
     {
-        $entriesToSort = array();
+        $entriesToSort = [];
         foreach ($directoryEntries as $entryArray) {
             $dir      = pathinfo($entryArray['name'], PATHINFO_DIRNAME) . '/';
             $fullPath = $this->getAbsoluteBasePath() . $entryArray['identifier'];
@@ -640,15 +640,15 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      * @param array $propertiesToExtract array of properties which should be returned, if empty all will be extracted
      * @return array
      */
-    protected function extractFileInformation($filePath, $containerPath, array $propertiesToExtract = array())
+    protected function extractFileInformation($filePath, $containerPath, array $propertiesToExtract = [])
     {
         if (empty($propertiesToExtract)) {
-            $propertiesToExtract = array(
+            $propertiesToExtract = [
                 'size', 'atime', 'atime', 'mtime', 'ctime', 'mimetype', 'name',
                 'identifier', 'identifier_hash', 'storage', 'folder_hash'
-            );
+            ];
         }
-        $fileInformation = array();
+        $fileInformation = [];
         foreach ($propertiesToExtract as $property) {
             $fileInformation[$property] = $this->getSpecificFileInformation($filePath, $containerPath, $property);
         }
@@ -981,7 +981,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      */
     protected function createIdentifierMap(array $filesAndFolders, $sourceFolderIdentifier, $targetFolderIdentifier)
     {
-        $identifierMap = array();
+        $identifierMap = [];
         $identifierMap[$sourceFolderIdentifier] = $targetFolderIdentifier;
         foreach ($filesAndFolders as $oldItem) {
             if ($oldItem['type'] == 'dir') {
@@ -1257,10 +1257,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
         if ($permissionBits === false) {
             throw new Exception\ResourcePermissionsUnavailableException('Error while fetching permissions for ' . $path, 1319455097);
         }
-        return array(
+        return [
             'r' => (bool)is_readable($path),
             'w' => (bool)is_writable($path)
-        );
+        ];
     }
 
     /**

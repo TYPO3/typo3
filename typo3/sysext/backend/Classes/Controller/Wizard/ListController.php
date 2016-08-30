@@ -91,7 +91,7 @@ class ListController extends AbstractWizardController
         // Get TSconfig for it.
         $TSconfig = BackendUtility::getTCEFORM_TSconfig(
             $this->table,
-            is_array($origRow) ? $origRow : array('pid' => $this->P['pid'])
+            is_array($origRow) ? $origRow : ['pid' => $this->P['pid']]
         );
         // Set [params][pid]
         if (substr($this->P['params']['pid'], 0, 3) === '###' && substr($this->P['params']['pid'], -3) === '###') {
@@ -110,7 +110,7 @@ class ListController extends AbstractWizardController
             $redirectUrl = GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']);
         } else {
             // Otherwise, show the list:
-            $urlParameters = array();
+            $urlParameters = [];
             $urlParameters['id'] = $this->pid;
             $urlParameters['table'] = $this->P['params']['table'];
             $urlParameters['returnUrl'] = GeneralUtility::getIndpEnv('REQUEST_URI');

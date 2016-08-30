@@ -25,7 +25,7 @@ class BrowseTreeView extends AbstractTreeView
     /**
      * @var array
      */
-    public $fieldArray = array(
+    public $fieldArray = [
         'uid',
         'pid',
         'title',
@@ -45,7 +45,7 @@ class BrowseTreeView extends AbstractTreeView
         't3ver_wsid',
         't3ver_move_id',
         'is_siteroot'
-    );
+    ];
 
     /**
      * override to use this treeName

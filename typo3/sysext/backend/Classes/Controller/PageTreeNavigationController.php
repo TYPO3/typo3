@@ -194,7 +194,7 @@ class PageTreeNavigationController
         // Outputting Temporary DB mount notice:
         if ($this->active_tempMountPoint) {
             $flashText = '
-				<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">' . $this->getLanguageService()->sl('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', true) . '</a>		<br />' . $this->getLanguageService()->sl('LLL:EXT:lang/locallang_core.xlf:labels.path', true) . ': <span title="' . htmlspecialchars($this->active_tempMountPoint['_thePathFull']) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->active_tempMountPoint['_thePath'], -50)) . '</span>
+				<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(['setTempDBmount' => 0])) . '">' . $this->getLanguageService()->sl('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', true) . '</a>		<br />' . $this->getLanguageService()->sl('LLL:EXT:lang/locallang_core.xlf:labels.path', true) . ': <span title="' . htmlspecialchars($this->active_tempMountPoint['_thePathFull']) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->active_tempMountPoint['_thePath'], -50)) . '</span>
 			';
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $flashText, '', FlashMessage::INFO);
             $this->content .= $flashMessage->render();
@@ -203,13 +203,13 @@ class PageTreeNavigationController
         $this->content .= '<div id="PageTreeDiv">' . $tree . '</div>';
         // Setting up the buttons and markers for docheader
         $docHeaderButtons = $this->getButtons();
-        $markers = array(
+        $markers = [
             'WORKSPACEINFO' => $this->getWorkspaceInfo(),
             'CONTENT' => $this->content
-        );
+        ];
         // Build the <body> for the module
         $this->content = $this->doc->startPage('TYPO3 Page Tree');
-        $this->content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markers);
+        $this->content .= $this->doc->moduleBody([], $docHeaderButtons, $markers);
         $this->content .= $this->doc->endPage();
         $this->content = $this->doc->insertStylesAndJS($this->content);
     }
@@ -231,11 +231,11 @@ class PageTreeNavigationController
      */
     protected function getButtons()
     {
-        $buttons = array(
+        $buttons = [
             'csh' => '',
             'new_page' => '',
             'refresh' => ''
-        );
+        ];
         // New Page
         $onclickNewPageWizard = 'top.content.list_frame.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', ['pagesOnly' => 1, 'id' => ''])) . '+Tree.pageID;';
         $buttons['new_page'] = '<a href="#" onclick="' . $onclickNewPageWizard . '" title="' . $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage', true) . '">'
@@ -296,7 +296,7 @@ class PageTreeNavigationController
         // If mount point ID existed and is within users real mount points, then set it temporarily:
         if ($temporaryMountPoint > 0 && $beUser->isInWebMount($temporaryMountPoint)) {
             if ($this->active_tempMountPoint = BackendUtility::readPageAccess($temporaryMountPoint, $beUser->getPagePermsClause(1))) {
-                $this->pagetree->MOUNTS = array($temporaryMountPoint);
+                $this->pagetree->MOUNTS = [$temporaryMountPoint];
             } else {
                 // Clear temporary mount point as we have no access to it any longer
                 $this->settingTemporaryMountPoint(0);

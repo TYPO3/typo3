@@ -63,8 +63,8 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $backendLayoutIdentifier = $this->getUniqueId('identifier');
 
-        $dataProviderMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class, array('getBackendLayout'), array(), '', false);
-        $backendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', false);
+        $dataProviderMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class, ['getBackendLayout'], [], '', false);
+        $backendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, ['getIdentifier'], [], '', false);
         $backendLayoutMock->expects($this->any())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
         $dataProviderMock->expects($this->once())->method('getBackendLayout')->will($this->returnValue($backendLayoutMock));
 
@@ -83,8 +83,8 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $dataProviderIdentifier = $this->getUniqueId('custom');
         $backendLayoutIdentifier = $this->getUniqueId('identifier');
 
-        $dataProviderMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class, array('getBackendLayout'), array(), '', false);
-        $backendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', false);
+        $dataProviderMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class, ['getBackendLayout'], [], '', false);
+        $backendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, ['getIdentifier'], [], '', false);
         $backendLayoutMock->expects($this->any())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
         $dataProviderMock->expects($this->once())->method('getBackendLayout')->will($this->returnValue($backendLayoutMock));
 

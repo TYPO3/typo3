@@ -35,12 +35,12 @@ class LengthValidator extends AbstractValidator
     /**
      * @var array
      */
-    protected $supportedOptions = array(
-        'element' => array('', 'The name of the element', 'string', true),
-        'errorMessage' => array('', 'The error message', 'array', true),
-        'minimum' => array('', 'The minimum value', 'integer', true),
-        'maximum' => array('', 'The maximum value', 'integer', false),
-    );
+    protected $supportedOptions = [
+        'element' => ['', 'The name of the element', 'string', true],
+        'errorMessage' => ['', 'The error message', 'array', true],
+        'minimum' => ['', 'The minimum value', 'integer', true],
+        'maximum' => ['', 'The maximum value', 'integer', false],
+    ];
 
     /**
      * Constant for localisation
@@ -120,8 +120,8 @@ class LengthValidator extends AbstractValidator
     public function substituteMarkers($message)
     {
         return str_replace(
-            array('%minimum', '%maximum'),
-            array($this->options['minimum'], $this->options['maximum']),
+            ['%minimum', '%maximum'],
+            [$this->options['minimum'], $this->options['maximum']],
             $message
         );
     }

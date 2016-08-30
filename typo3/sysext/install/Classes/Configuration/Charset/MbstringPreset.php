@@ -34,10 +34,10 @@ class MbstringPreset extends Configuration\AbstractPreset
     /**
      * @var array Configuration values handled by this preset
      */
-    protected $configurationValues = array(
+    protected $configurationValues = [
         'SYS/t3lib_cs_convMethod' => 'mbstring',
         'SYS/t3lib_cs_utils' => 'mbstring',
-    );
+    ];
 
     /**
      * Check if mbstring PHP module is loaded

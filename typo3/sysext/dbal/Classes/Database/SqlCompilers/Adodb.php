@@ -32,16 +32,16 @@ class Adodb extends AbstractCompiler
      */
     protected function compileINSERT($components)
     {
-        $values = array();
+        $values = [];
         if (isset($components['VALUES_ONLY']) && is_array($components['VALUES_ONLY'])) {
-            $valuesComponents = $components['EXTENDED'] === '1' ? $components['VALUES_ONLY'] : array($components['VALUES_ONLY']);
+            $valuesComponents = $components['EXTENDED'] === '1' ? $components['VALUES_ONLY'] : [$components['VALUES_ONLY']];
             $tableFields = array_keys($this->databaseConnection->cache_fieldType[$components['TABLE']]);
         } else {
-            $valuesComponents = $components['EXTENDED'] === '1' ? $components['FIELDS'] : array($components['FIELDS']);
+            $valuesComponents = $components['EXTENDED'] === '1' ? $components['FIELDS'] : [$components['FIELDS']];
             $tableFields = array_keys($valuesComponents[0]);
         }
         foreach ($valuesComponents as $valuesComponent) {
-            $fields = array();
+            $fields = [];
             $fc = 0;
             foreach ($valuesComponent as $fV) {
                 $fields[$tableFields[$fc++]] = $fV[0];
@@ -61,8 +61,8 @@ class Adodb extends AbstractCompiler
     protected function compileCREATETABLE($components)
     {
         // Create fields and keys:
-        $fieldsKeys = array();
-        $indexKeys = array();
+        $fieldsKeys = [];
+        $indexKeys = [];
         foreach ($components['FIELDS'] as $fN => $fCfg) {
             $handlerKey = $this->databaseConnection->handler_getFromTableList($components['TABLE']);
             $fieldsKeys[$fN] = $this->databaseConnection->quoteName($fN, $handlerKey, true) . ' ' . $this->compileFieldCfg($fCfg['definition']);
@@ -75,7 +75,7 @@ class Adodb extends AbstractCompiler
                     }
                 } elseif ($kN === 'UNIQUE') {
                     foreach ($kCfg as $n => $field) {
-                        $indexKeys = array_merge($indexKeys, $this->compileCREATEINDEX($n, $components['TABLE'], $field, array('UNIQUE')));
+                        $indexKeys = array_merge($indexKeys, $this->compileCREATEINDEX($n, $components['TABLE'], $field, ['UNIQUE']));
                     }
                 } else {
                     $indexKeys = array_merge($indexKeys, $this->compileCREATEINDEX($kN, $components['TABLE'], $kCfg));
@@ -83,7 +83,7 @@ class Adodb extends AbstractCompiler
             }
         }
         // Generally create without OID on PostgreSQL
-        $tableOptions = array('postgres' => 'WITHOUT OIDS');
+        $tableOptions = ['postgres' => 'WITHOUT OIDS'];
         // Fetch table/index generation query:
         $tableName = $this->databaseConnection->quoteName($components['TABLE'], null, true);
         $query = array_merge($this->databaseConnection->handlerInstance[$this->databaseConnection->lastHandlerKey]->DataDictionary->CreateTableSQL($tableName, implode(',' . LF, $fieldsKeys), $tableOptions), $indexKeys);
@@ -102,7 +102,7 @@ class Adodb extends AbstractCompiler
         $query = '';
         $tableName = $this->databaseConnection->quoteName($components['TABLE'], null, true);
         $fieldName = $this->databaseConnection->quoteName($components['FIELD'], null, true);
-        switch (strtoupper(str_replace(array(' ', "\n", "\r", "\t"), '', $components['action']))) {
+        switch (strtoupper(str_replace([' ', "\n", "\r", "\t"], '', $components['action']))) {
             case 'ADD':
                 $query = $this->databaseConnection->handlerInstance[$this->databaseConnection->lastHandlerKey]->DataDictionary->AddColumnSQL($tableName, $fieldName . ' ' . $this->compileFieldCfg($components['definition']));
                 break;
@@ -122,7 +122,7 @@ class Adodb extends AbstractCompiler
                 $query = $this->compileCREATEINDEX($components['KEY'], $components['TABLE'], $components['fields']);
                 break;
             case 'ADDUNIQUE':
-                $query = $this->compileCREATEINDEX($components['KEY'], $components['TABLE'], $components['fields'], array('UNIQUE'));
+                $query = $this->compileCREATEINDEX($components['KEY'], $components['TABLE'], $components['fields'], ['UNIQUE']);
                 break;
             case 'ADDPRIMARYKEY':
                 // @todo ???
@@ -149,7 +149,7 @@ class Adodb extends AbstractCompiler
      * @return array
      * @see compileALTERTABLE()
      */
-    protected function compileCREATEINDEX($indexName, $tableName, $indexFields, $indexOptions = array())
+    protected function compileCREATEINDEX($indexName, $tableName, $indexFields, $indexOptions = [])
     {
         $indexIdentifier = $this->databaseConnection->quoteName(hash('crc32b', $tableName) . '_' . $indexName, null, true);
         $dbmsSpecifics = $this->databaseConnection->getSpecifics();
@@ -203,7 +203,7 @@ class Adodb extends AbstractCompiler
         $output = '';
         // Traverse the selectFields if any:
         if (is_array($selectFields)) {
-            $outputParts = array();
+            $outputParts = [];
             foreach ($selectFields as $k => $v) {
                 // Detecting type:
                 switch ($v['type']) {
@@ -262,9 +262,9 @@ class Adodb extends AbstractCompiler
         $type = $this->databaseConnection->getSpecifics()->getMetaFieldType($fieldCfg['fieldType']);
         $cfg = $type;
         // Add value, if any:
-        if ((string)$fieldCfg['value'] !== '' && in_array($type, array('C', 'C2'))) {
+        if ((string)$fieldCfg['value'] !== '' && in_array($type, ['C', 'C2'])) {
             $cfg .= ' ' . $fieldCfg['value'];
-        } elseif (!isset($fieldCfg['value']) && in_array($type, array('C', 'C2'))) {
+        } elseif (!isset($fieldCfg['value']) && in_array($type, ['C', 'C2'])) {
             $cfg .= ' 255';
         }
         // Add additional features:
@@ -279,10 +279,10 @@ class Adodb extends AbstractCompiler
                     case 'F':
 
                     case 'N':
-                        $fieldCfg['featureIndex']['DEFAULT'] = array('keyword' => 'DEFAULT', 'value' => array('0', ''));
+                        $fieldCfg['featureIndex']['DEFAULT'] = ['keyword' => 'DEFAULT', 'value' => ['0', '']];
                         break;
                     default:
-                        $fieldCfg['featureIndex']['DEFAULT'] = array('keyword' => 'DEFAULT', 'value' => array('', '\''));
+                        $fieldCfg['featureIndex']['DEFAULT'] = ['keyword' => 'DEFAULT', 'value' => ['', '\'']];
                 }
             }
             foreach ($fieldCfg['featureIndex'] as $feature => $featureDef) {
@@ -478,7 +478,7 @@ class Adodb extends AbstractCompiler
                             case $this->databaseConnection->runningADOdbDriver('oci8') && $isLikeOperator && $functionMapping:
                                 // Oracle cannot handle LIKE on CLOB fields - sigh
                                 if (isset($v['value']['operator'])) {
-                                    $values = array();
+                                    $values = [];
                                     foreach ($v['value']['args'] as $fieldDef) {
                                         $values[] = ($fieldDef['table'] ? $fieldDef['table'] . '.' : '') . $fieldDef['field'];
                                     }
@@ -539,7 +539,7 @@ class Adodb extends AbstractCompiler
                                     if (isset($v['subquery'])) {
                                         $output .= ' (' . $this->compileSELECT($v['subquery']) . ')';
                                     } else {
-                                        $valueBuffer = array();
+                                        $valueBuffer = [];
                                         foreach ($v['value'] as $realValue) {
                                             $valueBuffer[] = $realValue[1] . $this->compileAddslashes($realValue[0]) . $realValue[1];
                                         }
@@ -554,7 +554,7 @@ class Adodb extends AbstractCompiler
                                             if ($chunkCount === 1) {
                                                 $output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
                                             } else {
-                                                $listExpressions = array();
+                                                $listExpressions = [];
                                                 $field = trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']);
 
                                                 switch ($comparator) {
@@ -589,7 +589,7 @@ class Adodb extends AbstractCompiler
                                     $output .= ' AND ';
                                     $output .= $ubound[1] . $this->compileAddslashes($ubound[0]) . $ubound[1];
                                 } elseif (isset($v['value']['operator'])) {
-                                    $values = array();
+                                    $values = [];
                                     foreach ($v['value']['args'] as $fieldDef) {
                                         $values[] = ($fieldDef['table'] ? $fieldDef['table'] . '.' : '') . $fieldDef['field'];
                                     }

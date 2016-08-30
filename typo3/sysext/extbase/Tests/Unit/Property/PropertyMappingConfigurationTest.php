@@ -122,7 +122,7 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     {
         $mockTypeConverterClass = $this->getMockClass(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class);
 
-        $this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, array('k1' => 'v1', 'k2' => 'v2'));
+        $this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, ['k1' => 'v1', 'k2' => 'v2']);
         $this->assertEquals('v1', $this->propertyMappingConfiguration->getConfigurationValue($mockTypeConverterClass, 'k1'));
         $this->assertEquals('v2', $this->propertyMappingConfiguration->getConfigurationValue($mockTypeConverterClass, 'k2'));
     }
@@ -141,8 +141,8 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     public function setTypeConverterOptionsShouldOverrideAlreadySetOptions()
     {
         $mockTypeConverterClass = $this->getMockClass(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class);
-        $this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, array('k1' => 'v1', 'k2' => 'v2'));
-        $this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, array('k3' => 'v3'));
+        $this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, ['k1' => 'v1', 'k2' => 'v2']);
+        $this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, ['k3' => 'v3']);
 
         $this->assertEquals('v3', $this->propertyMappingConfiguration->getConfigurationValue($mockTypeConverterClass, 'k3'));
         $this->assertNull($this->propertyMappingConfiguration->getConfigurationValue($mockTypeConverterClass, 'k2'));
@@ -154,7 +154,7 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     public function setTypeConverterOptionShouldOverrideAlreadySetOptions()
     {
         $mockTypeConverterClass = $this->getMockClass(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class);
-        $this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, array('k1' => 'v1', 'k2' => 'v2'));
+        $this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, ['k1' => 'v1', 'k2' => 'v2']);
         $this->propertyMappingConfiguration->setTypeConverterOption($mockTypeConverterClass, 'k1', 'v3');
 
         $this->assertEquals('v3', $this->propertyMappingConfiguration->getConfigurationValue($mockTypeConverterClass, 'k1'));
@@ -207,24 +207,24 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     {
         $mockTypeConverterClass = $this->getMockClass(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class);
 
-        return array(
-            array('allowAllProperties'),
-            array('allowProperties'),
-            array('allowAllPropertiesExcept'),
-            array('setMapping', array('k1', 'k1a')),
-            array('setTypeConverterOptions', array($mockTypeConverterClass, array('k1' => 'v1', 'k2' => 'v2'))),
-            array('setTypeConverterOption', array($mockTypeConverterClass, 'k1', 'v3')),
-            array('setTypeConverter', array($this->getMock(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class))),
-        );
+        return [
+            ['allowAllProperties'],
+            ['allowProperties'],
+            ['allowAllPropertiesExcept'],
+            ['setMapping', ['k1', 'k1a']],
+            ['setTypeConverterOptions', [$mockTypeConverterClass, ['k1' => 'v1', 'k2' => 'v2']]],
+            ['setTypeConverterOption', [$mockTypeConverterClass, 'k1', 'v3']],
+            ['setTypeConverter', [$this->getMock(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class)]],
+        ];
     }
 
     /**
      * @test
      * @dataProvider fluentInterfaceMethodsDataProvider
      */
-    public function respectiveMethodsProvideFluentInterface($methodToTestForFluentInterface, array $argumentsForMethod = array())
+    public function respectiveMethodsProvideFluentInterface($methodToTestForFluentInterface, array $argumentsForMethod = [])
     {
-        $actualResult = call_user_func_array(array($this->propertyMappingConfiguration, $methodToTestForFluentInterface), $argumentsForMethod);
+        $actualResult = call_user_func_array([$this->propertyMappingConfiguration, $methodToTestForFluentInterface], $argumentsForMethod);
         $this->assertSame($this->propertyMappingConfiguration, $actualResult);
     }
 
@@ -234,7 +234,7 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithGetConfigurationFor()
     {
         // using stdClass so that class_parents() in getTypeConvertersWithParentClasses() is happy
-        $this->propertyMappingConfiguration->forProperty('items.*')->setTypeConverterOptions('stdClass', array('k1' => 'v1'));
+        $this->propertyMappingConfiguration->forProperty('items.*')->setTypeConverterOptions('stdClass', ['k1' => 'v1']);
 
         $configuration = $this->propertyMappingConfiguration->getConfigurationFor('items')->getConfigurationFor('6');
         $this->assertSame('v1', $configuration->getConfigurationValue('stdClass', 'k1'));
@@ -246,7 +246,7 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithForProperty()
     {
         // using stdClass so that class_parents() in getTypeConvertersWithParentClasses() is happy
-        $this->propertyMappingConfiguration->forProperty('items.*.foo')->setTypeConverterOptions('stdClass', array('k1' => 'v1'));
+        $this->propertyMappingConfiguration->forProperty('items.*.foo')->setTypeConverterOptions('stdClass', ['k1' => 'v1']);
 
         $configuration = $this->propertyMappingConfiguration->forProperty('items.6.foo');
         $this->assertSame('v1', $configuration->getConfigurationValue('stdClass', 'k1'));
@@ -257,7 +257,7 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
      */
     public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithShouldMap()
     {
-        $this->propertyMappingConfiguration->forProperty('items.*')->setTypeConverterOptions('stdClass', array('k1' => 'v1'));
+        $this->propertyMappingConfiguration->forProperty('items.*')->setTypeConverterOptions('stdClass', ['k1' => 'v1']);
 
         $configuration = $this->propertyMappingConfiguration->forProperty('items');
         $this->assertTrue($configuration->shouldMap(6));

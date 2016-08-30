@@ -45,7 +45,7 @@ class ContextMenuConfiguration extends \TYPO3\CMS\Backend\ContextMenu\Extdirect\
         $this->initDataProvider();
         $this->dataProvider->setContextMenuType('table.' . $node->getType());
         $actionCollection = $this->dataProvider->getActionsForNode($node);
-        $actions = array();
+        $actions = [];
         if ($actionCollection instanceof \TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection) {
             $actions = $actionCollection->toArray();
         }

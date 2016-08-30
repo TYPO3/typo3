@@ -77,13 +77,13 @@ class SectionViewHelper extends AbstractViewHelper
             $pageUid = $this->getTypoScriptFrontendController()->id;
         }
 
-        if (!empty($type) && !in_array($type, array('all', 'header'), true)) {
+        if (!empty($type) && !in_array($type, ['all', 'header'], true)) {
             return '';
         }
 
-        return $this->renderChildrenWithVariables(array(
+        return $this->renderChildrenWithVariables([
             $as => $this->findBySection($pageUid, $type, $this->arguments['column'])
-        ));
+        ]);
     }
 
     /**

@@ -54,7 +54,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
      *
      * @var mixed[][]
      */
-    protected $elements = array();
+    protected $elements = [];
 
     /**
     * @var string
@@ -101,7 +101,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $this->expandFolder = $data['expandFolder'];
             $store = false;
         }
-        return array($data, $store);
+        return [$data, $store];
     }
 
     /**
@@ -122,7 +122,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $storages = $backendUser->getFileStorages();
             /** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
             foreach ($storages as $storage) {
-                $storage->addFileAndFolderNameFilter(array($filterObject, 'filterFileList'));
+                $storage->addFileAndFolderNameFilter([$filterObject, 'filterFileList']);
             }
         }
         if ($this->expandFolder) {
@@ -165,10 +165,10 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
 
         // Getting flag for showing/not showing thumbnails:
         $noThumbs = $backendUser->getTSConfigVal('options.noThumbsInEB');
-        $_MOD_SETTINGS = array();
+        $_MOD_SETTINGS = [];
         if (!$noThumbs) {
             // MENU-ITEMS, fetching the setting for thumbnails from File>List module:
-            $_MOD_MENU = array('displayThumbs' => '');
+            $_MOD_MENU = ['displayThumbs' => ''];
             $_MCONF['name'] = 'file_list';
             $_MOD_SETTINGS = BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), $_MCONF['name']);
         }
@@ -244,7 +244,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         }
         $filesCount = count($files);
 
-        $lines = array();
+        $lines = [];
 
         // Create the header of current folder:
         $folderIcon = $this->iconFactory->getIconForResource($folder, Icon::SIZE_SMALL);
@@ -270,17 +270,17 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         foreach ($files as $fileObject) {
             $fileExtension = $fileObject->getExtension();
             // Thumbnail/size generation:
-            $imgInfo = array();
+            $imgInfo = [];
             if (!$noThumbs && GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . ',' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']), strtolower($fileExtension))) {
                 $processedFile = $fileObject->process(
                     ProcessedFile::CONTEXT_IMAGEPREVIEW,
-                    array('width' => 64, 'height' => 64)
+                    ['width' => 64, 'height' => 64]
                 );
                 $imageUrl = $processedFile->getPublicUrl(true);
-                $imgInfo = array(
+                $imgInfo = [
                     $fileObject->getProperty('width'),
                     $fileObject->getProperty('height')
-                );
+                ];
                 $pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
                 $clickIcon = '<img src="' . $imageUrl . '"'
                     . ' width="' . $processedFile->getProperty('width') . '"'
@@ -295,7 +295,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $icon = '<span title="' . htmlspecialchars($fileObject->getName() . $size) . '">' . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL) . '</span>';
             // Create links for adding the file:
             $filesIndex = count($this->elements);
-            $this->elements['file_' . $filesIndex] = array(
+            $this->elements['file_' . $filesIndex] = [
                 'type' => 'file',
                 'table' => 'sys_file',
                 'uid' => $fileObject->getUid(),
@@ -303,7 +303,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 'filePath' => $fileObject->getUid(),
                 'fileExt' => $fileExtension,
                 'fileIcon' => $icon
-            );
+            ];
             if ($this->fileIsSelectableInFileList($fileObject, $imgInfo)) {
                 $ATag = '<a href="#" class="btn btn-default" title="' . htmlspecialchars($fileObject->getName()) . '" data-file-index="' . htmlspecialchars($filesIndex) . '" data-close="0">';
                 $ATag_alt = '<a href="#" title="' . htmlspecialchars($fileObject->getName()) . '" data-file-index="' . htmlspecialchars($filesIndex) . '" data-close="1">';
@@ -316,12 +316,12 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 $bulkCheckBox = '';
             }
             // Create link to showing details about the file in a window:
-            $Ahref = BackendUtility::getModuleUrl('show_item', array(
+            $Ahref = BackendUtility::getModuleUrl('show_item', [
                 'type' => 'file',
                 'table' => '_FILE',
                 'uid' => $fileObject->getCombinedIdentifier(),
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-            ));
+            ]);
 
             // Combine the stuff:
             $filenameAndIcon = $ATag_alt . $icon . htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileObject->getName(), $titleLen)) . $ATag_e;
@@ -376,7 +376,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             /** @var FileExtensionFilter $filter */
             $filter = GeneralUtility::makeInstance(FileExtensionFilter::class);
             $filter->setAllowedFileExtensions($extensionList);
-            $folder->setFileAndFolderNameFilters(array(array($filter, 'filterFileList')));
+            $folder->setFileAndFolderNameFilters([[$filter, 'filterFileList']]);
         }
         return $folder->getFiles();
     }
@@ -400,7 +400,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $noThumbsInEB = $this->getBackendUser()->getTSConfigVal('options.noThumbsInEB');
         if (!$noThumbsInEB && $this->selectedFolder) {
             // MENU-ITEMS, fetching the setting for thumbnails from File>List module:
-            $_MOD_MENU = array('displayThumbs' => '');
+            $_MOD_MENU = ['displayThumbs' => ''];
             $_MCONF['name'] = 'file_list';
             $_MOD_SETTINGS = BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), $_MCONF['name']);
             $addParams = GeneralUtility::implodeArrayForUrl('', $this->getUrlParameters(['identifier' => $this->selectedFolder->getCombinedIdentifier()]));

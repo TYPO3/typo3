@@ -43,7 +43,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTest
         $currentDatabaseSchema = $this->sqlSchemaMigrationService->getFieldDefinitions_database();
 
         // Limit our scope to the be_users table:
-        $currentDatabaseSchemaForBeUsers = array();
+        $currentDatabaseSchemaForBeUsers = [];
         $currentDatabaseSchemaForBeUsers['be_users'] = $currentDatabaseSchema['be_users'];
         unset($currentDatabaseSchema);
 

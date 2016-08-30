@@ -24,7 +24,7 @@ class NotFoundView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView
     /**
      * @var array
      */
-    protected $variablesMarker = array('errorMessage' => 'ERROR_MESSAGE');
+    protected $variablesMarker = ['errorMessage' => 'ERROR_MESSAGE'];
 
     /**
      * Renders the not found view

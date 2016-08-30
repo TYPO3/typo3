@@ -58,7 +58,7 @@ class MvcPropertyMappingConfigurationService implements \TYPO3\CMS\Core\Singleto
      */
     public function generateTrustedPropertiesToken($formFieldNames, $fieldNamePrefix = '')
     {
-        $formFieldArray = array();
+        $formFieldArray = [];
         foreach ($formFieldNames as $formField) {
             $formFieldParts = explode('[', $formField);
             $currentPosition = &$formFieldArray;
@@ -84,14 +84,14 @@ class MvcPropertyMappingConfigurationService implements \TYPO3\CMS\Core\Singleto
                         throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException('The form field "' . $formField . '" is invalid. Reason: "[]" used not as last argument, but somewhere in the middle (like foo[][bar]).', 1255072832);
                     }
                     if (!isset($currentPosition[$formFieldPart])) {
-                        $currentPosition[$formFieldPart] = array();
+                        $currentPosition[$formFieldPart] = [];
                     }
                     $currentPosition = &$currentPosition[$formFieldPart];
                 }
             }
         }
         if ($fieldNamePrefix !== '') {
-            $formFieldArray = (isset($formFieldArray[$fieldNamePrefix]) ? $formFieldArray[$fieldNamePrefix] : array());
+            $formFieldArray = (isset($formFieldArray[$fieldNamePrefix]) ? $formFieldArray[$fieldNamePrefix] : []);
         }
         return $this->serializeAndHashFormFieldArray($formFieldArray);
     }

@@ -53,14 +53,14 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
      */
     public function modMenu()
     {
-        return array(
+        return [
             'ts_analyzer_checkSetup' => '1',
             'ts_analyzer_checkConst' => '1',
             'ts_analyzer_checkLinenum' => '1',
             'ts_analyzer_checkComments' => '1',
             'ts_analyzer_checkCrop' => '1',
             'ts_analyzer_checkSyntax' => '1'
-        );
+        ];
     }
 
     /**
@@ -128,7 +128,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
         $templateService->clearList_const_temp = array_flip($templateService->clearList_const);
         $templateService->clearList_setup_temp = array_flip($templateService->clearList_setup);
         $pointer = count($templateService->hierarchyInfo);
-        $hierarchyInfo = $templateService->ext_process_hierarchyInfo(array(), $pointer);
+        $hierarchyInfo = $templateService->ext_process_hierarchyInfo([], $pointer);
         $head = '<thead><tr>';
         $head .= '<th>' . $lang->getLL('title', true) . '</th>';
         $head .= '<th>' . $lang->getLL('rootlevel', true) . '</th>';
@@ -138,15 +138,15 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
         $head .= '<th>' . $lang->getLL('rootline', true) . '</th>';
         $head .= '<th>' . $lang->getLL('nextLevel', true) . '</th>';
         $head .= '</tr></thead>';
-        $hierar = implode(array_reverse($templateService->ext_getTemplateHierarchyArr($hierarchyInfo, '', array(), 1)), '');
+        $hierar = implode(array_reverse($templateService->ext_getTemplateHierarchyArr($hierarchyInfo, '', [], 1)), '');
         $hierar = '<div class="table-fit"><table class="table table-striped table-hover" id="ts-analyzer">' . $head . $hierar . '</table></div>';
         $theOutput .= '<div style="padding-top: 5px;"></div>';
         $theOutput .= '<h2>' . $lang->getLL('templateHierarchy', true) . '</h2>';
         $theOutput .= '<div>' . $hierar . '</div>';
-        $urlParameters = array(
+        $urlParameters = [
             'id' => $GLOBALS['SOBE']->id,
             'template' => 'all'
-        );
+        ];
         $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 
         $completeLink = '<p><a href="' . htmlspecialchars($aHref) . '" class="btn btn-default">' . $lang->getLL('viewCompleteTS', true) . '</a></p>';
@@ -194,7 +194,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
                     $theOutput .= '
 						<h3>' . htmlspecialchars($templateService->hierarchyInfo[$key]['title']) . '</h3>
 						<div class="nowrap">' .
-                            $templateService->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], 0) .
+                            $templateService->ext_outputTS([$val], $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], 0) .
                         '</div>
 					';
                     if ($template !== 'all') {
@@ -215,7 +215,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
                     $theOutput .= '
 						<h3>' . htmlspecialchars($templateService->hierarchyInfo[$key]['title']) . '</h3>
 						<div class="nowrap">' .
-                            $templateService->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], 0) .
+                            $templateService->ext_outputTS([$val], $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], 0) .
                         '</div>
 					';
                     if ($template !== 'all') {

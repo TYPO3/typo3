@@ -32,7 +32,7 @@ class ThenViewHelper extends AbstractViewHelper implements CompilableInterface
     public function render()
     {
         return static::renderStatic(
-            array(),
+            [],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

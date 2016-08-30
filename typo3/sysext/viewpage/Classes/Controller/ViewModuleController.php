@@ -75,7 +75,7 @@ class ViewModuleController extends ActionController
         $extensionName = $currentRequest->getControllerExtensionName();
         if (count($getVars) === 0) {
             $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-            $getVars = array('id', 'M', $modulePrefix);
+            $getVars = ['id', 'M', $modulePrefix];
         }
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($moduleName)
@@ -219,15 +219,15 @@ class ViewModuleController extends ActionController
     {
         $pageId = (int)GeneralUtility::_GP('id');
         $modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_view');
-        $widths = array(
+        $widths = [
             '100%|100%' => $this->getLanguageService()->getLL('autoSize')
-        );
+        ];
         if (is_array($modTSconfig['properties']['previewFrameWidths.'])) {
             foreach ($modTSconfig['properties']['previewFrameWidths.'] as $item => $conf) {
                 $label = '';
 
                 $width = substr($item, 0, -1);
-                $data = array('width' => $width);
+                $data = ['width' => $width];
                 $label .= $width . 'px ';
 
                 //if height is set
@@ -260,11 +260,11 @@ class ViewModuleController extends ActionController
         if ($modSharedTSconfig['properties']['view.']['disableLanguageSelector'] === '1') {
             return [];
         }
-        $languages = array(
+        $languages = [
             0 => isset($modSharedTSconfig['properties']['defaultLanguageLabel'])
                     ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage') . ')'
                     : $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage')
-        );
+        ];
         $excludeHidden = $this->getBackendUser()->isAdmin() ? '' : ' AND sys_language.hidden=0';
         $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
             'sys_language.*',

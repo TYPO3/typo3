@@ -20,9 +20,9 @@ class SessionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function objectRegisteredWithRegisterReconstitutedEntityCanBeRetrievedWithGetReconstitutedEntities()
     {
-        $someObject = new \ArrayObject(array());
+        $someObject = new \ArrayObject([]);
         $session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
-        $session->registerReconstitutedEntity($someObject, array('identifier' => 'fakeUuid'));
+        $session->registerReconstitutedEntity($someObject, ['identifier' => 'fakeUuid']);
 
         $ReconstitutedEntities = $session->getReconstitutedEntities();
         $this->assertTrue($ReconstitutedEntities->contains($someObject));
@@ -33,10 +33,10 @@ class SessionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function unregisterReconstitutedEntityRemovesObjectFromSession()
     {
-        $someObject = new \ArrayObject(array());
+        $someObject = new \ArrayObject([]);
         $session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
         $session->registerObject($someObject, 'fakeUuid');
-        $session->registerReconstitutedEntity($someObject, array('identifier' => 'fakeUuid'));
+        $session->registerReconstitutedEntity($someObject, ['identifier' => 'fakeUuid']);
         $session->unregisterReconstitutedEntity($someObject);
 
         $ReconstitutedEntities = $session->getReconstitutedEntities();

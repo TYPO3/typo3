@@ -61,20 +61,20 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
         // @todo Evaluate how the intval() call can be used with Extbase validators/filters
         $this->pageId = (int)GeneralUtility::_GP('id');
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $icons = array(
+        $icons = [
             'language' => $iconFactory->getIcon('flags-multiple', Icon::SIZE_SMALL)->render(),
             'integrity' => $iconFactory->getIcon('status-dialog-information', Icon::SIZE_SMALL)->render(),
             'success' => $iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render(),
             'info' => $iconFactory->getIcon('status-dialog-information', Icon::SIZE_SMALL)->render(),
             'warning' => $iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render(),
             'error' => $iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render()
-        );
+        ];
         $this->pageRenderer->addInlineSetting('Workspaces', 'icons', $icons);
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
         $this->pageRenderer->addInlineSetting('Workspaces', 'depth', $this->pageId === 0 ? 999 : 1);
         $this->pageRenderer->addInlineSetting('Workspaces', 'language', $this->getLanguageSelection());
         $this->pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/Css/module.css');
-        $this->pageRenderer->addInlineLanguageLabelArray(array(
+        $this->pageRenderer->addInlineLanguageLabelArray([
             'title' => $GLOBALS['LANG']->getLL('title'),
             'path' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.path'),
             'table' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.table'),
@@ -85,7 +85,7 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
             'depth_3' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
             'depth_4' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
             'depth_infi' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
-        ));
+        ]);
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xlf');
         $this->assignExtensionSettings();
     }
@@ -97,12 +97,12 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      */
     protected function assignExtensionSettings()
     {
-        $extension = array(
-            'AdditionalColumn' => array(
-                'Definition' => array(),
-                'Handler' => array(),
-            ),
-        );
+        $extension = [
+            'AdditionalColumn' => [
+                'Definition' => [],
+                'Handler' => [],
+            ],
+        ];
 
         $extension['AdditionalColumn']['Definition'] = $this->getAdditionalColumnService()->getDefinition();
         $extension['AdditionalColumn']['Handler'] = $this->getAdditionalColumnService()->getHandler();

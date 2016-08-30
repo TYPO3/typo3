@@ -41,11 +41,11 @@ class Application implements ApplicationInterface
      * All available request handlers that can handle backend requests (non-CLI)
      * @var array
      */
-    protected $availableRequestHandlers = array(
+    protected $availableRequestHandlers = [
         \TYPO3\CMS\Backend\Http\RequestHandler::class,
         \TYPO3\CMS\Backend\Http\BackendModuleRequestHandler::class,
         \TYPO3\CMS\Backend\Http\AjaxRequestHandler::class
-    );
+    ];
 
     /**
      * Constructor setting up legacy constant and register available Request Handlers

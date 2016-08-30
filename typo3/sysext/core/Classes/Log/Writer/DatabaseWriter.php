@@ -69,14 +69,14 @@ class DatabaseWriter extends AbstractWriter
             $data = '- ' . json_encode($recordData);
         }
 
-        $fieldValues = array(
+        $fieldValues = [
             'request_id' => $record->getRequestId(),
             'time_micro' => $record->getCreated(),
             'component' => $record->getComponent(),
             'level' => $record->getLevel(),
             'message' => $record->getMessage(),
             'data' => $data
-        );
+        ];
 
         if (false === $this->getDatabaseConnection()->exec_INSERTquery($this->logTable, $fieldValues)) {
             throw new \RuntimeException('Could not write log record to database', 1345036334);

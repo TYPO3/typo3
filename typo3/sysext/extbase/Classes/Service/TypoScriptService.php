@@ -63,7 +63,7 @@ class TypoScriptService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function convertPlainArrayToTypoScriptArray(array $plainArray)
     {
-        $typoScriptArray = array();
+        $typoScriptArray = [];
         foreach ($plainArray as $key => $value) {
             if (is_array($value)) {
                 if (isset($value['_typoScriptNodeValue'])) {

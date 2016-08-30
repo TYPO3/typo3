@@ -50,7 +50,7 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
      *
      * @param array $data
      */
-    public function __construct(array $data = array())
+    public function __construct(array $data = [])
     {
         if (!empty($data)) {
             $this->dataFromArray($data);
@@ -184,10 +184,10 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
      */
     public function toArray($addChildNodes = true)
     {
-        $arrayRepresentation = array(
+        $arrayRepresentation = [
             'serializeClassName' => get_class($this),
             'id' => $this->id
-        );
+        ];
         if ($this->parentNode !== null) {
             $arrayRepresentation['parentNode'] = $this->parentNode->toArray(false);
         } else {

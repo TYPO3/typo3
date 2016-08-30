@@ -45,7 +45,7 @@ class ValidationElement extends AbstractEntity
      * @param array $incomingFields
      * @return void
      */
-    public function setIncomingFields($incomingFields = array())
+    public function setIncomingFields($incomingFields = [])
     {
         $this->incomingFields = $incomingFields;
     }

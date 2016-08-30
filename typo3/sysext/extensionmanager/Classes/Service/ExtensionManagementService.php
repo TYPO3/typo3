@@ -184,15 +184,15 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
             return false;
         }
 
-        $updatedDependencies = array();
-        $installedDependencies = array();
+        $updatedDependencies = [];
+        $installedDependencies = [];
         $queue = $this->downloadQueue->getExtensionQueue();
         $copyQueue = $this->downloadQueue->getExtensionCopyStorage();
 
         if (!empty($copyQueue)) {
             $this->copyDependencies($copyQueue);
         }
-        $downloadedDependencies = array();
+        $downloadedDependencies = [];
         if (array_key_exists('download', $queue)) {
             $downloadedDependencies = $this->downloadDependencies($queue['download']);
         }
@@ -323,7 +323,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function uninstallDependenciesToBeUpdated(array $updateQueue)
     {
-        $resolvedDependencies = array();
+        $resolvedDependencies = [];
         foreach ($updateQueue as $extensionToUpdate) {
             $this->installUtility->uninstall($extensionToUpdate->getExtensionKey());
             $resolvedDependencies['updated'][$extensionToUpdate->getExtensionKey()] = $extensionToUpdate;
@@ -342,12 +342,12 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
         if (!empty($installQueue)) {
             $this->emitWillInstallExtensionsSignal($installQueue);
         }
-        $resolvedDependencies = array();
+        $resolvedDependencies = [];
         foreach ($installQueue as $extensionKey => $_) {
             $this->installUtility->install($extensionKey);
             $this->emitHasInstalledExtensionSignal($extensionKey);
             if (!is_array($resolvedDependencies['installed'])) {
-                $resolvedDependencies['installed'] = array();
+                $resolvedDependencies['installed'] = [];
             }
             $resolvedDependencies['installed'][$extensionKey] = $extensionKey;
         }
@@ -363,7 +363,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function downloadDependencies(array $downloadQueue)
     {
-        $resolvedDependencies = array();
+        $resolvedDependencies = [];
         foreach ($downloadQueue as $extensionToDownload) {
             $this->downloadUtility->download($extensionToDownload);
             $this->downloadQueue->removeExtensionFromQueue($extensionToDownload);
@@ -385,7 +385,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
         $this->dependencyUtility->checkDependencies($extension);
         $installQueue = $this->downloadQueue->getExtensionInstallStorage();
         if (is_array($installQueue) && !empty($installQueue)) {
-            $installQueue = array('install' => $installQueue);
+            $installQueue = ['install' => $installQueue];
         }
         return array_merge($this->downloadQueue->getExtensionQueue(), $installQueue);
     }
@@ -412,7 +412,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function emitWillInstallExtensionsSignal(array $installQueue)
     {
-        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'willInstallExtensions', array($installQueue));
+        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'willInstallExtensions', [$installQueue]);
     }
 
     /**
@@ -420,7 +420,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function emitHasInstalledExtensionSignal($extensionKey)
     {
-        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'hasInstalledExtensions', array($extensionKey));
+        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'hasInstalledExtensions', [$extensionKey]);
     }
 
     /**

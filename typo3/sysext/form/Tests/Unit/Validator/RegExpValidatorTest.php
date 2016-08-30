@@ -29,9 +29,9 @@ class RegExpValidatorTest extends AbstractValidatorTest
      */
     public function validDataProvider()
     {
-        return array(
-            '/^a/ matches a' => array(array('/^a/', 'a')),
-        );
+        return [
+            '/^a/ matches a' => [['/^a/', 'a']],
+        ];
     }
 
     /**
@@ -39,9 +39,9 @@ class RegExpValidatorTest extends AbstractValidatorTest
      */
     public function invalidDataProvider()
     {
-        return array(
-            '/[^\d]/ matches 8' => array(array('/[^\d]/', 8)),
-        );
+        return [
+            '/[^\d]/ matches 8' => [['/[^\d]/', 8]],
+        ];
     }
 
     /**
@@ -50,7 +50,7 @@ class RegExpValidatorTest extends AbstractValidatorTest
      */
     public function validateForValidInputHasEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['expression'] = $input[0];
         $subject = $this->createSubject($options);
 
@@ -65,7 +65,7 @@ class RegExpValidatorTest extends AbstractValidatorTest
      */
     public function validateForInvalidInputHasNotEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['expression'] = $input[0];
         $subject = $this->createSubject($options);
 

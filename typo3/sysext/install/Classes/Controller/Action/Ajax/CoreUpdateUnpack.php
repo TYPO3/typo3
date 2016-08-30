@@ -26,10 +26,10 @@ class CoreUpdateUnpack extends AbstractCoreUpdate
      */
     protected function executeAction()
     {
-        $this->view->assignMultiple(array(
+        $this->view->assignMultiple([
                 'success' => $this->coreUpdateService->unpackVersion($this->getVersionToHandle()),
                 'status' => $this->coreUpdateService->getMessages(),
-            ));
+            ]);
         return $this->view->render();
     }
 }

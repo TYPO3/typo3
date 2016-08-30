@@ -23,7 +23,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array List of created fake extensions to be deleted in tearDown() again
      */
-    protected $fakedExtensions = array();
+    protected $fakedExtensions = [];
 
     /**
      * Creates a fake extension inside typo3temp/. No configuration is created,
@@ -37,10 +37,10 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $extKey = strtolower($this->getUniqueId('testing'));
         $absExtPath = PATH_site . 'typo3temp/ext-' . $extKey . '/';
         $relPath = 'typo3temp/ext-' . $extKey . '/';
-        $this->fakedExtensions[$extKey] = array(
+        $this->fakedExtensions[$extKey] = [
             'siteRelPath' => $relPath,
             'siteAbsPath' => $absExtPath
-        );
+        ];
         if ($extkeyOnly === true) {
             return $extKey;
         }
@@ -56,7 +56,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function makeAndClearExtensionDirRemovesExtensionDirIfAlreadyExists()
     {
         $extKey = $this->createFakeExtension();
-        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array('removeDirectory', 'addDirectory', 'getExtensionDir'), array(), '', false);
+        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, ['removeDirectory', 'addDirectory', 'getExtensionDir'], [], '', false);
         $fileHandlerMock->expects($this->once())
             ->method('removeDirectory')
             ->with(PATH_site . 'typo3temp/ext-' . $extKey . '/');
@@ -71,12 +71,12 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function invalidRelativePathDataProvider()
     {
-        return array(
-            array('../../'),
-            array('/foo/bar'),
-            array('foo//bar'),
-            array('foo/bar' . chr(0)),
-        );
+        return [
+            ['../../'],
+            ['/foo/bar'],
+            ['foo//bar'],
+            ['foo/bar' . chr(0)],
+        ];
     }
 
     /**
@@ -87,7 +87,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getAbsolutePathThrowsExceptionForInvalidRelativePaths($invalidRelativePath)
     {
-        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array('dummy'), array());
+        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, ['dummy'], []);
         $fileHandlerMock->_call('getAbsolutePath', $invalidRelativePath);
     }
 
@@ -96,10 +96,10 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validRelativePathDataProvider()
     {
-        return array(
-            array('foo/../bar', PATH_site . 'bar'),
-            array('bas', PATH_site . 'bas'),
-        );
+        return [
+            ['foo/../bar', PATH_site . 'bar'],
+            ['bas', PATH_site . 'bas'],
+        ];
     }
 
     /**
@@ -110,7 +110,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getAbsolutePathReturnsAbsolutePathForValidRelativePaths($validRelativePath, $expectedAbsolutePath)
     {
-        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array('dummy'));
+        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, ['dummy']);
         $this->assertSame($expectedAbsolutePath, $fileHandlerMock->_call('getAbsolutePath', $validRelativePath));
     }
 
@@ -121,7 +121,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function makeAndClearExtensionDirAddsDir()
     {
         $extKey = $this->createFakeExtension();
-        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array('removeDirectory', 'addDirectory', 'getExtensionDir'));
+        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, ['removeDirectory', 'addDirectory', 'getExtensionDir']);
         $fileHandlerMock->expects($this->once())
             ->method('addDirectory')
             ->with(PATH_site . 'typo3temp/ext-' . $extKey . '/');
@@ -138,7 +138,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function makeAndClearExtensionDirThrowsExceptionOnInvalidPath()
     {
-        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array('removeDirectory', 'addDirectory'));
+        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, ['removeDirectory', 'addDirectory']);
         $languageServiceMock = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class);
         $fileHandlerMock->_set('languageService', $languageServiceMock);
         $fileHandlerMock->_call('makeAndClearExtensionDir', 'testing123', 'fakepath');
@@ -152,7 +152,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $extDirPath = PATH_site . '/typo3temp/' . $this->getUniqueId('test-extensions-');
         $this->testFilesToDelete[] = $extDirPath;
-        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array('dummy'));
+        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, ['dummy']);
         $fileHandlerMock->_call('addDirectory', $extDirPath);
         $this->assertTrue(is_dir($extDirPath));
     }
@@ -165,7 +165,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $extDirPath = PATH_site . '/typo3temp/' . $this->getUniqueId('test-extensions-');
         @mkdir($extDirPath);
-        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array('dummy'));
+        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, ['dummy']);
         $fileHandlerMock->_call('removeDirectory', $extDirPath);
         $this->assertFalse(is_dir($extDirPath));
     }
@@ -215,10 +215,10 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function unpackExtensionFromExtensionDataArrayCreatesTheExtensionDirectory()
     {
-        $extensionData = array(
+        $extensionData = [
             'extKey' => 'test'
-        );
-        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array(
+        ];
+        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, [
             'makeAndClearExtensionDir',
             'writeEmConfToFile',
             'extractFilesArrayFromExtensionData',
@@ -226,9 +226,9 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'createDirectoriesForExtensionFiles',
             'writeExtensionFiles',
             'reloadPackageInformation',
-        ));
-        $fileHandlerMock->expects($this->once())->method('extractFilesArrayFromExtensionData')->will($this->returnValue(array()));
-        $fileHandlerMock->expects($this->once())->method('extractDirectoriesFromExtensionData')->will($this->returnValue(array()));
+        ]);
+        $fileHandlerMock->expects($this->once())->method('extractFilesArrayFromExtensionData')->will($this->returnValue([]));
+        $fileHandlerMock->expects($this->once())->method('extractDirectoriesFromExtensionData')->will($this->returnValue([]));
         $fileHandlerMock->expects($this->once())->method('makeAndClearExtensionDir')->with($extensionData['extKey']);
         $fileHandlerMock->_call('unpackExtensionFromExtensionDataArray', $extensionData);
     }
@@ -239,54 +239,54 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function unpackExtensionFromExtensionDataArrayStripsDirectoriesFromFilesArray()
     {
-        $extensionData = array(
+        $extensionData = [
             'extKey' => 'test'
-        );
-        $files = array(
-            'ChangeLog' => array(
+        ];
+        $files = [
+            'ChangeLog' => [
                 'name' => 'ChangeLog',
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
                 'content' => 'some content to write'
-            ),
-            'doc/' => array(
+            ],
+            'doc/' => [
                 'name' => 'doc/',
                 'size' => 0,
                 'mtime' => 1219448527,
                 'is_executable' => false,
                 'content' => ''
-            ),
-            'doc/ChangeLog' => array(
+            ],
+            'doc/ChangeLog' => [
                 'name' => 'ChangeLog',
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
                 'content' => 'some content to write'
-            ),
-        );
-        $cleanedFiles = array(
-            'ChangeLog' => array(
+            ],
+        ];
+        $cleanedFiles = [
+            'ChangeLog' => [
                 'name' => 'ChangeLog',
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
                 'content' => 'some content to write'
-            ),
-            'doc/ChangeLog' => array(
+            ],
+            'doc/ChangeLog' => [
                 'name' => 'ChangeLog',
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
                 'content' => 'some content to write'
-            ),
-        );
-        $directories = array(
+            ],
+        ];
+        $directories = [
             'doc/',
             'mod/doc/'
-        );
+        ];
 
-        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array(
+        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, [
             'makeAndClearExtensionDir',
             'writeEmConfToFile',
             'extractFilesArrayFromExtensionData',
@@ -294,7 +294,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'createDirectoriesForExtensionFiles',
             'writeExtensionFiles',
             'reloadPackageInformation',
-        ));
+        ]);
         $fileHandlerMock->expects($this->once())->method('extractFilesArrayFromExtensionData')->will($this->returnValue($files));
         $fileHandlerMock->expects($this->once())->method('extractDirectoriesFromExtensionData')->will($this->returnValue($directories));
         $fileHandlerMock->expects($this->once())->method('createDirectoriesForExtensionFiles')->with($directories);
@@ -309,14 +309,14 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extractFilesArrayFromExtensionDataReturnsFileArray()
     {
-        $extensionData = array(
+        $extensionData = [
             'key' => 'test',
-            'FILES' => array(
+            'FILES' => [
                 'filename1' => 'dummycontent',
                 'filename2' => 'dummycontent2'
-            )
-        );
-        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array('makeAndClearExtensionDir'));
+            ]
+        ];
+        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         $extractedFiles = $fileHandlerMock->_call('extractFilesArrayFromExtensionData', $extensionData);
         $this->assertArrayHasKey('filename1', $extractedFiles);
         $this->assertArrayHasKey('filename2', $extractedFiles);
@@ -328,24 +328,24 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function writeExtensionFilesWritesFiles()
     {
-        $files = array(
-            'ChangeLog' => array(
+        $files = [
+            'ChangeLog' => [
                 'name' => 'ChangeLog',
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
                 'content' => 'some content to write'
-            ),
-            'README' => array(
+            ],
+            'README' => [
                 'name' => 'README',
                 'size' => 4566,
                 'mtime' => 1219448533,
                 'is_executable' => false,
                 'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE'
-            )
-        );
+            ]
+        ];
         $rootPath = ($extDirPath = $this->fakedExtensions[$this->createFakeExtension()]['siteAbsPath']);
-        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array('makeAndClearExtensionDir'));
+        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         $fileHandlerMock->_call('writeExtensionFiles', $files, $rootPath);
         $this->assertTrue(file_exists($rootPath . 'ChangeLog'));
     }
@@ -356,49 +356,49 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extractDirectoriesFromExtensionDataExtractsDirectories()
     {
-        $files = array(
-            'ChangeLog' => array(
+        $files = [
+            'ChangeLog' => [
                 'name' => 'ChangeLog',
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
                 'content' => 'some content to write'
-            ),
-            'doc/' => array(
+            ],
+            'doc/' => [
                 'name' => 'doc/',
                 'size' => 0,
                 'mtime' => 1219448527,
                 'is_executable' => false,
                 'content' => ''
-            ),
-            'doc/ChangeLog' => array(
+            ],
+            'doc/ChangeLog' => [
                 'name' => 'ChangeLog',
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
                 'content' => 'some content to write'
-            ),
-            'doc/README' => array(
+            ],
+            'doc/README' => [
                 'name' => 'README',
                 'size' => 4566,
                 'mtime' => 1219448533,
                 'is_executable' => false,
                 'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE'
-            ),
-            'mod/doc/README' => array(
+            ],
+            'mod/doc/README' => [
                 'name' => 'README',
                 'size' => 4566,
                 'mtime' => 1219448533,
                 'is_executable' => false,
                 'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE'
-            )
-        );
-        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array('makeAndClearExtensionDir'));
+            ]
+        ];
+        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         $extractedDirectories = $fileHandlerMock->_call('extractDirectoriesFromExtensionData', $files);
-        $expected = array(
+        $expected = [
             'doc/',
             'mod/doc/'
-        );
+        ];
         $this->assertSame($expected, array_values($extractedDirectories));
     }
 
@@ -409,11 +409,11 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function createDirectoriesForExtensionFilesCreatesDirectories()
     {
         $rootPath = $this->fakedExtensions[$this->createFakeExtension()]['siteAbsPath'];
-        $directories = array(
+        $directories = [
             'doc/',
             'mod/doc/'
-        );
-        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array('makeAndClearExtensionDir'));
+        ];
+        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         $this->assertFalse(is_dir($rootPath . 'doc/'));
         $this->assertFalse(is_dir($rootPath . 'mod/doc/'));
         $fileHandlerMock->_call('createDirectoriesForExtensionFiles', $directories, $rootPath);
@@ -428,18 +428,18 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function writeEmConfWritesEmConfFile()
     {
         $extKey = $this->createFakeExtension();
-        $extensionData = array(
+        $extensionData = [
             'extKey' => $extKey,
-            'EM_CONF' => array(
+            'EM_CONF' => [
                 'title' => 'Plugin cache engine',
                 'description' => 'Provides an interface to cache plugin content elements based on 4.3 caching framework',
                 'category' => 'Frontend',
-            )
-        );
+            ]
+        ];
         $rootPath = $this->fakedExtensions[$extKey]['siteAbsPath'];
-        $emConfUtilityMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility::class, array('constructEmConf'));
+        $emConfUtilityMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility::class, ['constructEmConf']);
         $emConfUtilityMock->expects($this->once())->method('constructEmConf')->with($extensionData)->will($this->returnValue(var_export($extensionData['EM_CONF'], true)));
-        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array('makeAndClearExtensionDir'));
+        $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         $fileHandlerMock->_set('emConfUtility', $emConfUtilityMock);
         $fileHandlerMock->_call('writeEmConfToFile', $extensionData, $rootPath);
         $this->assertTrue(file_exists($rootPath . 'ext_emconf.php'));
@@ -451,7 +451,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function getPreparedFileHandlingMockForDirectoryCreationTests()
     {
         /** @var $fileHandlerMock \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility|\PHPUnit_Framework_MockObject_MockObject */
-        $fileHandlerMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, array('createNestedDirectory', 'getAbsolutePath', 'directoryExists'));
+        $fileHandlerMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, ['createNestedDirectory', 'getAbsolutePath', 'directoryExists']);
         $fileHandlerMock->expects($this->any())
             ->method('getAbsolutePath')
             ->will($this->returnArgument(0));
@@ -466,10 +466,10 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
         $fileHandlerMock->expects($this->never())
             ->method('createNestedDirectory');
-        $fileHandlerMock->ensureConfiguredDirectoriesExist(array(
+        $fileHandlerMock->ensureConfiguredDirectoriesExist([
                 'key' => 'foo_bar',
                 'uploadfolder' => 0,
-            )
+            ]
         );
     }
 
@@ -481,10 +481,10 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
         $fileHandlerMock->expects($this->never())
             ->method('createNestedDirectory');
-        $fileHandlerMock->ensureConfiguredDirectoriesExist(array(
+        $fileHandlerMock->ensureConfiguredDirectoriesExist([
                 'key' => 'foo_bar',
                 'createDirs' => '',
-            )
+            ]
         );
     }
 
@@ -497,10 +497,10 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $fileHandlerMock->expects($this->once())
             ->method('createNestedDirectory')
             ->with('uploads/tx_foobar/');
-        $fileHandlerMock->ensureConfiguredDirectoriesExist(array(
+        $fileHandlerMock->ensureConfiguredDirectoriesExist([
                 'key' => 'foo_bar',
                 'uploadfolder' => 1,
-            )
+            ]
         );
     }
 
@@ -513,16 +513,16 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $fileHandlerMock->expects($this->exactly(2))
             ->method('createNestedDirectory')
             ->will($this->returnCallback(function ($path) {
-                    if (!in_array($path, array('foo/bar', 'baz/foo'))) {
+                    if (!in_array($path, ['foo/bar', 'baz/foo'])) {
                         throw new \Exception('Path "' . $path . '" is not expected to be created');
                     }
 
                 })
             );
-        $fileHandlerMock->ensureConfiguredDirectoriesExist(array(
+        $fileHandlerMock->ensureConfiguredDirectoriesExist([
                 'key' => 'foo_bar',
                 'createDirs' => 'foo/bar, baz/foo',
-            )
+            ]
         );
     }
 
@@ -537,11 +537,11 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->will($this->returnValue(true));
         $fileHandlerMock->expects($this->never())
             ->method('createNestedDirectory');
-        $fileHandlerMock->ensureConfiguredDirectoriesExist(array(
+        $fileHandlerMock->ensureConfiguredDirectoriesExist([
                 'key' => 'foo_bar',
                 'uploadfolder' => 1,
                 'createDirs' => 'foo/bar, baz/foo',
-            )
+            ]
         );
     }
 
@@ -562,7 +562,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         // Build mocked fileHandlingUtility:
         $fileHandlerMock = $this->getAccessibleMock(
             \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class,
-            array('getAbsoluteExtensionPath', 'getExtensionVersion')
+            ['getAbsoluteExtensionPath', 'getExtensionVersion']
         );
         $fileHandlerMock->expects($this->any())
             ->method('getAbsoluteExtensionPath')

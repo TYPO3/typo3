@@ -35,7 +35,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     const BEHAVIOUR_LocalizeChildrenAtParentLocalization = 'localizeChildrenAtParentLocalization';
     const BEHAVIOUR_LocalizationMode = 'localizationMode';
 
-    protected $testExtensionsToLoad = array('typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial');
+    protected $testExtensionsToLoad = ['typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial'];
 
     /**
      * @var int
@@ -99,14 +99,14 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     protected function getElementStructureForCommands($command, $value, array $tables)
     {
-        $commandStructure = array();
+        $commandStructure = [];
 
         foreach ($tables as $tableName => $idList) {
             $ids = GeneralUtility::trimExplode(',', $idList, true);
             foreach ($ids as $id) {
-                $commandStructure[$tableName][$id] = array(
+                $commandStructure[$tableName][$id] = [
                     $command => $value
-                );
+                ];
             }
         }
 
@@ -122,7 +122,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     protected function simulateCommandByStructure(array $elements)
     {
         $tceMain = $this->getTceMain();
-        $tceMain->start(array(), $elements);
+        $tceMain->start([], $elements);
         $tceMain->process_cmdmap();
 
         return $tceMain;
@@ -165,7 +165,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     protected function getElementsByItemArray(array $itemArray)
     {
-        $elements = array();
+        $elements = [];
 
         foreach ($itemArray as $item) {
             $elements[$item['table']][$item['id']] = BackendUtility::getRecord($item['table'], $item['id']);
@@ -227,7 +227,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     {
         if (isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'])) {
             if (!isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config']['behaviour'])) {
-                $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config']['behaviour'] = array();
+                $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config']['behaviour'] = [];
             }
 
             $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config']['behaviour'][$behaviourName] = $value;
@@ -332,13 +332,13 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 $parentItems = explode(':', $parent);
                 $childItems = explode(':', $child);
 
-                $assertion = array(
+                $assertion = [
                     'tablename' => $parentItems[0],
                     'recuid' => $parentItems[1],
                     'field' => $parentItems[2],
                     'ref_table' => $childItems[0],
                     'ref_uid' => $childItems[1],
-                );
+                ];
 
                 $this->assertTrue(
                     ($expected === $this->executeAssertionOnElements($assertion, $references)),

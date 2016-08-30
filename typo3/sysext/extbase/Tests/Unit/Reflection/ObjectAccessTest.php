@@ -90,7 +90,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getPropertyReturnsThrowsExceptionIfArrayKeyDoesNotExist()
     {
-        \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty(array(), 'notExistingProperty');
+        \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty([], 'notExistingProperty');
     }
 
     /**
@@ -170,7 +170,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setPropertyCanDirectlySetValuesInAnArrayObjectOrArray()
     {
         $arrayObject = new \ArrayObject();
-        $array = array();
+        $array = [];
         \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($arrayObject, 'publicProperty', 4242);
         \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($array, 'key', 'value');
         $this->assertEquals(4242, $arrayObject['publicProperty']);
@@ -182,7 +182,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getPropertyCanAccessPropertiesOfAnArrayObject()
     {
-        $arrayObject = new \ArrayObject(array('key' => 'value'));
+        $arrayObject = new \ArrayObject(['key' => 'value']);
         $actual = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($arrayObject, 'key');
         $this->assertEquals('value', $actual, 'getProperty does not work with ArrayObject property.');
     }
@@ -203,7 +203,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getPropertyCanAccessPropertiesOfAnObjectImplementingArrayAccess()
     {
-        $arrayAccessInstance = new \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\ArrayAccessClass(array('key' => 'value'));
+        $arrayAccessInstance = new \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\ArrayAccessClass(['key' => 'value']);
         $actual = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($arrayAccessInstance, 'key');
         $this->assertEquals('value', $actual, 'getProperty does not work with Array Access property.');
     }
@@ -213,7 +213,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getPropertyCanAccessPropertiesOfAnArray()
     {
-        $array = array('key' => 'value');
+        $array = ['key' => 'value'];
         $expected = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($array, 'key');
         $this->assertEquals($expected, 'value', 'getProperty does not work with Array property.');
     }
@@ -223,7 +223,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getPropertyPathCanAccessPropertiesOfAnArray()
     {
-        $array = array('parent' => array('key' => 'value'));
+        $array = ['parent' => ['key' => 'value']];
         $actual = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.key');
         $this->assertEquals('value', $actual, 'getPropertyPath does not work with Array property.');
     }
@@ -233,7 +233,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getPropertyPathCanAccessPropertiesOfAnObjectImplementingArrayAccess()
     {
-        $array = array('parent' => new \ArrayObject(array('key' => 'value')));
+        $array = ['parent' => new \ArrayObject(['key' => 'value'])];
         $actual = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.key');
         $this->assertEquals('value', $actual, 'getPropertyPath does not work with Array Access property.');
     }
@@ -250,9 +250,9 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $exampleObject2->key = 'value2';
         $objectStorage->attach($exampleObject);
         $objectStorage->attach($exampleObject2);
-        $array = array(
+        $array = [
             'parent' => $objectStorage,
-        );
+        ];
         $this->assertSame('value', \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.0.key'));
         $this->assertSame('value2', \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.1.key'));
     }
@@ -269,9 +269,9 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $exampleObject2->key = 'value2';
         $objectStorage->attach($exampleObject);
         $objectStorage->attach($exampleObject2);
-        $array = array(
+        $array = [
             'parent' => $objectStorage,
-        );
+        ];
         $this->assertSame('value', \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.0.key'));
         $this->assertSame('value2', \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.1.key'));
     }
@@ -282,7 +282,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getGettablePropertyNamesReturnsAllPropertiesWhichAreAvailable()
     {
         $gettablePropertyNames = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettablePropertyNames($this->dummyObject);
-        $expectedPropertyNames = array('anotherBooleanProperty', 'anotherProperty', 'booleanProperty', 'property', 'property2', 'publicProperty', 'publicProperty2');
+        $expectedPropertyNames = ['anotherBooleanProperty', 'anotherProperty', 'booleanProperty', 'property', 'property2', 'publicProperty', 'publicProperty2'];
         $this->assertEquals($gettablePropertyNames, $expectedPropertyNames, 'getGettablePropertyNames returns not all gettable properties.');
     }
 
@@ -292,7 +292,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getSettablePropertyNamesReturnsAllPropertiesWhichAreAvailable()
     {
         $settablePropertyNames = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getSettablePropertyNames($this->dummyObject);
-        $expectedPropertyNames = array('anotherBooleanProperty', 'anotherProperty', 'property', 'property2', 'publicProperty', 'publicProperty2', 'writeOnlyMagicProperty');
+        $expectedPropertyNames = ['anotherBooleanProperty', 'anotherProperty', 'property', 'property2', 'publicProperty', 'publicProperty2', 'writeOnlyMagicProperty'];
         $this->assertEquals($settablePropertyNames, $expectedPropertyNames, 'getSettablePropertyNames returns not all settable properties.');
     }
 
@@ -305,7 +305,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $stdClassObject->property = 'string1';
         $stdClassObject->property2 = null;
         $settablePropertyNames = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getSettablePropertyNames($stdClassObject);
-        $expectedPropertyNames = array('property', 'property2');
+        $expectedPropertyNames = ['property', 'property2'];
         $this->assertEquals($expectedPropertyNames, $settablePropertyNames, 'getSettablePropertyNames returns not all settable properties.');
     }
 
@@ -315,7 +315,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getGettablePropertiesReturnsTheCorrectValuesForAllProperties()
     {
         $allProperties = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($this->dummyObject);
-        $expectedProperties = array(
+        $expectedProperties = [
             'anotherBooleanProperty' => true,
             'anotherProperty' => 42,
             'booleanProperty' => true,
@@ -323,7 +323,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'property2' => null,
             'publicProperty' => null,
             'publicProperty2' => 42
-        );
+        ];
         $this->assertEquals($allProperties, $expectedProperties, 'expectedProperties did not return the right values for the properties.');
     }
 
@@ -337,11 +337,11 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $stdClassObject->property2 = null;
         $stdClassObject->publicProperty2 = 42;
         $allProperties = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($stdClassObject);
-        $expectedProperties = array(
+        $expectedProperties = [
             'property' => 'string1',
             'property2' => null,
             'publicProperty2' => 42
-        );
+        ];
         $this->assertEquals($expectedProperties, $allProperties, 'expectedProperties did not return the right values for the properties.');
     }
 

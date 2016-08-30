@@ -115,7 +115,7 @@ class HelpController extends ActionController
         if (count($identifierParts) > 1) {
             array_shift($field);
             // There's at least one extra part
-            $extraIdentifierInformation = array();
+            $extraIdentifierInformation = [];
             $extraIdentifierInformation[] = array_shift($identifierParts);
             // If the ds_pointerField contains a comma, it means the choice of FlexForm DS
             // is determined by 2 parameters. In this case we have an extra identifier part
@@ -132,12 +132,12 @@ class HelpController extends ActionController
             $field = $flexFormField;
         }
 
-        $this->view->assignMultiple(array(
+        $this->view->assignMultiple([
             'table' => $table,
             'key' => $mainKey,
             'field' => $field,
-            'manuals' => $field === '*' ? $this->tableManualRepository->getTableManual($mainKey) : array($this->tableManualRepository->getSingleManual($mainKey, $field)),
-        ));
+            'manuals' => $field === '*' ? $this->tableManualRepository->getTableManual($mainKey) : [$this->tableManualRepository->getSingleManual($mainKey, $field)],
+        ]);
     }
 
     /**
@@ -159,7 +159,7 @@ class HelpController extends ActionController
             $extensionName = $currentRequest->getControllerExtensionName();
             if (count($getVars) === 0) {
                 $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-                $getVars = array('id', 'M', $modulePrefix);
+                $getVars = ['id', 'M', $modulePrefix];
             }
             $shortcutButton = $buttonBar->makeShortcutButton()
                 ->setModuleName($moduleName)

@@ -36,7 +36,7 @@ class UsernamePasswordLoginProvider implements LoginProviderInterface
      */
     public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController)
     {
-        GeneralUtility::makeInstance(ObjectManager::class)->get(Dispatcher::class)->dispatch(__CLASS__, self::SIGNAL_getPageRenderer, array($pageRenderer));
+        GeneralUtility::makeInstance(ObjectManager::class)->get(Dispatcher::class)->dispatch(__CLASS__, self::SIGNAL_getPageRenderer, [$pageRenderer]);
 
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/UserPassLogin');
 

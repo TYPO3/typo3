@@ -34,9 +34,9 @@ class SendmailPreset extends Configuration\AbstractPreset
     /**
      * @var array Configuration values handled by this preset
      */
-    protected $configurationValues = array(
+    protected $configurationValues = [
         'MAIL/transport_sendmail_command' => '',
-    );
+    ];
 
     /**
      * Get configuration values to activate prefix

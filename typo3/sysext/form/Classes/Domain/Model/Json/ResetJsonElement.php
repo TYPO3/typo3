@@ -31,24 +31,24 @@ class ResetJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEle
      *
      * @var array
      */
-    public $configuration = array(
-        'attributes' => array(
+    public $configuration = [
+        'attributes' => [
             'type' => 'reset'
-        ),
-        'filters' => array(),
-        'label' => array(
+        ],
+        'filters' => [],
+        'label' => [
             'value' => ''
-        ),
+        ],
         'layout' => 'front',
-        'validation' => array()
-    );
+        'validation' => []
+    ];
 
     /**
      * Allowed attributes for this object
      *
      * @var array
      */
-    protected $allowedAttributes = array(
+    protected $allowedAttributes = [
         'accesskey',
         'class',
         'contenteditable',
@@ -70,5 +70,5 @@ class ResetJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEle
         'name',
         'type',
         'value'
-    );
+    ];
 }

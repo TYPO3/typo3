@@ -65,7 +65,7 @@ class TemplateVariableContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $object = 'StringObject';
         $this->variableContainer->add('variable', $object);
-        $this->assertEquals($this->variableContainer->getAllIdentifiers(), array('variable'), 'Added key is not visible in getAllIdentifiers');
+        $this->assertEquals($this->variableContainer->getAllIdentifiers(), ['variable'], 'Added key is not visible in getAllIdentifiers');
     }
 
     /**
@@ -121,7 +121,7 @@ class TemplateVariableContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function whenVariablesAreEmpty_getAll_shouldReturnEmptyArray()
     {
-        $this->assertSame(array(), $this->variableContainer->get('_all'));
+        $this->assertSame([], $this->variableContainer->get('_all'));
     }
 
     /**
@@ -130,7 +130,7 @@ class TemplateVariableContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getAllShouldReturnAllVariables()
     {
         $this->variableContainer->add('name', 'Simon');
-        $this->assertSame(array('name' => 'Simon'), $this->variableContainer->get('_all'));
+        $this->assertSame(['name' => 'Simon'], $this->variableContainer->get('_all'));
     }
 
     /**

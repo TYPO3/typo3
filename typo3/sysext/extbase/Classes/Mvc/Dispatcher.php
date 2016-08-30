@@ -38,7 +38,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $settings = array();
+    protected $settings = [];
 
     /**
      * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
@@ -98,7 +98,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function emitAfterRequestDispatchSignal(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
     {
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRequestDispatch', array($request, $response));
+        $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRequestDispatch', [$request, $response]);
     }
 
     /**

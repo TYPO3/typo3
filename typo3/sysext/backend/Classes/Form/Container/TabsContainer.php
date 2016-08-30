@@ -39,7 +39,7 @@ class TabsContainer extends AbstractContainer
         $fieldsArray = $this->data['fieldsArray'];
 
         // Create a nested array from flat fieldArray list
-        $tabsArray = array();
+        $tabsArray = [];
         // First element will be a --div--, so it is safe to start -1 here to trigger 0 as first array index
         $currentTabIndex = -1;
         foreach ($fieldsArray as $fieldString) {
@@ -52,10 +52,10 @@ class TabsContainer extends AbstractContainer
                         1426454001
                     );
                 }
-                $tabsArray[$currentTabIndex] = array(
+                $tabsArray[$currentTabIndex] = [
                     'label' => $languageService->sL($fieldArray['fieldLabel']),
-                    'elements' => array(),
-                );
+                    'elements' => [],
+                ];
             } else {
                 $tabsArray[$currentTabIndex]['elements'][] = $fieldArray;
             }
@@ -66,7 +66,7 @@ class TabsContainer extends AbstractContainer
 
         $domIdPrefix = 'DTM-' . GeneralUtility::shortMD5($this->data['tableName'] . $this->data['databaseRow']['uid']);
         $tabCounter = 0;
-        $tabElements = array();
+        $tabElements = [];
         foreach ($tabsArray as $tabWithLabelAndElements) {
             $tabCounter ++;
             $elements = $tabWithLabelAndElements['elements'];
@@ -74,21 +74,21 @@ class TabsContainer extends AbstractContainer
             // Merge elements of this tab into a single list again and hand over to
             // palette and single field container to render this group
             $options = $this->data;
-            $options['tabAndInlineStack'][] = array(
+            $options['tabAndInlineStack'][] = [
                 'tab',
                 $domIdPrefix . '-' . $tabCounter,
-            );
-            $options['fieldsArray'] = array();
+            ];
+            $options['fieldsArray'] = [];
             foreach ($elements as $element) {
                 $options['fieldsArray'][] = implode(';', $element);
             }
             $options['renderType'] = 'paletteAndSingleContainer';
             $childArray = $this->nodeFactory->create($options)->render();
 
-            $tabElements[] = array(
+            $tabElements[] = [
                 'label' => $tabWithLabelAndElements['label'],
                 'content' => $childArray['html'],
-            );
+            ];
             $childArray['html'] = '';
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childArray);
         }

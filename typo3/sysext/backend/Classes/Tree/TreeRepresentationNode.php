@@ -151,13 +151,13 @@ class TreeRepresentationNode extends \TYPO3\CMS\Backend\Tree\TreeNode
     public function toArray($addChildNodes = true)
     {
         $arrayRepresentation = parent::toArray();
-        $arrayRepresentation = array_merge($arrayRepresentation, array(
+        $arrayRepresentation = array_merge($arrayRepresentation, [
             'label' => $this->label,
             'type' => $this->type,
             'class' => $this->class,
             'icon' => $this->icon,
             'callbackAction' => $this->callbackAction
-        ));
+        ]);
         return $arrayRepresentation;
     }
 

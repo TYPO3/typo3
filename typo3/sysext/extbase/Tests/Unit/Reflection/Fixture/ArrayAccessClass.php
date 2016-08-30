@@ -21,7 +21,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  */
 class ArrayAccessClass implements \ArrayAccess
 {
-    protected $array = array();
+    protected $array = [];
 
     /**
      * @param array $array

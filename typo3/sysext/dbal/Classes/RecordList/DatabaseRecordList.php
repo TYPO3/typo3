@@ -34,7 +34,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecord
         // Make query, only if table is valid and a search string is actually defined:
         if ($GLOBALS['TCA'][$table] && $this->searchString) {
             // Initialize field array:
-            $sfields = array();
+            $sfields = [];
             $or = '';
             // add the uid only if input is numeric, cast to int
             if (is_numeric($this->searchString)) {

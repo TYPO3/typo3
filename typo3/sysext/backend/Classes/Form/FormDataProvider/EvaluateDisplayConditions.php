@@ -78,7 +78,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                 continue;
             }
 
-            $flexFormRowData = is_array($result['databaseRow'][$columnName]['data']) ? $result['databaseRow'][$columnName]['data'] : array();
+            $flexFormRowData = is_array($result['databaseRow'][$columnName]['data']) ? $result['databaseRow'][$columnName]['data'] : [];
             $flexFormRowData = $this->flattenFlexformRowData($flexFormRowData);
             $flexFormRowData['parentRec'] = $result['databaseRow'];
 
@@ -113,7 +113,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                 continue;
             }
 
-            $flexFormRowData = is_array($result['databaseRow'][$columnName]['data']) ? $result['databaseRow'][$columnName]['data'] : array();
+            $flexFormRowData = is_array($result['databaseRow'][$columnName]['data']) ? $result['databaseRow'][$columnName]['data'] : [];
             $flexFormRowData['parentRec'] = $result['databaseRow'];
 
             foreach ($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
@@ -189,7 +189,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
      * @param int $recursionLevel Internal level of recursion
      * @return bool TRUE if condition evaluates successfully
      */
-    protected function evaluateDisplayCondition($displayCondition, array $record = array(), $flexformContext = false, $recursionLevel = 0)
+    protected function evaluateDisplayCondition($displayCondition, array $record = [], $flexformContext = false, $recursionLevel = 0)
     {
         if ($recursionLevel > 99) {
             // This should not happen, treat as misconfiguration
@@ -200,10 +200,10 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
             $result = $this->evaluateSingleDisplayCondition($displayCondition, $record, $flexformContext);
         } else {
             // Multiple conditions given as array ('AND|OR' => condition array)
-            $conditionEvaluations = array(
-                'AND' => array(),
-                'OR' => array(),
-            );
+            $conditionEvaluations = [
+                'AND' => [],
+                'OR' => [],
+            ];
             foreach ($displayCondition as $logicalOperator => $groupedDisplayConditions) {
                 $logicalOperator = strtoupper($logicalOperator);
                 if (($logicalOperator !== 'AND' && $logicalOperator !== 'OR') || !is_array($groupedDisplayConditions)) {
@@ -215,7 +215,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                         if (($key === 'AND' || $key === 'OR') && is_array($singleDisplayCondition)) {
                             // Recursion statement: condition is 'AND' or 'OR' and is pointing to an array (should be conditions again)
                             $conditionEvaluations[$logicalOperator][] = $this->evaluateDisplayCondition(
-                                array($key => $singleDisplayCondition),
+                                [$key => $singleDisplayCondition],
                                 $record,
                                 $flexformContext,
                                 $recursionLevel + 1
@@ -261,7 +261,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
      * @return bool
      * @see evaluateDisplayCondition()
      */
-    protected function evaluateSingleDisplayCondition($displayCondition, array $record = array(), $flexformContext = false)
+    protected function evaluateSingleDisplayCondition($displayCondition, array $record = [], $flexformContext = false)
     {
         $result = false;
         list($matchType, $condition) = explode(':', $displayCondition, 2);
@@ -515,11 +515,11 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
         $conditionParameters = explode(':', $condition);
         $userFunction = array_shift($conditionParameters);
 
-        $parameter = array(
+        $parameter = [
             'record' => $record,
             'flexformValueKey' => 'vDEF',
             'conditionParameters' => $conditionParameters
-        );
+        ];
 
         return (bool)GeneralUtility::callUserFunction($userFunction, $parameter, $this);
     }

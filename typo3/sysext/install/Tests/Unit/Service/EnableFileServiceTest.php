@@ -28,34 +28,34 @@ class EnableFileServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFirstInstallFilePathsDataProvider()
     {
-        return array(
-            'first-install-file-present' => array(
-                array(
-                    'FIRST_INSTALL2Folder' => array(),
+        return [
+            'first-install-file-present' => [
+                [
+                    'FIRST_INSTALL2Folder' => [],
                     'FIRST_INSTALL' => '',
                     'FIRST_INStall' => '',
                     'FIRST_INSTALL.txt' => 'with content',
                     'somethingelse' => '',
                     'dadadaFIRST_INStall' => '',
-                ),
-                array(
+                ],
+                [
                     'FIRST_INSTALL',
                     'FIRST_INStall',
                     'FIRST_INSTALL.txt',
-                ),
-            ),
-            'no-first-install-file' => array(
-                array(
-                    'FIRST_INSTALL2Folder' => array(),
+                ],
+            ],
+            'no-first-install-file' => [
+                [
+                    'FIRST_INSTALL2Folder' => [],
                     'foo' => '',
                     'bar' => '',
                     'ddd.txt' => 'with content',
                     'somethingelse' => '',
                     'dadadaFIRST_INStall' => '',
-                ),
-                array(),
-            ),
-        );
+                ],
+                [],
+            ],
+        ];
     }
 
     /**
@@ -67,9 +67,9 @@ class EnableFileServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $vfs = vfsStream::setup('root');
         vfsStream::create($structure, $vfs);
         /** @var $instance \TYPO3\CMS\Install\Service\EnableFileService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\EnableFileService::class, array('dummy'), array(), '', false);
+        $instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\EnableFileService::class, ['dummy'], [], '', false);
         $instance->_setStatic('sitePath', 'vfs://root/');
-        $this->assertEquals(array(), array_diff($expected, $instance->_call('getFirstInstallFilePaths')));
+        $this->assertEquals([], array_diff($expected, $instance->_call('getFirstInstallFilePaths')));
     }
 
     /**
@@ -79,34 +79,34 @@ class EnableFileServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function removeFirstInstallFileDataProvider()
     {
-        return array(
-            'first-install-file-present' => array(
-                array(
-                    'FIRST_INSTALL2Folder' => array(),
+        return [
+            'first-install-file-present' => [
+                [
+                    'FIRST_INSTALL2Folder' => [],
                     'FIRST_INSTALL' => '',
                     'FIRST_INStall' => '',
                     'FIRST_INSTALL.txt' => 'with content',
                     'somethingelse' => '',
                     'dadadaFIRST_INStall' => '',
-                ),
-                array(
+                ],
+                [
                     '.',
                     '..',
                     'FIRST_INSTALL2Folder',
                     'somethingelse',
                     'dadadaFIRST_INStall',
-                ),
-            ),
-            'no-first-install-file' => array(
-                array(
-                    'FIRST_INSTALL2Folder' => array(),
+                ],
+            ],
+            'no-first-install-file' => [
+                [
+                    'FIRST_INSTALL2Folder' => [],
                     'foo' => '',
                     'bar' => '',
                     'ddd.txt' => 'with content',
                     'somethingelse' => '',
                     'dadadaFIRST_INStall' => '',
-                ),
-                array(
+                ],
+                [
                     '.',
                     '..',
                     'FIRST_INSTALL2Folder',
@@ -115,9 +115,9 @@ class EnableFileServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'ddd.txt',
                     'somethingelse',
                     'dadadaFIRST_INStall',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -129,10 +129,10 @@ class EnableFileServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $vfs = vfsStream::setup('root');
         vfsStream::create($structure, $vfs);
         /** @var $instance \TYPO3\CMS\Install\Service\EnableFileService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\EnableFileService::class, array('dummy'), array(), '', false);
+        $instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\EnableFileService::class, ['dummy'], [], '', false);
         $instance->_setStatic('sitePath', 'vfs://root/');
         $instance->_call('removeFirstInstallFile');
 
-        $this->assertEquals(array(), array_diff($expected, scandir('vfs://root/')));
+        $this->assertEquals([], array_diff($expected, scandir('vfs://root/')));
     }
 }

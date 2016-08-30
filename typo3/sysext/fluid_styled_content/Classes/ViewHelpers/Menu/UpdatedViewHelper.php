@@ -47,7 +47,7 @@ class UpdatedViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         $this->registerArgument('as', 'string', 'Name of the template variable that will contain selected pages', true);
-        $this->registerArgument('pageUids', 'array', 'Page UIDs of parent pages', false, array());
+        $this->registerArgument('pageUids', 'array', 'Page UIDs of parent pages', false, []);
         $this->registerArgument('sortField', 'string', 'Field to sort pages; possible values: starttime, lastUpdated, tstamp, crdate', false, 'SYS_LASTCHANGED');
         $this->registerArgument('maximumAge', 'string', 'Maximum age of pages to be included; supports mathematical expressions', false, '604800');
         $this->registerArgument('includeNotInMenu', 'boolean', 'Include pages that are marked "hide in menu"?', false, false);
@@ -73,10 +73,10 @@ class UpdatedViewHelper extends AbstractViewHelper
 
         // If no pages have been defined, use the current page
         if (empty($pageUids)) {
-            $pageUids = array($typoScriptFrontendController->page['uid']);
+            $pageUids = [$typoScriptFrontendController->page['uid']];
         }
 
-        $unfilteredPageTreeUids = array();
+        $unfilteredPageTreeUids = [];
         foreach ($pageUids as $pageUid) {
             $unfilteredPageTreeUids = array_merge(
                 $unfilteredPageTreeUids,
@@ -107,8 +107,8 @@ class UpdatedViewHelper extends AbstractViewHelper
             $sortField . ' DESC',
             $constraints
         );
-        return $this->renderChildrenWithVariables(array(
+        return $this->renderChildrenWithVariables([
             $as => $pages
-        ));
+        ]);
     }
 }

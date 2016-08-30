@@ -63,14 +63,14 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
      *
      * @var array
      */
-    public $tsConfig = array();
+    public $tsConfig = [];
 
     /**
      * Set to the TSconfig options coming from Page TSconfig
      *
      * @var array
      */
-    public $procOptions = array();
+    public $procOptions = [];
 
     /**
      * Run-away brake for recursive calls.
@@ -91,14 +91,14 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
      *
      * @var array
      */
-    public $getKeepTags_cache = array();
+    public $getKeepTags_cache = [];
 
     /**
      * Storage of the allowed CSS class names in the RTE
      *
      * @var array
      */
-    public $allowedClasses = array();
+    public $allowedClasses = [];
 
     /**
      * Set to tags to preserve from Page TSconfig configuration
@@ -174,7 +174,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
      * @param array Parsed TypoScript content configuring the RTE, probably coming from Page TSconfig.
      * @return string Output value
      */
-    public function RTE_transform($value, $specConf, $direction = 'rte', $thisConfig = array())
+    public function RTE_transform($value, $specConf, $direction = 'rte', $thisConfig = [])
     {
         // Init:
         $this->tsConfig = $thisConfig;
@@ -382,10 +382,10 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                             if ($this->procOptions['plainImageMode']) {
                                 // "plain image mode" is configured
                                 // Find the dimensions of the original image
-                                $imageInfo = array(
+                                $imageInfo = [
                                     $originalImageFile->getProperty('width'),
                                     $originalImageFile->getProperty('height')
-                                );
+                                ];
                                 if (!$imageInfo[0] || !$imageInfo[1]) {
                                     $filePath = $originalImageFile->getForLocalProcessing(false);
                                     $imageInfo = @getimagesize($filePath);
@@ -394,10 +394,10 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                             }
                         } else {
                             // Magic image case: get a processed file with the requested configuration
-                            $imageConfiguration = array(
+                            $imageConfiguration = [
                                 'width' => $imgTagDimensions[0],
                                 'height' => $imgTagDimensions[1]
-                            );
+                            ];
                             $magicImage = $magicImageService->createMagicImage($originalImageFile, $imageConfiguration);
                             $attribArray['width'] = $magicImage->getProperty('width');
                             $attribArray['height'] = $magicImage->getProperty('height');
@@ -417,10 +417,10 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                                 list($table, $field) = explode(':', $this->elRef);
                                 $folder = $GLOBALS['BE_USER']->getDefaultUploadFolder($this->recPid, $table, $field);
                                 $fileObject = $folder->createFile($fileName)->setContents($externalFile);
-                                $imageConfiguration = array(
+                                $imageConfiguration = [
                                     'width' => $attribArray['width'],
                                     'height' => $attribArray['height']
-                                );
+                                ];
                                 $magicImage = $magicImageService->createMagicImage($fileObject, $imageConfiguration);
                                 $attribArray['width'] = $magicImage->getProperty('width');
                                 $attribArray['height'] = $magicImage->getProperty('height');
@@ -562,7 +562,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
      */
     public function TS_links_db($value)
     {
-        $conf = array();
+        $conf = [];
         // Split content into <a> tag blocks and process:
         $blockSplit = $this->splitIntoBlock('A', $value);
         foreach ($blockSplit as $k => $v) {
@@ -584,10 +584,10 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                 }
                 // Remove additional parameters
                 if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['removeParams_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['removeParams_PostProc'])) {
-                    $parameters = array(
+                    $parameters = [
                         'conf' => &$conf,
                         'aTagParams' => &$attribArray_copy
-                    );
+                    ];
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['removeParams_PostProc'] as $objRef) {
                         $processor = GeneralUtility::getUserObj($objRef);
                         $attribArray_copy = $processor->removeParams($parameters, $this);
@@ -605,17 +605,17 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                     } else {
                         $href = $info['url'] . ($info['query'] ? ',0,' . $info['query'] : '');
                     }
-                    $typoLink = GeneralUtility::makeInstance(TypoLinkCodecService::class)->encode(array('url' => $href, 'target' => $attribArray['target'], 'class' => trim($attribArray['class'], '"'), 'title' => trim($attribArray['title'], '"'), 'additionalParams' => ''));
+                    $typoLink = GeneralUtility::makeInstance(TypoLinkCodecService::class)->encode(['url' => $href, 'target' => $attribArray['target'], 'class' => trim($attribArray['class'], '"'), 'title' => trim($attribArray['title'], '"'), 'additionalParams' => '']);
                     $bTag = '<link ' . $typoLink . '>';
                     $eTag = '</link>';
                     // Modify parameters
                     if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'])) {
-                        $parameters = array(
+                        $parameters = [
                             'conf' => &$conf,
                             'currentBlock' => $v,
                             'url' => $href,
                             'attributes' => $attribArray
-                        );
+                        ];
                         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'] as $objRef) {
                             $processor = GeneralUtility::getUserObj($objRef);
                             $blockSplit[$k] = $processor->modifyParamsLinksDb($parameters, $this);
@@ -666,7 +666,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
      */
     public function TS_links_rte($value)
     {
-        $conf = array();
+        $conf = [];
         $value = $this->TS_AtagToAbs($value);
         // Split content by the TYPO3 pseudo tag "<link>":
         $blockSplit = $this->splitIntoBlock('link', $value, 1);
@@ -778,14 +778,14 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                 $eTag = '</a>';
                 // Modify parameters
                 if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'])) {
-                    $parameters = array(
+                    $parameters = [
                         'conf' => &$conf,
                         'currentBlock' => $v,
                         'url' => $href,
                         'tagCode' => $tagCode,
                         'external' => $external,
                         'error' => $error
-                    );
+                    ];
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'] as $objRef) {
                         $processor = GeneralUtility::getUserObj($objRef);
                         $blockSplit[$k] = $processor->modifyParamsLinksRte($parameters, $this);
@@ -1111,7 +1111,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
         // Default: re-convert literals to characters (that is &lt; to <)
         $hSC = $this->procOptions['dontUndoHSC_db'] ? 0 : -1;
         // Create additional configuration in order to honor the setting RTE.default.proc.HTMLparser_db.xhtml_cleaning=1
-        $addConfig = array();
+        $addConfig = [];
         if (is_array($this->procOptions['HTMLparser_db.']) && $this->procOptions['HTMLparser_db.']['xhtml_cleaning'] || is_array($this->procOptions['entryHTMLparser_db.']) && $this->procOptions['entryHTMLparser_db.']['xhtml_cleaning'] || is_array($this->procOptions['exitHTMLparser_db.']) && $this->procOptions['exitHTMLparser_db.']['xhtml_cleaning']) {
             $addConfig['xhtml'] = 1;
         }
@@ -1151,10 +1151,10 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                     if (!isset($this->procOptions['transformBoldAndItalicTags']) || $this->procOptions['transformBoldAndItalicTags']) {
                         // Transform bold/italics tags to strong/em
                         if (isset($keepTags['b'])) {
-                            $keepTags['b'] = array('remap' => 'STRONG');
+                            $keepTags['b'] = ['remap' => 'STRONG'];
                         }
                         if (isset($keepTags['i'])) {
-                            $keepTags['i'] = array('remap' => 'EM');
+                            $keepTags['i'] = ['remap' => 'EM'];
                         }
                     }
                     // Transforming keepTags array so it can be understood by the HTMLcleaner function. This basically converts the format of the array from TypoScript (having .'s) to plain multi-dimensional array.
@@ -1164,48 +1164,48 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                     if (!isset($this->procOptions['transformBoldAndItalicTags']) || $this->procOptions['transformBoldAndItalicTags']) {
                         // Transform strong/em back to bold/italics:
                         if (isset($keepTags['strong'])) {
-                            $keepTags['strong'] = array('remap' => 'b');
+                            $keepTags['strong'] = ['remap' => 'b'];
                         }
                         if (isset($keepTags['em'])) {
-                            $keepTags['em'] = array('remap' => 'i');
+                            $keepTags['em'] = ['remap' => 'i'];
                         }
                     }
                     // Setting up span tags if they are allowed:
                     if (isset($keepTags['span'])) {
-                        $classes = array_merge(array(''), $this->allowedClasses);
-                        $keepTags['span'] = array(
+                        $classes = array_merge([''], $this->allowedClasses);
+                        $keepTags['span'] = [
                             'allowedAttribs' => 'id,class,style,title,lang,xml:lang,dir,itemscope,itemtype,itemprop',
-                            'fixAttrib' => array(
-                                'class' => array(
+                            'fixAttrib' => [
+                                'class' => [
                                     'list' => $classes,
                                     'removeIfFalse' => 1
-                                )
-                            ),
+                                ]
+                            ],
                             'rmTagIfNoAttrib' => 1
-                        );
+                        ];
                         if (!$this->procOptions['allowedClasses']) {
                             unset($keepTags['span']['fixAttrib']['class']['list']);
                         }
                     }
                     // Setting up font tags if they are allowed:
                     if (isset($keepTags['font'])) {
-                        $colors = array_merge(array(''), GeneralUtility::trimExplode(',', $this->procOptions['allowedFontColors'], true));
-                        $keepTags['font'] = array(
+                        $colors = array_merge([''], GeneralUtility::trimExplode(',', $this->procOptions['allowedFontColors'], true));
+                        $keepTags['font'] = [
                             'allowedAttribs' => 'face,color,size',
-                            'fixAttrib' => array(
-                                'face' => array(
+                            'fixAttrib' => [
+                                'face' => [
                                     'removeIfFalse' => 1
-                                ),
-                                'color' => array(
+                                ],
+                                'color' => [
                                     'removeIfFalse' => 1,
                                     'list' => $colors
-                                ),
-                                'size' => array(
+                                ],
+                                'size' => [
                                     'removeIfFalse' => 1
-                                )
-                            ),
+                                ]
+                            ],
                             'rmTagIfNoAttrib' => 1
-                        );
+                        ];
                         if (!$this->procOptions['allowedFontColors']) {
                             unset($keepTags['font']['fixAttrib']['color']['list']);
                         }
@@ -1255,7 +1255,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
         if ($this->procOptions['keepPDIVattribs']) {
             $keepAttribListArr = GeneralUtility::trimExplode(',', strtolower($this->procOptions['keepPDIVattribs']), true);
         } else {
-            $keepAttribListArr = array();
+            $keepAttribListArr = [];
         }
         // Returns plainly the value if there was no div/p sections in it
         if (count($divSplit) <= 1 || $count <= 0) {
@@ -1276,7 +1276,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                 if (is_array($subLines)) {
                 } else {
                     //... but if NO subsection was found, we process it as a TRUE line without erronous content:
-                    $subLines = array($subLines);
+                    $subLines = [$subLines];
                     // process break-tags, if configured for. Simply, the breaktags will here be treated like if each was a line of content...
                     if (!$this->procOptions['dontConvBRtoParagraph']) {
                         $subLines = preg_split('/<br[[:space:]]*[\\/]?>/i', $v);
@@ -1290,7 +1290,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                         $tagName = strtolower($this->getFirstTagName($divSplit[$k]));
                         $attribs = $this->get_tag_attributes($fTag);
                         // Keep attributes (lowercase)
-                        $newAttribs = array();
+                        $newAttribs = [];
                         if (!empty($keepAttribListArr)) {
                             foreach ($keepAttribListArr as $keepA) {
                                 if (isset($attribs[0][$keepA])) {
@@ -1310,7 +1310,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                                 $newAttribs['class'] = $attribs[0]['class'];
                             } else {
                                 $classes = GeneralUtility::trimExplode(' ', $attribs[0]['class'], true);
-                                $newClasses = array();
+                                $newClasses = [];
                                 foreach ($classes as $class) {
                                     if (in_array($class, $this->allowedClasses)) {
                                         $newClasses[] = $class;
@@ -1459,18 +1459,18 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
     public function defaultTStagMapping($code, $direction = 'rte')
     {
         if ($direction == 'db') {
-            $code = $this->mapTags($code, array(
+            $code = $this->mapTags($code, [
                 // Map tags
                 'strong' => 'b',
                 'em' => 'i'
-            ));
+            ]);
         }
         if ($direction == 'rte') {
-            $code = $this->mapTags($code, array(
+            $code = $this->mapTags($code, [
                 // Map tags
                 'b' => 'strong',
                 'i' => 'em'
-            ));
+            ]);
         }
         return $code;
     }
@@ -1488,7 +1488,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
         if ($style) {
             $regex = '[[:space:]]*:[[:space:]]*([0-9]*)[[:space:]]*px';
             // Width
-            $reg = array();
+            $reg = [];
             preg_match('/width' . $regex . '/i', $style, $reg);
             $w = (int)$reg[1];
             // Height
@@ -1501,7 +1501,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
         if (!$h) {
             $h = $attribArray['height'];
         }
-        return array((int)$w, (int)$h);
+        return [(int)$w, (int)$h];
     }
 
     /**
@@ -1512,7 +1512,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
      */
     public function urlInfoForLinkTags($url)
     {
-        $info = array();
+        $info = [];
         $url = trim($url);
         if (substr(strtolower($url), 0, 7) == 'mailto:') {
             $info['url'] = trim(substr($url, 7));

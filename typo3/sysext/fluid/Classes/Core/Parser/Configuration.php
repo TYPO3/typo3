@@ -22,7 +22,7 @@ class Configuration
      *
      * @var array<\TYPO3\CMS\Extbase\Persistence\ObjectStorage>
      */
-    protected $interceptors = array();
+    protected $interceptors = [];
 
     /**
      * Adds an interceptor to apply to values coming from object accessors.

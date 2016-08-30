@@ -26,40 +26,40 @@ class ResourceUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function recursiveFileListSortingHelperTestDataProvider()
     {
-        return array(
-            'normal file list' => array(
-                array('fileB', 'fileA', 'someFile'),
-                array('fileA', 'fileB', 'someFile')
-            ),
-            'already in correct order' => array(
-                array('fileA', 'fileB', 'someFile'),
-                array('fileA', 'fileB', 'someFile')
-            ),
-            'hidden file' => array(
-                array('someFile', '.hiddenFile'),
-                array('.hiddenFile', 'someFile')
-            ),
-            'mixed capitalization' => array(
-                array('alllower', 'allCAPS', 'ALLcaps', 'mIxedinanotherway', 'ALLCAPS', 'MiXeDcApItAlIzAtIoN'),
-                array('ALLCAPS', 'ALLcaps', 'allCAPS', 'alllower', 'MiXeDcApItAlIzAtIoN', 'mIxedinanotherway')
-            ),
-            'mixed capitalization reversed' => array(
-                array('MiXeDcApItAlIzAtIoN', 'mIxedinanotherway', 'ALLcaps', 'allCAPS', 'ALLCAPS', 'alllower'),
-                array('ALLCAPS', 'ALLcaps', 'allCAPS', 'alllower', 'MiXeDcApItAlIzAtIoN', 'mIxedinanotherway')
-            ),
-            'recursive list with one sublevel' => array(
-                array('fileA', 'fileB', 'anotherDir/someFile', 'someDir/someFile', 'anotherDir/anotherFile'),
-                array('anotherDir/anotherFile', 'anotherDir/someFile', 'someDir/someFile', 'fileA', 'fileB')
-            ),
-            'recursive list with two sub-levels' => array(
-                array('file', 'someDir/someFile', 'someDir/subdir/file', 'someDir/subdir/somefile', 'someDir/anotherDir/somefile', 'anotherDir/someFile'),
-                array('anotherDir/someFile', 'someDir/anotherDir/somefile', 'someDir/subdir/file', 'someDir/subdir/somefile', 'someDir/someFile', 'file')
-            ),
-            'recursive list with three sub-levels' => array(
-                array('someDir/someSubdir/file', 'someDir/someSubdir/someSubsubdir/someFile', 'someDir/someSubdir/someSubsubdir/anotherFile'),
-                array('someDir/someSubdir/someSubsubdir/anotherFile', 'someDir/someSubdir/someSubsubdir/someFile', 'someDir/someSubdir/file')
-            )
-        );
+        return [
+            'normal file list' => [
+                ['fileB', 'fileA', 'someFile'],
+                ['fileA', 'fileB', 'someFile']
+            ],
+            'already in correct order' => [
+                ['fileA', 'fileB', 'someFile'],
+                ['fileA', 'fileB', 'someFile']
+            ],
+            'hidden file' => [
+                ['someFile', '.hiddenFile'],
+                ['.hiddenFile', 'someFile']
+            ],
+            'mixed capitalization' => [
+                ['alllower', 'allCAPS', 'ALLcaps', 'mIxedinanotherway', 'ALLCAPS', 'MiXeDcApItAlIzAtIoN'],
+                ['ALLCAPS', 'ALLcaps', 'allCAPS', 'alllower', 'MiXeDcApItAlIzAtIoN', 'mIxedinanotherway']
+            ],
+            'mixed capitalization reversed' => [
+                ['MiXeDcApItAlIzAtIoN', 'mIxedinanotherway', 'ALLcaps', 'allCAPS', 'ALLCAPS', 'alllower'],
+                ['ALLCAPS', 'ALLcaps', 'allCAPS', 'alllower', 'MiXeDcApItAlIzAtIoN', 'mIxedinanotherway']
+            ],
+            'recursive list with one sublevel' => [
+                ['fileA', 'fileB', 'anotherDir/someFile', 'someDir/someFile', 'anotherDir/anotherFile'],
+                ['anotherDir/anotherFile', 'anotherDir/someFile', 'someDir/someFile', 'fileA', 'fileB']
+            ],
+            'recursive list with two sub-levels' => [
+                ['file', 'someDir/someFile', 'someDir/subdir/file', 'someDir/subdir/somefile', 'someDir/anotherDir/somefile', 'anotherDir/someFile'],
+                ['anotherDir/someFile', 'someDir/anotherDir/somefile', 'someDir/subdir/file', 'someDir/subdir/somefile', 'someDir/someFile', 'file']
+            ],
+            'recursive list with three sub-levels' => [
+                ['someDir/someSubdir/file', 'someDir/someSubdir/someSubsubdir/someFile', 'someDir/someSubdir/someSubsubdir/anotherFile'],
+                ['someDir/someSubdir/someSubsubdir/anotherFile', 'someDir/someSubdir/someSubsubdir/someFile', 'someDir/someSubdir/file']
+            ]
+        ];
     }
 
     /**
@@ -73,7 +73,7 @@ class ResourceUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $result = $unsortedList;
         usort(
             $result,
-            array(ResourceUtility::class, 'recursiveFileListSortingHelper')
+            [ResourceUtility::class, 'recursiveFileListSortingHelper']
         );
         $this->assertSame($expectedList, $result);
     }

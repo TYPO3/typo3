@@ -57,7 +57,7 @@ class IndexedSearchUtility
      */
     public static function getExplodedSearchString($sword, $defaultOperator, $operatorTranslateTable)
     {
-        $swordArray = array();
+        $swordArray = [];
         $sword = trim($sword);
         if ($sword) {
             $components = self::split($sword);

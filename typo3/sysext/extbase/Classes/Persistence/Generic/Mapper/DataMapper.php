@@ -52,7 +52,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $dataMaps = array();
+    protected $dataMaps = [];
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
@@ -139,7 +139,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function map($className, array $rows)
     {
-        $objects = array();
+        $objects = [];
         foreach ($rows as $row) {
             $objects[] = $this->mapSingleRow($this->getTargetType($className, $row), $row);
         }
@@ -198,7 +198,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function emitAfterMappingSingleRow(DomainObjectInterface $object)
     {
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterMappingSingleRow', array($object));
+        $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterMappingSingleRow', [$object]);
     }
 
     /**
@@ -387,7 +387,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
     {
         $columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
         $relatesToOne = $columnMap->getTypeOfRelation() == ColumnMap::RELATION_HAS_ONE;
-        return $relatesToOne ? null : array();
+        return $relatesToOne ? null : [];
     }
 
     /**
@@ -419,12 +419,12 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
         $query->getQuerySettings()->setRespectSysLanguage(false);
         if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
             if ($columnMap->getChildSortByFieldName() !== null) {
-                $query->setOrderings(array($columnMap->getChildSortByFieldName() => Persistence\QueryInterface::ORDER_ASCENDING));
+                $query->setOrderings([$columnMap->getChildSortByFieldName() => Persistence\QueryInterface::ORDER_ASCENDING]);
             }
         } elseif ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
             $query->setSource($this->getSource($parentObject, $propertyName));
             if ($columnMap->getChildSortByFieldName() !== null) {
-                $query->setOrderings(array($columnMap->getChildSortByFieldName() => Persistence\QueryInterface::ORDER_ASCENDING));
+                $query->setOrderings([$columnMap->getChildSortByFieldName() => Persistence\QueryInterface::ORDER_ASCENDING]);
             }
         }
         $query->matching($this->getConstraint($query, $parentObject, $propertyName, $fieldValue, $columnMap->getRelationTableMatchFields()));
@@ -441,7 +441,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $relationTableMatchFields
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint
      */
-    protected function getConstraint(Persistence\QueryInterface $query, DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $relationTableMatchFields = array())
+    protected function getConstraint(Persistence\QueryInterface $query, DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $relationTableMatchFields = [])
     {
         $columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
         if ($columnMap->getParentKeyFieldName() !== null) {
@@ -546,14 +546,14 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
             $propertyValue = $result;
         } else {
             $propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-            if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'SplObjectStorage', \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class), true)) {
-                $objects = array();
+            if (in_array($propertyMetaData['type'], ['array', 'ArrayObject', 'SplObjectStorage', \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class], true)) {
+                $objects = [];
                 foreach ($result as $value) {
                     $objects[] = $value;
                 }
                 if ($propertyMetaData['type'] === 'ArrayObject') {
                     $propertyValue = new \ArrayObject($objects);
-                } elseif (in_array($propertyMetaData['type'], array(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class), true)) {
+                } elseif (in_array($propertyMetaData['type'], [\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class], true)) {
                     $propertyValue = new Persistence\ObjectStorage();
                     foreach ($objects as $object) {
                         $propertyValue->attach($object);
@@ -684,7 +684,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
      * @throws UnexpectedTypeException
      * @return int|string
      */
-    public function getPlainValue($input, $columnMap = null, $parseStringValueCallback = null, array $parseStringValueCallbackParameters = array())
+    public function getPlainValue($input, $columnMap = null, $parseStringValueCallback = null, array $parseStringValueCallbackParameters = [])
     {
         if ($input === null) {
             return 'NULL';
@@ -715,7 +715,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
                 $parameter = $input->format('U');
             }
         } elseif (TypeHandlingUtility::isValidTypeForMultiValueComparison($input)) {
-            $plainValueArray = array();
+            $plainValueArray = [];
             foreach ($input as $inputElement) {
                 $plainValueArray[] = $this->getPlainValue($inputElement, $columnMap, $parseStringValueCallback, $parseStringValueCallbackParameters);
             }
@@ -743,7 +743,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $additionalParameters Optional additional parameters passed to the callback as second argument.
      * @return string
      */
-    protected function getPlainStringValue($value, $callback = null, array $additionalParameters = array())
+    protected function getPlainStringValue($value, $callback = null, array $additionalParameters = [])
     {
         if (is_callable($callback)) {
             $value = call_user_func($callback, $value, $additionalParameters);

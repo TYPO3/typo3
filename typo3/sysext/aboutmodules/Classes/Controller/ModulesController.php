@@ -72,7 +72,7 @@ class ModulesController extends ActionController
      */
     public function indexAction()
     {
-        $warnings = array();
+        $warnings = [];
         $securityWarnings = '';
         // Hook for additional warnings
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'])) {
@@ -93,13 +93,13 @@ class ModulesController extends ActionController
         }
 
         $this->view->assignMultiple(
-            array(
+            [
                 'TYPO3Version' => TYPO3_version,
                 'copyRightNotice' => BackendUtility::TYPO3_copyRightNotice(),
                 'warningMessages' => $securityWarnings,
                 'warningTitle' => $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:warning.header'),
                 'modules' => $this->getModulesData()
-            )
+            ]
         );
     }
 
@@ -115,9 +115,9 @@ class ModulesController extends ActionController
         $loadedModules = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
         $loadedModules->observeWorkspaces = true;
         $loadedModules->load($GLOBALS['TBE_MODULES']);
-        $mainModulesData = array();
+        $mainModulesData = [];
         foreach ($loadedModules->modules as $moduleName => $moduleInfo) {
-            $mainModuleData = array();
+            $mainModuleData = [];
             $moduleKey = $moduleName . '_tab';
             $mainModuleData['name'] = $moduleName;
             $mainModuleData['label'] = $this->languageService->moduleLabels['tabs'][$moduleKey];
@@ -136,12 +136,12 @@ class ModulesController extends ActionController
      * @param array $subModulesInfo Sub module information
      * @return array
      */
-    protected function getSubModuleData($moduleName, array $subModulesInfo = array())
+    protected function getSubModuleData($moduleName, array $subModulesInfo = [])
     {
-        $subModulesData = array();
+        $subModulesData = [];
         foreach ($subModulesInfo as $subModuleName => $subModuleInfo) {
             $subModuleKey = $moduleName . '_' . $subModuleName . '_tab';
-            $subModuleData = array();
+            $subModuleData = [];
             $subModuleData['name'] = $subModuleName;
             $subModuleData['icon'] = PathUtility::stripPathSitePrefix($this->languageService->moduleLabels['tabs_images'][$subModuleKey]);
             $subModuleData['label'] = $this->languageService->moduleLabels['tabs'][$subModuleKey];

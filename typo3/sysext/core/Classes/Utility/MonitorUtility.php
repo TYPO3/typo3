@@ -32,11 +32,11 @@ class MonitorUtility
             if ($peakUsage / $memoryLimit >= 0.9) {
                 /** @var $registry \TYPO3\CMS\Core\Registry */
                 $registry = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
-                $data = array(
+                $data = [
                     'used' => $peakUsage,
                     'tstamp' => $GLOBALS['EXEC_TIME'],
                     'url' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')
-                );
+                ];
                 $registry->set('core', 'reports-peakMemoryUsage', $data);
             }
         }

@@ -40,13 +40,13 @@ class IconViewHelper extends AbstractViewHelper implements CompilableInterface
     public function render($identifier, $size = Icon::SIZE_SMALL, $overlay = null, $state = IconState::STATE_DEFAULT, $alternativeMarkupIdentifier = null)
     {
         return static::renderStatic(
-            array(
+            [
                 'identifier' => $identifier,
                 'size' => $size,
                 'overlay' => $overlay,
                 'state' => $state,
                 'alternativeMarkupIdentifier' => $alternativeMarkupIdentifier
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

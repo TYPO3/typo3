@@ -62,14 +62,14 @@ class ClassSchema
      *
      * @var array
      */
-    protected $properties = array();
+    protected $properties = [];
 
     /**
      * The properties forming the identity of an object
      *
      * @var array
      */
-    protected $identityProperties = array();
+    protected $identityProperties = [];
 
     /**
      * Constructs this class schema
@@ -103,12 +103,12 @@ class ClassSchema
     public function addProperty($name, $type, $lazy = false, $cascade = '')
     {
         $type = TypeHandlingUtility::parseType($type);
-        $this->properties[$name] = array(
+        $this->properties[$name] = [
             'type' => $type['type'],
             'elementType' => $type['elementType'],
             'lazy' => $lazy,
             'cascade' => $cascade
-        );
+        ];
     }
 
     /**
@@ -120,7 +120,7 @@ class ClassSchema
      */
     public function getProperty($propertyName)
     {
-        return is_array($this->properties[$propertyName]) ? $this->properties[$propertyName] : array();
+        return is_array($this->properties[$propertyName]) ? $this->properties[$propertyName] : [];
     }
 
     /**

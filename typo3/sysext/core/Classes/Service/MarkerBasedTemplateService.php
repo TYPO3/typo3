@@ -44,17 +44,17 @@ class MarkerBasedTemplateService
             return '';
         }
         $content = substr($content, $start, $stop - $start);
-        $matches = array();
+        $matches = [];
         if (preg_match('/^([^\\<]*\\-\\-\\>)(.*)(\\<\\!\\-\\-[^\\>]*)$/s', $content, $matches) === 1) {
             return $matches[2];
         }
         // Resetting $matches
-        $matches = array();
+        $matches = [];
         if (preg_match('/(.*)(\\<\\!\\-\\-[^\\>]*)$/s', $content, $matches) === 1) {
             return $matches[1];
         }
         // Resetting $matches
-        $matches = array();
+        $matches = [];
         if (preg_match('/^([^\\<]*\\-\\-\\>)(.*)$/s', $content, $matches) === 1) {
             return $matches[2];
         }
@@ -92,7 +92,7 @@ class MarkerBasedTemplateService
             $after = $this->substituteSubpart($after, $marker, $subpartContent, $recursive, $keepMarker);
         }
         if ($keepMarker) {
-            $matches = array();
+            $matches = [];
             if (preg_match('/^([^\\<]*\\-\\-\\>)(.*)(\\<\\!\\-\\-[^\\>]*)$/s', $between, $matches) === 1) {
                 $before .= $marker . $matches[1];
                 $between = $matches[2];
@@ -110,12 +110,12 @@ class MarkerBasedTemplateService
                 $after = $marker . $after;
             }
         } else {
-            $matches = array();
+            $matches = [];
             if (preg_match('/^(.*)\\<\\!\\-\\-[^\\>]*$/s', $before, $matches) === 1) {
                 $before = $matches[1];
             }
             if (is_array($subpartContent)) {
-                $matches = array();
+                $matches = [];
                 if (preg_match('/^([^\\<]*\\-\\-\\>)(.*)(\\<\\!\\-\\-[^\\>]*)$/s', $between, $matches) === 1) {
                     $between = $matches[2];
                 } elseif (preg_match('/^(.*)(\\<\\!\\-\\-[^\\>]*)$/s', $between, $matches) === 1) {
@@ -124,7 +124,7 @@ class MarkerBasedTemplateService
                     $between = $matches[2];
                 }
             }
-            $matches = array();
+            $matches = [];
             // resetting $matches
             if (preg_match('/^[^\\<]*\\-\\-\\>(.*)$/s', $after, $matches) === 1) {
                 $after = $matches[1];
@@ -195,8 +195,8 @@ class MarkerBasedTemplateService
     {
         if (is_array($markContentArray)) {
             $wrapArr = GeneralUtility::trimExplode('|', $wrap);
-            $search = array();
-            $replace = array();
+            $search = [];
+            $replace = [];
             foreach ($markContentArray as $marker => $markContent) {
                 if ($uppercase) {
                     // use strtr instead of strtoupper to avoid locale problems with Turkish
@@ -212,7 +212,7 @@ class MarkerBasedTemplateService
             unset($search, $replace);
             if ($deleteUnused) {
                 if (empty($wrap)) {
-                    $wrapArr = array('###', '###');
+                    $wrapArr = ['###', '###'];
                 }
                 $content = preg_replace('/' . preg_quote($wrapArr[0], '/') . '([A-Z0-9_|\\-]*)' . preg_quote($wrapArr[1], '/') . '/is', '', $content);
             }
@@ -261,8 +261,8 @@ class MarkerBasedTemplateService
     public function substituteMarkerAndSubpartArrayRecursive($content, array $markersAndSubparts, $wrap = '', $uppercase = false, $deleteUnused = false)
     {
         $wraps = GeneralUtility::trimExplode('|', $wrap);
-        $singleItems = array();
-        $compoundItems = array();
+        $singleItems = [];
+        $compoundItems = [];
         // Split markers and subparts into separate arrays
         foreach ($markersAndSubparts as $markerName => $markerContent) {
             if (is_array($markerContent)) {
@@ -271,8 +271,8 @@ class MarkerBasedTemplateService
                 $singleItems[$markerName] = $markerContent;
             }
         }
-        $subTemplates = array();
-        $subpartSubstitutes = array();
+        $subTemplates = [];
+        $subpartSubstitutes = [];
         // Build a cache for the sub template
         foreach ($compoundItems as $subpartMarker) {
             if ($uppercase) {

@@ -45,10 +45,10 @@ class ArrayValueByKeyViewHelper extends AbstractViewHelper implements Compilable
     public function render(array $array, $key)
     {
         return static::renderStatic(
-            array(
+            [
                 'array' => $array,
                 'key' => $key,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

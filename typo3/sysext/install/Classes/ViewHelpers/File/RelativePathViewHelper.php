@@ -42,7 +42,7 @@ class RelativePathViewHelper extends AbstractViewHelper implements CompilableInt
     public function render()
     {
         return static::renderStatic(
-            array(),
+            [],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

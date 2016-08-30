@@ -81,7 +81,7 @@ class SortedTreeNodeCollection extends \TYPO3\CMS\Backend\Tree\TreeNodeCollectio
      */
     protected function normalize()
     {
-        $nodes = array();
+        $nodes = [];
         foreach ($this as $node) {
             $nodes[] = $node;
         }

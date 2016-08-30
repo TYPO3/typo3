@@ -187,7 +187,7 @@ class CoreVersionService
     {
         $result = false;
         $version = $this->getInstalledVersion();
-        $youngestVersion = $this->getYoungestReleaseByType(array('security'));
+        $youngestVersion = $this->getYoungestReleaseByType(['security']);
         if ($youngestVersion !== $version) {
             $result = true;
         }
@@ -201,7 +201,7 @@ class CoreVersionService
      */
     public function getYoungestPatchRelease()
     {
-        return $this->getYoungestReleaseByType(array('release', 'security', 'regular'));
+        return $this->getYoungestReleaseByType(['release', 'security', 'regular']);
     }
 
     /**
@@ -211,7 +211,7 @@ class CoreVersionService
      */
     public function getYoungestPatchDevelopmentRelease()
     {
-        return $this->getYoungestReleaseByType(array('release', 'security', 'regular', 'development'));
+        return $this->getYoungestReleaseByType(['release', 'security', 'regular', 'development']);
     }
 
     /**

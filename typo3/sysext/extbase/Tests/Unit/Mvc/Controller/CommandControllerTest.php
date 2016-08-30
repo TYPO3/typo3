@@ -31,7 +31,7 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->commandController = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\CommandController::class, array('dummyCommand'));
+        $this->commandController = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\CommandController::class, ['dummyCommand']);
         $this->mockConsoleOutput = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Cli\ConsoleOutput::class)->disableOriginalConstructor()->getMock();
         $this->commandController->_set('output', $this->mockConsoleOutput);
     }
@@ -50,8 +50,8 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function outputReplacesArgumentsInGivenString()
     {
-        $this->mockConsoleOutput->expects($this->once())->method('output')->with('%2$s %1$s', array('text', 'some'));
-        $this->commandController->_call('output', '%2$s %1$s', array('text', 'some'));
+        $this->mockConsoleOutput->expects($this->once())->method('output')->with('%2$s %1$s', ['text', 'some']);
+        $this->commandController->_call('output', '%2$s %1$s', ['text', 'some']);
     }
 
     /**
@@ -95,7 +95,7 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     }
                 ));
         $this->commandController->_set('userAuthentication', $mockedUserAuthentication);
-        $this->commandController->_set('arguments', array());
+        $this->commandController->_set('arguments', []);
         $this->commandController->_set('commandMethodName', 'dummyCommand');
         $this->commandController->_set('requestAdminPermissions', true);
         $this->commandController->_call('callCommandMethod');

@@ -97,7 +97,7 @@ class VimeoRenderer implements FileRendererInterface
             }
         }
 
-        $urlParams = array();
+        $urlParams = [];
         if (!empty($options['autoplay'])) {
             $urlParams[] = 'autoplay=1';
         }

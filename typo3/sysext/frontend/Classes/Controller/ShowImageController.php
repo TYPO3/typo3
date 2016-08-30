@@ -119,7 +119,7 @@ EOF;
 
         /* For backwards compatibility the HMAC is transported within the md5 param */
         $hmacParameter = isset($this->request->getQueryParams()['md5']) ? $this->request->getQueryParams()['md5'] : null;
-        $hmac = GeneralUtility::hmac(implode('|', array($fileUid, $parametersEncoded)));
+        $hmac = GeneralUtility::hmac(implode('|', [$fileUid, $parametersEncoded]));
         if ($hmac !== $hmacParameter) {
             throw new \InvalidArgumentException('hash does not match');
         }
@@ -147,19 +147,19 @@ EOF;
     public function main()
     {
         $processedImage = $this->processImage();
-        $imageTagMarkers = array(
+        $imageTagMarkers = [
             '###publicUrl###' => htmlspecialchars($processedImage->getPublicUrl()),
             '###alt###' => htmlspecialchars($this->file->getProperty('alternative') ?: $this->title),
             '###title###' => htmlspecialchars($this->file->getProperty('title') ?: $this->title),
             '###width###' => $processedImage->getProperty('width'),
             '###height###' => $processedImage->getProperty('height')
-        );
+        ];
         $this->imageTag = str_replace(array_keys($imageTagMarkers), array_values($imageTagMarkers), $this->imageTag);
-        $markerArray = array(
+        $markerArray = [
             '###TITLE###' => ($this->file->getProperty('title') ?: $this->title),
             '###IMAGE###' => $this->imageTag,
             '###BODY###' => $this->bodyTag
-        );
+        ];
 
         $this->content = str_replace(array_keys($markerArray), array_values($markerArray), $this->content);
     }
@@ -179,12 +179,12 @@ EOF;
         $this->height = MathUtility::forceIntegerInRange($this->height, 0);
         $this->width = MathUtility::forceIntegerInRange($this->width, 0) . $max;
 
-        $processingConfiguration = array(
+        $processingConfiguration = [
             'width' => $this->width,
             'height' => $this->height,
             'frame' => $this->frame,
             'crop' => $this->crop,
-        );
+        ];
         return $this->file->process('Image.CropScaleMask', $processingConfiguration);
     }
 

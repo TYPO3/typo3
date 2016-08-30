@@ -49,11 +49,11 @@ class BackendLogModuleBootstrap
      */
     public function main()
     {
-        $configuration = array(
+        $configuration = [
             'extensionName' => 'Belog',
             'pluginName' => 'system_BelogLog',
             'vendorName' => 'TYPO3\\CMS',
-        );
+        ];
         // Yeah, this is ugly. But currently, there is no other direct way
         // in extbase to force a specific controller in backend mode.
         // Overwriting $_GET was the most simple solution here until extbase

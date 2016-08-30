@@ -28,7 +28,7 @@ class DeletedRecords
      *
      * @var array
      */
-    protected $deletedRows = array();
+    protected $deletedRows = [];
 
     /**
      * String with the global limit
@@ -42,7 +42,7 @@ class DeletedRecords
      *
      * @var array
      */
-    protected $table = array();
+    protected $table = [];
 
     /**
      * Object from helper class
@@ -165,7 +165,7 @@ class DeletedRecords
             if ($result >= 0) {
                 // store the new offset in the limit and go into the next depth
                 $offset = $result;
-                $this->limit = implode(',', array($offset, $rowCount));
+                $this->limit = implode(',', [$offset, $rowCount]);
                 // do NOT query this depth; limit also does not need to be set, we set it anyways
                 $allowQuery = false;
                 $allowDepth = true;
@@ -185,19 +185,19 @@ class DeletedRecords
                 // if the result now is > limit's row count
                 if ($absResult > $rowCount) {
                     // use the limit's row count as the temporary limit
-                    $limit = implode(',', array($tempOffset, $rowCount));
+                    $limit = implode(',', [$tempOffset, $rowCount]);
                     // set the limit's row count to 0
-                    $this->limit = implode(',', array($newOffset, 0));
+                    $this->limit = implode(',', [$newOffset, 0]);
                     // do not go into new depth
                     $allowDepth = false;
                 } else {
                     // if the result now is <= limit's row count
                     // use the result as the temporary limit
-                    $limit = implode(',', array($tempOffset, $absResult));
+                    $limit = implode(',', [$tempOffset, $absResult]);
                     // subtract the result from the row count
                     $newCount = $rowCount - $absResult;
                     // store the new result in the limit's row count
-                    $this->limit = implode(',', array($newOffset, $newCount));
+                    $this->limit = implode(',', [$newOffset, $newCount]);
                     // if the new row count is > 0
                     if ($newCount > 0) {
                         // go into new depth
@@ -331,8 +331,8 @@ class DeletedRecords
         $result = false;
         $depth = 999;
         if (is_array($recordsArray)) {
-            $this->deletedRows = array();
-            $cmd = array();
+            $this->deletedRows = [];
+            $cmd = [];
             foreach ($recordsArray as $record) {
                 list($table, $uid) = explode(':', $record);
                 // get all parent pages and cover them
@@ -365,7 +365,7 @@ class DeletedRecords
             }
             if ($cmd) {
                 $tce = GeneralUtility::makeInstance(DataHandler::class);
-                $tce->start(array(), $cmd);
+                $tce->start([], $cmd);
                 $tce->process_cmdmap();
                 $result = true;
             }
@@ -380,7 +380,7 @@ class DeletedRecords
      * @param array $pages
      * @return array
      */
-    protected function getDeletedParentPages($uid, &$pages = array())
+    protected function getDeletedParentPages($uid, &$pages = [])
     {
         $db = $this->getDatabaseConnection();
         $res = $db->exec_SELECTquery('uid, pid', 'pages', 'uid=' . (int)$uid . ' AND ' . $GLOBALS['TCA']['pages']['ctrl']['delete'] . '=1');

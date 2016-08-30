@@ -64,7 +64,7 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->once())
             ->method('getSessionData')
             ->with('formProtectionSessionToken')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $this->subject->generateToken('foo');
     }
 

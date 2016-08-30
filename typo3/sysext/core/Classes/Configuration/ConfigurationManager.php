@@ -71,13 +71,13 @@ class ConfigurationManager
      *
      * @var array
      */
-    protected $whiteListedLocalConfigurationPaths = array(
+    protected $whiteListedLocalConfigurationPaths = [
         'EXT/extConf',
         'EXTCONF',
         'INSTALL/wizardDone',
         'DB',
         'SYS/caching/cacheConfigurations',
-    );
+    ];
 
     /**
      * Return default configuration array

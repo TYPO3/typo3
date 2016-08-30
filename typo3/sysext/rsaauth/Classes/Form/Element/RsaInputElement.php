@@ -37,27 +37,27 @@ class RsaInputElement extends AbstractFormElement
         $row = $this->data['databaseRow'];
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
-        $resultArray['requireJsModules'] = array('TYPO3/CMS/Rsaauth/RsaEncryptionModule');
+        $resultArray['requireJsModules'] = ['TYPO3/CMS/Rsaauth/RsaEncryptionModule'];
 
         $config = $parameterArray['fieldConf']['config'];
         $specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
         $size = MathUtility::forceIntegerInRange($config['size'] ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
         $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
-        $classes = array();
-        $attributes = array(
+        $classes = [];
+        $attributes = [
             'type' => 'text',
             'value' => '',
-        );
+        ];
 
         if ($config['readOnly']) {
             $itemFormElValue = $parameterArray['itemFormElValue'];
             $options = $this->data;
-            $options['parameterArray'] = array(
-                'fieldConf' => array(
+            $options['parameterArray'] = [
+                'fieldConf' => [
                     'config' => $config,
-                ),
+                ],
                 'itemFormElValue' => $itemFormElValue,
-            );
+            ];
             $options['renderType'] = 'none';
             return $this->nodeFactory->create($options)->render();
         }
@@ -66,7 +66,7 @@ class RsaInputElement extends AbstractFormElement
         foreach ($evalList as $func) {
             switch ($func) {
                 case 'required':
-                    $attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString(array('required' => true));
+                    $attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString(['required' => true]);
                     break;
                 case 'password':
                     $attributes['type'] = 'password';
@@ -81,9 +81,9 @@ class RsaInputElement extends AbstractFormElement
                         if (class_exists($func)) {
                             $evalObj = GeneralUtility::makeInstance($func);
                             if (method_exists($evalObj, 'deevaluateFieldValue')) {
-                                $_params = array(
+                                $_params = [
                                     'value' => $parameterArray['itemFormElValue']
-                                );
+                                ];
                                 $parameterArray['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
                             }
                         }
@@ -94,11 +94,11 @@ class RsaInputElement extends AbstractFormElement
             return $value !== 'password';
         });
 
-        $paramsList = array(
+        $paramsList = [
             'field' => $parameterArray['itemFormElName'],
             'evalList' => implode(',', $evalList),
             'is_in' => trim($config['is_in']),
-        );
+        ];
         // set classes
         $classes[] = 'form-control';
         $classes[] = 't3js-clearable';
@@ -157,7 +157,7 @@ class RsaInputElement extends AbstractFormElement
 
         // Wrap a wizard around the item?
         $html = $this->renderWizards(
-            array($html),
+            [$html],
             $config['wizards'],
             $table,
             $row,

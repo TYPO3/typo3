@@ -32,7 +32,7 @@ class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
     /**
      * @var array<string>
      */
-    protected $sourceTypes = array('float', 'integer', 'string');
+    protected $sourceTypes = ['float', 'integer', 'string'];
 
     /**
      * @var string
@@ -54,7 +54,7 @@ class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
      * @return float|\TYPO3\CMS\Extbase\Error\Error
      * @api
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
     {
         if ($source === null || (string)$source === '') {
             return null;
@@ -62,7 +62,7 @@ class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
         // We won't backport the full flavored locale parsing of floats from Flow here
 
         if (!is_numeric($source)) {
-            return new \TYPO3\CMS\Extbase\Error\Error('"%s" cannot be converted to a float value.', 1332934124, array($source));
+            return new \TYPO3\CMS\Extbase\Error\Error('"%s" cannot be converted to a float value.', 1332934124, [$source]);
         }
         return (float) $source;
     }

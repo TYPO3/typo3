@@ -62,9 +62,9 @@ class BackendUserStartModuleUpdate extends AbstractUpdate
                         $db->exec_UPDATEquery(
                             'be_users',
                             'uid=' . (int)$backendUser['uid'],
-                            array(
+                            [
                                 'uc' => serialize($userConfig),
-                            )
+                            ]
                         );
                         $databaseQueries[] = $db->debug_lastBuiltQuery;
                     }

@@ -1,6 +1,6 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'label' => 'title',
         'descriptionColumn' => 'description',
         'tstamp' => 'tstamp',
@@ -13,59 +13,59 @@ return array(
         'adminOnly' => 1,
         'rootLevel' => -1,
         'setToDefaultOnCopy' => 'assign_to_groups',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden'
-        ),
-        'typeicon_classes' => array(
+        ],
+        'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_action'
-        ),
+        ],
         'type' => 'type'
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'hidden,title,type,description,assign_to_groups'
-    ),
-    'columns' => array(
-        'title' => array(
+    ],
+    'columns' => [
+        'title' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '25',
                 'max' => '255',
                 'eval' => 'trim,required'
-            )
-        ),
-        'description' => array(
+            ]
+        ],
+        'description' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'rows' => 10,
                 'cols' => 48
-            )
-        ),
-        'hidden' => array(
+            ]
+        ],
+        'hidden' => [
             'label' => 'LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.hidden',
-            'config' => array(
+            'config' => [
                 'type' => 'check'
-            )
-        ),
-        'type' => array(
+            ]
+        ],
+        'type' => [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.type',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', '0'),
-                    array('LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.type.1', '1'),
-                    array('LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.type.2', '2'),
-                    array('LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.type.3', '3'),
-                    array('LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.type.4', '4'),
-                    array('LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.type.5', '5')
-                )
-            )
-        ),
-        'assign_to_groups' => array(
+                'items' => [
+                    ['', '0'],
+                    ['LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.type.1', '1'],
+                    ['LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.type.2', '2'],
+                    ['LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.type.3', '3'],
+                    ['LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.type.4', '4'],
+                    ['LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.type.5', '5']
+                ]
+            ]
+        ],
+        'assign_to_groups' => [
             'label' => 'LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.assign_to_groups',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'be_groups',
@@ -75,20 +75,20 @@ return array(
                 'minitems' => '0',
                 'maxitems' => '200',
                 'autoSizeMax' => '10'
-            )
-        ),
-        't1_userprefix' => array(
+            ]
+        ],
+        't1_userprefix' => [
             'label' => 'LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.t1_userprefix',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '25',
                 'max' => '10',
                 'eval' => 'trim'
-            )
-        ),
-        't1_allowed_groups' => array(
+            ]
+        ],
+        't1_allowed_groups' => [
             'label' => 'LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.t1_allowed_groups',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'be_groups',
@@ -96,17 +96,17 @@ return array(
                 'size' => '10',
                 'maxitems' => '20',
                 'autoSizeMax' => '10'
-            )
-        ),
-        't1_create_user_dir' => array(
+            ]
+        ],
+        't1_create_user_dir' => [
             'label' => 'LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.t1_create_user_dir',
-            'config' => array(
+            'config' => [
                 'type' => 'check'
-            )
-        ),
-        't1_copy_of_user' => array(
+            ]
+        ],
+        't1_copy_of_user' => [
             'label' => 'LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.t1_copy_of_user',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users',
@@ -114,16 +114,16 @@ return array(
                 'maxitems' => '1',
                 'minitems' => '1',
                 'show_thumbs' => '1',
-                'wizards' => array(
-                    'suggest' => array(
+                'wizards' => [
+                    'suggest' => [
                         'type' => 'suggest'
-                    )
-                )
-            )
-        ),
-        't3_listPid' => array(
+                    ]
+                ]
+            ]
+        ],
+        't3_listPid' => [
             'label' => 'LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.t3_listPid',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'pages',
@@ -131,27 +131,27 @@ return array(
                 'maxitems' => '1',
                 'minitems' => '1',
                 'show_thumbs' => '1',
-                'wizards' => array(
-                    'suggest' => array(
+                'wizards' => [
+                    'suggest' => [
                         'type' => 'suggest'
-                    )
-                )
-            )
-        ),
-        't3_tables' => array(
+                    ]
+                ]
+            ]
+        ],
+        't3_tables' => [
             'label' => 'LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.t3_tables',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'special' => 'tables',
-                'items' => array(
-                    array('', '')
-                )
-            )
-        ),
-        't4_recordsToEdit' => array(
+                'items' => [
+                    ['', '']
+                ]
+            ]
+        ],
+        't4_recordsToEdit' => [
             'label' => 'LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.t4_recordsToEdit',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => '*',
@@ -160,24 +160,24 @@ return array(
                 'maxitems' => '50',
                 'minitems' => '1',
                 'show_thumbs' => '1',
-                'wizards' => array(
-                    'suggest' => array(
+                'wizards' => [
+                    'suggest' => [
                         'type' => 'suggest'
-                    )
-                )
-            )
-        )
-    ),
-    'types' => array(
-        '0' => array('showitem' => '
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'types' => [
+        '0' => ['showitem' => '
 			type,
 			title,
 			description,
 			--div--;LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.tab.access,
 				hidden,
 				assign_to_groups
-		'),
-        '1' => array('showitem' => '
+		'],
+        '1' => ['showitem' => '
 			type,
 			title,
 			description,
@@ -188,16 +188,16 @@ return array(
 			--div--;LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.tab.access,
 				hidden,
 				assign_to_groups
-		'),
-        '2' => array('showitem' => '
+		'],
+        '2' => ['showitem' => '
 			type,
 			title,
 			description,
 			--div--;LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.tab.access,
 				hidden,
 				assign_to_groups
-		'),
-        '3' => array('showitem' => '
+		'],
+        '3' => ['showitem' => '
 			type,
 			title,
 			description,
@@ -207,8 +207,8 @@ return array(
 			--div--;LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.tab.access,
 				hidden,
 				assign_to_groups
-		'),
-        '4' => array('showitem' => '
+		'],
+        '4' => ['showitem' => '
 			type,
 			title,
 			description,
@@ -217,8 +217,8 @@ return array(
 			--div--;LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.tab.access,
 				hidden,
 				assign_to_groups
-		'),
-        '5' => array('showitem' => '
+		'],
+        '5' => ['showitem' => '
 			type,
 			title,
 			description,
@@ -228,6 +228,6 @@ return array(
 			--div--;LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.tab.access,
 				hidden,
 				assign_to_groups
-		')
-    )
-);
+		']
+    ]
+];

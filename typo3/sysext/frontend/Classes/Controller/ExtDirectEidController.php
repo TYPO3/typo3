@@ -44,7 +44,7 @@ class ExtDirectEidController
         EidUtility::initLanguage();
         $ajaxScript = $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['ExtDirect::' . $ajaxID]['callbackMethod'];
         $this->ajaxObject = GeneralUtility::makeInstance(AjaxRequestHandler::class, 'ExtDirect::' . $ajaxID);
-        $parameters = array();
+        $parameters = [];
         GeneralUtility::callUserFunction($ajaxScript, $parameters, $this->ajaxObject, false, true);
     }
 
@@ -61,7 +61,7 @@ class ExtDirectEidController
         $action = isset($request->getParsedBody()['action'])
             ? $request->getParsedBody()['action']
             : (isset($request->getQueryParams()['action']) ? $request->getQueryParams()['action'] : '');
-        if (!in_array($action, array('route', 'getAPI'), true)) {
+        if (!in_array($action, ['route', 'getAPI'], true)) {
             return null;
         }
         $this->routeAction($action);

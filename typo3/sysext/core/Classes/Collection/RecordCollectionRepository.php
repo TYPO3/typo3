@@ -81,9 +81,9 @@ class RecordCollectionRepository
      */
     public function findByTableName($tableName)
     {
-        $conditions = array(
+        $conditions = [
             $this->tableField . '=' . $this->getDatabaseConnection()->fullQuoteStr($tableName, $this->table)
-        );
+        ];
         return $this->queryMultipleRecords($conditions);
     }
 
@@ -95,9 +95,9 @@ class RecordCollectionRepository
      */
     public function findByType($type)
     {
-        $conditions = array(
+        $conditions = [
             $this->typeField . '=' . $this->getDatabaseConnection()->fullQuoteStr($type, $this->table)
-        );
+        ];
         return $this->queryMultipleRecords($conditions);
     }
 
@@ -110,10 +110,10 @@ class RecordCollectionRepository
      */
     public function findByTypeAndTableName($type, $tableName)
     {
-        $conditions = array(
+        $conditions = [
             $this->typeField . '=' . $this->getDatabaseConnection()->fullQuoteStr($type, $this->table),
             $this->tableField . '=' . $this->getDatabaseConnection()->fullQuoteStr($tableName, $this->table)
-        );
+        ];
         return $this->queryMultipleRecords($conditions);
     }
 
@@ -125,7 +125,7 @@ class RecordCollectionRepository
      */
     public function deleteByUid($uid)
     {
-        $this->getDatabaseConnection()->exec_UPDATEquery($this->table, 'uid=' . (int)$uid, array('deleted' => 1, 'tstamp' => $GLOBALS['EXEC_TIME']));
+        $this->getDatabaseConnection()->exec_UPDATEquery($this->table, 'uid=' . (int)$uid, ['deleted' => 1, 'tstamp' => $GLOBALS['EXEC_TIME']]);
     }
 
     /**
@@ -134,7 +134,7 @@ class RecordCollectionRepository
      * @param array $conditions Conditions concatenated with AND for query
      * @return NULL|\TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
      */
-    protected function queryMultipleRecords(array $conditions = array())
+    protected function queryMultipleRecords(array $conditions = [])
     {
         $result = null;
         if (!empty($conditions)) {
@@ -180,7 +180,7 @@ class RecordCollectionRepository
      */
     protected function createMultipleDomainObjects(array $data)
     {
-        $collections = array();
+        $collections = [];
         foreach ($data as $collection) {
             $collections[] = $this->createDomainObject($collection);
         }

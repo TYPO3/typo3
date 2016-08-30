@@ -32,12 +32,12 @@ class DependencyResolver
     /**
      * @var array
      */
-    protected $elements = array();
+    protected $elements = [];
 
     /**
      * @var array
      */
-    protected $eventCallbacks = array();
+    protected $eventCallbacks = [];
 
     /**
      * @var bool
@@ -90,7 +90,7 @@ class DependencyResolver
      * @param array $callerArguments
      * @return mixed
      */
-    public function executeEventCallback($eventName, $caller, array $callerArguments = array())
+    public function executeEventCallback($eventName, $caller, array $callerArguments = [])
     {
         if (isset($this->eventCallbacks[$eventName])) {
             /** @var $callback \TYPO3\CMS\Version\Dependency\EventCallback */
@@ -120,7 +120,7 @@ class DependencyResolver
      * @param array $data
      * @return \TYPO3\CMS\Version\Dependency\ElementEntity
      */
-    public function addElement($table, $id, array $data = array())
+    public function addElement($table, $id, array $data = [])
     {
         $element = $this->getFactory()->getElement($table, $id, $data, $this);
         $elementName = $element->__toString();
@@ -136,7 +136,7 @@ class DependencyResolver
     public function getOuterMostParents()
     {
         if (!isset($this->outerMostParents)) {
-            $this->outerMostParents = array();
+            $this->outerMostParents = [];
             /** @var $element \TYPO3\CMS\Version\Dependency\ElementEntity */
             foreach ($this->elements as $element) {
                 $this->processOuterMostParent($element);
@@ -177,7 +177,7 @@ class DependencyResolver
         if (!isset($this->outerMostParents[$outerMostParentName])) {
             throw new \RuntimeException('Element "' . $outerMostParentName . '" was not detected as outermost parent.', 1289318609);
         }
-        $nestedStructure = array_merge(array($outerMostParentName => $outerMostParent), $outerMostParent->getNestedChildren());
+        $nestedStructure = array_merge([$outerMostParentName => $outerMostParent], $outerMostParent->getNestedChildren());
         return $nestedStructure;
     }
 

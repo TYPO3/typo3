@@ -154,7 +154,7 @@ class ColorpickerController extends AbstractWizardController
                 $this->imageError = 'ERROR: The image "' . $this->exampleImg . '" could not be found!';
             }
         }
-        $update = array();
+        $update = [];
         if ($this->areFieldChangeFunctionsValid()) {
             // Setting field-change functions:
             $fieldChangeFuncArr = unserialize($this->fieldChangeFunc);
@@ -281,7 +281,7 @@ class ColorpickerController extends AbstractWizardController
         // URL for the inner main frame:
         $url = BackendUtility::getModuleUrl(
             'wizard_colorpicker',
-            array(
+            [
                 'showPicker' => 1,
                 'colorValue' => $this->wizardParameters['currentValue'],
                 'fieldName' => $this->wizardParameters['itemName'],
@@ -290,7 +290,7 @@ class ColorpickerController extends AbstractWizardController
                 'md5ID' => $this->wizardParameters['md5ID'],
                 'fieldChangeFunc' => serialize($this->wizardParameters['fieldChangeFunc']),
                 'fieldChangeFuncHash' => $this->wizardParameters['fieldChangeFuncHash'],
-            )
+            ]
         );
         $this->content = $this->getPageRenderer()->render(PageRenderer::PART_HEADER) . '
 			<frameset rows="*,1" framespacing="0" frameborder="0" border="0">
@@ -314,7 +314,7 @@ class ColorpickerController extends AbstractWizardController
     {
         $steps = 51;
         // Get colors:
-        $color = array();
+        $color = [];
         for ($rr = 0; $rr < 256; $rr += $steps) {
             for ($gg = 0; $gg < 256; $gg += $steps) {
                 for ($bb = 0; $bb < 256; $bb += $steps) {
@@ -325,9 +325,9 @@ class ColorpickerController extends AbstractWizardController
         // Traverse colors:
         $columns = 24;
         $rows = 0;
-        $tRows = array();
+        $tRows = [];
         while (isset($color[$columns * $rows])) {
-            $tCells = array();
+            $tCells = [];
             for ($i = 0; $i < $columns; $i++) {
                 $tCells[] = '<td bgcolor="' . $color[$columns * $rows + $i] . '" class="t3js-colorpicker-value" data-color-value="' . htmlspecialchars($color[($columns * $rows + $i)]) . '" title="' . htmlspecialchars($color[($columns * $rows + $i)]) . '">&nbsp;&nbsp;</td>';
             }
@@ -348,7 +348,7 @@ class ColorpickerController extends AbstractWizardController
         // Initialize variables:
         $colors = explode(',', $this->HTMLcolorList);
         $currentValue = strtolower($this->colorValue);
-        $opt = array();
+        $opt = [];
         $opt[] = '<option value=""></option>';
         // Traverse colors, making option tags for selector box.
         foreach ($colors as $colorName) {
@@ -404,7 +404,7 @@ class ColorpickerController extends AbstractWizardController
         $index['r'] = dechex($colorRgb['red']);
         $index['g'] = dechex($colorRgb['green']);
         $index['b'] = dechex($colorRgb['blue']);
-        $hexValue = array();
+        $hexValue = [];
         foreach ($index as $value) {
             if (strlen($value) === 1) {
                 $hexValue[] = strtoupper('0' . $value);

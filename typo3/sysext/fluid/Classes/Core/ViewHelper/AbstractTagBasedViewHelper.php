@@ -25,7 +25,7 @@ abstract class AbstractTagBasedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
      *
      * @var array
      */
-    private static $tagAttributes = array();
+    private static $tagAttributes = [];
 
     /**
      * Tag builder instance

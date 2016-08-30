@@ -37,27 +37,27 @@ class ProcessedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array
      */
-    protected $databaseRow = array();
+    protected $databaseRow = [];
 
     /**
      * @throws \PHPUnit_Framework_Exception
      */
     protected function setUp()
     {
-        $this->storageMock = $this->getMock(ResourceStorage::class, array(), array(), '', false);
+        $this->storageMock = $this->getMock(ResourceStorage::class, [], [], '', false);
         $this->storageMock->expects($this->any())->method('getUid')->will($this->returnValue(5));
 
-        $this->folderMock = $this->getMock(Folder::class, array(), array(), '', false);
+        $this->folderMock = $this->getMock(Folder::class, [], [], '', false);
         $this->folderMock->expects($this->any())->method('getStorage')->willReturn($this->storageMock);
 
         $this->storageMock->expects($this->any())->method('getProcessingFolder')->willReturn($this->folderMock);
 
-        $this->databaseRow = array(
+        $this->databaseRow = [
             'uid' => '1234567',
             'identifier' => 'dummy.txt',
             'name' => $this->getUniqueId('dummy_'),
             'storage' => $this->storageMock->getUid(),
-        );
+        ];
     }
 
     /**
@@ -80,7 +80,7 @@ class ProcessedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         if ($originalFile === null) {
             $originalFile = $this->getFileFixture();
         }
-        return new ProcessedFile($originalFile, 'dummy', array(), $dbRow ?: $this->databaseRow);
+        return new ProcessedFile($originalFile, 'dummy', [], $dbRow ?: $this->databaseRow);
     }
 
     /**

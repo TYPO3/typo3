@@ -28,7 +28,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array $extConf Settings from the extension manager
      */
-    public $extConf = array();
+    public $extConf = [];
 
     /**
      * Constructor, makes sure all derived client classes are included
@@ -59,13 +59,13 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
     {
         $taskUid = $task->getTaskUid();
         if (empty($taskUid)) {
-            $fields = array(
+            $fields = [
                 'crdate' => $GLOBALS['EXEC_TIME'],
                 'disable' => $task->isDisabled(),
                 'description' => $task->getDescription(),
                 'task_group' => $task->getTaskGroup(),
                 'serialized_task_object' => 'RESERVED'
-            );
+            ];
             $result = $this->getDatabaseConnection()->exec_INSERTquery('tx_scheduler_task', $fields);
             if ($result) {
                 $task->setTaskUid($this->getDatabaseConnection()->sql_insert_id());
@@ -96,7 +96,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
         $res = $db->exec_SELECTquery('uid, serialized_executions, serialized_task_object', 'tx_scheduler_task', 'serialized_executions <> \'\'');
         $maxDuration = $this->extConf['maxLifetime'] * 60;
         while ($row = $db->sql_fetch_assoc($res)) {
-            $executions = array();
+            $executions = [];
             if ($serialized_executions = unserialize($row['serialized_executions'])) {
                 foreach ($serialized_executions as $task) {
                     if ($tstamp - $task < $maxDuration) {
@@ -115,7 +115,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
                 } else {
                     $value = serialize($executions);
                 }
-                $db->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . (int)$row['uid'], array('serialized_executions' => $value));
+                $db->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . (int)$row['uid'], ['serialized_executions' => $value]);
             }
         }
         $db->sql_free_result($res);
@@ -194,7 +194,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
         }
         /** @var Registry $registry */
         $registry = GeneralUtility::makeInstance(Registry::class);
-        $runInformation = array('start' => $GLOBALS['EXEC_TIME'], 'end' => time(), 'type' => $type);
+        $runInformation = ['start' => $GLOBALS['EXEC_TIME'], 'end' => time(), 'type' => $type];
         $registry->set('tx_scheduler', 'lastRun', $runInformation);
     }
 
@@ -238,13 +238,13 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
                 $executionTime = 0;
             }
             $task->unsetScheduler();
-            $fields = array(
+            $fields = [
                 'nextexecution' => $executionTime,
                 'disable' => $task->isDisabled(),
                 'description' => $task->getDescription(),
                 'task_group' => $task->getTaskGroup(),
                 'serialized_task_object' => serialize($task)
-            );
+            ];
             $result = $this->getDatabaseConnection()->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $taskUid, $fields);
         } else {
             $result = false;
@@ -270,19 +270,19 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
         // Define where clause
         // If no uid is given, take any non-disabled task which has a next execution time in the past
         if (empty($uid)) {
-            $queryArray = array(
+            $queryArray = [
                 'SELECT' => 'tx_scheduler_task.uid AS uid, serialized_task_object',
                 'FROM' => 'tx_scheduler_task LEFT JOIN tx_scheduler_task_group ON tx_scheduler_task.task_group = tx_scheduler_task_group.uid',
                 'WHERE' => 'disable = 0 AND nextexecution != 0 AND nextexecution <= ' . $GLOBALS['EXEC_TIME'] . ' AND (tx_scheduler_task_group.hidden = 0 OR tx_scheduler_task_group.hidden IS NULL)',
                 'LIMIT' => 1
-            );
+            ];
         } else {
-            $queryArray = array(
+            $queryArray = [
                 'SELECT' => 'uid, serialized_task_object',
                 'FROM' => 'tx_scheduler_task',
                 'WHERE' => 'uid = ' . (int)$uid,
                 'LIMIT' => 1
-            );
+            ];
         }
 
         $db = $this->getDatabaseConnection();
@@ -303,7 +303,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
             } else {
                 // Forcibly set the disable flag to 1 in the database,
                 // so that the task does not come up again and again for execution
-                $db->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $row['uid'], array('disable' => 1));
+                $db->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $row['uid'], ['disable' => 1]);
                 // Throw an exception to raise the problem
                 throw new \UnexpectedValueException('Could not unserialize task', 1255083671);
             }
@@ -346,7 +346,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
     public function fetchTasksWithCondition($where, $includeDisabledTasks = false)
     {
         $whereClause = '';
-        $tasks = array();
+        $tasks = [];
         if (!empty($where)) {
             $whereClause = $where;
         }
@@ -403,7 +403,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
     {
         // Log only if enabled
         if (!empty($this->extConf['enableBELog'])) {
-            $GLOBALS['BE_USER']->writelog(4, 0, $status, $code, '[scheduler]: ' . $message, array());
+            $GLOBALS['BE_USER']->writelog(4, 0, $status, $code, '[scheduler]: ' . $message, []);
         }
     }
 
@@ -450,7 +450,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
             }
             $cliDispatchPath = PATH_site . 'typo3/cli_dispatch.phpsh';
             list($cliDispatchPathEscaped, $startTimeEscaped) =
-                CommandUtility::escapeShellArguments(array($cliDispatchPath, $startTime));
+                CommandUtility::escapeShellArguments([$cliDispatchPath, $startTime]);
             $cmd = 'echo ' . $cliDispatchPathEscaped . ' scheduler | at ' . $startTimeEscaped . ' 2>&1';
             $output = shell_exec($cmd);
             $outputParts = '';

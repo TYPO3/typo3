@@ -74,11 +74,11 @@ class ActionHandler extends AbstractHandler
         $versionRecord = BackendUtility::getRecord($table, $orig_uid);
         $currentWorkspace = $this->setTemporaryWorkspace($versionRecord['t3ver_wsid']);
 
-        $cmd[$table][$t3ver_oid]['version'] = array(
+        $cmd[$table][$t3ver_oid]['version'] = [
             'action' => 'swap',
             'swapWith' => $orig_uid,
             'swapIntoWS' => 1
-        );
+        ];
         $this->processTcaCmd($cmd);
 
         $this->setTemporaryWorkspace($currentWorkspace);
@@ -97,9 +97,9 @@ class ActionHandler extends AbstractHandler
         $versionRecord = BackendUtility::getRecord($table, $uid);
         $currentWorkspace = $this->setTemporaryWorkspace($versionRecord['t3ver_wsid']);
 
-        $cmd[$table][$uid]['version'] = array(
+        $cmd[$table][$uid]['version'] = [
             'action' => 'clearWSID'
-        );
+        ];
         $this->processTcaCmd($cmd);
 
         $this->setTemporaryWorkspace($currentWorkspace);
@@ -125,14 +125,14 @@ class ActionHandler extends AbstractHandler
      */
     public function executeSelectionAction($parameter)
     {
-        $result = array();
+        $result = [];
 
         if (empty($parameter->action) || empty($parameter->selection)) {
             $result['error'] = 'No action or record selection given';
             return $result;
         }
 
-        $commands = array();
+        $commands = [];
         $swapIntoWorkspace = ($parameter->action === 'swap');
         if ($parameter->action === 'publish' || $swapIntoWorkspace) {
             $commands = $this->getPublishSwapCommands($parameter->selection, $swapIntoWorkspace);
@@ -154,13 +154,13 @@ class ActionHandler extends AbstractHandler
      */
     protected function getPublishSwapCommands(array $selection, $swapIntoWorkspace)
     {
-        $commands = array();
+        $commands = [];
         foreach ($selection as $record) {
-            $commands[$record->table][$record->liveId]['version'] = array(
+            $commands[$record->table][$record->liveId]['version'] = [
                 'action' => 'swap',
                 'swapWith' => $record->versionId,
                 'swapIntoWS' => (bool)$swapIntoWorkspace,
-            );
+            ];
         }
         return $commands;
     }
@@ -173,11 +173,11 @@ class ActionHandler extends AbstractHandler
      */
     protected function getFlushCommands(array $selection)
     {
-        $commands = array();
+        $commands = [];
         foreach ($selection as $record) {
-            $commands[$record->table][$record->versionId]['version'] = array(
+            $commands[$record->table][$record->versionId]['version'] = [
                 'action' => 'clearWSID',
-            );
+            ];
         }
         return $commands;
     }
@@ -190,12 +190,12 @@ class ActionHandler extends AbstractHandler
      */
     public function saveColumnModel($model)
     {
-        $data = array();
+        $data = [];
         foreach ($model as $column) {
-            $data[$column->column] = array(
+            $data[$column->column] = [
                 'position' => $column->position,
                 'hidden' => $column->hidden
-            );
+            ];
         }
         $GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'] = $data;
         $GLOBALS['BE_USER']->writeUC();
@@ -206,7 +206,7 @@ class ActionHandler extends AbstractHandler
         if (is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'])) {
             return $GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'];
         } else {
-            return array();
+            return [];
         }
     }
 
@@ -244,12 +244,12 @@ class ActionHandler extends AbstractHandler
             if ($nextStageRecord !== null) {
                 $this->stageService->getRecordService()->add($table, $uid);
                 $result = $this->getSentToStageWindow($nextStageRecord);
-                $result['affects'] = array(
+                $result['affects'] = [
                     'table' => $table,
                     'nextStage' => $nextStageRecord->getUid(),
                     't3ver_oid' => $t3ver_oid,
                     'uid' => $uid
-                );
+                ];
             } else {
                 $result = $this->getErrorResponse('error.stageId.invalid', 1291111644);
             }
@@ -282,11 +282,11 @@ class ActionHandler extends AbstractHandler
                     $this->stageService->getRecordService()->add($table, $uid);
                     $previousStageRecord = $stageRecord->getPrevious();
                     $result = $this->getSentToStageWindow($previousStageRecord);
-                    $result['affects'] = array(
+                    $result['affects'] = [
                         'table' => $table,
                         'uid' => $uid,
                         'nextStage' => $previousStageRecord->getUid()
-                    );
+                    ];
                 } else {
                     // element is already in edit stage, there is no prev stage - return an error message
                     $result = $this->getErrorResponse('error.sendToPrevStage.noPreviousStage', 1287264746);
@@ -319,9 +319,9 @@ class ActionHandler extends AbstractHandler
         }
 
         $result = $this->getSentToStageWindow($nextStageId);
-        $result['affects'] = array(
+        $result['affects'] = [
             'nextStage' => $nextStageId
-        );
+        ];
         return $result;
     }
 
@@ -342,8 +342,8 @@ class ActionHandler extends AbstractHandler
             throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'));
         }
 
-        $recipients = array();
-        $finalRecipients = array();
+        $recipients = [];
+        $finalRecipients = [];
         $backendUserIds = $stageRecord->getAllRecipients();
         foreach ($uidOfRecipients as $userUid) {
             // Ensure that only configured backend users are considered
@@ -352,11 +352,11 @@ class ActionHandler extends AbstractHandler
             }
             $beUserRecord = BackendUtility::getRecord('be_users', (int)$userUid);
             if (is_array($beUserRecord) && $beUserRecord['email'] !== '') {
-                $uc = $beUserRecord['uc'] ? unserialize($beUserRecord['uc']) : array();
-                $recipients[$beUserRecord['email']] = array(
+                $uc = $beUserRecord['uc'] ? unserialize($beUserRecord['uc']) : [];
+                $recipients[$beUserRecord['email']] = [
                     'email' => $beUserRecord['email'],
                     'lang' => isset($uc['lang']) ? $uc['lang'] : $beUserRecord['lang']
-                );
+                ];
             }
         }
 
@@ -370,23 +370,23 @@ class ActionHandler extends AbstractHandler
                     continue;
                 }
                 if (!isset($recipients[$preselectedBackendUser['email']])) {
-                    $uc = (!empty($preselectedBackendUser['uc']) ? unserialize($preselectedBackendUser['uc']) : array());
-                    $recipients[$preselectedBackendUser['email']] = array(
+                    $uc = (!empty($preselectedBackendUser['uc']) ? unserialize($preselectedBackendUser['uc']) : []);
+                    $recipients[$preselectedBackendUser['email']] = [
                         'email' => $preselectedBackendUser['email'],
                         'lang' => (isset($uc['lang']) ? $uc['lang'] : $preselectedBackendUser['lang'])
-                    );
+                    ];
                 }
             }
         }
 
         if ($additionalRecipients !== '') {
             $emails = GeneralUtility::trimExplode(LF, $additionalRecipients, true);
-            $additionalRecipients = array();
+            $additionalRecipients = [];
             foreach ($emails as $email) {
-                $additionalRecipients[$email] = array('email' => $email);
+                $additionalRecipients[$email] = ['email' => $email];
             }
         } else {
-            $additionalRecipients = array();
+            $additionalRecipients = [];
         }
         // We merge $recipients on top of $additionalRecipients because $recipients
         // possibly is more complete with a user language. Furthermore, the list of
@@ -409,7 +409,7 @@ class ActionHandler extends AbstractHandler
      */
     public function discardStagesFromPage($pageId)
     {
-        $cmdMapArray = array();
+        $cmdMapArray = [];
         /** @var $workspaceService \TYPO3\CMS\Workspaces\Service\WorkspaceService */
         $workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
         /** @var $stageService StagesService */
@@ -421,9 +421,9 @@ class ActionHandler extends AbstractHandler
             }
         }
         $this->processTcaCmd($cmdMapArray);
-        return array(
+        return [
             'success' => true
-        );
+        ];
     }
 
     /**
@@ -442,7 +442,7 @@ class ActionHandler extends AbstractHandler
      */
     public function sentCollectionToStage(\stdClass $parameters)
     {
-        $cmdMapArray = array();
+        $cmdMapArray = [];
         $comment = $parameters->comments;
         $stageId = $parameters->stageId;
         if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageId) === false) {
@@ -470,11 +470,11 @@ class ActionHandler extends AbstractHandler
             }
         }
         $this->processTcaCmd($cmdMapArray);
-        return array(
+        return [
             'success' => true,
             // force refresh after publishing changes
             'refreshLivePanel' => $parameters->stageId == -20
-        );
+        ];
     }
 
     /**
@@ -485,7 +485,7 @@ class ActionHandler extends AbstractHandler
      */
     protected function processTcaCmd(array $cmdMapArray)
     {
-        $result = array();
+        $result = [];
 
         if (empty($cmdMapArray)) {
             $result['error'] = 'No commands given to be processed';
@@ -494,7 +494,7 @@ class ActionHandler extends AbstractHandler
 
         /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler */
         $dataHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-        $dataHandler->start(array(), $cmdMapArray);
+        $dataHandler->start([], $cmdMapArray);
         $dataHandler->process_cmdmap();
 
         if ($dataHandler->errorLog) {
@@ -521,7 +521,7 @@ class ActionHandler extends AbstractHandler
      */
     public function sendToNextStageExecute(\stdClass $parameters)
     {
-        $cmdArray = array();
+        $cmdArray = [];
         $setStageId = $parameters->affects->nextStage;
         $comments = $parameters->comments;
         $table = $parameters->affects->table;
@@ -544,9 +544,9 @@ class ActionHandler extends AbstractHandler
             $cmdArray[$table][$uid]['version']['notificationAlternativeRecipients'] = $recipients;
         }
         $this->processTcaCmd($cmdArray);
-        $result = array(
+        $result = [
             'success' => true
-        );
+        ];
 
         $this->setTemporaryWorkspace($currentWorkspace);
         return $result;
@@ -568,7 +568,7 @@ class ActionHandler extends AbstractHandler
      */
     public function sendToPrevStageExecute(\stdClass $parameters)
     {
-        $cmdArray = array();
+        $cmdArray = [];
         $setStageId = $parameters->affects->nextStage;
         $comments = $parameters->comments;
         $table = $parameters->affects->table;
@@ -583,9 +583,9 @@ class ActionHandler extends AbstractHandler
         $cmdArray[$table][$uid]['version']['comment'] = $comments;
         $cmdArray[$table][$uid]['version']['notificationAlternativeRecipients'] = $recipients;
         $this->processTcaCmd($cmdArray);
-        $result = array(
+        $result = [
             'success' => true
-        );
+        ];
 
         $this->setTemporaryWorkspace($currentWorkspace);
         return $result;
@@ -614,7 +614,7 @@ class ActionHandler extends AbstractHandler
      */
     public function sendToSpecificStageExecute(\stdClass $parameters)
     {
-        $cmdArray = array();
+        $cmdArray = [];
         $setStageId = $parameters->affects->nextStage;
         $comments = $parameters->comments;
         $elements = $parameters->affects->elements;
@@ -639,9 +639,9 @@ class ActionHandler extends AbstractHandler
             }
         }
         $this->processTcaCmd($cmdArray);
-        $result = array(
+        $result = [
             'success' => true
-        );
+        ];
         return $result;
     }
 
@@ -657,43 +657,43 @@ class ActionHandler extends AbstractHandler
             $nextStage = WorkspaceRecord::get($this->getCurrentWorkspace())->getStage($nextStage);
         }
 
-        $result = array(
+        $result = [
             'title' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:actionSendToStage'),
-            'items' => array(
-                array(
+            'items' => [
+                [
                     'xtype' => 'panel',
                     'bodyStyle' => 'margin-bottom: 7px; border: none;',
                     'html' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.itemsWillBeSentTo') . ' ' . $nextStage->getTitle()
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         if ($nextStage->isDialogEnabled()) {
-            $result['items'][] = array(
+            $result['items'][] = [
                 'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.sendMailTo'),
                 'xtype' => 'checkboxgroup',
                 'itemCls' => 'x-check-group-alt',
                 'columns' => 1,
                 'style' => 'max-height: 200px',
                 'autoScroll' => true,
-                'items' => array(
+                'items' => [
                     $this->getReceipientsOfStage($nextStage->getUid())
-                )
-            );
-            $result['items'][] = array(
+                ]
+            ];
+            $result['items'][] = [
                 'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.additionalRecipients'),
                 'name' => 'additional',
                 'xtype' => 'textarea',
                 'width' => 250
-            );
+            ];
         }
-        $result['items'][] = array(
+        $result['items'][] = [
             'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.comments'),
             'name' => 'comments',
             'xtype' => 'textarea',
             'width' => 250,
             'value' => ($nextStage->isInternal() ? '' : $nextStage->getDefaultComment())
-        );
+        ];
 
         return $result;
     }
@@ -710,7 +710,7 @@ class ActionHandler extends AbstractHandler
             $stageRecord = WorkspaceRecord::get($this->getCurrentWorkspace())->getStage($stageRecord);
         }
 
-        $result = array();
+        $result = [];
         $allRecipients = $this->getStageService()->getResponsibleBeUser($stageRecord);
         $preselectedRecipients = $this->stageService->getPreselectedRecipients($stageRecord);
         $isPreselectionChangeable = $stageRecord->isPreselectionChangeable();
@@ -724,12 +724,12 @@ class ActionHandler extends AbstractHandler
             $checked = in_array($backendUserId, $preselectedRecipients);
             $disabled = ($checked && !$isPreselectionChangeable);
 
-            $result[] = array(
+            $result[] = [
                 'boxLabel' => sprintf('%s (%s)', $name, $backendUser['email']),
                 'name' => 'receipients-' . $backendUserId,
                 'checked' => $checked,
                 'disabled' => $disabled
-            );
+            ];
         }
 
         return $result;
@@ -773,12 +773,12 @@ class ActionHandler extends AbstractHandler
         list($currentStage, $previousStage) = $this->getStageService()->getPreviousStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
         $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), $currentStage['uid'], $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
-        return array(
+        return [
             'title' => 'Status message: Page send to next stage - ID: ' . $id . ' - Next stage title: ' . $previousStage['title'],
             'items' => $this->getSentToStageWindow($previousStage['uid']),
             'affects' => $workspaceItemsArray,
             'stageId' => $previousStage['uid']
-        );
+        ];
     }
 
     /**
@@ -792,12 +792,12 @@ class ActionHandler extends AbstractHandler
         list($currentStage, $nextStage) = $this->getStageService()->getNextStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
         $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), $currentStage['uid'], $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
-        return array(
+        return [
             'title' => 'Status message: Page send to next stage - ID: ' . $id . ' - Next stage title: ' . $nextStage['title'],
             'items' => $this->getSentToStageWindow($nextStage['uid']),
             'affects' => $workspaceItemsArray,
             'stageId' => $nextStage['uid']
-        );
+        ];
     }
 
     /**
@@ -814,20 +814,20 @@ class ActionHandler extends AbstractHandler
         $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
         list(, $nextStage) = $stageService->getNextStageForElementCollection($workspaceItemsArray);
         list(, $previousStage) = $stageService->getPreviousStageForElementCollection($workspaceItemsArray);
-        $toolbarButtons = array(
-            'feToolbarButtonNextStage' => array(
+        $toolbarButtons = [
+            'feToolbarButtonNextStage' => [
                 'visible' => is_array($nextStage) && !empty($nextStage),
                 'text' => $nextStage['title']
-            ),
-            'feToolbarButtonPreviousStage' => array(
+            ],
+            'feToolbarButtonPreviousStage' => [
                 'visible' => is_array($previousStage) && !empty($previousStage),
                 'text' => $previousStage['title']
-            ),
-            'feToolbarButtonDiscardStage' => array(
+            ],
+            'feToolbarButtonDiscardStage' => [
                 'visible' => is_array($nextStage) && !empty($nextStage) || is_array($previousStage) && !empty($previousStage),
                 'text' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:label_doaction_discard', true)
-            )
-        );
+            ]
+        ];
         return $toolbarButtons;
     }
 

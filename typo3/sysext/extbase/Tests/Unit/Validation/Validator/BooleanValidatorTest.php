@@ -35,8 +35,8 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
      */
     public function booleanValidatorReturnsNoErrorForAFalseStringExpectation()
     {
-        $options = array('is' => 'false');
-        $validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'), array($options));
+        $options = ['is' => 'false'];
+        $validator = $this->getMock($this->validatorClassName, ['translateErrorMessage'], [$options]);
         $this->assertFalse($validator->validate(false)->hasErrors());
     }
 
@@ -45,8 +45,8 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
      */
     public function booleanValidatorReturnsNoErrorForATrueStringExpectation()
     {
-        $options = array('is' => 'true');
-        $validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'), array($options));
+        $options = ['is' => 'true'];
+        $validator = $this->getMock($this->validatorClassName, ['translateErrorMessage'], [$options]);
         $this->assertFalse($validator->validate(true)->hasErrors());
     }
 
@@ -55,8 +55,8 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
      */
     public function booleanValidatorReturnsNoErrorForATrueExpectation()
     {
-        $options = array('is' => true);
-        $validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'), array($options));
+        $options = ['is' => true];
+        $validator = $this->getMock($this->validatorClassName, ['translateErrorMessage'], [$options]);
         $this->assertFalse($validator->validate(true)->hasErrors());
     }
 
@@ -65,8 +65,8 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
      */
     public function booleanValidatorReturnsNoErrorForAFalseExpectation()
     {
-        $options = array('is' => false);
-        $validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'), array($options));
+        $options = ['is' => false];
+        $validator = $this->getMock($this->validatorClassName, ['translateErrorMessage'], [$options]);
         $this->assertFalse($validator->validate(false)->hasErrors());
     }
 
@@ -75,8 +75,8 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
      */
     public function booleanValidatorReturnsErrorForTrueWhenFalseExpected()
     {
-        $options = array('is' => false);
-        $validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'), array($options));
+        $options = ['is' => false];
+        $validator = $this->getMock($this->validatorClassName, ['translateErrorMessage'], [$options]);
         $this->assertTrue($validator->validate(true)->hasErrors());
     }
 
@@ -85,8 +85,8 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
      */
     public function booleanValidatorReturnsErrorForFalseWhenTrueExpected()
     {
-        $options = array('is' => true);
-        $validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'), array($options));
+        $options = ['is' => true];
+        $validator = $this->getMock($this->validatorClassName, ['translateErrorMessage'], [$options]);
         $this->assertTrue($validator->validate(false)->hasErrors());
     }
 
@@ -95,8 +95,8 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
      */
     public function booleanValidatorReturnsErrorForAString()
     {
-        $options = array('is' => true);
-        $validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'), array($options));
+        $options = ['is' => true];
+        $validator = $this->getMock($this->validatorClassName, ['translateErrorMessage'], [$options]);
         $this->assertTrue($validator->validate('a string')->hasErrors());
     }
 
@@ -105,8 +105,8 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
      */
     public function booleanValidatorReturnsTrueIfNoParameterIsGiven()
     {
-        $options = array();
-        $validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'), array($options));
+        $options = [];
+        $validator = $this->getMock($this->validatorClassName, ['translateErrorMessage'], [$options]);
         $this->assertFalse($validator->validate(true)->hasErrors());
     }
 }

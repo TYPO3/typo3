@@ -74,7 +74,7 @@ class Request implements RequestInterface
     /**
      * @var array The arguments for this request
      */
-    protected $arguments = array();
+    protected $arguments = [];
 
     /**
      * Framework-internal arguments for this request, such as __referrer.
@@ -84,7 +84,7 @@ class Request implements RequestInterface
      *
      * @var array
      */
-    protected $internalArguments = array();
+    protected $internalArguments = [];
 
     /**
      * @var string The requested representation format
@@ -150,36 +150,36 @@ class Request implements RequestInterface
         if (null !== $this->controllerVendorName) {
             // It's safe to assume a namespaced name as namespaced names have to follow PSR-0
             $objectName = str_replace(
-                array(
+                [
                     '@extension',
                     '@subpackage',
                     '@controller',
                     '@vendor',
                     '\\\\'
-                ),
-                array(
+                ],
+                [
                     $this->controllerExtensionName,
                     $this->controllerSubpackageKey,
                     $this->controllerName,
                     $this->controllerVendorName,
                     '\\'
-                ),
+                ],
                 $this->namespacedControllerObjectNamePattern
             );
         } else {
             $objectName = str_replace(
-                array(
+                [
                     '@extension',
                     '@subpackage',
                     '@controller',
                     '__'
-                ),
-                array(
+                ],
+                [
                     $this->controllerExtensionName,
                     $this->controllerSubpackageKey,
                     $this->controllerName,
                     '_'
-                ),
+                ],
                 $this->controllerObjectNamePattern
             );
         }
@@ -390,7 +390,7 @@ class Request implements RequestInterface
             $this->internalArguments[$argumentName] = $value;
             return;
         }
-        if (!in_array($argumentName, array('@extension', '@subpackage', '@controller', '@action', '@format', '@vendor'), true)) {
+        if (!in_array($argumentName, ['@extension', '@subpackage', '@controller', '@action', '@format', '@vendor'], true)) {
             $this->arguments[$argumentName] = $value;
         }
     }
@@ -427,7 +427,7 @@ class Request implements RequestInterface
      */
     public function setArguments(array $arguments)
     {
-        $this->arguments = array();
+        $this->arguments = [];
         foreach ($arguments as $argumentName => $argumentValue) {
             $this->setArgument($argumentName, $argumentValue);
         }

@@ -26,12 +26,12 @@ class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array('typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example');
+    protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = array('extbase', 'fluid');
+    protected $coreExtensionsToLoad = ['extbase', 'fluid'];
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager

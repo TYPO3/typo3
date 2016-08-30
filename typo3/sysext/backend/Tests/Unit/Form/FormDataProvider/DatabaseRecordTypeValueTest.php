@@ -413,7 +413,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
             'foreignField' => 3,
         ];
         // Required for BackendUtility::getRecord
-        $GLOBALS['TCA']['foreignTable'] = array('foo');
+        $GLOBALS['TCA']['foreignTable'] = ['foo'];
 
         $this->dbProphecy->exec_SELECTgetSingleRow('foreignField', 'foreignTable', 'uid=42')->shouldBeCalled()->willReturn($foreignRecordResult);
 
@@ -459,7 +459,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
             'type' => 2,
         ];
         // Required for BackendUtility::getRecord
-        $GLOBALS['TCA']['sys_file'] = array('foo');
+        $GLOBALS['TCA']['sys_file'] = ['foo'];
 
         $this->dbProphecy->exec_SELECTgetSingleRow('type', 'sys_file', 'uid=222')->shouldBeCalled()->willReturn($foreignRecordResult);
 

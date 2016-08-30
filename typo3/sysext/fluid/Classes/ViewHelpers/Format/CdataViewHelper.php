@@ -63,7 +63,7 @@ class CdataViewHelper extends AbstractViewHelper implements CompilableInterface
     public function render($value = null)
     {
         return static::renderStatic(
-            array('value' => $value),
+            ['value' => $value],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

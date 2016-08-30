@@ -127,11 +127,11 @@ class MysqlFulltextIndexHook
         } else {
             $searchString = trim($naturalSearchString);
         }
-        return array(
+        return [
             'searchBoolean' => $searchBoolean,
             'searchString' => $searchString,
             'fulltextIndex' => $fulltextIndex
-        );
+        ];
     }
 
     /**
@@ -164,7 +164,7 @@ class MysqlFulltextIndexHook
 
             // Collecting all pages IDs in which to search;
             // filtering out ALL pages that are not accessible due to enableFields. Does NOT look for "no_search" field!
-            $idList = array();
+            $idList = [];
             foreach ($searchRootPageIdList as $rootId) {
                 /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
                 $cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);

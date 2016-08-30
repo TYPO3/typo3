@@ -93,6 +93,6 @@ class ImportExportUtility
      */
     protected function emitAfterImportExportInitialisationSignal(Import $import)
     {
-        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'afterImportExportInitialisation', array($import));
+        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'afterImportExportInitialisation', [$import]);
     }
 }

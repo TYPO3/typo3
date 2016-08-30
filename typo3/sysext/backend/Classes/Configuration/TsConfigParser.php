@@ -24,7 +24,7 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
     /**
      * @var array
      */
-    protected $rootLine = array();
+    protected $rootLine = [];
 
     /**
      * The uid of the page being handled
@@ -42,7 +42,7 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
      * @param array $rootLine The rootline of the page being handled
      * @return array Array containing the parsed TSConfig and a flag whether the content was retrieved from cache
      */
-    public function parseTSconfig($TStext, $type, $id = 0, array $rootLine = array())
+    public function parseTSconfig($TStext, $type, $id = 0, array $rootLine = [])
     {
         $this->type = $type;
         $this->id = $id;
@@ -52,44 +52,44 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
         if (is_array($cachedContent)) {
             $storedData = $cachedContent[0];
             $storedMD5 = $cachedContent[1];
-            $storedData['match'] = array();
+            $storedData['match'] = [];
             $storedData = $this->matching($storedData);
             $checkMD5 = md5(serialize($storedData));
             if ($checkMD5 == $storedMD5) {
-                $res = array(
+                $res = [
                     'TSconfig' => $storedData['TSconfig'],
                     'cached' => 1,
                     'hash' => $hash
-                );
+                ];
             } else {
                 $shash = md5($checkMD5 . $hash);
                 $cachedSpec = BackendUtility::getHash($shash);
                 if (is_array($cachedSpec)) {
                     $storedData = $cachedSpec;
-                    $res = array(
+                    $res = [
                         'TSconfig' => $storedData['TSconfig'],
                         'cached' => 1,
                         'hash' => $shash
-                    );
+                    ];
                 } else {
                     $storeData = $this->parseWithConditions($TStext);
                     BackendUtility::storeHash($shash, $storeData, $type . '_TSconfig');
-                    $res = array(
+                    $res = [
                         'TSconfig' => $storeData['TSconfig'],
                         'cached' => 0,
                         'hash' => $shash
-                    );
+                    ];
                 }
             }
         } else {
             $storeData = $this->parseWithConditions($TStext);
             $md5 = md5(serialize($storeData));
-            BackendUtility::storeHash($hash, array($storeData, $md5), $type . '_TSconfig');
-            $res = array(
+            BackendUtility::storeHash($hash, [$storeData, $md5], $type . '_TSconfig');
+            $res = [
                 'TSconfig' => $storeData['TSconfig'],
                 'cached' => 0,
                 'hash' => $hash
-            );
+            ];
         }
         return $res;
     }
@@ -107,11 +107,11 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
         $matchObj->setRootline($this->rootLine);
         $matchObj->setPageId($this->id);
         $this->parse($TSconfig, $matchObj);
-        return array(
+        return [
             'TSconfig' => $this->setup,
             'sections' => $this->sections,
             'match' => $this->sectionsMatch
-        );
+        ];
     }
 
     /**

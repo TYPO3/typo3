@@ -78,7 +78,7 @@ class RecordHistory
     /**
      * @var array
      */
-    public $changeLog = array();
+    public $changeLog = [];
 
     /**
      * @var bool
@@ -88,12 +88,12 @@ class RecordHistory
     /**
      * @var array
      */
-    protected $recordCache = array();
+    protected $recordCache = [];
 
     /**
      * @var array
      */
-    protected $pageAccessCache = array();
+    protected $pageAccessCache = [];
 
     /**
      * @var IconFactory
@@ -182,7 +182,7 @@ class RecordHistory
         $uid = (int)$uid;
         $row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('snapshot', 'sys_history', 'uid=' . $uid);
         if (!empty($row)) {
-            $this->getDatabaseConnection()->exec_UPDATEquery('sys_history', 'uid=' . $uid, array('snapshot' => !$row['snapshot']));
+            $this->getDatabaseConnection()->exec_UPDATEquery('sys_history', 'uid=' . $uid, ['snapshot' => !$row['snapshot']]);
         }
     }
 
@@ -202,8 +202,8 @@ class RecordHistory
         $rollbackData = explode(':', $this->rollbackFields);
         // PROCESS INSERTS AND DELETES
         // rewrite inserts and deletes
-        $cmdmapArray = array();
-        $data = array();
+        $cmdmapArray = [];
+        $data = [];
         if ($diff['insertsDeletes']) {
             switch (count($rollbackData)) {
                 case 1:
@@ -242,7 +242,7 @@ class RecordHistory
             $tce->stripslashes_values = 0;
             $tce->debug = 0;
             $tce->dontProcessTransformations = 1;
-            $tce->start(array(), $cmdmapArray);
+            $tce->start([], $cmdmapArray);
             $tce->process_cmdmap();
             unset($tce);
             if (isset($cmdmapArray['pages'])) {
@@ -251,7 +251,7 @@ class RecordHistory
         }
         // PROCESS CHANGES
         // create an array for process_datamap
-        $diffModified = array();
+        $diffModified = [];
         foreach ($diff['oldData'] as $key => $value) {
             $splitKey = explode(':', $key);
             $diffModified[$splitKey[0]][$splitKey[1]] = $value;
@@ -277,7 +277,7 @@ class RecordHistory
         $tce->stripslashes_values = 0;
         $tce->debug = 0;
         $tce->dontProcessTransformations = 1;
-        $tce->start($data, array());
+        $tce->start($data, []);
         $tce->process_datamap();
         unset($tce);
         if (isset($data['pages'])) {
@@ -315,7 +315,7 @@ class RecordHistory
         // Get current selection from UC, merge data, write it back to UC
         $currentSelection = is_array($this->getBackendUser()->uc['moduleData']['history'])
             ? $this->getBackendUser()->uc['moduleData']['history']
-            : array('maxSteps' => '', 'showDiff' => 1, 'showSubElements' => 1, 'showInsertDelete' => 1);
+            : ['maxSteps' => '', 'showDiff' => 1, 'showSubElements' => 1, 'showInsertDelete' => 1];
         $currentSelectionOverride = $this->getArgument('settings');
         if ($currentSelectionOverride) {
             $currentSelection = array_merge($currentSelection, $currentSelectionOverride);
@@ -323,26 +323,26 @@ class RecordHistory
             $this->getBackendUser()->writeUC($this->getBackendUser()->uc);
         }
         // Display selector for number of history entries
-        $selector['maxSteps'] = array(
+        $selector['maxSteps'] = [
             10 => 10,
             20 => 20,
             50 => 50,
             100 => 100,
             '' => 'maxSteps_all',
             'marked' => 'maxSteps_marked'
-        );
-        $selector['showDiff'] = array(
+        ];
+        $selector['showDiff'] = [
             0 => 'showDiff_no',
             1 => 'showDiff_inline'
-        );
-        $selector['showSubElements'] = array(
+        ];
+        $selector['showSubElements'] = [
             0 => 'no',
             1 => 'yes'
-        );
-        $selector['showInsertDelete'] = array(
+        ];
+        $selector['showInsertDelete'] = [
             0 => 'no',
             1 => 'yes'
-        );
+        ];
         // render selectors
         $displayCode = '';
         $scriptUrl = GeneralUtility::linkThisScript();
@@ -392,7 +392,7 @@ class RecordHistory
             $pid = $this->getRecord($elParts[0], $elParts[1]);
 
             if ($this->hasPageAccess('pages', $pid['pid'])) {
-                $content .= $this->linkPage('<span class="btn btn-default" style="margin-bottom: 5px;">' . $languageService->getLL('elementHistory_link', true) . '</span>', array('element' => 'pages:' . $pid['pid']));
+                $content .= $this->linkPage('<span class="btn btn-default" style="margin-bottom: 5px;">' . $languageService->getLL('elementHistory_link', true) . '</span>', ['element' => 'pages:' . $pid['pid']]);
             }
         }
 
@@ -425,7 +425,7 @@ class RecordHistory
             return '';
         }
         $languageService = $this->getLanguageService();
-        $lines = array();
+        $lines = [];
         // Initialize:
         $lines[] = '<thead><tr>
 				<th>' . $languageService->getLL('rollback', true) . '</th>
@@ -455,7 +455,7 @@ class RecordHistory
             $i++;
             // Get user names
             // Build up single line
-            $singleLine = array();
+            $singleLine = [];
             $userName = $entry['user'] ? $beUserArray[$entry['user']]['username'] : $languageService->getLL('externalChange');
             // Executed by switch-user
             if (!empty($entry['originalUser'])) {
@@ -467,7 +467,7 @@ class RecordHistory
 
             // Diff link
             $image = '<span title="' . $languageService->getLL('sumUpChanges', true) . '">' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</span>';
-            $singleLine[] = '<span>' . $this->linkPage($image, array('diff' => $sysLogUid)) . '</span>';
+            $singleLine[] = '<span>' . $this->linkPage($image, ['diff' => $sysLogUid]) . '</span>';
             // remove first link
             $singleLine[] = htmlspecialchars(BackendUtility::datetime($entry['tstamp']));
             // add time
@@ -478,7 +478,7 @@ class RecordHistory
             // add user name
             $singleLine[] = $this->linkPage(
                 $this->generateTitle($entry['tablename'], $entry['recuid']),
-                array('element' => $entry['tablename'] . ':' . $entry['recuid']),
+                ['element' => $entry['tablename'] . ':' . $entry['recuid']],
                 '',
                 $languageService->getLL('linkRecordHistory', true)
             );
@@ -517,7 +517,7 @@ class RecordHistory
                     $title = $languageService->getLL('markState', true);
                     $image = $this->iconFactory->getIcon('actions-markstate', Icon::SIZE_SMALL)->render();
                 }
-                $singleLine[] = $this->linkPage($image, array('highlight' => $entry['uid']), '', $title);
+                $singleLine[] = $this->linkPage($image, ['highlight' => $entry['uid']], '', $title);
             } else {
                 $singleLine[] = '';
             }
@@ -546,7 +546,7 @@ class RecordHistory
 				' . implode('', $lines) . '
 			</table>';
         if ($this->lastSyslogId) {
-            $theCode .= '<br />' . $this->linkPage('<span class="btn btn-default">' . $languageService->getLL('fullView', true) . '</span>', array('diff' => ''));
+            $theCode .= '<br />' . $this->linkPage('<span class="btn btn-default">' . $languageService->getLL('fullView', true) . '</span>', ['diff' => '']);
         }
 
         $theCode .= '<br /><br />';
@@ -616,7 +616,7 @@ class RecordHistory
      */
     public function renderDiff($entry, $table, $rollbackUid = 0)
     {
-        $lines = array();
+        $lines = [];
         if (is_array($entry['newRecord'])) {
             $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
             $fieldsToDisplay = array_keys($entry['newRecord']);
@@ -658,9 +658,9 @@ class RecordHistory
      */
     public function createMultipleDiff()
     {
-        $insertsDeletes = array();
-        $newArr = array();
-        $differences = array();
+        $insertsDeletes = [];
+        $newArr = [];
+        $differences = [];
         if (!$this->changeLog) {
             return 0;
         }
@@ -706,11 +706,11 @@ class RecordHistory
                 unset($differences[$record]);
             }
         }
-        return array(
+        return [
             'newData' => $newArr,
             'oldData' => $differences,
             'insertsDeletes' => $insertsDeletes
-        );
+        ];
     }
 
     /**
@@ -774,7 +774,7 @@ class RecordHistory
         $rows = $databaseConnection->exec_SELECTgetRows('sys_history.*, sys_log.userid, sys_log.log_data', 'sys_history, sys_log', 'sys_history.sys_log_uid = sys_log.uid
 						AND sys_history.tablename = ' . $databaseConnection->fullQuoteStr($table, 'sys_history') . '
 						AND sys_history.recuid = ' . (int)$uid, '', 'sys_log.uid DESC', $this->maxSteps);
-        $changeLog = array();
+        $changeLog = [];
         if (!empty($rows)) {
             // Traversing the result, building up changesArray / changeLog:
             foreach ($rows as $row) {
@@ -817,7 +817,7 @@ class RecordHistory
                 if ($this->lastSyslogId && $row['uid'] < $this->lastSyslogId) {
                     continue;
                 }
-                $hisDat = array();
+                $hisDat = [];
                 $logData = unserialize($row['log_data']);
                 switch ($row['action']) {
                     case 1:
@@ -872,7 +872,7 @@ class RecordHistory
      */
     public function createRollbackLink($key, $alt = '', $type = 0)
     {
-        return $this->linkPage('<span class="btn btn-default" style="margin-right: 5px;">' . $alt . '</span>', array('rollbackFields' => $key));
+        return $this->linkPage('<span class="btn btn-default" style="margin-right: 5px;">' . $alt . '</span>', ['rollbackFields' => $key]);
     }
 
     /**
@@ -885,7 +885,7 @@ class RecordHistory
      * @return string Link.
      * @access private
      */
-    public function linkPage($str, $inparams = array(), $anchor = '', $title = '')
+    public function linkPage($str, $inparams = [], $anchor = '', $title = '')
     {
         // Setting default values based on GET parameters:
         $params['element'] = $this->element;
@@ -1052,7 +1052,7 @@ class RecordHistory
                 break;
             case 'settings':
                 if (!is_array($value)) {
-                    $value = array();
+                    $value = [];
                 }
                 break;
             default:

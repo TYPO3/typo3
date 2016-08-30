@@ -49,7 +49,7 @@ class SilentConfigurationUpgradeService
      *
      * @var array
      */
-    protected $obsoleteLocalConfigurationSettings = array(
+    protected $obsoleteLocalConfigurationSettings = [
         // #62402
         'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\ExtensionManagerTables',
         'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\FileIdentifierHashUpdate',
@@ -102,7 +102,7 @@ class SilentConfigurationUpgradeService
         'BE/flexFormXMLincludeDiffBase',
         // #71110
         'BE/maxFileSize',
-    );
+    ];
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
@@ -196,7 +196,7 @@ class SilentConfigurationUpgradeService
         try {
             $extensionConfiguration = @unserialize($this->configurationManager->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords'));
         } catch (\RuntimeException $e) {
-            $extensionConfiguration = array();
+            $extensionConfiguration = [];
         }
         if (is_array($extensionConfiguration) && !empty($extensionConfiguration)) {
             if (isset($extensionConfiguration['BE.']['enabled'])) {
@@ -261,7 +261,7 @@ class SilentConfigurationUpgradeService
             return;
         }
         if ($currentValueInLocalConfiguration !== 'digest') {
-            $this->configurationManager->removeLocalConfigurationKeysByPath(array('HTTP/proxy_auth_scheme'));
+            $this->configurationManager->removeLocalConfigurationKeysByPath(['HTTP/proxy_auth_scheme']);
             $this->throwRedirectException();
         }
     }
@@ -340,7 +340,7 @@ class SilentConfigurationUpgradeService
      */
     protected function disableImageMagickAndGdlibIfImageProcessingIsDisabled()
     {
-        $changedValues = array();
+        $changedValues = [];
         try {
             $currentImageProcessingValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/image_processing');
         } catch (\RuntimeException $e) {
@@ -383,7 +383,7 @@ class SilentConfigurationUpgradeService
      */
     protected function disableImageMagickDetailSettingsIfImageMagickIsDisabled()
     {
-        $changedValues = array();
+        $changedValues = [];
         try {
             $currentImValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im');
         } catch (\RuntimeException $e) {
@@ -441,7 +441,7 @@ class SilentConfigurationUpgradeService
      */
     protected function setImageMagickDetailSettings()
     {
-        $changedValues = array();
+        $changedValues = [];
         try {
             $currentIm5Value = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_version_5');
         } catch (\RuntimeException $e) {

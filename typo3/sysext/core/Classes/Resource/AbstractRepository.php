@@ -119,7 +119,7 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
      */
     public function findAll()
     {
-        $itemList = array();
+        $itemList = [];
         $whereClause = '1=1';
         if ($this->type != '') {
             $whereClause .= ' AND ' . $this->typeField . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->type, $this->table) . ' ';

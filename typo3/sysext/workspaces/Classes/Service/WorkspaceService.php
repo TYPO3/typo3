@@ -28,12 +28,12 @@ class WorkspaceService implements SingletonInterface
     /**
      * @var array
      */
-    protected $pageCache = array();
+    protected $pageCache = [];
 
     /**
      * @var array
      */
-    protected $versionsOnPageCache = array();
+    protected $versionsOnPageCache = [];
 
     const TABLE_WORKSPACE = 'sys_workspace';
     const SELECT_ALL_WORKSPACES = -98;
@@ -46,9 +46,9 @@ class WorkspaceService implements SingletonInterface
      */
     public function getAvailableWorkspaces()
     {
-        $availableWorkspaces = array();
+        $availableWorkspaces = [];
         // add default workspaces
-        if ($GLOBALS['BE_USER']->checkWorkspace(array('uid' => (string)self::LIVE_WORKSPACE_ID))) {
+        if ($GLOBALS['BE_USER']->checkWorkspace(['uid' => (string)self::LIVE_WORKSPACE_ID])) {
             $availableWorkspaces[self::LIVE_WORKSPACE_ID] = self::getWorkspaceTitle(self::LIVE_WORKSPACE_ID);
         }
         // add custom workspaces (selecting all, filtering by BE_USER check):
@@ -127,7 +127,7 @@ class WorkspaceService implements SingletonInterface
     public function getCmdArrayForPublishWS($wsid, $doSwap, $pageId = 0, $language = null)
     {
         $wsid = (int)$wsid;
-        $cmd = array();
+        $cmd = [];
         if ($wsid >= -1 && $wsid !== 0) {
             // Define stage to select:
             $stage = -99;
@@ -143,7 +143,7 @@ class WorkspaceService implements SingletonInterface
             foreach ($versions as $table => $records) {
                 foreach ($records as $rec) {
                     // Build the cmd Array:
-                    $cmd[$table][$rec['t3ver_oid']]['version'] = array('action' => 'swap', 'swapWith' => $rec['uid'], 'swapIntoWS' => $doSwap ? 1 : 0);
+                    $cmd[$table][$rec['t3ver_oid']]['version'] = ['action' => 'swap', 'swapWith' => $rec['uid'], 'swapIntoWS' => $doSwap ? 1 : 0];
                 }
             }
         }
@@ -162,7 +162,7 @@ class WorkspaceService implements SingletonInterface
     public function getCmdArrayForFlushWS($wsid, $flush = true, $pageId = 0, $language = null)
     {
         $wsid = (int)$wsid;
-        $cmd = array();
+        $cmd = [];
         if ($wsid >= -1 && $wsid !== 0) {
             // Define stage to select:
             $stage = -99;
@@ -172,7 +172,7 @@ class WorkspaceService implements SingletonInterface
             foreach ($versions as $table => $records) {
                 foreach ($records as $rec) {
                     // Build the cmd Array:
-                    $cmd[$table][$rec['uid']]['version'] = array('action' => $flush ? 'flush' : 'clearWSID');
+                    $cmd[$table][$rec['uid']]['version'] = ['action' => $flush ? 'flush' : 'clearWSID'];
                 }
             }
         }
@@ -197,7 +197,7 @@ class WorkspaceService implements SingletonInterface
     {
         $wsid = (int)$wsid;
         $filter = (int)$filter;
-        $output = array();
+        $output = [];
         // Contains either nothing or a list with live-uids
         if ($pageId != -1 && $recursionLevel > 0) {
             $pageList = $this->getTreeUids($pageId, $wsid, $recursionLevel);
@@ -209,7 +209,7 @@ class WorkspaceService implements SingletonInterface
             $mountPoints = array_map('intval', $GLOBALS['BE_USER']->returnWebmounts());
             $mountPoints = array_unique($mountPoints);
             if (!in_array(0, $mountPoints)) {
-                $tempPageIds = array();
+                $tempPageIds = [];
                 foreach ($mountPoints as $mountPoint) {
                     $tempPageIds[] = $this->getTreeUids($mountPoint, $wsid, $recursionLevel);
                 }
@@ -258,7 +258,7 @@ class WorkspaceService implements SingletonInterface
         // If table is not localizable, but localized reocrds shall
         // be collected, an empty result array needs to be returned:
         if ($isTableLocalizable === false && $language > 0) {
-            return array();
+            return [];
         } elseif ($isTableLocalizable) {
             $languageParentField = 'A.' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . ', ';
         }
@@ -304,7 +304,7 @@ class WorkspaceService implements SingletonInterface
         // This joins the online version with the offline version as tables A and B
         // Order by UID, mostly to have a sorting in the backend overview module which doesn't "jump around" when swapping.
         $res = $this->getDatabaseConnection()->exec_SELECTgetRows($fields, $from, $where, '', 'B.uid');
-        return is_array($res) ? $res : array();
+        return is_array($res) ? $res : [];
     }
 
     /**
@@ -352,7 +352,7 @@ class WorkspaceService implements SingletonInterface
         $where .= BackendUtility::deleteClause($table, 'B');
         $where .= BackendUtility::deleteClause($table, 'C');
         $res = $this->getDatabaseConnection()->exec_SELECTgetRows($fields, $from, $where, '', 'A.uid');
-        return is_array($res) ? $res : array();
+        return is_array($res) ? $res : [];
     }
 
     /**
@@ -378,7 +378,7 @@ class WorkspaceService implements SingletonInterface
                 $mountPoints = array_map('intval', $GLOBALS['BE_USER']->returnWebmounts());
                 $mountPoints = array_unique($mountPoints);
             }
-            $newList = array();
+            $newList = [];
             foreach ($mountPoints as $mountPoint) {
                 $newList[] = $searchObj->getTreeList($mountPoint, $recursionLevel, 0, $perms_clause);
             }
@@ -406,7 +406,7 @@ class WorkspaceService implements SingletonInterface
             $pageList = implode(',', $newList);
             // In case moving pages is enabled we need to replace all move-to pointer with their origin
             $pages = $this->getDatabaseConnection()->exec_SELECTgetRows('uid, t3ver_move_id', 'pages', 'uid IN (' . $pageList . ')' . BackendUtility::deleteClause('pages'), '', 'uid', '', 'uid');
-            $newList = array();
+            $newList = [];
             $pageIds = GeneralUtility::intExplode(',', $pageList, true);
             if (!in_array($pageId, $pageIds)) {
                 $pageIds[] = $pageId;
@@ -432,7 +432,7 @@ class WorkspaceService implements SingletonInterface
      */
     protected function filterPermittedElements($recs, $table)
     {
-        $permittedElements = array();
+        $permittedElements = [];
         if (is_array($recs)) {
             foreach ($recs as $rec) {
                 if ($this->isPageAccessibleForCurrentUser($table, $rec) && $this->isLanguageAccessibleForCurrentUser($table, $rec)) {
@@ -592,13 +592,13 @@ class WorkspaceService implements SingletonInterface
             $viewUrl = BackendUtility::viewOnClick($previewPageId, '', '', '', '', $additionalParameters);
         // Call user function to render the single record view
         } elseif (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'])) {
-            $_params = array(
+            $_params = [
                 'table' => $table,
                 'uid' => $uid,
                 'record' => $liveRecord,
                 'liveRecord' => $liveRecord,
                 'versionRecord' => $versionRecord,
-            );
+            ];
             $_funcRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'];
             $null = null;
             $viewUrl = GeneralUtility::callUserFunction($_funcRef, $_params, $null);
@@ -643,10 +643,10 @@ class WorkspaceService implements SingletonInterface
         $previewObject = GeneralUtility::makeInstance(\TYPO3\CMS\Version\Hook\PreviewHook::class);
         $timeToLiveHours = $previewObject->getPreviewLinkLifetime();
         $previewKeyword = $previewObject->compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], $timeToLiveHours * 3600, $this->getCurrentWorkspace());
-        $linkParams = array(
+        $linkParams = [
             'ADMCMD_prev' => $previewKeyword,
             'id' => $uid
-        );
+        ];
         return BackendUtility::getViewDomain($uid) . '/index.php?' . GeneralUtility::implodeArrayForUrl('', $linkParams);
     }
 
@@ -669,7 +669,7 @@ class WorkspaceService implements SingletonInterface
         // @todo this should maybe be changed so that the extbase URI Builder can deal with module names directly
         $originalM = GeneralUtility::_GET('M');
         GeneralUtility::_GETset('web_WorkspacesWorkspaces', 'M');
-        $viewScript = $uriBuilder->uriFor('index', array(), 'Preview', 'workspaces', 'web_workspacesworkspaces') . '&id=';
+        $viewScript = $uriBuilder->uriFor('index', [], 'Preview', 'workspaces', 'web_workspacesworkspaces') . '&id=';
         GeneralUtility::_GETset($originalM, 'M');
         if ($addDomain === true) {
             return BackendUtility::getViewDomain($uid) . $redirect . urlencode($viewScript) . $uid;
@@ -688,7 +688,7 @@ class WorkspaceService implements SingletonInterface
     {
         $previewUrl = $this->generateWorkspacePreviewLink($uid);
         $previewLanguages = $this->getAvailableLanguages($uid);
-        $previewLinks = array();
+        $previewLinks = [];
 
         foreach ($previewLanguages as $languageUid => $language) {
             $previewLinks[$language] = $previewUrl . '&L=' . $languageUid;
@@ -795,7 +795,7 @@ class WorkspaceService implements SingletonInterface
      */
     public function getAvailableLanguages($pageId)
     {
-        $languageOptions = array();
+        $languageOptions = [];
         /** @var \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider $translationConfigurationProvider */
         $translationConfigurationProvider = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider::class);
         $systemLanguages = $translationConfigurationProvider->getSystemLanguages($pageId);

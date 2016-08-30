@@ -27,7 +27,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * @var array
      */
-    public $viewHelperMapping = array(
+    public $viewHelperMapping = [
         'int' => 'renderIntegerField',
         'int+' => 'renderPositiveIntegerField',
         'integer' => 'renderIntegerField',
@@ -41,7 +41,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
         'string' => 'renderTextField',
         'input' => 'renderTextField',  // only for backwards compatibility, many extensions depend on that
         'default' => 'renderTextField' // only for backwards compatibility, many extensions depend on that
-    );
+    ];
 
     /**
      * @var string
@@ -102,14 +102,14 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
         }
 
         // configure colorpicker wizard
-        $params = array(
+        $params = [
             'formName' => 'configurationform',
             'itemName' => $elementName,
-        );
+        ];
         $onClick =
             'this.blur();' .
             'vHWin=window.open(' .
-                GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_colorpicker', array('P' => $params))) . ' + \'&P[currentValue]=\' + encodeURIComponent(document.getElementById(' . GeneralUtility::quoteJSvalue($elementId) . ').value),' .
+                GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_colorpicker', ['P' => $params])) . ' + \'&P[currentValue]=\' + encodeURIComponent(document.getElementById(' . GeneralUtility::quoteJSvalue($elementId) . ').value),' .
                 '\'popUpem-' . GeneralUtility::shortmd5($elementName) . '\',' .
                 '\'height=400,width=400,status=0,menubar=0,scrollbars=1\'' .
             ');' .
@@ -285,11 +285,11 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     protected function renderUserFunction(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration)
     {
         $userFunction = $configuration->getGeneric();
-        $userFunctionParams = array(
+        $userFunctionParams = [
             'fieldName' => $this->getName($configuration),
             'fieldValue' => $configuration->getValue(),
             'propertyName' => $configuration->getName()
-        );
+        ];
         return \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($userFunction, $userFunctionParams, $this, '');
     }
 
@@ -312,7 +312,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
      */
     protected function renderHiddenFieldForEmptyValue($configuration)
     {
-        $hiddenFieldNames = array();
+        $hiddenFieldNames = [];
         if ($this->viewHelperVariableContainer->exists(FormViewHelper::class, 'renderedHiddenFields')) {
             $hiddenFieldNames = $this->viewHelperVariableContainer->get(FormViewHelper::class, 'renderedHiddenFields');
         }

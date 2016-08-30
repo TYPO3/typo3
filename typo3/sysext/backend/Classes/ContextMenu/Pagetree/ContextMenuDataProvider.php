@@ -28,11 +28,11 @@ class ContextMenuDataProvider extends \TYPO3\CMS\Backend\ContextMenu\AbstractCon
      *
      * @var array
      */
-    protected $legacyContextMenuMapping = array(
+    protected $legacyContextMenuMapping = [
         'hide' => 'disable',
         'paste' => 'pasteInto,pasteAfter',
         'mount_as_treeroot' => 'mountAsTreeroot'
-    );
+    ];
 
     /**
      * Fetches the items that should be disabled from the context menu
@@ -42,16 +42,16 @@ class ContextMenuDataProvider extends \TYPO3\CMS\Backend\ContextMenu\AbstractCon
     protected function getDisableActions()
     {
         $tsConfig = $this->getBackendUser()->getTSConfig('options.contextMenu.' . $this->getContextMenuType() . '.disableItems');
-        $disableItems = array();
+        $disableItems = [];
         if (trim($tsConfig['value']) !== '') {
             $disableItems = GeneralUtility::trimExplode(',', $tsConfig['value']);
         }
         $tsConfig = $this->getBackendUser()->getTSConfig('options.contextMenu.pageTree.disableItems');
-        $oldDisableItems = array();
+        $oldDisableItems = [];
         if (trim($tsConfig['value']) !== '') {
             $oldDisableItems = GeneralUtility::trimExplode(',', $tsConfig['value']);
         }
-        $additionalItems = array();
+        $additionalItems = [];
         foreach ($oldDisableItems as $item) {
             if (!isset($this->legacyContextMenuMapping[$item])) {
                 $additionalItems[] = $item;
@@ -94,7 +94,7 @@ class ContextMenuDataProvider extends \TYPO3\CMS\Backend\ContextMenu\AbstractCon
     {
         $this->disableItems = $this->getDisableActions();
         $configuration = $this->getConfiguration();
-        $contextMenuActions = array();
+        $contextMenuActions = [];
         if (is_array($configuration)) {
             $contextMenuActions = $this->getNextContextMenuLevel($configuration, $node);
         }

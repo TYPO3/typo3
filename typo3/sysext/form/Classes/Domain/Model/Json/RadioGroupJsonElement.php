@@ -31,30 +31,30 @@ class RadioGroupJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJs
      *
      * @var array
      */
-    public $configuration = array(
-        'attributes' => array(),
-        'legend' => array(
+    public $configuration = [
+        'attributes' => [],
+        'legend' => [
             'value' => ''
-        ),
-        'options' => array(),
-        'various' => array(
+        ],
+        'options' => [],
+        'various' => [
             'name' => ''
-        ),
-        'validation' => array()
-    );
+        ],
+        'validation' => []
+    ];
 
     /**
      * Allowed attributes for this object
      *
      * @var array
      */
-    protected $allowedAttributes = array(
+    protected $allowedAttributes = [
         'class',
         'dir',
         'id',
         'lang',
         'style'
-    );
+    ];
 
     /**
      * Set all the parameters for this object

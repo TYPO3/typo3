@@ -53,9 +53,9 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                     ],
                 ],
                 'palettes' => [
-                    '2' => array(
+                    '2' => [
                         'showitem' => 'aField',
-                    ),
+                    ],
                 ],
                 'columns' => [
                     'aField' => [

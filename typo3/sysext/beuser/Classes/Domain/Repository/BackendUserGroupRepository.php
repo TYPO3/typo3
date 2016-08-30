@@ -22,9 +22,9 @@ class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Reposito
     /**
      * @var array Default order is by title ascending
      */
-    protected $defaultOrderings = array(
+    protected $defaultOrderings = [
         'title' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
-    );
+    ];
 
     /**
      * Overwrite createQuery to don't respect enable fields

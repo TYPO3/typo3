@@ -45,9 +45,9 @@ class TemplateViewTest extends UnitTestCase
     public function expandGenericPathPatternWorksWithOldNamingSchemeOfSubPackage()
     {
         $mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', 'ViewHelpers_Widget', 'Paginate', 'html');
-        $templateView = $this->getAccessibleMock(TemplateView::class, array('dummy'), array(), '', false);
+        $templateView = $this->getAccessibleMock(TemplateView::class, ['dummy'], [], '', false);
         $templateView->_set('controllerContext', $mockControllerContext);
-        $expected = array(ExtensionManagementUtility::extPath('frontend') . 'Resources/Private/Templates/ViewHelpers/Widget/Paginate/@action.html');
+        $expected = [ExtensionManagementUtility::extPath('frontend') . 'Resources/Private/Templates/ViewHelpers/Widget/Paginate/@action.html'];
         $actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/@subpackage/@controller/@action.@format', false, false);
         $this->assertEquals($expected, $actual);
     }
@@ -60,9 +60,9 @@ class TemplateViewTest extends UnitTestCase
     public function expandGenericPathPatternWorksWithNewNamingSchemeOfSubPackage()
     {
         $mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', 'ViewHelpers\\Widget', 'Paginate', 'html');
-        $templateView = $this->getAccessibleMock(TemplateView::class, array('dummy'), array(), '', false);
+        $templateView = $this->getAccessibleMock(TemplateView::class, ['dummy'], [], '', false);
         $templateView->_set('controllerContext', $mockControllerContext);
-        $expected = array(ExtensionManagementUtility::extPath('frontend') . 'Resources/Private/Templates/ViewHelpers/Widget/Paginate/@action.html');
+        $expected = [ExtensionManagementUtility::extPath('frontend') . 'Resources/Private/Templates/ViewHelpers/Widget/Paginate/@action.html'];
         $actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/@subpackage/@controller/@action.@format', false, false);
         $this->assertEquals($expected, $actual);
     }
@@ -87,7 +87,7 @@ class TemplateViewTest extends UnitTestCase
         $mockRequest->expects($this->any())->method('getControllerObjectName')->will($this->returnValue($controllerObjectName));
         $mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue($format));
 
-        $mockControllerContext = $this->getMock(ControllerContext::class, array('getRequest'), array(), '', false);
+        $mockControllerContext = $this->getMock(ControllerContext::class, ['getRequest'], [], '', false);
         $mockControllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($mockRequest));
 
         return $mockControllerContext;
@@ -98,9 +98,9 @@ class TemplateViewTest extends UnitTestCase
      */
     public function expandGenericPathPatternDataProvider()
     {
-        return array(
+        return [
             // bubbling controller & subpackage parts and optional format
-            array(
+            [
                 'package' => 'Some.Package',
                 'subPackage' => 'Some\\Sub\\Package',
                 'controller' => 'SomeController',
@@ -114,7 +114,7 @@ class TemplateViewTest extends UnitTestCase
                 'bubbleControllerAndSubpackage' => true,
                 'formatIsOptional' => true,
                 'pattern' => '@templateRoot/@subpackage/@controller/@action.@format',
-                'expectedResult' => array(
+                'expectedResult' => [
                     'Resources/Private/Templates/Some/Sub/Package/SomeController/@action.html',
                     'Resources/Private/Templates/Some/Sub/Package/SomeController/@action',
                     'Resources/Private/Templates/Some/Sub/Package/@action.html',
@@ -125,10 +125,10 @@ class TemplateViewTest extends UnitTestCase
                     'Resources/Private/Templates/Package/@action',
                     'Resources/Private/Templates/@action.html',
                     'Resources/Private/Templates/@action',
-                )
-            ),
+                ]
+            ],
             // just optional format
-            array(
+            [
                 'package' => 'Some.Package',
                 'subPackage' => 'Some\\Sub\\Package',
                 'controller' => 'SomeController',
@@ -142,13 +142,13 @@ class TemplateViewTest extends UnitTestCase
                 'bubbleControllerAndSubpackage' => false,
                 'formatIsOptional' => true,
                 'pattern' => '@templateRoot/@subpackage/@controller/@action.@format',
-                'expectedResult' => array(
+                'expectedResult' => [
                     'Resources/Private/Templates/Some/Sub/Package/SomeController/@action.html',
                     'Resources/Private/Templates/Some/Sub/Package/SomeController/@action',
-                )
-            ),
+                ]
+            ],
             // just bubbling controller & subpackage parts
-            array(
+            [
                 'package' => 'Some.Package',
                 'subPackage' => 'Some\\Sub\\Package',
                 'controller' => 'SomeController',
@@ -162,16 +162,16 @@ class TemplateViewTest extends UnitTestCase
                 'bubbleControllerAndSubpackage' => true,
                 'formatIsOptional' => false,
                 'pattern' => '@partialRoot/@subpackage/@controller/@action.@format',
-                'expectedResult' => array(
+                'expectedResult' => [
                     'Resources/Private/Partials/Some/Sub/Package/SomeController/@action.json',
                     'Resources/Private/Partials/Some/Sub/Package/@action.json',
                     'Resources/Private/Partials/Sub/Package/@action.json',
                     'Resources/Private/Partials/Package/@action.json',
                     'Resources/Private/Partials/@action.json',
-                )
-            ),
+                ]
+            ],
             // layoutRootPath
-            array(
+            [
                 'package' => 'Some.Package',
                 'subPackage' => null,
                 'controller' => null,
@@ -185,13 +185,13 @@ class TemplateViewTest extends UnitTestCase
                 'bubbleControllerAndSubpackage' => true,
                 'formatIsOptional' => true,
                 'pattern' => '@layoutRoot/@subpackage/@controller/@action.@format',
-                'expectedResult' => array(
+                'expectedResult' => [
                     'Resources/Private/Layouts/@action.xml',
                     'Resources/Private/Layouts/@action',
-                )
-            ),
+                ]
+            ],
             // partialRootPath
-            array(
+            [
                 'package' => 'Some.Package',
                 'subPackage' => 'Some\\Sub\\Package',
                 'controller' => null,
@@ -205,7 +205,7 @@ class TemplateViewTest extends UnitTestCase
                 'bubbleControllerAndSubpackage' => true,
                 'formatIsOptional' => true,
                 'pattern' => '@templateRoot/@subpackage/@controller/@action.@format',
-                'expectedResult' => array(
+                'expectedResult' => [
                     'Resources/Private/Templates/Some/Sub/Package/@action.html',
                     'Resources/Private/Templates/Some/Sub/Package/@action',
                     'Resources/Private/Templates/Sub/Package/@action.html',
@@ -214,10 +214,10 @@ class TemplateViewTest extends UnitTestCase
                     'Resources/Private/Templates/Package/@action',
                     'Resources/Private/Templates/@action.html',
                     'Resources/Private/Templates/@action',
-                )
-            ),
+                ]
+            ],
             // optional format as directory name
-            array(
+            [
                 'package' => 'Some.Package',
                 'subPackage' => 'Some\\Sub\\Package',
                 'controller' => 'SomeController',
@@ -231,13 +231,13 @@ class TemplateViewTest extends UnitTestCase
                 'bubbleControllerAndSubpackage' => false,
                 'formatIsOptional' => true,
                 'pattern' => '@templateRoot/@subpackage/@controller/@action',
-                'expectedResult' => array(
+                'expectedResult' => [
                     'Resources/Private/Templates_xml/Some/Sub/Package/SomeController/@action',
                     'Resources/Private/Templates_/Some/Sub/Package/SomeController/@action',
-                )
-            ),
+                ]
+            ],
             // mandatory format as directory name
-            array(
+            [
                 'package' => 'Some.Package',
                 'subPackage' => 'Some\\Sub\\Package',
                 'controller' => 'SomeController',
@@ -251,12 +251,12 @@ class TemplateViewTest extends UnitTestCase
                 'bubbleControllerAndSubpackage' => false,
                 'formatIsOptional' => false,
                 'pattern' => '@templateRoot/@subpackage/@controller/@action',
-                'expectedResult' => array(
+                'expectedResult' => [
                     'Resources/Private/Templates_json/Some/Sub/Package/SomeController/@action',
-                )
-            ),
+                ]
+            ],
             // paths must not contain double slashes
-            array(
+            [
                 'package' => 'Some.Package',
                 'subPackage' => null,
                 'controller' => 'SomeController',
@@ -270,15 +270,15 @@ class TemplateViewTest extends UnitTestCase
                 'bubbleControllerAndSubpackage' => true,
                 'formatIsOptional' => true,
                 'pattern' => '@layoutRoot/@subpackage/@controller/@action.@format',
-                'expectedResult' => array(
+                'expectedResult' => [
                     'Some/Root/Path/SomeController/@action.html',
                     'Some/Root/Path/SomeController/@action',
                     'Some/Root/Path/@action.html',
                     'Some/Root/Path/@action',
-                )
-            ),
+                ]
+            ],
             // paths must be unique
-            array(
+            [
                 'package' => 'Some.Package',
                 'subPackage' => 'Some\\Sub\\Package',
                 'controller' => 'SomeController',
@@ -292,18 +292,18 @@ class TemplateViewTest extends UnitTestCase
                 'bubbleControllerAndSubpackage' => true,
                 'formatIsOptional' => false,
                 'pattern' => 'foo',
-                'expectedResult' => array(
+                'expectedResult' => [
                     'foo',
-                )
-            ),
+                ]
+            ],
             // template fallback paths
-            array(
+            [
                 'package' => 'Some.Package',
                 'subPackage' => 'Some\\Sub\\Package',
                 'controller' => 'SomeController',
                 'format' => 'html',
                 'templateRootPath' => 'Resources/Private/Templates',
-                'templateRootPaths' => array('Resources/Private/Templates', 'Some/Fallback/Path'),
+                'templateRootPaths' => ['Resources/Private/Templates', 'Some/Fallback/Path'],
                 'partialRootPath' => 'Resources/Private/Partials',
                 'partialRootPaths' => null,
                 'layoutRootPath' => 'Resources/Private/Layouts',
@@ -311,21 +311,21 @@ class TemplateViewTest extends UnitTestCase
                 'bubbleControllerAndSubpackage' => false,
                 'formatIsOptional' => true,
                 'pattern' => '@templateRoot/@subpackage/@controller/@action.@format',
-                'expectedResult' => array(
+                'expectedResult' => [
                     'Resources/Private/Templates/Some/Sub/Package/SomeController/@action.html',
                     'Resources/Private/Templates/Some/Sub/Package/SomeController/@action',
                     'Some/Fallback/Path/Some/Sub/Package/SomeController/@action.html',
                     'Some/Fallback/Path/Some/Sub/Package/SomeController/@action',
-                )
-            ),
+                ]
+            ],
             // template fallback paths with bubbleControllerAndSubpackage
-            array(
+            [
                 'package' => 'Some.Package',
                 'subPackage' => 'Some\\Sub\\Package',
                 'controller' => 'SomeController',
                 'format' => 'html',
                 'templateRootPath' => 'Resources/Private/Templates',
-                'templateRootPaths' => array('Resources/Private/Templates', 'Some/Fallback/Path'),
+                'templateRootPaths' => ['Resources/Private/Templates', 'Some/Fallback/Path'],
                 'partialRootPath' => 'Resources/Private/Partials',
                 'partialRootPaths' => null,
                 'layoutRootPath' => 'Resources/Private/Layouts',
@@ -333,7 +333,7 @@ class TemplateViewTest extends UnitTestCase
                 'bubbleControllerAndSubpackage' => true,
                 'formatIsOptional' => false,
                 'pattern' => '@templateRoot/@subpackage/@controller/@action.@format',
-                'expectedResult' => array(
+                'expectedResult' => [
                     'Resources/Private/Templates/Some/Sub/Package/SomeController/@action.html',
                     'Resources/Private/Templates/Some/Sub/Package/@action.html',
                     'Resources/Private/Templates/Sub/Package/@action.html',
@@ -344,10 +344,10 @@ class TemplateViewTest extends UnitTestCase
                     'Some/Fallback/Path/Sub/Package/@action.html',
                     'Some/Fallback/Path/Package/@action.html',
                     'Some/Fallback/Path/@action.html',
-                )
-            ),
+                ]
+            ],
             // partial fallback paths
-            array(
+            [
                 'package' => 'Some.Package',
                 'subPackage' => 'Some\\Sub\\Package',
                 'controller' => 'SomeController',
@@ -355,35 +355,35 @@ class TemplateViewTest extends UnitTestCase
                 'templateRootPath' => 'Resources/Private/Templates',
                 'templateRootPaths' => null,
                 'partialRootPath' => 'Resources/Private/Partials',
-                'partialRootPaths' => array('Default/Resources/Path', 'Fallback/'),
+                'partialRootPaths' => ['Default/Resources/Path', 'Fallback/'],
                 'layoutRootPath' => 'Resources/Private/Layouts',
                 'layoutRootPaths' => null,
                 'bubbleControllerAndSubpackage' => false,
                 'formatIsOptional' => true,
                 'pattern' => '@partialRoot/@subpackage/@controller/@partial.@format',
-                'expectedResult' => array(
+                'expectedResult' => [
                     'Default/Resources/Path/Some/Sub/Package/SomeController/@partial.html',
                     'Default/Resources/Path/Some/Sub/Package/SomeController/@partial',
                     'Fallback/Some/Sub/Package/SomeController/@partial.html',
                     'Fallback/Some/Sub/Package/SomeController/@partial',
-                )
-            ),
+                ]
+            ],
             // partial fallback paths with bubbleControllerAndSubpackage
-            array(
+            [
                 'package' => 'Some.Package',
                 'subPackage' => 'Some\\Sub\\Package',
                 'controller' => 'SomeController',
                 'format' => 'html',
                 'templateRootPath' => 'Resources/Private/Templates',
-                'templateRootPaths' => array('Resources/Private/Templates', 'Some/Fallback/Path'),
+                'templateRootPaths' => ['Resources/Private/Templates', 'Some/Fallback/Path'],
                 'partialRootPath' => 'Resources/Private/Partials',
-                'partialRootPaths' => array('Default/Resources/Path', 'Fallback1/', 'Fallback2'),
+                'partialRootPaths' => ['Default/Resources/Path', 'Fallback1/', 'Fallback2'],
                 'layoutRootPath' => 'Resources/Private/Layouts',
                 'layoutRootPaths' => null,
                 'bubbleControllerAndSubpackage' => true,
                 'formatIsOptional' => true,
                 'pattern' => '@partialRoot/@controller/@subpackage/@partial',
-                'expectedResult' => array(
+                'expectedResult' => [
                     'Default/Resources/Path/SomeController/Some/Sub/Package/@partial',
                     'Default/Resources/Path/Some/Sub/Package/@partial',
                     'Default/Resources/Path/Sub/Package/@partial',
@@ -399,30 +399,30 @@ class TemplateViewTest extends UnitTestCase
                     'Fallback2/Sub/Package/@partial',
                     'Fallback2/Package/@partial',
                     'Fallback2/@partial',
-                )
-            ),
+                ]
+            ],
             // layout fallback paths
-            array(
+            [
                 'package' => 'Some.Package',
                 'subPackage' => 'Some\\Sub\\Package',
                 'controller' => 'SomeController',
                 'format' => 'html',
                 'templateRootPath' => 'Resources/Private/Templates',
-                'templateRootPaths' => array('Resources/Private/Templates', 'Some/Fallback/Path'),
+                'templateRootPaths' => ['Resources/Private/Templates', 'Some/Fallback/Path'],
                 'partialRootPath' => 'Resources/Private/Partials',
-                'partialRootPaths' => array('foo', 'bar'),
+                'partialRootPaths' => ['foo', 'bar'],
                 'layoutRootPath' => 'Resources/Private/Layouts',
-                'layoutRootPaths' => array('Default/Layout/Path', 'Fallback/Path'),
+                'layoutRootPaths' => ['Default/Layout/Path', 'Fallback/Path'],
                 'bubbleControllerAndSubpackage' => false,
                 'formatIsOptional' => false,
                 'pattern' => '@layoutRoot/@subpackage/@controller/@layout.@format',
-                'expectedResult' => array(
+                'expectedResult' => [
                     'Default/Layout/Path/Some/Sub/Package/SomeController/@layout.html',
                     'Fallback/Path/Some/Sub/Package/SomeController/@layout.html',
-                )
-            ),
+                ]
+            ],
             // layout fallback paths with bubbleControllerAndSubpackage
-            array(
+            [
                 'package' => 'Some.Package',
                 'subPackage' => 'Some\\Sub\\Package',
                 'controller' => 'SomeController',
@@ -432,11 +432,11 @@ class TemplateViewTest extends UnitTestCase
                 'partialRootPath' => 'Resources/Private/Partials',
                 'partialRootPaths' => null,
                 'layoutRootPath' => 'Resources/Private/Layouts',
-                'layoutRootPaths' => array('Resources/Layouts', 'Some/Fallback/Path'),
+                'layoutRootPaths' => ['Resources/Layouts', 'Some/Fallback/Path'],
                 'bubbleControllerAndSubpackage' => true,
                 'formatIsOptional' => true,
                 'pattern' => 'Static/@layoutRoot/@subpackage/@controller/@layout.@format',
-                'expectedResult' => array(
+                'expectedResult' => [
                     'Static/Resources/Layouts/Some/Sub/Package/SomeController/@layout.html',
                     'Static/Resources/Layouts/Some/Sub/Package/SomeController/@layout',
                     'Static/Resources/Layouts/Some/Sub/Package/@layout.html',
@@ -457,33 +457,33 @@ class TemplateViewTest extends UnitTestCase
                     'Static/Some/Fallback/Path/Package/@layout',
                     'Static/Some/Fallback/Path/@layout.html',
                     'Static/Some/Fallback/Path/@layout',
-                )
-            ),
+                ]
+            ],
             // combined fallback paths
-            array(
+            [
                 'package' => 'Some.Package',
                 'subPackage' => 'Some\\Sub\\Package',
                 'controller' => 'SomeController',
                 'format' => 'html',
                 'templateRootPath' => 'Resources/Private/Templates',
-                'templateRootPaths' => array('Resources/Templates', 'Templates/Fallback1', 'Templates/Fallback2'),
+                'templateRootPaths' => ['Resources/Templates', 'Templates/Fallback1', 'Templates/Fallback2'],
                 'partialRootPath' => 'Resources/Private/Partials',
-                'partialRootPaths' => array('Resources/Partials'),
+                'partialRootPaths' => ['Resources/Partials'],
                 'layoutRootPath' => 'Resources/Private/Layouts',
-                'layoutRootPaths' => array('Resources/Layouts', 'Layouts/Fallback1'),
+                'layoutRootPaths' => ['Resources/Layouts', 'Layouts/Fallback1'],
                 'bubbleControllerAndSubpackage' => false,
                 'formatIsOptional' => true,
                 'pattern' => '@layoutRoot/@templateRoot/@partialRoot/@subpackage/@controller/foo',
-                'expectedResult' => array(
+                'expectedResult' => [
                     'Resources/Layouts/Resources/Templates/Resources/Partials/Some/Sub/Package/SomeController/foo',
                     'Layouts/Fallback1/Resources/Templates/Resources/Partials/Some/Sub/Package/SomeController/foo',
                     'Resources/Layouts/Templates/Fallback1/Resources/Partials/Some/Sub/Package/SomeController/foo',
                     'Layouts/Fallback1/Templates/Fallback1/Resources/Partials/Some/Sub/Package/SomeController/foo',
                     'Resources/Layouts/Templates/Fallback2/Resources/Partials/Some/Sub/Package/SomeController/foo',
                     'Layouts/Fallback1/Templates/Fallback2/Resources/Partials/Some/Sub/Package/SomeController/foo',
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
@@ -510,7 +510,7 @@ class TemplateViewTest extends UnitTestCase
         $mockControllerContext = $this->setupMockControllerContextForPathResolving($package, $subPackage, $controller, $format);
 
         /** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $templateView */
-        $templateView = $this->getAccessibleMock(TemplateView::class, array('dummy'), array(), '', false);
+        $templateView = $this->getAccessibleMock(TemplateView::class, ['dummy'], [], '', false);
         $templateView->setControllerContext($mockControllerContext);
         if ($templateRootPath !== null) {
             $templateView->setTemplateRootPath($templateRootPath);
@@ -544,11 +544,11 @@ class TemplateViewTest extends UnitTestCase
     {
         $mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', null, 'My', 'html');
 
-        $templateView = $this->getAccessibleMock(TemplateView::class, array('getTemplateRootPaths'), array(), '', false);
+        $templateView = $this->getAccessibleMock(TemplateView::class, ['getTemplateRootPaths'], [], '', false);
         $templateView->_set('controllerContext', $mockControllerContext);
-        $templateView->expects($this->any())->method('getTemplateRootPaths')->will($this->returnValue(array('Resources/Private/')));
+        $templateView->expects($this->any())->method('getTemplateRootPaths')->will($this->returnValue(['Resources/Private/']));
 
-        $expected = array('Resources/Private/Templates/My/@action.html');
+        $expected = ['Resources/Private/Templates/My/@action.html'];
         $actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', false, false);
         $this->assertEquals($expected, $actual);
     }
@@ -560,14 +560,14 @@ class TemplateViewTest extends UnitTestCase
     {
         $mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', 'MySubPackage', 'My', 'html');
 
-        $templateView = $this->getAccessibleMock(TemplateView::class, array('getTemplateRootPaths'), array(), '', false);
+        $templateView = $this->getAccessibleMock(TemplateView::class, ['getTemplateRootPaths'], [], '', false);
         $templateView->_set('controllerContext', $mockControllerContext);
-        $templateView->expects($this->any())->method('getTemplateRootPaths')->will($this->returnValue(array('Resources/Private/')));
+        $templateView->expects($this->any())->method('getTemplateRootPaths')->will($this->returnValue(['Resources/Private/']));
         $actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', false, false);
 
-        $expected = array(
+        $expected = [
             'Resources/Private/Templates/MySubPackage/My/@action.html'
-        );
+        ];
         $this->assertEquals($expected, $actual);
     }
 
@@ -578,15 +578,15 @@ class TemplateViewTest extends UnitTestCase
     {
         $mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', 'MySubPackage', 'My', 'html');
 
-        $templateView = $this->getAccessibleMock(TemplateView::class, array('getTemplateRootPaths'), array(), '', false);
+        $templateView = $this->getAccessibleMock(TemplateView::class, ['getTemplateRootPaths'], [], '', false);
         $templateView->_set('controllerContext', $mockControllerContext);
-        $templateView->expects($this->any())->method('getTemplateRootPaths')->will($this->returnValue(array('Resources/Private/')));
+        $templateView->expects($this->any())->method('getTemplateRootPaths')->will($this->returnValue(['Resources/Private/']));
         $actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', false, true);
 
-        $expected = array(
+        $expected = [
             'Resources/Private/Templates/MySubPackage/My/@action.html',
             'Resources/Private/Templates/MySubPackage/My/@action'
-        );
+        ];
         $this->assertEquals($expected, $actual);
     }
 
@@ -597,19 +597,19 @@ class TemplateViewTest extends UnitTestCase
     {
         $mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', 'MySubPackage', 'My', 'html');
 
-        $templateView = $this->getAccessibleMock(TemplateView::class, array('getTemplateRootPaths'), array(), '', false);
+        $templateView = $this->getAccessibleMock(TemplateView::class, ['getTemplateRootPaths'], [], '', false);
         $templateView->_set('controllerContext', $mockControllerContext);
-        $templateView->expects($this->any())->method('getTemplateRootPaths')->will($this->returnValue(array('Resources/Private/')));
+        $templateView->expects($this->any())->method('getTemplateRootPaths')->will($this->returnValue(['Resources/Private/']));
         $actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', true, true);
 
-        $expected = array(
+        $expected = [
             'Resources/Private/Templates/MySubPackage/My/@action.html',
             'Resources/Private/Templates/MySubPackage/My/@action',
             'Resources/Private/Templates/MySubPackage/@action.html',
             'Resources/Private/Templates/MySubPackage/@action',
             'Resources/Private/Templates/@action.html',
             'Resources/Private/Templates/@action'
-        );
+        ];
         $this->assertEquals($expected, $actual);
     }
 
@@ -619,9 +619,9 @@ class TemplateViewTest extends UnitTestCase
     public function getTemplateRootPathsReturnsUserSpecifiedTemplatePaths()
     {
         /** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $templateView */
-        $templateView = $this->getAccessibleMock(TemplateView::class, array('dummy'), array(), '', false);
+        $templateView = $this->getAccessibleMock(TemplateView::class, ['dummy'], [], '', false);
         $templateView->setTemplateRootPath('/foo/bar');
-        $expected = array('/foo/bar');
+        $expected = ['/foo/bar'];
         $actual = $templateView->_call('getTemplateRootPaths');
         $this->assertEquals($expected, $actual, 'A set template root path was not returned correctly.');
     }
@@ -632,10 +632,10 @@ class TemplateViewTest extends UnitTestCase
     public function setTemplateRootPathOverrulesSetTemplateRootPaths()
     {
         /** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $templateView */
-        $templateView = $this->getAccessibleMock(TemplateView::class, array('dummy'), array(), '', false);
+        $templateView = $this->getAccessibleMock(TemplateView::class, ['dummy'], [], '', false);
         $templateView->setTemplateRootPath('/foo/bar');
-        $templateView->setTemplateRootPaths(array('/overruled/path'));
-        $expected = array('/overruled/path');
+        $templateView->setTemplateRootPaths(['/overruled/path']);
+        $expected = ['/overruled/path'];
         $actual = $templateView->_call('getTemplateRootPaths');
         $this->assertEquals($expected, $actual, 'A set template root path was not returned correctly.');
     }
@@ -646,9 +646,9 @@ class TemplateViewTest extends UnitTestCase
     public function getPartialRootPathsReturnsUserSpecifiedPartialPath()
     {
         /** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $templateView */
-        $templateView = $this->getAccessibleMock(TemplateView::class, array('dummy'), array(), '', false);
+        $templateView = $this->getAccessibleMock(TemplateView::class, ['dummy'], [], '', false);
         $templateView->setPartialRootPath('/foo/bar');
-        $expected = array('/foo/bar');
+        $expected = ['/foo/bar'];
         $actual = $templateView->_call('getPartialRootPaths');
         $this->assertEquals($expected, $actual, 'A set partial root path was not returned correctly.');
     }
@@ -659,9 +659,9 @@ class TemplateViewTest extends UnitTestCase
     public function getLayoutRootPathsReturnsUserSpecifiedPartialPath()
     {
         /** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $templateView */
-        $templateView = $this->getAccessibleMock(TemplateView::class, array('dummy'), array(), '', false);
+        $templateView = $this->getAccessibleMock(TemplateView::class, ['dummy'], [], '', false);
         $templateView->setLayoutRootPath('/foo/bar');
-        $expected = array('/foo/bar');
+        $expected = ['/foo/bar'];
         $actual = $templateView->_call('getLayoutRootPaths');
         $this->assertEquals($expected, $actual, 'A set partial root path was not returned correctly.');
     }
@@ -675,14 +675,14 @@ class TemplateViewTest extends UnitTestCase
         mkdir('vfs://MyPartials');
         \file_put_contents('vfs://MyPartials/SomePartial', 'contentsOfSomePartial');
 
-        $paths = array(
+        $paths = [
             'vfs://NonExistentDir/UnknowFile.html',
             'vfs://MyPartials/SomePartial.html',
             'vfs://MyPartials/SomePartial'
-        );
+        ];
 
         /** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $templateView */
-        $templateView = $this->getAccessibleMock(TemplateView::class, array('expandGenericPathPattern', 'resolveFileNamePath'), array(), '', false);
+        $templateView = $this->getAccessibleMock(TemplateView::class, ['expandGenericPathPattern', 'resolveFileNamePath'], [], '', false);
         $templateView->expects($this->once())->method('expandGenericPathPattern')->with('@partialRoot/@subpackage/@partial.@format', true, true)->will($this->returnValue($paths));
         $templateView->expects($this->any())->method('resolveFileNamePath')->will($this->onConsecutiveCalls(
             $paths[0],
@@ -706,13 +706,13 @@ class TemplateViewTest extends UnitTestCase
         mkdir('vfs://MyTemplates');
         \file_put_contents('vfs://MyTemplates/MyCoolAction.html', 'contentsOfMyCoolAction');
 
-        $paths = array(
+        $paths = [
             'vfs://NonExistentDir/UnknownFile.html',
             'vfs://MyTemplates/@action.html'
-        );
+        ];
 
         /** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $templateView */
-        $templateView = $this->getAccessibleMock(TemplateView::class, array('expandGenericPathPattern', 'resolveFileNamePath'), array(), '', false);
+        $templateView = $this->getAccessibleMock(TemplateView::class, ['expandGenericPathPattern', 'resolveFileNamePath'], [], '', false);
         $templateView->expects($this->once())->method('expandGenericPathPattern')->with('@templateRoot/@subpackage/@controller/@action.@format', false, false)->will($this->returnValue($paths));
         $templateView->expects($this->any())->method('resolveFileNamePath')->will($this->onConsecutiveCalls(
             $paths[0],
@@ -735,7 +735,7 @@ class TemplateViewTest extends UnitTestCase
         mkdir('vfs://MyTemplates');
         \file_put_contents('vfs://MyTemplates/MyCoolAction.html', 'contentsOfMyCoolAction');
 
-        $templateView = $this->getAccessibleMock(TemplateView::class, array('resolveFileNamePath'), array(), '', false);
+        $templateView = $this->getAccessibleMock(TemplateView::class, ['resolveFileNamePath'], [], '', false);
         $templateView->expects($this->any())->method('resolveFileNamePath')->willReturnArgument(0);
         $templateView->_set('templatePathAndFilename', 'vfs://MyTemplates/MyCoolAction.html');
 
@@ -755,7 +755,7 @@ class TemplateViewTest extends UnitTestCase
 
         /** @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject $mockObjectManager */
         $mockObjectManager = $this->getMock(ObjectManager::class);
-        $mockObjectManager->expects($this->any())->method('get')->will($this->returnCallback(array($this, 'objectManagerCallback')));
+        $mockObjectManager->expects($this->any())->method('get')->will($this->returnCallback([$this, 'objectManagerCallback']));
 
         $mockRequest = $this->getMock(WebRequest::class);
         $mockControllerContext = $this->getMock(ControllerContext::class);
@@ -768,7 +768,7 @@ class TemplateViewTest extends UnitTestCase
         $mockRenderingContext->expects($this->any())->method('getViewHelperVariableContainer')->will($this->returnValue($mockViewHelperVariableContainer));
 
         /** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $view */
-        $view = $this->getAccessibleMock(TemplateView::class, array('testFileExistence', 'buildParserConfiguration'), array(), '', false);
+        $view = $this->getAccessibleMock(TemplateView::class, ['testFileExistence', 'buildParserConfiguration'], [], '', false);
         $view->_set('templateParser', $mockTemplateParser);
         $view->_set('objectManager', $mockObjectManager);
         $view->setRenderingContext($mockRenderingContext);
@@ -780,15 +780,15 @@ class TemplateViewTest extends UnitTestCase
         GeneralUtility::addInstance(ContentObjectRenderer::class, $mockContentObject);
 
         /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
-        $mockCacheManager = $this->getMock(CacheManager::class, array(), array(), '', false);
-        $mockCache = $this->getMock(PhpFrontend::class, array(), array(), '', false);
+        $mockCacheManager = $this->getMock(CacheManager::class, [], [], '', false);
+        $mockCache = $this->getMock(PhpFrontend::class, [], [], '', false);
         $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         GeneralUtility::setSingletonInstance(CacheManager::class, $mockCacheManager);
 
         $mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-        $view->setLayoutRootPaths(array('some/Default/Directory'));
-        $view->setTemplateRootPaths(array('some/Default/Directory'));
-        $view->setPartialRootPaths(array('some/Default/Directory'));
+        $view->setLayoutRootPaths(['some/Default/Directory']);
+        $view->setTemplateRootPaths(['some/Default/Directory']);
+        $view->setPartialRootPaths(['some/Default/Directory']);
         $view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/LayoutName.html')->willReturn(false);
         $view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/layoutName.html')->willReturn(true);
         $this->assertSame(PATH_site . 'some/Default/Directory/layoutName.html', $view->_call('getLayoutPathAndFilename', 'layoutName'));

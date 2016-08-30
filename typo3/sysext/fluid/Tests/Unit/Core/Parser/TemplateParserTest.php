@@ -36,12 +36,12 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extractNamespaceDefinitionsExtractsNamespacesCorrectly()
     {
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
         $templateParser->_call('extractNamespaceDefinitions', ' \\{namespace f4=F7\\Rocks} {namespace f4=TYPO3\Rocks\Really}');
-        $expected = array(
+        $expected = [
             'f' => \TYPO3\CMS\Fluid\ViewHelpers::class,
             'f4' => 'TYPO3\Rocks\Really'
-        );
+        ];
         $this->assertEquals($expected, $templateParser->getNamespaces(), 'Namespaces do not match.');
     }
 
@@ -50,21 +50,21 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extractNamespaceDefinitionsExtractsXmlNamespacesCorrectly()
     {
-        $mockSettings = array(
-            'namespaces' => array(
+        $mockSettings = [
+            'namespaces' => [
                 'http://domain.tld/ns/my/viewhelpers' => 'My\Namespace',
                 'http://otherdomain.tld/ns/other/viewhelpers' => 'My\Other\Namespace'
-            )
-        );
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+            ]
+        ];
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
         $templateParser->injectSettings($mockSettings);
         $templateParser->_call('extractNamespaceDefinitions', 'Some content <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f5="http://domain.tld/ns/my/viewhelpers"
 		xmlns:xyz="http://otherdomain.tld/ns/other/viewhelpers" />');
-        $expected = array(
+        $expected = [
             'f' => \TYPO3\CMS\Fluid\ViewHelpers::class,
             'f5' => 'My\Namespace',
             'xyz' => 'My\Other\Namespace'
-        );
+        ];
         $this->assertEquals($expected, $templateParser->getNamespaces(), 'Namespaces do not match.');
     }
 
@@ -73,12 +73,12 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extractNamespaceDefinitionsResolveNamespacesWithDefaultPattern()
     {
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
         $templateParser->_call('extractNamespaceDefinitions', '<xml xmlns="http://www.w3.org/1999/xhtml" xmlns:xyz="http://typo3.org/ns/Some/Package/ViewHelpers" />');
-        $expected = array(
+        $expected = [
             'f' => \TYPO3\CMS\Fluid\ViewHelpers::class,
             'xyz' => 'Some\Package\ViewHelpers'
-        );
+        ];
         $this->assertEquals($expected, $templateParser->getNamespaces(), 'Namespaces do not match.');
     }
 
@@ -87,19 +87,19 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extractNamespaceDefinitionsSilentlySkipsXmlNamespaceDeclarationsThatCantBeResolved()
     {
-        $mockSettings = array(
-            'namespaces' => array(
+        $mockSettings = [
+            'namespaces' => [
                 'http://domain.tld/ns/my/viewhelpers' => 'My\Namespace'
-            )
-        );
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+            ]
+        ];
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
         $templateParser->injectSettings($mockSettings);
         $templateParser->_call('extractNamespaceDefinitions', '<xml xmlns="http://www.w3.org/1999/xhtml" xmlns:f5="http://domain.tld/ns/my/viewhelpers"
 		xmlns:xyz="http://otherdomain.tld/ns/other/viewhelpers" />');
-        $expected = array(
+        $expected = [
             'f' => \TYPO3\CMS\Fluid\ViewHelpers::class,
             'f5' => 'My\Namespace'
-        );
+        ];
         $this->assertEquals($expected, $templateParser->getNamespaces(), 'Namespaces do not match.');
     }
 
@@ -108,11 +108,11 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extractNamespaceDefinitionsSilentlySkipsXmlNamespaceDeclarationForTheDefaultFluidNamespace()
     {
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
         $templateParser->_call('extractNamespaceDefinitions', '<foo xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://domain.tld/this/will/be/ignored" />');
-        $expected = array(
+        $expected = [
             'f' => \TYPO3\CMS\Fluid\ViewHelpers::class
-        );
+        ];
         $this->assertEquals($expected, $templateParser->getNamespaces(), 'Namespaces do not match.');
     }
 
@@ -122,7 +122,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extractNamespaceDefinitionsThrowsExceptionIfNamespaceIsRedeclared()
     {
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
         $templateParser->_call('extractNamespaceDefinitions', '{namespace typo3=TYPO3\CMS\Fluid\Blablubb} {namespace typo3= TYPO3\Rocks\Blu}');
     }
 
@@ -132,12 +132,12 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extractNamespaceDefinitionsThrowsExceptionIfXmlNamespaceIsRedeclaredAsFluidNamespace()
     {
-        $mockSettings = array(
-            'namespaces' => array(
+        $mockSettings = [
+            'namespaces' => [
                 'http://domain.tld/ns/my/viewhelpers' => 'My\Namespace'
-            )
-        );
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+            ]
+        ];
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
         $templateParser->injectSettings($mockSettings);
         $templateParser->_call('extractNamespaceDefinitions', '<foo xmlns="http://www.w3.org/1999/xhtml" xmlns:typo3="http://domain.tld/ns/my/viewhelpers" />{namespace typo3=TYPO3\CMS\Fluid\Blablubb}');
     }
@@ -148,12 +148,12 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extractNamespaceDefinitionsThrowsExceptionIfFluidNamespaceIsRedeclaredAsXmlNamespace()
     {
-        $mockSettings = array(
-            'namespaces' => array(
+        $mockSettings = [
+            'namespaces' => [
                 'http://domain.tld/ns/my/viewhelpers' => 'My\Namespace'
-            )
-        );
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+            ]
+        ];
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
         $templateParser->injectSettings($mockSettings);
         $templateParser->_call('extractNamespaceDefinitions', '{namespace typo3=TYPO3\CMS\Fluid\Blablubb} <foo xmlns="http://www.w3.org/1999/xhtml" xmlns:typo3="http://domain.tld/ns/my/viewhelpers" />');
     }
@@ -167,12 +167,12 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extractNamespaceDefinitionsCallsRemoveXmlnsViewHelperNamespaceDeclarationsWithCorrectFoundIdentifiers(array $expectedFoundIdentifiers, $templateString, array $namespaces)
     {
-        $mockSettings = array(
+        $mockSettings = [
             'namespaces' => $namespaces
-        );
+        ];
 
         /** @var TemplateParser|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $templateParser */
-        $templateParser = $this->getAccessibleMock(TemplateParser::class, array('removeXmlnsViewHelperNamespaceDeclarations'));
+        $templateParser = $this->getAccessibleMock(TemplateParser::class, ['removeXmlnsViewHelperNamespaceDeclarations']);
         $templateParser->injectSettings($mockSettings);
 
         // this verifies that the method is called with the correct found identifiers
@@ -191,17 +191,17 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function extractNamespaceDefinitionsCallsRemoveXmlnsViewHelperNamespaceDeclarationsWithCorrectFoundIdentifiersDataProvider()
     {
         return [
-            'bothViewHelperNamespacesDefinitionsOnlyProvideXmlnsViewHelpersUsingNonDefaultPatternViewHelpers' => array(
+            'bothViewHelperNamespacesDefinitionsOnlyProvideXmlnsViewHelpersUsingNonDefaultPatternViewHelpers' => [
                 ['foo'],
                 '{namespace typo3=TYPO3\\CMS\\Fluid\\Blablubb} <div xmlns:foo="http://domain.tld/ns/foo/viewhelpers">Content</div>',
                 ['http://domain.tld/ns/foo/viewhelpers' => 'My\\Namespace']
-            ),
-            'bothViewHelperNamespacesDefinitionsOnlyProvideXmlnsViewHelpersUsingDefaultPatternViewHelpers' => array(
+            ],
+            'bothViewHelperNamespacesDefinitionsOnlyProvideXmlnsViewHelpersUsingDefaultPatternViewHelpers' => [
                 ['xyz'],
                 '{namespace typo3=TYPO3\\CMS\\Fluid\\Blablubb} <div xmlns:xyz="http://typo3.org/ns/Some/Package/ViewHelpers">Content</div>',
                 []
-            ),
-            'xmlnsIdentifiersWithWhitespaces' => array(
+            ],
+            'xmlnsIdentifiersWithWhitespaces' => [
                 [' ', 'foo bar', '"x y z"'],
                 '
 					<div xmlns: ="http://typo3.org/ns/Some/Package/ViewHelpers"
@@ -212,8 +212,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 					</div>
 				',
                 ['http://domain.tld/ns/foobar/viewhelpers' => 'My\\Namespace']
-            ),
-            'xmlnsWithEqualsSign' => array(
+            ],
+            'xmlnsWithEqualsSign' => [
                 ['=', 'foo=bar', '"x=y=z"'],
                 '
 					<div xmlns:=="http://typo3.org/ns/Some/Package/ViewHelpers"
@@ -224,8 +224,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 					</div>
 				',
                 ['http://domain.tld/ns/foobar/viewhelpers' => 'My\\Namespace']
-            ),
-            'nonViewHelpersXmlnsAreNotIncludedButDefaultPatternAndNonDefaultAreIncluded' => array(
+            ],
+            'nonViewHelpersXmlnsAreNotIncludedButDefaultPatternAndNonDefaultAreIncluded' => [
                 ['xyz', 'foo'],
                 '<div xmlns:xyz="http://typo3.org/ns/Some/Package/ViewHelpers"
 						xmlns:foo="http://domain.tld/ns/foo/viewhelpers"
@@ -234,8 +234,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 					Content
 				</div>',
                 ['http://domain.tld/ns/foo/viewhelpers' => 'My\\Namespace']
-            ),
-            'nonViewHelpersInBetweenViewHelperXmlnsAreNotIncludedButDefaultPatternAndNonDefaultAreIncluded' => array(
+            ],
+            'nonViewHelpersInBetweenViewHelperXmlnsAreNotIncludedButDefaultPatternAndNonDefaultAreIncluded' => [
                 ['xyz', 'foo'],
                 '<div xmlns:xyz="http://typo3.org/ns/Some/Package/ViewHelpers"
 							xmlns:bar="http://typo3.org/foo/bar"
@@ -244,18 +244,18 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 					Content
 				</div>',
                 ['http://domain.tld/ns/foo/viewhelpers' => 'My\\Namespace']
-            ),
-            'fluidNamespaceIsFound' => array(
+            ],
+            'fluidNamespaceIsFound' => [
                 ['f'],
                 '<div xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">Content</div>',
                 []
-            ),
-            'xmlnsWithoutIdentifierIsIgnored' => array(
+            ],
+            'xmlnsWithoutIdentifierIsIgnored' => [
                 [],
                 '<div xmlns="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">Content</div>',
                 []
-            ),
-            'htmlTagAlsoFindsIdentifiers' => array(
+            ],
+            'htmlTagAlsoFindsIdentifiers' => [
                 ['f', 'xyz'],
                 '<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
 								xmlns:xyz="http://typo3.org/ns/Some/Package/ViewHelpers">
@@ -263,8 +263,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 					Content
 				</html>',
                 []
-            ),
-            'htmlTagWithNamespaceTypo3FluidAttributeTagAlsoFindsIdentifiers' => array(
+            ],
+            'htmlTagWithNamespaceTypo3FluidAttributeTagAlsoFindsIdentifiers' => [
                 ['f', 'xyz'],
                 '<html data-namespace-typo3-fluid="true"
 					xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
@@ -273,8 +273,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 					Content
 				</html>',
                 []
-            ),
-            'nonHtmlTagAlsoFindsIdentifiers' => array(
+            ],
+            'nonHtmlTagAlsoFindsIdentifiers' => [
                 ['f', 'xyz'],
                 '<typo3-root
 					xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
@@ -283,7 +283,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 					Content
 				</typo3-root>',
                 []
-            ),
+            ],
         ];
     }
 
@@ -296,7 +296,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function removeXmlnsViewHelperNamespaceDeclarationsWorks($expectedOut, array $foundIdentifiers, $templateString)
     {
-        $templateParser = $this->getAccessibleMock(TemplateParser::class, array('dummy'));
+        $templateParser = $this->getAccessibleMock(TemplateParser::class, ['dummy']);
         $templateString = $templateParser->_call('removeXmlnsViewHelperNamespaceDeclarations', $templateString, $foundIdentifiers);
 
         // remove tabs and trim because expected result and given have a different tab count in dataProvider which is not relevant for the parser (xml and html)
@@ -311,7 +311,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function removeXmlnsViewHelperNamespaceDeclarationsDataProvider()
     {
         return [
-            'onlyViewHelperXmlns' => array(
+            'onlyViewHelperXmlns' => [
                 '
 					<div >
 						<f:if condition="{demo}">Hello World</f:if>
@@ -322,8 +322,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 							xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers">
 					<f:if condition="{demo}">Hello World</f:if>
 				</div>'
-            ),
-            'xmlnsViewHelpersFoundWithNonViewHelperXmlnsAtBeginning' => array(
+            ],
+            'xmlnsViewHelpersFoundWithNonViewHelperXmlnsAtBeginning' => [
                 '
 					<div xmlns:z="http://www.typo3.org/foo" >
 						<f:if condition="{demo}">Hello World</f:if>
@@ -337,8 +337,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 						<f:if condition="{demo}">Hello World</f:if>
 					</div>
 				'
-            ),
-            'xmlnsViewHelpersFoundWithNonViewHelperXmlnsAtEnd' => array(
+            ],
+            'xmlnsViewHelpersFoundWithNonViewHelperXmlnsAtEnd' => [
                 '
 					<div xmlns:z="http://www.typo3.org/foo">
 						<f:if condition="{demo}">Hello World</f:if>
@@ -352,8 +352,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 						<f:if condition="{demo}">Hello World</f:if>
 					</div>
 				'
-            ),
-            'xmlnsViewHelpersFoundWithMultipleNonViewHelperXmlns' => array(
+            ],
+            'xmlnsViewHelpersFoundWithMultipleNonViewHelperXmlns' => [
                 '
 					<div xmlns:y="http://www.typo3.org/bar" xmlns:z="http://www.typo3.org/foo">
 						<f:if condition="{demo}">Hello World</f:if>
@@ -368,8 +368,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 						<f:if condition="{demo}">Hello World</f:if>
 					</div>
 				'
-            ),
-            'xmlnsViewHelpersFoundWithNonViewHelperXmlnsBetween' => array(
+            ],
+            'xmlnsViewHelpersFoundWithNonViewHelperXmlnsBetween' => [
                 '
 					<div xmlns:z="http://www.typo3.org/foo" >
 						<f:if condition="{demo}">Hello World</f:if>
@@ -383,8 +383,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 						<f:if condition="{demo}">Hello World</f:if>
 					</div>
 				'
-            ),
-            'removeHtmlTagWithAttributeButNoXmlnsViewHelpersFound' => array(
+            ],
+            'removeHtmlTagWithAttributeButNoXmlnsViewHelpersFound' => [
                 '<f:if condition="{demo}">Hello World</f:if>',
                 [],
                 '
@@ -392,8 +392,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 						<f:if condition="{demo}">Hello World</f:if>
 					</html>
 				'
-            ),
-            'doNotRemoveHtmlTagBecauseHtmlTagNotMarkedAsFluidNamespaceDefinitionTag' => array(
+            ],
+            'doNotRemoveHtmlTagBecauseHtmlTagNotMarkedAsFluidNamespaceDefinitionTag' => [
                 '
 					<html xmlns:z="http://www.typo3.org/foo">
 						<f:if condition="{demo}">Hello World</f:if>
@@ -407,8 +407,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 						<f:if condition="{demo}">Hello World</f:if>
 					</html>
 				'
-            ),
-            'doNotModifyHtmlTagBecauseViewHelperXmlnsNotFoundInTagAndNotMarkedForRemoval' => array(
+            ],
+            'doNotModifyHtmlTagBecauseViewHelperXmlnsNotFoundInTagAndNotMarkedForRemoval' => [
                 '
 					<html xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"
 							xmlns:z="http://www.typo3.org/foo">
@@ -422,8 +422,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 						<f:if condition="{demo}">Hello World</f:if>
 					</html>
 				'
-            ),
-            'removeHtmlTagBecauseXmlnsFoundInTagAndMarkedAsFluidViewHelperDefinitionTag' => array(
+            ],
+            'removeHtmlTagBecauseXmlnsFoundInTagAndMarkedAsFluidViewHelperDefinitionTag' => [
                 '<f:if condition="{demo}">Hello World</f:if>',
                 ['fe'],
                 '
@@ -433,8 +433,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 						<f:if condition="{demo}">Hello World</f:if>
 					</html>
 				'
-            ),
-            'removeHtmlTagBecauseXmlnsFoundInDifferentTagAndMarkedAsFluidViewHelperDefinitionTag' => array(
+            ],
+            'removeHtmlTagBecauseXmlnsFoundInDifferentTagAndMarkedAsFluidViewHelperDefinitionTag' => [
                 '<f:if condition="{demo}">Hello World</f:if>',
                 ['f'],
                 '
@@ -444,8 +444,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 						<f:if condition="{demo}">Hello World</f:if>
 					</html>
 				'
-            ),
-            'producesExcpedtedOutputIfFouundIdentifiersAreWrongButContainNoExistingNonViewHelperXmlns' => array(
+            ],
+            'producesExcpedtedOutputIfFouundIdentifiersAreWrongButContainNoExistingNonViewHelperXmlns' => [
                 '
 					<div xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers" xmlns:z="http://www.typo3.org/foo">
 						<f:if condition="{demo}">Hello World</f:if>
@@ -459,11 +459,11 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 						<f:if condition="{demo}">Hello World</f:if>
 					</div>
 				'
-            ),
+            ],
             // this test verifies that the expected output can be wrong if the foundNameSpaces are incorrect
             // which is why extractNamespaceDefinitionsCallsRemoveXmlnsViewHelperNamespaceDeclarationsWithCorrectFoundIdentifiers
             // tests if the correct identifiers are found
-            'removesNonViewHelperNamespaceIfFoundIdentifiersAreWrong' => array(
+            'removesNonViewHelperNamespaceIfFoundIdentifiersAreWrong' => [
                 '
 					<div xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers" >
 						<f:if condition="{demo}">Hello World</f:if>
@@ -477,11 +477,11 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 						<f:if condition="{demo}">Hello World</f:if>
 					</div>
 				'
-            ),
+            ],
             // this verifies that the scan pattern was correctly quoted for the regular expression
             // because if the regular expression delimiter were to be modified in the pattern,
             // the corresponding preg_quote will fail without adaptions
-            'xmlnsWithScanPatternAsIdentifier' => array(
+            'xmlnsWithScanPatternAsIdentifier' => [
                 '
 					<div >
 						<f:if condition="{demo}">Hello World</f:if>
@@ -493,12 +493,12 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 						<f:if condition="{demo}">Hello World</f:if>
 					</div>
 				'
-            ),
+            ],
             // these scenarios also need to because even if the foundIdentifiers are
             // invalid the method should still work as expected,
             // Furthermore, currently these patterns are allowed for foundIdentifiers
             // see also test extractNamespaceDefinitionsCallsRemoveXmlnsViewHelperNamespaceDeclarationsWithCorrectFoundIdentifiers
-            'xmlnsIdentifiersWithWhitespaces' => array(
+            'xmlnsIdentifiersWithWhitespaces' => [
                 '
 					<div xmlns:none xyz="http://domain.tld/ns/NoneXyz/viewhelpers" >
 
@@ -515,8 +515,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 						<f:if condition="{demo}">Hello World</f:if>
 					</div>
 				'
-            ),
-            'xmlnsWithRegularExpressionAsIdentifier' => array(
+            ],
+            'xmlnsWithRegularExpressionAsIdentifier' => [
                 '
 					<div xmlns:z="http://www.typo3.org/foo">
 						<f:if condition="{demo}">Hello World</f:if>
@@ -531,8 +531,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 						<f:if condition="{demo}">Hello World</f:if>
 					</div>
 				'
-            ),
-            'xmlnsWithRegularExpressionDelimiterAsIdentifier' => array(
+            ],
+            'xmlnsWithRegularExpressionDelimiterAsIdentifier' => [
                 '
 					<div xmlns:z="http://www.typo3.org/foo">
 						<f:if condition="{demo}">Hello World</f:if>
@@ -547,8 +547,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 						<f:if condition="{demo}">Hello World</f:if>
 					</div>
 				'
-            ),
-            'xmlnsWithEqualsSign' => array(
+            ],
+            'xmlnsWithEqualsSign' => [
                 '
 					<div xmlns:none=xyz="http://domain.tld/ns/NoneXyz/viewhelpers" >
 
@@ -565,7 +565,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 						<f:if condition="{demo}">Hello World</f:if>
 					</div>
 				'
-            )
+            ]
         ];
     }
 
@@ -574,7 +574,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperNameWithMultipleLevelsCanBeResolvedByResolveViewHelperName()
     {
-        $mockTemplateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'), array(), '', false);
+        $mockTemplateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy'], [], '', false);
         $result = $mockTemplateParser->_call('resolveViewHelperName', 'f', 'foo.bar.baz');
         $expected = 'TYPO3\CMS\Fluid\ViewHelpers\Foo\Bar\BazViewHelper';
         $this->assertEquals($expected, $result, 'The name of the View Helper Name could not be resolved.');
@@ -585,7 +585,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function viewHelperNameWithOneLevelCanBeResolvedByResolveViewHelperName()
     {
-        $mockTemplateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'), array(), '', false);
+        $mockTemplateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy'], [], '', false);
         $actual = $mockTemplateParser->_call('resolveViewHelperName', 'f', 'myown');
         $expected = 'TYPO3\CMS\Fluid\ViewHelpers\MyownViewHelper';
         $this->assertEquals($expected, $actual);
@@ -595,14 +595,14 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function quotedStrings()
     {
-        return array(
-            array('"no quotes here"', 'no quotes here'),
-            array("'no quotes here'", 'no quotes here'),
-            array("'this \"string\" had \\'quotes\\' in it'", 'this "string" had \'quotes\' in it'),
-            array('"this \\"string\\" had \'quotes\' in it"', 'this "string" had \'quotes\' in it'),
-            array('"a weird \"string\" \'with\' *freaky* \\\\stuff', 'a weird "string" \'with\' *freaky* \\stuff'),
-            array('\'\\\'escaped quoted string in string\\\'\'', '\'escaped quoted string in string\'')
-        );
+        return [
+            ['"no quotes here"', 'no quotes here'],
+            ["'no quotes here'", 'no quotes here'],
+            ["'this \"string\" had \\'quotes\\' in it'", 'this "string" had \'quotes\' in it'],
+            ['"this \\"string\\" had \'quotes\' in it"', 'this "string" had \'quotes\' in it'],
+            ['"a weird \"string\" \'with\' *freaky* \\\\stuff', 'a weird "string" \'with\' *freaky* \\stuff'],
+            ['\'\\\'escaped quoted string in string\\\'\'', '\'escaped quoted string in string\'']
+        ];
     }
 
     /**
@@ -611,7 +611,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function unquoteStringReturnsUnquotedStrings($quoted, $unquoted)
     {
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
         $this->assertEquals($unquoted, $templateParser->_call('unquoteString', $quoted));
     }
 
@@ -619,11 +619,11 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function templatesToSplit()
     {
-        return array(
-            array('TemplateParserTestFixture01-shorthand'),
-            array('TemplateParserTestFixture06'),
-            array('TemplateParserTestFixture14')
-        );
+        return [
+            ['TemplateParserTestFixture01-shorthand'],
+            ['TemplateParserTestFixture06'],
+            ['TemplateParserTestFixture14']
+        ];
     }
 
     /**
@@ -634,7 +634,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $template = file_get_contents(__DIR__ . '/Fixtures/' . $templateName . '.html', FILE_TEXT);
         $expectedResult = require(__DIR__ . '/Fixtures/' . $templateName . '-split.php');
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
         $this->assertSame($expectedResult, $templateParser->_call('splitTemplateAtDynamicTags', $template), 'Filed for ' . $templateName);
     }
 
@@ -654,9 +654,9 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockObjectManager->expects($this->at(0))->method('get')->with(\TYPO3\CMS\Fluid\Core\Parser\ParsingState::class)->will($this->returnValue($mockState));
         $mockObjectManager->expects($this->at(1))->method('get')->with(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode::class)->will($this->returnValue($mockRootNode));
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
         $templateParser->_set('objectManager', $mockObjectManager);
-        $templateParser->_call('buildObjectTree', array(), \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::CONTEXT_OUTSIDE_VIEWHELPER_ARGUMENTS);
+        $templateParser->_call('buildObjectTree', [], \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::CONTEXT_OUTSIDE_VIEWHELPER_ARGUMENTS);
     }
 
     /**
@@ -674,9 +674,9 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockObjectManager->expects($this->at(0))->method('get')->with(\TYPO3\CMS\Fluid\Core\Parser\ParsingState::class)->will($this->returnValue($mockState));
         $mockObjectManager->expects($this->at(1))->method('get')->with(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode::class)->will($this->returnValue($mockRootNode));
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
         $templateParser->_set('objectManager', $mockObjectManager);
-        $templateParser->_call('buildObjectTree', array(), \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::CONTEXT_OUTSIDE_VIEWHELPER_ARGUMENTS);
+        $templateParser->_call('buildObjectTree', [], \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::CONTEXT_OUTSIDE_VIEWHELPER_ARGUMENTS);
     }
 
     /**
@@ -691,7 +691,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockObjectManager->expects($this->at(0))->method('get')->with(\TYPO3\CMS\Fluid\Core\Parser\ParsingState::class)->will($this->returnValue($mockState));
         $mockObjectManager->expects($this->at(1))->method('get')->with(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode::class)->will($this->returnValue($mockRootNode));
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('textHandler', 'openingViewHelperTagHandler', 'closingViewHelperTagHandler', 'textAndShorthandSyntaxHandler'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['textHandler', 'openingViewHelperTagHandler', 'closingViewHelperTagHandler', 'textAndShorthandSyntaxHandler']);
         $templateParser->_set('objectManager', $mockObjectManager);
         $templateParser->expects($this->at(0))->method('textAndShorthandSyntaxHandler')->with($mockState, 'The first part is simple');
         $templateParser->expects($this->at(1))->method('textHandler')->with($mockState, '<f:for each="{a: {a: 0, b: 2, c: 4}}" as="array"><f:for each="{array}" as="value">{value} </f:for>');
@@ -712,11 +712,11 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockState = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\ParsingState::class);
         $mockState->expects($this->never())->method('popNodeFromStack');
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('parseArguments', 'initializeViewHelperAndAddItToStack'));
-        $templateParser->expects($this->once())->method('parseArguments')->with(array('arguments'))->will($this->returnValue(array('parsedArguments')));
-        $templateParser->expects($this->once())->method('initializeViewHelperAndAddItToStack')->with($mockState, 'namespaceIdentifier', 'methodIdentifier', array('parsedArguments'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['parseArguments', 'initializeViewHelperAndAddItToStack']);
+        $templateParser->expects($this->once())->method('parseArguments')->with(['arguments'])->will($this->returnValue(['parsedArguments']));
+        $templateParser->expects($this->once())->method('initializeViewHelperAndAddItToStack')->with($mockState, 'namespaceIdentifier', 'methodIdentifier', ['parsedArguments']);
 
-        $templateParser->_call('openingViewHelperTagHandler', $mockState, 'namespaceIdentifier', 'methodIdentifier', array('arguments'), false);
+        $templateParser->_call('openingViewHelperTagHandler', $mockState, 'namespaceIdentifier', 'methodIdentifier', ['arguments'], false);
     }
 
     /**
@@ -727,9 +727,9 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockState = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\ParsingState::class);
         $mockState->expects($this->once())->method('popNodeFromStack')->will($this->returnValue($this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface::class)));
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('parseArguments', 'initializeViewHelperAndAddItToStack'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['parseArguments', 'initializeViewHelperAndAddItToStack']);
 
-        $templateParser->_call('openingViewHelperTagHandler', $mockState, '', '', array(), true);
+        $templateParser->_call('openingViewHelperTagHandler', $mockState, '', '', [], true);
     }
 
     /**
@@ -738,7 +738,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function initializeViewHelperAndAddItToStackCreatesRequestedViewHelperAndViewHelperNode()
     {
         $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class);
-        $mockViewHelperNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class, array(), array(), '', false);
+        $mockViewHelperNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class, [], [], '', false);
 
         $mockNodeOnStack = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface::class);
         $mockNodeOnStack->expects($this->once())->method('addChildNode')->with($mockViewHelperNode);
@@ -751,10 +751,10 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
         $mockState->expects($this->once())->method('pushNodeToStack')->with($mockViewHelperNode);
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('abortIfUnregisteredArgumentsExist', 'abortIfRequiredArgumentsAreMissing', 'rewriteBooleanNodesInArgumentsObjectTree'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['abortIfUnregisteredArgumentsExist', 'abortIfRequiredArgumentsAreMissing', 'rewriteBooleanNodesInArgumentsObjectTree']);
         $templateParser->_set('objectManager', $mockObjectManager);
 
-        $templateParser->_call('initializeViewHelperAndAddItToStack', $mockState, 'f', 'myown', array('arguments'));
+        $templateParser->_call('initializeViewHelperAndAddItToStack', $mockState, 'f', 'myown', ['arguments']);
     }
 
     /**
@@ -762,12 +762,12 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function initializeViewHelperAndAddItToStackChecksViewHelperArguments()
     {
-        $expectedArguments = array('expectedArguments');
-        $argumentsObjectTree = array('arguments');
+        $expectedArguments = ['expectedArguments'];
+        $argumentsObjectTree = ['arguments'];
 
         $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class);
         $mockViewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue($expectedArguments));
-        $mockViewHelperNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class, array(), array(), '', false);
+        $mockViewHelperNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class, [], [], '', false);
 
         $mockNodeOnStack = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface::class);
 
@@ -778,7 +778,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockState = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\ParsingState::class);
         $mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('abortIfUnregisteredArgumentsExist', 'abortIfRequiredArgumentsAreMissing', 'rewriteBooleanNodesInArgumentsObjectTree'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['abortIfUnregisteredArgumentsExist', 'abortIfRequiredArgumentsAreMissing', 'rewriteBooleanNodesInArgumentsObjectTree']);
         $templateParser->_set('objectManager', $mockObjectManager);
         $templateParser->expects($this->once())->method('abortIfUnregisteredArgumentsExist')->with($expectedArguments, $argumentsObjectTree);
         $templateParser->expects($this->once())->method('abortIfRequiredArgumentsAreMissing')->with($expectedArguments, $argumentsObjectTree);
@@ -791,8 +791,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function initializeViewHelperAndAddItToStackHandlesPostParseFacets()
     {
-        $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\Fixtures\PostParseFacetViewHelper::class, array('prepareArguments'));
-        $mockViewHelperNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class, array(), array(), '', false);
+        $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\Fixtures\PostParseFacetViewHelper::class, ['prepareArguments']);
+        $mockViewHelperNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class, [], [], '', false);
 
         $mockNodeOnStack = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface::class);
         $mockNodeOnStack->expects($this->once())->method('addChildNode')->with($mockViewHelperNode);
@@ -805,10 +805,10 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
         $mockState->expects($this->once())->method('getVariableContainer')->will($this->returnValue($this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer::class)));
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('abortIfUnregisteredArgumentsExist', 'abortIfRequiredArgumentsAreMissing', 'rewriteBooleanNodesInArgumentsObjectTree'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['abortIfUnregisteredArgumentsExist', 'abortIfRequiredArgumentsAreMissing', 'rewriteBooleanNodesInArgumentsObjectTree']);
         $templateParser->_set('objectManager', $mockObjectManager);
 
-        $templateParser->_call('initializeViewHelperAndAddItToStack', $mockState, 'f', 'myown', array('arguments'));
+        $templateParser->_call('initializeViewHelperAndAddItToStack', $mockState, 'f', 'myown', ['arguments']);
         $this->assertTrue(\TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\Fixtures\PostParseFacetViewHelper::$wasCalled, 'PostParse was not called!');
     }
 
@@ -818,10 +818,10 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function abortIfUnregisteredArgumentsExistThrowsExceptionOnUnregisteredArguments()
     {
-        $expected = array(new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('firstArgument', 'string', '', false));
-        $actual = array('firstArgument' => 'foo', 'secondArgument' => 'bar');
+        $expected = [new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('firstArgument', 'string', '', false)];
+        $actual = ['firstArgument' => 'foo', 'secondArgument' => 'bar'];
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
 
         $templateParser->_call('abortIfUnregisteredArgumentsExist', $expected, $actual);
     }
@@ -831,15 +831,15 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function abortIfUnregisteredArgumentsExistDoesNotThrowExceptionIfEverythingIsOk()
     {
-        $expectedArguments = array(
+        $expectedArguments = [
             new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('name1', 'string', 'desc', false),
             new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('name2', 'string', 'desc', true)
-        );
-        $actualArguments = array(
+        ];
+        $actualArguments = [
             'name1' => 'bla'
-        );
+        ];
 
-        $mockTemplateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $mockTemplateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
 
         $mockTemplateParser->_call('abortIfUnregisteredArgumentsExist', $expectedArguments, $actualArguments);
         // dummy assertion to avoid "did not perform any assertions" error
@@ -852,14 +852,14 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function abortIfRequiredArgumentsAreMissingThrowsException()
     {
-        $expected = array(
+        $expected = [
             new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('firstArgument', 'string', '', false),
             new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('secondArgument', 'string', '', true)
-        );
+        ];
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
 
-        $templateParser->_call('abortIfRequiredArgumentsAreMissing', $expected, array());
+        $templateParser->_call('abortIfRequiredArgumentsAreMissing', $expected, []);
     }
 
     /**
@@ -867,15 +867,15 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function abortIfRequiredArgumentsAreMissingDoesNotThrowExceptionIfRequiredArgumentExists()
     {
-        $expectedArguments = array(
+        $expectedArguments = [
             new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('name1', 'string', 'desc', false),
             new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('name2', 'string', 'desc', true)
-        );
-        $actualArguments = array(
+        ];
+        $actualArguments = [
             'name2' => 'bla'
-        );
+        ];
 
-        $mockTemplateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $mockTemplateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
 
         $mockTemplateParser->_call('abortIfRequiredArgumentsAreMissing', $expectedArguments, $actualArguments);
         // dummy assertion to avoid "did not perform any assertions" error
@@ -888,11 +888,11 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function closingViewHelperTagHandlerThrowsExceptionBecauseOfClosingTagWhichWasNeverOpened()
     {
-        $mockNodeOnStack = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface::class, array(), array(), '', false);
+        $mockNodeOnStack = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface::class, [], [], '', false);
         $mockState = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\ParsingState::class);
         $mockState->expects($this->once())->method('popNodeFromStack')->will($this->returnValue($mockNodeOnStack));
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
 
         $templateParser->_call('closingViewHelperTagHandler', $mockState, 'f', 'method');
     }
@@ -903,11 +903,11 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function closingViewHelperTagHandlerThrowsExceptionBecauseOfWrongTagNesting()
     {
-        $mockNodeOnStack = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class, array(), array(), '', false);
+        $mockNodeOnStack = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class, [], [], '', false);
         $mockState = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\ParsingState::class);
         $mockState->expects($this->once())->method('popNodeFromStack')->will($this->returnValue($mockNodeOnStack));
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
 
         $templateParser->_call('closingViewHelperTagHandler', $mockState, 'f', 'method');
     }
@@ -920,11 +920,11 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockState = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\ParsingState::class);
         $mockState->expects($this->exactly(2))->method('popNodeFromStack')->will($this->returnValue($this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface::class)));
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('recursiveArrayHandler', 'postProcessArgumentsForObjectAccessor', 'initializeViewHelperAndAddItToStack'));
-        $templateParser->expects($this->at(0))->method('recursiveArrayHandler')->with('format: "H:i"')->will($this->returnValue(array('format' => 'H:i')));
-        $templateParser->expects($this->at(1))->method('postProcessArgumentsForObjectAccessor')->with(array('format' => 'H:i'))->will($this->returnValue(array('processedArguments')));
-        $templateParser->expects($this->at(2))->method('initializeViewHelperAndAddItToStack')->with($mockState, 'f', 'format.date', array('processedArguments'));
-        $templateParser->expects($this->at(3))->method('initializeViewHelperAndAddItToStack')->with($mockState, 'f', 'base', array());
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['recursiveArrayHandler', 'postProcessArgumentsForObjectAccessor', 'initializeViewHelperAndAddItToStack']);
+        $templateParser->expects($this->at(0))->method('recursiveArrayHandler')->with('format: "H:i"')->will($this->returnValue(['format' => 'H:i']));
+        $templateParser->expects($this->at(1))->method('postProcessArgumentsForObjectAccessor')->with(['format' => 'H:i'])->will($this->returnValue(['processedArguments']));
+        $templateParser->expects($this->at(2))->method('initializeViewHelperAndAddItToStack')->with($mockState, 'f', 'format.date', ['processedArguments']);
+        $templateParser->expects($this->at(3))->method('initializeViewHelperAndAddItToStack')->with($mockState, 'f', 'base', []);
 
         $templateParser->_call('objectAccessorHandler', $mockState, '', '', 'f:base() f:format.date(format: "H:i")', '');
     }
@@ -934,17 +934,17 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function objectAccessorHandlerCreatesObjectAccessorNodeWithExpectedValueAndAddsItToStack()
     {
-        $objectAccessorNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class, array(), array(), '', false);
+        $objectAccessorNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class, [], [], '', false);
 
         $mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $mockObjectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class, 'objectAccessorString')->will($this->returnValue($objectAccessorNode));
 
-        $mockNodeOnStack = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode::class, array(), array(), '', false);
+        $mockNodeOnStack = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode::class, [], [], '', false);
         $mockNodeOnStack->expects($this->once())->method('addChildNode')->with($objectAccessorNode);
         $mockState = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\ParsingState::class);
         $mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
         $templateParser->_set('objectManager', $mockObjectManager);
 
         $templateParser->_call('objectAccessorHandler', $mockState, 'objectAccessorString', '', '', '');
@@ -955,21 +955,21 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function valuesFromObjectAccessorsAreRunThroughValueInterceptorsByDefault()
     {
-        $objectAccessorNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class, array(), array(), '', false);
+        $objectAccessorNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class, [], [], '', false);
         $objectAccessorNodeInterceptor = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::class);
         $objectAccessorNodeInterceptor->expects($this->once())->method('process')->with($objectAccessorNode)->will($this->returnArgument(0));
 
         $parserConfiguration = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\Configuration::class);
-        $parserConfiguration->expects($this->once())->method('getInterceptors')->with(\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OBJECTACCESSOR)->will($this->returnValue(array($objectAccessorNodeInterceptor)));
+        $parserConfiguration->expects($this->once())->method('getInterceptors')->with(\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OBJECTACCESSOR)->will($this->returnValue([$objectAccessorNodeInterceptor]));
 
         $mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $mockObjectManager->expects($this->once())->method('get')->will($this->returnValue($objectAccessorNode));
 
-        $mockNodeOnStack = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode::class, array(), array(), '', false);
+        $mockNodeOnStack = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode::class, [], [], '', false);
         $mockState = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\ParsingState::class);
         $mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
         $templateParser->_set('objectManager', $mockObjectManager);
         $templateParser->_set('configuration', $parserConfiguration);
 
@@ -980,11 +980,11 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function argumentsStrings()
     {
-        return array(
-            array('a="2"', array('a' => '2')),
-            array('a="2" b="foobar \' with \\" quotes"', array('a' => '2', 'b' => 'foobar \' with " quotes')),
-            array(' arguments="{number : 362525200}"', array('arguments' => '{number : 362525200}'))
-        );
+        return [
+            ['a="2"', ['a' => '2']],
+            ['a="2" b="foobar \' with \\" quotes"', ['a' => '2', 'b' => 'foobar \' with " quotes']],
+            [' arguments="{number : 362525200}"', ['arguments' => '{number : 362525200}']]
+        ];
     }
 
     /**
@@ -995,7 +995,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function parseArgumentsWorksAsExpected($argumentsString, array $expected)
     {
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('buildArgumentObjectTree'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['buildArgumentObjectTree']);
         $templateParser->expects($this->any())->method('buildArgumentObjectTree')->will($this->returnArgument(0));
 
         $this->assertSame($expected, $templateParser->_call('parseArguments', $argumentsString));
@@ -1009,7 +1009,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $mockObjectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode::class, 'a very plain string')->will($this->returnValue('theTextNode'));
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['dummy']);
         $templateParser->_set('objectManager', $mockObjectManager);
 
         $this->assertEquals('theTextNode', $templateParser->_call('buildArgumentObjectTree', 'a very plain string'));
@@ -1023,7 +1023,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $objectTree = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\ParsingState::class);
         $objectTree->expects($this->once())->method('getRootNode')->will($this->returnValue('theRootNode'));
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('splitTemplateAtDynamicTags', 'buildObjectTree'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['splitTemplateAtDynamicTags', 'buildObjectTree']);
         $templateParser->expects($this->at(0))->method('splitTemplateAtDynamicTags')->with('a <very> {complex} string')->will($this->returnValue('split string'));
         $templateParser->expects($this->at(1))->method('buildObjectTree')->with('split string')->will($this->returnValue($objectTree));
 
@@ -1039,7 +1039,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockObjectManager->expects($this->any())->method('get')->will($this->returnArgument(1));
         $mockState = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\ParsingState::class);
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('objectAccessorHandler', 'arrayHandler', 'textHandler'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['objectAccessorHandler', 'arrayHandler', 'textHandler']);
         $templateParser->_set('objectManager', $mockObjectManager);
         $templateParser->expects($this->at(0))->method('objectAccessorHandler')->with($mockState, 'someThing.absolutely', '', '', '');
         $templateParser->expects($this->at(1))->method('textHandler')->with($mockState, ' "fishy" is \'going\' ');
@@ -1054,8 +1054,8 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function arrayHandlerAddsArrayNodeWithProperContentToStack()
     {
-        $arrayNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ArrayNode::class, array(), array(array()));
-        $mockNodeOnStack = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode::class, array(), array(), '', false);
+        $arrayNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ArrayNode::class, [], [[]]);
+        $mockNodeOnStack = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode::class, [], [], '', false);
         $mockNodeOnStack->expects($this->once())->method('addChildNode')->with($arrayNode);
         $mockState = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\ParsingState::class);
         $mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
@@ -1063,7 +1063,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $mockObjectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ArrayNode::class, 'processedArrayText')->will($this->returnValue($arrayNode));
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('recursiveArrayHandler'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['recursiveArrayHandler']);
         $templateParser->_set('objectManager', $mockObjectManager);
         $templateParser->expects($this->once())->method('recursiveArrayHandler')->with('arrayText')->will($this->returnValue('processedArrayText'));
 
@@ -1074,16 +1074,16 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function arrayTexts()
     {
-        return array(
-            array(
+        return [
+            [
                 'key1: "foo", key2: \'bar\', key3: someVar, key4: 123, key5: { key6: "baz" }',
-                array('key1' => 'foo', 'key2' => 'bar', 'key3' => 'someVar', 'key4' => 123.0, 'key5' => array('key6' => 'baz'))
-            ),
-            array(
+                ['key1' => 'foo', 'key2' => 'bar', 'key3' => 'someVar', 'key4' => 123.0, 'key5' => ['key6' => 'baz']]
+            ],
+            [
                 'key1: "\'foo\'", key2: \'\\\'bar\\\'\'',
-                array('key1' => '\'foo\'', 'key2' => '\'bar\'')
-            )
-        );
+                ['key1' => '\'foo\'', 'key2' => '\'bar\'']
+            ]
+        ];
     }
 
     /**
@@ -1095,7 +1095,7 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $mockObjectManager->expects($this->any())->method('get')->will($this->returnArgument(1));
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('buildArgumentObjectTree'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['buildArgumentObjectTree']);
         $templateParser->_set('objectManager', $mockObjectManager);
         $templateParser->expects($this->any())->method('buildArgumentObjectTree')->will($this->returnArgument(0));
 
@@ -1107,22 +1107,22 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function textNodesAreRunThroughTextInterceptors()
     {
-        $textNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode::class, array(), array(), '', false);
+        $textNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode::class, [], [], '', false);
         $textInterceptor = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::class);
         $textInterceptor->expects($this->once())->method('process')->with($textNode)->will($this->returnArgument(0));
 
         $parserConfiguration = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\Configuration::class);
-        $parserConfiguration->expects($this->once())->method('getInterceptors')->with(\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_TEXT)->will($this->returnValue(array($textInterceptor)));
+        $parserConfiguration->expects($this->once())->method('getInterceptors')->with(\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_TEXT)->will($this->returnValue([$textInterceptor]));
 
         $mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $mockObjectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode::class, 'string')->will($this->returnValue($textNode));
 
-        $mockNodeOnStack = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode::class, array(), array(), '', false);
+        $mockNodeOnStack = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode::class, [], [], '', false);
         $mockNodeOnStack->expects($this->once())->method('addChildNode')->with($textNode);
         $mockState = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\ParsingState::class);
         $mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
 
-        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('splitTemplateAtDynamicTags', 'buildObjectTree'));
+        $templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, ['splitTemplateAtDynamicTags', 'buildObjectTree']);
         $templateParser->_set('objectManager', $mockObjectManager);
         $templateParser->_set('configuration', $parserConfiguration);
 

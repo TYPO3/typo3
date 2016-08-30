@@ -40,14 +40,14 @@ class DefaultInline extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'bold' => 'Bold',
         'italic' => 'Italic',
         'underline' => 'Underline',
         'strikethrough' => 'StrikeThrough',
         'superscript' => 'Superscript',
         'subscript' => 'Subscript'
-    );
+    ];
 
     /**
      * Return JS configuration of the htmlArea plugins registered by the extension

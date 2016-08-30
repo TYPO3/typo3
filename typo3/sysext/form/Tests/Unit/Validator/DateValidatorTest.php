@@ -29,11 +29,11 @@ class DateValidatorTest extends AbstractValidatorTest
      */
     public function validDateProvider()
     {
-        return array(
-            '28-03-2012' => array(array('%e-%m-%Y', '28-03-2012')),
-            '8-03-2012'  => array(array('%e-%m-%Y', '8-03-2012')),
-            '29-02-2012' => array(array('%d-%m-%Y', '29-02-2012'))
-        );
+        return [
+            '28-03-2012' => [['%e-%m-%Y', '28-03-2012']],
+            '8-03-2012'  => [['%e-%m-%Y', '8-03-2012']],
+            '29-02-2012' => [['%d-%m-%Y', '29-02-2012']]
+        ];
     }
 
     /**
@@ -41,11 +41,11 @@ class DateValidatorTest extends AbstractValidatorTest
      */
     public function invalidDateProvider()
     {
-        return array(
-            '32-03-2012' => array(array('%d-%m-%Y', '32-03-2012')),
-            '31-13-2012' => array(array('%d-%m-%Y', '31-13-2012')),
-            '29-02-2011' => array(array('%d-%m-%Y', '29-02-2011'))
-        );
+        return [
+            '32-03-2012' => [['%d-%m-%Y', '32-03-2012']],
+            '31-13-2012' => [['%d-%m-%Y', '31-13-2012']],
+            '29-02-2011' => [['%d-%m-%Y', '29-02-2011']]
+        ];
     }
 
     /**
@@ -55,7 +55,7 @@ class DateValidatorTest extends AbstractValidatorTest
      */
     public function validateForValidInputHasEmptyErrorResult(array $input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['format'] = $input[0];
         $subject = $this->createSubject($options);
 
@@ -71,7 +71,7 @@ class DateValidatorTest extends AbstractValidatorTest
      */
     public function validateForInvalidInputHasNotEmptyErrorResult(array $input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['format'] = $input[0];
         $subject = $this->createSubject($options);
 

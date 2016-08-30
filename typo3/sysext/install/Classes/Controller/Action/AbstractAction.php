@@ -69,17 +69,17 @@ abstract class AbstractAction implements ActionInterface
     /**
      * @var array Values in $_POST['install']
      */
-    protected $postValues = array();
+    protected $postValues = [];
 
     /**
      * @var array Contains the fatal error array of the last request when passed. Schema is the one returned by error_get_last()
      */
-    protected $lastError = array();
+    protected $lastError = [];
 
     /**
      * @var array<\TYPO3\CMS\Install\Status\StatusInterface> Optional status message from controller
      */
-    protected $messages = array();
+    protected $messages = [];
 
     /**
      * Handles the action
@@ -189,7 +189,7 @@ abstract class AbstractAction implements ActionInterface
      *
      * @param array<\TYPO3\CMS\Install\Status\StatusInterface> $messages
      */
-    public function setMessages(array $messages = array())
+    public function setMessages(array $messages = [])
     {
         $this->messages = $messages;
     }
@@ -287,7 +287,7 @@ abstract class AbstractAction implements ActionInterface
      */
     protected function getExtensionCompatibilityTesterMessages()
     {
-        $extensionCompatibilityTesterMessages = array();
+        $extensionCompatibilityTesterMessages = [];
 
         /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
         $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\LoadingStatus::class);

@@ -42,7 +42,7 @@ class WidgetRequestHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->widgetRequestHandler = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler::class, array('dummy'), array(), '', false);
+        $this->widgetRequestHandler = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler::class, ['dummy'], [], '', false);
     }
 
     /**
@@ -68,7 +68,7 @@ class WidgetRequestHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function priorityIsHigherThanDefaultRequestHandler()
     {
-        $defaultWebRequestHandler = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHandler::class, array('handleRequest'), array(), '', false);
+        $defaultWebRequestHandler = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHandler::class, ['handleRequest'], [], '', false);
         $this->assertTrue($this->widgetRequestHandler->getPriority() > $defaultWebRequestHandler->getPriority());
     }
 
@@ -79,11 +79,11 @@ class WidgetRequestHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $handler = new WidgetRequestHandler();
         $request = $this->getMock(Request::class);
-        $requestBuilder = $this->getMock(WidgetRequestBuilder::class, array('build'));
+        $requestBuilder = $this->getMock(WidgetRequestBuilder::class, ['build']);
         $requestBuilder->expects($this->once())->method('build')->willReturn($request);
         $objectManager = $this->getMock(ObjectManagerInterface::class);
         $objectManager->expects($this->once())->method('get')->willReturn($this->getMock(Response::class));
-        $requestDispatcher = $this->getMock(Dispatcher::class, array('dispatch'), array(), '', false);
+        $requestDispatcher = $this->getMock(Dispatcher::class, ['dispatch'], [], '', false);
         $requestDispatcher->expects($this->once())->method('dispatch')->with($request);
         $this->inject($handler, 'widgetRequestBuilder', $requestBuilder);
         $this->inject($handler, 'dispatcher', $requestDispatcher);

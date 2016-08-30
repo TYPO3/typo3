@@ -32,7 +32,7 @@ class DatabaseSpecificsTest extends AbstractTestCase
      */
     protected function setUp()
     {
-        $GLOBALS['TYPO3_LOADED_EXT'] = array();
+        $GLOBALS['TYPO3_LOADED_EXT'] = [];
 
         /** @var AbstractSpecifics|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
         $this->subject = GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\Specifics\NullSpecifics::class);
@@ -80,36 +80,36 @@ class DatabaseSpecificsTest extends AbstractTestCase
      */
     public function determineMetaTypeProvider()
     {
-        return array(
-            array('INT', 'I8'),
-            array('INTEGER', 'I8'),
-            array('TINYINT', 'I8'),
-            array('SMALLINT', 'I8'),
-            array('MEDIUMINT', 'I8'),
-            array('BIGINT', 'I8'),
-            array('DOUBLE', 'F'),
-            array('FLOAT', 'F'),
-            array('TIME', 'T'),
-            array('TIMESTAMP', 'T'),
-            array('DATETIME', 'T'),
-            array('DATE', 'D'),
-            array('YEAR', 'D'),
-            array('IMAGE', 'B'),
-            array('BLOB', 'B'),
-            array('MEDIUMBLOB', 'B'),
-            array('LONGBLOB', 'B'),
-            array('IMAGE', 'B'),
-            array('TEXT', 'XL'),
-            array('MEDIUMTEXT', 'XL'),
-            array('LONGTEXT', 'XL'),
-            array('STRING', 'C'),
-            array('CHAR', 'C'),
-            array('VARCHAR', 'C'),
-            array('TINYBLOB', 'C'),
-            array('TINYTEXT', 'C'),
-            array('ENUM', 'C'),
-            array('SET', 'C')
-        );
+        return [
+            ['INT', 'I8'],
+            ['INTEGER', 'I8'],
+            ['TINYINT', 'I8'],
+            ['SMALLINT', 'I8'],
+            ['MEDIUMINT', 'I8'],
+            ['BIGINT', 'I8'],
+            ['DOUBLE', 'F'],
+            ['FLOAT', 'F'],
+            ['TIME', 'T'],
+            ['TIMESTAMP', 'T'],
+            ['DATETIME', 'T'],
+            ['DATE', 'D'],
+            ['YEAR', 'D'],
+            ['IMAGE', 'B'],
+            ['BLOB', 'B'],
+            ['MEDIUMBLOB', 'B'],
+            ['LONGBLOB', 'B'],
+            ['IMAGE', 'B'],
+            ['TEXT', 'XL'],
+            ['MEDIUMTEXT', 'XL'],
+            ['LONGTEXT', 'XL'],
+            ['STRING', 'C'],
+            ['CHAR', 'C'],
+            ['VARCHAR', 'C'],
+            ['TINYBLOB', 'C'],
+            ['TINYTEXT', 'C'],
+            ['ENUM', 'C'],
+            ['SET', 'C']
+        ];
     }
 
     /**
@@ -117,25 +117,25 @@ class DatabaseSpecificsTest extends AbstractTestCase
      */
     public function determineNativeTypeProvider()
     {
-        return array(
-            array('C', 'VARCHAR'),
-            array('C2', 'VARCHAR'),
-            array('X', 'LONGTEXT'),
-            array('X2', 'LONGTEXT'),
-            array('XL', 'LONGTEXT'),
-            array('B', 'LONGBLOB'),
-            array('D', 'DATE'),
-            array('T', 'DATETIME'),
-            array('L', 'TINYINT'),
-            array('I', 'BIGINT'),
-            array('I1', 'BIGINT'),
-            array('I2', 'BIGINT'),
-            array('I4', 'BIGINT'),
-            array('I8', 'BIGINT'),
-            array('F', 'DOUBLE'),
-            array('N', 'NUMERIC'),
-            array('U', 'U')
-        );
+        return [
+            ['C', 'VARCHAR'],
+            ['C2', 'VARCHAR'],
+            ['X', 'LONGTEXT'],
+            ['X2', 'LONGTEXT'],
+            ['XL', 'LONGTEXT'],
+            ['B', 'LONGBLOB'],
+            ['D', 'DATE'],
+            ['T', 'DATETIME'],
+            ['L', 'TINYINT'],
+            ['I', 'BIGINT'],
+            ['I1', 'BIGINT'],
+            ['I2', 'BIGINT'],
+            ['I4', 'BIGINT'],
+            ['I8', 'BIGINT'],
+            ['F', 'DOUBLE'],
+            ['N', 'NUMERIC'],
+            ['U', 'U']
+        ];
     }
 
     /**
@@ -143,10 +143,10 @@ class DatabaseSpecificsTest extends AbstractTestCase
      */
     public function determineNativeFieldLengthProvider()
     {
-        return array(
-            array('INT', '4', '(11)'),
-            array('VARCHAR', -1, ''),
-            array('VARCHAR', 30, '(30)')
-        );
+        return [
+            ['INT', '4', '(11)'],
+            ['VARCHAR', -1, ''],
+            ['VARCHAR', 30, '(30)']
+        ];
     }
 }

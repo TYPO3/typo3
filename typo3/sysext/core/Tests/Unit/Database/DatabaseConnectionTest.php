@@ -35,7 +35,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
 
         /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('fullQuoteStr'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, ['fullQuoteStr'], [], '', false);
         $subject->_set('isConnected', true);
         $subject
             ->expects($this->any())
@@ -48,7 +48,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->shouldBeCalled();
         $subject->_set('link', $mysqliProphecy->reveal());
 
-        $subject->exec_INSERTquery('aTable', array('fieldblob' => $binaryString));
+        $subject->exec_INSERTquery('aTable', ['fieldblob' => $binaryString]);
     }
 
     /**
@@ -59,7 +59,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $testStringWithBinary = @gzcompress('sdfkljer4587');
 
         /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('fullQuoteStr'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, ['fullQuoteStr'], [], '', false);
         $subject->_set('isConnected', true);
         $subject
             ->expects($this->any())
@@ -72,7 +72,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->shouldBeCalled();
         $subject->_set('link', $mysqliProphecy->reveal());
 
-        $subject->exec_INSERTquery('aTable', array('fieldblob' => $testStringWithBinary));
+        $subject->exec_INSERTquery('aTable', ['fieldblob' => $testStringWithBinary]);
     }
 
     ////////////////////////////////
@@ -86,7 +86,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function listQueryWithIntegerCommaAsValue()
     {
         /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('quoteStr'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, ['quoteStr'], [], '', false);
         $subject->_set('isConnected', true);
         $subject
             ->expects($this->any())
@@ -105,7 +105,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function listQueryThrowsExceptionIfValueContainsComma()
     {
         /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('quoteStr'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, ['quoteStr'], [], '', false);
         $subject->_set('isConnected', true);
         $subject->listQuery('aField', 'foo,bar', 'aTable');
     }
@@ -121,67 +121,67 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function searchQueryDataProvider()
     {
-        return array(
-            'One search word in one field' => array(
+        return [
+            'One search word in one field' => [
                 '(pages.title LIKE \'%TYPO3%\')',
-                array('TYPO3'),
-                array('title'),
+                ['TYPO3'],
+                ['title'],
                 'pages',
                 'AND'
-            ),
+            ],
 
-            'One search word with special chars (for like)' => array(
+            'One search word with special chars (for like)' => [
                 '(pages.title LIKE \'%TYPO3\\_100\\%%\')',
-                array('TYPO3_100%'),
-                array('title'),
+                ['TYPO3_100%'],
+                ['title'],
                 'pages',
                 'AND'
-            ),
+            ],
 
-            'One search word in multiple fields' => array(
+            'One search word in multiple fields' => [
                 '(pages.title LIKE \'%TYPO3%\' OR pages.keyword LIKE \'%TYPO3%\' OR pages.description LIKE \'%TYPO3%\')',
-                array('TYPO3'),
-                array('title', 'keyword', 'description'),
+                ['TYPO3'],
+                ['title', 'keyword', 'description'],
                 'pages',
                 'AND'
-            ),
+            ],
 
-            'Multiple search words in one field with AND constraint' => array(
+            'Multiple search words in one field with AND constraint' => [
                 '(pages.title LIKE \'%TYPO3%\') AND (pages.title LIKE \'%is%\') AND (pages.title LIKE \'%great%\')',
-                array('TYPO3', 'is', 'great'),
-                array('title'),
+                ['TYPO3', 'is', 'great'],
+                ['title'],
                 'pages',
                 'AND'
-            ),
+            ],
 
-            'Multiple search words in one field with OR constraint' => array(
+            'Multiple search words in one field with OR constraint' => [
                 '(pages.title LIKE \'%TYPO3%\') OR (pages.title LIKE \'%is%\') OR (pages.title LIKE \'%great%\')',
-                array('TYPO3', 'is', 'great'),
-                array('title'),
+                ['TYPO3', 'is', 'great'],
+                ['title'],
                 'pages',
                 'OR'
-            ),
+            ],
 
-            'Multiple search words in multiple fields with AND constraint' => array(
+            'Multiple search words in multiple fields with AND constraint' => [
                 '(pages.title LIKE \'%TYPO3%\' OR pages.keywords LIKE \'%TYPO3%\' OR pages.description LIKE \'%TYPO3%\') AND ' .
                     '(pages.title LIKE \'%is%\' OR pages.keywords LIKE \'%is%\' OR pages.description LIKE \'%is%\') AND ' .
                     '(pages.title LIKE \'%great%\' OR pages.keywords LIKE \'%great%\' OR pages.description LIKE \'%great%\')',
-                array('TYPO3', 'is', 'great'),
-                array('title', 'keywords', 'description'),
+                ['TYPO3', 'is', 'great'],
+                ['title', 'keywords', 'description'],
                 'pages',
                 'AND'
-            ),
+            ],
 
-            'Multiple search words in multiple fields with OR constraint' => array(
+            'Multiple search words in multiple fields with OR constraint' => [
                 '(pages.title LIKE \'%TYPO3%\' OR pages.keywords LIKE \'%TYPO3%\' OR pages.description LIKE \'%TYPO3%\') OR ' .
                     '(pages.title LIKE \'%is%\' OR pages.keywords LIKE \'%is%\' OR pages.description LIKE \'%is%\') OR ' .
                     '(pages.title LIKE \'%great%\' OR pages.keywords LIKE \'%great%\' OR pages.description LIKE \'%great%\')',
-                array('TYPO3', 'is', 'great'),
-                array('title', 'keywords', 'description'),
+                ['TYPO3', 'is', 'great'],
+                ['title', 'keywords', 'description'],
                 'pages',
                 'OR'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -191,7 +191,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function searchQueryCreatesQuery($expectedResult, $searchWords, $fields, $table, $constraint)
     {
         /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('quoteStr'), array(), '', false);
+        $subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, ['quoteStr'], [], '', false);
         $subject
             ->expects($this->any())
             ->method('quoteStr')
@@ -212,7 +212,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function escapeStringForLikeComparison()
     {
         /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('dummy'), array(), '', false);
+        $subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, ['dummy'], [], '', false);
         $this->assertEquals('foo\\_bar\\%', $subject->escapeStrForLike('foo_bar%', 'table'));
     }
 
@@ -228,17 +228,17 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stripOrderByForOrderByKeywordDataProvider()
     {
-        return array(
-            'single ORDER BY' => array('ORDER BY name, tstamp', 'name, tstamp'),
-            'single ORDER BY in lower case' => array('order by name, tstamp', 'name, tstamp'),
-            'ORDER BY with additional space behind' => array('ORDER BY  name, tstamp', 'name, tstamp'),
-            'ORDER BY without space between the words' => array('ORDERBY name, tstamp', 'name, tstamp'),
-            'ORDER BY added twice' => array('ORDER BY ORDER BY name, tstamp', 'name, tstamp'),
-            'ORDER BY added twice without spaces in the first occurrence' => array('ORDERBY ORDER BY  name, tstamp', 'name, tstamp'),
-            'ORDER BY added twice without spaces in the second occurrence' => array('ORDER BYORDERBY name, tstamp', 'name, tstamp'),
-            'ORDER BY added twice without spaces' => array('ORDERBYORDERBY name, tstamp', 'name, tstamp'),
-            'ORDER BY added twice without spaces afterwards' => array('ORDERBYORDERBYname, tstamp', 'name, tstamp'),
-        );
+        return [
+            'single ORDER BY' => ['ORDER BY name, tstamp', 'name, tstamp'],
+            'single ORDER BY in lower case' => ['order by name, tstamp', 'name, tstamp'],
+            'ORDER BY with additional space behind' => ['ORDER BY  name, tstamp', 'name, tstamp'],
+            'ORDER BY without space between the words' => ['ORDERBY name, tstamp', 'name, tstamp'],
+            'ORDER BY added twice' => ['ORDER BY ORDER BY name, tstamp', 'name, tstamp'],
+            'ORDER BY added twice without spaces in the first occurrence' => ['ORDERBY ORDER BY  name, tstamp', 'name, tstamp'],
+            'ORDER BY added twice without spaces in the second occurrence' => ['ORDER BYORDERBY name, tstamp', 'name, tstamp'],
+            'ORDER BY added twice without spaces' => ['ORDERBYORDERBY name, tstamp', 'name, tstamp'],
+            'ORDER BY added twice without spaces afterwards' => ['ORDERBYORDERBYname, tstamp', 'name, tstamp'],
+        ];
     }
 
     /**
@@ -251,7 +251,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function stripOrderByForOrderByKeyword($orderByClause, $expectedResult)
     {
         /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('dummy'), array(), '', false);
+        $subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, ['dummy'], [], '', false);
         $strippedQuery = $subject->stripOrderBy($orderByClause);
         $this->assertEquals($expectedResult, $strippedQuery);
     }
@@ -268,17 +268,17 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stripGroupByForGroupByKeywordDataProvider()
     {
-        return array(
-            'single GROUP BY' => array('GROUP BY name, tstamp', 'name, tstamp'),
-            'single GROUP BY in lower case' => array('group by name, tstamp', 'name, tstamp'),
-            'GROUP BY with additional space behind' => array('GROUP BY  name, tstamp', 'name, tstamp'),
-            'GROUP BY without space between the words' => array('GROUPBY name, tstamp', 'name, tstamp'),
-            'GROUP BY added twice' => array('GROUP BY GROUP BY name, tstamp', 'name, tstamp'),
-            'GROUP BY added twice without spaces in the first occurrence' => array('GROUPBY GROUP BY  name, tstamp', 'name, tstamp'),
-            'GROUP BY added twice without spaces in the second occurrence' => array('GROUP BYGROUPBY name, tstamp', 'name, tstamp'),
-            'GROUP BY added twice without spaces' => array('GROUPBYGROUPBY name, tstamp', 'name, tstamp'),
-            'GROUP BY added twice without spaces afterwards' => array('GROUPBYGROUPBYname, tstamp', 'name, tstamp'),
-        );
+        return [
+            'single GROUP BY' => ['GROUP BY name, tstamp', 'name, tstamp'],
+            'single GROUP BY in lower case' => ['group by name, tstamp', 'name, tstamp'],
+            'GROUP BY with additional space behind' => ['GROUP BY  name, tstamp', 'name, tstamp'],
+            'GROUP BY without space between the words' => ['GROUPBY name, tstamp', 'name, tstamp'],
+            'GROUP BY added twice' => ['GROUP BY GROUP BY name, tstamp', 'name, tstamp'],
+            'GROUP BY added twice without spaces in the first occurrence' => ['GROUPBY GROUP BY  name, tstamp', 'name, tstamp'],
+            'GROUP BY added twice without spaces in the second occurrence' => ['GROUP BYGROUPBY name, tstamp', 'name, tstamp'],
+            'GROUP BY added twice without spaces' => ['GROUPBYGROUPBY name, tstamp', 'name, tstamp'],
+            'GROUP BY added twice without spaces afterwards' => ['GROUPBYGROUPBYname, tstamp', 'name, tstamp'],
+        ];
     }
 
     /**
@@ -291,7 +291,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function stripGroupByForGroupByKeyword($groupByClause, $expectedResult)
     {
         /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('dummy'), array(), '', false);
+        $subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, ['dummy'], [], '', false);
         $strippedQuery = $subject->stripGroupBy($groupByClause);
         $this->assertEquals($expectedResult, $strippedQuery);
     }
@@ -308,54 +308,54 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function cleanIntArrayDataProvider()
     {
-        return array(
-            'simple array' => array(
-                array(1, 2, 3),
-                array(1, 2, 3)
-            ),
-            'string array' => array(
-                array('2', '4', '8'),
-                array(2, 4, 8)
-            ),
-            'string array with letters #1' => array(
-                array('3', '6letters', '12'),
-                array(3, 6, 12)
-            ),
-            'string array with letters #2' => array(
-                array('3', 'letters6', '12'),
-                array(3, 0, 12)
-            ),
-            'string array with letters #3' => array(
-                array('3', '6letters4', '12'),
-                array(3, 6, 12)
-            ),
-            'associative array' => array(
-                array('apples' => 3, 'bananas' => 4, 'kiwis' => 9),
-                array('apples' => 3, 'bananas' => 4, 'kiwis' => 9)
-            ),
-            'associative string array' => array(
-                array('apples' => '1', 'bananas' => '5', 'kiwis' => '7'),
-                array('apples' => 1, 'bananas' => 5, 'kiwis' => 7)
-            ),
-            'associative string array with letters #1' => array(
-                array('apples' => '1', 'bananas' => 'no5', 'kiwis' => '7'),
-                array('apples' => 1, 'bananas' => 0, 'kiwis' => 7)
-            ),
-            'associative string array with letters #2' => array(
-                array('apples' => '1', 'bananas' => '5yes', 'kiwis' => '7'),
-                array('apples' => 1, 'bananas' => 5, 'kiwis' => 7)
-            ),
-            'associative string array with letters #3' => array(
-                array('apples' => '1', 'bananas' => '5yes9', 'kiwis' => '7'),
-                array('apples' => 1, 'bananas' => 5, 'kiwis' => 7)
-            ),
-            'multidimensional associative array' => array(
-                array('apples' => '1', 'bananas' => array(3, 4), 'kiwis' => '7'),
+        return [
+            'simple array' => [
+                [1, 2, 3],
+                [1, 2, 3]
+            ],
+            'string array' => [
+                ['2', '4', '8'],
+                [2, 4, 8]
+            ],
+            'string array with letters #1' => [
+                ['3', '6letters', '12'],
+                [3, 6, 12]
+            ],
+            'string array with letters #2' => [
+                ['3', 'letters6', '12'],
+                [3, 0, 12]
+            ],
+            'string array with letters #3' => [
+                ['3', '6letters4', '12'],
+                [3, 6, 12]
+            ],
+            'associative array' => [
+                ['apples' => 3, 'bananas' => 4, 'kiwis' => 9],
+                ['apples' => 3, 'bananas' => 4, 'kiwis' => 9]
+            ],
+            'associative string array' => [
+                ['apples' => '1', 'bananas' => '5', 'kiwis' => '7'],
+                ['apples' => 1, 'bananas' => 5, 'kiwis' => 7]
+            ],
+            'associative string array with letters #1' => [
+                ['apples' => '1', 'bananas' => 'no5', 'kiwis' => '7'],
+                ['apples' => 1, 'bananas' => 0, 'kiwis' => 7]
+            ],
+            'associative string array with letters #2' => [
+                ['apples' => '1', 'bananas' => '5yes', 'kiwis' => '7'],
+                ['apples' => 1, 'bananas' => 5, 'kiwis' => 7]
+            ],
+            'associative string array with letters #3' => [
+                ['apples' => '1', 'bananas' => '5yes9', 'kiwis' => '7'],
+                ['apples' => 1, 'bananas' => 5, 'kiwis' => 7]
+            ],
+            'multidimensional associative array' => [
+                ['apples' => '1', 'bananas' => [3, 4], 'kiwis' => '7'],
                 // intval(array(...)) is 1
                 // But by specification "cleanIntArray" should only get used on one-dimensional arrays
-                array('apples' => 1, 'bananas' => 1, 'kiwis' => 7)
-            ),
-        );
+                ['apples' => 1, 'bananas' => 1, 'kiwis' => 7]
+            ],
+        ];
     }
 
     /**

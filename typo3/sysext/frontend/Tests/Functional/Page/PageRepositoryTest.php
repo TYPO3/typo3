@@ -22,7 +22,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class PageRepositoryTest extends FunctionalTestCase
 {
-    protected $coreExtensionsToLoad = array('frontend');
+    protected $coreExtensionsToLoad = ['frontend'];
 
     /**
      * @var \TYPO3\CMS\Frontend\Page\PageRepository
@@ -66,7 +66,7 @@ class PageRepositoryTest extends FunctionalTestCase
      */
     public function getMenuMulipleUid()
     {
-        $rows = $this->pageRepo->getMenu(array(2, 3), 'uid, title');
+        $rows = $this->pageRepo->getMenu([2, 3], 'uid, title');
         $this->assertArrayHasKey(5, $rows);
         $this->assertArrayHasKey(6, $rows);
         $this->assertArrayHasKey(7, $rows);
@@ -82,7 +82,7 @@ class PageRepositoryTest extends FunctionalTestCase
     {
         $this->pageRepo->sys_language_uid = 1;
 
-        $rows = $this->pageRepo->getMenu(array(2, 3), 'uid, title');
+        $rows = $this->pageRepo->getMenu([2, 3], 'uid, title');
         $this->assertEquals('Attrappe 1-2-5', $rows[5]['title']);
         $this->assertEquals('Attrappe 1-2-6', $rows[6]['title']);
         $this->assertEquals('Dummy 1-2-7', $rows[7]['title']);
@@ -145,7 +145,7 @@ class PageRepositoryTest extends FunctionalTestCase
     public function getPagesOverlayByIdSingle()
     {
         $this->pageRepo->sys_language_uid = 1;
-        $rows = $this->pageRepo->getPagesOverlay(array(1));
+        $rows = $this->pageRepo->getPagesOverlay([1]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(1, $rows);
         $this->assertArrayHasKey(0, $rows);
@@ -163,7 +163,7 @@ class PageRepositoryTest extends FunctionalTestCase
     public function getPagesOverlayByIdMultiple()
     {
         $this->pageRepo->sys_language_uid = 1;
-        $rows = $this->pageRepo->getPagesOverlay(array(1, 5));
+        $rows = $this->pageRepo->getPagesOverlay([1, 5]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(2, $rows);
         $this->assertArrayHasKey(0, $rows);
@@ -188,7 +188,7 @@ class PageRepositoryTest extends FunctionalTestCase
     public function getPagesOverlayByIdMultipleSomeNotOverlaid()
     {
         $this->pageRepo->sys_language_uid = 1;
-        $rows = $this->pageRepo->getPagesOverlay(array(1, 4, 5, 8));
+        $rows = $this->pageRepo->getPagesOverlay([1, 4, 5, 8]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(2, $rows);
         $this->assertArrayHasKey(0, $rows);
@@ -211,7 +211,7 @@ class PageRepositoryTest extends FunctionalTestCase
         $origRow = $this->pageRepo->getPage(1);
 
         $this->pageRepo->sys_language_uid = 1;
-        $rows = $this->pageRepo->getPagesOverlay(array($origRow));
+        $rows = $this->pageRepo->getPagesOverlay([$origRow]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(1, $rows);
         $this->assertArrayHasKey(0, $rows);
@@ -232,7 +232,7 @@ class PageRepositoryTest extends FunctionalTestCase
         $orig2 = $this->pageRepo->getPage(5);
 
         $this->pageRepo->sys_language_uid = 1;
-        $rows = $this->pageRepo->getPagesOverlay(array(1 => $orig1, 5 => $orig2));
+        $rows = $this->pageRepo->getPagesOverlay([1 => $orig1, 5 => $orig2]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(2, $rows);
         $this->assertArrayHasKey(1, $rows);
@@ -261,7 +261,7 @@ class PageRepositoryTest extends FunctionalTestCase
         $orig3 = $this->pageRepo->getPage(9);
 
         $this->pageRepo->sys_language_uid = 1;
-        $rows = $this->pageRepo->getPagesOverlay(array($orig1, $orig2, $orig3));
+        $rows = $this->pageRepo->getPagesOverlay([$orig1, $orig2, $orig3]);
         $this->assertInternalType('array', $rows);
         $this->assertCount(3, $rows);
         $this->assertArrayHasKey(0, $rows);

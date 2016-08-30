@@ -83,18 +83,18 @@ class FinalDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
 				<label><strong>%1$s</strong>: %2$s</label>
 			</li>';
 
-        $fieldItems = array();
-        $keyItems = array();
+        $fieldItems = [];
+        $keyItems = [];
         foreach ($databaseDifferences['diff'] as $tableName => $difference) {
             if ($difference['fields']) {
-                $fieldNames = array();
+                $fieldNames = [];
                 foreach ($difference['fields'] as $fieldName => $sql) {
                     $fieldNames[] = $fieldName;
                 }
                 $fieldItems[] = sprintf($item, $tableName, implode(', ', $fieldNames));
             }
             if ($difference['keys']) {
-                $keyNames = array();
+                $keyNames = [];
                 foreach ($difference['keys'] as $keyName => $sql) {
                     $keyNames[] = $keyName;
                 }
@@ -125,7 +125,7 @@ class FinalDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
         $updateStatements = $this->schemaMigrationService->getUpdateSuggestions($databaseDifferences);
 
         $db = $this->getDatabaseConnection();
-        $customMessagesArray = array();
+        $customMessagesArray = [];
         foreach ((array)$updateStatements['change'] as $query) {
             $db->admin_query($query);
             $dbQueries[] = $query;

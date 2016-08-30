@@ -30,7 +30,7 @@ class AbstractHierarchicalFilesystemDriverTest extends BaseTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->subject = $this->getAccessibleMockForAbstractClass(AbstractHierarchicalFilesystemDriver::class, array(), '', false);
+        $this->subject = $this->getAccessibleMockForAbstractClass(AbstractHierarchicalFilesystemDriver::class, [], '', false);
     }
 
     /**
@@ -49,40 +49,40 @@ class AbstractHierarchicalFilesystemDriverTest extends BaseTestCase
      */
     public function canonicalizeAndCheckFileIdentifierCanonicalizesPathDataProvider()
     {
-        return array(
-            'File path gets leading slash' => array(
+        return [
+            'File path gets leading slash' => [
                 '/foo.php',
                 'foo.php',
-            ),
-            'Absolute path to file is not modified' => array(
+            ],
+            'Absolute path to file is not modified' => [
                 '/bar/foo.php',
                 '/bar/foo.php',
-            ),
-            'Relative path to file gets leading slash' => array(
+            ],
+            'Relative path to file gets leading slash' => [
                 '/bar/foo.php',
                 'bar/foo.php',
-            ),
-            'Empty string is returned as empty string' => array(
+            ],
+            'Empty string is returned as empty string' => [
                 '',
                 '',
-            ),
-            'Double slashes in path are removed' => array(
+            ],
+            'Double slashes in path are removed' => [
                 '/bar/foo.php',
                 '/bar//foo.php',
-            ),
-            'Trailing point in path is removed' => array(
+            ],
+            'Trailing point in path is removed' => [
                 '/foo.php',
                 './foo.php',
-            ),
-            'Point is replaced by slash' => array(
+            ],
+            'Point is replaced by slash' => [
                 '/',
                 '.',
-            ),
-            './ becomes /' => array(
+            ],
+            './ becomes /' => [
                 '/',
                 './',
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -101,35 +101,35 @@ class AbstractHierarchicalFilesystemDriverTest extends BaseTestCase
      */
     public function canonicalizeAndCheckFolderIdentifierCanonicalizesFolderIdentifierDataProvider()
     {
-        return array(
-            'Empty string results in slash' => array(
+        return [
+            'Empty string results in slash' => [
                 '/',
                 '',
-            ),
-            'Single point results in slash' => array(
+            ],
+            'Single point results in slash' => [
                 '/',
                 '.',
-            ),
-            'Single slash results in single slash' => array(
+            ],
+            'Single slash results in single slash' => [
                 '/',
                 '/',
-            ),
-            'Double slash results in single slash' => array(
+            ],
+            'Double slash results in single slash' => [
                 '/',
                 '//',
-            ),
-            'Absolute folder paths without trailing slash gets a trailing slash' => array(
+            ],
+            'Absolute folder paths without trailing slash gets a trailing slash' => [
                 '/foo/',
                 '/foo',
-            ),
-            'Absolute path with trailing and leading slash is not modified' => array(
+            ],
+            'Absolute path with trailing and leading slash is not modified' => [
                 '/foo/',
                 '/foo/',
-            ),
-            'Relative path to folder becomes absolute path with trailing slash' => array(
+            ],
+            'Relative path to folder becomes absolute path with trailing slash' => [
                 '/foo/',
                 'foo/',
-            ),
-        );
+            ],
+        ];
     }
 }

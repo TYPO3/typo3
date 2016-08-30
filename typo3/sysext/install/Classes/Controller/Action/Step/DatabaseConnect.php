@@ -34,7 +34,7 @@ class DatabaseConnect extends AbstractStepAction
      */
     public function execute()
     {
-        $result = array();
+        $result = [];
 
         /** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
         $configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
@@ -49,33 +49,33 @@ class DatabaseConnect extends AbstractStepAction
             switch ($driver) {
                 case 'mssql':
                 case 'odbc_mssql':
-                    $driverConfig = array(
+                    $driverConfig = [
                         'useNameQuote' => true,
                         'quoteClob' => false,
-                    );
+                    ];
                     break;
                 case 'oci8':
-                    $driverConfig = array(
-                        'driverOptions' => array(
+                    $driverConfig = [
+                        'driverOptions' => [
                             'connectSID' => '',
-                        ),
-                    );
+                        ],
+                    ];
                     break;
             }
-            $config = array(
-                '_DEFAULT' => array(
+            $config = [
+                '_DEFAULT' => [
                     'type' => 'adodb',
-                    'config' => array(
+                    'config' => [
                         'driver' => $driver,
-                    )
-                )
-            );
+                    ]
+                ]
+            ];
             if (isset($driverConfig)) {
                 $config['_DEFAULT']['config'] = array_merge($config['_DEFAULT']['config'], $driverConfig);
             }
             $configurationManager->setLocalConfigurationValueByPath('EXTCONF/dbal/handlerCfg', $config);
         } else {
-            $localConfigurationPathValuePairs = array();
+            $localConfigurationPathValuePairs = [];
 
             if ($this->isDbalEnabled()) {
                 $config = $configurationManager->getConfigurationValueByPath('EXTCONF/dbal/handlerCfg');
@@ -367,7 +367,7 @@ class DatabaseConnect extends AbstractStepAction
      */
     protected function useDefaultValuesForNotConfiguredOptions()
     {
-        $localConfigurationPathValuePairs = array();
+        $localConfigurationPathValuePairs = [];
 
         $localConfigurationPathValuePairs['DB/host'] = $this->getConfiguredHost();
 
@@ -478,7 +478,7 @@ class DatabaseConnect extends AbstractStepAction
     protected function getAvailableDbalDrivers()
     {
         $supportedDrivers = $this->getSupportedDbalDrivers();
-        $availableDrivers = array();
+        $availableDrivers = [];
         $selectedDbalDriver = $this->getSelectedDbalDriver();
         foreach ($supportedDrivers as $abstractionLayer => $drivers) {
             foreach ($drivers as $driver => $info) {
@@ -497,9 +497,9 @@ class DatabaseConnect extends AbstractStepAction
                 }
                 if ($isAvailable) {
                     if (!isset($availableDrivers[$abstractionLayer])) {
-                        $availableDrivers[$abstractionLayer] = array();
+                        $availableDrivers[$abstractionLayer] = [];
                     }
-                    $availableDrivers[$abstractionLayer][$driver] = array();
+                    $availableDrivers[$abstractionLayer][$driver] = [];
                     $availableDrivers[$abstractionLayer][$driver]['driver'] = $driver;
                     $availableDrivers[$abstractionLayer][$driver]['label'] = $info['label'];
                     $availableDrivers[$abstractionLayer][$driver]['selected'] = false;
@@ -520,28 +520,28 @@ class DatabaseConnect extends AbstractStepAction
      */
     protected function getSupportedDbalDrivers()
     {
-        $supportedDrivers = array(
-            'Native' => array(
-                'mssql' => array(
+        $supportedDrivers = [
+            'Native' => [
+                'mssql' => [
                     'label' => 'Microsoft SQL Server',
-                    'extensions' => array('mssql')
-                ),
-                'oci8' => array(
+                    'extensions' => ['mssql']
+                ],
+                'oci8' => [
                     'label' => 'Oracle OCI8',
-                    'extensions' => array('oci8')
-                ),
-                'postgres' => array(
+                    'extensions' => ['oci8']
+                ],
+                'postgres' => [
                     'label' => 'PostgreSQL',
-                    'extensions' => array('pgsql')
-                )
-            ),
-            'ODBC' => array(
-                'odbc_mssql' => array(
+                    'extensions' => ['pgsql']
+                ]
+            ],
+            'ODBC' => [
+                'odbc_mssql' => [
                     'label' => 'Microsoft SQL Server',
-                    'extensions' => array('odbc', 'mssql')
-                )
-            )
-        );
+                    'extensions' => ['odbc', 'mssql']
+                ]
+            ]
+        ];
         return $supportedDrivers;
     }
 

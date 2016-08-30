@@ -32,7 +32,7 @@ class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Valida
 
     public function setup()
     {
-        $this->validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'));
+        $this->validator = $this->getMock($this->validatorClassName, ['translateErrorMessage']);
     }
 
     /**
@@ -42,14 +42,14 @@ class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Valida
      */
     public function validFloats()
     {
-        return array(
-            array(1029437.234726),
-            array('123.45'),
-            array('+123.45'),
-            array('-123.45'),
-            array('123.45e3'),
-            array(123450.0)
-        );
+        return [
+            [1029437.234726],
+            ['123.45'],
+            ['+123.45'],
+            ['-123.45'],
+            ['123.45e3'],
+            [123450.0]
+        ];
     }
 
     /**
@@ -69,11 +69,11 @@ class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Valida
      */
     public function invalidFloats()
     {
-        return array(
-            array(1029437),
-            array('1029437'),
-            array('not a number')
-        );
+        return [
+            [1029437],
+            ['1029437'],
+            ['not a number']
+        ];
     }
 
     /**

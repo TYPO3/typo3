@@ -27,7 +27,7 @@ abstract class AbstractWriter implements WriterInterface
      * @param array $options Configuration options - depends on the actual log writer
      * @throws \TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         foreach ($options as $optionKey => $optionValue) {
             $methodName = 'set' . ucfirst($optionKey);

@@ -49,13 +49,13 @@ class InformationStatus extends \TYPO3\CMS\Core\Type\Enumeration
     /**
      * @var int[]
      */
-    protected static $statusIntegerMap = array(
+    protected static $statusIntegerMap = [
         self::STATUS_NOTICE => -2,
         self::STATUS_INFO => -1,
         self::STATUS_OK => 0,
         self::STATUS_WARNING => 1,
         self::STATUS_ERROR => 2
-    );
+    ];
 
     /**
      * Check if the given status is greater than this status instance

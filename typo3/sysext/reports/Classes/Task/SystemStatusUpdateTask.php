@@ -83,7 +83,7 @@ class SystemStatusUpdateTask extends AbstractTask
      */
     protected function sendNotificationEmail(array $systemStatus)
     {
-        $systemIssues = array();
+        $systemIssues = [];
         foreach ($systemStatus as $statusProvider) {
             /** @var Status $status */
             foreach ($statusProvider as $status) {
@@ -93,7 +93,7 @@ class SystemStatusUpdateTask extends AbstractTask
             }
         }
         $notificationEmails = GeneralUtility::trimExplode(LF, $this->notificationEmail, true);
-        $sendEmailsTo = array();
+        $sendEmailsTo = [];
         foreach ($notificationEmails as $notificationEmail) {
             $sendEmailsTo[] = $notificationEmail;
         }

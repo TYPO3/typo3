@@ -162,13 +162,13 @@ class TcaFlexPrepare implements FormDataProviderInterface
                 foreach ($value as $subKey => $subValue) {
                     // On-the-fly migration for flex form "TCA"
                     // @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. This can be removed *if* no additional TCA migration is added with CMS 8, see class TcaMigration
-                    $dummyTca = array(
-                        'dummyTable' => array(
-                            'columns' => array(
+                    $dummyTca = [
+                        'dummyTable' => [
+                            'columns' => [
                                 'dummyField' => $subValue,
-                            ),
-                        ),
-                    );
+                            ],
+                        ],
+                    ];
                     $migratedTca = $tcaMigration->migrate($dummyTca);
                     $messages = $tcaMigration->getMessages();
                     if (!empty($messages)) {

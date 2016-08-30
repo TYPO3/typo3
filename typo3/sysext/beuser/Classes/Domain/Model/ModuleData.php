@@ -27,7 +27,7 @@ class ModuleData
     /**
      * @var array
      */
-    protected $compareUserList = array();
+    protected $compareUserList = [];
 
     /**
      * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand

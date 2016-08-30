@@ -36,24 +36,24 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function cDataWillRemainUnmodifiedDataProvider()
     {
-        return array(
-            'single-line CDATA' => array(
+        return [
+            'single-line CDATA' => [
                 '/*<![CDATA[*/ <hello world> /*]]>*/',
                 '/*<![CDATA[*/ <hello world> /*]]>*/',
-            ),
-            'multi-line CDATA #1' => array(
+            ],
+            'multi-line CDATA #1' => [
                 '/*<![CDATA[*/' . LF . '<hello world> /*]]>*/',
                 '/*<![CDATA[*/' . LF . '<hello world> /*]]>*/',
-            ),
-            'multi-line CDATA #2' => array(
+            ],
+            'multi-line CDATA #2' => [
                 '/*<![CDATA[*/ <hello world>' . LF . '/*]]>*/',
                 '/*<![CDATA[*/ <hello world>' . LF . '/*]]>*/',
-            ),
-            'multi-line CDATA #3' => array(
+            ],
+            'multi-line CDATA #3' => [
                 '/*<![CDATA[*/' . LF . '<hello world>' . LF . '/*]]>*/',
                 '/*<![CDATA[*/' . LF . '<hello world>' . LF . '/*]]>*/',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -63,56 +63,56 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function splitIntoBlockDataProvider()
     {
-        return array(
-            'splitBlock' => array(
+        return [
+            'splitBlock' => [
                 'h1,span',
                 '<body><h1>Title</h1><span>Note</span></body>',
                 false,
-                array('<body>',
+                ['<body>',
                     '<h1>Title</h1>',
                     '',
                     '<span>Note</span>',
-                    '</body>')
-            ),
-            'splitBlock br' => array(
+                    '</body>']
+            ],
+            'splitBlock br' => [
                 'h1,span',
                 '<body><h1>Title</h1><br /><span>Note</span><br /></body>',
                 false,
-                array('<body>',
+                ['<body>',
                     '<h1>Title</h1>',
                     '<br />',
                     '<span>Note</span>',
-                    '<br /></body>')
-            ),
-            'splitBlock with attribute' => array(
+                    '<br /></body>']
+            ],
+            'splitBlock with attribute' => [
                 'h1,span',
                 '<body><h1 class="title">Title</h1><span>Note</span></body>',
                 false,
-                array('<body>',
+                ['<body>',
                     '<h1 class="title">Title</h1>',
                     '',
                     '<span>Note</span>',
-                    '</body>')
-            ),
-            'splitBlock span with attribute' => array(
+                    '</body>']
+            ],
+            'splitBlock span with attribute' => [
                 'span',
                 '<body><h1>Title</h1><span class="title">Note</span></body>',
                 false,
-                array('<body><h1>Title</h1>',
+                ['<body><h1>Title</h1>',
                     '<span class="title">Note</span>',
-                    '</body>')
-            ),
-            'splitBlock without extra end tags' => array(
+                    '</body>']
+            ],
+            'splitBlock without extra end tags' => [
                 'h1,span,div',
                 '<body><h1>Title</h1><span>Note</span></body></div>',
                 true,
-                array('<body>',
+                ['<body>',
                     '<h1>Title</h1>',
                     '',
                     '<span>Note</span>',
-                    '</body>')
-            ),
-        );
+                    '</body>']
+            ],
+        ];
     }
 
     /**
@@ -145,20 +145,20 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function spanTagCorrectlyRemovedWhenRmTagIfNoAttribIsConfiguredDataProvider()
     {
-        return array(
-            'Span tag with no attrib' => array(
+        return [
+            'Span tag with no attrib' => [
                 '<span>text</span>',
                 'text'
-            ),
-            'Span tag with allowed id attrib' => array(
+            ],
+            'Span tag with allowed id attrib' => [
                 '<span id="id">text</span>',
                 '<span id="id">text</span>'
-            ),
-            'Span tag with disallowed style attrib' => array(
+            ],
+            'Span tag with disallowed style attrib' => [
                 '<span style="line-height: 12px;">text</span>',
                 'text'
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -169,15 +169,15 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function tagCorrectlyRemovedWhenRmTagIfNoAttribIsConfigured($content, $expectedResult)
     {
-        $tsConfig = array(
+        $tsConfig = [
             'allowTags' => 'span',
-            'tags.' => array(
-                'span.' => array(
+            'tags.' => [
+                'span.' => [
                     'allowedAttribs' => 'id',
                     'rmTagIfNoAttrib' => 1
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $this->assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
     }
 
@@ -186,11 +186,11 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function rmTagIfNoAttribIsConfiguredDoesNotChangeNestingType()
     {
-        $tsConfig = array(
+        $tsConfig = [
             'allowTags' => 'div,span',
             'rmTagIfNoAttrib' => 'span',
             'globalNesting' => 'div,span'
-        );
+        ];
         $content = '<span></span><span id="test"><div></span></div>';
         $expectedResult = '<span id="test"></span>';
         $this->assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
@@ -203,28 +203,28 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function localNestingCorrectlyRemovesInvalidTagsDataProvider()
     {
-        return array(
-            'Valid nesting is untouched' => array(
+        return [
+            'Valid nesting is untouched' => [
                 '<B><I></B></I>',
                 '<B><I></B></I>'
-            ),
-            'Valid nesting with content is untouched' => array(
+            ],
+            'Valid nesting with content is untouched' => [
                 'testa<B>test1<I>test2</B>test3</I>testb',
                 'testa<B>test1<I>test2</B>test3</I>testb'
-            ),
-            'Superflous tags are removed' => array(
+            ],
+            'Superflous tags are removed' => [
                 '</B><B><I></B></I></B>',
                 '<B><I></B></I>'
-            ),
-            'Superflous tags with content are removed' => array(
+            ],
+            'Superflous tags with content are removed' => [
                 'test1</B>test2<B>test3<I>test4</B>test5</I>test6</B>test7',
                 'test1test2<B>test3<I>test4</B>test5</I>test6test7'
-            ),
-            'Another valid nesting test' => array(
+            ],
+            'Another valid nesting test' => [
                 '<span><div></span></div>',
                 '<span><div></span></div>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -235,10 +235,10 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function localNestingCorrectlyRemovesInvalidTags($content, $expectedResult)
     {
-        $tsConfig = array(
+        $tsConfig = [
             'allowTags' => 'div,span,b,i',
             'localNesting' => 'div,span,b,i',
-        );
+        ];
         $this->assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
     }
 
@@ -249,28 +249,28 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function globalNestingCorrectlyRemovesInvalidTagsDataProvider()
     {
-        return array(
-            'Valid nesting is untouched' => array(
+        return [
+            'Valid nesting is untouched' => [
                 '<B><I></I></B>',
                 '<B><I></I></B>'
-            ),
-            'Valid nesting with content is untouched' => array(
+            ],
+            'Valid nesting with content is untouched' => [
                 'testa<B>test1<I>test2</I>test3</B>testb',
                 'testa<B>test1<I>test2</I>test3</B>testb'
-            ),
-            'Invalid nesting is cleaned' => array(
+            ],
+            'Invalid nesting is cleaned' => [
                 '</B><B><I></B></I></B>',
                 '<B></B>'
-            ),
-            'Invalid nesting with content is cleaned' => array(
+            ],
+            'Invalid nesting with content is cleaned' => [
                 'test1</B>test2<B>test3<I>test4</B>test5</I>test6</B>test7',
                 'test1test2<B>test3test4</B>test5test6test7'
-            ),
-            'Another invalid nesting test' => array(
+            ],
+            'Another invalid nesting test' => [
                 '<span><div></span></div>',
                 '<span></span>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -281,10 +281,10 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function globalNestingCorrectlyRemovesInvalidTags($content, $expectedResult)
     {
-        $tsConfig = array(
+        $tsConfig = [
             'allowTags' => 'span,div,b,i',
             'globalNesting' => 'span,div,b,i',
-        );
+        ];
         $this->assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
     }
 
@@ -293,25 +293,25 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function emptyTagsDataProvider()
     {
-        return array(
-            array(0 , null, false, '<h1></h1>', '<h1></h1>'),
-            array(1 , null, false, '<h1></h1>', ''),
-            array(1 , null, false, '<h1>hallo</h1>', '<h1>hallo</h1>'),
-            array(1 , null, false, '<h1 class="something"></h1>', ''),
-            array(1 , null, false, '<h1 class="something"></h1><h2></h2>', ''),
-            array(1 , 'h2', false, '<h1 class="something"></h1><h2></h2>', '<h1 class="something"></h1>'),
-            array(1 , 'h2, h1', false, '<h1 class="something"></h1><h2></h2>', ''),
-            array(1 , null, false, '<div><p></p></div>', ''),
-            array(1 , null, false, '<div><p>&nbsp;</p></div>', '<div><p>&nbsp;</p></div>'),
-            array(1 , null, true, '<div><p>&nbsp;&nbsp;</p></div>', ''),
-            array(1 , null, true, '<div>&nbsp;&nbsp;<p></p></div>', ''),
-            array(1 , null, false, '<div>Some content<p></p></div>', '<div>Some content</div>'),
-            array(1 , null, true, '<div>Some content<p></p></div>', '<div>Some content</div>'),
-            array(1 , null, false, '<div>Some content</div>', '<div>Some content</div>'),
-            array(1 , null, true, '<div>Some content</div>', '<div>Some content</div>'),
-            array(1 , null, false, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'),
-            array(1 , null, true, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'),
-        );
+        return [
+            [0 , null, false, '<h1></h1>', '<h1></h1>'],
+            [1 , null, false, '<h1></h1>', ''],
+            [1 , null, false, '<h1>hallo</h1>', '<h1>hallo</h1>'],
+            [1 , null, false, '<h1 class="something"></h1>', ''],
+            [1 , null, false, '<h1 class="something"></h1><h2></h2>', ''],
+            [1 , 'h2', false, '<h1 class="something"></h1><h2></h2>', '<h1 class="something"></h1>'],
+            [1 , 'h2, h1', false, '<h1 class="something"></h1><h2></h2>', ''],
+            [1 , null, false, '<div><p></p></div>', ''],
+            [1 , null, false, '<div><p>&nbsp;</p></div>', '<div><p>&nbsp;</p></div>'],
+            [1 , null, true, '<div><p>&nbsp;&nbsp;</p></div>', ''],
+            [1 , null, true, '<div>&nbsp;&nbsp;<p></p></div>', ''],
+            [1 , null, false, '<div>Some content<p></p></div>', '<div>Some content</div>'],
+            [1 , null, true, '<div>Some content<p></p></div>', '<div>Some content</div>'],
+            [1 , null, false, '<div>Some content</div>', '<div>Some content</div>'],
+            [1 , null, true, '<div>Some content</div>', '<div>Some content</div>'],
+            [1 , null, false, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'],
+            [1 , null, true, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'],
+        ];
     }
 
     /**
@@ -325,14 +325,14 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stripEmptyTags($stripOn, $tagList, $treatNonBreakingSpaceAsEmpty, $content, $expectedResult)
     {
-        $tsConfig = array(
+        $tsConfig = [
             'keepNonMatchedTags' => 1,
             'stripEmptyTags' => $stripOn,
-            'stripEmptyTags.' => array(
+            'stripEmptyTags.' => [
                 'tags' => $tagList,
                 'treatNonBreakingSpaceAsEmpty' => $treatNonBreakingSpaceAsEmpty
-            ),
-        );
+            ],
+        ];
 
         $result = $this->parseConfigAndCleanHtml($tsConfig, $content);
         $this->assertEquals($expectedResult, $result);
@@ -358,12 +358,12 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFirstTagDataProvider()
     {
-        return array(
-            array('<body><span></span></body>', '<body>'),
-            array('<span>Wrapper<div>Some content</div></span>', '<span>'),
-            array('Something before<span>Wrapper<div>Some content</div></span>Something after', 'Something before<span>'),
-            array('Something without tag', '')
-        );
+        return [
+            ['<body><span></span></body>', '<body>'],
+            ['<span>Wrapper<div>Some content</div></span>', '<span>'],
+            ['Something before<span>Wrapper<div>Some content</div></span>Something after', 'Something before<span>'],
+            ['Something without tag', '']
+        ];
     }
 
     /**
@@ -388,26 +388,26 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFirstTagNameDataProvider()
     {
-        return array(
-            array('<body><span></span></body>',
+        return [
+            ['<body><span></span></body>',
                 false,
-                'BODY'),
-            array('<body><span></span></body>',
+                'BODY'],
+            ['<body><span></span></body>',
                 true,
-                'body'),
-            array('<div class="test"><span></span></div>',
+                'body'],
+            ['<div class="test"><span></span></div>',
                 false,
-                'DIV'),
-            array('<div><span class="test"></span></div>',
+                'DIV'],
+            ['<div><span class="test"></span></div>',
                 false,
-                'DIV'),
-            array('<br /><span class="test"></span>',
+                'DIV'],
+            ['<br /><span class="test"></span>',
                 false,
-                'BR'),
-            array('<img src="test.jpg" />',
+                'BR'],
+            ['<img src="test.jpg" />',
                 false,
-                'IMG'),
-        );
+                'IMG'],
+        ];
     }
 
     /**
@@ -430,13 +430,13 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function removeFirstAndLastTagDataProvider()
     {
-        return array(
-            array('<span>Wrapper<div>Some content</div></span>', 'Wrapper<div>Some content</div>'),
-            array('<td><tr>Some content</tr></td>', '<tr>Some content</tr>'),
-            array('Something before<span>Wrapper<div>Some content</div></span>Something after', 'Wrapper<div>Some content</div>'),
-            array('<span class="hidden">Wrapper<div>Some content</div></span>', 'Wrapper<div>Some content</div>'),
-            array('<span>Wrapper<div class="hidden">Some content</div></span>', 'Wrapper<div class="hidden">Some content</div>'),
-        );
+        return [
+            ['<span>Wrapper<div>Some content</div></span>', 'Wrapper<div>Some content</div>'],
+            ['<td><tr>Some content</tr></td>', '<tr>Some content</tr>'],
+            ['Something before<span>Wrapper<div>Some content</div></span>Something after', 'Wrapper<div>Some content</div>'],
+            ['<span class="hidden">Wrapper<div>Some content</div></span>', 'Wrapper<div>Some content</div>'],
+            ['<span>Wrapper<div class="hidden">Some content</div></span>', 'Wrapper<div class="hidden">Some content</div>'],
+        ];
     }
 
     /**

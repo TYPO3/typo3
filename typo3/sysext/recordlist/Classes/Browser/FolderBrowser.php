@@ -74,7 +74,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
             $this->expandFolder = $data['expandFolder'];
             $store = false;
         }
-        return array($data, $store);
+        return [$data, $store];
     }
 
     /**
@@ -154,7 +154,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
         $folderIcon .= '</a>';
         $content .= $folderIcon . '<br />';
 
-        $lines = array();
+        $lines = [];
         // Traverse the folder list:
         foreach ($folders as $subFolder) {
             $subFolderIdentifier = $subFolder->getCombinedIdentifier();

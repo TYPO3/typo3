@@ -8,11 +8,11 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
         'help',
         'about',
         'top',
-        array('About' => 'index'),
-        array(
+        ['About' => 'index'],
+        [
             'access' => 'user,group',
             'icon' => 'EXT:about/Resources/Public/Icons/module-about.svg',
             'labels' => 'LLL:EXT:lang/locallang_mod_help_about.xlf'
-        )
+        ]
     );
 }

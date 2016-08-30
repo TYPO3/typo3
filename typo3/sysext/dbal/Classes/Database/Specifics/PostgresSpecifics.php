@@ -28,34 +28,34 @@ class PostgresSpecifics extends AbstractSpecifics
      *
      * @var array
      */
-    protected $specificProperties = array(
+    protected $specificProperties = [
         self::CAST_FIND_IN_SET => true
-    );
+    ];
 
     /**
      * Contains the DBMS specific mapping overrides for native MySQL to ADOdb meta field types
      */
-    protected $nativeToMetaFieldTypeOverrides = array(
+    protected $nativeToMetaFieldTypeOverrides = [
         'TINYBLOB' => 'B',
         'INT' => 'I4',
         'INTEGER' => 'I4',
         'TINYINT' => 'I2',
         'SMALLINT' => 'I2',
         'MEDIUMINT' => 'I4'
-    );
+    ];
 
     /**
      * Contains the DBMS specific mapping information for ADOdb meta field types to MySQL native field types
      *
      * @var array
      */
-    protected $metaToNativeFieldTypeOverrides = array(
+    protected $metaToNativeFieldTypeOverrides = [
         'R' => 'INT',
         'I' => 'INT',
         'I1' => 'SMALLINT',
         'I2' => 'SMALLINT',
         'I4' => 'INT',
-    );
+    ];
 
     /**
      * Determine the native field length information for a table field.

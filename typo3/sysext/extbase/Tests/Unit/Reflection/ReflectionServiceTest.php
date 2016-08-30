@@ -49,10 +49,10 @@ class ReflectionServiceTest extends UnitTestCase
     {
         $service = new ReflectionService();
         $classValues = $service->getClassTagsValues(get_class($this));
-        $this->assertEquals(array(
-            'firsttest' => array('test for reflection'),
-            'anothertest' => array('second test for reflection', 'second test for reflection with second value')
-        ), $classValues);
+        $this->assertEquals([
+            'firsttest' => ['test for reflection'],
+            'anothertest' => ['second test for reflection', 'second test for reflection with second value']
+        ], $classValues);
     }
 
     /**
@@ -62,9 +62,9 @@ class ReflectionServiceTest extends UnitTestCase
     {
         $service = new ReflectionService();
         $classValues = $service->getClassTagValues(get_class($this), 'firsttest');
-        $this->assertEquals(array(
+        $this->assertEquals([
             'test for reflection',
-        ), $classValues);
+        ], $classValues);
     }
 
     /**
@@ -84,10 +84,10 @@ class ReflectionServiceTest extends UnitTestCase
     {
         $service = new ReflectionService();
         $tagsValues = $service->getMethodTagsValues(get_class($this), 'fixtureMethodForMethodTagsValues');
-        $this->assertEquals(array(
-            'param' => array('array $foo The foo parameter'),
-            'return' => array('void')
-        ), $tagsValues);
+        $this->assertEquals([
+            'param' => ['array $foo The foo parameter'],
+            'return' => ['void']
+        ], $tagsValues);
     }
 
     /**
@@ -97,8 +97,8 @@ class ReflectionServiceTest extends UnitTestCase
     {
         $service = new ReflectionService();
         $parameters = $service->getMethodParameters(get_class($this), 'fixtureMethodForMethodTagsValues');
-        $this->assertSame(array(
-            'foo' => array(
+        $this->assertSame([
+            'foo' => [
                 'position' => 0,
                 'byReference' => false,
                 'array' => true,
@@ -106,8 +106,8 @@ class ReflectionServiceTest extends UnitTestCase
                 'allowsNull' => false,
                 'class' => null,
                 'type' => 'array'
-            )
-        ), $parameters);
+            ]
+        ], $parameters);
     }
 
     /**
@@ -117,8 +117,8 @@ class ReflectionServiceTest extends UnitTestCase
     {
         $service = new ReflectionService();
         $parameters = $service->getMethodParameters(get_class($this), 'fixtureMethodForMethodTagsValuesWithShortTypes');
-        $this->assertSame(array(
-            'dummy' => array(
+        $this->assertSame([
+            'dummy' => [
                 'position' => 0,
                 'byReference' => false,
                 'array' => false,
@@ -126,8 +126,8 @@ class ReflectionServiceTest extends UnitTestCase
                 'allowsNull' => true,
                 'class' => null,
                 'type' => 'boolean'
-            ),
-            'foo' => array(
+            ],
+            'foo' => [
                 'position' => 1,
                 'byReference' => false,
                 'array' => false,
@@ -135,7 +135,7 @@ class ReflectionServiceTest extends UnitTestCase
                 'allowsNull' => true,
                 'class' => null,
                 'type' => 'integer'
-            )
-        ), $parameters);
+            ]
+        ], $parameters);
     }
 }

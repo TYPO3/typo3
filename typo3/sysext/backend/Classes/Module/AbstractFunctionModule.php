@@ -259,7 +259,7 @@ abstract class AbstractFunctionModule
      */
     public function modMenu()
     {
-        return array();
+        return [];
     }
 
     /**

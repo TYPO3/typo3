@@ -28,7 +28,7 @@ class ViewHelperNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNod
      *
      * @var array
      */
-    protected $arguments = array();
+    protected $arguments = [];
 
     /**
      * The ViewHelper associated with this node
@@ -114,7 +114,7 @@ class ViewHelperNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNod
             $this->viewHelpersByContext->attach($renderingContext, $viewHelper);
         }
 
-        $evaluatedArguments = array();
+        $evaluatedArguments = [];
         if (count($viewHelper->prepareArguments())) {
             foreach ($viewHelper->prepareArguments() as $argumentName => $argumentDefinition) {
                 if (isset($this->arguments[$argumentName])) {
@@ -146,6 +146,6 @@ class ViewHelperNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNod
      */
     public function __sleep()
     {
-        return array('viewHelperClassName', 'arguments', 'childNodes');
+        return ['viewHelperClassName', 'arguments', 'childNodes'];
     }
 }

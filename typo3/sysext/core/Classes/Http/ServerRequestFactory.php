@@ -73,7 +73,7 @@ class ServerRequestFactory
      */
     protected static function prepareHeaders(array $server)
     {
-        $headers = array();
+        $headers = [];
         foreach ($server as $key => $value) {
             if (strpos($key, 'HTTP_COOKIE') === 0) {
                 // Cookies are handled using the $_COOKIE superglobal
@@ -107,7 +107,7 @@ class ServerRequestFactory
      */
     protected static function normalizeUploadedFiles(array $files)
     {
-        $normalizedFileUploads = array();
+        $normalizedFileUploads = [];
         foreach ($files as $key => $value) {
             if ($value instanceof UploadedFileInterface) {
                 $normalizedFileUploads[$key] = $value;
@@ -139,15 +139,15 @@ class ServerRequestFactory
     protected static function createUploadedFile(array $value)
     {
         if (is_array($value['tmp_name'])) {
-            $files = array();
+            $files = [];
             foreach (array_keys($value['tmp_name']) as $key) {
-                $data = array(
+                $data = [
                     'tmp_name' => $value['tmp_name'][$key],
                     'size'     => $value['size'][$key],
                     'error'    => $value['error'][$key],
                     'name'     => $value['name'][$key],
                     'type'     => $value['type'][$key]
-                );
+                ];
                 $result = self::createUploadedFile($data);
                 if ($result) {
                     $files[$key] = $result;

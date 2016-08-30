@@ -64,52 +64,52 @@ class CharsetConverter
      *
      * @var array
      */
-    public $parsedCharsets = array();
+    public $parsedCharsets = [];
 
     /**
      * An array where case folding data will be stored (cached)
      *
      * @var array
      */
-    public $caseFolding = array();
+    public $caseFolding = [];
 
     /**
      * An array where charset-to-ASCII mappings are stored (cached)
      *
      * @var array
      */
-    public $toASCII = array();
+    public $toASCII = [];
 
     /**
      * This tells the converter which charsets has two bytes per char:
      *
      * @var array
      */
-    public $twoByteSets = array(
+    public $twoByteSets = [
         'ucs-2' => 1
-    );
+    ];
 
     /**
      * This tells the converter which charsets has four bytes per char:
      *
      * @var array
      */
-    public $fourByteSets = array(
+    public $fourByteSets = [
         'ucs-4' => 1, // 4-byte Unicode
         'utf-32' => 1
-    );
+    ];
 
     /**
      * This tells the converter which charsets use a scheme like the Extended Unix Code:
      *
      * @var array
      */
-    public $eucBasedSets = array(
+    public $eucBasedSets = [
         'gb2312' => 1, // Chinese, simplified.
         'big5' => 1, // Chinese, traditional.
         'euc-kr' => 1, // Korean
         'shift_jis' => 1
-    );
+    ];
 
     /**
      * @link http://developer.apple.com/documentation/macos8/TextIntlSvcs/TextEncodingConversionManager/TEC1.5/TEC.b0.html
@@ -117,7 +117,7 @@ class CharsetConverter
      *
      * @var array
      */
-    public $synonyms = array(
+    public $synonyms = [
         'us' => 'ascii',
         'us-ascii' => 'ascii',
         'cp819' => 'iso-8859-1',
@@ -200,14 +200,14 @@ class CharsetConverter
         'utf32' => 'utf-32',
         'ucs2' => 'ucs-2',
         'ucs4' => 'ucs-4'
-    );
+    ];
 
     /**
      * Mapping of iso-639-1 language codes to script names
      *
      * @var array
      */
-    public $lang_to_script = array(
+    public $lang_to_script = [
         // iso-639-1 language codes, see http://www.loc.gov/standards/iso639-2/php/code_list.php
         'af' => 'west_european', // Afrikaans
         'ar' => 'arabic',
@@ -370,14 +370,14 @@ class CharsetConverter
         'that' => 'thai',
         'turkish' => 'turkish',
         'ukrainian' => 'cyrillic'
-    );
+    ];
 
     /**
      * Mapping of language (family) names to charsets on Unix
      *
      * @var array
      */
-    public $script_to_charset_unix = array(
+    public $script_to_charset_unix = [
         'west_european' => 'iso-8859-1',
         'estonian' => 'iso-8859-1',
         'east_european' => 'iso-8859-2',
@@ -397,14 +397,14 @@ class CharsetConverter
         'vietnamese' => '',
         'unicode' => 'utf-8',
         'albanian' => 'utf-8'
-    );
+    ];
 
     /**
      * Mapping of language (family) names to charsets on Windows
      *
      * @var array
      */
-    public $script_to_charset_windows = array(
+    public $script_to_charset_windows = [
         'east_european' => 'windows-1250',
         'cyrillic' => 'windows-1251',
         'west_european' => 'windows-1252',
@@ -424,14 +424,14 @@ class CharsetConverter
         'trad_chinese' => 'big5',
         'albanian' => 'windows-1250',
         'unicode' => 'utf-8'
-    );
+    ];
 
     /**
      * Mapping of locale names to charsets
      *
      * @var array
      */
-    public $locale_to_charset = array(
+    public $locale_to_charset = [
         'japanese.euc' => 'euc-jp',
         'ja_jp.ujis' => 'euc-jp',
         'korean.euc' => 'euc-kr',
@@ -439,7 +439,7 @@ class CharsetConverter
         'zh_cn' => 'gb2312',
         'zh_hk' => 'big5',
         'zh_tw' => 'big5'
-    );
+    ];
 
     /**
      * TYPO3 specific: Array with the system charsets used for each system language in TYPO3:
@@ -447,7 +447,7 @@ class CharsetConverter
      *
      * @var array
      */
-    public $charSetArray = array(
+    public $charSetArray = [
         'af' => '',
         'ar' => 'iso-8859-6',
         'ba' => 'iso-8859-2',
@@ -514,7 +514,7 @@ class CharsetConverter
         'vi' => 'utf-8',
         'vn' => 'utf-8',
         'zh' => 'big5'
-    );
+    ];
 
     /**
      * Normalize - changes input character set to lowercase letters.
@@ -876,7 +876,7 @@ class CharsetConverter
         }
         // Do conversion:
         $strLen = strlen($str);
-        $outArr = array();
+        $outArr = [];
         // Traverse each char in UTF-8 string.
         for ($a = 0; $a < $strLen; $a++) {
             $chr = substr($str, $a, 1);
@@ -1035,7 +1035,7 @@ class CharsetConverter
                     // Parse conversion table into lines:
                     $lines = GeneralUtility::trimExplode(LF, GeneralUtility::getUrl($charsetConvTableFile), true);
                     // Initialize the internal variable holding the conv. table:
-                    $this->parsedCharsets[$charset] = array('local' => array(), 'utf8' => array());
+                    $this->parsedCharsets[$charset] = ['local' => [], 'utf8' => []];
                     // traverse the lines:
                     $detectedType = '';
                     foreach ($lines as $value) {
@@ -1049,7 +1049,7 @@ class CharsetConverter
                             if ($detectedType === 'ms-token') {
                                 list($hexbyte, $utf8) = preg_split('/[=:]/', $value, 3);
                             } elseif ($detectedType === 'whitespaced') {
-                                $regA = array();
+                                $regA = [];
                                 preg_match('/[[:space:]]*0x([[:alnum:]]*)[[:space:]]+0x([[:alnum:]]*)[[:space:]]+/', $value, $regA);
                                 $hexbyte = $regA[1];
                                 $utf8 = 'U+' . $regA[2];
@@ -1123,20 +1123,20 @@ class CharsetConverter
         }
         // key = utf8 char (single codepoint), value = utf8 string (codepoint sequence)
         // Note: we use the UTF-8 characters here and not the Unicode numbers to avoid conversion roundtrip in utf8_strtolower/-upper)
-        $this->caseFolding['utf-8'] = array();
+        $this->caseFolding['utf-8'] = [];
         $utf8CaseFolding = &$this->caseFolding['utf-8'];
         // a shorthand
-        $utf8CaseFolding['toUpper'] = array();
-        $utf8CaseFolding['toLower'] = array();
-        $utf8CaseFolding['toTitle'] = array();
+        $utf8CaseFolding['toUpper'] = [];
+        $utf8CaseFolding['toLower'] = [];
+        $utf8CaseFolding['toTitle'] = [];
         // Array of temp. decompositions
-        $decomposition = array();
+        $decomposition = [];
         // Array of chars that are marks (eg. composing accents)
-        $mark = array();
+        $mark = [];
         // Array of chars that are numbers (eg. digits)
-        $number = array();
+        $number = [];
         // Array of chars to be omitted (eg. Russian hard sign)
-        $omit = array();
+        $omit = [];
         while (!feof($fh)) {
             $line = fgets($fh, 4096);
             // Has a lot of info
@@ -1169,16 +1169,16 @@ class CharsetConverter
                     }
             }
             // Accented Latin letters without "official" decomposition
-            $match = array();
+            $match = [];
             if (preg_match('/^LATIN (SMALL|CAPITAL) LETTER ([A-Z]) WITH/', $name, $match) && !$decomp) {
                 $c = ord($match[2]);
                 if ($match[1] === 'SMALL') {
                     $c += 32;
                 }
-                $decomposition['U+' . $char] = array(dechex($c));
+                $decomposition['U+' . $char] = [dechex($c)];
                 continue;
             }
-            $match = array();
+            $match = [];
             if (preg_match('/(<.*>)? *(.+)/', $decomp, $match)) {
                 switch ($match[1]) {
                     case '<circle>':
@@ -1264,7 +1264,7 @@ class CharsetConverter
         }
         // Decompose and remove marks; inspired by unac (Loic Dachary <loic@senga.org>)
         foreach ($decomposition as $from => $to) {
-            $code_decomp = array();
+            $code_decomp = [];
             while ($code_value = array_shift($to)) {
                 // Do recursive decomposition
                 if (isset($decomposition['U+' . $code_value])) {
@@ -1283,10 +1283,10 @@ class CharsetConverter
             }
         }
         // Create ascii only mapping
-        $this->toASCII['utf-8'] = array();
+        $this->toASCII['utf-8'] = [];
         $ascii = &$this->toASCII['utf-8'];
         foreach ($decomposition as $from => $to) {
-            $code_decomp = array();
+            $code_decomp = [];
             while ($code_value = array_shift($to)) {
                 $ord = hexdec($code_value);
                 if ($ord > 127) {
@@ -1694,7 +1694,7 @@ class CharsetConverter
         $selectedLanguage = 'default';
         $preferredLanguages = GeneralUtility::trimExplode(',', $languageCodesList);
         // Order the preferred languages after they key
-        $sortedPreferredLanguages = array();
+        $sortedPreferredLanguages = [];
         foreach ($preferredLanguages as $preferredLanguage) {
             $quality = 1.0;
             if (strpos($preferredLanguage, ';q=') !== false) {

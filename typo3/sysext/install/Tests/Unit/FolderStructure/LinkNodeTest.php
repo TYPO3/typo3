@@ -26,8 +26,8 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function constructorThrowsExceptionIfParentIsNull()
     {
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('dummy'), array(), '', false);
-        $node->__construct(array(), null);
+        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, ['dummy'], [], '', false);
+        $node->__construct([], null);
     }
 
     /**
@@ -36,12 +36,12 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorThrowsExceptionIfNameContainsForwardSlash()
     {
-        $parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class, array(), array(), '', false);
+        $parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class, [], [], '', false);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('dummy'), array(), '', false);
-        $structure = array(
+        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, ['dummy'], [], '', false);
+        $structure = [
             'name' => 'foo/bar',
-        );
+        ];
         $node->__construct($structure, $parent);
     }
 
@@ -50,12 +50,12 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorSetsParent()
     {
-        $parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class, array(), array(), '', false);
+        $parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class, [], [], '', false);
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('dummy'), array(), '', false);
-        $structure = array(
+        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, ['dummy'], [], '', false);
+        $structure = [
             'name' => 'foo',
-        );
+        ];
         $node->__construct($structure, $parent);
         $this->assertSame($parent, $node->_call('getParent'));
     }
@@ -66,10 +66,10 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function constructorSetsName()
     {
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('dummy'), array(), '', false);
-        $parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class, array(), array(), '', false);
+        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, ['dummy'], [], '', false);
+        $parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class, [], [], '', false);
         $name = $this->getUniqueId('test_');
-        $node->__construct(array('name' => $name), $parent);
+        $node->__construct(['name' => $name], $parent);
         $this->assertSame($name, $node->getName());
     }
 
@@ -79,10 +79,10 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function constructorSetsTarget()
     {
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('dummy'), array(), '', false);
-        $parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class, array(), array(), '', false);
+        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, ['dummy'], [], '', false);
+        $parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class, [], [], '', false);
         $target = '../' . $this->getUniqueId('test_');
-        $node->__construct(array('target' => $target), $parent);
+        $node->__construct(['target' => $target], $parent);
         $this->assertSame($target, $node->_call('getTarget'));
     }
 
@@ -94,8 +94,8 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
             \TYPO3\CMS\Install\FolderStructure\LinkNode::class,
-            array('isWindowsOs', 'getAbsolutePath', 'exists'),
-            array(),
+            ['isWindowsOs', 'getAbsolutePath', 'exists'],
+            [],
             '',
             false
         );
@@ -112,8 +112,8 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
             \TYPO3\CMS\Install\FolderStructure\LinkNode::class,
-            array('isWindowsOs', 'getAbsolutePath', 'exists'),
-            array(),
+            ['isWindowsOs', 'getAbsolutePath', 'exists'],
+            [],
             '',
             false
         );
@@ -134,8 +134,8 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
             \TYPO3\CMS\Install\FolderStructure\LinkNode::class,
-            array('isWindowsOs', 'getAbsolutePath', 'exists'),
-            array(),
+            ['isWindowsOs', 'getAbsolutePath', 'exists'],
+            [],
             '',
             false
         );
@@ -157,8 +157,8 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
             \TYPO3\CMS\Install\FolderStructure\LinkNode::class,
-            array('isWindowsOs', 'getAbsolutePath', 'exists', 'isLink', 'getRelativePathBelowSiteRoot'),
-            array(),
+            ['isWindowsOs', 'getAbsolutePath', 'exists', 'isLink', 'getRelativePathBelowSiteRoot'],
+            [],
             '',
             false
         );
@@ -179,8 +179,8 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
             \TYPO3\CMS\Install\FolderStructure\LinkNode::class,
-            array('isWindowsOs', 'getAbsolutePath', 'exists', 'isLink', 'isTargetCorrect', 'getCurrentTarget', 'getRelativePathBelowSiteRoot'),
-            array(),
+            ['isWindowsOs', 'getAbsolutePath', 'exists', 'isLink', 'isTargetCorrect', 'getCurrentTarget', 'getRelativePathBelowSiteRoot'],
+            [],
             '',
             false
         );
@@ -203,8 +203,8 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
             \TYPO3\CMS\Install\FolderStructure\LinkNode::class,
-            array('isWindowsOs', 'getAbsolutePath', 'exists', 'isLink', 'isTargetCorrect', 'getRelativePathBelowSiteRoot'),
-            array(),
+            ['isWindowsOs', 'getAbsolutePath', 'exists', 'isLink', 'isTargetCorrect', 'getRelativePathBelowSiteRoot'],
+            [],
             '',
             false
         );
@@ -226,8 +226,8 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
             \TYPO3\CMS\Install\FolderStructure\LinkNode::class,
-            array('getRelativePathBelowSiteRoot'),
-            array(),
+            ['getRelativePathBelowSiteRoot'],
+            [],
             '',
             false
         );
@@ -242,7 +242,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function isLinkThrowsExceptionIfLinkNotExists()
     {
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('exists'), array(), '', false);
+        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, ['exists'], [], '', false);
         $node->expects($this->once())->method('exists')->will($this->returnValue(false));
         $this->assertFalse($node->_call('isLink'));
     }
@@ -256,7 +256,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $this->markTestSkipped('Test not available on Windows OS.');
         }
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('exists', 'getAbsolutePath'), array(), '', false);
+        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, ['exists', 'getAbsolutePath'], [], '', false);
         $path = PATH_site . 'typo3temp/' . $this->getUniqueId('link_');
         $target = PATH_site . $this->getUniqueId('linkTarget_');
         symlink($target, $path);
@@ -275,7 +275,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $this->markTestSkipped('Test not available on Windows OS.');
         }
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('exists', 'getAbsolutePath'), array(), '', false);
+        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, ['exists', 'getAbsolutePath'], [], '', false);
         $path = PATH_site . 'typo3temp/' . $this->getUniqueId('file_');
         touch($path);
         $this->testFilesToDelete[] = $path;
@@ -291,7 +291,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function isTargetCorrectThrowsExceptionIfLinkNotExists()
     {
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('exists'), array(), '', false);
+        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, ['exists'], [], '', false);
         $node->expects($this->once())->method('exists')->will($this->returnValue(false));
         $this->assertFalse($node->_call('isTargetCorrect'));
     }
@@ -303,7 +303,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function isTargetCorrectThrowsExceptionIfNodeIsNotALink()
     {
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('exists', 'isLink', 'getTarget'), array(), '', false);
+        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, ['exists', 'isLink', 'getTarget'], [], '', false);
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));
         $node->expects($this->once())->method('isLink')->will($this->returnValue(false));
         $this->assertTrue($node->_call('isTargetCorrect'));
@@ -315,7 +315,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function isTargetCorrectReturnsTrueIfNoExpectedLinkTargetIsSpecified()
     {
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('exists', 'isLink', 'getTarget'), array(), '', false);
+        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, ['exists', 'isLink', 'getTarget'], [], '', false);
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));
         $node->expects($this->any())->method('isLink')->will($this->returnValue(true));
         $node->expects($this->once())->method('getTarget')->will($this->returnValue(''));
@@ -328,7 +328,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function isTargetCorrectAcceptsATargetWithATrailingSlash()
     {
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('exists', 'isLink', 'getCurrentTarget', 'getTarget'), array(), '', false);
+        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, ['exists', 'isLink', 'getCurrentTarget', 'getTarget'], [], '', false);
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));
         $node->expects($this->any())->method('isLink')->will($this->returnValue(true));
         $node->expects($this->once())->method('getCurrentTarget')->will($this->returnValue('someLinkTarget/'));
@@ -351,8 +351,8 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->testFilesToDelete[] = $path;
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class,
-            array('exists', 'isLink', 'getTarget', 'getAbsolutePath'),
-            array(),
+            ['exists', 'isLink', 'getTarget', 'getAbsolutePath'],
+            [],
             '',
             false
         );
@@ -378,8 +378,8 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->testFilesToDelete[] = $path;
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class,
-            array('exists', 'isLink', 'getTarget', 'getAbsolutePath'),
-            array(),
+            ['exists', 'isLink', 'getTarget', 'getAbsolutePath'],
+            [],
             '',
             false
         );

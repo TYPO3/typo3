@@ -80,7 +80,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     /**
      * @var array
      */
-    public $pageinfo = array();
+    public $pageinfo = [];
 
     /**
      * @var bool
@@ -109,9 +109,9 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang.xlf');
 
-        $this->MCONF = array(
+        $this->MCONF = [
             'name' => $this->moduleName
-        );
+        ];
         $this->moduleTemplate->addJavaScriptCode(
             'jumpToUrl',
             '
@@ -149,7 +149,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             /** @var DataHandler $tce */
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->stripslashes_values = false;
-            $tce->start(array(), array());
+            $tce->start([], []);
             $tce->clear_cacheCmd('all');
         }
     }
@@ -162,11 +162,11 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     public function main()
     {
         // Template markers
-        $markers = array(
+        $markers = [
             'CSH' => '',
             'FUNC_MENU' => '',
             'CONTENT' => ''
-        );
+        ];
 
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
@@ -180,10 +180,10 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         $lang = $this->getLanguageService();
 
         if ($this->id && $this->access) {
-            $urlParameters = array(
+            $urlParameters = [
                 'id' => $this->id,
                 'template' => 'all'
-            );
+            ];
             $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 
             // JavaScript
@@ -230,7 +230,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 'pages.uid',
                 'pages.pid, pages.sorting'
             );
-            $pArray = array();
+            $pArray = [];
             foreach ($records as $record) {
                 $this->setInPageArray($pArray, BackendUtility::BEgetRootLine($record['uid'], 'AND 1=1'), $record);
             }
@@ -345,11 +345,11 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 99);
             if ($this->extClassConf['name'] === TypoScriptTemplateInformationModuleFunctionController::class) {
                 // NEW button
-                $urlParameters = array(
+                $urlParameters = [
                     'id' => $this->id,
                     'template' => 'all',
                     'createExtension' => 'new'
-                );
+                ];
 
                 if (!empty($this->e) && !GeneralUtility::_POST('_saveandclosedok')) {
                     $saveButton = $buttonBar->makeInputButton()
@@ -374,7 +374,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
 
                     // CLOSE button
                     $closeButton = $buttonBar->makeLinkButton()
-                        ->setHref(BackendUtility::getModuleUrl('web_ts', array('id' => $this->id)))
+                        ->setHref(BackendUtility::getModuleUrl('web_ts', ['id' => $this->id]))
                         ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc'))
                         ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL));
                     $buttonBar->addButton($closeButton);
@@ -398,9 +398,9 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             } elseif ($this->extClassConf['name'] === TypoScriptTemplateObjectBrowserModuleFunctionController::class) {
                 if (!empty($this->sObj)) {
                     // BACK
-                    $urlParameters = array(
+                    $urlParameters = [
                         'id' => $this->id
-                    );
+                    ];
                     $backButton = $buttonBar->makeLinkButton()
                         ->setHref(BackendUtility::getModuleUrl('web_ts', $urlParameters))
                         ->setClasses('typo3-goBack')
@@ -427,9 +427,9 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
      */
     public function linkWrapTemplateTitle($title, $onlyKey = '')
     {
-        $urlParameters = array(
+        $urlParameters = [
             'id' => $this->id
-        );
+        ];
         $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
         if ($onlyKey) {
             $title = '<a href="' . htmlspecialchars(($aHref . '&e[' . $onlyKey . ']=1&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController')) . '">' . htmlspecialchars($title) . '</a>';
@@ -463,11 +463,11 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
 
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:tstemplate/Resources/Private/Templates/InfoBox.html'));
-        $view->assignMultiple(array(
+        $view->assignMultiple([
             'title' => $title,
             'message' => $message,
             'state' => InfoboxViewHelper::STATE_INFO
-        ));
+        ]);
         $theOutput = $view->render();
 
         // New standard?
@@ -478,10 +478,10 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             )) {
                 $selector = '';
                 $staticsText = '';
-                $reference = array(
+                $reference = [
                     'selectorHtml' => &$selector,
                     'staticsText' => &$staticsText
-                );
+                ];
                 GeneralUtility::callUserFunction(
                     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][TypoScriptTemplateModuleController::class]['newStandardTemplateView'],
                     $reference,
@@ -506,9 +506,9 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         // Go to first appearing...
         $first = $tmpl->ext_prevPageWithTemplate($this->id, $this->perms_clause);
         if ($first) {
-            $urlParameters = array(
+            $urlParameters = [
                 'id' => $first['uid']
-            );
+            ];
             $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
             $theOutput .= '<h3>' . $lang->getLL('goToClosest') . '</h3>';
             $theOutput .= '<div>' . sprintf('<p>' . $lang->getLL('goToClosestDescription') . '</p>%s' . $lang->getLL('goToClosestAction') . '%s', htmlspecialchars($first['title']), $first['uid'], '<a class="btn btn-default" href="' . htmlspecialchars($aHref) . '">', '</a>') . '</div>';
@@ -533,7 +533,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
 
         $all = $tmpl->ext_getAllTemplates($this->id, $this->perms_clause);
         if (count($all) > 1) {
-            $this->MOD_MENU['templatesOnPage'] = array();
+            $this->MOD_MENU['templatesOnPage'] = [];
             foreach ($all as $d) {
                 $this->MOD_MENU['templatesOnPage'][$d['uid']] = $d['title'];
             }
@@ -551,27 +551,27 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
      */
     public function createTemplate($id, $actTemplateId = 0)
     {
-        $recData = array();
+        $recData = [];
         /** @var DataHandler $tce */
         $tce = GeneralUtility::makeInstance(DataHandler::class);
         $tce->stripslashes_values = false;
 
         if (GeneralUtility::_GP('createExtension')) {
-            $recData['sys_template']['NEW'] = array(
+            $recData['sys_template']['NEW'] = [
                 'pid' => $actTemplateId ? -1 * $actTemplateId : $id,
                 'title' => '+ext'
-            );
-            $tce->start($recData, array());
+            ];
+            $tce->start($recData, []);
             $tce->process_datamap();
         } elseif (GeneralUtility::_GP('newWebsite')) {
             // Hook to handle row data, implemented for statictemplates
             if (isset(
                 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][TypoScriptTemplateModuleController::class]['newStandardTemplateHandler']
             )) {
-                $reference = array(
+                $reference = [
                     'recData' => &$recData,
                     'id' => $id,
-                );
+                ];
                 GeneralUtility::callUserFunction(
                     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][TypoScriptTemplateModuleController::class]['newStandardTemplateHandler'],
                     $reference,
@@ -579,7 +579,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 );
                 $recData = $reference['recData'];
             } else {
-                $recData['sys_template']['NEW'] = array(
+                $recData['sys_template']['NEW'] = [
                     'pid' => $id,
                     'title' => $this->getLanguageService()->getLL('titleNewSite'),
                     'sorting' => 0,
@@ -591,9 +591,9 @@ page = PAGE
 page.10 = TEXT
 page.10.value = HELLO WORLD!
 '
-                );
+                ];
             }
-            $tce->start($recData, array());
+            $tce->start($recData, []);
             $tce->process_datamap();
             $tce->clear_cacheCmd('all');
         }
@@ -621,7 +621,7 @@ page.10.value = HELLO WORLD!
         array_shift($rlArr);
         if (!empty($rlArr)) {
             if (!isset($pArray[$cEl['uid'] . '.'])) {
-                $pArray[$cEl['uid'] . '.'] = array();
+                $pArray[$cEl['uid'] . '.'] = [];
             }
             $this->setInPageArray($pArray[$cEl['uid'] . '.'], $rlArr, $row);
         } else {
@@ -637,7 +637,7 @@ page.10.value = HELLO WORLD!
      * @param int $c
      * @return array
      */
-    public function renderList($pArray, $lines = array(), $c = 0)
+    public function renderList($pArray, $lines = [], $c = 0)
     {
         static $i;
 
@@ -650,7 +650,7 @@ page.10.value = HELLO WORLD!
             if (MathUtility::canBeInterpretedAsInteger($k)) {
                 if (isset($pArray[$k . '_'])) {
                     $lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
-						<td nowrap><span style="width: 1px; height: 1px; display:inline-block; margin-left: ' . $c * 20 . 'px"></span>' . '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $k))) . '" title="' . htmlspecialchars('ID: ' . $k) . '">' . $this->moduleTemplate->getIconFactory()->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k), Icon::SIZE_SMALL)->render() . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</a></td>
+						<td nowrap><span style="width: 1px; height: 1px; display:inline-block; margin-left: ' . $c * 20 . 'px"></span>' . '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(['id' => $k])) . '" title="' . htmlspecialchars('ID: ' . $k) . '">' . $this->moduleTemplate->getIconFactory()->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k), Icon::SIZE_SMALL)->render() . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</a></td>
 						<td>' . $pArray[$k . '_']['count'] . '</td>
 						<td>' . ($pArray[$k . '_']['root_max_val'] > 0 ? $statusCheckedIcon : '&nbsp;') . '</td>
 						<td>' . ($pArray[$k . '_']['root_min_val'] == 0 ? $statusCheckedIcon : '&nbsp;') . '</td>

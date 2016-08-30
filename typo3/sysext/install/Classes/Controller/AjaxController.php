@@ -28,7 +28,7 @@ class AjaxController extends AbstractController
     /**
      * @var array List of valid action names that need authentication
      */
-    protected $authenticationActions = array(
+    protected $authenticationActions = [
         'extensionCompatibilityTester',
         'uninstallExtension',
         'clearCache',
@@ -42,7 +42,7 @@ class AjaxController extends AbstractController
         'coreUpdateActivate',
         'folderStatus',
         'environmentStatus'
-    );
+    ];
 
     /**
      * Main entry point

@@ -84,7 +84,7 @@ class CollectionService implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $targetArguments
      * @return Dependency\EventCallback
      */
-    protected function getDependencyCallback($method, array $targetArguments = array())
+    protected function getDependencyCallback($method, array $targetArguments = [])
     {
         return GeneralUtility::makeInstance(
             \TYPO3\CMS\Version\Dependency\EventCallback::class,
@@ -126,7 +126,7 @@ class CollectionService implements \TYPO3\CMS\Core\SingletonInterface
     {
         $collection = 0;
         $this->dataArray = $dataArray;
-        $this->nestedDataArray = array();
+        $this->nestedDataArray = [];
 
         $outerMostParents = $this->getDependencyResolver()->getOuterMostParents();
 
@@ -159,7 +159,7 @@ class CollectionService implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function finalize(array $dataArray)
     {
-        $processedDataArray = array();
+        $processedDataArray = [];
         foreach ($dataArray as $dataElement) {
             $dataElementIdentifier = $dataElement['id'];
             $processedDataArray[] = $dataElement;

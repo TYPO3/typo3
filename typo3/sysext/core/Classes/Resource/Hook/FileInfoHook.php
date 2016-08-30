@@ -64,7 +64,7 @@ class FileInfoHook
     protected function renderFileInformationContent(\TYPO3\CMS\Core\Resource\File $file = null)
     {
         if ($file !== null) {
-            $processedFile = $file->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => 150, 'height' => 150));
+            $processedFile = $file->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, ['width' => 150, 'height' => 150]);
             $previewImage = $processedFile->getPublicUrl(true);
             $content = '';
             if ($file->isMissing()) {

@@ -40,7 +40,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $slots = array();
+    protected $slots = [];
 
     /**
      * Initializes this object.
@@ -87,12 +87,12 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
             $class = $slotClassNameOrObject;
             $method = $slotMethodName;
         }
-        $slot = array(
+        $slot = [
             'class' => $class,
             'method' => $method,
             'object' => $object,
             'passSignalInformation' => $passSignalInformation === true
-        );
+        ];
         if (!is_array($this->slots[$signalClassName][$signalName]) || !in_array($slot, $this->slots[$signalClassName][$signalName])) {
             $this->slots[$signalClassName][$signalName][] = $slot;
         }
@@ -109,7 +109,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      * @throws Exception\InvalidSlotReturnException if a slot returns invalid arguments (too few or return value is not an array)
      * @api
      */
-    public function dispatch($signalClassName, $signalName, array $signalArguments = array())
+    public function dispatch($signalClassName, $signalName, array $signalArguments = [])
     {
         $this->initializeObject();
         if (!isset($this->slots[$signalClassName][$signalName])) {
@@ -137,7 +137,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
                 $preparedSlotArguments[] = $signalClassName . '::' . $signalName;
             }
 
-            $slotReturn = call_user_func_array(array($object, $slotInformation['method']), $preparedSlotArguments);
+            $slotReturn = call_user_func_array([$object, $slotInformation['method']], $preparedSlotArguments);
 
             if ($slotReturn) {
                 if (!is_array($slotReturn)) {
@@ -165,6 +165,6 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getSlots($signalClassName, $signalName)
     {
-        return isset($this->slots[$signalClassName][$signalName]) ? $this->slots[$signalClassName][$signalName] : array();
+        return isset($this->slots[$signalClassName][$signalName]) ? $this->slots[$signalClassName][$signalName] : [];
     }
 }

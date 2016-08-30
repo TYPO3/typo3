@@ -32,9 +32,9 @@ class StatusReportConflictsCheckHook implements StatusProviderInterface
      */
     public function getStatus()
     {
-        $reports = array(
+        $reports = [
             'noConflictingExtensionISInstalled' => $this->checkIfNoConflictingExtensionIsInstalled()
-        );
+        ];
         return $reports;
     }
 
@@ -47,7 +47,7 @@ class StatusReportConflictsCheckHook implements StatusProviderInterface
     {
         $languageService = $this->getLanguageService();
         $title = $languageService->sL('LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_statusreport.xlf:title');
-        $conflictingExtensions = array();
+        $conflictingExtensions = [];
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['conflicts'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['conflicts'] as $extensionKey => $version) {
                 if (ExtensionManagementUtility::isLoaded($extensionKey)) {

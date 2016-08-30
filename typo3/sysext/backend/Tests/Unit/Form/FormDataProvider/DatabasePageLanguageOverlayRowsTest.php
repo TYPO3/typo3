@@ -39,7 +39,7 @@ class DatabasePageLanguageOverlayRowsTest extends UnitTestCase
     {
         $this->dbProphecy = $this->prophesize(DatabaseConnection::class);
         $GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
-        $GLOBALS['TCA']['pages_language_overlay'] = array();
+        $GLOBALS['TCA']['pages_language_overlay'] = [];
 
         $this->subject = new DatabasePageLanguageOverlayRows();
     }

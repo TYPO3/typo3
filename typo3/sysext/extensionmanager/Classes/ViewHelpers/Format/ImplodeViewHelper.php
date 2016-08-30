@@ -35,10 +35,10 @@ class ImplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
     public function render(array $implode, $delimiter = ', ')
     {
         return static::renderStatic(
-            array(
+            [
                 'implode' => $implode,
                 'delimiter' => $delimiter,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

@@ -31,23 +31,23 @@ class SelectJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEl
      *
      * @var array
      */
-    public $configuration = array(
-        'attributes' => array(),
-        'filters' => array(),
-        'label' => array(
+    public $configuration = [
+        'attributes' => [],
+        'filters' => [],
+        'label' => [
             'value' => ''
-        ),
+        ],
         'layout' => 'front',
-        'options' => array(),
-        'validation' => array()
-    );
+        'options' => [],
+        'validation' => []
+    ];
 
     /**
      * Allowed attributes for this object
      *
      * @var array
      */
-    protected $allowedAttributes = array(
+    protected $allowedAttributes = [
         'accesskey',
         'class',
         'contenteditable',
@@ -70,7 +70,7 @@ class SelectJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEl
         'name',
         'required',
         'size'
-    );
+    ];
 
     protected $childElementsAllowed = false;
 

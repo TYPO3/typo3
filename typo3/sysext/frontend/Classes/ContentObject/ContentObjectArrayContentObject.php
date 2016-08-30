@@ -27,7 +27,7 @@ class ContentObjectArrayContentObject extends AbstractContentObject
      * @param array $conf Array of TypoScript properties
      * @return string Output
      */
-    public function render($conf = array())
+    public function render($conf = [])
     {
         if (empty($conf)) {
             $this->getTimeTracker()->setTSlogMessage('No elements in this content object array (COBJ_ARRAY, COA).', 2);

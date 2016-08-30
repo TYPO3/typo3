@@ -47,8 +47,8 @@ class TextStyle extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'textstylelabel' => 'I[text_style]',
         'textstyle' => 'TextStyle'
-    );
+    ];
 }

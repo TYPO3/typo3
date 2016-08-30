@@ -41,7 +41,7 @@ class TcaFlexFetchTest extends UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     protected function setUp()
     {

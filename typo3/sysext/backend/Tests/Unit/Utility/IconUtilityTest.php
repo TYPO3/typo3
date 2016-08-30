@@ -24,7 +24,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array Simulate a tt_content record
      */
-    protected $mockRecord = array(
+    protected $mockRecord = [
         'header' => 'dummy content header',
         'uid' => '1',
         'pid' => '1',
@@ -41,7 +41,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         'l18n_parent' => '0',
         'subheader' => '',
         'bodytext' => '',
-    );
+    ];
 
     /**
      * Create folder object to use as test subject
@@ -51,7 +51,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function getTestSubjectFolderObject($identifier)
     {
-        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, [], [], '', false);
         $mockedStorage->expects($this->any())->method('getRootLevelFolder')->will($this->returnValue(
             new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, '/', '/')
         ));
@@ -68,8 +68,8 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function getTestSubjectFileObject($extension)
     {
-        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
-        $mockedFile = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(array(), $mockedStorage));
+        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, [], [], '', false);
+        $mockedFile = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, [], [[], $mockedStorage]);
         $mockedFile->expects($this->once())->method('getExtension')->will($this->returnValue($extension));
         return $mockedFile;
     }
@@ -129,7 +129,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $result = explode(' ', IconUtilityFixture::getSpriteIconClasses('actions-juggle'));
         sort($result);
-        $this->assertEquals(array('t3-icon', 't3-icon-actions', 't3-icon-actions-juggle', 't3-icon-juggle'), $result);
+        $this->assertEquals(['t3-icon', 't3-icon-actions', 't3-icon-actions-juggle', 't3-icon-juggle'], $result);
     }
 
     /**
@@ -141,7 +141,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $result = explode(' ', IconUtilityFixture::getSpriteIconClasses('actions-juggle-speed'));
         sort($result);
-        $this->assertEquals(array('t3-icon', 't3-icon-actions', 't3-icon-actions-juggle', 't3-icon-juggle-speed'), $result);
+        $this->assertEquals(['t3-icon', 't3-icon-actions', 't3-icon-actions-juggle', 't3-icon-juggle-speed'], $result);
     }
 
     /**
@@ -153,6 +153,6 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $result = explode(' ', IconUtilityFixture::getSpriteIconClasses('actions-juggle-speed-game'));
         sort($result);
-        $this->assertEquals(array('t3-icon', 't3-icon-actions', 't3-icon-actions-juggle', 't3-icon-juggle-speed-game'), $result);
+        $this->assertEquals(['t3-icon', 't3-icon-actions', 't3-icon-actions-juggle', 't3-icon-juggle-speed-game'], $result);
     }
 }

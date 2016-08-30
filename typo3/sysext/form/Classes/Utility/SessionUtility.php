@@ -28,7 +28,7 @@ class SessionUtility implements SingletonInterface
      *
      * @var array
      */
-    protected $sessionData = array();
+    protected $sessionData = [];
 
     /**
      * Prefix for the session

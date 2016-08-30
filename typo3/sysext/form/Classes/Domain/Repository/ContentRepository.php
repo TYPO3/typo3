@@ -87,10 +87,10 @@ class ContentRepository
             $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
             $tce->stripslashes_values = 0;
             // Put content into the data array:
-            $data = array();
+            $data = [];
             $data[$parameters['table']][$parameters['uid']][$parameters['field']] = $typoscript;
             // Perform the update:
-            $tce->start($data, array());
+            $tce->start($data, []);
             $tce->process_datamap();
             $success = true;
         }

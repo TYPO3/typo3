@@ -29,7 +29,7 @@ class Escape implements \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface
      *
      * @var array<\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface>
      */
-    protected $viewHelperNodesWhichDisableTheInterceptor = array();
+    protected $viewHelperNodesWhichDisableTheInterceptor = [];
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
@@ -65,7 +65,7 @@ class Escape implements \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface
             $node = $this->objectManager->get(
                 \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class,
                 $escapeViewHelper,
-                array('value' => $node)
+                ['value' => $node]
             );
         }
         return $node;
@@ -78,10 +78,10 @@ class Escape implements \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface
      */
     public function getInterceptionPoints()
     {
-        return array(
+        return [
             \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER,
             \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER,
             \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OBJECTACCESSOR
-        );
+        ];
     }
 }

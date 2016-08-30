@@ -38,9 +38,9 @@ class DateTimeValidator extends AbstractValidator
             $this->translateErrorMessage(
                 'validator.datetime.notvalid',
                 'extbase',
-                array(
+                [
                     gettype($value)
-                )
-            ), 1238087674, array(gettype($value)));
+                ]
+            ), 1238087674, [gettype($value)]);
     }
 }

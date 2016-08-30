@@ -29,12 +29,12 @@ class IpValidatorTest extends AbstractValidatorTest
      */
     public function validIpv4Provider()
     {
-        return array(
-            '127.0.0.1'   => array('127.0.0.1'),
-            '10.0.0.4'    => array('10.0.0.4'),
-            '192.168.0.4' => array('192.168.0.4'),
-            '0.0.0.0'     => array('0.0.0.0')
-        );
+        return [
+            '127.0.0.1'   => ['127.0.0.1'],
+            '10.0.0.4'    => ['10.0.0.4'],
+            '192.168.0.4' => ['192.168.0.4'],
+            '0.0.0.0'     => ['0.0.0.0']
+        ];
     }
 
     /**
@@ -42,10 +42,10 @@ class IpValidatorTest extends AbstractValidatorTest
      */
     public function invalidIpv4Provider()
     {
-        return array(
-            '127.0.0.256' => array('127.0.0.256'),
-            '256.0.0.2'   => array('256.0.0.2')
-        );
+        return [
+            '127.0.0.256' => ['127.0.0.256'],
+            '256.0.0.2'   => ['256.0.0.2']
+        ];
     }
 
     /**
@@ -54,7 +54,7 @@ class IpValidatorTest extends AbstractValidatorTest
      */
     public function validateForValidInputHasEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $subject = $this->createSubject($options);
 
         $this->assertEmpty(
@@ -68,7 +68,7 @@ class IpValidatorTest extends AbstractValidatorTest
      */
     public function validateForInvalidInputHasNotEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $subject = $this->createSubject($options);
 
         $this->assertNotEmpty(

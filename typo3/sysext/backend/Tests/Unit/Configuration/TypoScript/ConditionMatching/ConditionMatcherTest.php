@@ -49,11 +49,11 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->testTableName = 'conditionMatcherTestTable';
         $this->testGlobalNamespace = $this->getUniqueId('TEST');
-        $GLOBALS['TCA'][$this->testTableName] = array('ctrl' => array());
-        $GLOBALS[$this->testGlobalNamespace] = array();
+        $GLOBALS['TCA'][$this->testTableName] = ['ctrl' => []];
+        $GLOBALS[$this->testGlobalNamespace] = [];
         GeneralUtility::flushInternalRuntimeCaches();
         $this->setUpBackend();
-        $this->matchCondition = $this->getMock(\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class, array('determineRootline'), array(), '', false);
+        $this->matchCondition = $this->getMock(\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class, ['determineRootline'], [], '', false);
     }
 
     /**
@@ -61,12 +61,12 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     private function setUpBackend()
     {
-        $this->rootline = array(
-            2 => array('uid' => 121, 'pid' => 111),
-            1 => array('uid' => 111, 'pid' => 101),
-            0 => array('uid' => 101, 'pid' => 0)
-        );
-        $GLOBALS['BE_USER'] = $this->getMock(BackendUserAuthentication::class, array('dummy'), array(), '', false);
+        $this->rootline = [
+            2 => ['uid' => 121, 'pid' => 111],
+            1 => ['uid' => 111, 'pid' => 101],
+            0 => ['uid' => 101, 'pid' => 0]
+        ];
+        $GLOBALS['BE_USER'] = $this->getMock(BackendUserAuthentication::class, ['dummy'], [], '', false);
     }
 
     /**
@@ -74,9 +74,9 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     private function setUpDatabaseMockForDeterminePageId()
     {
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('exec_SELECTquery', 'sql_fetch_assoc', 'sql_free_result'));
-        $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->will($this->returnCallback(array($this, 'determinePageIdByRecordDatabaseExecuteCallback')));
-        $GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->will($this->returnCallback(array($this, 'determinePageIdByRecordDatabaseFetchCallback')));
+        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, ['exec_SELECTquery', 'sql_fetch_assoc', 'sql_free_result']);
+        $GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->will($this->returnCallback([$this, 'determinePageIdByRecordDatabaseExecuteCallback']));
+        $GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->will($this->returnCallback([$this, 'determinePageIdByRecordDatabaseFetchCallback']));
     }
 
     /**
@@ -108,7 +108,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function simulateEnabledMatchSpecificConditionsSucceeds()
     {
         $testCondition = '[' . $this->getUniqueId('test') . ' = Any condition to simulate a positive match]';
-        $this->matchCondition->setSimulateMatchConditions(array($testCondition));
+        $this->matchCondition->setSimulateMatchConditions([$testCondition]);
         $this->assertTrue($this->matchCondition->match($testCondition));
     }
 
@@ -514,8 +514,8 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function globalVarConditionDoesNotMatchOnEmptyExpressionWithValueSetToZero()
     {
         $testKey = $this->getUniqueId('test');
-        $_GET = array();
-        $_POST = array($testKey => 0);
+        $_GET = [];
+        $_POST = [$testKey => 0];
         $this->assertFalse($this->matchCondition->match('[globalVar = GP:' . $testKey . '=]'));
         $this->assertFalse($this->matchCondition->match('[globalVar = GP:' . $testKey . ' = ]'));
     }
@@ -539,8 +539,8 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function globalStringConditionMatchesOnEmptyExpressionWithValueSetToEmptyString()
     {
         $testKey = $this->getUniqueId('test');
-        $_GET = array();
-        $_POST = array($testKey => '');
+        $_GET = [];
+        $_POST = [$testKey => ''];
         $this->assertTrue($this->matchCondition->match('[globalString = GP:' . $testKey . '=]'));
         $this->assertTrue($this->matchCondition->match('[globalString = GP:' . $testKey . ' = ]'));
     }
@@ -632,17 +632,17 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function treeLevelConditionMatchesCurrentPageIdWhileEditingNewPage()
     {
-        $GLOBALS['SOBE'] = $this->getMock(\TYPO3\CMS\Backend\Controller\EditDocumentController::class, array(), array(), '', false);
-        $GLOBALS['SOBE']->elementsData = array(
-            array(
+        $GLOBALS['SOBE'] = $this->getMock(\TYPO3\CMS\Backend\Controller\EditDocumentController::class, [], [], '', false);
+        $GLOBALS['SOBE']->elementsData = [
+            [
                 'table' => 'pages',
                 'uid' => 'NEW4adc6021e37e7',
                 'pid' => 121,
                 'cmd' => 'new',
                 'deleteAccess' => 0
-            )
-        );
-        $GLOBALS['SOBE']->data = array();
+            ]
+        ];
+        $GLOBALS['SOBE']->data = [];
         $this->matchCondition->setRootline($this->rootline);
         $this->matchCondition->setPageId(121);
         $this->assertTrue($this->matchCondition->match('[treeLevel = 3]'));
@@ -655,24 +655,24 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function treeLevelConditionMatchesCurrentPageIdWhileSavingNewPage()
     {
-        $GLOBALS['SOBE'] = $this->getMock(\TYPO3\CMS\Backend\Controller\EditDocumentController::class, array(), array(), '', false);
-        $GLOBALS['SOBE']->elementsData = array(
-            array(
+        $GLOBALS['SOBE'] = $this->getMock(\TYPO3\CMS\Backend\Controller\EditDocumentController::class, [], [], '', false);
+        $GLOBALS['SOBE']->elementsData = [
+            [
                 'table' => 'pages',
                 /// 999 is the uid of the page that was just created
                 'uid' => 999,
                 'pid' => 121,
                 'cmd' => 'edit',
                 'deleteAccess' => 1
-            )
-        );
-        $GLOBALS['SOBE']->data = array(
-            'pages' => array(
-                'NEW4adc6021e37e7' => array(
+            ]
+        ];
+        $GLOBALS['SOBE']->data = [
+            'pages' => [
+                'NEW4adc6021e37e7' => [
                     'pid' => 121
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $this->matchCondition->setRootline($this->rootline);
         $this->matchCondition->setPageId(121);
         $this->assertTrue($this->matchCondition->match('[treeLevel = 3]'));
@@ -733,17 +733,17 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function PIDupinRootlineConditionMatchesCurrentPageIdWhileEditingNewPage()
     {
-        $GLOBALS['SOBE'] = $this->getMock(\TYPO3\CMS\Backend\Controller\EditDocumentController::class, array(), array(), '', false);
-        $GLOBALS['SOBE']->elementsData = array(
-            array(
+        $GLOBALS['SOBE'] = $this->getMock(\TYPO3\CMS\Backend\Controller\EditDocumentController::class, [], [], '', false);
+        $GLOBALS['SOBE']->elementsData = [
+            [
                 'table' => 'pages',
                 'uid' => 'NEW4adc6021e37e7',
                 'pid' => 121,
                 'cmd' => 'new',
                 'deleteAccess' => 0
-            )
-        );
-        $GLOBALS['SOBE']->data = array();
+            ]
+        ];
+        $GLOBALS['SOBE']->data = [];
         $this->matchCondition->setRootline($this->rootline);
         $this->matchCondition->setPageId(121);
         $this->assertTrue($this->matchCondition->match('[PIDupinRootline = 121]'));
@@ -756,24 +756,24 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function PIDupinRootlineConditionMatchesCurrentPageIdWhileSavingNewPage()
     {
-        $GLOBALS['SOBE'] = $this->getMock(\TYPO3\CMS\Backend\Controller\EditDocumentController::class, array(), array(), '', false);
-        $GLOBALS['SOBE']->elementsData = array(
-            array(
+        $GLOBALS['SOBE'] = $this->getMock(\TYPO3\CMS\Backend\Controller\EditDocumentController::class, [], [], '', false);
+        $GLOBALS['SOBE']->elementsData = [
+            [
                 'table' => 'pages',
                 /// 999 is the uid of the page that was just created
                 'uid' => 999,
                 'pid' => 121,
                 'cmd' => 'edit',
                 'deleteAccess' => 1
-            )
-        );
-        $GLOBALS['SOBE']->data = array(
-            'pages' => array(
-                'NEW4adc6021e37e7' => array(
+            ]
+        ];
+        $GLOBALS['SOBE']->data = [
+            'pages' => [
+                'NEW4adc6021e37e7' => [
                     'pid' => 121
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $this->matchCondition->setRootline($this->rootline);
         $this->matchCondition->setPageId(121);
         $this->assertTrue($this->matchCondition->match('[PIDupinRootline = 121]'));
@@ -867,8 +867,8 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function genericGetVariablesSucceedsWithNamespaceGP()
     {
-        $_GET = array('testGet' => 'getTest');
-        $_POST = array('testPost' => 'postTest');
+        $_GET = ['testGet' => 'getTest'];
+        $_POST = ['testPost' => 'postTest'];
         $this->assertTrue($this->matchCondition->match('[globalString = GP:testGet = getTest]'));
         $this->assertTrue($this->matchCondition->match('[globalString = GP:testPost = postTest]'));
     }
@@ -916,10 +916,10 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function genericGetVariablesSucceedsWithAnyGlobalNamespace()
     {
-        $GLOBALS[$this->testGlobalNamespace] = array(
+        $GLOBALS[$this->testGlobalNamespace] = [
             'first' => 'testFirst',
-            'second' => array('third' => 'testThird')
-        );
+            'second' => ['third' => 'testThird']
+        ];
         $this->assertTrue($this->matchCondition->match('[globalString = ' . $this->testGlobalNamespace . '|first = testFirst]'));
         $this->assertTrue($this->matchCondition->match('[globalString = ' . $this->testGlobalNamespace . '|second|third = testThird]'));
     }
@@ -1047,13 +1047,13 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function determinePageIdByRecordDatabaseExecuteCallback($fields, $table, $where)
     {
         if ($table === $this->testTableName) {
-            return array(
+            return [
                 'scope' => $this->testTableName,
-                'data' => array(
+                'data' => [
                     'pid' => 999,
                     'uid' => 998
-                )
-            );
+                ]
+            ];
         } else {
             return false;
         }

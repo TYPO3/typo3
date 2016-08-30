@@ -56,7 +56,7 @@ class DataSet
             throw new \RuntimeException('File "' . $fileName . '" does not exist');
         }
 
-        $rawData = array();
+        $rawData = [];
         $fileHandle = fopen($fileName, 'r');
         while (($values = fgetcsv($fileHandle, 0)) !== false) {
             $rawData[] = $values;
@@ -77,7 +77,7 @@ class DataSet
      */
     protected static function parseData(array $rawData)
     {
-        $data = array();
+        $data = [];
         $tableName = null;
         $fieldCount = null;
         $idIndex = null;
@@ -91,7 +91,7 @@ class DataSet
                 $fieldCount = null;
                 $idIndex = null;
                 if (!isset($data[$tableName])) {
-                    $data[$tableName] = array();
+                    $data[$tableName] = [];
                 }
             } elseif (implode('', $values) === '') {
                 $tableName = null;
@@ -100,7 +100,7 @@ class DataSet
             } elseif ($tableName !== null && !empty($values[1])) {
                 array_shift($values);
                 if (!isset($data[$tableName]['fields'])) {
-                    $data[$tableName]['fields'] = array();
+                    $data[$tableName]['fields'] = [];
                     foreach ($values as $value) {
                         if (empty($value)) {
                             continue;
@@ -114,7 +114,7 @@ class DataSet
                     }
                 } else {
                     if (!isset($data[$tableName]['elements'])) {
-                        $data[$tableName]['elements'] = array();
+                        $data[$tableName]['elements'] = [];
                     }
                     $values = array_slice($values, 0, $fieldCount);
                     foreach ($values as &$value) {
@@ -244,7 +244,7 @@ class DataSet
             $fields = $tableData['fields'];
             array_unshift($fields, '');
 
-            fputcsv($fileHandle, array($tableName));
+            fputcsv($fileHandle, [$tableName]);
             fputcsv($fileHandle, $fields);
 
             foreach ($tableData['elements'] as $element) {

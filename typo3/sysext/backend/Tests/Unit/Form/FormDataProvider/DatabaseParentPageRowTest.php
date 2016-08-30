@@ -82,7 +82,7 @@ class DatabaseParentPageRowTest extends UnitTestCase
         ];
         $this->dbProphecy->quoteStr(Argument::cetera())->willReturnArgument(0);
         $this->dbProphecy->exec_SELECTgetSingleRow('*', $input['tableName'], 'uid=10')->willReturn($neigborRow);
-        $this->dbProphecy->exec_SELECTgetSingleRow('*', 'pages', 'uid=321')->willReturn(array());
+        $this->dbProphecy->exec_SELECTgetSingleRow('*', 'pages', 'uid=321')->willReturn([]);
 
         $result = $this->subject->addData($input);
 

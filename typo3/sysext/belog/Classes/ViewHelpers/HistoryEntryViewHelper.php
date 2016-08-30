@@ -41,9 +41,9 @@ class HistoryEntryViewHelper extends AbstractViewHelper implements CompilableInt
     public function render($uid)
     {
         return static::renderStatic(
-            array(
+            [
                 'uid' => $uid
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -75,7 +75,7 @@ class HistoryEntryViewHelper extends AbstractViewHelper implements CompilableInt
         $historyLabel = LocalizationUtility::translate(
             'changesInFields',
             $controllerContext->getRequest()->getControllerExtensionName(),
-            array($historyEntry->getFieldlist())
+            [$historyEntry->getFieldlist()]
         );
         $titleLable = LocalizationUtility::translate(
             'showHistory',
@@ -84,10 +84,10 @@ class HistoryEntryViewHelper extends AbstractViewHelper implements CompilableInt
         $historyIcon = $iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render();
         $historyHref = BackendUtility::getModuleUrl(
                 'record_history',
-                array(
+                [
                     'sh_uid' => $historyEntry->getUid(),
                     'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
-                )
+                ]
             );
         $historyLink = '<a href="' . htmlspecialchars($historyHref) . '" title="' . htmlspecialchars($titleLable) . '">' . $historyIcon . '</a>';
         return $historyLabel . '&nbsp;' . $historyLink;

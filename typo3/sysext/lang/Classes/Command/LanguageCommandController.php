@@ -62,7 +62,7 @@ class LanguageCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
         $translationService = $this->objectManager->get(\TYPO3\CMS\Lang\Service\TranslationService::class);
         /** @var $languageRepository \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository */
         $languageRepository = $this->objectManager->get(\TYPO3\CMS\Lang\Domain\Repository\LanguageRepository::class);
-        $locales = array();
+        $locales = [];
         if (!empty($localesToUpdate)) {
             $locales = GeneralUtility::trimExplode(',', $localesToUpdate, true);
         } else {

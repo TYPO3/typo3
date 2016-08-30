@@ -71,7 +71,7 @@ class InitialDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
 					<label><strong>%1$s</strong></label>
 				</li>';
 
-            $items = array();
+            $items = [];
             foreach ($databaseDifferences['extra'] as $tableName => $difference) {
                 if ($difference['whole_table'] == 1) {
                     $items[] = sprintf($item, $tableName);
@@ -100,19 +100,19 @@ class InitialDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
 					<label><strong>%1$s</strong>: %2$s</label>
 				</li>';
 
-            $fieldItems = array();
-            $keyItems = array();
+            $fieldItems = [];
+            $keyItems = [];
             foreach ($databaseDifferences['extra'] as $tableName => $difference) {
                 if ($difference['whole_table'] != 1) {
                     if ($difference['fields']) {
-                        $fieldNames = array();
+                        $fieldNames = [];
                         foreach ($difference['fields'] as $fieldName => $sql) {
                             $fieldNames[] = $fieldName;
                         }
                         $fieldItems[] = sprintf($item, $tableName, implode(', ', $fieldNames));
                     }
                     if ($difference['keys']) {
-                        $keyNames = array();
+                        $keyNames = [];
                         foreach ($difference['keys'] as $keyName => $sql) {
                             $keyNames[] = $keyName;
                         }

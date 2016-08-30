@@ -41,7 +41,7 @@ class FileDumpController
      */
     public function dumpAction(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $parameters = array('eID' => 'dumpFile');
+        $parameters = ['eID' => 'dumpFile'];
         $t = $this->getGetOrPost($request, 't');
         if ($t) {
             $parameters['t'] = $t;

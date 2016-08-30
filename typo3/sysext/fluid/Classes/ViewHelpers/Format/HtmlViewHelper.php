@@ -76,9 +76,9 @@ class HtmlViewHelper extends AbstractViewHelper implements CompilableInterface
     public function render($parseFuncTSPath = 'lib.parseFunc_RTE')
     {
         return static::renderStatic(
-            array(
+            [
                 'parseFuncTSPath' => $parseFuncTSPath,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -99,7 +99,7 @@ class HtmlViewHelper extends AbstractViewHelper implements CompilableInterface
         }
         $value = $renderChildrenClosure();
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $content = $contentObject->parseFunc($value, array(), '< ' . $parseFuncTSPath);
+        $content = $contentObject->parseFunc($value, [], '< ' . $parseFuncTSPath);
         if (TYPO3_MODE === 'BE') {
             self::resetFrontendEnvironment();
         }

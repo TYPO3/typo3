@@ -35,7 +35,7 @@ class Router implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var Route[]
      */
-    protected $routes = array();
+    protected $routes = [];
 
     /**
      * Adds a new route with the identifiers

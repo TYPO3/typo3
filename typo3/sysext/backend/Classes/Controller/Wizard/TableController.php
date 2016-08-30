@@ -307,7 +307,7 @@ class TableController extends AbstractWizardController
                 $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
                 $dataHandler->stripslashes_values = false;
                 // Put content into the data array:
-                $data = array();
+                $data = [];
                 if ($this->P['flexFormPath']) {
                     // Current value of flexForm path:
                     $currentFlexFormData = GeneralUtility::xml2array($row[$this->P['field']]);
@@ -319,7 +319,7 @@ class TableController extends AbstractWizardController
                     $data[$this->P['table']][$this->P['uid']][$this->P['field']] = $bodyText;
                 }
                 // Perform the update:
-                $dataHandler->start($data, array());
+                $dataHandler->start($data, []);
                 $dataHandler->process_datamap();
                 // If the save/close button was pressed, then redirect the screen:
                 if ($_POST['_saveandclosedok']) {
@@ -346,7 +346,7 @@ class TableController extends AbstractWizardController
                     $configuration = $this->cfgString2CfgArray($row[$this->P['field']], $row[$this->colsFieldName]);
                 }
             }
-            $configuration = is_array($configuration) ? $configuration : array();
+            $configuration = is_array($configuration) ? $configuration : [];
         }
         return $configuration;
     }
@@ -361,13 +361,13 @@ class TableController extends AbstractWizardController
     public function getTableHTML($configuration)
     {
         // Traverse the rows:
-        $tRows = array();
+        $tRows = [];
         $k = 0;
         $countLines = count($configuration);
         foreach ($configuration as $cellArr) {
             if (is_array($cellArr)) {
                 // Initialize:
-                $cells = array();
+                $cells = [];
                 $a = 0;
                 // Traverse the columns:
                 foreach ($cellArr as $cellContent) {
@@ -410,7 +410,7 @@ class TableController extends AbstractWizardController
             }
         }
         // CTRL panel for a table column (move left/right/around/delete)
-        $cells = array();
+        $cells = [];
         $cells[] = '';
         // Finding first row:
         $firstRow = reset($configuration);
@@ -528,7 +528,7 @@ class TableController extends AbstractWizardController
                             // of the table there will be no existing rows to stop the addition of new rows
                             // which means it will add up to $this->numNewRows rows then.
                             if (!isset($this->TABLECFG['c'][$kk + $a])) {
-                                $this->TABLECFG['c'][$kk + $a] = array();
+                                $this->TABLECFG['c'][$kk + $a] = [];
                             } else {
                                 break;
                             }
@@ -604,10 +604,10 @@ class TableController extends AbstractWizardController
      */
     public function cfgArray2CfgString($cfgArr)
     {
-        $inLines = array();
+        $inLines = [];
         // Traverse the elements of the table wizard and transform the settings into configuration code.
         foreach ($cfgArr as $valueA) {
-            $thisLine = array();
+            $thisLine = [];
             foreach ($valueA as $valueB) {
                 $thisLine[] = $this->tableParsing_quote
                     . str_replace($this->tableParsing_delimiter, '', $valueB) . $this->tableParsing_quote;
@@ -637,7 +637,7 @@ class TableController extends AbstractWizardController
         }
         $columns = $columns ?: 4;
         // Traverse the number of table elements:
-        $configurationArray = array();
+        $configurationArray = [];
         foreach ($tableLines as $key => $value) {
             // Initialize:
             $valueParts = explode($this->tableParsing_delimiter, $value);

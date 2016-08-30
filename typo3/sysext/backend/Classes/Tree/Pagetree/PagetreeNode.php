@@ -26,7 +26,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      *
      * @var array
      */
-    protected $cachedAccessRights = array();
+    protected $cachedAccessRights = [];
 
     /**
      * Workspace Overlay Id

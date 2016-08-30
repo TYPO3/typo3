@@ -70,9 +70,9 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->getLanguageService()->includeLLFile('EXT:lang/locallang_mod_web_func.xlf');
-        $this->MCONF = array(
+        $this->MCONF = [
             'name' => $this->moduleName,
-        );
+        ];
     }
 
     /**
@@ -141,11 +141,11 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $message = $this->getLanguageService()->getLL('clickAPage_content');
             $view = GeneralUtility::makeInstance(StandaloneView::class);
             $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:func/Resources/Private/Templates/InfoBox.html'));
-            $view->assignMultiple(array(
+            $view->assignMultiple([
                 'title' => $title,
                 'message' => $message,
                 'state' => InfoboxViewHelper::STATE_INFO
-            ));
+            ]);
             $this->content = $view->render();
             // Setting up the buttons and markers for docheader
             $this->getButtons();

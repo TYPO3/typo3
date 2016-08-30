@@ -22,7 +22,7 @@ class LatestCompatibleExtensionObjectStorageFixture
     /**
      * @var array
      */
-    public $extensions = array();
+    public $extensions = [];
 
     /**
      * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Extension

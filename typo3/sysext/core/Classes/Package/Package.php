@@ -25,7 +25,7 @@ class Package implements PackageInterface
     /**
      * @var array
      */
-    protected $extensionManagerConfiguration = array();
+    protected $extensionManagerConfiguration = [];
 
     /**
      * @var array
@@ -234,7 +234,7 @@ class Package implements PackageInterface
     public function getPackageReplacementKeys()
     {
         // The cast to array is required since the manifest returns data with type mixed
-        return (array)$this->getValueFromComposerManifest('replace') ?: array();
+        return (array)$this->getValueFromComposerManifest('replace') ?: [];
     }
 
     /**

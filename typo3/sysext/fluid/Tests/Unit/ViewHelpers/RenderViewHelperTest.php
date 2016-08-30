@@ -26,7 +26,7 @@ class RenderViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
         parent::setUp();
         $this->templateVariableContainer = new \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer();
         $this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);
-        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\RenderViewHelper::class, array('dummy'));
+        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\RenderViewHelper::class, ['dummy']);
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }
 
@@ -35,13 +35,13 @@ class RenderViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
      */
     public function loadSettingsIntoArgumentsSetsSettingsIfNoSettingsAreSpecified()
     {
-        $arguments = array(
+        $arguments = [
             'someArgument' => 'someValue'
-        );
-        $expected = array(
+        ];
+        $expected = [
             'someArgument' => 'someValue',
             'settings' => 'theSettings'
-        );
+        ];
         $this->templateVariableContainer->add('settings', 'theSettings');
 
         $actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments, $this->renderingContext);
@@ -53,14 +53,14 @@ class RenderViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
      */
     public function loadSettingsIntoArgumentsDoesNotOverrideGivenSettings()
     {
-        $arguments = array(
+        $arguments = [
             'someArgument' => 'someValue',
             'settings' => 'specifiedSettings'
-        );
-        $expected = array(
+        ];
+        $expected = [
             'someArgument' => 'someValue',
             'settings' => 'specifiedSettings'
-        );
+        ];
         $this->templateVariableContainer->add('settings', 'theSettings');
 
         $actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments, $this->renderingContext);
@@ -72,12 +72,12 @@ class RenderViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
      */
     public function loadSettingsIntoArgumentsDoesNotThrowExceptionIfSettingsAreNotInTemplateVariableContainer()
     {
-        $arguments = array(
+        $arguments = [
             'someArgument' => 'someValue'
-        );
-        $expected = array(
+        ];
+        $expected = [
             'someArgument' => 'someValue'
-        );
+        ];
 
         $actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments, $this->renderingContext);
         $this->assertEquals($expected, $actual);

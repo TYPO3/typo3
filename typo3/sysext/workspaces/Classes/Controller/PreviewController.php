@@ -67,21 +67,21 @@ class PreviewController extends AbstractController
         $GLOBALS['TBE_STYLES']['extJS']['theme'] = $resourcePath;
         $this->pageRenderer->loadExtJS();
         // Load  JavaScript:
-        $this->pageRenderer->addExtDirectCode(array(
+        $this->pageRenderer->addExtDirectCode([
             'TYPO3.Workspaces',
             'TYPO3.ExtDirectStateProvider'
-        ));
+        ]);
         $states = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['States'];
         $this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
         $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/notifications.js');
         $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/iframepanel.js');
         $resourcePathJavaScript = $workspacesRelPath . 'Resources/Public/JavaScript/';
-        $jsFiles = array(
+        $jsFiles = [
             'Ext.ux.plugins.TabStripContainer.js',
             'Store/mainstore.js',
             'helpers.js',
             'actions.js'
-        );
+        ];
         foreach ($jsFiles as $jsFile) {
             $this->pageRenderer->addJsFile($resourcePathJavaScript . $jsFile);
         }
@@ -128,7 +128,7 @@ class PreviewController extends AbstractController
         /** @var $uriBuilder \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder */
         $uriBuilder = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
         $wsSettingsPath = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-        $wsSettingsUri = $uriBuilder->uriFor('singleIndex', array(), \TYPO3\CMS\Workspaces\Controller\ReviewController::class, 'workspaces', 'web_workspacesworkspaces');
+        $wsSettingsUri = $uriBuilder->uriFor('singleIndex', [], \TYPO3\CMS\Workspaces\Controller\ReviewController::class, 'workspaces', 'web_workspacesworkspaces');
         $wsSettingsParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Review';
         $wsSettingsUrl = $wsSettingsPath . $wsSettingsUri . $wsSettingsParams;
         $viewDomain = BackendUtility::getViewDomain($this->pageId);
@@ -136,7 +136,7 @@ class PreviewController extends AbstractController
         // @todo - handle new pages here
         // branchpoints are not handled anymore because this feature is not supposed anymore
         if (\TYPO3\CMS\Workspaces\Service\WorkspaceService::isNewPage($this->pageId)) {
-            $wsNewPageUri = $uriBuilder->uriFor('newPage', array(), \TYPO3\CMS\Workspaces\Controller\PreviewController::class, 'workspaces', 'web_workspacesworkspaces');
+            $wsNewPageUri = $uriBuilder->uriFor('newPage', [], \TYPO3\CMS\Workspaces\Controller\PreviewController::class, 'workspaces', 'web_workspacesworkspaces');
             $wsNewPageParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Preview';
             $this->view->assign('liveUrl', $wsSettingsPath . $wsNewPageUri . $wsNewPageParams . '&ADMCMD_prev=IGNORE');
         } else {
@@ -147,7 +147,7 @@ class PreviewController extends AbstractController
         $this->view->assign('backendDomain', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'));
         $splitPreviewTsConfig = BackendUtility::getModTSconfig($this->pageId, 'workspaces.splitPreviewModes');
         $splitPreviewModes = GeneralUtility::trimExplode(',', $splitPreviewTsConfig['value']);
-        $allPreviewModes = array('slider', 'vbox', 'hbox');
+        $allPreviewModes = ['slider', 'vbox', 'hbox'];
         if (!array_intersect($splitPreviewModes, $allPreviewModes)) {
             $splitPreviewModes = $allPreviewModes;
         }
@@ -218,7 +218,7 @@ class PreviewController extends AbstractController
         if (!$GLOBALS['BE_USER']->check('modules', $pageModule)) {
             $pageModule = '';
         }
-        $t3Configuration = array(
+        $t3Configuration = [
             'siteUrl' => GeneralUtility::getIndpEnv('TYPO3_SITE_URL'),
             'PATH_typo3' => $pathTYPO3,
             'PATH_typo3_enc' => rawurlencode($pathTYPO3),
@@ -235,12 +235,12 @@ class PreviewController extends AbstractController
             'topBarHeight' => isset($GLOBALS['TBE_STYLES']['dims']['topFrameH']) ? (int)$GLOBALS['TBE_STYLES']['dims']['topFrameH'] : 30,
             'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : false,
             'debugInWindow' => $GLOBALS['BE_USER']->uc['debugInWindow'] ? 1 : 0,
-            'ContextHelpWindows' => array(
+            'ContextHelpWindows' => [
                 'width' => 600,
                 'height' => 400
-            )
-        );
-        $t3LLLcore = array(
+            ]
+        ];
+        $t3LLLcore = [
             'waitTitle' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_logging_in'),
             'refresh_login_failed' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_failed'),
             'refresh_login_failed_message' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_failed_message'),
@@ -270,7 +270,7 @@ class PreviewController extends AbstractController
             'donateWindow_button_donate' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:donateWindow.button_donate'),
             'donateWindow_button_disable' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:donateWindow.button_disable'),
             'donateWindow_button_postpone' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:donateWindow.button_postpone')
-        );
+        ];
         return '
 		TYPO3.configuration = ' . json_encode($t3Configuration) . ';
 		TYPO3.LLL = {

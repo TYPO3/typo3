@@ -26,8 +26,8 @@ class ExtendedFileUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array('sL'));
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array());
+        $GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, ['sL']);
+        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, []);
     }
 
     /**
@@ -36,17 +36,17 @@ class ExtendedFileUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function folderHasFilesInUseReturnsTrueIfItHasFiles()
     {
         $fileUid = 1;
-        $file = $this->getMock(File::class, array('getUid'), array(), '', false);
+        $file = $this->getMock(File::class, ['getUid'], [], '', false);
         $file->expects($this->once())->method('getUid')->will($this->returnValue($fileUid));
 
-        $folder = $this->getMock(Folder::class, array('getFiles'), array(), '', false);
+        $folder = $this->getMock(Folder::class, ['getFiles'], [], '', false);
         $folder->expects($this->once())
             ->method('getFiles')->with(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, true)
-            ->will($this->returnValue(array($file))
+            ->will($this->returnValue([$file])
         );
 
         /** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class, array('addFlashMessage'), array(), '');
+        $subject = $this->getMock(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class, ['addFlashMessage'], [], '');
         $GLOBALS['TYPO3_DB']->expects($this->once())
             ->method('exec_SELECTcountRows')->with('*', 'sys_refindex', 'deleted=0 AND ref_table="sys_file" AND ref_uid IN (' . $fileUid . ') AND tablename<>"sys_file_metadata"')
             ->will($this->returnValue(1));
@@ -67,13 +67,13 @@ class ExtendedFileUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function folderHasFilesInUseReturnsFalseIfItHasNoFiles()
     {
-        $folder = $this->getMock(Folder::class, array('getFiles'), array(), '', false);
+        $folder = $this->getMock(Folder::class, ['getFiles'], [], '', false);
         $folder->expects($this->once())->method('getFiles')->with(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, true)->will(
-            $this->returnValue(array())
+            $this->returnValue([])
         );
 
         /** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class, array('addFlashMessage'), array(), '');
+        $subject = $this->getMock(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class, ['addFlashMessage'], [], '');
         $this->assertFalse($subject->folderHasFilesInUse($folder));
     }
 }

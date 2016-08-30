@@ -37,7 +37,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     public function getStatus()
     {
-        $reports = array();
+        $reports = [];
         $reportMethods = explode(',', $this->reportList);
         foreach ($reportMethods as $reportMethod) {
             $reports[$reportMethod] = $this->{'get' . $reportMethod . 'Status'}();
@@ -61,7 +61,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         //  0 = not required, if it exists the dir should be writable
         //  1 = required, don't has to be writable
         //  2 = required, has to be writable
-        $checkWritable = array(
+        $checkWritable = [
             'typo3temp/' => 2,
             'typo3temp/pics/' => 2,
             'typo3temp/temp/' => 2,
@@ -77,7 +77,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
             'uploads/media/' => 0,
             $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] => -1,
             $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '_temp_/' => 0,
-        );
+        ];
 
         if ($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowGlobalInstall']) {
             $checkWritable[TYPO3_mainDir . 'ext/'] = -1;

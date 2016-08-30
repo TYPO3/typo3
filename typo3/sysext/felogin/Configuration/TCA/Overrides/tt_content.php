@@ -11,11 +11,11 @@ call_user_func(function () {
 
     // check if there is already a forms tab and add the item after that, otherwise
     // add the tab item as well
-    $additionalCTypeItem = array(
+    $additionalCTypeItem = [
         'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.10',
         'login',
         'content-elements-login'
-    );
+    ];
 
     $existingCTypeItems = $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'];
     $groupFound = false;
@@ -30,11 +30,11 @@ call_user_func(function () {
 
     if ($groupFound && $groupPosition) {
         // add the new CType item below CType
-        array_splice($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'], $groupPosition, 0, array(0 => $additionalCTypeItem));
+        array_splice($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'], $groupPosition, 0, [0 => $additionalCTypeItem]);
     } else {
         // nothing found, add two items (group + new CType) at the bottom of the list
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem('tt_content', 'CType',
-            array('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.forms', '--div--')
+            ['LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.forms', '--div--']
         );
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem('tt_content', 'CType', $additionalCTypeItem);
     }

@@ -22,5 +22,5 @@ class IconUtilityFixture extends \TYPO3\CMS\Backend\Utility\IconUtility
     /**
      * @var array
      */
-    protected static $spriteIconCache = array();
+    protected static $spriteIconCache = [];
 }

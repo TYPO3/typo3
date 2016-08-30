@@ -56,7 +56,7 @@ class DatabaseSchemaService
     public function addCachingFrameworkRequiredDatabaseSchemaForInstallUtility(array $sqlString, $extensionKey)
     {
         $sqlString[] = $this->getCachingFrameworkRequiredDatabaseSchema();
-        return array($sqlString, $extensionKey);
+        return [$sqlString, $extensionKey];
     }
 
     /**
@@ -69,6 +69,6 @@ class DatabaseSchemaService
     public function addCachingFrameworkRequiredDatabaseSchemaForSqlExpectedSchemaService(array $sqlString)
     {
         $sqlString[] = $this->getCachingFrameworkRequiredDatabaseSchema();
-        return array($sqlString);
+        return [$sqlString];
     }
 }

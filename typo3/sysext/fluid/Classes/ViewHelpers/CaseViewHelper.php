@@ -36,10 +36,10 @@ class CaseViewHelper extends AbstractViewHelper implements CompilableInterface
     public function render($value = null, $default = false)
     {
         return static::renderStatic(
-            array(
+            [
                 'value' => $value,
                 'default' => $default
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

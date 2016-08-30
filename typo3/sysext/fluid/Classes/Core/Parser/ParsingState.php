@@ -30,7 +30,7 @@ class ParsingState implements \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterfa
      *
      * @var array
      */
-    protected $nodeStack = array();
+    protected $nodeStack = [];
 
     /**
      * Variable container where ViewHelpers implementing the PostParseFacet can

@@ -52,7 +52,7 @@ class XcacheBackend extends AbstractBackend implements TaggableBackendInterface
      * @param array $options Configuration options
      * @throws \TYPO3\CMS\Core\Cache\Exception If xcache PHP extension is not loaded
      */
-    public function __construct($context, array $options = array())
+    public function __construct($context, array $options = [])
     {
         if (!extension_loaded('xcache')) {
             throw new Exception(
@@ -74,7 +74,7 @@ class XcacheBackend extends AbstractBackend implements TaggableBackendInterface
      * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if $data is not a string
      */
-    public function set($entryIdentifier, $data, array $tags = array(), $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
         if ($this->runningFromCliOrWrongConfiguration()) {
             return;
@@ -161,10 +161,10 @@ class XcacheBackend extends AbstractBackend implements TaggableBackendInterface
     public function findIdentifiersByTag($tag)
     {
         if ($this->runningFromCliOrWrongConfiguration()) {
-            return array();
+            return [];
         }
         $identifiers = xcache_get($this->identifierPrefix . 'tag_' . $tag);
-        return $identifiers ?: array();
+        return $identifiers ?: [];
     }
 
     /**
@@ -177,10 +177,10 @@ class XcacheBackend extends AbstractBackend implements TaggableBackendInterface
     protected function findTagsByIdentifier($identifier)
     {
         if ($this->runningFromCliOrWrongConfiguration()) {
-            return array();
+            return [];
         }
         $tags = xcache_get($this->identifierPrefix . 'ident_' . $identifier);
-        return $tags ?: array();
+        return $tags ?: [];
     }
 
     /**

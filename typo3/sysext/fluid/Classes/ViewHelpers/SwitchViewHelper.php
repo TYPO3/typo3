@@ -47,7 +47,7 @@ class SwitchViewHelper extends AbstractViewHelper implements ChildNodeAccessInte
      * An array of \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
      * @var array
      */
-    private $childNodes = array();
+    private $childNodes = [];
 
     /**
      * @var mixed
@@ -78,9 +78,9 @@ class SwitchViewHelper extends AbstractViewHelper implements ChildNodeAccessInte
     public function render($expression)
     {
         return static::renderStatic(
-            array(
+            [
                 'expression' => $expression
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -100,15 +100,15 @@ class SwitchViewHelper extends AbstractViewHelper implements ChildNodeAccessInte
     {
         $viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
 
-        $stackValue = array(
+        $stackValue = [
             'expression' => $arguments['expression'],
             'break' => false
-        );
+        ];
 
         if ($viewHelperVariableContainer->exists(SwitchViewHelper::class, 'stateStack')) {
             $stateStack = $viewHelperVariableContainer->get(SwitchViewHelper::class, 'stateStack');
         } else {
-            $stateStack = array();
+            $stateStack = [];
         }
         $stateStack[] = $stackValue;
         $viewHelperVariableContainer->addOrUpdate(SwitchViewHelper::class, 'stateStack', $stateStack);

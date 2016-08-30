@@ -37,7 +37,7 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     /**
      * @var int Pointer to last handled frontend and backend user row
      */
-    protected $userRecordPointer = array();
+    protected $userRecordPointer = [];
 
     /**
      * Constructor initializes user record pointer
@@ -45,10 +45,10 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     public function __construct()
     {
         parent::__construct();
-        $this->userRecordPointer = array(
+        $this->userRecordPointer = [
             'FE' => 0,
             'BE' => 0
-        );
+        ];
     }
 
     /**
@@ -75,10 +75,10 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
         }
         if ($processedAllRecords) {
             // Reset the user record pointer
-            $this->userRecordPointer = array(
+            $this->userRecordPointer = [
                 'FE' => 0,
                 'BE' => 0
-            );
+            ];
             // Determine if task should disable itself
             if ($this->canDeactivateSelf) {
                 $this->deactivateSelf();
@@ -121,7 +121,7 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     protected function convertPasswords($mode, array $users)
     {
-        $updateUsers = array();
+        $updateUsers = [];
         foreach ($users as $user) {
             // If a password is already a salted hash it must not be updated
             if ($this->isSaltedHash($user['password'])) {
@@ -155,9 +155,9 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
                 $newPassword = 'M' . $newPassword;
             }
             // Persist updated password
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery(strtolower($mode) . '_users', 'uid = ' . $user['uid'], array(
+            $GLOBALS['TYPO3_DB']->exec_UPDATEquery(strtolower($mode) . '_users', 'uid = ' . $user['uid'], [
                 'password' => $newPassword
-            ));
+            ]);
         }
     }
 

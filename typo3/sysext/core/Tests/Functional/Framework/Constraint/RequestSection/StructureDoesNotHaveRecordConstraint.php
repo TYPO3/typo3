@@ -27,7 +27,7 @@ class StructureDoesNotHaveRecordConstraint extends AbstractStructureRecordConstr
      */
     protected function matchesSection(ResponseSection $responseSection)
     {
-        $matchingVariants = array();
+        $matchingVariants = [];
 
         foreach ($responseSection->findStructures($this->recordIdentifier, $this->recordField) as $path => $structure) {
             if (empty($structure) || !is_array($structure)) {

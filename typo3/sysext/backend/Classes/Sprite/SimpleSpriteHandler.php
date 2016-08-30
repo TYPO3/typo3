@@ -68,7 +68,7 @@ class SimpleSpriteHandler extends AbstractSpriteHandler
         $iconPath = '../../' . TYPO3_mainDir;
         $iconsToProcess = array_merge((array)$GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'], $this->collectTcaSpriteIcons());
         foreach ($iconsToProcess as $iconName => $iconFile) {
-            $css = str_replace('###NAME###', str_replace(array('extensions-', 'tcarecords-'), array('', ''), $iconName), $this->styleSheetTemplateExtIcons);
+            $css = str_replace('###NAME###', str_replace(['extensions-', 'tcarecords-'], ['', ''], $iconName), $this->styleSheetTemplateExtIcons);
             $css = str_replace('###IMAGE###', \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($iconPath . $iconFile), $css);
             $this->iconNames[] = $iconName;
             $this->styleSheetData .= $css;

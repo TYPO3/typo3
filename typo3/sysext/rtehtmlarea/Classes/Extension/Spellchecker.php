@@ -43,16 +43,16 @@ class Spellchecker extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'spellcheck' => 'SpellCheck'
-    );
+    ];
 
     /**
      * Spell checker modes
      *
      * @var array
      */
-    protected $spellCheckerModes = array('ultra', 'fast', 'normal', 'bad-spellers');
+    protected $spellCheckerModes = ['ultra', 'fast', 'normal', 'bad-spellers'];
 
     /**
      * Returns TRUE if the plugin is available and correctly initialized
@@ -77,7 +77,7 @@ class Spellchecker extends RteHtmlAreaApi
      */
     public function buildJavascriptConfiguration()
     {
-        $jsArray = array();
+        $jsArray = [];
         $button = 'spellcheck';
         // Set the SpellChecker mode
         $spellCheckerMode = isset($GLOBALS['BE_USER']->userTS['options.']['HTMLAreaPspellMode']) ? trim($GLOBALS['BE_USER']->userTS['options.']['HTMLAreaPspellMode']) : 'normal';

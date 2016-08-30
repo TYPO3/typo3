@@ -24,9 +24,9 @@ class RegularExpressionValidator extends AbstractValidator
     /**
      * @var array
      */
-    protected $supportedOptions = array(
-        'regularExpression' => array('', 'The regular expression to use for validation, used as given', 'string', true)
-    );
+    protected $supportedOptions = [
+        'regularExpression' => ['', 'The regular expression to use for validation, used as given', 'string', true]
+    ];
 
     /**
      * Checks if the given value matches the specified regular expression.

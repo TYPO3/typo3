@@ -7,17 +7,17 @@ if (TYPO3_MODE === 'BE') {
         'ts',
         '',
         '',
-        array(
+        [
             'routeTarget' => \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::class . '::mainAction',
             'access' => 'admin',
             'name' => 'web_ts',
-            'labels' => array(
-                'tabs_images' => array(
+            'labels' => [
+                'tabs_images' => [
                     'tab' => 'EXT:tstemplate/Resources/Public/Icons/module-tstemplate.svg',
-                ),
+                ],
                 'll_ref' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_mod.xlf',
-            ),
-        )
+            ],
+        ]
     );
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(

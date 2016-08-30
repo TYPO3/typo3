@@ -79,16 +79,16 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
     {
         $isGD = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'];
         if (!is_array($conf)) {
-            $conf = array();
+            $conf = [];
         }
-        $totalWH = array();
+        $totalWH = [];
         $items = count($conf);
         $minDim = 0;
         $maxDim = 0;
         $Hcounter = 0;
         $Wcounter = 0;
-        $Hobjs = array();
-        $Wobjs = array();
+        $Hobjs = [];
+        $Wobjs = [];
         if ($isGD) {
             // Generate the gif-files. the $menuArr is filled with some values like output_w, output_h, output_file
             $Hobjs = $this->mconf['applyTotalH'];
@@ -109,7 +109,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
             }
             if ($minDim) {
                 $conf[$items] = $conf[$items - 1];
-                $this->menuArr[$items] = array();
+                $this->menuArr[$items] = [];
                 $items = count($conf);
             }
             // TOTAL width
@@ -119,7 +119,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
         }
         $c = 0;
         $maxFlag = 0;
-        $distributeAccu = array('H' => 0, 'W' => 0);
+        $distributeAccu = ['H' => 0, 'W' => 0];
         foreach ($conf as $key => $val) {
             $this->getTypoScriptFrontendController()->register['count_HMENU_MENUOBJ']++;
             $this->getTypoScriptFrontendController()->register['count_MENUOBJ']++;
@@ -213,7 +213,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
                     foreach ($Hobjs as $index) {
                         if ($gifCreator->setup[$index] && $gifCreator->setup[$index . '.']) {
                             $oldOffset = explode(',', $gifCreator->setup[$index . '.']['offset']);
-                            $gifCreator->setup[$index . '.']['offset'] = implode(',', $gifCreator->applyOffset($oldOffset, array(0, -$Hcounter)));
+                            $gifCreator->setup[$index . '.']['offset'] = implode(',', $gifCreator->applyOffset($oldOffset, [0, -$Hcounter]));
                         }
                     }
                 }
@@ -221,7 +221,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
                     foreach ($Wobjs as $index) {
                         if ($gifCreator->setup[$index] && $gifCreator->setup[$index . '.']) {
                             $oldOffset = explode(',', $gifCreator->setup[$index . '.']['offset']);
-                            $gifCreator->setup[$index . '.']['offset'] = implode(',', $gifCreator->applyOffset($oldOffset, array(-$Wcounter, 0)));
+                            $gifCreator->setup[$index . '.']['offset'] = implode(',', $gifCreator->applyOffset($oldOffset, [-$Wcounter, 0]));
                         }
                     }
                 }
@@ -284,12 +284,12 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
     public function findLargestDims($conf, $items, $Hobjs, $Wobjs, $minDim, $maxDim)
     {
         $items = (int)$items;
-        $totalWH = array(
-            'W' => array(),
-            'H' => array(),
+        $totalWH = [
+            'W' => [],
+            'H' => [],
             'W_total' => 0,
             'H_total' => 0
-        );
+        ];
         $Hcounter = 0;
         $Wcounter = 0;
         $c = 0;
@@ -372,7 +372,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
         $this->WMresult = '';
         $this->INPfixMD5 = substr(md5(microtime() . $this->GMENU_fixKey), 0, 4);
         $this->WMmenuItems = count($this->result['NO']);
-        $this->WMsubmenuObjSuffixes = $this->tmpl->splitConfArray(array('sOSuffix' => $this->mconf['submenuObjSuffixes']), $this->WMmenuItems);
+        $this->WMsubmenuObjSuffixes = $this->tmpl->splitConfArray(['sOSuffix' => $this->mconf['submenuObjSuffixes']], $this->WMmenuItems);
         $this->extProc_init();
         $tsfe = $this->getTypoScriptFrontendController();
         if (!isset($tsfe->additionalJavaScript['JSImgCode'])) {
@@ -382,7 +382,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
             if ($this->result['NO'][$key]['output_file']) {
                 // Initialize the cObj with the page record of the menu item
                 $this->WMcObj->start($this->menuArr[$key], 'pages');
-                $this->I = array();
+                $this->I = [];
                 $this->I['key'] = $key;
                 $this->I['INPfix'] = ($this->imgNameNotRandom ? '' : '_' . $this->INPfixMD5) . '_' . $key;
                 $this->I['val'] = $this->result['NO'][$key];
@@ -401,7 +401,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
                 if ($this->mconf['accessKey']) {
                     $this->I['accessKey'] = $this->accessKey($this->I['title']);
                 } else {
-                    $this->I['accessKey'] = array();
+                    $this->I['accessKey'] = [];
                 }
                 // Make link tag
                 $this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val']);
@@ -439,7 +439,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
                 }
                 $this->I['IMG'] = '<img src="' . $tsfe->absRefPrefix . $this->I['val']['output_file'] . '" width="' . $this->I['val']['output_w'] . '" height="' . $this->I['val']['output_h'] . '" ' . $this->parent_cObj->getBorderAttr('border="0"') . ($this->mconf['disableAltText'] ? '' : ' alt="' . htmlspecialchars($this->I['altText']) . '"') . $this->I['name'] . ($this->I['val']['imgParams'] ? ' ' . $this->I['val']['imgParams'] : '') . ' />';
                 // Make before, middle and after parts
-                $this->I['parts'] = array();
+                $this->I['parts'] = [];
                 $this->I['parts']['ATag_begin'] = $this->I['A1'];
                 $this->I['parts']['image'] = $this->I['IMG'];
                 $this->I['parts']['ATag_end'] = $this->I['A2'];

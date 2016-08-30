@@ -65,7 +65,7 @@ class DocumentRepository
         $allDocuments = $this->findAll();
 
         // Initialize the dependency of languages
-        $languageDependencies = array();
+        $languageDependencies = [];
         /** @var $locales \TYPO3\CMS\Core\Localization\Locales */
         $locales = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
         // Language is found. Configure it:
@@ -132,7 +132,7 @@ class DocumentRepository
     {
         $basePath = 'typo3conf/Documentation/';
 
-        $documents = array();
+        $documents = [];
         $documentKeys = GeneralUtility::get_dirs(PATH_site . $basePath);
         // Early return in case no document keys were found
         if (!is_array($documentKeys)) {
@@ -168,7 +168,7 @@ class DocumentRepository
                     switch ($format) {
                         case 'html':
                             // Try to find a valid index file
-                            $indexFiles = array('Index.html', 'index.html', 'index.htm');
+                            $indexFiles = ['Index.html', 'index.html', 'index.htm'];
                             foreach ($indexFiles as $indexFile) {
                                 if (file_exists(PATH_site . $formatPath . $format . '/' . $indexFile)) {
                                     $documentFile = $indexFile;
@@ -211,7 +211,7 @@ class DocumentRepository
      */
     protected function findOpenOfficeDocuments()
     {
-        $documents = array();
+        $documents = [];
         $language = 'default';
 
         foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extensionKey => $extensionData) {
@@ -257,10 +257,10 @@ class DocumentRepository
     protected function getMetadata($documentKey, $language)
     {
         $documentPath = PATH_site . 'typo3conf/Documentation/' . $documentKey . '/' . $language . '/';
-        $metadata = array(
+        $metadata = [
             'title' => $documentKey,
             'description' => '',
-        );
+        ];
         if (GeneralUtility::isFirstPartOfStr($documentKey, 'typo3cms.extensions.')) {
             $extensionKey = substr($documentKey, 20);
             if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {

@@ -77,10 +77,10 @@ class IconRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $unregisterdIcon = 'foo-bar-unregistered';
         $this->assertFalse($this->subject->isRegistered($unregisterdIcon));
-        $this->subject->registerIcon($unregisterdIcon, FontawesomeIconProvider::class, array(
+        $this->subject->registerIcon($unregisterdIcon, FontawesomeIconProvider::class, [
             'name' => 'pencil',
             'additionalClasses' => 'fa-fw'
-        ));
+        ]);
         $this->assertTrue($this->subject->isRegistered($unregisterdIcon));
     }
 

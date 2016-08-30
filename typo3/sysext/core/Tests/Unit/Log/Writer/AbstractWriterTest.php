@@ -25,9 +25,9 @@ class AbstractWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructThrowsExceptionWithInvalidConfigurationOption()
     {
-        $invalidConfiguration = array(
+        $invalidConfiguration = [
             'foo' => 'bar'
-        );
-        $this->getMockForAbstractClass(\TYPO3\CMS\Core\Log\Writer\AbstractWriter::class, array($invalidConfiguration));
+        ];
+        $this->getMockForAbstractClass(\TYPO3\CMS\Core\Log\Writer\AbstractWriter::class, [$invalidConfiguration]);
     }
 }

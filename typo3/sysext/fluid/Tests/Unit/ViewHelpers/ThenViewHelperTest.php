@@ -26,7 +26,7 @@ class ThenViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        $this->subject = $this->getMock(ThenViewHelper::class, array('renderChildren'));
+        $this->subject = $this->getMock(ThenViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->subject);
     }
 

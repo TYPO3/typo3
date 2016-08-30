@@ -31,7 +31,7 @@ class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->subject = $this->getMock(\TYPO3\CMS\IndexedSearch\Indexer::class, array('dummy'));
+        $this->subject = $this->getMock(\TYPO3\CMS\IndexedSearch\Indexer::class, ['dummy']);
     }
 
     /**
@@ -53,9 +53,9 @@ class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $temporaryFileName = tempnam(PATH_site . 'typo3temp/', 't3unit-');
         $this->testFilesToDelete[] = $temporaryFileName;
         $html = 'test <a href="testfile">test</a> test';
-        $GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'] = array(
+        $GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'] = [
             \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('testfile') => $temporaryFileName,
-        );
+        ];
         $result = $this->subject->extractHyperLinks($html);
         $this->assertEquals(1, count($result));
         $this->assertEquals($temporaryFileName, $result[0]['localPath']);
@@ -103,7 +103,7 @@ class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $absRefPrefix = '/' . $this->getUniqueId();
         $html = 'test <a href="' . $absRefPrefix . 'index.php">test</a> test';
-        $GLOBALS['TSFE'] = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', false);
+        $GLOBALS['TSFE'] = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, [], [], '', false);
         $config = [
             'config' => [
                 'absRefPrefix' => $absRefPrefix,

@@ -47,21 +47,21 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
     public function modMenu()
     {
         $lang = $this->getLanguageService();
-        $menuArray = array(
-            'depth' => array(
+        $menuArray = [
+            'depth' => [
                 0 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
                 1 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
                 2 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
                 3 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
                 4 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
                 999 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
-            )
-        );
+            ]
+        ];
         // Languages:
         $lang = $this->getSystemLanguages();
-        $menuArray['lang'] = array(
+        $menuArray['lang'] = [
             0 => '[All]'
-        );
+        ];
         foreach ($lang as $langRec) {
             $menuArray['lang'][$langRec['uid']] = $langRec['title'];
         }
@@ -96,10 +96,10 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
             $tree->addField('l18n_cfg');
             // Creating top icon; the current page
             $HTML = $this->iconFactory->getIconForRecord('pages', $treeStartingRecord, Icon::SIZE_SMALL)->render();
-            $tree->tree[] = array(
+            $tree->tree[] = [
                 'row' => $treeStartingRecord,
                 'HTML' => $HTML
-            );
+            ];
             // Create the tree from starting point:
             if ($depth) {
                 $tree->getTree($treeStartingPoint, $depth, '');
@@ -125,10 +125,10 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
         $titleLen = $this->getBackendUser()->uc['titleLen'];
         // Put together the TREE:
         $output = '';
-        $newOL_js = array();
-        $langRecUids = array();
+        $newOL_js = [];
+        $langRecUids = [];
         foreach ($tree->tree as $data) {
-            $tCells = array();
+            $tCells = [];
             $langRecUids[0][] = $data['row']['uid'];
             // Page icons / titles etc.
             $tCells[] = '<td' . ($data['row']['_CSSCLASS'] ? ' class="' . $data['row']['_CSSCLASS'] . '"' : '') . '>' .
@@ -171,7 +171,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
                     'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_CEcount'
                 ) . '" align="center">' . $this->getContentElementCount($data['row']['uid'], 0) . '</td>';
             $modSharedTSconfig = BackendUtility::getModTSconfig($data['row']['uid'], 'mod.SHARED');
-            $disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages']) ? GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], true) : array();
+            $disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages']) ? GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], true) : [];
             // Traverse system languages:
             foreach ($languages as $langRow) {
                 if ($this->pObj->MOD_SETTINGS['lang'] == 0 || (int)$this->pObj->MOD_SETTINGS['lang'] === (int)$langRow['uid']) {
@@ -242,7 +242,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 				</tr>';
         }
         // Put together HEADER:
-        $tCells = array();
+        $tCells = [];
         $tCells[] = '<td>' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_page') . ':</td>';
         if (is_array($langRecUids[0])) {
             $editUrl = BackendUtility::getModuleUrl('record_edit', [
@@ -332,7 +332,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
             $allowed_languages = array_flip(explode(',', $this->getBackendUser()->groupData['allowed_languages']));
         }
         $res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'sys_language', '1=1' . BackendUtility::deleteClause('sys_language'));
-        $outputArray = array();
+        $outputArray = [];
         while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
             if (is_array($allowed_languages) && !empty($allowed_languages)) {
                 if (isset($allowed_languages[$row['uid']])) {

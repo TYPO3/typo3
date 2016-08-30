@@ -34,7 +34,7 @@ class ImageMagick6Preset extends AbstractImagePreset implements Configuration\Pr
     /**
      * @var array Configuration values handled by this preset
      */
-    protected $configurationValues = array(
+    protected $configurationValues = [
         'GFX/image_processing' => 1,
         'GFX/im' => 1,
         // im_path and im_path_lzw are determined and set by path lookup methods
@@ -44,7 +44,7 @@ class ImageMagick6Preset extends AbstractImagePreset implements Configuration\Pr
         'GFX/im_v5effects' => 1,
         'GFX/im_mask_temp_ext_gif' => 1,
         'GFX/colorspace' => 'sRGB',
-    );
+    ];
 
     /**
      * Find executable in path, wrapper for specific ImageMagick/GraphicsMagick find methods.

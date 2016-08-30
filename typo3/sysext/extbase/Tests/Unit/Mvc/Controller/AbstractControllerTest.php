@@ -51,51 +51,51 @@ class AbstractControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function addFlashMessageDataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 new \TYPO3\CMS\Core\Messaging\FlashMessage('Simple Message'),
                 'Simple Message',
                 '',
                 \TYPO3\CMS\Core\Messaging\FlashMessage::OK,
                 false
-            ),
-            array(
+            ],
+            [
                 new \TYPO3\CMS\Core\Messaging\FlashMessage('Some OK', 'Message Title', \TYPO3\CMS\Core\Messaging\FlashMessage::OK, true),
                 'Some OK',
                 'Message Title',
                 \TYPO3\CMS\Core\Messaging\FlashMessage::OK,
                 true
-            ),
-            array(
+            ],
+            [
                 new \TYPO3\CMS\Core\Messaging\FlashMessage('Some Info', 'Message Title', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO, true),
                 'Some Info',
                 'Message Title',
                 \TYPO3\CMS\Core\Messaging\FlashMessage::INFO,
                 true
-            ),
-            array(
+            ],
+            [
                 new \TYPO3\CMS\Core\Messaging\FlashMessage('Some Notice', 'Message Title', \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE, true),
                 'Some Notice',
                 'Message Title',
                 \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE,
                 true
-            ),
+            ],
 
-            array(
+            [
                 new \TYPO3\CMS\Core\Messaging\FlashMessage('Some Warning', 'Message Title', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING, true),
                 'Some Warning',
                 'Message Title',
                 \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING,
                 true
-            ),
-            array(
+            ],
+            [
                 new \TYPO3\CMS\Core\Messaging\FlashMessage('Some Error', 'Message Title', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR, true),
                 'Some Error',
                 'Message Title',
                 \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
                 true
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -106,24 +106,24 @@ class AbstractControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $flashMessageQueue = $this->getMock(
             \TYPO3\CMS\Core\Messaging\FlashMessageQueue::class,
-            array('enqueue'),
-            array($this->getUniqueId('identifier_'))
+            ['enqueue'],
+            [$this->getUniqueId('identifier_')]
         );
         $flashMessageQueue->expects($this->once())->method('enqueue')->with($this->equalTo($expectedMessage));
 
         $controllerContext = $this->getMock(
             \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class,
-            array('getFlashMessageQueue')
+            ['getFlashMessageQueue']
         );
         $controllerContext->expects($this->once())->method('getFlashMessageQueue')->will($this->returnValue($flashMessageQueue));
 
         $controller = $this->getMockForAbstractClass(\TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class,
-            array(),
+            [],
             '',
             false,
             true,
             true,
-            array('dummy')
+            ['dummy']
         );
         $this->inject($controller, 'controllerContext', $controllerContext);
 
@@ -137,12 +137,12 @@ class AbstractControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function addFlashMessageThrowsExceptionOnInvalidMessageBody()
     {
         $controller = $this->getMockForAbstractClass(\TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class,
-            array(),
+            [],
             '',
             false,
             true,
             true,
-            array('dummy')
+            ['dummy']
         );
 
         $controller->addFlashMessage(new \stdClass());

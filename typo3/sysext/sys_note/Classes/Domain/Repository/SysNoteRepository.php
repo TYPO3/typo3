@@ -42,10 +42,10 @@ class SysNoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     {
         $pids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', (string)$pids);
         $query = $this->createQuery();
-        $query->setOrderings(array(
+        $query->setOrderings([
             'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
             'creationDate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
-        ));
+        ]);
         $query->matching(
             $query->logicalAnd(
                 $query->in('pid', $pids),

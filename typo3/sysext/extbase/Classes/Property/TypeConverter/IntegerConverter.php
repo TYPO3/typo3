@@ -30,7 +30,7 @@ class IntegerConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstrac
     /**
      * @var array<string>
      */
-    protected $sourceTypes = array('integer', 'string');
+    protected $sourceTypes = ['integer', 'string'];
 
     /**
      * @var string
@@ -52,13 +52,13 @@ class IntegerConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstrac
      * @return int|\TYPO3\CMS\Extbase\Error\Error
      * @api
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
     {
         if ($source === null || (string)$source === '') {
             return null;
         }
         if (!is_numeric($source)) {
-            return new \TYPO3\CMS\Extbase\Error\Error('"%s" is no integer.', 1332933658, array($source));
+            return new \TYPO3\CMS\Extbase\Error\Error('"%s" is no integer.', 1332933658, [$source]);
         }
         return (int)$source;
     }

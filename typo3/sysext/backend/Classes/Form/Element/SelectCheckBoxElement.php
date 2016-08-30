@@ -46,7 +46,7 @@ class SelectCheckBoxElement extends AbstractFormElement
             $itemArray = array_flip($parameterArray['itemFormElValue']);
 
             // Traverse the Array of selector box items:
-            $groups = array();
+            $groups = [];
             $currentGroup = 0;
             $c = 0;
             $sOnChange = '';
@@ -61,10 +61,10 @@ class SelectCheckBoxElement extends AbstractFormElement
                             $selIcon = FormEngineUtility::getIconHtml($p[2]);
                         }
                         $currentGroup++;
-                        $groups[$currentGroup]['header'] = array(
+                        $groups[$currentGroup]['header'] = [
                             'icon' => $selIcon,
                             'title' => $p[0]
-                        );
+                        ];
                     } else {
                         // Check if some help text is available
                         // Since TYPO3 4.5 help text is expected to be an associative array
@@ -74,7 +74,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                         // are modified with an itemProcFunc)
                         $hasHelp = false;
                         $help = '';
-                        $helpArray = array();
+                        $helpArray = [];
                         if (!empty($p[3])) {
                             $hasHelp = true;
                             if (is_array($p[3])) {
@@ -95,7 +95,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                         }
 
                         // Build item array
-                        $groups[$currentGroup]['items'][] = array(
+                        $groups[$currentGroup]['items'][] = [
                             'id' => StringUtility::getUniqueId('select_checkbox_row_'),
                             'name' => $parameterArray['itemFormElName'] . '[' . $c . ']',
                             'value' => $p[1],
@@ -105,7 +105,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                             'icon' => (!empty($p[2]) ? FormEngineUtility::getIconHtml($p[2]) : $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render()),
                             'title' => $p[0],
                             'help' => $help
-                        );
+                        ];
                         $c++;
                     }
                 }
@@ -127,7 +127,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                 }
                 if (is_array($group['items']) && !empty($group['items'])) {
                     $tableRows = [];
-                    $resetGroup = array();
+                    $resetGroup = [];
 
                     // Render rows
                     foreach ($group['items'] as $item) {
@@ -194,7 +194,7 @@ class SelectCheckBoxElement extends AbstractFormElement
 
         if (!$disabled) {
             $html = $this->renderWizards(
-                array(implode(LF, $html)),
+                [implode(LF, $html)],
                 $config['wizards'],
                 $this->data['tableName'],
                 $this->data['databaseRow'],

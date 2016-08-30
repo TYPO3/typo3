@@ -155,7 +155,7 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
                 1344687436);
         }
 
-        $fileContent = GeneralUtility::getUrl($url, 0, array(TYPO3_user_agent));
+        $fileContent = GeneralUtility::getUrl($url, 0, [TYPO3_user_agent]);
 
         // Can not fetch url, throw an exception
         if ($fileContent === false) {

@@ -38,7 +38,7 @@ class CheckboxElement extends AbstractFormElement
 
         $numberOfItems = count($items);
         if ($numberOfItems === 0) {
-            $items[] = array('', '');
+            $items[] = ['', ''];
             $numberOfItems = 1;
         }
         $formElementValue = (int)$this->data['parameterArray']['itemFormElValue'];
@@ -46,30 +46,30 @@ class CheckboxElement extends AbstractFormElement
         if ($cols > 1) {
             $colWidth = (int)floor(12 / $cols);
             $colClass = 'col-md-12';
-            $colClear = array();
+            $colClear = [];
             if ($colWidth == 6) {
                 $colClass = 'col-sm-6';
-                $colClear = array(
+                $colClear = [
                     2 => 'visible-sm-block visible-md-block visible-lg-block',
-                );
+                ];
             } elseif ($colWidth === 4) {
                 $colClass = 'col-sm-4';
-                $colClear = array(
+                $colClear = [
                     3 => 'visible-sm-block visible-md-block visible-lg-block',
-                );
+                ];
             } elseif ($colWidth === 3) {
                 $colClass = 'col-sm-6 col-md-3';
-                $colClear = array(
+                $colClear = [
                     2 => 'visible-sm-block',
                     4 => 'visible-md-block visible-lg-block',
-                );
+                ];
             } elseif ($colWidth <= 2) {
                 $colClass = 'checkbox-column col-sm-6 col-md-3 col-lg-2';
-                $colClear = array(
+                $colClear = [
                     2 => 'visible-sm-block',
                     4 => 'visible-md-block',
                     6 => 'visible-lg-block'
-                );
+                ];
             }
             $html .= '<div class="checkbox-row row">';
             $counter = 0;

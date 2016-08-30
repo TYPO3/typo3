@@ -47,7 +47,7 @@ class GridDataService
      *
      * @var array
      */
-    protected $dataArray = array();
+    protected $dataArray = [];
 
     /**
      * Name of the field used for sorting.
@@ -100,8 +100,8 @@ class GridDataService
         } else {
             throw new \InvalidArgumentException('No such workspace defined');
         }
-        $data = array();
-        $data['data'] = array();
+        $data = [];
+        $data['data'] = [];
         $this->generateDataArray($versions, $filterTxt);
         $data['total'] = count($this->dataArray);
         $data['data'] = $this->getDataArray($start, $limit);
@@ -127,13 +127,13 @@ class GridDataService
         if ($this->getDataArrayFromCache($versions, $filterTxt) === false) {
             /** @var $stagesObj \TYPO3\CMS\Workspaces\Service\StagesService */
             $stagesObj = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
-            $defaultGridColumns = array(
+            $defaultGridColumns = [
                 self::GridColumn_Collection => 0,
                 self::GridColumn_CollectionLevel => 0,
                 self::GridColumn_CollectionParent => '',
                 self::GridColumn_CollectionCurrent => '',
                 self::GridColumn_CollectionChildren => 0,
-            );
+            ];
             foreach ($versions as $table => $records) {
                 $hiddenField = $this->getTcaEnableColumnsFieldName($table, 'disabled');
                 $isRecordTypeAllowedToModify = $GLOBALS['BE_USER']->check('tables_modify', $table);
@@ -152,7 +152,7 @@ class GridDataService
 
                     $isDeletedPage = $table == 'pages' && $recordState == 'deleted';
                     $viewUrl = \TYPO3\CMS\Workspaces\Service\WorkspaceService::viewSingleRecord($table, $record['uid'], $origRecord, $versionRecord);
-                    $versionArray = array();
+                    $versionArray = [];
                     $versionArray['table'] = $table;
                     $versionArray['id'] = $table . ':' . $record['uid'];
                     $versionArray['uid'] = $record['uid'];
@@ -178,9 +178,9 @@ class GridDataService
                     $versionArray['icon_Workspace'] = $iconFactory->getIconForRecord($table, $versionRecord, Icon::SIZE_SMALL)->render();
                     $languageValue = $this->getLanguageValue($table, $versionRecord);
                     $versionArray['languageValue'] = $languageValue;
-                    $versionArray['language'] = array(
+                    $versionArray['language'] = [
                         'icon' => $iconFactory->getIcon($this->getSystemLanguageValue($languageValue, 'flagIcon'), Icon::SIZE_SMALL)->render()
-                    );
+                    ];
                     $versionArray['allowedAction_nextStage'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
                     $versionArray['allowedAction_prevStage'] = $isRecordTypeAllowedToModify && $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);
                     if ($swapAccess && $swapStage != 0 && $versionRecord['t3ver_stage'] == $swapStage) {
@@ -214,10 +214,10 @@ class GridDataService
             // Enrich elements after everything has been processed:
             foreach ($this->dataArray as &$element) {
                 $identifier = $element['table'] . ':' . $element['t3ver_oid'];
-                $element['integrity'] = array(
+                $element['integrity'] = [
                     'status' => $this->getIntegrityService()->getStatusRepresentation($identifier),
                     'messages' => htmlspecialchars($this->getIntegrityService()->getIssueMessages($identifier, true))
-                );
+                ];
             }
             $this->setDataArrayIntoCache($versions, $filterTxt);
         }
@@ -255,7 +255,7 @@ class GridDataService
      */
     protected function getDataArray($start, $limit)
     {
-        $dataArrayPart = array();
+        $dataArrayPart = [];
         $dataArrayCount = count($this->dataArray);
         $end = ($start + $limit < $dataArrayCount ? $start + $limit : $dataArrayCount);
 
@@ -298,7 +298,7 @@ class GridDataService
     protected function setDataArrayIntoCache(array $versions, $filterTxt)
     {
         $hash = $this->calculateHash($versions, $filterTxt);
-        $this->workspacesCache->set($hash, $this->dataArray, array($this->currentWorkspace, 'user_' . $GLOBALS['BE_USER']->user['uid']));
+        $this->workspacesCache->set($hash, $this->dataArray, [$this->currentWorkspace, 'user_' . $GLOBALS['BE_USER']->user['uid']]);
     }
 
     /**
@@ -329,7 +329,7 @@ class GridDataService
      */
     protected function calculateHash(array $versions, $filterTxt)
     {
-        $hashArray = array(
+        $hashArray = [
             $GLOBALS['BE_USER']->workspace,
             $GLOBALS['BE_USER']->user['uid'],
             $versions,
@@ -337,7 +337,7 @@ class GridDataService
             $this->sort,
             $this->sortDir,
             $this->currentWorkspace
-        );
+        ];
         $hash = md5(serialize($hashArray));
         return $hash;
     }
@@ -359,7 +359,7 @@ class GridDataService
                 case 'liveid':
                 case 'livepid':
                 case 'languageValue':
-                    uasort($this->dataArray, array($this, 'intSort'));
+                    uasort($this->dataArray, [$this, 'intSort']);
                     break;
                 case 'label_Workspace':
                 case 'label_Live':
@@ -367,7 +367,7 @@ class GridDataService
                 case 'workspace_Title':
                 case 'path_Live':
                     // case 'path_Workspace': This is the first sorting attribute
-                    uasort($this->dataArray, array($this, 'stringSort'));
+                    uasort($this->dataArray, [$this, 'stringSort']);
                     break;
                 default:
                     // Do nothing
@@ -624,7 +624,7 @@ class GridDataService
     protected function emitSignal($signalName)
     {
         // Arguments are always ($this, [method argument], [method argument], ...)
-        $signalArguments = array_merge(array($this), array_slice(func_get_args(), 1));
+        $signalArguments = array_merge([$this], array_slice(func_get_args(), 1));
         $slotReturn = $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Workspaces\Service\GridDataService::class, $signalName, $signalArguments);
         return array_slice($slotReturn, 1);
     }

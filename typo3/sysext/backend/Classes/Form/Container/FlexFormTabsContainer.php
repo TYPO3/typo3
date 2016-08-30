@@ -46,7 +46,7 @@ class FlexFormTabsContainer extends AbstractContainer
 
         $domIdPrefix = 'DTM-' . GeneralUtility::shortMD5($this->data['parameterArray']['itemFormElName']);
         $tabCounter = 0;
-        $tabElements = array();
+        $tabElements = [];
         foreach ($flexFormDataStructureArray['sheets'] as $sheetName => $sheetDataStructure) {
             $flexFormRowSheetDataSubPart = $flexFormRowData['data'][$sheetName]['lDEF'] ?: [];
 
@@ -76,19 +76,19 @@ class FlexFormTabsContainer extends AbstractContainer
             $options['parameterArray'] = $parameterArray;
             // Merge elements of this tab into a single list again and hand over to
             // palette and single field container to render this group
-            $options['tabAndInlineStack'][] = array(
+            $options['tabAndInlineStack'][] = [
                 'tab',
                 $domIdPrefix . '-' . $tabCounter,
-            );
+            ];
             $options['renderType'] = 'flexFormElementContainer';
             $childReturn = $this->nodeFactory->create($options)->render();
 
-            $tabElements[] = array(
+            $tabElements[] = [
                 'label' => !empty(trim($sheetDataStructure['ROOT']['sheetTitle'])) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetTitle'])) : $sheetName,
                 'content' => $childReturn['html'],
                 'description' => trim($sheetDataStructure['ROOT']['sheetDescription']) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetDescription'])) : '',
                 'linkTitle' => trim($sheetDataStructure['ROOT']['sheetShortDescr']) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetShortDescr'])) : '',
-            );
+            ];
 
             $childReturn['html'] = '';
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childReturn);

@@ -11,6 +11,6 @@ class RadioElementItems
      */
     public function getItems($params)
     {
-        $params['items'][] = array('processed label', 'processed value');
+        $params['items'][] = ['processed label', 'processed value'];
     }
 }

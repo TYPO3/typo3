@@ -24,7 +24,7 @@ abstract class AbstractRecycleTestCase extends \TYPO3\CMS\Core\Tests\FunctionalT
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = array('recycler');
+    protected $coreExtensionsToLoad = ['recycler'];
 
     /**
      * The fixture which is used when initializing a backend user
@@ -91,7 +91,7 @@ abstract class AbstractRecycleTestCase extends \TYPO3\CMS\Core\Tests\FunctionalT
             );
         }
 
-        $data = array();
+        $data = [];
         $fileContent = file_get_contents($path);
         // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
         $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
@@ -100,7 +100,7 @@ abstract class AbstractRecycleTestCase extends \TYPO3\CMS\Core\Tests\FunctionalT
 
         /** @var $table \SimpleXMLElement */
         foreach ($xml->children() as $table) {
-            $record = array();
+            $record = [];
 
             /** @var $column \SimpleXMLElement */
             foreach ($table->children() as $column) {

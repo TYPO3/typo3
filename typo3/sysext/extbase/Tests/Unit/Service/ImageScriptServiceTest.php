@@ -53,13 +53,13 @@ class ImageScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function fileIsUnwrappedFromReferenceForProcessing()
     {
-        $reference = $this->getAccessibleMock(FileReference::class, array(), array(), '', false);
-        $file = $this->getMock(File::class, array(), array(), '', false);
-        $file->expects($this->once())->method('process')->willReturn($this->getMock(ProcessedFile::class, array(), array(), '', false));
+        $reference = $this->getAccessibleMock(FileReference::class, [], [], '', false);
+        $file = $this->getMock(File::class, [], [], '', false);
+        $file->expects($this->once())->method('process')->willReturn($this->getMock(ProcessedFile::class, [], [], '', false));
         $reference->expects($this->once())->method('getOriginalFile')->willReturn($file);
         $reference->_set('file', $file);
 
-        $this->subject->applyProcessingInstructions($reference, array());
+        $this->subject->applyProcessingInstructions($reference, []);
     }
 
     /**
@@ -67,11 +67,11 @@ class ImageScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function prefixIsCorrectlyAppliedToGetImageUriDataProvider()
     {
-        return array(
-            'with scheme' => array('http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'),
-            'scheme relative' => array('//foo.bar/img.jpg', '//foo.bar/img.jpg'),
-            'without scheme' => array('foo.bar/img.jpg', '/prefix/foo.bar/img.jpg'),
-        );
+        return [
+            'with scheme' => ['http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'],
+            'scheme relative' => ['//foo.bar/img.jpg', '//foo.bar/img.jpg'],
+            'without scheme' => ['foo.bar/img.jpg', '/prefix/foo.bar/img.jpg'],
+        ];
     }
 
     /**
@@ -84,7 +84,7 @@ class ImageScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->absRefPrefix = '/prefix/';
 
-        $file = $this->getMock(File::class, array(), array(), '', false);
+        $file = $this->getMock(File::class, [], [], '', false);
         $file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
 
         $this->assertSame($expected, $this->subject->getImageUri($file));
@@ -95,11 +95,11 @@ class ImageScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function prefixIsCorrectlyAppliedToGetImageUriWithAbsolutePathDataProvider()
     {
-        return array(
-            'with scheme' => array('http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'),
-            'scheme relative' => array('//foo.bar/img.jpg', 'http://foo.bar/img.jpg'),
-            'without scheme' => array('foo.bar/img.jpg', 'http://foo.bar/prefix/foo.bar/img.jpg'),
-        );
+        return [
+            'with scheme' => ['http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'],
+            'scheme relative' => ['//foo.bar/img.jpg', 'http://foo.bar/img.jpg'],
+            'without scheme' => ['foo.bar/img.jpg', 'http://foo.bar/prefix/foo.bar/img.jpg'],
+        ];
     }
 
     /**
@@ -112,7 +112,7 @@ class ImageScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->absRefPrefix = '/prefix/';
 
-        $file = $this->getMock(File::class, array(), array(), '', false);
+        $file = $this->getMock(File::class, [], [], '', false);
         $file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
 
         $this->assertSame($expected, $this->subject->getImageUri($file, true));

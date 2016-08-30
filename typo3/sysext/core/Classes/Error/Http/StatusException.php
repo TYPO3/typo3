@@ -42,7 +42,7 @@ class StatusException extends \TYPO3\CMS\Core\Error\Exception
         if (is_array($statusHeaders)) {
             $this->statusHeaders = $statusHeaders;
         } else {
-            $this->statusHeaders = array($statusHeaders);
+            $this->statusHeaders = [$statusHeaders];
         }
         $this->title = $title ?: $this->title;
         parent::__construct($message, $code);

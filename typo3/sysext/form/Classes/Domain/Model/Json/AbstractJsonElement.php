@@ -31,14 +31,14 @@ class AbstractJsonElement
      *
      * @var array
      */
-    public $configuration = array();
+    public $configuration = [];
 
     /**
      * Allowed attributes for this object
      *
      * @var array
      */
-    protected $allowedAttributes = array();
+    protected $allowedAttributes = [];
 
     /**
      * Child elements allowed withing this element
@@ -117,7 +117,7 @@ class AbstractJsonElement
             $filters = $parameters['filters.'];
             foreach ($filters as $key => $filterName) {
                 if ((int)$key && strpos($key, '.') === false) {
-                    $filterConfiguration = array();
+                    $filterConfiguration = [];
                     if (isset($filters[$key . '.'])) {
                         $filterConfiguration = $filters[$key . '.'];
                     }

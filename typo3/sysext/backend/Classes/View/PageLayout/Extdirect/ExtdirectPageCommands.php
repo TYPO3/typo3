@@ -73,12 +73,12 @@ class ExtdirectPageCommands
             'Dragdrop',
             'core',
             -1,
-            array(
+            [
                 'action' => $action,
                 'sourceElement' => $sourceElement,
                 'destinationColumn' => $destinationColumn,
                 'destinationElement' => $destinationElement,
-            )
+            ]
         );
         /** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
         $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
@@ -87,6 +87,6 @@ class ExtdirectPageCommands
         $tce->process_datamap();
         $tce->process_cmdmap();
 
-        return array('success' => true);
+        return ['success' => true];
     }
 }

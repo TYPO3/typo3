@@ -105,9 +105,9 @@ class EditController extends AbstractWizardController
         $config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
         $fTable = $config['foreign_table'];
 
-        $urlParameters = array(
-            'returnUrl' => BackendUtility::getModuleUrl('wizard_edit', array('doClose' => 1))
-        );
+        $urlParameters = [
+            'returnUrl' => BackendUtility::getModuleUrl('wizard_edit', ['doClose' => 1])
+        ];
 
         // Detecting the various allowed field type setups and acting accordingly.
         if (is_array($config)

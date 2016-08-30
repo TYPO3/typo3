@@ -22,7 +22,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array
      */
-    protected $defaultFilePermissions = array(
+    protected $defaultFilePermissions = [
         // File permissions
         'addFile' => false,
         'readFile' => false,
@@ -41,12 +41,12 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         'renameFolder' => false,
         'deleteFolder' => false,
         'recursivedeleteFolder' => false
-    );
+    ];
 
     protected function setUp()
     {
         // reset hooks
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = array();
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = [];
     }
 
     protected function tearDown()
@@ -65,8 +65,8 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $formProtection = $this->getMock(
             \TYPO3\CMS\Core\FormProtection\BackendFormProtection::class,
-            array('clean'),
-            array(),
+            ['clean'],
+            [],
             '',
             false
         );
@@ -78,11 +78,11 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         );
 
         // logoff() call the static factory that has a dependency to a valid BE_USER object. Mock this away
-        $GLOBALS['BE_USER'] = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array(), array(), '', false);
-        $GLOBALS['BE_USER']->user = array('uid' => $this->getUniqueId());
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', false);
+        $GLOBALS['BE_USER'] = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, [], [], '', false);
+        $GLOBALS['BE_USER']->user = ['uid' => $this->getUniqueId()];
+        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, [], [], '', false);
 
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array('dummy'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, ['dummy'], [], '', false);
         $subject->_set('db', $GLOBALS['TYPO3_DB']);
         $subject->logoff();
     }
@@ -92,137 +92,137 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getTSConfigDataProvider()
     {
-        $completeConfiguration = array(
+        $completeConfiguration = [
             'value' => 'oneValue',
-            'value.' => array('oneProperty' => 'oneValue'),
-            'permissions.' => array(
-                'file.' => array(
-                    'default.' => array('readAction' => '1'),
-                    '1.' => array('writeAction' => '1'),
-                    '0.' => array('readAction' => '0'),
-                ),
-            )
-        );
+            'value.' => ['oneProperty' => 'oneValue'],
+            'permissions.' => [
+                'file.' => [
+                    'default.' => ['readAction' => '1'],
+                    '1.' => ['writeAction' => '1'],
+                    '0.' => ['readAction' => '0'],
+                ],
+            ]
+        ];
 
-        return array(
-            'single level string' => array(
+        return [
+            'single level string' => [
                 $completeConfiguration,
                 'permissions',
-                array(
+                [
                     'value' => null,
                     'properties' =>
-                    array(
-                        'file.' => array(
-                            'default.' => array('readAction' => '1'),
-                            '1.' => array('writeAction' => '1'),
-                            '0.' => array('readAction' => '0'),
-                        ),
-                    ),
-                ),
-            ),
-            'two levels string' => array(
+                    [
+                        'file.' => [
+                            'default.' => ['readAction' => '1'],
+                            '1.' => ['writeAction' => '1'],
+                            '0.' => ['readAction' => '0'],
+                        ],
+                    ],
+                ],
+            ],
+            'two levels string' => [
                 $completeConfiguration,
                 'permissions.file',
-                array(
+                [
                     'value' => null,
                     'properties' =>
-                    array(
-                        'default.' => array('readAction' => '1'),
-                        '1.' => array('writeAction' => '1'),
-                        '0.' => array('readAction' => '0'),
-                    ),
-                ),
-            ),
-            'three levels string' => array(
+                    [
+                        'default.' => ['readAction' => '1'],
+                        '1.' => ['writeAction' => '1'],
+                        '0.' => ['readAction' => '0'],
+                    ],
+                ],
+            ],
+            'three levels string' => [
                 $completeConfiguration,
                 'permissions.file.default',
-                array(
+                [
                     'value' => null,
                     'properties' =>
-                    array('readAction' => '1'),
-                ),
-            ),
-            'three levels string with integer property' => array(
+                    ['readAction' => '1'],
+                ],
+            ],
+            'three levels string with integer property' => [
                 $completeConfiguration,
                 'permissions.file.1',
-                array(
+                [
                     'value' => null,
-                    'properties' => array('writeAction' => '1'),
-                ),
-            ),
-            'three levels string with integer zero property' => array(
+                    'properties' => ['writeAction' => '1'],
+                ],
+            ],
+            'three levels string with integer zero property' => [
                 $completeConfiguration,
                 'permissions.file.0',
-                array(
+                [
                     'value' => null,
-                    'properties' => array('readAction' => '0'),
-                ),
-            ),
-            'four levels string with integer zero property, value, no properties' => array(
+                    'properties' => ['readAction' => '0'],
+                ],
+            ],
+            'four levels string with integer zero property, value, no properties' => [
                 $completeConfiguration,
                 'permissions.file.0.readAction',
-                array(
+                [
                     'value' => '0',
                     'properties' => null,
-                ),
-            ),
-            'four levels string with integer property, value, no properties' => array(
+                ],
+            ],
+            'four levels string with integer property, value, no properties' => [
                 $completeConfiguration,
                 'permissions.file.1.writeAction',
-                array(
+                [
                     'value' => '1',
                     'properties' => null,
-                ),
-            ),
-            'one level, not existent string' => array(
+                ],
+            ],
+            'one level, not existent string' => [
                 $completeConfiguration,
                 'foo',
-                array(
+                [
                     'value' => null,
                     'properties' => null,
-                ),
-            ),
-            'two level, not existent string' => array(
+                ],
+            ],
+            'two level, not existent string' => [
                 $completeConfiguration,
                 'foo.bar',
-                array(
+                [
                     'value' => null,
                     'properties' => null,
-                ),
-            ),
-            'two level, where second level does not exist' => array(
+                ],
+            ],
+            'two level, where second level does not exist' => [
                 $completeConfiguration,
                 'permissions.bar',
-                array(
+                [
                     'value' => null,
                     'properties' => null,
-                ),
-            ),
-            'three level, where third level does not exist' => array(
+                ],
+            ],
+            'three level, where third level does not exist' => [
                 $completeConfiguration,
                 'permissions.file.foo',
-                array(
+                [
                     'value' => null,
                     'properties' => null,
-                ),
-            ),
-            'three level, where second and third level does not exist' => array(
+                ],
+            ],
+            'three level, where second and third level does not exist' => [
                 $completeConfiguration,
                 'permissions.foo.bar',
-                array(
+                [
                     'value' => null,
                     'properties' => null,
-                ),
-            ),
-            'value and properties' => array(
+                ],
+            ],
+            'value and properties' => [
                 $completeConfiguration,
                 'value',
-                array(
+                [
                     'value' => 'oneValue',
-                    'properties' => array('oneProperty' => 'oneValue'),
-                ),
-            ),
-        );
+                    'properties' => ['oneProperty' => 'oneValue'],
+                ],
+            ],
+        ];
     }
 
     /**
@@ -234,7 +234,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getTSConfigReturnsCorrectArrayForGivenObjectString(array $completeConfiguration, $objectString, array $expectedConfiguration)
     {
-        $subject = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array('dummy'), array(), '', false);
+        $subject = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, ['dummy'], [], '', false);
         $subject->userTS = $completeConfiguration;
 
         $actualConfiguration = $subject->getTSConfig($objectString);
@@ -246,9 +246,9 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFilePermissionsTakesUserDefaultAndStoragePermissionsIntoAccountIfUserIsNotAdminDataProvider()
     {
-        return array(
-            'Only read permissions' => array(
-                array(
+        return [
+            'Only read permissions' => [
+                [
                     'addFile' => 0,
                     'readFile' => 1,
                     'writeFile' => 0,
@@ -265,10 +265,10 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'writeFolder' => 0,
                     'deleteFolder' => 0,
                     'recursivedeleteFolder' => 0,
-                )
-            ),
-            'Uploading allowed' => array(
-                array(
+                ]
+            ],
+            'Uploading allowed' => [
+                [
                     'addFile' => 1,
                     'readFile' => 1,
                     'writeFile' => 1,
@@ -285,14 +285,14 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'writeFolder' => 0,
                     'deleteFolder' => 0,
                     'recursivedeleteFolder' => 0
-                )
-            ),
-            'One value is enough' => array(
-                array(
+                ]
+            ],
+            'One value is enough' => [
+                [
                     'addFile' => 1,
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
@@ -302,20 +302,20 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFilePermissionsTakesUserDefaultPermissionsFromTsConfigIntoAccountIfUserIsNotAdmin(array $userTsConfiguration)
     {
-        $subject = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array('isAdmin'));
+        $subject = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, ['isAdmin']);
 
         $subject
             ->expects($this->any())
             ->method('isAdmin')
             ->will($this->returnValue(false));
 
-        $subject->userTS = array(
-            'permissions.' => array(
-                'file.' => array(
+        $subject->userTS = [
+            'permissions.' => [
+                'file.' => [
                     'default.' => $userTsConfiguration
-                ),
-            )
-        );
+                ],
+            ]
+        ];
 
         $expectedPermissions = array_merge($this->defaultFilePermissions, $userTsConfiguration);
         array_walk(
@@ -333,7 +333,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFilePermissionsFromStorageDataProvider()
     {
-        $defaultPermissions = array(
+        $defaultPermissions = [
             'addFile' => true,
             'readFile' => true,
             'writeFile' => true,
@@ -350,17 +350,17 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'writeFolder' => true,
             'deleteFolder' => true,
             'recursivedeleteFolder' => true
-        );
+        ];
 
-        return array(
-            'Overwrites given storage permissions with default permissions' => array(
+        return [
+            'Overwrites given storage permissions with default permissions' => [
                 $defaultPermissions,
                 1,
-                array(
+                [
                     'addFile' => 0,
                     'recursivedeleteFolder' =>0
-                ),
-                array(
+                ],
+                [
                     'addFile' => 0,
                     'readFile' => 1,
                     'writeFile' => 1,
@@ -377,16 +377,16 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'writeFolder' => 1,
                     'deleteFolder' => 1,
                     'recursivedeleteFolder' => 0
-                )
-            ),
-            'Overwrites given storage 0 permissions with default permissions' => array(
+                ]
+            ],
+            'Overwrites given storage 0 permissions with default permissions' => [
                 $defaultPermissions,
                 0,
-                array(
+                [
                     'addFile' => 0,
                     'recursivedeleteFolder' =>0
-                ),
-                array(
+                ],
+                [
                     'addFile' => false,
                     'readFile' => true,
                     'writeFile' => true,
@@ -403,13 +403,13 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'writeFolder' => true,
                     'deleteFolder' => true,
                     'recursivedeleteFolder' => false
-                )
-            ),
-            'Returns default permissions if no storage permissions are found' => array(
+                ]
+            ],
+            'Returns default permissions if no storage permissions are found' => [
                 $defaultPermissions,
                 1,
-                array(),
-                array(
+                [],
+                [
                     'addFile' => true,
                     'readFile' => true,
                     'writeFile' => true,
@@ -426,9 +426,9 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'writeFolder' => true,
                     'deleteFolder' => true,
                     'recursivedeleteFolder' => true
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
@@ -441,8 +441,8 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFilePermissionsFromStorageOverwritesDefaultPermissions(array $defaultPermissions, $storageUid, array $storagePermissions, array $expectedPermissions)
     {
-        $subject = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array('isAdmin', 'getFilePermissions'));
-        $storageMock = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $subject = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, ['isAdmin', 'getFilePermissions']);
+        $storageMock = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, [], [], '', false);
         $storageMock->expects($this->any())->method('getUid')->will($this->returnValue($storageUid));
 
         $subject
@@ -455,15 +455,15 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('getFilePermissions')
             ->will($this->returnValue($defaultPermissions));
 
-        $subject->userTS = array(
-            'permissions.' => array(
-                'file.' => array(
-                    'storage.' => array(
+        $subject->userTS = [
+            'permissions.' => [
+                'file.' => [
+                    'storage.' => [
                         $storageUid . '.' => $storagePermissions
-                    ),
-                ),
-            )
-        );
+                    ],
+                ],
+            ]
+        ];
 
         $this->assertEquals($expectedPermissions, $subject->getFilePermissionsForStorage($storageMock));
     }
@@ -477,8 +477,8 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFilePermissionsFromStorageAlwaysReturnsDefaultPermissionsForAdmins(array $defaultPermissions, $storageUid, array $storagePermissions)
     {
-        $subject = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array('isAdmin', 'getFilePermissions'));
-        $storageMock = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $subject = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, ['isAdmin', 'getFilePermissions']);
+        $storageMock = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, [], [], '', false);
         $storageMock->expects($this->any())->method('getUid')->will($this->returnValue($storageUid));
 
         $subject
@@ -491,15 +491,15 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('getFilePermissions')
             ->will($this->returnValue($defaultPermissions));
 
-        $subject->userTS = array(
-            'permissions.' => array(
-                'file.' => array(
-                    'storage.' => array(
+        $subject->userTS = [
+            'permissions.' => [
+                'file.' => [
+                    'storage.' => [
                         $storageUid . '.' => $storagePermissions
-                    ),
-                ),
-            )
-        );
+                    ],
+                ],
+            ]
+        ];
 
         $this->assertEquals($defaultPermissions, $subject->getFilePermissionsForStorage($storageMock));
     }
@@ -509,10 +509,10 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdminDataProvider()
     {
-        return array(
-            'No permission' => array(
+        return [
+            'No permission' => [
                 '',
-                array(
+                [
                     'addFile' => false,
                     'readFile' => false,
                     'writeFile' => false,
@@ -529,11 +529,11 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'writeFolder' => false,
                     'deleteFolder' => false,
                     'recursivedeleteFolder' => false
-                )
-            ),
-            'Standard file permissions' => array(
+                ]
+            ],
+            'Standard file permissions' => [
                 'addFile,readFile,writeFile,copyFile,moveFile,renameFile,deleteFile',
-                array(
+                [
                     'addFile' => true,
                     'readFile' => true,
                     'writeFile' => true,
@@ -550,11 +550,11 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'writeFolder' => false,
                     'deleteFolder' => false,
                     'recursivedeleteFolder' => false
-                )
-            ),
-            'Unzip allowed' => array(
+                ]
+            ],
+            'Unzip allowed' => [
                 'readFile,unzipFile',
-                array(
+                [
                     'addFile' => false,
                     'readFile' => true,
                     'writeFile' => false,
@@ -571,11 +571,11 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'renameFolder' => false,
                     'deleteFolder' => false,
                     'recursivedeleteFolder' => false
-                )
-            ),
-            'Standard folder permissions' => array(
+                ]
+            ],
+            'Standard folder permissions' => [
                 'addFolder,readFolder,moveFolder,renameFolder,writeFolder,deleteFolder',
-                array(
+                [
                     'addFile' => false,
                     'readFile' => false,
                     'writeFile' => false,
@@ -592,11 +592,11 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'renameFolder' => true,
                     'deleteFolder' => true,
                     'recursivedeleteFolder' => false
-                )
-            ),
-            'Copy folder allowed' => array(
+                ]
+            ],
+            'Copy folder allowed' => [
                 'readFolder,copyFolder',
-                array(
+                [
                     'addFile' => false,
                     'readFile' => false,
                     'writeFile' => false,
@@ -613,11 +613,11 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'renameFolder' => false,
                     'deleteFolder' => false,
                     'recursivedeleteFolder' => false
-                )
-            ),
-            'Copy folder and remove subfolders allowed' => array(
+                ]
+            ],
+            'Copy folder and remove subfolders allowed' => [
                 'readFolder,copyFolder,recursivedeleteFolder',
-                array(
+                [
                     'addFile' => false,
                     'readFile' => false,
                     'writeFile' => false,
@@ -634,9 +634,9 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'renameFolder' => false,
                     'deleteFolder' => false,
                     'recursivedeleteFolder' => true
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
@@ -645,14 +645,14 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdmin($permissionValue, $expectedPermissions)
     {
-        $subject = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array('isAdmin'));
+        $subject = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, ['isAdmin']);
 
         $subject
             ->expects($this->any())
             ->method('isAdmin')
             ->will($this->returnValue(false));
 
-        $subject->userTS = array();
+        $subject->userTS = [];
         $subject->groupData['file_permissions'] = $permissionValue;
         $this->assertEquals($expectedPermissions, $subject->getFilePermissions());
     }
@@ -662,14 +662,14 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFilePermissionsGrantsAllPermissionsToAdminUsers()
     {
-        $subject = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array('isAdmin'));
+        $subject = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, ['isAdmin']);
 
         $subject
             ->expects($this->any())
             ->method('isAdmin')
             ->will($this->returnValue(true));
 
-        $expectedPermissions = array(
+        $expectedPermissions = [
             'addFile' => true,
             'readFile' => true,
             'writeFile' => true,
@@ -686,7 +686,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'renameFolder' => true,
             'deleteFolder' => true,
             'recursivedeleteFolder' => true
-        );
+        ];
 
         $this->assertEquals($expectedPermissions, $subject->getFilePermissions());
     }

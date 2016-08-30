@@ -30,7 +30,7 @@ class LostFilesCommand extends CleanerCommand
     public function __construct()
     {
         parent::__construct();
-        $this->cli_options[] = array('--excludePath [path-list]', 'Comma separated list of paths to exclude. Example: "uploads/[path1],uploads/[path2],..."');
+        $this->cli_options[] = ['--excludePath [path-list]', 'Comma separated list of paths to exclude. Example: "uploads/[path1],uploads/[path2],..."'];
         // Setting up help:
         $this->cli_help['name'] = 'lost_files -- Looking for files in the uploads/ folder which does not have a reference in TYPO3 managed records.';
         $this->cli_help['description'] = trim('
@@ -67,23 +67,23 @@ Will report lost files.';
     public function main()
     {
         // Initialize result array:
-        $resultArray = array(
+        $resultArray = [
             'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
-            'headers' => array(
-                'managedFiles' => array('Files related to TYPO3 records and managed by TCEmain', 'These files you definitely want to keep.', 0),
-                'ignoredFiles' => array('Ignored files (index.html, .htaccess etc.)', 'These files are allowed in uploads/ folder', 0),
-                'RTEmagicFiles' => array('RTE magic images - those found (and ignored)', 'These files are also allowed in some uploads/ folders as RTEmagic images.', 0),
-                'lostFiles' => array('Lost files - those you can delete', 'You can delete these files!', 3),
-                'warnings' => array('Warnings picked up', '', 2)
-            ),
-            'managedFiles' => array(),
-            'ignoredFiles' => array(),
-            'RTEmagicFiles' => array(),
-            'lostFiles' => array(),
-            'warnings' => array()
-        );
+            'headers' => [
+                'managedFiles' => ['Files related to TYPO3 records and managed by TCEmain', 'These files you definitely want to keep.', 0],
+                'ignoredFiles' => ['Ignored files (index.html, .htaccess etc.)', 'These files are allowed in uploads/ folder', 0],
+                'RTEmagicFiles' => ['RTE magic images - those found (and ignored)', 'These files are also allowed in some uploads/ folders as RTEmagic images.', 0],
+                'lostFiles' => ['Lost files - those you can delete', 'You can delete these files!', 3],
+                'warnings' => ['Warnings picked up', '', 2]
+            ],
+            'managedFiles' => [],
+            'ignoredFiles' => [],
+            'RTEmagicFiles' => [],
+            'lostFiles' => [],
+            'warnings' => []
+        ];
         // Get all files:
-        $fileArr = array();
+        $fileArr = [];
         $fileArr = \TYPO3\CMS\Core\Utility\GeneralUtility::getAllFilesAndFoldersInPath($fileArr, PATH_site . 'uploads/');
         $fileArr = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($fileArr, PATH_site);
         $excludePaths = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->cli_argValue('--excludePath', 0), true);

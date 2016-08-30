@@ -40,9 +40,9 @@ class DefaultImage extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'image' => 'InsertImage'
-    );
+    ];
 
     /**
      * Returns TRUE if the plugin is available and correctly initialized

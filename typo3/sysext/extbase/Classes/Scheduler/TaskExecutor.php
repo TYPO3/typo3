@@ -131,7 +131,7 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface
         $commandIdentifier = $task->getCommandIdentifier();
         list($extensionKey, $controllerName, $commandName) = explode(':', $commandIdentifier);
         $extensionName = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($extensionKey);
-        $this->initialize(array('extensionName' => $extensionName));
+        $this->initialize(['extensionName' => $extensionName]);
         // execute command
         $command = $this->commandManager->getCommandByIdentifier($commandIdentifier);
         $this->request->setControllerObjectName($command->getControllerClassName());

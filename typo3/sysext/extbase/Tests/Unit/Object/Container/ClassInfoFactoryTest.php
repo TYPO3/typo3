@@ -47,7 +47,7 @@ class ClassInfoFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function buildClassInfoDoesNotIncludeInjectSettingsMethodInListOfInjectMethods()
     {
         $classInfo = $this->classInfoFactory->buildClassInfoFromClassName('t3lib_object_tests_class_with_injectsettings');
-        $this->assertEquals(array('injectFoo' => 't3lib_object_tests_resolveablecyclic1'), $classInfo->getInjectMethods());
+        $this->assertEquals(['injectFoo' => 't3lib_object_tests_resolveablecyclic1'], $classInfo->getInjectMethods());
     }
 
     /**
@@ -56,7 +56,7 @@ class ClassInfoFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function buildClassInfoDetectsPropertiesToInjectByAnnotation()
     {
         $classInfo = $this->classInfoFactory->buildClassInfoFromClassName(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithInjectProperties::class);
-        $this->assertEquals(array('secondDummyClass' => \TYPO3\CMS\Extbase\Tests\Fixture\SecondDummyClass::class), $classInfo->getInjectProperties());
+        $this->assertEquals(['secondDummyClass' => \TYPO3\CMS\Extbase\Tests\Fixture\SecondDummyClass::class], $classInfo->getInjectProperties());
     }
 
     /**
@@ -66,12 +66,12 @@ class ClassInfoFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
 
         /** @var \PHPUnit_Framework_MockObject_MockObject | \TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory $classInfoFactory */
-        $classInfoFactory = $this->getMock(\TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory::class, array('dummy'));
+        $classInfoFactory = $this->getMock(\TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory::class, ['dummy']);
         $classInfoFactory->expects($this->never())->method('getConstructorArguments');
 
         $classInfo = $classInfoFactory->buildClassInfoFromClassName('DateTime');
         $this->assertEquals(
-            new \TYPO3\CMS\Extbase\Object\Container\ClassInfo('DateTime', array(), array(), false, false, array()),
+            new \TYPO3\CMS\Extbase\Object\Container\ClassInfo('DateTime', [], [], false, false, []),
             $classInfo
         );
     }

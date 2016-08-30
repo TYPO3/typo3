@@ -267,9 +267,9 @@ class TemplateParser
      * Namespace identifiers and their component name prefix (Associative array).
      * @var array
      */
-    protected $namespaces = array(
+    protected $namespaces = [
         'f' => 'TYPO3\\CMS\\Fluid\\ViewHelpers'
-    );
+    ];
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
@@ -290,7 +290,7 @@ class TemplateParser
     /**
      * @var array
      */
-    protected $viewHelperNameToImplementationClassNameRuntimeCache = array();
+    protected $viewHelperNameToImplementationClassNameRuntimeCache = [];
 
     /**
      * Constructor. Preprocesses the $SCAN_PATTERN_NAMESPACEDECLARATION by
@@ -299,14 +299,14 @@ class TemplateParser
     public function __construct()
     {
         self::$SCAN_PATTERN_NAMESPACEDECLARATION = str_replace(
-            array(
+            [
                 'LEGACY_NAMESPACE_SEPARATOR',
                 'FLUID_NAMESPACE_SEPARATOR'
-            ),
-            array(
+            ],
+            [
                 preg_quote(\TYPO3\CMS\Fluid\Fluid::LEGACY_NAMESPACE_SEPARATOR),
                 preg_quote(\TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR)
-            ),
+            ],
             self::$SCAN_PATTERN_NAMESPACEDECLARATION
         );
     }
@@ -381,9 +381,9 @@ class TemplateParser
      */
     protected function reset()
     {
-        $this->namespaces = array(
+        $this->namespaces = [
             'f' => 'TYPO3\\CMS\\Fluid\\ViewHelpers'
-        );
+        ];
     }
 
     /**
@@ -396,8 +396,8 @@ class TemplateParser
      */
     protected function extractNamespaceDefinitions($templateString)
     {
-        $matches = array();
-        $foundIdentifiers = array();
+        $matches = [];
+        $foundIdentifiers = [];
         preg_match_all(self::$SCAN_PATTERN_XMLNSDECLARATION, $templateString, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {
             // skip reserved "f" namespace identifier
@@ -411,7 +411,7 @@ class TemplateParser
             if (isset($this->settings['namespaces'][$match['xmlNamespace']])) {
                 $phpNamespace = $this->settings['namespaces'][$match['xmlNamespace']];
             } else {
-                $matchedPhpNamespace = array();
+                $matchedPhpNamespace = [];
                 if (preg_match(self::$SCAN_PATTERN_DEFAULT_XML_NAMESPACE, $match['xmlNamespace'], $matchedPhpNamespace) === 0) {
                     continue;
                 }
@@ -423,7 +423,7 @@ class TemplateParser
 
         $templateString = $this->removeXmlnsViewHelperNamespaceDeclarations($templateString, $foundIdentifiers);
 
-        $matches = array();
+        $matches = [];
         preg_match_all(self::$SCAN_PATTERN_NAMESPACEDECLARATION, $templateString, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {
             if (array_key_exists($match['identifier'], $this->namespaces)) {
@@ -431,7 +431,7 @@ class TemplateParser
             }
             $this->namespaces[$match['identifier']] = $match['phpNamespace'];
         }
-        if ($matches !== array()) {
+        if ($matches !== []) {
             $templateString = preg_replace(self::$SCAN_PATTERN_NAMESPACEDECLARATION, '', $templateString);
         }
 
@@ -502,7 +502,7 @@ class TemplateParser
         $state->pushNodeToStack($rootNode);
 
         foreach ($splitTemplate as $templateElement) {
-            $matchedVariables = array();
+            $matchedVariables = [];
             if (preg_match(self::$SCAN_PATTERN_CDATA, $templateElement, $matchedVariables) > 0) {
                 $this->textHandler($state, $matchedVariables[1]);
             } elseif (preg_match($regularExpression_openingViewHelperTag, $templateElement, $matchedVariables) > 0) {
@@ -594,7 +594,7 @@ class TemplateParser
      */
     protected function abortIfUnregisteredArgumentsExist($expectedArguments, $actualArguments)
     {
-        $expectedArgumentNames = array();
+        $expectedArgumentNames = [];
         foreach ($expectedArguments as $expectedArgument) {
             $expectedArgumentNames[] = $expectedArgument->getName();
         }
@@ -718,7 +718,7 @@ class TemplateParser
         }
 
         // ViewHelpers
-        $matches = array();
+        $matches = [];
         if ($viewHelperString !== '' && preg_match_all(self::$SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER, $viewHelperString, $matches, PREG_SET_ORDER) > 0) {
             // The last ViewHelper has to be added first for correct chaining.
             foreach (array_reverse($matches) as $singleMatch) {
@@ -727,7 +727,7 @@ class TemplateParser
                         $this->recursiveArrayHandler($singleMatch['ViewHelperArguments'])
                     );
                 } else {
-                    $arguments = array();
+                    $arguments = [];
                 }
                 $this->initializeViewHelperAndAddItToStack($state, $singleMatch['NamespaceIdentifier'], $singleMatch['MethodIdentifier'], $arguments);
                 $numberOfViewHelpers++;
@@ -802,8 +802,8 @@ class TemplateParser
      */
     protected function parseArguments($argumentsString)
     {
-        $argumentsObjectTree = array();
-        $matches = array();
+        $argumentsObjectTree = [];
+        $matches = [];
         if (preg_match_all(self::$SPLIT_PATTERN_TAGARGUMENTS, $argumentsString, $matches, PREG_SET_ORDER) > 0) {
             $configurationBackup = $this->configuration;
             $this->configuration = null;
@@ -889,7 +889,7 @@ class TemplateParser
         $sections = preg_split($this->prepareTemplateRegularExpression(self::$SPLIT_PATTERN_SHORTHANDSYNTAX), $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 
         foreach ($sections as $section) {
-            $matchedVariables = array();
+            $matchedVariables = [];
             if (preg_match(self::$SCAN_PATTERN_SHORTHANDSYNTAX_OBJECTACCESSORS, $section, $matchedVariables) > 0) {
                 $this->objectAccessorHandler($state, $matchedVariables['Object'], $matchedVariables['Delimiter'], isset($matchedVariables['ViewHelper']) ? $matchedVariables['ViewHelper'] : '', isset($matchedVariables['AdditionalViewHelpers']) ? $matchedVariables['AdditionalViewHelpers'] : '');
             } elseif ($context === self::CONTEXT_INSIDE_VIEWHELPER_ARGUMENTS && preg_match(self::$SCAN_PATTERN_SHORTHANDSYNTAX_ARRAYS, $section, $matchedVariables) > 0) {
@@ -932,9 +932,9 @@ class TemplateParser
      */
     protected function recursiveArrayHandler($arrayText)
     {
-        $matches = array();
+        $matches = [];
         if (preg_match_all(self::$SPLIT_PATTERN_SHORTHANDSYNTAX_ARRAY_PARTS, $arrayText, $matches, PREG_SET_ORDER) > 0) {
-            $arrayToBuild = array();
+            $arrayToBuild = [];
             foreach ($matches as $singleMatch) {
                 $arrayKey = $singleMatch['Key'];
                 if (!empty($singleMatch['VariableIdentifier'])) {

@@ -26,52 +26,52 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getCategoryIndexFromStringOrNumberReturnsIndexDataProvider()
     {
-        return array(
-            'empty string' => array(
+        return [
+            'empty string' => [
                 '',
                 4
-            ),
-            'existing category string' => array(
+            ],
+            'existing category string' => [
                 'plugin',
                 3
-            ),
-            'not existing category string' => array(
+            ],
+            'not existing category string' => [
                 'foo',
                 4
-            ),
-            'string number 3' => array(
+            ],
+            'string number 3' => [
                 '3',
                 3
-            ),
-            'integer 3' => array(
+            ],
+            'integer 3' => [
                 3,
                 3
-            ),
-            'string number not in range -1' => array(
+            ],
+            'string number not in range -1' => [
                 '-1',
                 4
-            ),
-            'integer not in range -1' => array(
+            ],
+            'integer not in range -1' => [
                 -1,
                 4
-            ),
-            'string number not in range 11' => array(
+            ],
+            'string number not in range 11' => [
                 '11',
                 4
-            ),
-            'integer not in range 11' => array(
+            ],
+            'integer not in range 11' => [
                 11,
                 4
-            ),
-            'object' => array(
+            ],
+            'object' => [
                 new \stdClass(),
                 4
-            ),
-            'array' => array(
-                array(),
+            ],
+            'array' => [
+                [],
                 4
-            ),
-        );
+            ],
+        ];
     }
 
     /**

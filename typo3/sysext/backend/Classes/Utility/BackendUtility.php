@@ -58,7 +58,7 @@ class BackendUtility
      * @var array
      * @see self::getTCAtypes()
      */
-    protected static $tcaTableTypeConfigurationCache = array();
+    protected static $tcaTableTypeConfigurationCache = [];
 
     /*******************************************
      *
@@ -199,7 +199,7 @@ class BackendUtility
                 $orderBy,
                 $limit
             );
-            $rows = array();
+            $rows = [];
             while ($row = $db->sql_fetch_assoc($res)) {
                 $rows[] = $row;
             }
@@ -221,7 +221,7 @@ class BackendUtility
     public static function splitTable_Uid($str)
     {
         list($uid, $table) = explode('_', strrev($str), 2);
-        return array(strrev($table), strrev($uid));
+        return [strrev($table), strrev($uid)];
     }
 
     /**
@@ -235,7 +235,7 @@ class BackendUtility
      */
     public static function getSQLselectableList($in_list, $tablename, $default_tablename)
     {
-        $list = array();
+        $list = [];
         if ((string)trim($in_list) != '') {
             $tempItemArray = explode(',', trim($in_list));
             foreach ($tempItemArray as $key => $val) {
@@ -266,8 +266,8 @@ class BackendUtility
     public static function BEenableFields($table, $inv = false)
     {
         $ctrl = $GLOBALS['TCA'][$table]['ctrl'];
-        $query = array();
-        $invQuery = array();
+        $query = [];
+        $invQuery = [];
         if (is_array($ctrl)) {
             if (is_array($ctrl['enablecolumns'])) {
                 if ($ctrl['enablecolumns']['disabled']) {
@@ -333,15 +333,15 @@ class BackendUtility
      */
     public static function BEgetRootLine($uid, $clause = '', $workspaceOL = false)
     {
-        static $BEgetRootLine_cache = array();
-        $output = array();
+        static $BEgetRootLine_cache = [];
+        $output = [];
         $pid = $uid;
         $ident = $pid . '-' . $clause . '-' . $workspaceOL;
         if (is_array($BEgetRootLine_cache[$ident])) {
             $output = $BEgetRootLine_cache[$ident];
         } else {
             $loopCheck = 100;
-            $theRowArray = array();
+            $theRowArray = [];
             while ($uid != 0 && $loopCheck) {
                 $loopCheck--;
                 $row = self::getPageForRootline($uid, $clause, $workspaceOL);
@@ -353,12 +353,12 @@ class BackendUtility
                 }
             }
             if ($uid == 0) {
-                $theRowArray[] = array('uid' => 0, 'title' => '');
+                $theRowArray[] = ['uid' => 0, 'title' => ''];
             }
             $c = count($theRowArray);
             foreach ($theRowArray as $val) {
                 $c--;
-                $output[$c] = array(
+                $output[$c] = [
                     'uid' => $val['uid'],
                     'pid' => $val['pid'],
                     'title' => $val['title'],
@@ -371,7 +371,7 @@ class BackendUtility
                     't3ver_state' => $val['t3ver_state'],
                     't3ver_stage' => $val['t3ver_stage'],
                     'backend_layout_next_level' => $val['backend_layout_next_level']
-                );
+                ];
                 if (isset($val['_ORIG_pid'])) {
                     $output[$c]['_ORIG_pid'] = $val['_ORIG_pid'];
                 }
@@ -392,7 +392,7 @@ class BackendUtility
      */
     protected static function getPageForRootline($uid, $clause, $workspaceOL)
     {
-        static $getPageForRootline_cache = array();
+        static $getPageForRootline_cache = [];
         $ident = $uid . '-' . $clause . '-' . $workspaceOL;
         if (is_array($getPageForRootline_cache[$ident])) {
             $row = $getPageForRootline_cache[$ident];
@@ -432,7 +432,7 @@ class BackendUtility
         $beUser = static::getBackendUserAuthentication();
         // Get current expansion data:
         if ($clearExpansion) {
-            $expandedPages = array();
+            $expandedPages = [];
         } else {
             $expandedPages = unserialize($beUser->uc['browseTrees']['browsePages']);
         }
@@ -488,7 +488,7 @@ class BackendUtility
             }
         }
         if ($fullTitleLimit) {
-            return array($output, $fullOutput);
+            return [$output, $fullOutput];
         } else {
             return $output;
         }
@@ -504,10 +504,10 @@ class BackendUtility
     public static function getExcludeFields()
     {
         GeneralUtility::logDeprecatedFunction();
-        $finalExcludeArray = array();
+        $finalExcludeArray = [];
 
         // Fetch translations for table names
-        $tableToTranslation = array();
+        $tableToTranslation = [];
         $lang = static::getLanguageService();
         // All TCA keys
         foreach ($GLOBALS['TCA'] as $table => $conf) {
@@ -516,7 +516,7 @@ class BackendUtility
         // Sort by translations
         asort($tableToTranslation);
         foreach ($tableToTranslation as $table => $translatedTable) {
-            $excludeArrayTable = array();
+            $excludeArrayTable = [];
 
             // All field names configured and not restricted to admins
             if (is_array($GLOBALS['TCA'][$table]['columns'])
@@ -528,7 +528,7 @@ class BackendUtility
                         // Get human readable names of fields
                         $translatedField = $lang->sl($GLOBALS['TCA'][$table]['columns'][$field]['label']);
                         // Add entry
-                        $excludeArrayTable[] = array($translatedTable . ': ' . $translatedField, $table . ':' . $field);
+                        $excludeArrayTable[] = [$translatedTable . ': ' . $translatedField, $table . ':' . $field];
                     }
                 }
             }
@@ -555,7 +555,7 @@ class BackendUtility
                             }
                             $fieldLabel = !empty($field['TCEforms']['label']) ? $lang->sl($field['TCEforms']['label']) : $fieldName;
                             $fieldIdent = $table . ':' . $tableField . ';' . $extIdent . ';' . $sheetName . ';' . $fieldName;
-                            $excludeArrayTable[] = array(trim($labelPrefix . ' ' . $extTitle, ': ') . ': ' . $fieldLabel, $fieldIdent);
+                            $excludeArrayTable[] = [trim($labelPrefix . ' ' . $extTitle, ': ') . ': ' . $fieldLabel, $fieldIdent];
                         }
                     }
                 }
@@ -589,12 +589,12 @@ class BackendUtility
         GeneralUtility::logDeprecatedFunction();
         // Initialize:
         $lang = static::getLanguageService();
-        $adLabel = array(
+        $adLabel = [
             'ALLOW' => $lang->sl('LLL:EXT:lang/locallang_core.xlf:labels.allow'),
             'DENY' => $lang->sl('LLL:EXT:lang/locallang_core.xlf:labels.deny')
-        );
+        ];
         // All TCA keys:
-        $allowDenyOptions = array();
+        $allowDenyOptions = [];
         foreach ($GLOBALS['TCA'] as $table => $_) {
             // All field names configured:
             if (is_array($GLOBALS['TCA'][$table]['columns'])) {
@@ -630,7 +630,7 @@ class BackendUtility
                                     }
                                     // Set iMode
                                     if ($iMode) {
-                                        $allowDenyOptions[$table . ':' . $field]['items'][$iVal[1]] = array($iMode, $lang->sl($iVal[0]), $adLabel[$iMode]);
+                                        $allowDenyOptions[$table . ':' . $field]['items'][$iVal[1]] = [$iMode, $lang->sl($iVal[0]), $adLabel[$iMode]];
                                     }
                                 }
                             }
@@ -658,14 +658,14 @@ class BackendUtility
         /** @var TranslationConfigurationProvider $translationConfigurationProvider */
         $translationConfigurationProvider = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider::class);
         $languages = $translationConfigurationProvider->getSystemLanguages();
-        $sysLanguages = array();
+        $sysLanguages = [];
         foreach ($languages as $language) {
             if ($language['uid'] !== -1) {
-                $sysLanguages[] = array(
+                $sysLanguages[] = [
                     0 => htmlspecialchars($language['title']) . ' [' . $language['uid'] . ']',
                     1 => $language['uid'],
                     2 => $language['flagIcon']
-                );
+                ];
             }
         }
         return $sysLanguages;
@@ -802,7 +802,7 @@ class BackendUtility
                 }
             }
 
-            $altFieldList = array();
+            $altFieldList = [];
             // Traverse fields in types config and parse the configuration into a nice array:
             foreach ($fieldList as $k => $v) {
                 list($pFieldName, $pAltTitle, $pPalette) = GeneralUtility::trimExplode(';', $v);
@@ -815,13 +815,13 @@ class BackendUtility
                     $defaultExtras = $GLOBALS['TCA'][$table]['columns'][$pFieldName]['defaultExtras'];
                 }
                 $specConfParts = self::getSpecConfParts($defaultExtras);
-                $fieldList[$k] = array(
+                $fieldList[$k] = [
                     'field' => $pFieldName,
                     'title' => $pAltTitle,
                     'palette' => $pPalette,
                     'spec' => $specConfParts,
                     'origString' => $v
-                );
+                ];
                 if ($useFieldNameAsKey) {
                     $altFieldList[$fieldList[$k]['field']] = $fieldList[$k];
                 }
@@ -921,20 +921,20 @@ class BackendUtility
             $defaultExtrasString = $_ . ':' . $defaultExtrasString;
         }
         $specConfParts = GeneralUtility::trimExplode(':', $defaultExtrasString, true);
-        $reg = array();
+        $reg = [];
         if (!empty($specConfParts)) {
             foreach ($specConfParts as $k2 => $v2) {
                 unset($specConfParts[$k2]);
                 if (preg_match('/(.*)\\[(.*)\\]/', $v2, $reg)) {
-                    $specConfParts[trim($reg[1])] = array(
+                    $specConfParts[trim($reg[1])] = [
                         'parameters' => GeneralUtility::trimExplode('|', $reg[2], true)
-                    );
+                    ];
                 } else {
                     $specConfParts[trim($v2)] = 1;
                 }
             }
         } else {
-            $specConfParts = array();
+            $specConfParts = [];
         }
         return $specConfParts;
     }
@@ -948,7 +948,7 @@ class BackendUtility
      */
     public static function getSpecConfParametersFromArray($pArr)
     {
-        $out = array();
+        $out = [];
         if (is_array($pArr)) {
             foreach ($pArr as $k => $v) {
                 $parts = explode('=', $v, 2);
@@ -1051,7 +1051,7 @@ class BackendUtility
                     self::fixVersioningPid($table, $rr, true);
                 }
                 $db = static::getDatabaseConnection();
-                $uidAcc = array();
+                $uidAcc = [];
                 // Used to avoid looping, if any should happen.
                 $subFieldPointer = $conf['ds_pointerField_searchParent_subField'];
                 while (!$srcPointer) {
@@ -1136,12 +1136,12 @@ class BackendUtility
     {
         GeneralUtility::logDeprecatedFunction();
         if (empty($table) || empty($GLOBALS['TCA'][$table]['columns'])) {
-            return array();
+            return [];
         }
-        $flexForms = array();
+        $flexForms = [];
         foreach ($GLOBALS['TCA'][$table]['columns'] as $tableField => $fieldConf) {
             if (!empty($fieldConf['config']['type']) && !empty($fieldConf['config']['ds']) && $fieldConf['config']['type'] == 'flex') {
-                $flexForms[$tableField] = array();
+                $flexForms[$tableField] = [];
                 unset($fieldConf['config']['ds']['default']);
                 // Get pointer fields
                 $pointerFields = !empty($fieldConf['config']['ds_pointerField']) ? $fieldConf['config']['ds_pointerField'] : 'list_type,CType';
@@ -1190,10 +1190,10 @@ class BackendUtility
                             }
                         }
                     }
-                    $flexForms[$tableField][$extIdent] = array(
+                    $flexForms[$tableField][$extIdent] = [
                         'title' => $title,
                         'ds' => $dataStruct
-                    );
+                    ];
                 }
             }
         }
@@ -1220,7 +1220,7 @@ class BackendUtility
     {
         /** @var CacheManager $cacheManager */
         $cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
-        $cacheManager->getCache('cache_hash')->set($hash, $data, array('ident_' . $ident), 0);
+        $cacheManager->getCache('cache_hash')->set($hash, $data, ['ident_' . $ident], 0);
     }
 
     /**
@@ -1260,8 +1260,8 @@ class BackendUtility
      */
     public static function getPagesTSconfig($id, $rootLine = null, $returnPartArray = false)
     {
-        static $pagesTSconfig_cacheReference = array();
-        static $combinedTSconfig_cache = array();
+        static $pagesTSconfig_cacheReference = [];
+        static $combinedTSconfig_cache = [];
 
         $id = (int)$id;
         if ($returnPartArray === false
@@ -1270,7 +1270,7 @@ class BackendUtility
         ) {
             return $combinedTSconfig_cache[$pagesTSconfig_cacheReference[$id]];
         } else {
-            $TSconfig = array();
+            $TSconfig = [];
             if (!is_array($rootLine)) {
                 $useCacheForCurrentPageId = true;
                 $rootLine = self::BEgetRootLine($id, '', true);
@@ -1280,7 +1280,7 @@ class BackendUtility
 
             // Order correctly
             ksort($rootLine);
-            $TSdataArray = array();
+            $TSdataArray = [];
             // Setting default configuration
             $TSdataArray['defaultPageTSconfig'] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
             foreach ($rootLine as $k => $v) {
@@ -1352,7 +1352,7 @@ class BackendUtility
     public static function implodeTSParams($p, $k = '')
     {
         GeneralUtility::logDeprecatedFunction();
-        $implodeParams = array();
+        $implodeParams = [];
         if (is_array($p)) {
             foreach ($p as $kb => $val) {
                 if (is_array($val)) {
@@ -1422,7 +1422,7 @@ class BackendUtility
         // Make sure the titleField is amongst the fields when getting sorted
         $fieldsIndex[$titleField] = 1;
 
-        $result = array();
+        $result = [];
         $db = static::getDatabaseConnection();
         $res = $db->exec_SELECTquery('*', $table, '1=1 ' . $where . self::deleteClause($table));
         while ($record = $db->sql_fetch_assoc($res)) {
@@ -1660,7 +1660,7 @@ class BackendUtility
             return null;
         }
 
-        $fileReferences = array();
+        $fileReferences = [];
         /** @var $relationHandler RelationHandler */
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
         if ($workspaceId !== null) {
@@ -1672,7 +1672,7 @@ class BackendUtility
 
         foreach ($referenceUids as $referenceUid) {
             try {
-                $fileReference = ResourceFactory::getInstance()->getFileReferenceObject($referenceUid, array(), ($workspaceId === 0));
+                $fileReference = ResourceFactory::getInstance()->getFileReferenceObject($referenceUid, [], ($workspaceId === 0));
                 $fileReferences[$fileReference->getUid()] = $fileReference;
             } catch (\TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException $e) {
                 /**
@@ -1713,7 +1713,7 @@ class BackendUtility
     {
         // Check and parse the size parameter
         $size = trim($size);
-        $sizeParts = array(64, 64);
+        $sizeParts = [64, 64];
         if ($size) {
             $sizeParts = explode('x', $size . 'x' . $size);
         }
@@ -1738,11 +1738,11 @@ class BackendUtility
 
                 // Preview web image or media elements
                 if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . ',' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext'], $fileReferenceObject->getExtension())) {
-                    $processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, array(
+                    $processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, [
                                         'width' => $sizeParts[0],
                                         'height' => $sizeParts[1] . 'c',
                                         'crop' => $fileReferenceObject->getProperty('crop')
-                                    ));
+                                    ]);
                     $imageUrl = $processedImage->getPublicUrl(true);
                     $imgTag = '<img src="' . $imageUrl . '" ' .
                             'width="' . $processedImage->getProperty('width') . '" ' .
@@ -1795,10 +1795,10 @@ class BackendUtility
 
                     $fileExtension = $fileObject->getExtension();
                     if ($fileExtension == 'ttf' || GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
-                        $imageUrl = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, array(
+                        $imageUrl = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, [
                             'width' => $sizeParts[0],
                             'height' => $sizeParts[1]
-                        ))->getPublicUrl(true);
+                        ])->getPublicUrl(true);
                         $image = '<img src="' . htmlspecialchars($imageUrl) . '" hspace="2" border="0" title="' . htmlspecialchars($fileObject->getName()) . '"' . $tparams . ' alt="" />';
                         if ($linkInfoPopup) {
                             $onClick = 'top.launchView(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileName) . ',\'\',' . GeneralUtility::quoteJSvalue($backPath) . ');return false;';
@@ -1856,7 +1856,7 @@ class BackendUtility
     public static function titleAttribForPages($row, $perms_clause = '', $includeAttrib = true)
     {
         $lang = static::getLanguageService();
-        $parts = array();
+        $parts = [];
         $parts[] = 'id=' . $row['uid'];
         if ($row['alias']) {
             $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['alias']['label']) . ' ' . $row['alias'];
@@ -1920,7 +1920,7 @@ class BackendUtility
             $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['endtime']['label']) . ' ' . self::dateTimeAge($row['endtime'], -1, 'date');
         }
         if ($row['fe_group']) {
-            $fe_groups = array();
+            $fe_groups = [];
             foreach (GeneralUtility::intExplode(',', $row['fe_group']) as $fe_group) {
                 if ($fe_group < 0) {
                     $fe_groups[] = $lang->sL(self::getLabelFromItemlist('pages', 'fe_group', $fe_group));
@@ -2072,7 +2072,7 @@ class BackendUtility
      * @param array $columnTsConfig page TSConfig for $column (TCEMAIN.<table>.<column>)
      * @return string Comma-separated list of localized labels
      */
-    public static function getLabelsFromItemsList($table, $column, $keyList, array $columnTsConfig = array())
+    public static function getLabelsFromItemsList($table, $column, $keyList, array $columnTsConfig = [])
     {
         // Check if there is an "items" array
         if (
@@ -2084,7 +2084,7 @@ class BackendUtility
         }
 
         $keys = GeneralUtility::trimExplode(',', $keyList, true);
-        $labels = array();
+        $labels = [];
         // Loop on all selected values
         foreach ($keys as $key) {
             $label = null;
@@ -2186,7 +2186,7 @@ class BackendUtility
                 $params['table'] = $table;
                 $params['row'] = $row;
                 $params['title'] = '';
-                $params['options'] = isset($GLOBALS['TCA'][$table]['ctrl']['label_userFunc_options']) ? $GLOBALS['TCA'][$table]['ctrl']['label_userFunc_options'] : array();
+                $params['options'] = isset($GLOBALS['TCA'][$table]['ctrl']['label_userFunc_options']) ? $GLOBALS['TCA'][$table]['ctrl']['label_userFunc_options'] : [];
 
                 // Create NULL-reference
                 $null = null;
@@ -2201,7 +2201,7 @@ class BackendUtility
                 $recordTitle = self::getProcessedValue($table, $GLOBALS['TCA'][$table]['ctrl']['label'], $row[$GLOBALS['TCA'][$table]['ctrl']['label']], 0, 0, false, $row['uid'], $forceResult);
                 if ($GLOBALS['TCA'][$table]['ctrl']['label_alt'] && ($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'] || (string)$recordTitle === '')) {
                     $altFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'], true);
-                    $tA = array();
+                    $tA = [];
                     if (!empty($recordTitle)) {
                         $tA[] = $recordTitle;
                     }
@@ -2328,7 +2328,7 @@ class BackendUtility
                         if ($noRecordLookup) {
                             $MMfield = $theColConf['foreign_table'] . '.uid';
                         } else {
-                            $MMfields = array($theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']);
+                            $MMfields = [$theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']];
                             foreach (GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt'], true) as $f) {
                                 $MMfields[] = $theColConf['foreign_table'] . '.' . $f;
                             }
@@ -2340,7 +2340,7 @@ class BackendUtility
                         $selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
                         if (is_array($selectUids) && !empty($selectUids)) {
                             $MMres = $db->exec_SELECTquery('uid, ' . $MMfield, $theColConf['foreign_table'], 'uid IN (' . implode(',', $selectUids) . ')' . self::deleteClause($theColConf['foreign_table']));
-                            $mmlA = array();
+                            $mmlA = [];
                             while ($MMrow = $db->sql_fetch_assoc($MMres)) {
                                 // Keep sorting of $selectUids
                                 $mmlA[array_search($MMrow['uid'], $selectUids)] = $noRecordLookup ?
@@ -2361,7 +2361,7 @@ class BackendUtility
                         $l = 'N/A';
                     }
                 } else {
-                    $columnTsConfig = array();
+                    $columnTsConfig = [];
                     if ($pid) {
                         $pageTsConfig = self::getPagesTSconfig($pid);
                         if (isset($pageTsConfig['TCEFORM.'][$table . '.'][$col . '.']) && is_array($pageTsConfig['TCEFORM.'][$table . '.'][$col . '.'])) {
@@ -2373,14 +2373,14 @@ class BackendUtility
                         if ($noRecordLookup) {
                             $l = $value;
                         } else {
-                            $rParts = array();
+                            $rParts = [];
                             if ($uid && isset($theColConf['foreign_field']) && $theColConf['foreign_field'] !== '') {
                                 $whereClause = '';
                                 if (!empty($theColConf['foreign_table_field'])) {
                                     $whereClause .= ' AND ' . $theColConf['foreign_table_field'] . ' = ' . static::getDatabaseConnection()->fullQuoteStr($table, $theColConf['foreign_table']);
                                 }
                                 // Add additional where clause if foreign_match_fields are defined
-                                $foreignMatchFields = is_array($theColConf['foreign_match_fields']) ? $theColConf['foreign_match_fields'] : array();
+                                $foreignMatchFields = is_array($theColConf['foreign_match_fields']) ? $theColConf['foreign_match_fields'] : [];
                                 foreach ($foreignMatchFields as $matchField => $matchValue) {
                                     $whereClause .= ' AND ' . $matchField . '=' . static::getDatabaseConnection()->fullQuoteStr($matchValue, $theColConf['foreign_table']);
                                 }
@@ -2394,7 +2394,7 @@ class BackendUtility
                             if (empty($rParts)) {
                                 $rParts = GeneralUtility::trimExplode(',', $value, true);
                             }
-                            $lA = array();
+                            $lA = [];
                             foreach ($rParts as $rVal) {
                                 $rVal = (int)$rVal;
                                 $r = self::getRecordWSOL($theColConf['foreign_table'], $rVal);
@@ -2422,7 +2422,7 @@ class BackendUtility
                             if ($noRecordLookup) {
                                 $MMfield = $theColConf['foreign_table'] . '.uid';
                             } else {
-                                $MMfields = array($theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']);
+                                $MMfields = [$theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']];
                                 $altLabelFields = explode(',', $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt']);
                                 foreach ($altLabelFields as $f) {
                                     $f = trim($f);
@@ -2442,7 +2442,7 @@ class BackendUtility
                                     $theColConf['foreign_table'],
                                     'uid IN (' . implode(',', $selectUids) . ')' . static::deleteClause($theColConf['foreign_table'])
                                 );
-                                $mmlA = array();
+                                $mmlA = [];
                                 while ($MMrow = $db->sql_fetch_assoc($MMres)) {
                                     // Keep sorting of $selectUids
                                     $mmlA[array_search($MMrow['uid'], $selectUids)] = $noRecordLookup
@@ -2463,7 +2463,7 @@ class BackendUtility
                             $l = 'N/A';
                         }
                     } else {
-                        $finalValues = array();
+                        $finalValues = [];
                         $relationTableName = $theColConf['allowed'];
                         $explodedValues = GeneralUtility::trimExplode(',', $value, true);
 
@@ -2487,7 +2487,7 @@ class BackendUtility
                 if (!is_array($theColConf['items']) || count($theColConf['items']) === 1) {
                     $l = $value ? $lang->sL('LLL:EXT:lang/locallang_common.xlf:yes') : $lang->sL('LLL:EXT:lang/locallang_common.xlf:no');
                 } else {
-                    $lA = array();
+                    $lA = [];
                     foreach ($theColConf['items'] as $key => $val) {
                         if ($value & pow(2, $key)) {
                             $lA[] = $lang->sL($val[0]);
@@ -2570,10 +2570,10 @@ class BackendUtility
             // Create NULL-reference
             $null = null;
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'] as $_funcRef) {
-                $params = array(
+                $params = [
                     'value' => $l,
                     'colConf' => $theColConf
-                );
+                ];
                 $l = GeneralUtility::callUserFunction($_funcRef, $params, $null);
             }
         }
@@ -2625,7 +2625,7 @@ class BackendUtility
      * @param array $fields Preset fields (must include prefix if that is used)
      * @return string List of fields.
      */
-    public static function getCommonSelectFields($table, $prefix = '', $fields = array())
+    public static function getCommonSelectFields($table, $prefix = '', $fields = [])
     {
         $fields[] = $prefix . 'uid';
         if (isset($GLOBALS['TCA'][$table]['ctrl']['label']) && $GLOBALS['TCA'][$table]['ctrl']['label'] != '') {
@@ -2681,7 +2681,7 @@ class BackendUtility
     public static function makeConfigForm($configArray, $defaults, $dataPrefix)
     {
         $params = $defaults;
-        $lines = array();
+        $lines = [];
         if (is_array($configArray)) {
             foreach ($configArray as $fname => $config) {
                 if (is_array($config)) {
@@ -2700,7 +2700,7 @@ class BackendUtility
                             $formEl = '';
                             break;
                         case 'select':
-                            $opt = array();
+                            $opt = [];
                             foreach ($config[3] as $k => $v) {
                                 $opt[] = '<option value="' . htmlspecialchars($k) . '"' . ($params[$fname] == $k ? ' selected="selected"' : '') . '>' . htmlspecialchars($v) . '</option>';
                             }
@@ -2769,11 +2769,11 @@ class BackendUtility
         if (!isset($GLOBALS['TCA_DESCR'][$table]['columns'])) {
             static::getLanguageService()->loadSingleTableDescription($table);
         }
-        $output = array(
+        $output = [
             'description' => null,
             'title' => null,
             'moreInfo' => false
-        );
+        ];
         if (is_array($GLOBALS['TCA_DESCR'][$table]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])) {
             $data = $GLOBALS['TCA_DESCR'][$table]['columns'][$field];
             // Add alternative title, if defined
@@ -2836,7 +2836,7 @@ class BackendUtility
      * @param array $overloadHelpText Array with text to overload help text
      * @return string the HTML code ready to render
      */
-    public static function wrapInHelp($table, $field, $text = '', array $overloadHelpText = array())
+    public static function wrapInHelp($table, $field, $text = '', array $overloadHelpText = [])
     {
         if (!ExtensionManagementUtility::isLoaded('context_help')) {
             return $text;
@@ -3006,14 +3006,14 @@ class BackendUtility
         $enDisItems = '',
         $returnTagParameters = false
     ) {
-        $tagParameters = array(
+        $tagParameters = [
             'class' => 't3-js-clickmenutrigger',
             'data-table' => $table,
             'data-uid' => (int)$uid !== 0 ? (int)$uid : '',
             'data-listframe' => $listFrame,
             'data-iteminfo' => str_replace('+', '%2B', $enDisItems),
             'data-parameters' => $addParams,
-        );
+        ];
 
         if ($returnTagParameters) {
             return $tagParameters;
@@ -3194,7 +3194,7 @@ class BackendUtility
             return '';
         }
         $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $script);
-        $options = array();
+        $options = [];
         foreach ($menuItems as $value => $label) {
             $options[] = '<option value="' . htmlspecialchars($value) . '"' . ((string)$currentValue === (string)$value ? ' selected="selected"' : '') . '>' . htmlspecialchars($label, ENT_COMPAT, 'UTF-8', false) . '</option>';
         }
@@ -3232,7 +3232,7 @@ class BackendUtility
             return '';
         }
         $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $script);
-        $options = array();
+        $options = [];
         foreach ($menuItems as $value => $label) {
             $options[] = '<option value="' . htmlspecialchars($value) . '"' . ((string)$currentValue === (string)$value ? ' selected="selected"' : '') . '>' . htmlspecialchars($label, ENT_COMPAT, 'UTF-8', false) . '</option>';
         }
@@ -3311,7 +3311,7 @@ class BackendUtility
     protected static function buildScriptUrl($mainParams, $addParams, $script = '')
     {
         if (!is_array($mainParams)) {
-            $mainParams = array('id' => $mainParams);
+            $mainParams = ['id' => $mainParams];
         }
         if (!$script) {
             $script = basename(PATH_thisScript);
@@ -3369,13 +3369,13 @@ class BackendUtility
         $beUser = static::getBackendUserAuthentication();
         $modData = $beUser->getModuleData(\TYPO3\CMS\Backend\Utility\BackendUtility::class . '::getUpdateSignal', 'ses');
         if ($set) {
-            $modData[$set] = array(
+            $modData[$set] = [
                 'set' => $set,
                 'parameter' => $params
-            );
+            ];
         } else {
             // clear the module data
-            $modData = array();
+            $modData = [];
         }
         $beUser->pushModuleData(\TYPO3\CMS\Backend\Utility\BackendUtility::class . '::getUpdateSignal', $modData);
     }
@@ -3390,7 +3390,7 @@ class BackendUtility
      */
     public static function getUpdateSignalCode()
     {
-        $signals = array();
+        $signals = [];
         $modData = static::getBackendUserAuthentication()->getModuleData(\TYPO3\CMS\Backend\Utility\BackendUtility::class . '::getUpdateSignal', 'ses');
         if (empty($modData)) {
             return '';
@@ -3399,12 +3399,12 @@ class BackendUtility
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook'])) {
             $updateSignals = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook'];
         } else {
-            $updateSignals = array();
+            $updateSignals = [];
         }
         // Loop through all setUpdateSignals and get the JS code
         foreach ($modData as $set => $val) {
             if (isset($updateSignals[$set])) {
-                $params = array('set' => $set, 'parameter' => $val['parameter'], 'JScode' => '');
+                $params = ['set' => $set, 'parameter' => $val['parameter'], 'JScode' => ''];
                 $ref = null;
                 GeneralUtility::callUserFunction($updateSignals[$set], $params, $ref);
                 $signals[] = $params['JScode'];
@@ -3460,7 +3460,7 @@ class BackendUtility
             $changed = 0;
             if (!is_array($settings)) {
                 $changed = 1;
-                $settings = array();
+                $settings = [];
             }
             if (is_array($MOD_MENU)) {
                 foreach ($MOD_MENU as $key => $var) {
@@ -3515,7 +3515,7 @@ class BackendUtility
      * @param bool $returnAbsoluteUrl If set to TRUE, the URL returned will be absolute, $backPathOverride will be ignored in this case
      * @return string Calculated URL
      */
-    public static function getModuleUrl($moduleName, $urlParameters = array(), $backPathOverride = false, $returnAbsoluteUrl = false)
+    public static function getModuleUrl($moduleName, $urlParameters = [], $backPathOverride = false, $returnAbsoluteUrl = false)
     {
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -3541,7 +3541,7 @@ class BackendUtility
      * @param bool $returnAbsoluteUrl If set to TRUE, the URL returned will be absolute, $backPathOverride will be ignored in this case
      * @return string Calculated URL
      */
-    public static function getAjaxUrl($ajaxIdentifier, array $urlParameters = array(), $backPathOverride = false, $returnAbsoluteUrl = false)
+    public static function getAjaxUrl($ajaxIdentifier, array $urlParameters = [], $backPathOverride = false, $returnAbsoluteUrl = false)
     {
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -3563,7 +3563,7 @@ class BackendUtility
      * @param string $linkText optional link text after the icon
      * @return string A complete <a href=""> tag
      */
-    public static function getListViewLink($urlParameters = array(), $linkTitle = '', $linkText = '')
+    public static function getListViewLink($urlParameters = [], $linkTitle = '', $linkText = '')
     {
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -3607,7 +3607,7 @@ class BackendUtility
         if (isset($beUser->user['uid'])) {
             $user_id = (int)$beUser->user['uid'];
             if ($table && $uid) {
-                $fields_values = array(
+                $fields_values = [
                     'userid' => $user_id,
                     'feuserid' => 0,
                     'tstamp' => $GLOBALS['EXEC_TIME'],
@@ -3615,7 +3615,7 @@ class BackendUtility
                     'record_uid' => $uid,
                     'username' => $beUser->user['username'],
                     'record_pid' => $pid
-                );
+                ];
                 static::getDatabaseConnection()->exec_INSERTquery('sys_lockedrecords', $fields_values);
             } else {
                 static::getDatabaseConnection()->exec_DELETEquery('sys_lockedrecords', 'userid=' . (int)$user_id);
@@ -3638,7 +3638,7 @@ class BackendUtility
     public static function isRecordLocked($table, $uid)
     {
         if (!is_array($GLOBALS['LOCKED_RECORDS'])) {
-            $GLOBALS['LOCKED_RECORDS'] = array();
+            $GLOBALS['LOCKED_RECORDS'] = [];
             $db = static::getDatabaseConnection();
             $res = $db->exec_SELECTquery(
                 '*',
@@ -3694,7 +3694,7 @@ class BackendUtility
      * @internal
      * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
      */
-    public static function exec_foreign_table_where_query($fieldConfig, $field = '', $TSconfig = array())
+    public static function exec_foreign_table_where_query($fieldConfig, $field = '', $TSconfig = [])
     {
         GeneralUtility::logDeprecatedFunction();
         $foreign_table = $fieldConfig['config']['foreign_table'];
@@ -3708,18 +3708,18 @@ class BackendUtility
         // rootLevel = 1 means that elements are only on the root level (pid=0)
         if ($rootLevel == 1 || $rootLevel == -1) {
             $pidWhere = $foreign_table . '.pid' . (($rootLevel == -1) ? '<>-1' : '=0');
-            $queryParts = array(
+            $queryParts = [
                 'SELECT' => self::getCommonSelectFields($foreign_table, $foreign_table . '.'),
                 'FROM' => $foreign_table,
                 'WHERE' => $pidWhere . ' ' . self::deleteClause($foreign_table) . ' ' . $wgolParts['WHERE'],
                 'GROUPBY' => $wgolParts['GROUPBY'],
                 'ORDERBY' => $wgolParts['ORDERBY'],
                 'LIMIT' => $wgolParts['LIMIT']
-            );
+            ];
         } else {
             $pageClause = static::getBackendUserAuthentication()->getPagePermsClause(1);
             if ($foreign_table != 'pages') {
-                $queryParts = array(
+                $queryParts = [
                     'SELECT' => self::getCommonSelectFields($foreign_table, $foreign_table . '.'),
                     'FROM' => $foreign_table . ', pages',
                     'WHERE' => 'pages.uid=' . $foreign_table . '.pid
@@ -3727,9 +3727,9 @@ class BackendUtility
                     'GROUPBY' => $wgolParts['GROUPBY'],
                     'ORDERBY' => $wgolParts['ORDERBY'],
                     'LIMIT' => $wgolParts['LIMIT']
-                );
+                ];
             } else {
-                $queryParts = array(
+                $queryParts = [
                     'SELECT' => self::getCommonSelectFields($foreign_table, $foreign_table . '.'),
                     'FROM' => 'pages',
                     'WHERE' => 'pages.deleted=0
@@ -3737,7 +3737,7 @@ class BackendUtility
                     'GROUPBY' => $wgolParts['GROUPBY'],
                     'ORDERBY' => $wgolParts['ORDERBY'],
                     'LIMIT' => $wgolParts['LIMIT']
-                );
+                ];
             }
         }
         return $db->exec_SELECT_queryArray($queryParts);
@@ -3762,7 +3762,7 @@ class BackendUtility
      * @return string
      * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
      */
-    public static function replaceMarkersInWhereClause($whereClause, $table, $field = '', $tsConfig = array())
+    public static function replaceMarkersInWhereClause($whereClause, $table, $field = '', $tsConfig = [])
     {
         GeneralUtility::logDeprecatedFunction();
         $db = static::getDatabaseConnection();
@@ -3781,7 +3781,7 @@ class BackendUtility
             $whereClause = implode('', $whereClauseParts);
         }
         return str_replace(
-            array(
+            [
                 '###CURRENT_PID###',
                 '###THIS_UID###',
                 '###STORAGE_PID###',
@@ -3789,8 +3789,8 @@ class BackendUtility
                 '###PAGE_TSCONFIG_ID###',
                 '###PAGE_TSCONFIG_IDLIST###',
                 '###PAGE_TSCONFIG_STR###'
-            ),
-            array(
+            ],
+            [
                 (int)$tsConfig['_CURRENT_PID'],
                 (int)$tsConfig['_THIS_UID'],
                 (int)$tsConfig['_STORAGE_PID'],
@@ -3798,7 +3798,7 @@ class BackendUtility
                 (int)$tsConfig[$field]['PAGE_TSCONFIG_ID'],
                 $db->cleanIntList($tsConfig[$field]['PAGE_TSCONFIG_IDLIST']),
                 $db->quoteStr($tsConfig[$field]['PAGE_TSCONFIG_STR'], $table)
-            ),
+            ],
             $whereClause
         );
     }
@@ -3814,7 +3814,7 @@ class BackendUtility
     public static function getTCEFORM_TSconfig($table, $row)
     {
         self::fixVersioningPid($table, $row);
-        $res = array();
+        $res = [];
         $typeVal = self::getTCAtypeValue($table, $row);
         // Get main config for the table
         list($TScID, $cPid) = self::getTSCpid($table, $row['uid'], $row['pid']);
@@ -3928,7 +3928,7 @@ class BackendUtility
         static $firstLevelCache;
 
         if (!is_array($firstLevelCache)) {
-            $firstLevelCache = array();
+            $firstLevelCache = [];
         }
 
         $key = $table . ':' . $uid . ':' . $pid;
@@ -3955,7 +3955,7 @@ class BackendUtility
         $cPid = self::getTSconfig_pidValue($table, $uid, $pid);
         // $TScID is the id of $table = pages, else it's the pid of the record.
         $TScID = self::getPidForModTSconfig($table, $uid, $cPid);
-        return array($TScID, $cPid);
+        return [$TScID, $cPid];
     }
 
     /**
@@ -4015,7 +4015,7 @@ class BackendUtility
      */
     public static function RTEsetup($RTEprop, $table, $field, $type = '')
     {
-        $thisConfig = is_array($RTEprop['default.']) ? $RTEprop['default.'] : array();
+        $thisConfig = is_array($RTEprop['default.']) ? $RTEprop['default.'] : [];
         $thisFieldConf = $RTEprop['config.'][$table . '.'][$field . '.'];
         if (is_array($thisFieldConf)) {
             unset($thisFieldConf['types.']);
@@ -4040,7 +4040,7 @@ class BackendUtility
         // If no RTE object has been set previously, try to create it:
         if (!isset($GLOBALS['T3_VAR']['RTEobj'])) {
             // Set the object string to blank by default:
-            $GLOBALS['T3_VAR']['RTEobj'] = array();
+            $GLOBALS['T3_VAR']['RTEobj'] = [];
             // Traverse registered RTEs:
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_reg'])) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_reg'] as $rteObjCfg) {
@@ -4134,9 +4134,9 @@ class BackendUtility
 
         // Otherwise parse the list:
         $keyList = GeneralUtility::trimExplode(',', $parserList, true);
-        $output = array();
+        $output = [];
         foreach ($keyList as $val) {
-            $reg = array();
+            $reg = [];
             if (preg_match('/^([[:alnum:]_-]+)\\[(.*)\\]$/', $val, $reg)) {
                 $output[$reg[1]] = GeneralUtility::trimExplode(';', $reg[2], true);
             } else {
@@ -4155,7 +4155,7 @@ class BackendUtility
      */
     public static function isModuleSetInTBE_MODULES($modName)
     {
-        $loaded = array();
+        $loaded = [];
         foreach ($GLOBALS['TBE_MODULES'] as $mkey => $list) {
             $loaded[$mkey] = 1;
             if (!is_array($list) && trim($list)) {
@@ -4237,7 +4237,7 @@ class BackendUtility
     public static function selectVersionsOfRecord($table, $uid, $fields = '*', $workspace = 0, $includeDeletedRecords = false, $row = null)
     {
         $realPid = 0;
-        $outputRows = array();
+        $outputRows = [];
         if ($GLOBALS['TCA'][$table] && static::isTableWorkspaceEnabled($table)) {
             if (is_array($row) && !$includeDeletedRecords) {
                 $row['_CURRENT_VERSION'] = true;
@@ -4571,9 +4571,9 @@ class BackendUtility
     {
         GeneralUtility::logDeprecatedFunction();
         if ((int)$workspace === 0) {
-            return array();
+            return [];
         }
-        $output = array();
+        $output = [];
         foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
             if ($tableName != 'pages' && $cfg['ctrl']['versioningWS']) {
                 $movePointer = new VersionState(VersionState::MOVE_POINTER);
@@ -4596,11 +4596,11 @@ class BackendUtility
         }
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['countVersionsOfRecordsOnPage'])) {
             $reference = null;
-            $parameters = array(
+            $parameters = [
                 'workspace' => 'workspace',
                 'pageId' => $pageId,
                 'versions' => &$output,
-            );
+            ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['countVersionsOfRecordsOnPage'] as $hookFunction) {
                 GeneralUtility::callUserFunction($hookFunction, $parameters, $reference);
             }
@@ -4743,7 +4743,7 @@ class BackendUtility
      */
     public static function processParams($params)
     {
-        $paramArr = array();
+        $paramArr = [];
         $lines = explode(LF, $params);
         foreach ($lines as $val) {
             $val = trim($val);
@@ -4811,7 +4811,7 @@ class BackendUtility
      */
     public static function getTcaFieldConfiguration($table, $field)
     {
-        $configuration = array();
+        $configuration = [];
         if (isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
             $configuration = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
         }
@@ -4893,7 +4893,7 @@ class BackendUtility
      */
     protected static function emitGetPagesTSconfigPreIncludeSignal(array $TSdataArray, $id, array $rootLine, $returnPartArray)
     {
-        $signalArguments = static::getSignalSlotDispatcher()->dispatch(__CLASS__, 'getPagesTSconfigPreInclude', array($TSdataArray, $id, $rootLine, $returnPartArray));
+        $signalArguments = static::getSignalSlotDispatcher()->dispatch(__CLASS__, 'getPagesTSconfigPreInclude', [$TSdataArray, $id, $rootLine, $returnPartArray]);
         return $signalArguments[0];
     }
 

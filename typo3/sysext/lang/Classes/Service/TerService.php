@@ -35,7 +35,7 @@ class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtili
         $result = false;
         $extPath = GeneralUtility::strtolower($extensionKey);
         $mirrorUrl .= $extPath[0] . '/' . $extPath[1] . '/' . $extPath . '-l10n/' . $extPath . '-l10n.xml';
-        $remote = GeneralUtility::getURL($mirrorUrl, 0, array(TYPO3_user_agent));
+        $remote = GeneralUtility::getURL($mirrorUrl, 0, [TYPO3_user_agent]);
         if ($remote !== false) {
             $parsed = $this->parseL10nXML($remote);
             $result = $parsed['languagePackIndex'];
@@ -56,8 +56,8 @@ class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtili
         $parser = xml_parser_create();
         // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
         $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
-        $values = array();
-        $index = array();
+        $values = [];
+        $index = [];
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
         xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
             // Parse content
@@ -71,9 +71,9 @@ class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtili
             throw new \TYPO3\CMS\Lang\Exception\XmlParser('Error in XML parser while decoding l10n XML file. Line ' . $line . ': ' . $error, 1345736517);
         } else {
             // Init vars
-            $stack = array(array());
+            $stack = [[]];
             $stacktop = 0;
-            $current = array();
+            $current = [];
             $tagName = '';
             $documentTag = '';
                 // Traverse the parsed XML structure:
@@ -89,9 +89,9 @@ class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtili
                         // Therefore increase the stackpointer and reset the accumulation array
                     case 'open':
                             // Setting blank place holder
-                        $current[$tagName] = array();
+                        $current[$tagName] = [];
                         $stack[$stacktop++] = $current;
-                        $current = array();
+                        $current = [];
                         break;
                         // If the tag is "close" then it is an array which is closing and we decrease the stack pointer.
                     case 'close':
@@ -185,11 +185,11 @@ class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtili
             // Nothing to do
         }
 
-        $l10nResponse = GeneralUtility::getURL($mirrorUrl . $packageUrl, 0, array(TYPO3_user_agent));
+        $l10nResponse = GeneralUtility::getURL($mirrorUrl . $packageUrl, 0, [TYPO3_user_agent]);
         if ($l10nResponse === false) {
             throw new \TYPO3\CMS\Lang\Exception\XmlParser('Error: Translation could not be fetched.', 1345736785);
         } else {
-            return array($l10nResponse);
+            return [$l10nResponse];
         }
     }
 

@@ -32,17 +32,17 @@ abstract class AbstractFeature
     /**
      * @var array List of preset classes
      */
-    protected $presetRegistry = array();
+    protected $presetRegistry = [];
 
     /**
      * @var array Holds instances of presets
      */
-    protected $presetInstances = array();
+    protected $presetInstances = [];
 
     /**
      * @var array List of $POST values
      */
-    protected $postValues = array();
+    protected $postValues = [];
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
@@ -62,7 +62,7 @@ abstract class AbstractFeature
     public function initializePresets(array $postValues)
     {
         // Give feature sub array of $POST values to preset and set to own property
-        $featurePostValues = array();
+        $featurePostValues = [];
         if (!empty($postValues[$this->name])) {
             $featurePostValues = $postValues[$this->name];
         }
@@ -121,7 +121,7 @@ abstract class AbstractFeature
                 1378645155
             );
         }
-        $orderedPresets = array();
+        $orderedPresets = [];
         foreach ($this->presetInstances as $presetInstance) {
             /** @var PresetInterface $presetInstance */
             $orderedPresets[$presetInstance->getPriority()] = $presetInstance;

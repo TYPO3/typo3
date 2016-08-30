@@ -42,7 +42,7 @@ class TriggerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendV
      * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
      * @see \TYPO3\CMS\Core\Page\PageRenderer
      */
-    public function render($triggers = array())
+    public function render($triggers = [])
     {
         $pageRenderer = $this->getPageRenderer();
         // Handle triggers

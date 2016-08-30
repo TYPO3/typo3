@@ -169,9 +169,9 @@ class ListController extends AbstractModuleController
         $availableExtensions = $this->listUtility->getAvailableExtensions();
         if (isset($availableExtensions[$extensionKey])) {
             $extensionArray = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation(
-                array(
+                [
                     $extensionKey => $availableExtensions[$extensionKey]
-                )
+                ]
             );
             /** @var ExtensionModelUtility $extensionModelUtility */
             $extensionModelUtility = $this->objectManager->get(ExtensionModelUtility::class);
@@ -259,11 +259,11 @@ class ListController extends AbstractModuleController
         $extensions = $this->extensionRepository->findByExtensionKeyOrderedByVersion($extensionKey);
 
         $this->view->assignMultiple(
-            array(
+            [
                 'extensionKey' => $extensionKey,
                 'currentVersion' => $currentVersion,
                 'extensions' => $extensions
-            )
+            ]
         );
     }
 

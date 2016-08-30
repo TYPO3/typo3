@@ -53,13 +53,13 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
      */
     protected function getNodeArray(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node)
     {
-        $nodeArray = array(
+        $nodeArray = [
             'iconTag' => $node->getIcon(),
             'text' => htmlspecialchars($node->getLabel()),
             'leaf' => !$node->hasChildNodes(),
             'id' => htmlspecialchars($node->getId()),
             'uid' => htmlspecialchars($node->getId())
-        );
+        ];
 
         return $nodeArray;
     }

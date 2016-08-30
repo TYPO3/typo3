@@ -4,12 +4,12 @@ defined('TYPO3_MODE') or die();
 // Register extension list update task
 $_EXTCONF = unserialize($_EXTCONF);
 if (empty($_EXTCONF['offlineMode'])) {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class] = array(
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class] = [
         'extension' => $_EXTKEY,
         'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:task.updateExtensionListTask.name',
         'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:task.updateExtensionListTask.description',
         'additionalFields' => '',
-    );
+    ];
 }
 
 if (TYPO3_MODE === 'BE') {

@@ -21,7 +21,7 @@ abstract class AbstractNode implements \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\N
      *
      * @var array<\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface>
      */
-    protected $childNodes = array();
+    protected $childNodes = [];
 
     /**
      * Evaluate all child nodes and return the evaluated results.

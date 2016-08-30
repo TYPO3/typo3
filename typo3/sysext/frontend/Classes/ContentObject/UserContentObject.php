@@ -25,7 +25,7 @@ class UserContentObject extends AbstractContentObject
      * @param array $conf Array of TypoScript properties
      * @return string Output
      */
-    public function render($conf = array())
+    public function render($conf = [])
     {
         if (!is_array($conf) || empty($conf)) {
             $this->getTimeTracker()->setTSlogMessage('USER without configuration.', 2);

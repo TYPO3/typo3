@@ -156,7 +156,7 @@ class Element extends AbstractEntity
      * @param array $additionalArguments
      * @return void
      */
-    public function setAdditionalArguments($additionalArguments = array())
+    public function setAdditionalArguments($additionalArguments = [])
     {
         $this->additionalArguments = $additionalArguments;
     }
@@ -305,7 +305,7 @@ class Element extends AbstractEntity
      * @param array $htmlAttributes
      * @return void
      */
-    public function setHtmlAttributes($htmlAttributes = array())
+    public function setHtmlAttributes($htmlAttributes = [])
     {
         $this->htmlAttributes = $htmlAttributes;
     }

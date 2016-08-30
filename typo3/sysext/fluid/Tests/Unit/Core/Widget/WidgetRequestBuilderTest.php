@@ -53,13 +53,13 @@ class WidgetRequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->widgetRequestBuilder = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequestBuilder::class, array('setArgumentsFromRawRequestData'));
+        $this->widgetRequestBuilder = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequestBuilder::class, ['setArgumentsFromRawRequestData']);
         $this->mockWidgetRequest = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class);
         $this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $this->mockObjectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class)->will($this->returnValue($this->mockWidgetRequest));
         $this->widgetRequestBuilder->_set('objectManager', $this->mockObjectManager);
         $this->mockWidgetContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class);
-        $this->mockAjaxWidgetContextHolder = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder::class, array(), array(), '', false);
+        $this->mockAjaxWidgetContextHolder = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder::class, [], [], '', false);
         $this->widgetRequestBuilder->injectAjaxWidgetContextHolder($this->mockAjaxWidgetContextHolder);
         $this->mockAjaxWidgetContextHolder->expects($this->once())->method('get')->will($this->returnValue($this->mockWidgetContext));
     }
@@ -100,8 +100,8 @@ class WidgetRequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function buildSetsPostArgumentsFromRequest()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_GET = array('get' => 'foo');
-        $_POST = array('post' => 'bar');
+        $_GET = ['get' => 'foo'];
+        $_POST = ['post' => 'bar'];
         $this->mockWidgetRequest->expects($this->once())->method('setArguments')->with($_POST);
         $this->widgetRequestBuilder->build();
     }
@@ -112,8 +112,8 @@ class WidgetRequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function buildSetsGetArgumentsFromRequest()
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_GET = array('get' => 'foo');
-        $_POST = array('post' => 'bar');
+        $_GET = ['get' => 'foo'];
+        $_POST = ['post' => 'bar'];
         $this->mockWidgetRequest->expects($this->once())->method('setArguments')->with($_GET);
         $this->widgetRequestBuilder->build();
     }
@@ -123,7 +123,7 @@ class WidgetRequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function buildSetsControllerActionNameFromGetArguments()
     {
-        $_GET = array('action' => 'myAction');
+        $_GET = ['action' => 'myAction'];
         $this->mockWidgetRequest->expects($this->once())->method('setControllerActionName')->with('myAction');
         $this->widgetRequestBuilder->build();
     }
@@ -133,7 +133,7 @@ class WidgetRequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function buildSetsWidgetContext()
     {
-        $_GET = array('fluid-widget-id' => '123');
+        $_GET = ['fluid-widget-id' => '123'];
         $this->mockAjaxWidgetContextHolder->expects($this->once())->method('get')->with('123')->will($this->returnValue($this->mockWidgetContext));
         $this->mockWidgetRequest->expects($this->once())->method('setWidgetContext')->with($this->mockWidgetContext);
         $this->widgetRequestBuilder->build();

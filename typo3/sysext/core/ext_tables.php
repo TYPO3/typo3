@@ -9,34 +9,34 @@ defined('TYPO3_MODE') or die();
  * NOTE: The 'default' entry in the $GLOBALS['PAGES_TYPES'] array is the 'base' for all
  * types, and for every type the entries simply overrides the entries in the 'default' type!
  */
-$GLOBALS['PAGES_TYPES'] = array(
-    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK => array(),
-    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT => array(),
-    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION => array(
+$GLOBALS['PAGES_TYPES'] = [
+    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK => [],
+    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT => [],
+    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION => [
         'type' => 'web',
         'allowedTables' => '*'
-    ),
-    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT => array(),
-    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER => array(
+    ],
+    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT => [],
+    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER => [
         'type' => 'sys'
-    ),
-    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER => array(
+    ],
+    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER => [
         //  Doktype 254 is a 'Folder' - a general purpose storage folder for whatever you like.
         // In CMS context it's NOT a viewable page. Can contain any element.
         'type' => 'sys',
         'allowedTables' => '*'
-    ),
-    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER => array(
+    ],
+    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER => [
         // Doktype 255 is a recycle-bin.
         'type' => 'sys',
         'allowedTables' => '*'
-    ),
-    'default' => array(
+    ],
+    'default' => [
         'type' => 'web',
         'allowedTables' => 'pages',
         'onlyAllowedTables' => '0'
-    ),
-);
+    ],
+];
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('sys_category,sys_file_reference,sys_file_collection');
 
@@ -48,60 +48,60 @@ $GLOBALS['PAGES_TYPES'] = array(
  * For information about adding modules to TYPO3 you should consult the
  * documentation found in "Inside TYPO3"
  */
-$GLOBALS['TBE_MODULES'] = array(
+$GLOBALS['TBE_MODULES'] = [
     'web' => 'list',
     'file' => '',
     'user' => '',
     'tools' => '',
     'system' => '',
     'help' => '',
-    '_configuration' => array(
-        'web' => array(
-            'labels' => array(
+    '_configuration' => [
+        'web' => [
+            'labels' => [
                 'll_ref' => 'LLL:EXT:lang/locallang_mod_web.xlf'
-            ),
+            ],
             'name' => 'web',
             'iconIdentifier' => 'module-web'
-        ),
-        'file' => array(
-            'labels' => array(
+        ],
+        'file' => [
+            'labels' => [
                 'll_ref' => 'LLL:EXT:lang/locallang_mod_file.xlf'
-            ),
+            ],
             'navigationFrameModule' => 'file_navframe',
             'name' => 'file',
             'workspaces' => 'online,custom',
             'iconIdentifier' => 'module-file'
-        ),
-        'user' => array(
-            'labels' => array(
+        ],
+        'user' => [
+            'labels' => [
                 'll_ref' => 'LLL:EXT:lang/locallang_mod_usertools.xlf'
-            ),
+            ],
             'name' => 'user',
             'iconIdentifier' => 'status-user-backend'
-        ),
-        'tools' => array(
-            'labels' => array(
+        ],
+        'tools' => [
+            'labels' => [
                 'll_ref' => 'LLL:EXT:lang/locallang_mod_admintools.xlf'
-            ),
+            ],
             'name' => 'tools',
             'iconIdentifier' => 'module-tools'
-        ),
-        'system' => array(
-            'labels' => array(
+        ],
+        'system' => [
+            'labels' => [
                 'll_ref' => 'LLL:EXT:lang/locallang_mod_system.xlf'
-            ),
+            ],
             'name' => 'system',
             'iconIdentifier' => 'module-system'
-        ),
-        'help' => array(
-            'labels' => array(
+        ],
+        'help' => [
+            'labels' => [
                 'll_ref' => 'LLL:EXT:lang/locallang_mod_help.xlf'
-            ),
+            ],
             'name' => 'help',
             'iconIdentifier' => 'module-help'
-        )
-    )
-);
+        ]
+    ]
+];
 
 // Register the page tree core navigation component
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent('web', 'typo3-pagetree');
@@ -112,9 +112,9 @@ $GLOBALS['TBE_MODULES'] = array(
  * For information about making skins to TYPO3 you should consult the
  * documentation found in "Inside TYPO3"
  */
-$GLOBALS['TBE_STYLES'] = array(
-    'skinImg' => array()
-);
+$GLOBALS['TBE_STYLES'] = [
+    'skinImg' => []
+];
 
 /**
  * Setting up $TCA_DESCR - Context Sensitive Help (CSH)
@@ -137,7 +137,7 @@ $GLOBALS['TBE_STYLES'] = array(
 /**
  * Backend sprite icon-names
  */
-$GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
+$GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = [
     'actions-document-close',
     'actions-document-duplicates-select',
     'actions-document-edit-access',
@@ -415,9 +415,9 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
     'module-tools',
     'module-user',
     'module-help'
-);
+];
 
-$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = array(
+$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = [
     'deleted',
     'hidden',
     'starttime',
@@ -425,9 +425,9 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = a
     'futureendtime',
     'fe_group',
     'protectedSection'
-);
+];
 
-$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames'] = array(
+$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames'] = [
     'hidden' => 'status-overlay-hidden',
     'fe_group' => 'status-overlay-access-restricted',
     'starttime' => 'status-overlay-scheduled',
@@ -438,4 +438,4 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames'] = array(
     'missing' => 'status-overlay-missing',
     'translated' => 'status-overlay-translated',
     'protectedSection' => 'status-overlay-includes-subpages'
-);
+];

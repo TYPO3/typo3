@@ -41,26 +41,26 @@ class QueryFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->dataMap = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class, array('getIsStatic', 'getRootLevel'), array('Vendor\\Ext\\Domain\\Model\\ClubMate', 'tx_ext_domain_model_clubmate'));
+        $this->dataMap = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class, ['getIsStatic', 'getRootLevel'], ['Vendor\\Ext\\Domain\\Model\\ClubMate', 'tx_ext_domain_model_clubmate']);
 
-        $this->queryFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory::class, array('dummy'));
+        $this->queryFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory::class, ['dummy']);
         $this->queryFactory->_set('configurationManager',
             $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class)
         );
 
-        $this->dataMapper = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class, array('getDataMap', 'convertClassNameToTableName'));
+        $this->dataMapper = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class, ['getDataMap', 'convertClassNameToTableName']);
         $this->dataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($this->dataMap));
         $this->queryFactory->_set('dataMapper', $this->dataMapper);
     }
 
     public function getStaticAndRootLevelAndExpectedResult()
     {
-        return array(
-            'Respect storage page is set when entity is neither marked as static nor as rootLevel.' => array(false, false, true),
-            'Respect storage page is set when entity is marked as static and rootLevel.' => array(true, true, false),
-            'Respect storage page is set when entity is marked as static but not rootLevel.' => array(true, false, false),
-            'Respect storage page is set when entity is not marked as static but as rootLevel.' => array(false, true, false),
-        );
+        return [
+            'Respect storage page is set when entity is neither marked as static nor as rootLevel.' => [false, false, true],
+            'Respect storage page is set when entity is marked as static and rootLevel.' => [true, true, false],
+            'Respect storage page is set when entity is marked as static but not rootLevel.' => [true, false, false],
+            'Respect storage page is set when entity is not marked as static but as rootLevel.' => [false, true, false],
+        ];
     }
 
     /**

@@ -141,11 +141,11 @@ class Language extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function toArray()
     {
-        return array(
+        return [
             'locale'   => $this->getLocale(),
             'label' => $this->getLabel(),
             'selected' => $this->getSelected(),
             'lastUpdate' => $this->getLastUpdate(),
-        );
+        ];
     }
 }

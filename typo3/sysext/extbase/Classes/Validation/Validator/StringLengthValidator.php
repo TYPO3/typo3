@@ -24,10 +24,10 @@ class StringLengthValidator extends AbstractValidator
     /**
      * @var array
      */
-    protected $supportedOptions = array(
-        'minimum' => array(0, 'Minimum length for a valid string', 'integer'),
-        'maximum' => array(PHP_INT_MAX, 'Maximum length for a valid string', 'integer')
-    );
+    protected $supportedOptions = [
+        'minimum' => [0, 'Minimum length for a valid string', 'integer'],
+        'maximum' => [PHP_INT_MAX, 'Maximum length for a valid string', 'integer']
+    ];
 
     /**
      * Checks if the given value is a valid string (or can be cast to a string
@@ -71,29 +71,29 @@ class StringLengthValidator extends AbstractValidator
                     $this->translateErrorMessage(
                         'validator.stringlength.between',
                         'extbase',
-                        array(
+                        [
                             $this->options['minimum'],
                             $this->options['maximum']
-                        )
-                    ), 1428504122, array($this->options['minimum'], $this->options['maximum']));
+                        ]
+                    ), 1428504122, [$this->options['minimum'], $this->options['maximum']]);
             } elseif ($this->options['minimum'] > 0) {
                 $this->addError(
                     $this->translateErrorMessage(
                         'validator.stringlength.less',
                         'extbase',
-                        array(
+                        [
                             $this->options['minimum']
-                        )
-                    ), 1238108068, array($this->options['minimum']));
+                        ]
+                    ), 1238108068, [$this->options['minimum']]);
             } else {
                 $this->addError(
                     $this->translateErrorMessage(
                         'validator.stringlength.exceed',
                         'extbase',
-                        array(
+                        [
                             $this->options['maximum']
-                        )
-                    ), 1238108069, array($this->options['maximum']));
+                        ]
+                    ), 1238108069, [$this->options['maximum']]);
             }
         }
     }

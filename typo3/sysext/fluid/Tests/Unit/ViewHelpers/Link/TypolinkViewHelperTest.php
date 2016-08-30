@@ -35,7 +35,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
      */
     protected function setUp()
     {
-        $this->subject = $this->getAccessibleMock(TypolinkViewHelper::class, array('renderChildren'));
+        $this->subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['renderChildren']);
         /** @var RenderingContext  $renderingContext */
         $renderingContext = $this->getMock(RenderingContext::class);
         $this->subject->setRenderingContext($renderingContext);
@@ -47,7 +47,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
     public function renderReturnsResultOfContentObjectRenderer()
     {
         $this->subject->expects($this->any())->method('renderChildren')->will($this->returnValue('innerContent'));
-        $contentObjectRendererMock = $this->getMock(ContentObjectRenderer::class, array(), array(), '', false);
+        $contentObjectRendererMock = $this->getMock(ContentObjectRenderer::class, [], [], '', false);
         $contentObjectRendererMock->expects($this->once())->method('stdWrap')->will($this->returnValue('foo'));
         GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
         $this->assertEquals('foo', $this->subject->render('42'));
@@ -58,80 +58,80 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
      */
     public function typoScriptConfigurationData()
     {
-        return array(
-            'empty input' => array(
+        return [
+            'empty input' => [
                 '', // input from link field
                 '', // target from fluid
                 '', // class from fluid
                 '', // title from fluid
                 '', // additional parameters from fluid
                 '',
-            ),
-            'simple id input' => array(
+            ],
+            'simple id input' => [
                 19,
                 '',
                 '',
                 '',
                 '',
                 '19',
-            ),
-            'external url with target' => array(
+            ],
+            'external url with target' => [
                 'www.web.de _blank',
                 '',
                 '',
                 '',
                 '',
                 'www.web.de _blank',
-            ),
-            'page with extended class' => array(
+            ],
+            'page with extended class' => [
                 '42 - css-class',
                 '',
                 'fluid_class',
                 '',
                 '',
                 '42 - "css-class fluid_class"',
-            ),
-            'page with overridden title' => array(
+            ],
+            'page with overridden title' => [
                 '42 - - "a link title"',
                 '',
                 '',
                 'another link title',
                 '',
                 '42 - - "another link title"',
-            ),
-            'page with title and extended parameters' => array(
+            ],
+            'page with title and extended parameters' => [
                 '42 - - "a link title" &x=y',
                 '',
                 '',
                 '',
                 '&a=b',
                 '42 - - "a link title" &x=y&a=b',
-            ),
-            'page with complex title and extended parameters' => array(
+            ],
+            'page with complex title and extended parameters' => [
                 '42 - - "a \\"link\\" title with \\\\" &x=y',
                 '',
                 '',
                 '',
                 '&a=b',
                 '42 - - "a \\"link\\" title with \\\\" &x=y&a=b',
-            ),
-            'full parameter usage' => array(
+            ],
+            'full parameter usage' => [
                 '19 _blank css-class "testtitle with whitespace" &X=y',
                 '-',
                 'fluid_class',
                 'a new title',
                 '&a=b',
                 '19 - "css-class fluid_class" "a new title" &X=y&a=b',
-            ),
-            'only page id and overwrite' => array(
+            ],
+            'only page id and overwrite' => [
                 '42',
                 '',
                 '',
                 '',
                 '&a=b',
                 '42 - - - &a=b',
-            ),
-        );
+            ],
+        ];
     }
 
     /**

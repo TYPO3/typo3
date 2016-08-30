@@ -91,12 +91,12 @@ class DatabaseQueryProcessor implements DataProcessorInterface
 
         // Execute a SQL statement to fetch the records
         $records = $cObj->getRecords($tableName, $processorConfiguration);
-        $processedRecordVariables = array();
+        $processedRecordVariables = [];
         foreach ($records as $key => $record) {
             /** @var ContentObjectRenderer $recordContentObjectRenderer */
             $recordContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $recordContentObjectRenderer->start($record, $tableName);
-            $processedRecordVariables[$key] = array('data' => $record);
+            $processedRecordVariables[$key] = ['data' => $record];
             $processedRecordVariables[$key] = $this->contentDataProcessor->process($recordContentObjectRenderer, $processorConfiguration, $processedRecordVariables[$key]);
         }
 

@@ -28,9 +28,9 @@ class CacheManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function managerThrowsExceptionOnCacheRegistrationWithAlreadyExistingIdentifier()
     {
         $manager = new \TYPO3\CMS\Core\Cache\CacheManager();
-        $cache1 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache1 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, ['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'], [], '', false);
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('test'));
-        $cache2 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache2 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, ['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'], [], '', false);
         $cache2->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('test'));
         $manager->registerCache($cache1);
         $manager->registerCache($cache2);
@@ -42,9 +42,9 @@ class CacheManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function managerReturnsThePreviouslyRegisteredCache()
     {
         $manager = new \TYPO3\CMS\Core\Cache\CacheManager();
-        $cache1 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache1 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, ['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'], [], '', false);
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('cache1'));
-        $cache2 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache2 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, ['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'], [], '', false);
         $cache2->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('cache2'));
         $manager->registerCache($cache1);
         $manager->registerCache($cache2);
@@ -58,7 +58,7 @@ class CacheManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getCacheThrowsExceptionForNonExistingIdentifier()
     {
         $manager = new \TYPO3\CMS\Core\Cache\CacheManager();
-        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, ['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'], [], '', false);
         $cache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('someidentifier'));
         $manager->registerCache($cache);
         $manager->getCache('someidentifier');
@@ -71,7 +71,7 @@ class CacheManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function hasCacheReturnsCorrectResult()
     {
         $manager = new \TYPO3\CMS\Core\Cache\CacheManager();
-        $cache1 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache1 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, ['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'], [], '', false);
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('cache1'));
         $manager->registerCache($cache1);
         $this->assertTrue($manager->hasCache('cache1'), 'hasCache() did not return TRUE.');
@@ -84,11 +84,11 @@ class CacheManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function flushCachesByTagCallsTheFlushByTagMethodOfAllRegisteredCaches()
     {
         $manager = new \TYPO3\CMS\Core\Cache\CacheManager();
-        $cache1 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache1 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, ['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'], [], '', false);
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('cache1'));
         $cache1->expects($this->once())->method('flushByTag')->with($this->equalTo('theTag'));
         $manager->registerCache($cache1);
-        $cache2 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache2 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, ['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'], [], '', false);
         $cache2->expects($this->once())->method('flushByTag')->with($this->equalTo('theTag'));
         $manager->registerCache($cache2);
         $manager->flushCachesByTag('theTag');
@@ -100,11 +100,11 @@ class CacheManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function flushCachesCallsTheFlushMethodOfAllRegisteredCaches()
     {
         $manager = new \TYPO3\CMS\Core\Cache\CacheManager();
-        $cache1 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache1 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, ['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'], [], '', false);
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('cache1'));
         $cache1->expects($this->once())->method('flush');
         $manager->registerCache($cache1);
-        $cache2 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'), array(), '', false);
+        $cache2 = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, ['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag'], [], '', false);
         $cache2->expects($this->once())->method('flush');
         $manager->registerCache($cache2);
         $manager->flushCaches();
@@ -139,15 +139,15 @@ class CacheManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $cacheIdentifier = $this->getUniqueId('Test');
         $cacheObjectName = 'testCache';
         $backendObjectName = 'testBackend';
-        $backendOptions = array('foo');
-        $configuration = array(
-            $cacheIdentifier => array(
+        $backendOptions = ['foo'];
+        $configuration = [
+            $cacheIdentifier => [
                 'frontend' => $cacheObjectName,
                 'backend' => $backendObjectName,
                 'options' => $backendOptions
-            )
-        );
-        $factory = $this->getMock(\TYPO3\CMS\Core\Cache\CacheFactory::class, array('create'), array(), '', false);
+            ]
+        ];
+        $factory = $this->getMock(\TYPO3\CMS\Core\Cache\CacheFactory::class, ['create'], [], '', false);
         $factory->expects($this->once())->method('create')->with($cacheIdentifier, $cacheObjectName, $backendObjectName, $backendOptions);
         $manager->injectCacheFactory($factory);
         $manager->setCacheConfigurations($configuration);
@@ -162,14 +162,14 @@ class CacheManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $manager = new \TYPO3\CMS\Core\Cache\CacheManager();
         $cacheIdentifier = $this->getUniqueId('Test');
         $backendObjectName = 'testBackend';
-        $backendOptions = array('foo');
-        $configuration = array(
-            $cacheIdentifier => array(
+        $backendOptions = ['foo'];
+        $configuration = [
+            $cacheIdentifier => [
                 'backend' => $backendObjectName,
                 'options' => $backendOptions
-            )
-        );
-        $factory = $this->getMock(\TYPO3\CMS\Core\Cache\CacheFactory::class, array('create'), array(), '', false);
+            ]
+        ];
+        $factory = $this->getMock(\TYPO3\CMS\Core\Cache\CacheFactory::class, ['create'], [], '', false);
         $factory->expects($this->once())->method('create')->with($cacheIdentifier, \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class, $backendObjectName, $backendOptions);
         $manager->injectCacheFactory($factory);
         $manager->setCacheConfigurations($configuration);
@@ -184,14 +184,14 @@ class CacheManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $manager = new \TYPO3\CMS\Core\Cache\CacheManager();
         $cacheIdentifier = $this->getUniqueId('Test');
         $cacheObjectName = 'testCache';
-        $backendOptions = array('foo');
-        $configuration = array(
-            $cacheIdentifier => array(
+        $backendOptions = ['foo'];
+        $configuration = [
+            $cacheIdentifier => [
                 'frontend' => $cacheObjectName,
                 'options' => $backendOptions
-            )
-        );
-        $factory = $this->getMock(\TYPO3\CMS\Core\Cache\CacheFactory::class, array('create'), array(), '', false);
+            ]
+        ];
+        $factory = $this->getMock(\TYPO3\CMS\Core\Cache\CacheFactory::class, ['create'], [], '', false);
         $factory->expects($this->once())->method('create')->with($cacheIdentifier, $cacheObjectName, \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, $backendOptions);
         $manager->injectCacheFactory($factory);
         $manager->setCacheConfigurations($configuration);
@@ -207,14 +207,14 @@ class CacheManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $cacheIdentifier = $this->getUniqueId('Test');
         $cacheObjectName = 'testCache';
         $backendObjectName = 'testBackend';
-        $configuration = array(
-            $cacheIdentifier => array(
+        $configuration = [
+            $cacheIdentifier => [
                 'frontend' => $cacheObjectName,
                 'backend' => $backendObjectName
-            )
-        );
-        $factory = $this->getMock(\TYPO3\CMS\Core\Cache\CacheFactory::class, array('create'), array(), '', false);
-        $factory->expects($this->once())->method('create')->with($cacheIdentifier, $cacheObjectName, $backendObjectName, array());
+            ]
+        ];
+        $factory = $this->getMock(\TYPO3\CMS\Core\Cache\CacheFactory::class, ['create'], [], '', false);
+        $factory->expects($this->once())->method('create')->with($cacheIdentifier, $cacheObjectName, $backendObjectName, []);
         $manager->injectCacheFactory($factory);
         $manager->setCacheConfigurations($configuration);
         $manager->getCache($cacheIdentifier);

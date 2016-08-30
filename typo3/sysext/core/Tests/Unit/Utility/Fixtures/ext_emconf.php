@@ -1,5 +1,5 @@
 <?php
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => '',
     'description' => 'This is a fixture extension configuration file used for unit tests.',
     'category' => '',
@@ -11,9 +11,9 @@ $EM_CONF[$_EXTKEY] = array(
     'author_email' => '',
     'author_company' => '',
     'version' => '1.2.3',
-    'constraints' => array(
-        'depends' => array(),
-        'conflicts' => array(),
-        'suggests' => array(),
-    ),
-);
+    'constraints' => [
+        'depends' => [],
+        'conflicts' => [],
+        'suggests' => [],
+    ],
+];

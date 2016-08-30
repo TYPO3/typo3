@@ -26,21 +26,21 @@ class GetTranslationsJson extends \TYPO3\CMS\Lang\View\AbstractJsonView
      */
     protected function getReponseData()
     {
-        $data = array();
+        $data = [];
         $languages = $this->variables['languages'];
         foreach ($this->variables['extensions'] as $extension) {
             $extensionArray = $extension->toArray();
-            $row = array(
+            $row = [
                 $extensionArray,
                 $extensionArray,
-            );
+            ];
             foreach ($languages as $language) {
                 $row[] = $language->toArray();
             }
             $data[] = $row;
         }
-        return array(
+        return [
             'data' => $data,
-        );
+        ];
     }
 }

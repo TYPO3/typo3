@@ -34,7 +34,7 @@ class Mailer extends \Swift_Mailer
     /**
      * @var array
      */
-    protected $mailSettings = array();
+    protected $mailSettings = [];
 
     /**
      * When constructing, also initializes the \Swift_Transport like configured
@@ -177,6 +177,6 @@ class Mailer extends \Swift_Mailer
      */
     protected function emitPostInitializeMailerSignal()
     {
-        $this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Mail\\Mailer', 'postInitializeMailer', array($this));
+        $this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Mail\\Mailer', 'postInitializeMailer', [$this]);
     }
 }

@@ -45,14 +45,14 @@ class AutocompleteController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
             $query->matching($query->like($searchProperty, '%' . $term . '%', false));
         }
         $results = $query->execute();
-        $output = array();
+        $output = [];
         foreach ($results as $singleResult) {
             $val = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($singleResult, $searchProperty);
-            $output[] = array(
+            $output[] = [
                 'id' => $val,
                 'label' => $val,
                 'value' => $val
-            );
+            ];
         }
         return json_encode($output);
     }

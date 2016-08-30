@@ -82,7 +82,7 @@ class LocalCropScaleMaskHelper
             // check if it is a json object
             $cropData = json_decode($configuration['crop']);
             if ($cropData) {
-                $crop = implode(',', array((int)$cropData->x, (int)$cropData->y, (int)$cropData->width, (int)$cropData->height));
+                $crop = implode(',', [(int)$cropData->x, (int)$cropData->y, (int)$cropData->width, (int)$cropData->height]);
             } else {
                 $crop = $configuration['crop'];
             }
@@ -116,11 +116,11 @@ class LocalCropScaleMaskHelper
             // SVG
             if ($croppedImage === null && $sourceFile->getExtension() === 'svg') {
                 $newDimensions = $this->getNewSvgDimensions($sourceFile, $configuration, $options, $gifBuilder);
-                $result = array(
+                $result = [
                     0 => $newDimensions['width'],
                     1 => $newDimensions['height'],
                     3 => '' // no file = use original
-                );
+                ];
 
             // all other images
             } else {
@@ -164,7 +164,7 @@ class LocalCropScaleMaskHelper
                     }
 
                     //	Scaling:	****
-                    $tempScale = array();
+                    $tempScale = [];
                     $command = '-geometry ' . $tempFileInfo[0] . 'x' . $tempFileInfo[1] . '!';
                     $command = $this->modifyImageMagickStripProfileParameters($command, $configuration);
                     $tmpStr = $gifBuilder->randomName();
@@ -201,11 +201,11 @@ class LocalCropScaleMaskHelper
         // check if the processing really generated a new file (scaled and/or cropped)
         if ($result !== null) {
             if ($result[3] !== $originalFileName || $originalFileName === $croppedImage) {
-                $result = array(
+                $result = [
                     'width' => $result[0],
                     'height' => $result[1],
                     'filePath' => $result[3],
-                );
+                ];
             } else {
                 // No file was generated
                 $result = null;
@@ -232,7 +232,7 @@ class LocalCropScaleMaskHelper
      */
     protected function getNewSvgDimensions($file, array $configuration, array $options, GifBuilder $gifBuilder)
     {
-        $info = array($file->getProperty('width'), $file->getProperty('height'));
+        $info = [$file->getProperty('width'), $file->getProperty('height')];
         $data = $gifBuilder->getImageScale($info, $configuration['width'], $configuration['height'], $options);
 
         // Turn cropScaling into scaling
@@ -252,10 +252,10 @@ class LocalCropScaleMaskHelper
             }
         }
 
-        return array(
+        return [
             'width' => $data[0],
             'height' => $data[1]
-        );
+        ];
     }
 
     /**
@@ -271,7 +271,7 @@ class LocalCropScaleMaskHelper
         if ($configuration['useSample']) {
             $gifBuilder->scalecmd = '-sample';
         }
-        $options = array();
+        $options = [];
         if ($configuration['maxWidth']) {
             $options['maxW'] = $configuration['maxWidth'];
         }

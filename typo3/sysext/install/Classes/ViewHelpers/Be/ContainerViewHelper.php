@@ -52,7 +52,7 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
      * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
      * @see \TYPO3\CMS\Core\Page\PageRenderer
      */
-    public function render($pageTitle = '', $addCssFiles = array(), $addJsFiles = array())
+    public function render($pageTitle = '', $addCssFiles = [], $addJsFiles = [])
     {
         $doc = $this->getDocInstance();
         $pageRenderer = $this->getPageRenderer();

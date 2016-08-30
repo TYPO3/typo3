@@ -45,11 +45,11 @@ class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
     public function render($path, $extensionName = null, $absolute = false)
     {
         return static::renderStatic(
-            array(
+            [
                 'path' => $path,
                 'extensionName' => $extensionName,
                 'absolute' => $absolute
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

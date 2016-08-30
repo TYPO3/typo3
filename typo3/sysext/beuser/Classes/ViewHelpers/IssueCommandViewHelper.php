@@ -39,10 +39,10 @@ class IssueCommandViewHelper extends AbstractViewHelper implements CompilableInt
     public function render($parameters, $redirectUrl = '')
     {
         return static::renderStatic(
-            array(
+            [
                 'parameters' => $parameters,
                 'redirectUrl' => $redirectUrl
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

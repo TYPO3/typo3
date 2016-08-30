@@ -25,12 +25,12 @@ class AggregateSelectOptionsViewHelper extends AbstractViewHelper
     /**
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * @var array
      */
-    protected $selectedValues = array();
+    protected $selectedValues = [];
 
     /**
      * @param Element $model
@@ -55,7 +55,7 @@ class AggregateSelectOptionsViewHelper extends AbstractViewHelper
      * @param array $optGroupData
      * @return void
      */
-    protected function createElement(Element $model, array $optGroupData = array())
+    protected function createElement(Element $model, array $optGroupData = [])
     {
         $this->checkElementForOptgroup($model, $optGroupData);
     }
@@ -65,20 +65,20 @@ class AggregateSelectOptionsViewHelper extends AbstractViewHelper
      * @param array $optGroupData
      * @return void
      */
-    protected function checkElementForOptgroup(Element $model, array $optGroupData = array())
+    protected function checkElementForOptgroup(Element $model, array $optGroupData = [])
     {
         if ($model->getElementType() === 'OPTGROUP') {
-            $optGroupData = array(
+            $optGroupData = [
                 'label' => $model->getAdditionalArgument('label'),
                 'disabled' => $model->getAdditionalArgument('disabled')
-            );
+            ];
             $this->getChildElements($model, $optGroupData);
         } else {
-            $optionData = array(
+            $optionData = [
                 'value' => $model->getAdditionalArgument('value') ?: $model->getElementCounter(),
                 'label' => $model->getAdditionalArgument('text'),
                 'selected' => $model->getAdditionalArgument('selected'),
-            );
+            ];
 
             if (!empty($optionData['selected'])) {
                 $this->selectedValues[] = $optionData['value'];
@@ -99,7 +99,7 @@ class AggregateSelectOptionsViewHelper extends AbstractViewHelper
      * @param array $optGroupData
      * @return void
      */
-    protected function getChildElements(Element $model, array $optGroupData = array())
+    protected function getChildElements(Element $model, array $optGroupData = [])
     {
         foreach ($model->getChildElements() as $element) {
             $this->createElement($element, $optGroupData);

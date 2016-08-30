@@ -22,11 +22,11 @@ class AdminCommand extends \TYPO3\CMS\Core\Controller\CommandLineController
     /**
      * @var array
      */
-    public $adminModules = array(
+    public $adminModules = [
         'setBElock' => 'Set the Backend Lock',
         'clearBElock' => 'Clears the Backend Lock',
         'msg' => 1
-    );
+    ];
 
     /**
      * Constructor
@@ -36,7 +36,7 @@ class AdminCommand extends \TYPO3\CMS\Core\Controller\CommandLineController
         // Running parent class constructor
         parent::__construct();
         // Adding options to help archive:
-        $this->cli_options[] = array('--redirect=[URL]', 'For toolkey "setBElock": The URL to which the redirection will occur.');
+        $this->cli_options[] = ['--redirect=[URL]', 'For toolkey "setBElock": The URL to which the redirection will occur.'];
         // Setting help texts:
         $this->cli_help['name'] = 'lowlevel_admin -- Various functions for administration and maintenance of TYPO3 from the command line';
         $this->cli_help['synopsis'] = 'toolkey ###OPTIONS###';

@@ -36,8 +36,8 @@ class RenderChildrenViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpe
      */
     protected function setUp()
     {
-        $this->controllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, array(), array(), '', false);
-        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\RenderChildrenViewHelper::class, array('renderChildren'));
+        $this->controllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, [], [], '', false);
+        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\RenderChildrenViewHelper::class, ['renderChildren']);
         $this->viewHelper->_set('controllerContext', $this->controllerContext);
     }
 
@@ -62,7 +62,7 @@ class RenderChildrenViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpe
         $widgetContext->expects($this->any())->method('getViewHelperChildNodeRenderingContext')->will($this->returnValue($renderingContext));
         $widgetContext->expects($this->any())->method('getViewHelperChildNodes')->will($this->returnValue($rootNode));
         $rootNode->expects($this->any())->method('evaluate')->with($renderingContext)->will($this->returnValue('Rendered Results'));
-        $output = $this->viewHelper->render(array('k1' => 'v1', 'k2' => 'v2'));
+        $output = $this->viewHelper->render(['k1' => 'v1', 'k2' => 'v2']);
         $this->assertEquals('Rendered Results', $output);
     }
 

@@ -104,7 +104,7 @@ var ' . $this->JSVarName . $a . '=0;';
      * @return string JavaScript code lines.
      * @access private
      */
-    public function generate_level($levels, $count, $pid, $menuItemArray = '', $MP_array = array())
+    public function generate_level($levels, $count, $pid, $menuItemArray = '', $MP_array = [])
     {
         $count = (int)$count;
         $levelConf = $this->mconf[$count . '.'];
@@ -149,7 +149,7 @@ var ' . $this->JSVarName . $a . '=0;';
                     $url = '';
                     $target = '';
                     if (!$addLines && !$levelConf['noLink'] || $levelConf['alwaysLink']) {
-                        $LD = $this->menuTypoLink($data, $this->mconf['target'], '', '', array(), $MP_params, $this->mconf['forceTypeValue']);
+                        $LD = $this->menuTypoLink($data, $this->mconf['target'], '', '', [], $MP_params, $this->mconf['forceTypeValue']);
                         // If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
                         $this->changeLinksForAccessRestrictedPages($LD, $data, $this->mconf['target'], $this->mconf['forceTypeValue']);
                         $url = $this->getTypoScriptFrontendController()->baseUrlWrap($LD['totalURL']);

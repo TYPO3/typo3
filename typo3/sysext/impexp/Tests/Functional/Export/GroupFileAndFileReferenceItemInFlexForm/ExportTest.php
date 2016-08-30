@@ -24,17 +24,17 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array(
+    protected $testExtensionsToLoad = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/impexp_group_files'
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $pathsToLinkInTestInstance = array(
+    protected $pathsToLinkInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/uploads/tx_impexpgroupfiles' => 'uploads/tx_impexpgroupfiles'
-    );
+    ];
 
     protected function setUp()
     {
@@ -52,15 +52,15 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
     public function exportGroupFileAndFileReferenceItem()
     {
         $this->export->setRecordTypesIncludeFields(
-            array(
-                'pages' => array(
+            [
+                'pages' => [
                     'title',
                     'deleted',
                     'doktype',
                     'hidden',
                     'perms_everybody'
-                ),
-                'sys_file' => array(
+                ],
+                'sys_file' => [
                     'storage',
                     'type',
                     'metadata',
@@ -74,8 +74,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                     'size',
                     'creation_date',
                     'modification_date',
-                ),
-                'sys_file_storage' => array(
+                ],
+                'sys_file_storage' => [
                     'name',
                     'description',
                     'driver',
@@ -85,23 +85,23 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                     'is_public',
                     'is_writable',
                     'is_online'
-                ),
-                'tx_impexpgroupfiles_item' => array(
+                ],
+                'tx_impexpgroupfiles_item' => [
                     'title',
                     'deleted',
                     'hidden',
                     'images',
                     'image_references',
                     'flexform'
-                ),
+                ],
 
-            )
+            ]
         );
 
-        $this->export->relOnlyTables = array(
+        $this->export->relOnlyTables = [
             'sys_file',
             'sys_file_storage'
-        );
+        ];
 
         $this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 2));
         $this->export->export_addRecord('tx_impexpgroupfiles_item', BackendUtility::getRecord('tx_impexpgroupfiles_item', 2));

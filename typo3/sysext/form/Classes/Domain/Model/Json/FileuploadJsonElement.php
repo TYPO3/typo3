@@ -31,24 +31,24 @@ class FileuploadJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJs
      *
      * @var array
      */
-    public $configuration = array(
-        'attributes' => array(
+    public $configuration = [
+        'attributes' => [
             'type' => 'file'
-        ),
-        'filters' => array(),
-        'label' => array(
+        ],
+        'filters' => [],
+        'label' => [
             'value' => ''
-        ),
+        ],
         'layout' => 'front',
-        'validation' => array()
-    );
+        'validation' => []
+    ];
 
     /**
      * Allowed attributes for this object
      *
      * @var array
      */
-    protected $allowedAttributes = array(
+    protected $allowedAttributes = [
         'accesskey',
         'class',
         'contenteditable',
@@ -74,5 +74,5 @@ class FileuploadJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJs
         'required',
         'type',
         'value'
-    );
+    ];
 }

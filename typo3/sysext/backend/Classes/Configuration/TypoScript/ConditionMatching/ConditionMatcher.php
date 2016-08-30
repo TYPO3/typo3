@@ -282,7 +282,7 @@ class ConditionMatcher extends AbstractConditionMatcher
     protected function log($message)
     {
         if (is_object($this->getBackendUserAuthentication())) {
-            $this->getBackendUserAuthentication()->writelog(3, 0, 1, 0, $message, array());
+            $this->getBackendUserAuthentication()->writelog(3, 0, 1, 0, $message, []);
         }
     }
 

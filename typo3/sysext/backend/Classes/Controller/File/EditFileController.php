@@ -150,10 +150,10 @@ class EditFileController extends AbstractModule
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'])) {
             $preOutputProcessingHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'];
             if (is_array($preOutputProcessingHook)) {
-                $hookParameters = array(
+                $hookParameters = [
                     'content' => &$this->content,
                     'target' => &$this->target
-                );
+                ];
                 foreach ($preOutputProcessingHook as $hookFunction) {
                     GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
                 }
@@ -176,10 +176,10 @@ class EditFileController extends AbstractModule
             $fileContent = $this->fileObject->getContents();
 
             // Making the formfields
-            $hValue = BackendUtility::getModuleUrl('file_edit', array(
+            $hValue = BackendUtility::getModuleUrl('file_edit', [
                 'target' => $this->origTarget,
                 'returnUrl' => $this->returnUrl
-            ));
+            ]);
             $code .= '
                 <div id="c-edit">
 					<textarea rows="30" name="file[editfile][0][data]" wrap="off"  class="form-control text-monospace t3js-enable-tab">' . htmlspecialchars($fileContent) . '</textarea>
@@ -201,10 +201,10 @@ class EditFileController extends AbstractModule
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'])) {
             $postOutputProcessingHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'];
             if (is_array($postOutputProcessingHook)) {
-                $hookParameters = array(
+                $hookParameters = [
                     'pageContent' => &$pageContent,
                     'target' => &$this->target
-                );
+                ];
                 foreach ($postOutputProcessingHook as $hookFunction) {
                     GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
                 }

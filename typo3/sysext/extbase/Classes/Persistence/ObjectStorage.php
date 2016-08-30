@@ -46,7 +46,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @var array
      */
-    protected $storage = array();
+    protected $storage = [];
 
     /**
      * A flag indication if the object storage was modified after reconstitution (eg. by adding a new object)
@@ -61,7 +61,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @var array
      */
-    protected $addedObjectsPositions = array();
+    protected $addedObjectsPositions = [];
 
     /**
      * An array holding the internal position the object was added before, when it would
@@ -69,7 +69,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @var array
      */
-    protected $removedObjectsPositions = array();
+    protected $removedObjectsPositions = [];
 
     /**
      * An internal var holding the count of added objects to be stored as position.
@@ -152,7 +152,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     public function offsetSet($object, $information)
     {
         $this->isModified = true;
-        $this->storage[spl_object_hash($object)] = array('obj' => $object, 'inf' => $information);
+        $this->storage[spl_object_hash($object)] = ['obj' => $object, 'inf' => $information];
 
         $this->positionCounter++;
         $this->addedObjectsPositions[spl_object_hash($object)] = $this->positionCounter;
@@ -290,7 +290,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      */
     public function toArray()
     {
-        $array = array();
+        $array = [];
         $storage = array_values($this->storage);
         foreach ($storage as $item) {
             $array[] = $item['obj'];

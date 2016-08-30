@@ -33,14 +33,14 @@ class PaginateController extends AbstractWidgetController
     /**
      * @var array
      */
-    protected $configuration = array(
+    protected $configuration = [
         'itemsPerPage' => 10,
         'insertAbove' => false,
         'insertBelow' => true,
         'maximumNumberOfLinks' => 99,
         'addQueryStringMethod' => '',
         'section' => ''
-    );
+    ];
 
     /**
      * @var QueryResultInterface|ObjectStorage|array
@@ -107,9 +107,9 @@ class PaginateController extends AbstractWidgetController
             }
             $modifiedObjects = $this->prepareObjectsSlice($itemsPerPage, $offset);
         }
-        $this->view->assign('contentArguments', array(
+        $this->view->assign('contentArguments', [
             $this->widgetConfiguration['as'] => $modifiedObjects
-        ));
+        ]);
         $this->view->assign('configuration', $this->configuration);
         $this->view->assign('pagination', $this->buildPagination());
     }
@@ -148,11 +148,11 @@ class PaginateController extends AbstractWidgetController
     protected function buildPagination()
     {
         $this->calculateDisplayRange();
-        $pages = array();
+        $pages = [];
         for ($i = $this->displayRangeStart; $i <= $this->displayRangeEnd; $i++) {
-            $pages[] = array('number' => $i, 'isCurrent' => $i === $this->currentPage);
+            $pages[] = ['number' => $i, 'isCurrent' => $i === $this->currentPage];
         }
-        $pagination = array(
+        $pagination = [
             'pages' => $pages,
             'current' => $this->currentPage,
             'numberOfPages' => $this->numberOfPages,
@@ -160,7 +160,7 @@ class PaginateController extends AbstractWidgetController
             'displayRangeEnd' => $this->displayRangeEnd,
             'hasLessPages' => $this->displayRangeStart > 2,
             'hasMorePages' => $this->displayRangeEnd + 1 < $this->numberOfPages
-        );
+        ];
         if ($this->currentPage < $this->numberOfPages) {
             $pagination['nextPage'] = $this->currentPage + 1;
         }
@@ -188,7 +188,7 @@ class PaginateController extends AbstractWidgetController
             $modifiedObjects = $query->execute();
             return $modifiedObjects;
         } elseif ($this->objects instanceof ObjectStorage) {
-            $modifiedObjects = array();
+            $modifiedObjects = [];
             $endOfRange = $offset + $itemsPerPage;
             for ($i = $offset; $i < $endOfRange; $i++) {
                 $modifiedObjects[] = $this->objects->toArray()[$i];

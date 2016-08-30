@@ -79,7 +79,7 @@ class HelpToolbarItem implements ToolbarItemInterface
      */
     public function getDropDown()
     {
-        $dropdown = array();
+        $dropdown = [];
         $dropdown[] = '<ul class="dropdown-list">';
         foreach ($this->helpModuleMenu->getChildren() as $module) {
             /** @var BackendModule $module */
@@ -109,7 +109,7 @@ class HelpToolbarItem implements ToolbarItemInterface
      */
     public function getAdditionalAttributes()
     {
-        return array('class' => 'typo3-module-menu-group');
+        return ['class' => 'typo3-module-menu-group'];
     }
 
     /**

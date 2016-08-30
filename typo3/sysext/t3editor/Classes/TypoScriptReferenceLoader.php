@@ -92,7 +92,7 @@ class TypoScriptReferenceLoader
     protected function getTypes()
     {
         $types = $this->xmlDoc->getElementsByTagName('type');
-        $typeArr = array();
+        $typeArr = [];
         foreach ($types as $type) {
             $typeId = $type->getAttribute('id');
             $typeName = $type->getAttribute('name');
@@ -100,14 +100,14 @@ class TypoScriptReferenceLoader
                 $typeName = $typeId;
             }
             $properties = $type->getElementsByTagName('property');
-            $propArr = array();
+            $propArr = [];
             foreach ($properties as $property) {
-                $p = array();
+                $p = [];
                 $p['name'] = $property->getAttribute('name');
                 $p['type'] = $property->getAttribute('type');
                 $propArr[$property->getAttribute('name')] = $p;
             }
-            $typeArr[$typeId] = array();
+            $typeArr[$typeId] = [];
             $typeArr[$typeId]['properties'] = $propArr;
             $typeArr[$typeId]['name'] = $typeName;
             if ($type->hasAttribute('extends')) {

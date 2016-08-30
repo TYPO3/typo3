@@ -62,8 +62,8 @@ class WidgetContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function widgetConfigurationCanBeReadAgain()
     {
-        $this->widgetContext->setWidgetConfiguration(array('key' => 'value'));
-        $this->assertEquals(array('key' => 'value'), $this->widgetContext->getWidgetConfiguration());
+        $this->widgetContext->setWidgetConfiguration(['key' => 'value']);
+        $this->assertEquals(['key' => 'value'], $this->widgetContext->getWidgetConfiguration());
     }
 
     /**

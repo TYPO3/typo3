@@ -42,7 +42,7 @@ class AjaxRequestHandler
     /**
      * @var array
      */
-    protected $content = array();
+    protected $content = [];
 
     /**
      * @var string
@@ -137,7 +137,7 @@ class AjaxRequestHandler
      */
     public function setContentFormat($format)
     {
-        if (ArrayUtility::inArray(array('plain', 'xml', 'json', 'jsonhead', 'jsonbody', 'javascript'), $format)) {
+        if (ArrayUtility::inArray(['plain', 'xml', 'json', 'jsonhead', 'jsonbody', 'javascript'], $format)) {
             $this->contentFormat = $format;
         }
     }

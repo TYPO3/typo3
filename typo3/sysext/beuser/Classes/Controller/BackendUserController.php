@@ -144,7 +144,7 @@ class BackendUserController extends BackendUserActionController
 
         // Create online user list for easy parsing
         $onlineUsers = $this->backendUserSessionRepository->findAllActive();
-        $onlineBackendUsers = array();
+        $onlineBackendUsers = [];
         if (is_array($onlineUsers)) {
             foreach ($onlineUsers as $onlineUser) {
                 $onlineBackendUsers[$onlineUser['ses_userid']] = true;
@@ -157,7 +157,7 @@ class BackendUserController extends BackendUserActionController
         $this->view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);
         $this->view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
         $this->view->assign('backendUsers', $this->backendUserRepository->findDemanded($demand));
-        $this->view->assign('backendUserGroups', array_merge(array(''), $this->backendUserGroupRepository->findAll()->toArray()));
+        $this->view->assign('backendUserGroups', array_merge([''], $this->backendUserGroupRepository->findAll()->toArray()));
         $this->view->assign('compareUserList', !empty($compareUserList) ? $this->backendUserRepository->findByUidList($compareUserList) : '');
     }
 
@@ -168,13 +168,13 @@ class BackendUserController extends BackendUserActionController
      */
     public function onlineAction()
     {
-        $onlineUsersAndSessions = array();
+        $onlineUsersAndSessions = [];
         $onlineUsers = $this->backendUserRepository->findOnline();
         foreach ($onlineUsers as $onlineUser) {
-            $onlineUsersAndSessions[] = array(
+            $onlineUsersAndSessions[] = [
                 'backendUser' => $onlineUser,
                 'sessions' => $this->backendUserSessionRepository->findByBackendUser($onlineUser)
-            );
+            ];
         }
         $this->view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);
         $this->view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);

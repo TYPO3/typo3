@@ -41,12 +41,12 @@ class WarningMessagePostProcessor
                 // the admin should take a look at the detailed status report
                 $GLOBALS['LANG']->includeLLFile('EXT:reports/Resources/Private/Language/locallang_reports.xlf');
                 $reportModuleIdentifier = 'system_ReportsTxreportsm1';
-                $reportModuleParameters = array(
+                $reportModuleParameters = [
                     'tx_reports_system_reportstxreportsm1[extension]=tx_reports',
                     'tx_reports_system_reportstxreportsm1[report]=status',
                     'tx_reports_system_reportstxreportsm1[action]=detail',
                     'tx_reports_system_reportstxreportsm1[controller]=Report',
-                );
+                ];
                 $warningMessages['tx_reports_status_notification'] = sprintf(
                     $GLOBALS['LANG']->getLL('status_problemNotification'),
                     '<a href="javascript:top.goToModule(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($reportModuleIdentifier) . ', 1, ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue('&' . implode('&', $reportModuleParameters)) . ');">', '</a>'

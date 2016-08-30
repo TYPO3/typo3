@@ -30,7 +30,7 @@ abstract class AbstractContextMenuDataProvider
      *
      * @var array
      */
-    protected $disableItems = array();
+    protected $disableItems = [];
 
     /**
      * Context Menu Type (e.g. table.pages, table.tt_content)
@@ -97,7 +97,7 @@ abstract class AbstractContextMenuDataProvider
             return true;
         }
         // Parse condition string
-        $conditions = array();
+        $conditions = [];
         preg_match_all('/(.+?)(>=|<=|!=|=|>|<)(.+?)(\\|\\||&&|$)/is', $displayCondition, $conditions);
         $lastResult = false;
         $chainType = '';
@@ -110,7 +110,7 @@ abstract class AbstractContextMenuDataProvider
                 continue;
             }
             // Fetch compare value
-            $returnValue = call_user_func(array($node, $method));
+            $returnValue = call_user_func([$node, $method]);
             if (is_array($returnValue)) {
                 $returnValue = $returnValue[$index];
             }
@@ -172,7 +172,7 @@ abstract class AbstractContextMenuDataProvider
                     continue;
                 }
             }
-            if (!in_array($type, array('DIVIDER', 'SUBMENU', 'ITEM'))) {
+            if (!in_array($type, ['DIVIDER', 'SUBMENU', 'ITEM'])) {
                 continue;
             }
             /** @var $action ContextMenuAction */

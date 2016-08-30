@@ -77,9 +77,9 @@ class InfoModuleController extends BaseScriptClass
 
         $this->backendUser = $GLOBALS['BE_USER'];
 
-        $this->MCONF = array(
+        $this->MCONF = [
             'name' => $this->moduleName,
-        );
+        ];
     }
 
     /**
@@ -101,7 +101,7 @@ class InfoModuleController extends BaseScriptClass
         $access = is_array($this->pageinfo);
         if ($this->id && $access || $this->backendUser->user['admin'] && !$this->id) {
             if ($this->backendUser->user['admin'] && !$this->id) {
-                $this->pageinfo = array('title' => '[root-level]', 'uid' => 0, 'pid' => 0);
+                $this->pageinfo = ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
             }
             // JavaScript
             $this->moduleTemplate->addJavaScriptCode(

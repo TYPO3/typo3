@@ -33,10 +33,10 @@ class DatabaseSelect extends AbstractStepAction
      */
     public function execute()
     {
-        $result = array();
+        $result = [];
         $this->initializeDatabaseConnection();
         $postValues = $this->postValues['values'];
-        $localConfigurationPathValuePairs = array();
+        $localConfigurationPathValuePairs = [];
         /** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
         $configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
         if ($postValues['type'] === 'new') {
@@ -161,7 +161,7 @@ class DatabaseSelect extends AbstractStepAction
         $this->initializeDatabaseConnection();
         $databaseArray = $this->databaseConnection->admin_get_dbs();
         // Remove mysql organizational tables from database list
-        $reservedDatabaseNames = array('mysql', 'information_schema', 'performance_schema');
+        $reservedDatabaseNames = ['mysql', 'information_schema', 'performance_schema'];
         $allPossibleDatabases = array_diff($databaseArray, $reservedDatabaseNames);
 
         // If we are upgrading we show *all* databases the user has access to
@@ -169,15 +169,15 @@ class DatabaseSelect extends AbstractStepAction
             return $allPossibleDatabases;
         } else {
             // In first installation we show all databases but disable not empty ones (with tables)
-            $databases = array();
+            $databases = [];
             foreach ($allPossibleDatabases as $database) {
                 $this->databaseConnection->setDatabaseName($database);
                 $this->databaseConnection->sql_select_db();
                 $existingTables = $this->databaseConnection->admin_get_tables();
-                $databases[] = array(
+                $databases[] = [
                     'name' => $database,
                     'tables' => count($existingTables),
-                );
+                ];
             }
             return $databases;
         }

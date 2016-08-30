@@ -86,7 +86,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
     {
         $db = self::getDatabaseConnection();
 
-        $relatedRecords = array();
+        $relatedRecords = [];
         // Assemble where clause
         $where = 'AND ' . self::$storageTableName . '.uid = ' . (int)$this->getIdentifier();
         // Add condition on tablenames fields

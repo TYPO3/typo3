@@ -37,7 +37,7 @@ class HistoryEntryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function initializeObjectSetsRespectStoragePidToFalse()
     {
         $this->querySettings->expects($this->atLeastOnce())->method('setRespectStoragePage')->with(false);
-        $fixture = $this->getMock(\TYPO3\CMS\Belog\Domain\Repository\HistoryEntryRepository::class, array('setDefaultQuerySettings'), array($this->objectManager));
+        $fixture = $this->getMock(\TYPO3\CMS\Belog\Domain\Repository\HistoryEntryRepository::class, ['setDefaultQuerySettings'], [$this->objectManager]);
         $fixture->expects($this->once())->method('setDefaultQuerySettings')->with($this->querySettings);
         $fixture->initializeObject();
     }

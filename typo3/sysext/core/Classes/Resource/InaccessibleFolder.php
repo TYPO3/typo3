@@ -94,7 +94,7 @@ class InaccessibleFolder extends Folder
      *
      * @return int
      */
-    public function getFileCount(array $filterMethods = array(), $recursive = false)
+    public function getFileCount(array $filterMethods = [], $recursive = false)
     {
         $this->throwInaccessibleException();
     }

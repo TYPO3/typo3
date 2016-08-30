@@ -30,12 +30,12 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     /**
      * @var array
      */
-    protected $cacheActions = array();
+    protected $cacheActions = [];
 
     /**
      * @var array
      */
-    protected $optionValues = array();
+    protected $optionValues = [];
 
     /**
      * @var IconFactory
@@ -57,25 +57,25 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
 
         // Clear all page-related caches
         if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.pages')) {
-            $this->cacheActions[] = array(
+            $this->cacheActions[] = [
                 'id' => 'pages',
                 'title' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushPageCachesTitle', true),
                 'description' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushPageCachesDescription', true),
                 'href' => BackendUtility::getModuleUrl('tce_db', ['vC' => $backendUser->veriCode(), 'cacheCmd' => 'pages', 'ajaxCall' => 1]),
                 'icon' => $this->iconFactory->getIcon('actions-system-cache-clear-impact-low', Icon::SIZE_SMALL)->render()
-            );
+            ];
             $this->optionValues[] = 'pages';
         }
 
         // Clear cache for ALL tables!
         if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.all')) {
-            $this->cacheActions[] = array(
+            $this->cacheActions[] = [
                 'id' => 'all',
                 'title' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushGeneralCachesTitle', true),
                 'description' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushGeneralCachesDescription', true),
                 'href' => BackendUtility::getModuleUrl('tce_db', ['vC' => $backendUser->veriCode(), 'cacheCmd' => 'all', 'ajaxCall' => 1]),
                 'icon' => $this->iconFactory->getIcon('actions-system-cache-clear-impact-medium', Icon::SIZE_SMALL)->render()
-            );
+            ];
             $this->optionValues[] = 'all';
         }
 
@@ -88,13 +88,13 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
             || (GeneralUtility::getApplicationContext()->isDevelopment() && $backendUser->isAdmin())
             || ((bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === true && $backendUser->isAdmin())
         ) {
-            $this->cacheActions[] = array(
+            $this->cacheActions[] = [
                 'id' => 'system',
                 'title' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushSystemCachesTitle', true),
                 'description' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushSystemCachesDescription', true),
                 'href' => BackendUtility::getModuleUrl('tce_db', ['vC' => $backendUser->veriCode(), 'cacheCmd' => 'system', 'ajaxCall' => 1]),
                 'icon' => $this->iconFactory->getIcon('actions-system-cache-clear-impact-high', Icon::SIZE_SMALL)->render()
-            );
+            ];
             $this->optionValues[] = 'system';
         }
 
@@ -151,7 +151,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
      */
     public function getDropDown()
     {
-        $result = array();
+        $result = [];
         $result[] = '<ul class="dropdown-list">';
         foreach ($this->cacheActions as $cacheAction) {
             $title = $cacheAction['description'] ?: $cacheAction['title'];
@@ -172,7 +172,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
      */
     public function getAdditionalAttributes()
     {
-        return array();
+        return [];
     }
 
     /**

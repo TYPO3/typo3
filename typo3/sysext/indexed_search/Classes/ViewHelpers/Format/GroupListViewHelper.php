@@ -29,12 +29,12 @@ class GroupListViewHelper extends AbstractViewHelper implements CompilableInterf
      * @param array $groups
      * @return string
      */
-    public function render(array $groups = array())
+    public function render(array $groups = [])
     {
         return static::renderStatic(
-            array(
+            [
                 'groups' => $groups,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -51,7 +51,7 @@ class GroupListViewHelper extends AbstractViewHelper implements CompilableInterf
     {
         $groups = $arguments['groups'];
 
-        $str = array();
+        $str = [];
         foreach ($groups as $row) {
             $str[] = $row['gr_list'] === '0,-1' ? 'NL' : $row['gr_list'];
         }

@@ -32,7 +32,7 @@ class Tables
     {
         $deletedRecordsTotal = 0;
         $lang = $this->getLanguageService();
-        $tables = array();
+        $tables = [];
         foreach (RecyclerUtility::getModifyableTables() as $tableName) {
             $deletedField = RecyclerUtility::getDeletedField($tableName);
             if ($deletedField) {
@@ -45,22 +45,22 @@ class Tables
                     if (isset($deletedData[$tableName])) {
                         if ($deletedRecordsInTable = count($deletedData[$tableName])) {
                             $deletedRecordsTotal += $deletedRecordsInTable;
-                            $tables[] = array(
+                            $tables[] = [
                                 $tableName,
                                 $deletedRecordsInTable,
                                 RecyclerUtility::getUtf8String($lang->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']))
-                            );
+                            ];
                         }
                     }
                 }
             }
         }
         $jsonArray = $tables;
-        array_unshift($jsonArray, array(
+        array_unshift($jsonArray, [
             '',
             $deletedRecordsTotal,
             $lang->sL('LLL:EXT:recycler/mod1/locallang.xlf:label_allrecordtypes')
-        ));
+        ]);
         return $jsonArray;
     }
 

@@ -55,7 +55,7 @@ abstract class AbstractGenerator
      */
     protected function getClassNamesInNamespace($namespace)
     {
-        $affectedViewHelperClassNames = array();
+        $affectedViewHelperClassNames = [];
 
         $allViewHelperClassNames = $this->reflectionService->getAllSubClassNamesForClass(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class);
         foreach ($allViewHelperClassNames as $viewHelperClassName) {

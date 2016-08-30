@@ -94,12 +94,12 @@ class BackendLayoutWizardController extends AbstractModule
             'moduleUrl',
             BackendUtility::getModuleUrl(
                 'help_CshmanualCshmanual',
-                array(
-                    'tx_cshmanual_help_cshmanualcshmanual' => array(
+                [
+                    'tx_cshmanual_help_cshmanualcshmanual' => [
                         'controller' => 'Help',
                         'action' => 'detail'
-                    )
-                )
+                    ]
+                ]
             )
         );
         $pageRenderer->addJsInlineCode('storeData', '
@@ -110,7 +110,7 @@ class BackendLayoutWizardController extends AbstractModule
 				}
 			}
 			', false);
-        $languageLabels = array(
+        $languageLabels = [
             'save' => $lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_labelSave', true),
             'title' => $lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_windowTitle', true),
             'editCell' => $lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_editCell', true),
@@ -121,7 +121,7 @@ class BackendLayoutWizardController extends AbstractModule
             'notSet' => $lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_notSet', true),
             'nameHelp' => $lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_nameHelp', true),
             'columnHelp' => $lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_columnHelp', true)
-        );
+        ];
         $pageRenderer->addInlineLanguageLabelArray($languageLabels);
         // Select record
         $record = $this->getDatabaseConnection()->exec_SELECTgetRows(
@@ -130,7 +130,7 @@ class BackendLayoutWizardController extends AbstractModule
             'uid=' . (int)$this->P['uid']
         );
         if (trim($record[0][$this->P['field']]) == '') {
-            $rows = array(array(array('colspan' => 1, 'rowspan' => 1, 'spanned' => false, 'name' => '')));
+            $rows = [[['colspan' => 1, 'rowspan' => 1, 'spanned' => false, 'name' => '']]];
             $colCount = 1;
             $rowCount = 1;
         } else {
@@ -138,17 +138,17 @@ class BackendLayoutWizardController extends AbstractModule
             $parser = GeneralUtility::makeInstance(TypoScriptParser::class);
             $parser->parse($record[0][$this->P['field']]);
             $data = $parser->setup['backend_layout.'];
-            $rows = array();
+            $rows = [];
             $colCount = $data['colCount'];
             $rowCount = $data['rowCount'];
             $dataRows = $data['rows.'];
-            $spannedMatrix = array();
+            $spannedMatrix = [];
             for ($i = 1; $i <= $rowCount; $i++) {
-                $cells = array();
+                $cells = [];
                 $row = array_shift($dataRows);
                 $columns = $row['columns.'];
                 for ($j = 1; $j <= $colCount; $j++) {
-                    $cellData = array();
+                    $cellData = [];
                     if (!$spannedMatrix[$i][$j]) {
                         if (is_array($columns) && !empty($columns)) {
                             $column = array_shift($columns);
@@ -189,7 +189,7 @@ class BackendLayoutWizardController extends AbstractModule
                             }
                         }
                     } else {
-                        $cellData = array('colspan' => 1, 'rowspan' => 1, 'spanned' => 1);
+                        $cellData = ['colspan' => 1, 'rowspan' => 1, 'spanned' => 1];
                     }
                     $cells[] = $cellData;
                 }

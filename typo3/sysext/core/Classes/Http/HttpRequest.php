@@ -29,7 +29,7 @@ class HttpRequest extends \HTTP_Request2
      * @param array $config Configuration for this request instance
      * @link http://pear.php.net/manual/en/package.http.http-request2.config.php
      */
-    public function __construct($url = null, $method = self::METHOD_GET, array $config = array())
+    public function __construct($url = null, $method = self::METHOD_GET, array $config = [])
     {
         parent::__construct($url, $method);
         $this->setConfiguration($config);
@@ -44,11 +44,11 @@ class HttpRequest extends \HTTP_Request2
      * @return void
      * @see http://pear.php.net/manual/en/package.http.http-request2.config.php
      */
-    public function setConfiguration(array $config = array())
+    public function setConfiguration(array $config = [])
     {
         // set a branded user-agent
         $this->setHeader('user-agent', $GLOBALS['TYPO3_CONF_VARS']['HTTP']['userAgent']);
-        $default = array(
+        $default = [
             'adapter' => $GLOBALS['TYPO3_CONF_VARS']['HTTP']['adapter'],
             'connect_timeout' => $GLOBALS['TYPO3_CONF_VARS']['HTTP']['connect_timeout'],
             'timeout' => $GLOBALS['TYPO3_CONF_VARS']['HTTP']['timeout'],
@@ -68,7 +68,7 @@ class HttpRequest extends \HTTP_Request2
             'ssl_capath' => $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_capath'] ?: null,
             'ssl_local_cert' => $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_local_cert'] ?: null,
             'ssl_passphrase' => $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_passphrase'] ?: null
-        );
+        ];
         $configuration = array_merge($default, $config);
         $this->setConfig($configuration);
     }

@@ -66,7 +66,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     /**
      * @var array
      */
-    protected $idCache = array();
+    protected $idCache = [];
 
     /**
      * Stores TCA-Configuration of the LookUpField in tableName
@@ -80,12 +80,12 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      *
      * @var array
      */
-    protected $nodeSortValues = array();
+    protected $nodeSortValues = [];
 
     /**
      * @var array TCEforms compiled TSConfig array
      */
-    protected $generatedTSConfig = array();
+    protected $generatedTSConfig = [];
 
     /**
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
@@ -250,7 +250,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     {
         /** @var $node \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode */
         $node = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode::class);
-        $row = array();
+        $row = [];
         if ($basicNode->getId() == 0) {
             $node->setSelected(false);
             $node->setExpanded(true);
@@ -328,10 +328,10 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
             $nodeData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->tableName, 'uid=' . $node->getId());
         }
         if ($nodeData == null) {
-            $nodeData = array(
+            $nodeData = [
                 'uid' => 0,
                 $this->getLookupField() => ''
-            );
+            ];
         }
         $storage = null;
         $children = $this->getRelatedRecords($nodeData);
@@ -366,7 +366,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         } else {
             $children = $this->getChildrenUidsFromChildrenRelation($row);
         }
-        $allowedArray = array();
+        $allowedArray = [];
         foreach ($children as $child) {
             if (!in_array($child, $this->idCache) && in_array($child, $this->itemWhiteList)) {
                 $allowedArray[] = $child;
@@ -416,7 +416,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      */
     protected function getChildrenUidsFromChildrenRelation(array $row)
     {
-        $relatedUids = array();
+        $relatedUids = [];
         $uid = $row['uid'];
         $value = $row[$this->getLookupField()];
         switch ((string)$this->columnConfiguration['type']) {
@@ -453,7 +453,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     protected function listFieldQuery($fieldName, $queryId)
     {
         $records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $this->getTableName(), $GLOBALS['TYPO3_DB']->listQuery($fieldName, (int)$queryId, $this->getTableName()) . ((int)$queryId === 0 ? ' OR CAST(' . $fieldName . ' AS CHAR) = \'\'' : ''));
-        $uidArray = array();
+        $uidArray = [];
         if (!empty($records)) {
             foreach ($records as $record) {
                 $uidArray[] = $record['uid'];
@@ -471,7 +471,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     {
         $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::class,
             self::SIGNAL_PostProcessTreeData,
-            array($this, $this->treeData)
+            [$this, $this->treeData]
         );
         $this->emitDeprecatedPostProcessTreeDataSignal();
     }
@@ -501,7 +501,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
             $this->getSignalSlotDispatcher()->dispatch(
                 'TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\TableConfiguration\\DatabaseTreeDataProvider',
                 self::SIGNAL_PostProcessTreeData,
-                array($this, $this->treeData)
+                [$this, $this->treeData]
             );
         }
     }

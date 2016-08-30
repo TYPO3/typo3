@@ -34,7 +34,7 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->subject = $this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\AbstractRepository::class, array(), '', false);
+        $this->subject = $this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\AbstractRepository::class, [], '', false);
     }
 
     /**
@@ -52,7 +52,7 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function findByUidAcceptsNumericUidInString()
     {
         $this->createDatabaseMock();
-        $this->mockedDb->expects($this->once())->method('exec_SELECTgetSingleRow')->with($this->anything(), $this->anything(), $this->stringContains('uid=' . 123))->will($this->returnValue(array('uid' => 123)));
+        $this->mockedDb->expects($this->once())->method('exec_SELECTgetSingleRow')->with($this->anything(), $this->anything(), $this->stringContains('uid=' . 123))->will($this->returnValue(['uid' => 123]));
         $this->subject->findByUid('123');
     }
 
@@ -64,18 +64,18 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getWhereClauseForEnabledFieldsIncludesDeletedCheckInBackend()
     {
-        $GLOBALS['TCA'] = array(
-            'sys_file_storage' => array(
-                'ctrl' => array(
+        $GLOBALS['TCA'] = [
+            'sys_file_storage' => [
+                'ctrl' => [
                     'delete' => 'deleted',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         /** @var \TYPO3\CMS\Core\Resource\StorageRepository|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $storageRepositoryMock */
         $storageRepositoryMock = $this->getAccessibleMock(
             \TYPO3\CMS\Core\Resource\StorageRepository::class,
-            array('dummy'),
-            array(),
+            ['dummy'],
+            [],
             '',
             false
         );
@@ -100,8 +100,8 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->with('sys_file_storage');
         $storageRepositoryMock = $this->getAccessibleMock(
             \TYPO3\CMS\Core\Resource\StorageRepository::class,
-            array('getEnvironmentMode'),
-            array(),
+            ['getEnvironmentMode'],
+            [],
             '',
             false
         );

@@ -27,7 +27,7 @@ class Nl2brViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getMock(Nl2brViewHelper::class, array('renderChildren'));
+        $this->viewHelper = $this->getMock(Nl2brViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
     }

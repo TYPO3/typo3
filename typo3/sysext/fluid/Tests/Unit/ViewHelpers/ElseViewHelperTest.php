@@ -26,7 +26,7 @@ class ElseViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        $this->subject = $this->getMock(ElseViewHelper::class, array('renderChildren'));
+        $this->subject = $this->getMock(ElseViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->subject);
     }
 

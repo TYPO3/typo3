@@ -144,9 +144,9 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
 
         $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/typo3_image2.jpg');
 
-        $expectedErrors = array(
+        $expectedErrors = [
                 'Forcing uids of sys_file records is not supported! They will be imported as new records!'
-        );
+        ];
         $errors = $this->import->errorLog;
         $this->assertSame($expectedErrors, $errors);
     }

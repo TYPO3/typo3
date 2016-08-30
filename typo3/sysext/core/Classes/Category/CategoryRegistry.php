@@ -28,17 +28,17 @@ class CategoryRegistry implements SingletonInterface
     /**
      * @var array
      */
-    protected $registry = array();
+    protected $registry = [];
 
     /**
      * @var array
      */
-    protected $extensions = array();
+    protected $extensions = [];
 
     /**
      * @var array
      */
-    protected $addedCategoryTabs = array();
+    protected $addedCategoryTabs = [];
 
     /**
      * @var string
@@ -82,7 +82,7 @@ class CategoryRegistry implements SingletonInterface
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public function add($extensionKey, $tableName, $fieldName = 'categories', array $options = array(), $override = false)
+    public function add($extensionKey, $tableName, $fieldName = 'categories', array $options = [], $override = false)
     {
         $didRegister = false;
         if (empty($tableName) || !is_string($tableName)) {
@@ -161,7 +161,7 @@ class CategoryRegistry implements SingletonInterface
             if ($tableName === $table) {
                 foreach ($fields as $fieldName => $options) {
                     $fieldLabel = $this->getLanguageService()->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
-                    $configuration['items'][] = array($fieldLabel, $fieldName);
+                    $configuration['items'][] = [$fieldLabel, $fieldName];
                 }
             }
         }
@@ -346,15 +346,15 @@ class CategoryRegistry implements SingletonInterface
                 $exclude = (bool)$options['exclude'];
             }
 
-            $fieldConfiguration = empty($options['fieldConfiguration']) ? array() : $options['fieldConfiguration'];
+            $fieldConfiguration = empty($options['fieldConfiguration']) ? [] : $options['fieldConfiguration'];
 
-            $columns = array(
-                $fieldName => array(
+            $columns = [
+                $fieldName => [
                     'exclude' => $exclude,
                     'label' => $label,
                     'config' =>  static::getTcaFieldConfiguration($tableName, $fieldName, $fieldConfiguration),
-                ),
-            );
+                ],
+            ];
 
             if (isset($options['l10n_mode'])) {
                 $columns[$fieldName]['l10n_mode'] = $options['l10n_mode'];
@@ -368,7 +368,7 @@ class CategoryRegistry implements SingletonInterface
 
             // Register opposite references for the foreign side of a relation
             if (empty($GLOBALS['TCA']['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$tableName])) {
-                $GLOBALS['TCA']['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$tableName] = array();
+                $GLOBALS['TCA']['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$tableName] = [];
             }
             if (!in_array($fieldName, $GLOBALS['TCA']['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$tableName])) {
                 $GLOBALS['TCA']['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$tableName][] = $fieldName;
@@ -399,32 +399,32 @@ class CategoryRegistry implements SingletonInterface
      * @return array
      * @api
      */
-    public static function getTcaFieldConfiguration($tableName, $fieldName = 'categories', array $fieldConfigurationOverride = array())
+    public static function getTcaFieldConfiguration($tableName, $fieldName = 'categories', array $fieldConfigurationOverride = [])
     {
         // Forges a new field, default name is "categories"
-        $fieldConfiguration = array(
+        $fieldConfiguration = [
             'type' => 'select',
             'renderType' => 'selectTree',
             'foreign_table' => 'sys_category',
             'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0) ORDER BY sys_category.sorting ASC',
             'MM' => 'sys_category_record_mm',
             'MM_opposite_field' => 'items',
-            'MM_match_fields' => array(
+            'MM_match_fields' => [
                 'tablenames' => $tableName,
                 'fieldname' => $fieldName,
-            ),
+            ],
             'size' => 10,
             'autoSizeMax' => 50,
             'maxitems' => 9999,
-            'treeConfig' => array(
+            'treeConfig' => [
                 'parentField' => 'parent',
-                'appearance' => array(
+                'appearance' => [
                     'expandAll' => true,
                     'showHeader' => true,
                     'maxLevels' => 99,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         // Merge changes to TCA configuration
         if (!empty($fieldConfigurationOverride)) {
@@ -448,7 +448,7 @@ class CategoryRegistry implements SingletonInterface
     {
         $this->registerDefaultCategorizedTables();
         $sqlString[] = $this->getDatabaseTableDefinitions();
-        return array('sqlString' => $sqlString);
+        return ['sqlString' => $sqlString];
     }
 
     /**
@@ -462,7 +462,7 @@ class CategoryRegistry implements SingletonInterface
     public function addExtensionCategoryDatabaseSchemaToTablesDefinition(array $sqlString, $extensionKey)
     {
         $sqlString[] = $this->getDatabaseTableDefinition($extensionKey);
-        return array('sqlString' => $sqlString, 'extensionKey' => $extensionKey);
+        return ['sqlString' => $sqlString, 'extensionKey' => $extensionKey];
     }
 
     /**

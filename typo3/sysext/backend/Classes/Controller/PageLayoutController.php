@@ -197,28 +197,28 @@ class PageLayoutController
      *
      * @var array
      */
-    public $MCONF = array();
+    public $MCONF = [];
 
     /**
      * Menu configuration
      *
      * @var array
      */
-    public $MOD_MENU = array();
+    public $MOD_MENU = [];
 
     /**
      * Module settings (session variable)
      *
      * @var array
      */
-    public $MOD_SETTINGS = array();
+    public $MOD_SETTINGS = [];
 
     /**
      * Array of tables to be listed by the Web > Page module in addition to the default tables
      *
      * @var array
      */
-    public $externalTables = array();
+    public $externalTables = [];
 
     /**
      * Module output accumulation
@@ -238,7 +238,7 @@ class PageLayoutController
     /**
      * @var array
      */
-    protected $eRParts = array();
+    protected $eRParts = [];
 
     /**
      * @var string
@@ -275,7 +275,7 @@ class PageLayoutController
      *
      * @var array
      */
-    protected $languagesInColumnCache = array();
+    protected $languagesInColumnCache = [];
 
     /**
      * Caches the amount of content elements as a matrix
@@ -283,7 +283,7 @@ class PageLayoutController
      * @var array
      * @internal
      */
-    public $contentElementCache = array();
+    public $contentElementCache = [];
 
     /**
      * @var IconFactory
@@ -364,17 +364,17 @@ class PageLayoutController
     {
         $lang = $this->getLanguageService();
         // MENU-ITEMS:
-        $this->MOD_MENU = array(
+        $this->MOD_MENU = [
             'tt_content_showHidden' => '',
-            'function' => array(
+            'function' => [
                 0 => $lang->getLL('m_function_0'),
                 1 => $lang->getLL('m_function_1'),
                 2 => $lang->getLL('m_function_2')
-            ),
-            'language' => array(
+            ],
+            'language' => [
                 0 => $lang->getLL('m_default')
-            )
-        );
+            ]
+        ];
         // initialize page/be_user TSconfig settings
         $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.SHARED');
         $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
@@ -425,11 +425,11 @@ class PageLayoutController
      */
     protected function makeActionMenu()
     {
-        $availableActionArray = array(
+        $availableActionArray = [
             0 => $this->getLanguageService()->getLL('m_function_0'),
             1 => $this->getLanguageService()->getLL('m_function_1'),
             2 => $this->getLanguageService()->getLL('m_function_2')
-        );
+        ];
         // Find if there are ANY languages at all (and if not, remove the language option from function menu).
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'sys_language', $this->getBackendUser()->isAdmin() ? '' : 'hidden=0');
         if (!$count) {
@@ -482,7 +482,7 @@ class PageLayoutController
         if ($this->clear_cache) {
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->stripslashes_values = false;
-            $tce->start(array(), array());
+            $tce->start([], []);
             $tce->clear_cacheCmd($this->id);
         }
     }
@@ -508,28 +508,28 @@ class PageLayoutController
                 $message .= '<a class="btn btn-info" href="javascript:top.goToModule(\'web_list\',1);">' . $lang->getLL('goToListModule') . '</a>';
                 $view = GeneralUtility::makeInstance(StandaloneView::class);
                 $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
-                $view->assignMultiple(array(
+                $view->assignMultiple([
                     'title' => $title,
                     'message' => $message,
                     'state' => InfoboxViewHelper::STATE_INFO
-                ));
+                ]);
                 $content .= $view->render();
             }
         }
         // If content from different pid is displayed
         if ($this->pageinfo['content_from_pid']) {
             $contentPage = BackendUtility::getRecord('pages', (int)$this->pageinfo['content_from_pid']);
-            $linkToPid = $this->local_linkThisScript(array('id' => $this->pageinfo['content_from_pid']));
+            $linkToPid = $this->local_linkThisScript(['id' => $this->pageinfo['content_from_pid']]);
             $title = BackendUtility::getRecordTitle('pages', $contentPage);
             $link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageinfo['content_from_pid'] . ')</a>';
             $message = sprintf($lang->getLL('content_from_pid_title'), $link);
             $view = GeneralUtility::makeInstance(StandaloneView::class);
             $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
-            $view->assignMultiple(array(
+            $view->assignMultiple([
                 'title' => $title,
                 'message' => $message,
                 'state' => InfoboxViewHelper::STATE_INFO
-            ));
+            ]);
             $content .= $view->render();
         }
         return $content;
@@ -656,7 +656,7 @@ class PageLayoutController
                 $content .= '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db', ['prErr' => 1, 'uPT' => 1])) . '" method="post" enctype="multipart/form-data" name="editform" id="PageLayoutController" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
                 $content .= $this->renderQuickEdit();
             } else {
-                $content .= '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl($this->moduleName, array('id' => $this->id, 'imagemode' =>  $this->imagemode))) . '" id="PageLayoutController" method="post">';
+                $content .= '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl($this->moduleName, ['id' => $this->id, 'imagemode' =>  $this->imagemode])) . '" id="PageLayoutController" method="post">';
                 // Page title
                 $content .= '<h1 class="t3js-title-inlineedit">' . htmlspecialchars($this->getLocalizedPageTitle()) . '</h1>';
                 // All other listings
@@ -676,11 +676,11 @@ class PageLayoutController
             $content .= '<h1>' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '</h1>';
             $view = GeneralUtility::makeInstance(StandaloneView::class);
             $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
-            $view->assignMultiple(array(
+            $view->assignMultiple([
                 'title' => $lang->getLL('clickAPage_header'),
                 'message' => $lang->getLL('clickAPage_content'),
                 'state' => InfoboxViewHelper::STATE_INFO
-            ));
+            ]);
             $content .= $view->render();
         }
         // Set content
@@ -702,14 +702,14 @@ class PageLayoutController
         // If a command to edit all records in a column is issue, then select all those elements, and redirect to FormEngine
         if (substr($edit_record, 0, 9) == '_EDIT_COL') {
             $res = $databaseConnection->exec_SELECTquery('*', 'tt_content', 'pid=' . (int)$this->id . ' AND colPos=' . (int)substr($edit_record, 10) . ' AND sys_language_uid=' . (int)$this->current_sys_language . ($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : BackendUtility::BEenableFields('tt_content')) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');
-            $idListA = array();
+            $idListA = [];
             while ($cRow = $databaseConnection->sql_fetch_assoc($res)) {
                 $idListA[] = $cRow['uid'];
             }
-            $url = BackendUtility::getModuleUrl('record_edit', array(
+            $url = BackendUtility::getModuleUrl('record_edit', [
                 'edit[tt_content][' . implode(',', $idListA) . ']' => 'edit',
-                'returnUrl' => $this->local_linkThisScript(array('edit_record' => ''))
-            ));
+                'returnUrl' => $this->local_linkThisScript(['edit_record' => ''])
+            ]);
             HttpUtility::redirect($url);
         }
         // If the former record edited was the creation of a NEW record, this will look up the created records uid:
@@ -763,10 +763,10 @@ class PageLayoutController
             }
 
             // @todo: Hack because DatabaseInitializeNewRow reads from _GP directly
-            $GLOBALS['_GET']['defVals'][$tableName] = array(
+            $GLOBALS['_GET']['defVals'][$tableName] = [
                 'colPos' => (int)$ex_colPos,
                 'sys_language_uid' => (int)$this->current_sys_language
-            );
+            ];
 
             /** @var TcaDatabaseRecord $formDataGroup */
             $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
@@ -906,8 +906,8 @@ class PageLayoutController
         // also fills $dbList->activeTables
         $dbList->getTableMenu($this->id);
         // Initialize other variables:
-        $tableOutput = array();
-        $tableJSOutput = array();
+        $tableOutput = [];
+        $tableJSOutput = [];
         $CMcounter = 0;
         // Traverse the list of table names which has records on this page (that array is populated
         // by the $dblist object during the function getTableMenu()):
@@ -933,14 +933,14 @@ class PageLayoutController
                 $dbList->tt_contentConfig['showInfo'] = 1;
                 // Setting up the tt_content columns to show:
                 if (is_array($GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'])) {
-                    $colList = array();
+                    $colList = [];
                     $tcaItems = GeneralUtility::callUserFunction(BackendLayoutView::class . '->getColPosListItemsParsed', $this->id, $this);
                     foreach ($tcaItems as $temp) {
                         $colList[] = $temp[1];
                     }
                 } else {
                     // ... should be impossible that colPos has no array. But this is the fallback should it make any sense:
-                    $colList = array('1', '0', '2', '3');
+                    $colList = ['1', '0', '2', '3'];
                 }
                 if ($this->colPosList !== '') {
                     $colList = array_intersect(GeneralUtility::intExplode(',', $this->colPosList), $colList);
@@ -988,7 +988,7 @@ class PageLayoutController
         $headerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawHeaderHook'];
         if (is_array($headerContentHook)) {
             foreach ($headerContentHook as $hook) {
-                $params = array();
+                $params = [];
                 $content .= GeneralUtility::callUserFunction($hook, $params, $this);
             }
         }
@@ -1011,7 +1011,7 @@ class PageLayoutController
         $footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'];
         if (is_array($footerContentHook)) {
             foreach ($footerContentHook as $hook) {
-                $params = array();
+                $params = [];
                 $content .= GeneralUtility::callUserFunction($hook, $params, $this);
             }
         }
@@ -1191,7 +1191,7 @@ class PageLayoutController
 
                 // Delete record
                 if ($this->deleteButton) {
-                    $dataAttributes = array();
+                    $dataAttributes = [];
                     $dataAttributes['table'] = $this->eRParts[0];
                     $dataAttributes['uid'] = $this->eRParts[1];
                     $dataAttributes['return-url'] = BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id;
@@ -1212,12 +1212,12 @@ class PageLayoutController
                             GeneralUtility::quoteJSvalue(
                                 BackendUtility::getModuleUrl(
                                     'record_history',
-                                    array(
+                                    [
                                         'element' => $this->eRParts[0] . ':' . $this->eRParts[1],
                                         'revert' => 'ALL_FIELDS',
                                         'sumUp' => -1,
                                         'returnUrl' => $this->R_URI,
-                                    )
+                                    ]
                                 )
                             ) . '; return false;')
                         ->setTitle(sprintf($lang->getLL('undoLastChange'), BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $this->undoButtonR['tstamp'], $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears'))))
@@ -1229,10 +1229,10 @@ class PageLayoutController
                             GeneralUtility::quoteJSvalue(
                                 BackendUtility::getModuleUrl(
                                     'record_history',
-                                    array(
+                                    [
                                             'element' => $this->eRParts[0] . ':' . $this->eRParts[1],
                                             'returnUrl' => $this->R_URI,
-                                        )
+                                        ]
                                 ) . '#latest'
                             ) . ');return false;')
                         ->setTitle($lang->getLL('recordHistory'))
@@ -1355,7 +1355,7 @@ class PageLayoutController
         if (is_array($this->contentElementCache[$languageId][$colPos])) {
             return array_keys($this->contentElementCache[$languageId][$colPos]);
         }
-        return array();
+        return [];
     }
 
     /**
@@ -1435,7 +1435,7 @@ class PageLayoutController
 
         // Setting close url/return url for exiting this script:
         // Goes to 'Columns' view if close is pressed (default)
-        $this->closeUrl = $this->local_linkThisScript(array('SET' => array('function' => 1)));
+        $this->closeUrl = $this->local_linkThisScript(['SET' => ['function' => 1]]);
         if ($this->returnUrl) {
             $this->closeUrl = $this->returnUrl;
         }

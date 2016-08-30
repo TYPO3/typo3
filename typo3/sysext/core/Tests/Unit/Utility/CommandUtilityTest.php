@@ -27,48 +27,48 @@ class CommandUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getConfiguredAppsDataProvider()
     {
-        $defaultExpected = array(
-            'perl' => array(
+        $defaultExpected = [
+            'perl' => [
                 'app' => 'perl',
                 'path' => '/usr/bin/',
                 'valid' => true
-            ),
-            'unzip' => array(
+            ],
+            'unzip' => [
                 'app' => 'unzip',
                 'path' => '/usr/local/bin/',
                 'valid' => true
-            ),
-        );
-        return array(
-            'returns empty array for empty string' => array(
+            ],
+        ];
+        return [
+            'returns empty array for empty string' => [
                 '',
-                array()
-            ),
-            'separated by comma' => array(
+                []
+            ],
+            'separated by comma' => [
                 'perl=/usr/bin/perl,unzip=/usr/local/bin/unzip',
                 $defaultExpected
-            ),
-            'separated by new line' => array(
+            ],
+            'separated by new line' => [
                 'perl=/usr/bin/perl ' . LF . ' unzip=/usr/local/bin/unzip',
                 $defaultExpected
-            ),
-            'separated by new line with spaces' => array(
+            ],
+            'separated by new line with spaces' => [
                 'perl = /usr/bin/perl ' . LF . ' unzip = /usr/local/bin/unzip',
                 $defaultExpected
-            ),
-            'separated by new line with spaces and empty rows' => array(
+            ],
+            'separated by new line with spaces and empty rows' => [
                 LF . 'perl = /usr/bin/perl ' . LF . LF . ' unzip = /usr/local/bin/unzip' . LF,
                 $defaultExpected
-            ),
-            'separated by char(10)' => array(
+            ],
+            'separated by char(10)' => [
                 'perl=/usr/bin/perl' . '\'.chr(10).\'' . 'unzip=/usr/local/bin/unzip',
                 $defaultExpected
-            ),
-            'separated by LF as string' => array(
+            ],
+            'separated by LF as string' => [
                 'perl=/usr/bin/perl' . '\' . LF . \'' . 'unzip=/usr/local/bin/unzip',
                 $defaultExpected
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -80,7 +80,7 @@ class CommandUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getConfiguredApps($globalsBinSetup, $expected)
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup'] = $globalsBinSetup;
-        $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, array('dummy'));
+        $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, ['dummy']);
         $result = $commandUtilityMock->_call('getConfiguredApps');
         $this->assertSame($expected, $result);
     }

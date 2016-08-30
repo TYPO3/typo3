@@ -101,14 +101,14 @@ class SplitStorage extends AbstractStorage
             // Notice: we may not use TCEmain below to insert key part into the
             // table because TCEmain requires a valid BE user!
             $time = $GLOBALS['EXEC_TIME'];
-            $this->databaseConnection->exec_INSERTquery('tx_rsaauth_keys', array(
+            $this->databaseConnection->exec_INSERTquery('tx_rsaauth_keys', [
                 'pid' => 0,
                 'crdate' => $time,
                 'key_value' => $keyPart2
-            ));
+            ]);
             $keyId = $this->databaseConnection->sql_insert_id();
             // Store another part in session
-            $_SESSION['tx_rsaauth_key'] = array($keyId, $keyPart1);
+            $_SESSION['tx_rsaauth_key'] = [$keyId, $keyPart1];
         }
         // Remove expired keys (more than 30 minutes old)
         $this->databaseConnection->exec_DELETEquery('tx_rsaauth_keys', 'crdate<' . ($GLOBALS['EXEC_TIME'] - 30 * 60));

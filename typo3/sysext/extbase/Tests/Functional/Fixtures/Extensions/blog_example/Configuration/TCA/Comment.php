@@ -1,69 +1,69 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-$TCA['tx_blogexample_domain_model_comment'] = array(
+$TCA['tx_blogexample_domain_model_comment'] = [
     'ctrl' => $TCA['tx_blogexample_domain_model_comment']['ctrl'],
-    'interface' => array(
+    'interface' => [
         'showRecordFieldList' => 'hidden, date, author, email, content'
-    ),
-    'columns' => array(
-        'hidden' => array(
+    ],
+    'columns' => [
+        'hidden' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
-            'config' => array(
+            'config' => [
                 'type' => 'check'
-            )
-        ),
-        'date' => array(
+            ]
+        ],
+        'date' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_comment.date',
-            'config' => array(
+            'config' => [
                 'dbType' => 'datetime',
                 'type' => 'input',
                 'size' => 12,
                 'eval' => 'datetime, required',
                 'default' => time()
-            )
-        ),
-        'author' => array(
+            ]
+        ],
+        'author' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_comment.author',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim, required',
                 'max' => 256
-            )
-        ),
-        'email' => array(
+            ]
+        ],
+        'email' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_comment.email',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim, required',
                 'max' => 256
-            )
-        ),
-        'content' => array(
+            ]
+        ],
+        'content' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_comment.content',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'rows' => 30,
                 'cols' => 80
-            )
-        ),
-        'post' => array(
-            'config' => array(
+            ]
+        ],
+        'post' => [
+            'config' => [
                 'type' => 'passthrough',
-            )
-        ),
-    ),
-    'types' => array(
-        '1' => array('showitem' => 'hidden, date, author, email, content')
-    ),
-    'palettes' => array(
-        '1' => array('showitem' => '')
-    )
-);
+            ]
+        ],
+    ],
+    'types' => [
+        '1' => ['showitem' => 'hidden, date, author, email, content']
+    ],
+    'palettes' => [
+        '1' => ['showitem' => '']
+    ]
+];

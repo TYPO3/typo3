@@ -44,9 +44,9 @@ class AbstractPluginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $this->abstractPlugin = new \TYPO3\CMS\Frontend\Plugin\AbstractPlugin();
         $contentObjectRenderer = new ContentObjectRenderer();
-        $contentObjectRenderer->setContentObjectClassMap(array(
+        $contentObjectRenderer->setContentObjectClassMap([
             'TEXT' => TextContentObject::class,
-        ));
+        ]);
         $this->abstractPlugin->cObj = $contentObjectRenderer;
         $this->defaultPiVars = $this->abstractPlugin->piVars;
     }
@@ -58,70 +58,70 @@ class AbstractPluginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function piSetPiVarDefaultsStdWrapProvider()
     {
-        return array(
-            'stdWrap on conf, non-recursive, stdWrap 1 level deep' => array(
-                array(
+        return [
+            'stdWrap on conf, non-recursive, stdWrap 1 level deep' => [
+                [
                     'abc' => 'DEF',
-                    'abc.' => array(
-                        'stdWrap.' => array(
+                    'abc.' => [
+                        'stdWrap.' => [
                             'wrap' => 'test | test'
-                        ),
-                    ),
-                ),
-                array(
+                        ],
+                    ],
+                ],
+                [
                     'abc' => 'testDEFtest',
                     'pointer' => '',
                     'mode' => '',
                     'sword' => '',
                     'sort' => '',
-                ),
-            ),
-            'stdWrap on conf, non-recursive, stdWrap 2 levels deep' => array(
-                array(
-                    'xyz.' => array(
-                        'stdWrap.' => array(
+                ],
+            ],
+            'stdWrap on conf, non-recursive, stdWrap 2 levels deep' => [
+                [
+                    'xyz.' => [
+                        'stdWrap.' => [
                             'cObject' => 'TEXT',
-                            'cObject.' => array(
+                            'cObject.' => [
                                 'data' => 'date:U',
                                 'strftime' => '%Y',
-                            ),
-                        ),
-                    ),
-                ),
-                array(
+                            ],
+                        ],
+                    ],
+                ],
+                [
                     'xyz' => date('Y'),
                     'pointer' => '',
                     'mode' => '',
                     'sword' => '',
                     'sort' => '',
-                ),
-            ),
-            'stdWrap on conf, recursive' => array(
-                array(
-                    'abc.' => array(
+                ],
+            ],
+            'stdWrap on conf, recursive' => [
+                [
+                    'abc.' => [
                         'def' => 'DEF',
-                        'def.' => array(
+                        'def.' => [
                             'ghi' => '123',
-                            'stdWrap.' => array(
+                            'stdWrap.' => [
                                 'wrap' => 'test | test'
-                            ),
-                        ),
-                    ),
-                ),
-                array(
-                    'abc.' => array(
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'abc.' => [
                         'def' => 'testDEFtest',
-                        'def.' => array(
+                        'def.' => [
                             'ghi' => '123',
-                        ),
-                    ),
+                        ],
+                    ],
                     'pointer' => '',
                     'mode' => '',
                     'sword' => '',
                     'sort' => '',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**

@@ -202,17 +202,17 @@ class UserElementsController
         $RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
         $thisConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::RTEsetup($RTEsetup['properties'], $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
         if (is_array($thisConfig['userElements.'])) {
-            $categories = array();
+            $categories = [];
             foreach ($thisConfig['userElements.'] as $k => $value) {
                 $ki = (int)$k;
                 $v = $thisConfig['userElements.'][$ki . '.'];
                 if (substr($k, -1) == '.' && is_array($v)) {
-                    $subcats = array();
+                    $subcats = [];
                     $openK = $ki;
                     if ($openKeys[$openK]) {
                         $mArray = '';
                         if ($v['load'] === 'images_from_folder') {
-                            $mArray = array();
+                            $mArray = [];
                             if ($v['path'] && @is_dir((PATH_site . $v['path']))) {
                                 $files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir(PATH_site . $v['path'], 'gif,jpg,jpeg,png', 0, '');
                                 if (is_array($files)) {
@@ -222,11 +222,11 @@ class UserElementsController
                                         $iInfo = $this->calcWH($iInfo, 50, 100);
                                         $ks = (string)(100 + $c);
                                         $mArray[$ks] = $filename;
-                                        $mArray[$ks . '.'] = array(
+                                        $mArray[$ks . '.'] = [
                                             'content' => '<img src="' . $this->siteUrl . $v['path'] . $filename . '" />',
                                             '_icon' => '<img src="' . $this->siteUrl . $v['path'] . $filename . '" ' . $iInfo[3] . ' />',
                                             'description' => $GLOBALS['LANG']->getLL('filesize') . ': ' . str_replace('&nbsp;', ' ', \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(@filesize((PATH_site . $v['path'] . $filename)))) . ', ' . $GLOBALS['LANG']->getLL('pixels', 1) . ': ' . $iInfo[0] . 'x' . $iInfo[1]
-                                        );
+                                        ];
                                         $c++;
                                     }
                                 }
@@ -274,7 +274,7 @@ class UserElementsController
                                     default:
                                         $onClickEvent = 'insertHTML(' . GeneralUtility::quoteJSvalue($v[$k2i . '.']['content']) . ');';
                                 }
-                                $A = array('<a href="#" onClick="' . $onClickEvent . 'return false;">', '</a>');
+                                $A = ['<a href="#" onClick="' . $onClickEvent . 'return false;">', '</a>'];
                                 $subcats[$k2i] = '<tr>
 									<td></td>
 									<td class="bgColor4" valign="top">' . $A[0] . $logo . $A[1] . '</td>
@@ -289,7 +289,7 @@ class UserElementsController
             }
             ksort($categories);
             // Render menu of the items:
-            $lines = array();
+            $lines = [];
             foreach ($categories as $k => $v) {
                 $title = trim($thisConfig['userElements.'][$k]);
                 $openK = $k;
@@ -300,7 +300,7 @@ class UserElementsController
                 }
 
                 $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-                $url = (string)$uriBuilder->buildUriFromRoute('rtehtmlarea_wizard_user_elements', array('OC_key' => ($openKeys[$openK] ? 'C|' : 'O|') . $openK));
+                $url = (string)$uriBuilder->buildUriFromRoute('rtehtmlarea_wizard_user_elements', ['OC_key' => ($openKeys[$openK] ? 'C|' : 'O|') . $openK]);
 
                 $lines[] = '<tr><td colspan="3" class="bgColor5"><a href="#" title="' . $GLOBALS['LANG']->getLL('expand', true) . '" onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($url) . ');return false;"><i class="fa fa-caret-square-o-' . ($openKeys[$openK] ? 'left' : 'right') . '" title="' . $GLOBALS['LANG']->getLL('expand', true) . '"></i><strong>' . $title . '</strong></a></td></tr>';
                 $lines[] = $v;

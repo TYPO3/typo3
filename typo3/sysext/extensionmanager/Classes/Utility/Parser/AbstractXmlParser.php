@@ -40,7 +40,7 @@ abstract class AbstractXmlParser implements \SplSubject
      *
      * @var \SplObserver[]
      */
-    protected $observers = array();
+    protected $observers = [];
 
     /**
      * Method attaches an observer.

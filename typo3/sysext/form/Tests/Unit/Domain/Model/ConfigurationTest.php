@@ -40,7 +40,7 @@ class ConfigurationTest extends UnitTestCase
     {
         parent::setUp();
         $this->typoScriptRepositoryProphecy = $this->prophesize(TypoScriptRepository::class);
-        $this->subject = $this->getAccessibleMock(Configuration::class, array('__none'));
+        $this->subject = $this->getAccessibleMock(Configuration::class, ['__none']);
         $this->subject->_set('typoScriptRepository', $this->typoScriptRepositoryProphecy->reveal());
     }
 
@@ -84,119 +84,119 @@ class ConfigurationTest extends UnitTestCase
      */
     public function propertiesAreUpdatedFromTypoScriptDataProvider()
     {
-        return array(
-            '#1' => array(
-                array(
+        return [
+            '#1' => [
+                [
                     'prefix' => '',
                     'themeName' => '',
                     'compatibilityMode' => false,
                     'disableContentElement' => false,
-                ),
+                ],
                 false,
                 '',
-                array(
+                [
                     'prefix' => 'form',
                     'themeName' => 'Default',
                     'compatibility' => false,
                     'contentElementRendering' => true,
-                ),
-            ),
-            '#2' => array(
-                array(
+                ],
+            ],
+            '#2' => [
+                [
                     'prefix' => '',
                     'themeName' => '',
                     'compatibilityMode' => false,
                     'disableContentElement' => false,
-                ),
+                ],
                 true,
                 '',
-                array(
+                [
                     'prefix' => 'form',
                     'themeName' => 'Default',
                     'compatibility' => false,
                     'contentElementRendering' => true,
-                ),
-            ),
-            '#3' => array(
-                array(
+                ],
+            ],
+            '#3' => [
+                [
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
                     'compatibilityMode' => true,
                     'disableContentElement' => true,
-                ),
+                ],
                 true,
                 '',
-                array(
+                [
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
                     'compatibility' => true,
                     'contentElementRendering' => false,
-                ),
-            ),
-            '#4' => array(
-                array(
+                ],
+            ],
+            '#4' => [
+                [
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
                     'compatibilityMode' => true,
                     'disableContentElement' => true,
-                ),
+                ],
                 false,
                 '',
-                array(
+                [
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
                     'compatibility' => true,
                     'contentElementRendering' => false,
-                ),
-            ),
-            '#5' => array(
-                array(
+                ],
+            ],
+            '#5' => [
+                [
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
                     'compatibilityMode' => null,
                     'disableContentElement' => true,
-                ),
+                ],
                 true,
                 '',
-                array(
+                [
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
                     'compatibility' => true,
                     'contentElementRendering' => false,
-                ),
-            ),
-            '#6' => array(
-                array(
+                ],
+            ],
+            '#6' => [
+                [
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
                     'compatibilityMode' => null,
                     'disableContentElement' => true,
-                ),
+                ],
                 false,
                 '',
-                array(
+                [
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
                     'compatibility' => false,
                     'contentElementRendering' => false,
-                ),
-            ),
-            '#7' => array(
-                array(
+                ],
+            ],
+            '#7' => [
+                [
                     'prefix' => '',
                     'themeName' => '',
                     'compatibilityMode' => false,
                     'disableContentElement' => false,
-                ),
+                ],
                 false,
                 'globalTheme',
-                array(
+                [
                     'prefix' => 'form',
                     'themeName' => 'globalTheme',
                     'compatibility' => false,
                     'contentElementRendering' => true,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

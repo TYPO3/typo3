@@ -97,7 +97,7 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
      */
     protected function getItemUidList($includeTableName = false)
     {
-        $list = array();
+        $list = [];
         /** @var $entry \TYPO3\CMS\Core\Resource\File */
         foreach ($this->storage as $entry) {
             $list[] = $this->getItemTableName() . '_' . $entry->getUid();
@@ -113,12 +113,12 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
      */
     protected function getPersistableDataArray()
     {
-        return array(
+        return [
             'title' => $this->getTitle(),
             'type' => static::$type,
             'description' => $this->getDescription(),
             static::$itemsCriteriaField => $this->getItemsCriteria()
-        );
+        ];
     }
 
     /**
@@ -129,17 +129,17 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
      */
     public function toArray()
     {
-        $itemArray = array();
+        $itemArray = [];
         /** @var $item \TYPO3\CMS\Core\Resource\File */
         foreach ($this->storage as $item) {
             $itemArray[] = $item->toArray();
         }
-        return array(
+        return [
             'uid' => $this->getIdentifier(),
             'title' => $this->getTitle(),
             'description' => $this->getDescription(),
             'items' => $itemArray
-        );
+        ];
     }
 
     /**
@@ -149,7 +149,7 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
      */
     public function getItems()
     {
-        $itemArray = array();
+        $itemArray = [];
         /** @var $item \TYPO3\CMS\Core\Resource\File */
         foreach ($this->storage as $item) {
             $itemArray[] = $item;

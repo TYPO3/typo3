@@ -29,7 +29,7 @@ class WorkspaceTitleViewHelper extends AbstractViewHelper implements CompilableI
      *
      * @var array
      */
-    protected static $workspaceTitleRuntimeCache = array();
+    protected static $workspaceTitleRuntimeCache = [];
 
     /**
      * Resolve workspace title from UID.
@@ -40,9 +40,9 @@ class WorkspaceTitleViewHelper extends AbstractViewHelper implements CompilableI
     public function render($uid)
     {
         return static::renderStatic(
-            array(
+            [
                 'uid' => $uid
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

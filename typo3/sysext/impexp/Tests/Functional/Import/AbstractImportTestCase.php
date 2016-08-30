@@ -24,7 +24,7 @@ abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = array('impexp');
+    protected $coreExtensionsToLoad = ['impexp'];
 
     /**
      * @var \TYPO3\CMS\Impexp\Import
@@ -37,7 +37,7 @@ abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      *
      * @var array
      */
-    protected $testFilesToDelete = array();
+    protected $testFilesToDelete = [];
 
     /**
      * Set up for initialization of the Import instance

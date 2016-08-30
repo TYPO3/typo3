@@ -37,7 +37,7 @@ class TagBuilder
      *
      * @var array
      */
-    protected $attributes = array();
+    protected $attributes = [];
 
     /**
      * Specifies whether this tag needs a closing tag.
@@ -224,7 +224,7 @@ class TagBuilder
     {
         $this->tagName = '';
         $this->content = '';
-        $this->attributes = array();
+        $this->attributes = [];
         $this->forceClosingTag = false;
     }
 

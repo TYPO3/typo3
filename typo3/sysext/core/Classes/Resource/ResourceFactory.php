@@ -39,22 +39,22 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
     /**
      * @var ResourceStorage[]
      */
-    protected $storageInstances = array();
+    protected $storageInstances = [];
 
     /**
      * @var Collection\AbstractFileCollection[]
      */
-    protected $collectionInstances = array();
+    protected $collectionInstances = [];
 
     /**
      * @var File[]
      */
-    protected $fileInstances = array();
+    protected $fileInstances = [];
 
     /**
      * @var FileReference[]
      */
-    protected $fileReferenceInstances = array();
+    protected $fileReferenceInstances = [];
 
     /**
      * A list of the base paths of "local" driver storages. Used to make the detection of base paths easier.
@@ -127,7 +127,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      * @throws \InvalidArgumentException
      * @return ResourceStorage
      */
-    public function getStorageObject($uid, array $recordData = array(), &$fileIdentifier = null)
+    public function getStorageObject($uid, array $recordData = [], &$fileIdentifier = null)
     {
         if (!is_numeric($uid)) {
             throw new \InvalidArgumentException('The UID of storage has to be numeric. UID given: "' . $uid . '"', 1314085991);
@@ -141,7 +141,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
             $storageObject = null;
             // If the built-in storage with UID=0 is requested:
             if ($uid === 0) {
-                $recordData = array(
+                $recordData = [
                     'uid' => 0,
                     'pid' => 0,
                     'name' => 'Fallback Storage',
@@ -155,11 +155,11 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
                     'is_public' => true,
                     'is_writable' => true,
                     'is_default' => false,
-                );
-                $storageConfiguration = array(
+                ];
+                $storageConfiguration = [
                     'basePath' => '/',
                     'pathType' => 'relative'
-                );
+                ];
             } elseif (count($recordData) === 0 || (int)$recordData['uid'] !== $uid) {
                 /** @var $storageRepository StorageRepository */
                 $storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
@@ -182,7 +182,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      */
     protected function emitPostProcessStorageSignal(ResourceStorage $storageObject)
     {
-        $this->signalSlotDispatcher->dispatch(\TYPO3\CMS\Core\Resource\ResourceFactory::class, self::SIGNAL_PostProcessStorage, array($this, $storageObject));
+        $this->signalSlotDispatcher->dispatch(\TYPO3\CMS\Core\Resource\ResourceFactory::class, self::SIGNAL_PostProcessStorage, [$this, $storageObject]);
     }
 
     /**
@@ -204,7 +204,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
         $bestMatchStorageUid = 0;
         $bestMatchLength = 0;
         foreach ($this->localDriverStorageCache as $storageUid => $basePath) {
-            $matchLength = strlen(PathUtility::getCommonPrefix(array($basePath, $localPath)));
+            $matchLength = strlen(PathUtility::getCommonPrefix([$basePath, $localPath]));
             $basePathLength = strlen($basePath);
 
             if ($matchLength >= $basePathLength && $matchLength > $bestMatchLength) {
@@ -230,7 +230,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
         /** @var $storageObjects ResourceStorage[] */
         $storageObjects = $storageRepository->findByStorageType('Local');
 
-        $storageCache = array();
+        $storageCache = [];
         foreach ($storageObjects as $localStorage) {
             $configuration = $localStorage->getConfiguration();
             $storageCache[$localStorage->getUid()] = $configuration['basePath'];
@@ -246,7 +246,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      */
     public function convertFlexFormDataToConfigurationArray($flexFormData)
     {
-        $configuration = array();
+        $configuration = [];
         if ($flexFormData) {
             $flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
             $configuration = $flexFormService->convertFlexFormContentToArray($flexFormData);
@@ -263,7 +263,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      * @throws \InvalidArgumentException
      * @return Collection\AbstractFileCollection
      */
-    public function getCollectionObject($uid, array $recordData = array())
+    public function getCollectionObject($uid, array $recordData = [])
     {
         if (!is_numeric($uid)) {
             throw new \InvalidArgumentException('The UID of collection has to be numeric. UID given: "' . $uid . '"', 1314085999);
@@ -340,7 +340,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
      * @return File
      */
-    public function getFileObject($uid, array $fileData = array())
+    public function getFileObject($uid, array $fileData = [])
     {
         if (!is_numeric($uid)) {
             throw new \InvalidArgumentException('The UID of file has to be numeric. UID given: "' . $uid . '"', 1300096564);
@@ -397,7 +397,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      */
     public function getFileObjectByStorageAndIdentifier($storageUid, &$fileIdentifier)
     {
-        $storage = $this->getStorageObject($storageUid, array(), $fileIdentifier);
+        $storage = $this->getStorageObject($storageUid, [], $fileIdentifier);
         if (!$storage->isWithinProcessingFolder($fileIdentifier)) {
             $fileData = $this->getFileIndexRepository()->findOneByStorageUidAndIdentifier($storage->getUid(), $fileIdentifier);
             if ($fileData === false) {
@@ -499,7 +499,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
                 $folderIdentifier = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($parts[0]);
             }
         }
-        return $this->getStorageObject($storageUid, array(), $folderIdentifier)->getFolder($folderIdentifier);
+        return $this->getStorageObject($storageUid, [], $folderIdentifier)->getFolder($folderIdentifier);
     }
 
     /**
@@ -570,7 +570,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      * @throws \InvalidArgumentException
      * @throws \TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException
      */
-    public function getFileReferenceObject($uid, array $fileReferenceData = array(), $raw = false)
+    public function getFileReferenceObject($uid, array $fileReferenceData = [], $raw = false)
     {
         if (!is_numeric($uid)) {
             throw new \InvalidArgumentException(

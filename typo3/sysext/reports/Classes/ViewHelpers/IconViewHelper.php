@@ -35,10 +35,10 @@ class IconViewHelper extends AbstractBackendViewHelper implements CompilableInte
     public function render($icon, $title = '')
     {
         return static::renderStatic(
-            array(
+            [
                 'icon' => $icon,
                 'title' => $title,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

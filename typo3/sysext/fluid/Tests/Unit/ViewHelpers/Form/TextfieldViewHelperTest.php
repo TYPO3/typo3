@@ -24,7 +24,7 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\TextfieldViewHelper::class, array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
+        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\TextfieldViewHelper::class, ['setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration']);
         $this->arguments['name'] = '';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
@@ -35,7 +35,7 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
      */
     public function renderCorrectlySetsTagName()
     {
-        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName'), array(), '', false);
+        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, ['setTagName'], [], '', false);
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
         $this->viewHelper->_set('tag', $mockTagBuilder);
 
@@ -48,7 +48,7 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
      */
     public function renderCorrectlySetsTypeNameAndValueAttributes()
     {
-        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('addAttribute', 'setContent', 'render'), array(), '', false);
+        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, ['addAttribute', 'setContent', 'render'], [], '', false);
         $mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('type', 'text');
         $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('name', 'NameOfTextfield');
         $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('NameOfTextfield');
@@ -56,10 +56,10 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
         $mockTagBuilder->expects($this->once())->method('render');
         $this->viewHelper->_set('tag', $mockTagBuilder);
 
-        $arguments = array(
+        $arguments = [
             'name' => 'NameOfTextfield',
             'value' => 'Current value'
-        );
+        ];
         $this->viewHelper->setArguments($arguments);
 
         $this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());
@@ -81,17 +81,17 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
      */
     public function renderAddsPlaceholder()
     {
-        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('addAttribute', 'setContent', 'render'), array(), '', false);
+        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, ['addAttribute', 'setContent', 'render'], [], '', false);
         $mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('placeholder', 'SomePlaceholder');
         $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'text');
         $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'NameOfTextfield');
         $mockTagBuilder->expects($this->once())->method('render');
         $this->viewHelper->_set('tag', $mockTagBuilder);
 
-        $arguments = array(
+        $arguments = [
             'name' => 'NameOfTextfield',
             'placeholder' => 'SomePlaceholder'
-        );
+        ];
         $this->viewHelper->setArguments($arguments);
 
         $this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());
@@ -104,7 +104,7 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
      */
     public function renderCorrectlySetsRequiredAttribute()
     {
-        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('addAttribute', 'setContent', 'render'), array(), '', false);
+        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, ['addAttribute', 'setContent', 'render'], [], '', false);
         $mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('type', 'text');
         $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('name', 'NameOfTextfield');
         $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('NameOfTextfield');
@@ -113,10 +113,10 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
         $mockTagBuilder->expects($this->once())->method('render');
         $this->viewHelper->_set('tag', $mockTagBuilder);
 
-        $arguments = array(
+        $arguments = [
             'name' => 'NameOfTextfield',
             'value' => 'Current value'
-        );
+        ];
         $this->viewHelper->setArguments($arguments);
 
         $this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());

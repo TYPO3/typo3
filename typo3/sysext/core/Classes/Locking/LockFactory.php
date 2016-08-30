@@ -25,11 +25,11 @@ class LockFactory implements SingletonInterface
     /**
      * @var bool[]
      */
-    protected $lockingStrategy = array(
+    protected $lockingStrategy = [
         SemaphoreLockStrategy::class => true,
         FileLockStrategy::class => true,
         SimpleLockStrategy::class => true
-    );
+    ];
 
     /**
      * Add a locking method

@@ -46,7 +46,7 @@ class RsaEncryptionDecoder implements \TYPO3\CMS\Core\SingletonInterface
             return $data;
         }
 
-        $decryptedData = is_array($data) ? $data : array($data);
+        $decryptedData = is_array($data) ? $data : [$data];
         $decryptedData = $this->decryptDataArray($decryptedData);
         $this->getStorage()->put(null);
 

@@ -19,11 +19,11 @@ class DateValidator extends AbstractValidator
     /**
      * @var array
      */
-    protected $supportedOptions = array(
-        'element' => array('', 'The name of the element', 'string', true),
-        'errorMessage' => array('', 'The error message', 'array', true),
-        'format' => array('', 'The maximum value', 'string', true),
-    );
+    protected $supportedOptions = [
+        'element' => ['', 'The name of the element', 'string', true],
+        'errorMessage' => ['', 'The error message', 'array', true],
+        'format' => ['', 'The maximum value', 'string', true],
+    ];
 
     /**
      * Constant for localisation
@@ -77,8 +77,8 @@ class DateValidator extends AbstractValidator
             // %y => y : Two digit representation of the year
             // %Y => Y : Four digit representation for the year
             $dateTimeFormat = str_replace(
-                array('%a', '%A', '%d', '%e', '%j', '%b', '%B', '%h', '%m', '%y', '%Y'),
-                array('D', 'l', 'd', 'j', 'z', 'M', 'F', 'M', 'm', 'y', 'Y'),
+                ['%a', '%A', '%d', '%e', '%j', '%b', '%B', '%h', '%m', '%y', '%Y'],
+                ['D', 'l', 'd', 'j', 'z', 'M', 'F', 'M', 'm', 'y', 'Y'],
                 $this->options['format']
             );
             $dateTimeObject = date_create_from_format($dateTimeFormat, $value);
@@ -133,7 +133,7 @@ class DateValidator extends AbstractValidator
     protected function humanReadableDateFormat($format)
     {
         $label = self::LOCALISATION_OBJECT_NAME . '.strftime.';
-        $pairs = array(
+        $pairs = [
             '%A' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($label . 'A', 'form'),
             '%a' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($label . 'a', 'form'),
             '%d' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($label . 'd', 'form'),
@@ -147,7 +147,7 @@ class DateValidator extends AbstractValidator
             '%I' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($label . 'I', 'form'),
             '%M' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($label . 'M', 'form'),
             '%S' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($label . 'S', 'form')
-        );
+        ];
         $humanReadableFormat = str_replace(array_keys($pairs), array_values($pairs), $format);
         return $humanReadableFormat;
     }

@@ -42,11 +42,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = array(
+    protected $coreExtensionsToLoad = [
         'fluid',
         'version',
         'workspaces',
-    );
+    ];
 
     protected function setUp()
     {
@@ -55,7 +55,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->importScenarioDataSet('LiveDefaultElements');
         $this->importScenarioDataSet('ReferenceIndex');
 
-        $this->setUpFrontendRootPage(1, array('typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts'));
+        $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts']);
         $this->backendUser->workspace = self::VALUE_WorkspaceId;
     }
 
@@ -70,7 +70,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function addCategoryRelation()
     {
         $this->actionService->modifyReferences(
-            self::TABLE_Content, self::VALUE_ContentIdFirst, 'categories', array(self::VALUE_CategoryIdFirst, self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdLast)
+            self::TABLE_Content, self::VALUE_ContentIdFirst, 'categories', [self::VALUE_CategoryIdFirst, self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdLast]
         );
     }
 
@@ -81,7 +81,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function deleteCategoryRelation()
     {
         $this->actionService->modifyReferences(
-            self::TABLE_Content, self::VALUE_ContentIdFirst, 'categories', array(self::VALUE_CategoryIdFirst)
+            self::TABLE_Content, self::VALUE_ContentIdFirst, 'categories', [self::VALUE_CategoryIdFirst]
         );
     }
 
@@ -92,7 +92,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function changeCategoryRelationSorting()
     {
         $this->actionService->modifyReferences(
-            self::TABLE_Content, self::VALUE_ContentIdFirst, 'categories', array(self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdFirst)
+            self::TABLE_Content, self::VALUE_ContentIdFirst, 'categories', [self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdFirst]
         );
     }
 
@@ -103,7 +103,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function createContentAndAddRelation()
     {
         $newTableIds = $this->actionService->createNewRecord(
-            self::TABLE_Content, self::VALUE_PageId, array('header' => 'Testing #1', 'categories' => self::VALUE_CategoryIdSecond)
+            self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1', 'categories' => self::VALUE_CategoryIdSecond]
         );
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
@@ -115,7 +115,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function createCategoryAndAddRelation()
     {
         $newTableIds = $this->actionService->createNewRecord(
-            self::TABLE_Category, 0, array('title' => 'Testing #1', 'items' => 'tt_content_' . self::VALUE_ContentIdFirst)
+            self::TABLE_Category, 0, ['title' => 'Testing #1', 'items' => 'tt_content_' . self::VALUE_ContentIdFirst]
         );
         $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
     }
@@ -128,10 +128,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Category => array('pid' => 0, 'title' => 'Testing #1'),
-                self::TABLE_Content => array('header' => 'Testing #1', 'categories' => '__previousUid'),
-            )
+            [
+                self::TABLE_Category => ['pid' => 0, 'title' => 'Testing #1'],
+                self::TABLE_Content => ['header' => 'Testing #1', 'categories' => '__previousUid'],
+            ]
         );
         $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
@@ -145,10 +145,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('header' => 'Testing #1'),
-                self::TABLE_Category => array('pid' => 0, 'title' => 'Testing #1', 'items' => 'tt_content___previousUid'),
-            )
+            [
+                self::TABLE_Content => ['header' => 'Testing #1'],
+                self::TABLE_Category => ['pid' => 0, 'title' => 'Testing #1', 'items' => 'tt_content___previousUid'],
+            ]
         );
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
         $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
@@ -158,16 +158,16 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Category => array('pid' => 0, 'title' => 'Testing #1'),
-                self::TABLE_Content => array('header' => 'Testing #1'),
-            )
+            [
+                self::TABLE_Category => ['pid' => 0, 'title' => 'Testing #1'],
+                self::TABLE_Content => ['header' => 'Testing #1'],
+            ]
         );
         $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
 
         $this->actionService->modifyRecord(
-            self::TABLE_Content, $this->recordIds['newContentId'], array('categories' => $this->recordIds['newCategoryId'])
+            self::TABLE_Content, $this->recordIds['newContentId'], ['categories' => $this->recordIds['newCategoryId']]
         );
     }
 
@@ -175,16 +175,16 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
-            array(
-                self::TABLE_Content => array('header' => 'Testing #1'),
-                self::TABLE_Category => array('pid' => 0, 'title' => 'Testing #1', 'items' => 'tt_content___previousUid'),
-            )
+            [
+                self::TABLE_Content => ['header' => 'Testing #1'],
+                self::TABLE_Category => ['pid' => 0, 'title' => 'Testing #1', 'items' => 'tt_content___previousUid'],
+            ]
         );
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
         $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
 
         $this->actionService->modifyRecord(
-            self::TABLE_Category, $this->recordIds['newCategoryId'], array('items' => 'tt_content_' . $this->recordIds['newContentId'])
+            self::TABLE_Category, $this->recordIds['newCategoryId'], ['items' => 'tt_content_' . $this->recordIds['newContentId']]
         );
     }
 
@@ -193,7 +193,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
     public function modifyCategoryOfRelation()
     {
-        $this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, array('title' => 'Testing #1'));
+        $this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, ['title' => 'Testing #1']);
     }
 
     /**
@@ -201,7 +201,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
     public function modifyContentOfRelation()
     {
-        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, array('header' => 'Testing #1'));
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Testing #1']);
     }
 
     /**
@@ -209,8 +209,8 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
     public function modifyBothsOfRelation()
     {
-        $this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, array('title' => 'Testing #1'));
-        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, array('header' => 'Testing #1'));
+        $this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, ['title' => 'Testing #1']);
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Testing #1']);
     }
 
     /**

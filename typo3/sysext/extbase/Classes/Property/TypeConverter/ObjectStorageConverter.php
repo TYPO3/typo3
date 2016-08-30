@@ -32,7 +32,7 @@ class ObjectStorageConverter extends AbstractTypeConverter
     /**
      * @var array<string>
      */
-    protected $sourceTypes = array('string', 'array');
+    protected $sourceTypes = ['string', 'array'];
 
     /**
      * @var string
@@ -55,7 +55,7 @@ class ObjectStorageConverter extends AbstractTypeConverter
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      * @api
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
     {
         $objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
         foreach ($convertedChildProperties as $subProperty) {
@@ -76,7 +76,7 @@ class ObjectStorageConverter extends AbstractTypeConverter
         if (is_array($source)) {
             return $source;
         }
-        return array();
+        return [];
     }
 
     /**

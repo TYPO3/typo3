@@ -32,10 +32,10 @@ class ClientUtility
         if (is_array($getBrowserInfoHooks)) {
             foreach ($getBrowserInfoHooks as $hookFunction) {
                 $returnResult = true;
-                $hookParameters = array(
+                $hookParameters = [
                     'userAgent' => &$userAgent,
                     'returnResult' => &$returnResult
-                );
+                ];
                 // need reference for third parameter in \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction,
                 // so create a reference to NULL
                 $null = null;
@@ -46,12 +46,12 @@ class ClientUtility
             }
         }
         $userAgent = trim($userAgent);
-        $browserInfo = array(
+        $browserInfo = [
             'useragent' => $userAgent
-        );
+        ];
         // Analyze the userAgent string
         // Declare known browsers to look for
-        $known = array(
+        $known = [
             'msie',
             'firefox',
             'webkit',
@@ -71,8 +71,8 @@ class ClientUtility
             'camino',
             'flock',
             'aol'
-        );
-        $matches = array();
+        ];
+        $matches = [];
         $pattern = '#(?P<browser>' . join('|', $known) . ')[/ ]+(?P<version>[0-9]+(?:\\.[0-9]+)?)#';
         // Find all phrases (or return empty array if none found)
         if (!preg_match_all($pattern, strtolower($userAgent), $matches)) {
@@ -85,11 +85,11 @@ class ClientUtility
             if (preg_match_all($pattern, $userAgent, $matches)) {
                 $browserInfo['browser'] = 'msie';
                 $browserInfo['version'] = $matches['version'][0];
-                $browserInfo['all'] = array('msie' => $matches['version'][0]);
+                $browserInfo['all'] = ['msie' => $matches['version'][0]];
             } else {
                 $browserInfo['browser'] = 'unknown';
                 $browserInfo['version'] = '';
-                $browserInfo['all'] = array();
+                $browserInfo['all'] = [];
             }
         } else {
             // Since some UAs have more than one phrase (e.g Firefox has a Gecko phrase,
@@ -100,7 +100,7 @@ class ClientUtility
             $browserInfo['browser'] = $matches['browser'][$lastIndex];
             $browserInfo['version'] = $browserInfo['browser'] === 'msie' ? $matches['version'][0] : $matches['version'][$lastIndex];
             // But return all parsed browsers / version in an extra array
-            $browserInfo['all'] = array();
+            $browserInfo['all'] = [];
             for ($i = 0; $i <= $lastIndex; $i++) {
                 if (!isset($browserInfo['all'][$matches['browser'][$i]])) {
                     $browserInfo['all'][$matches['browser'][$i]] = $matches['version'][$i];
@@ -114,7 +114,7 @@ class ClientUtility
                 }
             }
         }
-        $browserInfo['all_systems'] = array();
+        $browserInfo['all_systems'] = [];
         if (strstr($userAgent, 'Win')) {
             // Windows
             if (strstr($userAgent, 'Windows NT 6.2') || strstr($userAgent, 'Windows NT 6.3')) {
@@ -193,10 +193,10 @@ class ClientUtility
         if (is_array($getDeviceTypeHooks)) {
             foreach ($getDeviceTypeHooks as $hookFunction) {
                 $returnResult = true;
-                $hookParameters = array(
+                $hookParameters = [
                     'userAgent' => &$userAgent,
                     'returnResult' => &$returnResult
-                );
+                ];
                 // need reference for third parameter in \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction,
                 // so create a reference to NULL
                 $null = null;

@@ -17,14 +17,14 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
         'system',
         'log',
         '',
-        array(
+        [
             'Tools' => 'index',
             'WebInfo' => 'index',
-        ),
-        array(
+        ],
+        [
             'access' => 'admin',
             'icon' => 'EXT:belog/Resources/Public/Icons/module-belog.svg',
             'labels' => 'LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf',
-        )
+        ]
     );
 }

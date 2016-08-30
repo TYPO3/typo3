@@ -409,11 +409,11 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getLogData()
     {
         if ($this->logData === '') {
-            return array();
+            return [];
         }
         $logData = @unserialize($this->logData);
         if (!is_array($logData)) {
-            $logData = array();
+            $logData = [];
         }
         return $logData;
     }

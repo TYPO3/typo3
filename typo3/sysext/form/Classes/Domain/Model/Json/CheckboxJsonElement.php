@@ -31,24 +31,24 @@ class CheckboxJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJson
      *
      * @var array
      */
-    public $configuration = array(
-        'attributes' => array(
+    public $configuration = [
+        'attributes' => [
             'type' => 'checkbox'
-        ),
-        'filters' => array(),
-        'label' => array(
+        ],
+        'filters' => [],
+        'label' => [
             'value' => ''
-        ),
+        ],
         'layout' => 'back',
-        'validation' => array()
-    );
+        'validation' => []
+    ];
 
     /**
      * Allowed attributes for this object
      *
      * @var array
      */
-    protected $allowedAttributes = array(
+    protected $allowedAttributes = [
         'accesskey',
         'class',
         'contenteditable',
@@ -73,5 +73,5 @@ class CheckboxJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJson
         'required',
         'type',
         'value'
-    );
+    ];
 }

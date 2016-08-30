@@ -9,14 +9,14 @@ if (TYPO3_MODE === 'BE') {
         'web',
         'isearch',
         '',
-        array(
+        [
             'Administration' => 'index,pages,externalDocuments,statistic,statisticDetails,deleteIndexedItem,saveStopwordsKeywords,wordDetail',
-        ),
-        array(
+        ],
+        [
             'access' => 'admin',
             'icon'   => 'EXT:indexed_search/Resources/Public/Icons/module-indexed_search.svg',
             'labels' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_mod.xlf',
-        )
+        ]
     );
 
     $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses']['tx_indexed_search_pi_wizicon'] =

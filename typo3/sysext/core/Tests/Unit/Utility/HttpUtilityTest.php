@@ -36,27 +36,27 @@ class HttpUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isUrlBuiltCorrectlyDataProvider()
     {
-        return array(
-            'rebuild url without scheme' => array(
+        return [
+            'rebuild url without scheme' => [
                 parse_url('typo3.org/path/index.php'),
                 'typo3.org/path/index.php'
-            ),
-            'rebuild url with scheme' => array(
+            ],
+            'rebuild url with scheme' => [
                 parse_url('http://typo3.org/path/index.php'),
                 'http://typo3.org/path/index.php'
-            ),
-            'rebuild url with all properties' => array(
+            ],
+            'rebuild url with all properties' => [
                 parse_url('http://editor:secret@typo3.org:8080/path/index.php?query=data#fragment'),
                 'http://editor:secret@typo3.org:8080/path/index.php?query=data#fragment'
-            ),
-            'url without username, but password' => array(
-                array(
+            ],
+            'url without username, but password' => [
+                [
                     'scheme' => 'http',
                     'pass' => 'secrept',
                     'host' => 'typo3.org'
-                ),
+                ],
                 'http://typo3.org'
-            )
-        );
+            ]
+        ];
     }
 }

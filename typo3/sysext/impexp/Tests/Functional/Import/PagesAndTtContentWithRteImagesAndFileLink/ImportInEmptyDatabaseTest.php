@@ -22,9 +22,9 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
     /**
      * @var array
      */
-    protected $additionalFoldersToCreate = array(
+    protected $additionalFoldersToCreate = [
         '/fileadmin/_processed_'
-    );
+    ];
 
     /**
      * @var string

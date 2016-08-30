@@ -57,29 +57,29 @@ class MigrateShortcutUrlsAgainUpdate extends AbstractUpdate
             foreach ($shortcuts as $shortcut) {
                 $decodedUrl = urldecode($shortcut['url']);
                 $encodedUrl = str_replace(
-                    array(
+                    [
                         '/typo3/sysext/cms/layout/db_layout.php?&',
                         '/typo3/sysext/cms/layout/db_layout.php?',
                         '/typo3/file_edit.php?&',
                         // From 7.2 to 7.4
                         'mod.php',
-                    ),
-                    array(
+                    ],
+                    [
                         '/typo3/index.php?&M=web_layout&',
                         urlencode('/typo3/index.php?&M=web_layout&'),
                         '/typo3/index.php?&M=file_edit&',
                         // From 7.2 to 7.4
                         'index.php',
-                    ),
+                    ],
                     $decodedUrl
                 );
 
                 $db->exec_UPDATEquery(
                     'sys_be_shortcuts',
                     'uid=' . (int)$shortcut['uid'],
-                    array(
+                    [
                         'url' => $encodedUrl,
-                    )
+                    ]
                 );
                 $databaseQueries[] = $db->debug_lastBuiltQuery;
             }

@@ -28,10 +28,10 @@ class TextExtractorRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @param array $createsTextExtractorInstances
      * @return \PHPUnit_Framework_MockObject_MockObject|TextExtractorRegistry
      */
-    protected function getTextExtractorRegistry(array $createsTextExtractorInstances = array())
+    protected function getTextExtractorRegistry(array $createsTextExtractorInstances = [])
     {
         $textExtractorRegistry = $this->getMockBuilder(TextExtractorRegistry::class)
-            ->setMethods(array('createTextExtractorInstance'))
+            ->setMethods(['createTextExtractorInstance'])
             ->getMock();
 
         if (!empty($createsTextExtractorInstances)) {
@@ -49,9 +49,9 @@ class TextExtractorRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function registeredTextExtractorClassCanBeRetrieved()
     {
         $textExtractorClass = $this->getUniqueId('myTextExtractor');
-        $textExtractorInstance = $this->getMock(TextExtractorInterface::class, array(), array(), $textExtractorClass);
+        $textExtractorInstance = $this->getMock(TextExtractorInterface::class, [], [], $textExtractorClass);
 
-        $textExtractorRegistry = $this->getTextExtractorRegistry(array(array($textExtractorClass, $textExtractorInstance)));
+        $textExtractorRegistry = $this->getTextExtractorRegistry([[$textExtractorClass, $textExtractorInstance]]);
 
         $textExtractorRegistry->registerTextExtractor($textExtractorClass);
         $this->assertContains($textExtractorInstance, $textExtractorRegistry->getTextExtractorInstances(), '', false, false);

@@ -38,7 +38,7 @@ class Dispatcher implements DispatcherInterface
     {
         $targetIdentifier = $request->getAttribute('target');
         $target = $this->getCallableFromTarget($targetIdentifier);
-        return call_user_func_array($target, array($request, $response));
+        return call_user_func_array($target, [$request, $response]);
     }
 
     /**

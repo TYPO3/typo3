@@ -134,15 +134,15 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
             // Update template ?
             if (GeneralUtility::_POST('_savedok')) {
                 $templateService->changed = 0;
-                $templateService->ext_procesInput(GeneralUtility::_POST(), array(), $theConstants, $tplRow);
+                $templateService->ext_procesInput(GeneralUtility::_POST(), [], $theConstants, $tplRow);
                 if ($templateService->changed) {
                     // Set the data to be saved
-                    $recData = array();
+                    $recData = [];
                     $recData['sys_template'][$saveId]['constants'] = implode($templateService->raw, LF);
                     // Create new  tce-object
                     $tce = GeneralUtility::makeInstance(DataHandler::class);
                     $tce->stripslashes_values = false;
-                    $tce->start($recData, array());
+                    $tce->start($recData, []);
                     $tce->process_datamap();
                     // Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
                     $tce->clear_cacheCmd('all');

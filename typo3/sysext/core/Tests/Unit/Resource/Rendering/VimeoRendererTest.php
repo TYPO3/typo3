@@ -38,10 +38,10 @@ class VimeoRendererTest extends UnitTestCase
         parent::setUp();
 
         /** @var VimeoHelper|\PHPUnit_Framework_MockObject_MockObject $vimeoHelper */
-        $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, array('getOnlineMediaId'), array('vimeo'));
+        $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
         $vimeoHelper->expects($this->any())->method('getOnlineMediaId')->will($this->returnValue('7331'));
 
-        $this->subject = $this->getAccessibleMock(VimeoRenderer::class, array('getOnlineMediaHelper'), array());
+        $this->subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper'], []);
         $this->subject->expects($this->any())->method('getOnlineMediaHelper')->will($this->returnValue($vimeoHelper));
     }
 
@@ -59,10 +59,10 @@ class VimeoRendererTest extends UnitTestCase
     public function canRenderReturnsTrueOnCorrectFile()
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock1 */
-        $fileResourceMock1 = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock1 = $this->getMock(File::class, [], [], '', false);
         $fileResourceMock1->expects($this->any())->method('getMimeType')->will($this->returnValue('video/vimeo'));
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock2 */
-        $fileResourceMock2 = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock2 = $this->getMock(File::class, [], [], '', false);
         $fileResourceMock2->expects($this->any())->method('getMimeType')->will($this->returnValue('video/unknown'));
         $fileResourceMock2->expects($this->any())->method('getExtension')->will($this->returnValue('vimeo'));
 
@@ -76,7 +76,7 @@ class VimeoRendererTest extends UnitTestCase
     public function canRenderReturnsFalseOnCorrectFile()
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
-        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock = $this->getMock(File::class, [], [], '', false);
         $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('video/youtube'));
 
         $this->assertFalse($this->subject->canRender($fileResourceMock));
@@ -88,7 +88,7 @@ class VimeoRendererTest extends UnitTestCase
     public function renderOutputIsCorrect()
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
-        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock = $this->getMock(File::class, [], [], '', false);
 
         $this->assertSame(
             '<iframe src="//player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
@@ -102,11 +102,11 @@ class VimeoRendererTest extends UnitTestCase
     public function renderOutputWithLoopIsCorrect()
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
-        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock = $this->getMock(File::class, [], [], '', false);
 
         $this->assertSame(
             '<iframe src="//player.vimeo.com/video/7331?loop=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', array('loop' => 1))
+            $this->subject->render($fileResourceMock, '300m', '200', ['loop' => 1])
         );
     }
 
@@ -116,11 +116,11 @@ class VimeoRendererTest extends UnitTestCase
     public function renderOutputWithAutoplayIsCorrect()
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
-        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock = $this->getMock(File::class, [], [], '', false);
 
         $this->assertSame(
             '<iframe src="//player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', array('autoplay' => 1))
+            $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
     }
 
@@ -130,10 +130,10 @@ class VimeoRendererTest extends UnitTestCase
     public function renderOutputWithAutoplayFromReferenceIsCorrect()
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
-        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock = $this->getMock(File::class, [], [], '', false);
 
         /** @var FileReference|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
-        $fileReferenceMock = $this->getMock(FileReference::class, array(), array(), '', false);
+        $fileReferenceMock = $this->getMock(FileReference::class, [], [], '', false);
         $fileReferenceMock->expects($this->any())->method('getProperty')->will($this->returnValue(1));
         $fileReferenceMock->expects($this->any())->method('getOriginalFile')->willReturn($fileResourceMock);
 
@@ -149,11 +149,11 @@ class VimeoRendererTest extends UnitTestCase
     public function renderOutputWithAutoplayAndWithoutControllsIsCorrect()
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
-        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock = $this->getMock(File::class, [], [], '', false);
 
         $this->assertSame(
             '<iframe src="//player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', array('autoplay' => 1))
+            $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
     }
 }

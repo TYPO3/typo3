@@ -80,7 +80,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     public function registerMenuTypeThrowsExceptionIfTypeIsNotOfTypeString()
     {
         $factory = new MenuContentObjectFactory;
-        $factory->registerMenuType(array(), 'foo');
+        $factory->registerMenuType([], 'foo');
     }
 
     /**
@@ -90,6 +90,6 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     public function registerMenuTypeThrowsExceptionIfClassNameIsNotOfTypeString()
     {
         $factory = new MenuContentObjectFactory;
-        $factory->registerMenuType('foo', array());
+        $factory->registerMenuType('foo', []);
     }
 }

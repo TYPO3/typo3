@@ -50,7 +50,7 @@ class ReviewController extends AbstractController
         $extensionName = $currentRequest->getControllerExtensionName();
         if (count($getVars) === 0) {
             $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-            $getVars = array('id', 'M', $modulePrefix);
+            $getVars = ['id', 'M', $modulePrefix];
         }
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($moduleName)
@@ -86,7 +86,7 @@ class ReviewController extends AbstractController
         // way for usability reasons. Regular users might be confused
         // by switching workspaces with the tabs in a module.
         if (!$GLOBALS['BE_USER']->isAdmin()) {
-            $wsCur = array($activeWorkspace => true);
+            $wsCur = [$activeWorkspace => true];
             $wsList = array_intersect_key($wsList, $wsCur);
         } else {
             if ((string)GeneralUtility::_GP('workspace') !== '') {
@@ -136,7 +136,7 @@ class ReviewController extends AbstractController
 
         if (!$GLOBALS['BE_USER']->isAdmin()) {
             $activeWorkspace = $GLOBALS['BE_USER']->workspace;
-            $wsCur = array($activeWorkspace => true);
+            $wsCur = [$activeWorkspace => true];
             $wsList = array_intersect_key($wsList, $wsCur);
         }
 
@@ -165,7 +165,7 @@ class ReviewController extends AbstractController
         $wsService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
         $wsList = $wsService->getAvailableWorkspaces();
         $activeWorkspace = $GLOBALS['BE_USER']->workspace;
-        $wsCur = array($activeWorkspace => true);
+        $wsCur = [$activeWorkspace => true];
         $wsList = array_intersect_key($wsList, $wsCur);
         $backendDomain = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
         $this->view->assign('pageUid', GeneralUtility::_GP('id'));
@@ -205,9 +205,9 @@ class ReviewController extends AbstractController
         $states = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['States'];
         $this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
         // Load  JavaScript:
-        $this->pageRenderer->addExtDirectCode(array(
+        $this->pageRenderer->addExtDirectCode([
             'TYPO3.Workspaces'
-        ));
+        ]);
         $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/extjs/ux/Ext.grid.RowExpander.js');
         $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/extjs/ux/Ext.app.SearchField.js');
         $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/extjs/ux/Ext.ux.FitToParent.js');
@@ -217,7 +217,7 @@ class ReviewController extends AbstractController
         $this->pageRenderer->addCssFile($resourcePath . 'gridfilters/css/GridFilters.css');
         $this->pageRenderer->addCssFile($resourcePath . 'gridfilters/css/RangeMenu.css');
 
-        $filters = array(
+        $filters = [
             $resourcePath . 'gridfilters/menu/RangeMenu.js',
             $resourcePath . 'gridfilters/menu/ListMenu.js',
             $resourcePath . 'gridfilters/GridFilters.js',
@@ -228,11 +228,11 @@ class ReviewController extends AbstractController
             $resourcePath . 'gridfilters/filter/NumericFilter.js',
             $resourcePath . 'gridfilters/filter/BooleanFilter.js',
             $resourcePath . 'gridfilters/filter/BooleanFilter.js',
-        );
+        ];
 
         $custom = $this->getAdditionalResourceService()->getJavaScriptResources();
 
-        $resources = array(
+        $resources = [
             $resourcePath . 'Component/RowDetailTemplate.js',
             $resourcePath . 'Component/RowExpander.js',
             $resourcePath . 'Component/TabPanel.js',
@@ -244,7 +244,7 @@ class ReviewController extends AbstractController
             $resourcePath . 'toolbar.js',
             $resourcePath . 'grid.js',
             $resourcePath . 'workspaces.js'
-        );
+        ];
 
         $javaScriptFiles = array_merge($filters, $custom, $resources);
 
@@ -267,34 +267,34 @@ class ReviewController extends AbstractController
      */
     protected function prepareWorkspaceTabs(array $workspaceList, $activeWorkspace)
     {
-        $tabs = array();
+        $tabs = [];
 
         if ($activeWorkspace !== WorkspaceService::SELECT_ALL_WORKSPACES) {
-            $tabs[] = array(
+            $tabs[] = [
                 'title' => $workspaceList[$activeWorkspace],
                 'itemId' => 'workspace-' . $activeWorkspace,
                 'workspaceId' => $activeWorkspace,
                 'triggerUrl' => $this->getModuleUri($activeWorkspace),
-            );
+            ];
         }
 
-        $tabs[] = array(
+        $tabs[] = [
             'title' => 'All workspaces',
             'itemId' => 'workspace-' . WorkspaceService::SELECT_ALL_WORKSPACES,
             'workspaceId' => WorkspaceService::SELECT_ALL_WORKSPACES,
             'triggerUrl' => $this->getModuleUri(WorkspaceService::SELECT_ALL_WORKSPACES),
-        );
+        ];
 
         foreach ($workspaceList as $workspaceId => $workspaceTitle) {
             if ($workspaceId === $activeWorkspace) {
                 continue;
             }
-            $tabs[] = array(
+            $tabs[] = [
                 'title' => $workspaceTitle,
                 'itemId' => 'workspace-' . $workspaceId,
                 'workspaceId' => $workspaceId,
                 'triggerUrl' => $this->getModuleUri($workspaceId),
-            );
+            ];
         }
 
         return $tabs;
@@ -308,10 +308,10 @@ class ReviewController extends AbstractController
      */
     protected function getModuleUri($workspaceId)
     {
-        $parameters = array(
+        $parameters = [
             'id' => (int)$this->pageId,
             'workspace' => (int)$workspaceId,
-        );
+        ];
         // The "all workspaces" tab is handled in fullIndexAction
         // which is required as additional GET parameter in the URI then
         if ($workspaceId === WorkspaceService::SELECT_ALL_WORKSPACES) {

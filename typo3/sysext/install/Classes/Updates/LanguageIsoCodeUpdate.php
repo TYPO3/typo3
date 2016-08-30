@@ -70,9 +70,9 @@ class LanguageIsoCodeUpdate extends AbstractUpdate
                     $this->getDatabaseConnection()->exec_UPDATEquery(
                         'sys_language',
                         'uid=' . (int)$languageRecord['uid'],
-                        array(
+                        [
                             'language_isocode' => strtolower($staticLanguageRecord['lg_iso_2'])
-                        )
+                        ]
                     );
                     $databaseQueries[] = $this->getDatabaseConnection()->debug_lastBuiltQuery;
                 }

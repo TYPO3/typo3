@@ -27,7 +27,7 @@ class RendererRegistry implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $classNames = array();
+    protected $classNames = [];
 
     /**
      * Instance cache for renderer classes
@@ -71,7 +71,7 @@ class RendererRegistry implements \TYPO3\CMS\Core\SingletonInterface
     public function getRendererInstances()
     {
         if ($this->instances === null) {
-            $this->instances = array();
+            $this->instances = [];
 
             // As the result is in reverse order we need to reverse
             // the array before processing to keep the items with same
@@ -84,7 +84,7 @@ class RendererRegistry implements \TYPO3\CMS\Core\SingletonInterface
             }
 
             if (count($this->instances) > 1) {
-                usort($this->instances, array($this, 'compareRendererPriority'));
+                usort($this->instances, [$this, 'compareRendererPriority']);
             }
         }
         return $this->instances;

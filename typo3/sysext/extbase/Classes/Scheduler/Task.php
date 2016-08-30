@@ -27,12 +27,12 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     /**
      * @var array
      */
-    protected $arguments = array();
+    protected $arguments = [];
 
     /**
      * @var array
      */
-    protected $defaults = array();
+    protected $defaults = [];
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
@@ -173,7 +173,7 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     {
         $label = $this->commandIdentifier;
         if (!empty($this->arguments)) {
-            $arguments = array();
+            $arguments = [];
             foreach ($this->arguments as $argumentName => $argumentValue) {
                 if ($argumentValue != $this->defaults[$argumentName]) {
                     array_push($arguments, $argumentName . '=' . $argumentValue);

@@ -47,8 +47,8 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
     public function modMenu()
     {
         $lang = $this->getLanguageService();
-        $modMenuAdd = array(
-            'tsconf_parts' => array(
+        $modMenuAdd = [
+            'tsconf_parts' => [
                 0 => $lang->getLL('tsconf_parts_0'),
                 1 => $lang->getLL('tsconf_parts_1'),
                 '1a' => $lang->getLL('tsconf_parts_1a'),
@@ -64,9 +64,9 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
                 3 => 'TSFE.',
                 4 => 'user.',
                 99 => $lang->getLL('tsconf_configFields')
-            ),
+            ],
             'tsconf_alphaSort' => '1'
-        );
+        ];
         if (!$this->getBackendUser()->isAdmin()) {
             unset($modMenuAdd['tsconf_parts'][99]);
         }
@@ -101,8 +101,8 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 
             if ($this->pObj->MOD_SETTINGS['tsconf_parts'] == 99) {
                 $TSparts = BackendUtility::getPagesTSconfig($this->pObj->id, null, true);
-                $lines = array();
-                $pUids = array();
+                $lines = [];
+                $pUids = [];
                 foreach ($TSparts as $k => $v) {
                     if ($k != 'uid_0') {
                         if ($k == 'defaultPageTSconfig') {
@@ -215,7 +215,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 
                 $modTSconfig = $modTSconfig['properties'];
                 if (!is_array($modTSconfig)) {
-                    $modTSconfig = array();
+                    $modTSconfig = [];
                 }
 
                 $csh = BackendUtility::cshItem('_MOD_web_info', 'tsconfig_hierarchy', null, '<span class="btn btn-default btn-sm">|</span>');
@@ -244,7 +244,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
             'TSconfig != \'\''
             . BackendUtility::deleteClause('pages')
             . BackendUtility::versioningPlaceholderClause('pages'), 'pages.uid');
-        $pageArray = array();
+        $pageArray = [];
         while ($row = $db->sql_fetch_assoc($res)) {
             $this->setInPageArray($pageArray, BackendUtility::BEgetRootLine($row['uid'], 'AND 1=1'), $row);
         }
@@ -273,7 +273,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
         array_shift($rootlineArray);
         if (!empty($rootlineArray)) {
             if (!isset($hierarchicArray[$currentElement['uid'] . '.'])) {
-                $hierarchicArray[$currentElement['uid'] . '.'] = array();
+                $hierarchicArray[$currentElement['uid'] . '.'] = [];
             }
             $this->setInPageArray($hierarchicArray[$currentElement['uid'] . '.'], $rootlineArray, $row);
         } else {
@@ -289,7 +289,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
      */
     protected function extractLinesFromTSConfig(array $row)
     {
-        $out = array();
+        $out = [];
         $includeLines = 0;
         $out['uid'] = $row['uid'];
         $lines = GeneralUtility::trimExplode("\r\n", $row['TSconfig']);
@@ -312,7 +312,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
      * @param int $pageDepth The level of the current $pageArray being processed
      * @return array
      */
-    protected function renderList($pageArray, $lines = array(), $pageDepth = 0)
+    protected function renderList($pageArray, $lines = [], $pageDepth = 0)
     {
         $cellStyle = 'padding-left: ' . ($pageDepth * 20) . 'px';
         if (!is_array($pageArray)) {
@@ -328,7 +328,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 				<tr>
 					<td nowrap style="' . $cellStyle . '">
 						<a href="'
-                    . htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $identifier)))
+                    . htmlspecialchars(GeneralUtility::linkThisScript(['id' => $identifier]))
                     . '" title="' . htmlspecialchars('ID: ' . $identifier) . '">'
                     . $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), Icon::SIZE_SMALL)->render()
                     . GeneralUtility::fixed_lgd_cs($pageArray[$identifier], 30) . '</a></td>

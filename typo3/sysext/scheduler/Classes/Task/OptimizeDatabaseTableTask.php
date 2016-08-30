@@ -29,7 +29,7 @@ class OptimizeDatabaseTableTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      *
      * @var array Selected tables to optimize
      */
-    public $selectedTables = array();
+    public $selectedTables = [];
 
     /**
      * Execute table optimization, called by scheduler.

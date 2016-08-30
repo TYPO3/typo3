@@ -49,18 +49,18 @@ class IntegerValidatorTest extends AbstractValidatorTest
 
     public function validIntegerProvider()
     {
-        return array(
-            '12 for de locale'    => array(array(12, 'de')),
-        );
+        return [
+            '12 for de locale'    => [[12, 'de']],
+        ];
     }
 
     public function invalidIntegerProvider()
     {
-        return array(
-            '12.1 for en_US locale' => array(array(12.1, 'en_US')),
+        return [
+            '12.1 for en_US locale' => [[12.1, 'en_US']],
             // @todo de_DE disabled currently, works locally but not on travis-ci.org
             // '12,1 for de_DE locale' => array(array('12,1', 'de_DE'))
-        );
+        ];
     }
 
     /**
@@ -71,7 +71,7 @@ class IntegerValidatorTest extends AbstractValidatorTest
     {
         setlocale(LC_NUMERIC, $input[1]);
 
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $subject = $this->createSubject($options);
 
         $this->assertEmpty(
@@ -87,7 +87,7 @@ class IntegerValidatorTest extends AbstractValidatorTest
     {
         setlocale(LC_NUMERIC, $input[1]);
 
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $subject = $this->createSubject($options);
 
         $this->assertNotEmpty(

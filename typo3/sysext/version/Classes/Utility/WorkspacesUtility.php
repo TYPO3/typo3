@@ -32,7 +32,7 @@ class WorkspacesUtility
     public function getCmdArrayForPublishWS($wsid, $doSwap, $pageId = 0)
     {
         $wsid = (int)$wsid;
-        $cmd = array();
+        $cmd = [];
         if ($wsid >= -1 && $wsid !== 0) {
             // Define stage to select:
             $stage = -99;
@@ -48,11 +48,11 @@ class WorkspacesUtility
             foreach ($versions as $table => $records) {
                 foreach ($records as $rec) {
                     // Build the cmd Array:
-                    $cmd[$table][$rec['t3ver_oid']]['version'] = array(
+                    $cmd[$table][$rec['t3ver_oid']]['version'] = [
                         'action' => 'swap',
                         'swapWith' => $rec['uid'],
                         'swapIntoWS' => $doSwap ? 1 : 0
-                    );
+                    ];
                 }
             }
         }
@@ -75,7 +75,7 @@ class WorkspacesUtility
         $wsid = (int)$wsid;
         $filter = (int)$filter;
         $pageId = (int)$pageId;
-        $output = array();
+        $output = [];
         // Traversing all tables supporting versioning:
         foreach ($GLOBALS['TCA'] as $table => $cfg) {
             if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
@@ -116,7 +116,7 @@ class WorkspacesUtility
 				OR (publish_time=0 AND unpublish_time!=0 AND unpublish_time<=' . (int)$GLOBALS['EXEC_TIME'] . '))' . BackendUtility::deleteClause('sys_workspace'));
         foreach ($workspaces as $rec) {
             // First, clear start/end time so it doesn't get select once again:
-            $fieldArray = $rec['publish_time'] != 0 ? array('publish_time' => 0) : array('unpublish_time' => 0);
+            $fieldArray = $rec['publish_time'] != 0 ? ['publish_time' => 0] : ['unpublish_time' => 0];
             $GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_workspace', 'uid=' . (int)$rec['uid'], $fieldArray);
             // Get CMD array:
             $cmd = $this->getCmdArrayForPublishWS($rec['uid'], $rec['swap_modes'] == 1);
@@ -124,7 +124,7 @@ class WorkspacesUtility
             // Execute CMD array:
             $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
             $tce->stripslashes_values = 0;
-            $tce->start(array(), $cmd);
+            $tce->start([], $cmd);
             $tce->process_cmdmap();
         }
         // Restore admin status

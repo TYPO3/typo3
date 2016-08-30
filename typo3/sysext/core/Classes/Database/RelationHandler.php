@@ -47,26 +47,26 @@ class RelationHandler
      *
      * @var array
      */
-    public $tableArray = array();
+    public $tableArray = [];
 
     /**
      * Contains items in an numeric array (table/id for each). Tablenames here might be "_NO_TABLE"
      *
      * @var array
      */
-    public $itemArray = array();
+    public $itemArray = [];
 
     /**
      * Array for NON-table elements
      *
      * @var array
      */
-    public $nonTableArray = array();
+    public $nonTableArray = [];
 
     /**
      * @var array
      */
-    public $additionalWhere = array();
+    public $additionalWhere = [];
 
     /**
      * Deleted-column is added to additionalWhere... if this is set...
@@ -78,7 +78,7 @@ class RelationHandler
     /**
      * @var array
      */
-    public $dbPaths = array();
+    public $dbPaths = [];
 
     /**
      * Will contain the first table name in the $tablelist (for positive ids)
@@ -151,7 +151,7 @@ class RelationHandler
      *
      * @var array
      */
-    public $MM_match_fields = array();
+    public $MM_match_fields = [];
 
     /**
      * This is set to TRUE if the MM table has a UID field.
@@ -165,7 +165,7 @@ class RelationHandler
      *
      * @var array
      */
-    public $MM_insert_fields = array();
+    public $MM_insert_fields = [];
 
     /**
      * Extra MM table where
@@ -211,7 +211,7 @@ class RelationHandler
      *
      * @var array
      */
-    public $results = array();
+    public $results = [];
 
     /**
      * Gets the current workspace id.
@@ -257,7 +257,7 @@ class RelationHandler
      * @param array $conf TCA configuration for current field
      * @return void
      */
-    public function start($itemlist, $tablelist, $MMtable = '', $MMuid = 0, $currentTable = '', $conf = array())
+    public function start($itemlist, $tablelist, $MMtable = '', $MMuid = 0, $currentTable = '', $conf = [])
     {
         $conf = (array)$conf;
         // SECTION: MM reverse relations
@@ -265,7 +265,7 @@ class RelationHandler
         $this->MM_oppositeField = $conf['MM_opposite_field'];
         $this->MM_table_where = $conf['MM_table_where'];
         $this->MM_hasUidField = $conf['MM_hasUidField'];
-        $this->MM_match_fields = is_array($conf['MM_match_fields']) ? $conf['MM_match_fields'] : array();
+        $this->MM_match_fields = is_array($conf['MM_match_fields']) ? $conf['MM_match_fields'] : [];
         $this->MM_insert_fields = is_array($conf['MM_insert_fields']) ? $conf['MM_insert_fields'] : $this->MM_match_fields;
         $this->currentTable = $currentTable;
         if (!empty($conf['MM_oppositeUsage']) && is_array($conf['MM_oppositeUsage'])) {
@@ -298,7 +298,7 @@ class RelationHandler
         $tempTableArray = GeneralUtility::trimExplode(',', $tablelist, true);
         foreach ($tempTableArray as $val) {
             $tName = trim($val);
-            $this->tableArray[$tName] = array();
+            $this->tableArray[$tName] = [];
             if ($this->checkIfDeleted && $GLOBALS['TCA'][$tName]['ctrl']['delete']) {
                 $fieldN = $tName . '.' . $GLOBALS['TCA'][$tName]['ctrl']['delete'];
                 $this->additionalWhere[$tName] .= ' AND ' . $fieldN . '=0';
@@ -446,14 +446,14 @@ class RelationHandler
                 }
             // Directly overlay workspace data
             } else {
-                $this->itemArray = array();
+                $this->itemArray = [];
                 $foreignTable = $configuration['foreign_table'];
                 $ids = $this->getResolver($foreignTable, $this->tableArray[$foreignTable])->get();
                 foreach ($ids as $id) {
-                    $this->itemArray[] = array(
+                    $this->itemArray[] = [
                         'id' => $id,
                         'table' => $foreignTable,
-                    );
+                    ];
                 }
             }
         }
@@ -482,11 +482,11 @@ class RelationHandler
             $table = key($this->tableArray);
             $uidList = implode(',', current($this->tableArray));
             if ($uidList) {
-                $this->itemArray = array();
-                $this->tableArray = array();
+                $this->itemArray = [];
+                $this->tableArray = [];
                 $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'uid IN (' . $uidList . ')', '', $sortby);
                 while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-                    $this->itemArray[] = array('id' => $row['uid'], 'table' => $table);
+                    $this->itemArray[] = ['id' => $row['uid'], 'table' => $table];
                     $this->tableArray[$table][] = $row['uid'];
                 }
                 $GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -604,19 +604,19 @@ class RelationHandler
                 '',
                 $sorting_field
             );
-            $oldMMs = array();
+            $oldMMs = [];
             // This array is similar to $oldMMs but also holds the uid of the MM-records, if any (configured by MM_hasUidField).
             // If the UID is present it will be used to update sorting and delete MM-records.
             // This is necessary if the "multiple" feature is used for the MM relations.
             // $oldMMs is still needed for the in_array() search used to look if an item from $this->itemArray is in $oldMMs
-            $oldMMs_inclUid = array();
+            $oldMMs_inclUid = [];
             while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                 if (!$this->MM_is_foreign && $prep) {
-                    $oldMMs[] = array($row['tablenames'], $row[$uidForeign_field]);
+                    $oldMMs[] = [$row['tablenames'], $row[$uidForeign_field]];
                 } else {
                     $oldMMs[] = $row[$uidForeign_field];
                 }
-                $oldMMs_inclUid[] = array($row['tablenames'], $row[$uidForeign_field], $row['uid']);
+                $oldMMs_inclUid[] = [$row['tablenames'], $row[$uidForeign_field], $row['uid']];
             }
             $GLOBALS['TYPO3_DB']->sql_free_result($res);
             // For each item, insert it:
@@ -633,7 +633,7 @@ class RelationHandler
                     $tablename = '';
                 }
                 if (!$this->MM_is_foreign && $prep) {
-                    $item = array($val['table'], $val['id']);
+                    $item = [$val['table'], $val['id']];
                 } else {
                     $item = $val['id'];
                 }
@@ -647,7 +647,7 @@ class RelationHandler
                     if ($tablename) {
                         $whereClause .= ' AND tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tablename, $MM_tableName);
                     }
-                    $GLOBALS['TYPO3_DB']->exec_UPDATEquery($MM_tableName, $whereClause . $additionalWhere, array($sorting_field => $c));
+                    $GLOBALS['TYPO3_DB']->exec_UPDATEquery($MM_tableName, $whereClause . $additionalWhere, [$sorting_field => $c]);
                     // Remove the item from the $oldMMs array so after this
                     // foreach loop only the ones that need to be deleted are in there.
                     unset($oldMMs[$oldMMs_index]);
@@ -671,8 +671,8 @@ class RelationHandler
             }
             // Delete all not-used relations:
             if (is_array($oldMMs) && !empty($oldMMs)) {
-                $removeClauses = array();
-                $updateRefIndex_records = array();
+                $removeClauses = [];
+                $updateRefIndex_records = [];
                 foreach ($oldMMs as $oldMM_key => $mmItem) {
                     // If UID field is present, of course we need only use that for deleting.
                     if ($this->MM_hasUidField) {
@@ -687,9 +687,9 @@ class RelationHandler
                     }
                     if ($this->MM_is_foreign) {
                         if (is_array($mmItem)) {
-                            $updateRefIndex_records[] = array($mmItem[0], $mmItem[1]);
+                            $updateRefIndex_records[] = [$mmItem[0], $mmItem[1]];
                         } else {
-                            $updateRefIndex_records[] = array($this->firstTable, $mmItem);
+                            $updateRefIndex_records[] = [$this->firstTable, $mmItem];
                         }
                     }
                 }
@@ -746,7 +746,7 @@ class RelationHandler
                 $additionalWhere .= ' AND ' . $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $MM_tableName);
             }
             $where = $uidLocal_field . '=' . (int)$uid . $additionalWhere_tablenames . $additionalWhere;
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery($MM_tableName, $where, array($uidLocal_field => $newUid));
+            $GLOBALS['TYPO3_DB']->exec_UPDATEquery($MM_tableName, $where, [$uidLocal_field => $newUid]);
         }
     }
 
@@ -769,7 +769,7 @@ class RelationHandler
         $foreign_table = $conf['foreign_table'];
         $foreign_table_field = $conf['foreign_table_field'];
         $useDeleteClause = !$this->undeleteRecord;
-        $foreign_match_fields = is_array($conf['foreign_match_fields']) ? $conf['foreign_match_fields'] : array();
+        $foreign_match_fields = is_array($conf['foreign_match_fields']) ? $conf['foreign_match_fields'] : [];
         // Search for $uid in foreign_field, and if we have symmetric relations, do this also on symmetric_field
         if ($conf['symmetric_field']) {
             $whereClause = '(' . $conf['foreign_field'] . '=' . $uid . ' OR ' . $conf['symmetric_field'] . '=' . $uid . ')';
@@ -858,7 +858,7 @@ class RelationHandler
         $foreign_field = $conf['foreign_field'];
         $symmetric_field = $conf['symmetric_field'];
         $foreign_table_field = $conf['foreign_table_field'];
-        $foreign_match_fields = is_array($conf['foreign_match_fields']) ? $conf['foreign_match_fields'] : array();
+        $foreign_match_fields = is_array($conf['foreign_match_fields']) ? $conf['foreign_match_fields'] : [];
         // If there are table items and we have a proper $parentUid
         if (MathUtility::canBeInterpretedAsInteger($parentUid) && !empty($this->tableArray)) {
             // If updateToUid is not a positive integer, set it to '0', so it will be ignored
@@ -879,7 +879,7 @@ class RelationHandler
             foreach ($this->itemArray as $val) {
                 $uid = $val['id'];
                 $table = $val['table'];
-                $row = array();
+                $row = [];
                 // Fetch the current (not overwritten) relation record if we should handle symmetric relations
                 if ($symmetric_field || $considerWorkspaces) {
                     $row = BackendUtility::getRecord($table, $uid, $fields, '', true);
@@ -978,7 +978,7 @@ class RelationHandler
     public function getValueArray($prependTableName = false)
     {
         // INIT:
-        $valueArray = array();
+        $valueArray = [];
         $tableC = count($this->tableArray);
         // If there are tables in the table array:
         if ($tableC) {
@@ -1074,7 +1074,7 @@ class RelationHandler
         if (!is_array($this->itemArray)) {
             return false;
         }
-        $output = array();
+        $output = [];
         $titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
         foreach ($this->itemArray as $val) {
             $theRow = $this->results[$val['table']][$val['id']];
@@ -1098,7 +1098,7 @@ class RelationHandler
     {
         $count = count($this->itemArray);
         if ($returnAsArray) {
-            $count = array($count);
+            $count = [$count];
         }
         return $count;
     }
@@ -1114,7 +1114,7 @@ class RelationHandler
      */
     public function updateRefIndex($table, $id)
     {
-        $statisticsArray = array();
+        $statisticsArray = [];
         if ($this->updateReferenceIndex) {
             /** @var $refIndexObj \TYPO3\CMS\Core\Database\ReferenceIndex */
             $refIndexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
@@ -1180,7 +1180,7 @@ class RelationHandler
                 continue;
             }
 
-            $purgedItemIds = call_user_func(array($this, $purgeCallback), $itemTableName, $itemIds);
+            $purgedItemIds = call_user_func([$this, $purgeCallback], $itemTableName, $itemIds);
             $removedItemIds = array_diff($itemIds, $purgedItemIds);
             foreach ($removedItemIds as $removedItemId) {
                 $this->removeFromItemArray($itemTableName, $removedItemId);

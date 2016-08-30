@@ -28,10 +28,10 @@ class DataProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['pageTree']['preloadLimit'] = 0;
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'] = array();
-        $GLOBALS['LOCKED_RECORDS'] = array();
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'] = [];
+        $GLOBALS['LOCKED_RECORDS'] = [];
         /** @var $backendUserMock \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject */
-        $backendUserMock = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array(), array(), '', false);
+        $backendUserMock = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, [], [], '', false);
         $GLOBALS['BE_USER'] = $backendUserMock;
 
         $this->subject = new \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider();

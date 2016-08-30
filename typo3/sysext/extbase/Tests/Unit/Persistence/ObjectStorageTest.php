@@ -137,13 +137,13 @@ class ObjectStorageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $object3 = new \StdClass();
         $objectStorage->attach($object1, 42);
         $objectStorage->attach($object2, 'foo');
-        $objectStorage->attach($object3, array('bar', 'baz'));
+        $objectStorage->attach($object3, ['bar', 'baz']);
         $objectStorage->rewind();
         $this->assertEquals($objectStorage->getInfo(), 42);
         $objectStorage->next();
         $this->assertEquals($objectStorage->getInfo(), 'foo');
         $objectStorage->next();
-        $this->assertEquals($objectStorage->getInfo(), array('bar', 'baz'));
+        $this->assertEquals($objectStorage->getInfo(), ['bar', 'baz']);
     }
 
     /**
@@ -209,7 +209,7 @@ class ObjectStorageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $object2 = new \StdClass();
         $objectStorage->attach($object1, 'foo');
         $objectStorage->attach($object2, 'bar');
-        $this->assertEquals($objectStorage->toArray(), array($object1, $object2));
+        $this->assertEquals($objectStorage->toArray(), [$object1, $object2]);
     }
 
     /**

@@ -24,7 +24,7 @@ class FlexFormServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array Backup of singletons
      */
-    protected $backupSingletons = array();
+    protected $backupSingletons = [];
 
     /**
      * Set up
@@ -91,30 +91,30 @@ class FlexFormServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	</data>
 </T3FlexForms>';
 
-        $expected = array(
-            'settings' => array(
+        $expected = [
+            'settings' => [
                 'foo' => 'Foo-Value',
-                'bar' => array(
-                    1 => array(
+                'bar' => [
+                    1 => [
                         'baz' => 'Baz1-Value',
                         'bum' => 'Bum1-Value'
-                    ),
-                    2 => array(
+                    ],
+                    2 => [
                         'baz' => 'Baz2-Value',
                         'bum' => 'Bum2-Value'
-                    )
-                )
-            )
-        );
+                    ]
+                ]
+            ]
+        ];
 
         // The subject calls xml2array statically, which calls getHash and setHash statically, which uses
         // caches, those need to be mocked.
-        $cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class, array(), array(), '', false);
-        $cacheMock = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', false);
+        $cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class, [], [], '', false);
+        $cacheMock = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, [], [], '', false);
         $cacheManagerMock->expects($this->any())->method('getCache')->will($this->returnValue($cacheMock));
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $cacheManagerMock);
 
-        $flexFormService = $this->getMock(\TYPO3\CMS\Extbase\Service\FlexFormService::class, array('dummy'), array(), '', false);
+        $flexFormService = $this->getMock(\TYPO3\CMS\Extbase\Service\FlexFormService::class, ['dummy'], [], '', false);
         $convertedFlexFormArray = $flexFormService->convertFlexFormContentToArray($input);
         $this->assertSame($expected, $convertedFlexFormArray);
     }

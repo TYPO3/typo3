@@ -29,7 +29,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
     /**
      * @var array
      */
-    protected $typoScriptSetupCache = array();
+    protected $typoScriptSetupCache = [];
 
     /**
      * stores the current page ID
@@ -63,7 +63,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
             $template->setProcessExtensionStatics(true);
             $template->init();
             // Get the root line
-            $rootline = array();
+            $rootline = [];
             if ($pageId > 0) {
                 /** @var $sysPage \TYPO3\CMS\Frontend\Page\PageRepository */
                 $sysPage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
@@ -89,7 +89,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
     protected function getPluginConfiguration($extensionName, $pluginName = null)
     {
         $setup = $this->getTypoScriptSetup();
-        $pluginConfiguration = array();
+        $pluginConfiguration = [];
         if (is_array($setup['module.']['tx_' . strtolower($extensionName) . '.'])) {
             $pluginConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['module.']['tx_' . strtolower($extensionName) . '.']);
         }
@@ -118,7 +118,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
     {
         $switchableControllerActions = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers'];
         if (!is_array($switchableControllerActions)) {
-            $switchableControllerActions = array();
+            $switchableControllerActions = [];
         }
         return $switchableControllerActions;
     }
@@ -207,10 +207,10 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
     protected function getContextSpecificFrameworkConfiguration(array $frameworkConfiguration)
     {
         if (!isset($frameworkConfiguration['mvc']['requestHandlers'])) {
-            $frameworkConfiguration['mvc']['requestHandlers'] = array(
+            $frameworkConfiguration['mvc']['requestHandlers'] = [
                 \TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler::class => \TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler::class,
                 \TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler::class => \TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler::class
-            );
+            ];
         }
         return $frameworkConfiguration;
     }

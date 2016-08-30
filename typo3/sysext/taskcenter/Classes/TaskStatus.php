@@ -51,7 +51,7 @@ class TaskStatus
      */
     public function saveSortingState(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $sort = array();
+        $sort = [];
         $data = isset($request->getParsedBody()['data']) ? $request->getParsedBody()['data'] : $request->getQueryParams()['data'];
 
         $items = explode('&', $data);

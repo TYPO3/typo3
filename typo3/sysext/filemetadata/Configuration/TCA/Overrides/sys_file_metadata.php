@@ -1,12 +1,12 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-$tca = array(
-    'ctrl' => array(
+$tca = [
+    'ctrl' => [
         'type' => 'file:type',
-    ),
-    'types' => array(
-        TYPO3\CMS\Core\Resource\File::FILETYPE_UNKNOWN => array(
+    ],
+    'types' => [
+        TYPO3\CMS\Core\Resource\File::FILETYPE_UNKNOWN => [
             'showitem' => '
 				fileinfo, title, description, ranking, keywords,
 				    --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.accessibility;25,
@@ -17,8 +17,8 @@ $tca = array(
 					creator, creator_tool, publisher, source, copyright,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40
 			',
-        ),
-        TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+        ],
+        TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => [
             'showitem' => '
 				fileinfo, title, description, ranking, keywords,
 				    --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.accessibility;25,
@@ -29,8 +29,8 @@ $tca = array(
 					creator, creator_tool, publisher, source, copyright, language,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40
 			',
-        ),
-        TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+        ],
+        TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
             'showitem' => '
 				fileinfo, title, description, ranking, keywords,
 				    --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.accessibility;20,
@@ -46,8 +46,8 @@ $tca = array(
 					color_space,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.metrics;50
 			',
-        ),
-        TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+        ],
+        TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => [
             'showitem' => '
 				fileinfo, title, description, ranking, keywords,
 				    --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.accessibility;25,
@@ -60,8 +60,8 @@ $tca = array(
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.audio,
 				    duration
 			',
-        ),
-        TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+        ],
+        TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => [
             'showitem' => '
 				fileinfo, title, description, ranking, keywords,
 				    --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.accessibility;25,
@@ -74,8 +74,8 @@ $tca = array(
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.video,
 					duration
 			',
-        ),
-        TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+        ],
+        TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => [
             'showitem' => '
 				fileinfo, title, description, ranking, keywords,
 				    --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.accessibility;25,
@@ -89,402 +89,402 @@ $tca = array(
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.metrics;50,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.content_date;60
 			',
-        ),
-    ),
-    'palettes' => array(
-        '10' => array(
+        ],
+    ],
+    'palettes' => [
+        '10' => [
             'showitem' => 'visible, status',
-        ),
-        '20' => array(
+        ],
+        '20' => [
             'showitem' => 'alternative, --linebreak--, caption, --linebreak--, download_name',
-        ),
-        '25' => array(
+        ],
+        '25' => [
             'showitem' => 'caption, --linebreak--, download_name',
-        ),
-        '30' => array(
+        ],
+        '30' => [
             'showitem' => 'latitude, longitude',
-        ),
-        '40' => array(
+        ],
+        '40' => [
             'showitem' => 'location_country, location_region, location_city',
-        ),
-        '50' => array(
+        ],
+        '50' => [
             'showitem' => 'width, height, unit',
-        ),
-        '60' => array(
+        ],
+        '60' => [
             'showitem' => 'content_creation_date, content_modification_date',
-        ),
-    ),
-    'columns' => array(
-        'visible' => array(
+        ],
+    ],
+    'columns' => [
+        'visible' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.visible',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => '1'
-            ),
-        ),
-        'status' => array(
+            ],
+        ],
+        'status' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.status',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array(
+                'items' => [
+                    [
                         'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.status.1',
                         1,
                         'EXT:filemetadata/Resources/Public/Icons/status_1.png'
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.status.2',
                         2,
                         'EXT:filemetadata/Resources/Public/Icons/status_2.png'
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.status.3',
                         3,
                         'EXT:filemetadata/Resources/Public/Icons/status_3.png'
-                    ),
-                ),
+                    ],
+                ],
                 'showIconTable' => true,
-            ),
-        ),
-        'keywords' => array(
+            ],
+        ],
+        'keywords' => [
             'exclude' => 1,
             'l10n_mode' => 'prefixLangTitle',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.keywords',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'cols' => '40',
                 'rows' => '3',
                 'placeholder' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:placeholder.keywords'
-            ),
-        ),
-        'caption' => array(
+            ],
+        ],
+        'caption' => [
             'exclude' => 1,
             'l10n_mode' => 'prefixLangTitle',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.caption',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim'
-            ),
-        ),
-        'creator_tool' => array(
+            ],
+        ],
+        'creator_tool' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.creator_tool',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim'
-            ),
-        ),
-        'download_name' => array(
+            ],
+        ],
+        'download_name' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.download_name',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim'
-            ),
-        ),
-        'creator' => array(
+            ],
+        ],
+        'creator' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.creator',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim'
-            ),
-        ),
-        'publisher' => array(
+            ],
+        ],
+        'publisher' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.publisher',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim'
-            ),
-        ),
-        'source' => array(
+            ],
+        ],
+        'source' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.source',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim'
-            ),
-        ),
-        'copyright' => array(
+            ],
+        ],
+        'copyright' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.copyright',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim'
-            ),
-        ),
-        'location_country' => array(
+            ],
+        ],
+        'location_country' => [
             'exclude' => 1,
             'l10n_mode' => 'mergeIfNotBlank',
             'l10n_display' => '',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.location_country',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim'
-            ),
-        ),
-        'location_region' => array(
+            ],
+        ],
+        'location_region' => [
             'exclude' => 1,
             'l10n_mode' => 'mergeIfNotBlank',
             'l10n_display' => '',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.location_region',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim'
-            ),
-        ),
-        'location_city' => array(
+            ],
+        ],
+        'location_city' => [
             'exclude' => 1,
             'l10n_mode' => 'mergeIfNotBlank',
             'l10n_display' => '',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.location_city',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim'
-            ),
-        ),
-        'latitude' => array(
+            ],
+        ],
+        'latitude' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.latitude',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '20',
                 'eval' => 'trim',
                 'max' => '30',
                 'default' => '0.00000000000000'
-            ),
-        ),
-        'longitude' => array(
+            ],
+        ],
+        'longitude' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.longitude',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '20',
                 'eval' => 'trim',
                 'max' => '30',
                 'default' => '0.00000000000000'
-            ),
-        ),
-        'ranking' => array(
+            ],
+        ],
+        'ranking' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.ranking',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'minitems' => 1,
                 'maxitems' => 1,
-                'items' => array(
-                    array(0, 0),
-                    array(1, 1),
-                    array(2, 2),
-                    array(3, 3),
-                    array(4, 4),
-                    array(5, 5),
-                ),
-            ),
-        ),
-        'content_creation_date' => array(
+                'items' => [
+                    [0, 0],
+                    [1, 1],
+                    [2, 2],
+                    [3, 3],
+                    [4, 4],
+                    [5, 5],
+                ],
+            ],
+        ],
+        'content_creation_date' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.content_creation_date',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 12,
                 'max' => 20,
                 'eval' => 'date',
                 'default' => time()
-            ),
-        ),
-        'content_modification_date' => array(
+            ],
+        ],
+        'content_modification_date' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.content_modification_date',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 12,
                 'max' => 20,
                 'eval' => 'date',
                 'default' => time()
-            ),
-        ),
-        'note' => array(
+            ],
+        ],
+        'note' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.note',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'cols' => 40,
                 'rows' => 15,
                 'eval' => 'trim'
-            ),
-        ),
+            ],
+        ],
         /*
          * METRICS ###########################################
          */
-        'unit' => array(
+        'unit' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', ''),
-                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.px', 'px'),
-                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.cm', 'cm'),
-                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.in', 'in'),
-                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.mm', 'mm'),
-                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.m', 'm'),
-                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.p', 'p'),
-                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.pt', 'pt')
-                ),
+                'items' => [
+                    ['', ''],
+                    ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.px', 'px'],
+                    ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.cm', 'cm'],
+                    ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.in', 'in'],
+                    ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.mm', 'mm'],
+                    ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.m', 'm'],
+                    ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.p', 'p'],
+                    ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.pt', 'pt']
+                ],
                 'default' => '',
                 'readOnly' => true,
-            ),
-        ),
-        'duration' => array(
+            ],
+        ],
+        'duration' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.duration',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '10',
                 'max' => '20',
                 'eval' => 'int',
                 'default' => '0'
-            )
-        ),
-        'color_space' => array(
+            ]
+        ],
+        'color_space' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.color_space',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', ''),
-                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.color_space.RGB', 'RGB'),
-                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.color_space.sRGB', 'sRGB'),
-                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.color_space.CMYK', 'CMYK'),
-                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.color_space.CMY', 'CMY'),
-                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.color_space.YUV', 'YUV'),
-                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.color_space.grey', 'grey'),
-                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.color_space.indx', 'indx'),
-                ),
+                'items' => [
+                    ['', ''],
+                    ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.color_space.RGB', 'RGB'],
+                    ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.color_space.sRGB', 'sRGB'],
+                    ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.color_space.CMYK', 'CMYK'],
+                    ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.color_space.CMY', 'CMY'],
+                    ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.color_space.YUV', 'YUV'],
+                    ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.color_space.grey', 'grey'],
+                    ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.color_space.indx', 'indx'],
+                ],
                 'default' => '',
                 'readOnly' => true,
-            )
-        ),
-        'width' => array(
+            ]
+        ],
+        'width' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.width',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '10',
                 'max' => '20',
                 'eval' => 'int',
                 'default' => '0',
                 'readOnly' => true,
-            ),
-        ),
-        'height' => array(
+            ],
+        ],
+        'height' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.height',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '10',
                 'max' => '20',
                 'eval' => 'int',
                 'default' => '0',
                 'readOnly' => true,
-            ),
-        ),
-        'pages' => array(
+            ],
+        ],
+        'pages' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.pages',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim',
                 'readOnly' => true
-            ),
-        ),
-        'language' => array(
+            ],
+        ],
+        'language' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.language',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim'
-            )
-        ),
-        'fe_groups' => array(
+            ]
+        ],
+        'fe_groups' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'size' => 5,
                 'maxitems' => 20,
-                'items' => array(
-                    array(
+                'items' => [
+                    [
                         'LLL:EXT:lang/locallang_general.xlf:LGL.hide_at_login',
                         -1
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:lang/locallang_general.xlf:LGL.any_login',
                         -2
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:lang/locallang_general.xlf:LGL.usergroups',
                         '--div--'
-                    )
-                ),
+                    ]
+                ],
                 'exclusiveKeys' => '-1,-2',
                 'foreign_table' => 'fe_groups',
                 'foreign_table_where' => 'ORDER BY fe_groups.title'
-            )
-        ),
-    ),
-);
+            ]
+        ],
+    ],
+];
 
 $GLOBALS['TCA']['sys_file_metadata'] = array_replace_recursive($GLOBALS['TCA']['sys_file_metadata'], $tca);
 

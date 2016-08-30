@@ -58,9 +58,9 @@ class UrlencodeViewHelper extends AbstractViewHelper implements CompilableInterf
     public function render($value = null)
     {
         return static::renderStatic(
-            array(
+            [
                 'value' => $value
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

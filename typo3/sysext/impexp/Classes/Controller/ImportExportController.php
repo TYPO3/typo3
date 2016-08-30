@@ -49,7 +49,7 @@ class ImportExportController extends BaseScriptClass
     /**
      * @var array|\TYPO3\CMS\Core\Resource\File[]
      */
-    protected $uploadedFiles = array();
+    protected $uploadedFiles = [];
 
     /**
      * Array containing the current page.
@@ -351,7 +351,7 @@ class ImportExportController extends BaseScriptClass
         }
         // Set exclude fields in export object:
         if (!is_array($inData['exclude'])) {
-            $inData['exclude'] = array();
+            $inData['exclude'] = [];
         }
         // Saving/Loading/Deleting presets:
         $this->presetRepository->processPresets($inData);
@@ -362,7 +362,7 @@ class ImportExportController extends BaseScriptClass
         $this->export->maxFileSize = $inData['maxFileSize'] * 1024;
         $this->export->excludeMap = (array)$inData['exclude'];
         $this->export->softrefCfg = (array)$inData['softrefCfg'];
-        $this->export->extensionDependencies = ($inData['extension_dep'] === '') ? array() : (array)$inData['extension_dep'];
+        $this->export->extensionDependencies = ($inData['extension_dep'] === '') ? [] : (array)$inData['extension_dep'];
         $this->export->showStaticRelations = $inData['showStaticRelations'];
         $this->export->includeExtFileResources = !$inData['excludeHTMLfileResources'];
 
@@ -428,10 +428,10 @@ class ImportExportController extends BaseScriptClass
                 // Drawing tree:
                 // If the ID is zero, export root
                 if (!$inData['pagetree']['id'] && $beUser->isAdmin()) {
-                    $sPage = array(
+                    $sPage = [
                         'uid' => 0,
                         'title' => 'ROOT'
-                    );
+                    ];
                 } else {
                     $sPage = BackendUtility::getRecordWSOL('pages', $inData['pagetree']['id'], '*', ' AND ' . $this->perms_clause);
                 }
@@ -440,12 +440,12 @@ class ImportExportController extends BaseScriptClass
                     $tree = GeneralUtility::makeInstance(PageTreeView::class);
                     $tree->init('AND ' . $this->perms_clause . $this->filterPageIds($this->export->excludeMap));
                     $HTML = $this->iconFactory->getIconForRecord('pages', $sPage, Icon::SIZE_SMALL)->render();
-                    $tree->tree[] = array('row' => $sPage, 'HTML' => $HTML);
-                    $tree->buffer_idH = array();
+                    $tree->tree[] = ['row' => $sPage, 'HTML' => $HTML];
+                    $tree->buffer_idH = [];
                     if ($inData['pagetree']['levels'] > 0) {
                         $tree->getTree($pid, $inData['pagetree']['levels'], '');
                     }
-                    $idH = array();
+                    $idH = [];
                     $idH[$pid]['uid'] = $pid;
                     if (!empty($tree->buffer_idH)) {
                         $idH[$pid]['subrow'] = $tree->buffer_idH;
@@ -647,7 +647,7 @@ class ImportExportController extends BaseScriptClass
         if (isset($inData['pagetree']['id'])) {
             $this->standaloneView->assign('treeHTML', $this->treeHTML);
 
-            $opt = array(
+            $opt = [
                 '-2' => $this->lang->getLL('makeconfig_tablesOnThisPage'),
                 '-1' => $this->lang->getLL('makeconfig_expandedTree'),
                 '0' => $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
@@ -656,14 +656,14 @@ class ImportExportController extends BaseScriptClass
                 '3' => $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
                 '4' => $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
                 '999' => $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi'),
-            );
+            ];
             $this->standaloneView->assign('levelSelectOptions', $opt);
             $this->standaloneView->assign('tableSelectOptions', $this->getTableSelectOptions('pages'));
             $nameSuggestion .= 'tree_PID' . $inData['pagetree']['id'] . '_L' . $inData['pagetree']['levels'];
         }
         // Single record export:
         if (is_array($inData['record'])) {
-            $records = array();
+            $records = [];
             foreach ($inData['record'] as $ref) {
                 $rParts = explode(':', $ref);
                 $tName = $rParts[0];
@@ -745,7 +745,7 @@ class ImportExportController extends BaseScriptClass
     {
 
         // Presets:
-        $opt = array('');
+        $opt = [''];
         $where = '(public>0 OR user_uid=' . (int)$this->getBackendUser()->user['uid'] . ')'
             . ($inData['pagetree']['id'] ? ' AND (item_uid=' . (int)$inData['pagetree']['id'] . ' OR item_uid=0)' : '');
         $presets = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'tx_impexp_presets', $where);
@@ -765,7 +765,7 @@ class ImportExportController extends BaseScriptClass
         }
 
         // Add file options:
-        $opt = array();
+        $opt = [];
         if ($this->export->compress) {
             $opt['t3d_compressed'] = $this->lang->getLL('makesavefo_t3dFileCompressed');
         }
@@ -805,7 +805,7 @@ class ImportExportController extends BaseScriptClass
         $beUser = $this->getBackendUser();
         if ($this->id && $access || $beUser->user['admin'] && !$this->id) {
             if ($beUser->user['admin'] && !$this->id) {
-                $this->pageinfo = array('title' => '[root-level]', 'uid' => 0, 'pid' => 0);
+                $this->pageinfo = ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
             }
             if ($inData['new_import']) {
                 unset($inData['import_mode']);
@@ -832,7 +832,7 @@ class ImportExportController extends BaseScriptClass
             $this->shortcutName .= ' (' . $this->pageinfo['title'] . ')';
 
             // Configuration
-            $selectOptions = array('');
+            $selectOptions = [''];
             foreach ($exportFiles as $file) {
                 $selectOptions[$file->getCombinedIdentifier()] = $file->getPublicUrl();
             }
@@ -866,7 +866,7 @@ class ImportExportController extends BaseScriptClass
             $inFile = $this->getFile($inData['file']);
             if ($inFile !== null && $inFile->exists()) {
                 $this->standaloneView->assign('metaDataInFileExists', true);
-                $importInhibitedMessages = array();
+                $importInhibitedMessages = [];
                 if ($import->loadFile($inFile->getForLocalProcessing(false), 1)) {
                     $importInhibitedMessages = $import->checkImportPrerequisites();
                     if ($inData['import_file']) {
@@ -941,7 +941,7 @@ class ImportExportController extends BaseScriptClass
         $file = GeneralUtility::_GP('file');
         // Initializing:
         $this->fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
-        $this->fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+        $this->fileProcessor->init([], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
         $this->fileProcessor->setActionPermissions();
         $this->fileProcessor->setExistingFilesConflictMode((int)GeneralUtility::_GP('overwriteExistingFiles') === 1 ? DuplicationBehavior::REPLACE : DuplicationBehavior::CANCEL);
         // Checking referer / executing:
@@ -952,7 +952,7 @@ class ImportExportController extends BaseScriptClass
             && !$GLOBALS['$TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']
             && $this->vC != $this->getBackendUser()->veriCode()
         ) {
-            $this->fileProcessor->writeLog(0, 2, 1, 'Referer host "%s" and server host "%s" did not match!', array($refInfo['host'], $httpHost));
+            $this->fileProcessor->writeLog(0, 2, 1, 'Referer host "%s" and server host "%s" did not match!', [$refInfo['host'], $httpHost]);
         } else {
             $this->fileProcessor->start($file);
             $result = $this->fileProcessor->processData();
@@ -972,7 +972,7 @@ class ImportExportController extends BaseScriptClass
      */
     public function getTableSelectOptions($excludeList = '')
     {
-        $optValues = array();
+        $optValues = [];
         if (!GeneralUtility::inList($excludeList, '_ALL')) {
             $optValues['_ALL'] = '[' . $this->lang->getLL('ALL_tables') . ']';
         }
@@ -996,7 +996,7 @@ class ImportExportController extends BaseScriptClass
         // Get keys:
         $exclude = array_keys($exclude);
         // Traverse
-        $pageIds = array();
+        $pageIds = [];
         foreach ($exclude as $element) {
             list($table, $uid) = explode(':', $element);
             if ($table === 'pages') {
@@ -1042,15 +1042,15 @@ class ImportExportController extends BaseScriptClass
      */
     protected function getExportFiles()
     {
-        $exportFiles = array();
+        $exportFiles = [];
 
         $folder = $this->getDefaultImportExportFolder();
         if ($folder !== null) {
 
             /** @var $filter FileExtensionFilter */
             $filter = GeneralUtility::makeInstance(FileExtensionFilter::class);
-            $filter->setAllowedFileExtensions(array('t3d', 'xml'));
-            $folder->getStorage()->addFileAndFolderNameFilter(array($filter, 'filterFileList'));
+            $filter->setAllowedFileExtensions(['t3d', 'xml']);
+            $folder->getStorage()->addFileAndFolderNameFilter([$filter, 'filterFileList']);
 
             $exportFiles = $folder->getFiles();
         }

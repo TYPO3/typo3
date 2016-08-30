@@ -30,7 +30,7 @@ class ContentContentObject extends AbstractContentObject
      * @param array $conf Array of TypoScript properties
      * @return string Output
      */
-    public function render($conf = array())
+    public function render($conf = [])
     {
         if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
             return '';
@@ -45,7 +45,7 @@ class ContentContentObject extends AbstractContentObject
             ++$frontendController->recordRegister[$originalRec];
         }
         $conf['table'] = isset($conf['table.']) ? trim($this->cObj->stdWrap($conf['table'], $conf['table.'])) : trim($conf['table']);
-        $conf['select.'] = !empty($conf['select.']) ? $conf['select.'] : array();
+        $conf['select.'] = !empty($conf['select.']) ? $conf['select.'] : [];
         $renderObjName = $conf['renderObj'] ?: '<' . $conf['table'];
         $renderObjKey = $conf['renderObj'] ? 'renderObj' : '';
         $renderObjConf = $conf['renderObj.'];

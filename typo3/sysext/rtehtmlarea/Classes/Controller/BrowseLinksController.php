@@ -93,27 +93,27 @@ class BrowseLinksController extends AbstractLinkBrowserController
     /**
      * @var array
      */
-    protected $classesAnchorDefault = array();
+    protected $classesAnchorDefault = [];
 
     /**
      * @var array
      */
-    protected $classesAnchorDefaultTitle = array();
+    protected $classesAnchorDefaultTitle = [];
 
     /**
      * @var array
      */
-    protected $classesAnchorClassTitle = array();
+    protected $classesAnchorClassTitle = [];
 
     /**
      * @var array
      */
-    protected $classesAnchorDefaultTarget = array();
+    protected $classesAnchorDefaultTarget = [];
 
     /**
      * @var array
      */
-    protected $classesAnchorJSOptions = array();
+    protected $classesAnchorJSOptions = [];
 
     /**
      * @var string
@@ -123,7 +123,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
     /**
      * @var array
      */
-    protected $additionalAttributes = array();
+    protected $additionalAttributes = [];
 
     /**
      * @var string
@@ -175,7 +175,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
             $this->contentTypo3Language = GeneralUtility::_GP('contentTypo3Language');
             $this->RTEtsConfigParams = GeneralUtility::_GP('RTEtsConfigParams');
         }
-        $pArr[1] = implode(':', array($this->editorNo, $this->contentTypo3Language));
+        $pArr[1] = implode(':', [$this->editorNo, $this->contentTypo3Language]);
         $pArr[2] = $this->RTEtsConfigParams;
         $this->bparams = implode('|', $pArr);
 
@@ -460,7 +460,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
      */
     protected function getTargetField()
     {
-        $targetSelectorConfig = array();
+        $targetSelectorConfig = [];
         if (is_array($this->buttonConfig['targetSelector.'])) {
             $targetSelectorConfig = $this->buttonConfig['targetSelector.'];
         }

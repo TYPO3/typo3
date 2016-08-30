@@ -34,16 +34,16 @@ class ApcuPreset extends Configuration\AbstractPreset
     /**
      * @var array Configuration values handled by this preset
      */
-    protected $configurationValues = array(
-        'SYS/caching/cacheConfigurations/extbase_object' => array(
+    protected $configurationValues = [
+        'SYS/caching/cacheConfigurations/extbase_object' => [
             'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
             'backend' => \TYPO3\CMS\Core\Cache\Backend\ApcuBackend::class,
-            'options' => array(
+            'options' => [
                 'defaultLifetime' => 0,
-            ),
-            'groups' => array('system')
-        )
-    );
+            ],
+            'groups' => ['system']
+        ]
+    ];
 
     /**
      * APC preset is available if extension is loaded and at least ~5MB are free.

@@ -34,10 +34,10 @@ class IconvPreset extends Configuration\AbstractPreset
     /**
      * @var array Configuration values handled by this preset
      */
-    protected $configurationValues = array(
+    protected $configurationValues = [
         'SYS/t3lib_cs_convMethod' => 'iconv',
         'SYS/t3lib_cs_utils' => 'iconv',
-    );
+    ];
 
     /**
      * Check if iconv PHP module is loaded

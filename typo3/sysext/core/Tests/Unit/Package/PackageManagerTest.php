@@ -38,21 +38,21 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         vfsStream::setup('Test');
 
         /** @var PhpFrontend|\PHPUnit_Framework_MockObject_MockObject $mockCache */
-        $mockCache = $this->getMock(PhpFrontend::class, array('has', 'set', 'getBackend'), array(), '', false);
-        $mockCacheBackend = $this->getMock(SimpleFileBackend::class, array('has', 'set', 'getBackend'), array(), '', false);
+        $mockCache = $this->getMock(PhpFrontend::class, ['has', 'set', 'getBackend'], [], '', false);
+        $mockCacheBackend = $this->getMock(SimpleFileBackend::class, ['has', 'set', 'getBackend'], [], '', false);
         $mockCache->expects($this->any())->method('has')->will($this->returnValue(false));
         $mockCache->expects($this->any())->method('set')->will($this->returnValue(true));
         $mockCache->expects($this->any())->method('getBackend')->will($this->returnValue($mockCacheBackend));
         $mockCacheBackend->expects($this->any())->method('getCacheDirectory')->will($this->returnValue('vfs://Test/Cache'));
-        $this->packageManager = $this->getAccessibleMock(PackageManager::class, array('sortAndSavePackageStates', 'sortAvailablePackagesByDependencies', 'registerTransientClassLoadingInformationForPackage'));
+        $this->packageManager = $this->getAccessibleMock(PackageManager::class, ['sortAndSavePackageStates', 'sortAvailablePackagesByDependencies', 'registerTransientClassLoadingInformationForPackage']);
 
         mkdir('vfs://Test/Packages/Application', 0700, true);
         mkdir('vfs://Test/Configuration');
         file_put_contents('vfs://Test/Configuration/PackageStates.php', "<?php return array ('packages' => array(), 'version' => 4); ");
 
-        $composerNameToPackageKeyMap = array(
+        $composerNameToPackageKeyMap = [
             'typo3/flow' => 'TYPO3.Flow'
-        );
+        ];
 
         $this->packageManager->injectCoreCache($mockCache);
         $this->inject($this->packageManager, 'composerNameToPackageKeyMap', $composerNameToPackageKeyMap);
@@ -102,12 +102,12 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function scanAvailablePackagesTraversesThePackagesDirectoryAndRegistersPackagesItFinds()
     {
-        $expectedPackageKeys = array(
+        $expectedPackageKeys = [
             $this->getUniqueId('TYPO3.CMS'),
             $this->getUniqueId('TYPO3.CMS.Test'),
             $this->getUniqueId('TYPO3.YetAnotherTestPackage'),
             $this->getUniqueId('Lolli.Pop.NothingElse')
-        );
+        ];
 
         foreach ($expectedPackageKeys as $packageKey) {
             $packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
@@ -116,11 +116,11 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-test"}');
         }
 
-        $packageManager = $this->getAccessibleMock(PackageManager::class, array('sortAndSavePackageStates'));
+        $packageManager = $this->getAccessibleMock(PackageManager::class, ['sortAndSavePackageStates']);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
         $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
 
-        $packageManager->_set('packages', array());
+        $packageManager->_set('packages', []);
         $packageManager->_call('scanAvailablePackages');
 
         $packageStates = require('vfs://Test/Configuration/PackageStates.php');
@@ -133,12 +133,12 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function scanAvailablePackagesKeepsExistingPackageConfiguration()
     {
-        $expectedPackageKeys = array(
+        $expectedPackageKeys = [
             $this->getUniqueId('TYPO3.CMS'),
             $this->getUniqueId('TYPO3.CMS.Test'),
             $this->getUniqueId('TYPO3.YetAnotherTestPackage'),
             $this->getUniqueId('Lolli.Pop.NothingElse')
-        );
+        ];
 
         foreach ($expectedPackageKeys as $packageKey) {
             $packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
@@ -149,8 +149,8 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
 
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $packageManager */
-        $packageManager = $this->getAccessibleMock(PackageManager::class, array('dummy'));
-        $packageManager->_set('packagesBasePaths', array('local' => 'vfs://Test/Packages/Application'));
+        $packageManager = $this->getAccessibleMock(PackageManager::class, ['dummy']);
+        $packageManager->_set('packagesBasePaths', ['local' => 'vfs://Test/Packages/Application']);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
         $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
 
@@ -164,15 +164,15 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $packageManager->injectDependencyResolver($dependencyResolver);
 
         $packageKey = $expectedPackageKeys[0];
-        $packageManager->_set('packageStatesConfiguration', array(
-            'packages' => array(
-                $packageKey => array(
+        $packageManager->_set('packageStatesConfiguration', [
+            'packages' => [
+                $packageKey => [
                     'state' => 'inactive',
                     'packagePath' => 'Application/' . $packageKey . '/'
-                )
-            ),
+                ]
+            ],
             'version' => 4
-        ));
+        ]);
         $packageManager->_call('scanAvailablePackages');
         $packageManager->_call('sortAndSavePackageStates');
 
@@ -185,11 +185,11 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function packageStatesConfigurationContainsRelativePaths()
     {
-        $packageKeys = array(
+        $packageKeys = [
             $this->getUniqueId('Lolli.Pop.NothingElse'),
             $this->getUniqueId('TYPO3.Package'),
             $this->getUniqueId('TYPO3.YetAnotherTestPackage')
-        );
+        ];
 
         foreach ($packageKeys as $packageKey) {
             $packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
@@ -200,8 +200,8 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
 
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $packageManager */
-        $packageManager = $this->getAccessibleMock(PackageManager::class, array('dummy'));
-        $packageManager->_set('packagesBasePaths', array('local' => 'vfs://Test/Packages/Application'));
+        $packageManager = $this->getAccessibleMock(PackageManager::class, ['dummy']);
+        $packageManager->_set('packagesBasePaths', ['local' => 'vfs://Test/Packages/Application']);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
         $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
 
@@ -214,17 +214,17 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $packageManager->injectDependencyResolver($dependencyResolver);
 
-        $packageManager->_set('packages', array());
+        $packageManager->_set('packages', []);
         $packageManager->_call('scanAvailablePackages');
 
-        $expectedPackageStatesConfiguration = array();
+        $expectedPackageStatesConfiguration = [];
         foreach ($packageKeys as $packageKey) {
-            $expectedPackageStatesConfiguration[$packageKey] = array(
+            $expectedPackageStatesConfiguration[$packageKey] = [
                 'state' => 'inactive',
                 'packagePath' => 'Application/' . $packageKey . '/',
                 'composerName' => $packageKey,
-                'suggestions' => array(),
-            );
+                'suggestions' => [],
+            ];
         }
 
         $actualPackageStatesConfiguration = $packageManager->_get('packageStatesConfiguration');
@@ -238,10 +238,10 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function packageKeysAndPaths()
     {
-        return array(
-            array('TYPO3.YetAnotherTestPackage', 'vfs://Test/Packages/Application/TYPO3.YetAnotherTestPackage/'),
-            array('Lolli.Pop.NothingElse', 'vfs://Test/Packages/Application/Lolli.Pop.NothingElse/')
-        );
+        return [
+            ['TYPO3.YetAnotherTestPackage', 'vfs://Test/Packages/Application/TYPO3.YetAnotherTestPackage/'],
+            ['Lolli.Pop.NothingElse', 'vfs://Test/Packages/Application/Lolli.Pop.NothingElse/']
+        ];
     }
 
     /**
@@ -327,12 +327,12 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function composerNamesAndPackageKeys()
     {
-        return array(
-            array('imagine/Imagine', 'imagine.Imagine'),
-            array('imagine/imagine', 'imagine.Imagine'),
-            array('typo3/cms', 'TYPO3.CMS'),
-            array('TYPO3/CMS', 'TYPO3.CMS')
-        );
+        return [
+            ['imagine/Imagine', 'imagine.Imagine'],
+            ['imagine/imagine', 'imagine.Imagine'],
+            ['typo3/cms', 'TYPO3.CMS'],
+            ['TYPO3/CMS', 'TYPO3.CMS']
+        ];
     }
 
     /**
@@ -341,18 +341,18 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getPackageKeyFromComposerNameIgnoresCaseDifferences($composerName, $packageKey)
     {
-        $packageStatesConfiguration = array('packages' =>
-            array(
-                'TYPO3.CMS' => array(
+        $packageStatesConfiguration = ['packages' =>
+            [
+                'TYPO3.CMS' => [
                     'composerName' => 'typo3/cms'
-                ),
-                'imagine.Imagine' => array(
+                ],
+                'imagine.Imagine' => [
                     'composerName' => 'imagine/Imagine'
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
-        $packageManager = $this->getAccessibleMock(PackageManager::class, array('resolvePackageDependencies'));
+        $packageManager = $this->getAccessibleMock(PackageManager::class, ['resolvePackageDependencies']);
         $packageManager->_set('packageStatesConfiguration', $packageStatesConfiguration);
 
         $this->assertEquals($packageKey, $packageManager->_call('getPackageKeyFromComposerName', $composerName));

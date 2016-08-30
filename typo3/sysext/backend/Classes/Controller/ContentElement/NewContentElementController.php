@@ -71,7 +71,7 @@ class NewContentElementController extends AbstractModule
      *
      * @var array
      */
-    public $modTSconfig = array();
+    public $modTSconfig = [];
 
     /**
      * Internal backend template object
@@ -199,7 +199,7 @@ class NewContentElementController extends AbstractModule
             // If a column is pre-set:
             if (isset($this->colPos)) {
                 if ($this->uid_pid < 0) {
-                    $row = array();
+                    $row = [];
                     $row['uid'] = abs($this->uid_pid);
                 } else {
                     $row = '';
@@ -221,7 +221,7 @@ class NewContentElementController extends AbstractModule
             // Wizard
             $wizardItems = $this->wizardArray();
             // Wrapper for wizards
-            $this->elementWrapper['section'] = array('', '');
+            $this->elementWrapper['section'] = ['', ''];
             // Hook for manipulating wizardItems, wrapper, onClickEvent etc.
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'])) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'] as $classData) {
@@ -249,13 +249,13 @@ class NewContentElementController extends AbstractModule
             // Traverse items for the wizard.
             // An item is either a header or an item rendered with a radio button and title/description and icon:
             $cc = ($key = 0);
-            $menuItems = array();
+            $menuItems = [];
             foreach ($wizardItems as $k => $wInfo) {
                 if ($wInfo['header']) {
-                    $menuItems[] = array(
+                    $menuItems[] = [
                         'label' => htmlspecialchars($wInfo['header']),
                         'content' => $this->elementWrapper['section'][0]
-                    );
+                    ];
                     $key = count($menuItems) - 1;
                 } else {
                     $content = '';
@@ -283,9 +283,9 @@ class NewContentElementController extends AbstractModule
                         if (!StringUtility::beginsWith($icon, 'EXT:') && strpos($icon, '/') !== false) {
                             $icon = TYPO3_mainDir . GeneralUtility::resolveBackPath($wInfo['icon']);
                         }
-                        $iconRegistry->registerIcon($wInfo['iconIdentifier'], BitmapIconProvider::class, array(
+                        $iconRegistry->registerIcon($wInfo['iconIdentifier'], BitmapIconProvider::class, [
                             'source' => $icon
-                        ));
+                        ]);
                     }
                     $icon = $this->moduleTemplate->getIconFactory()->getIcon($wInfo['iconIdentifier'])->render();
                     $menuItems[$key]['content'] .= '
@@ -393,7 +393,7 @@ class NewContentElementController extends AbstractModule
      */
     public function wizardArray()
     {
-        $wizardItems = array();
+        $wizardItems = [];
         if (is_array($this->config)) {
             $wizards = $this->config['wizardItems.'];
             $appendWizards = $this->wizard_appendWizards($wizards['elements.']);
@@ -402,7 +402,7 @@ class NewContentElementController extends AbstractModule
                     $groupKey = rtrim($groupKey, '.');
                     $showItems = GeneralUtility::trimExplode(',', $wizardGroup['show'], true);
                     $showAll = $wizardGroup['show'] === '*';
-                    $groupItems = array();
+                    $groupItems = [];
                     if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
                         $wizardElements = array_merge((array)$wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
                     } else {
@@ -438,7 +438,7 @@ class NewContentElementController extends AbstractModule
     public function wizard_appendWizards($wizardElements)
     {
         if (!is_array($wizardElements)) {
-            $wizardElements = array();
+            $wizardElements = [];
         }
         if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'])) {
             foreach ($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'] as $class => $path) {
@@ -447,7 +447,7 @@ class NewContentElementController extends AbstractModule
                 $wizardElements = $modObj->proc($wizardElements);
             }
         }
-        $returnElements = array();
+        $returnElements = [];
         foreach ($wizardElements as $key => $wizardItem) {
             preg_match('/^[a-zA-Z0-9]+_/', $key, $group);
             $wizardGroup = $group[0] ? substr($group[0], 0, -1) . '.' : $key;
@@ -478,9 +478,9 @@ class NewContentElementController extends AbstractModule
      */
     public function wizard_getGroupHeader($groupKey, $wizardGroup)
     {
-        return array(
+        return [
             'header' => $this->getLanguageService()->sL($wizardGroup['header'])
-        );
+        ];
     }
 
     /**
@@ -495,9 +495,9 @@ class NewContentElementController extends AbstractModule
     public function removeInvalidElements(&$wizardItems)
     {
         // Get TCEFORM from TSconfig of current page
-        $row = array('pid' => $this->id);
+        $row = ['pid' => $this->id];
         $TCEFORM_TSconfig = BackendUtility::getTCEFORM_TSconfig('tt_content', $row);
-        $headersUsed = array();
+        $headersUsed = [];
         // Traverse wizard items:
         foreach ($wizardItems as $key => $cfg) {
             // Exploding parameter string, if any (old style)
@@ -509,7 +509,7 @@ class NewContentElementController extends AbstractModule
                 // (in case remaining parameters are around).
                 if (is_array($tempGetVars['defVals']['tt_content'])) {
                     $wizardItems[$key]['tt_content_defValues'] = array_merge(
-                        is_array($wizardItems[$key]['tt_content_defValues']) ? $wizardItems[$key]['tt_content_defValues'] : array(),
+                        is_array($wizardItems[$key]['tt_content_defValues']) ? $wizardItems[$key]['tt_content_defValues'] : [],
                         $tempGetVars['defVals']['tt_content']
                     );
                     unset($tempGetVars['defVals']['tt_content']);

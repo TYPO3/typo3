@@ -31,24 +31,24 @@ class HiddenJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEl
      *
      * @var array
      */
-    public $configuration = array(
-        'attributes' => array(
+    public $configuration = [
+        'attributes' => [
             'type' => 'hidden'
-        ),
-        'filters' => array(),
-        'label' => array(
+        ],
+        'filters' => [],
+        'label' => [
             'value' => ''
-        ),
+        ],
         'layout' => 'front',
-        'validation' => array()
-    );
+        'validation' => []
+    ];
 
     /**
      * Allowed attributes for this object
      *
      * @var array
      */
-    protected $allowedAttributes = array(
+    protected $allowedAttributes = [
         'accesskey',
         'class',
         'contenteditable',
@@ -68,5 +68,5 @@ class HiddenJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEl
         'name',
         'type',
         'value'
-    );
+    ];
 }

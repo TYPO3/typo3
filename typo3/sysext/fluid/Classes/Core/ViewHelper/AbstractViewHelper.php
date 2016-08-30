@@ -33,7 +33,7 @@ abstract class AbstractViewHelper
      *
      * @var array
      */
-    private $argumentDefinitions = array();
+    private $argumentDefinitions = [];
 
     /**
      * Cache of argument definitions; the key is the ViewHelper class name, and the
@@ -44,7 +44,7 @@ abstract class AbstractViewHelper
      *
      * @var array
      */
-    private static $argumentDefinitionCache = array();
+    private static $argumentDefinitionCache = [];
 
     /**
      * Current view helper node
@@ -257,7 +257,7 @@ abstract class AbstractViewHelper
      */
     protected function callRenderMethod()
     {
-        $renderMethodParameters = array();
+        $renderMethodParameters = [];
         foreach ($this->argumentDefinitions as $argumentName => $argumentDefinition) {
             if ($argumentDefinition->isMethodParameter()) {
                 $renderMethodParameters[$argumentName] = $this->arguments[$argumentName];
@@ -265,10 +265,10 @@ abstract class AbstractViewHelper
         }
 
         try {
-            return call_user_func_array(array($this, 'render'), $renderMethodParameters);
+            return call_user_func_array([$this, 'render'], $renderMethodParameters);
         } catch (Exception $exception) {
             if (GeneralUtility::getApplicationContext()->isProduction()) {
-                $this->getLogger()->error('A Fluid ViewHelper Exception was captured: ' . $exception->getMessage() . ' (' . $exception->getCode() . ')', array('exception' => $exception));
+                $this->getLogger()->error('A Fluid ViewHelper Exception was captured: ' . $exception->getMessage() . ' (' . $exception->getCode() . ')', ['exception' => $exception]);
                 return '';
             } else {
                 throw $exception;
@@ -365,7 +365,7 @@ abstract class AbstractViewHelper
         if (\TYPO3\CMS\Fluid\Fluid::$debugMode) {
             $methodTags = $this->reflectionService->getMethodTagsValues(get_class($this), 'render');
 
-            $paramAnnotations = array();
+            $paramAnnotations = [];
             if (isset($methodTags['param'])) {
                 $paramAnnotations = $methodTags['param'];
             }

@@ -60,12 +60,12 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
      *
      * @var array $itemWhiteList
      */
-    protected $itemWhiteList = array();
+    protected $itemWhiteList = [];
 
     /**
      * Contains all ids which are not allowed to be selected
      */
-    protected $itemUnselectableList = array();
+    protected $itemUnselectableList = [];
 
     /**
      * Sets the id of the tree

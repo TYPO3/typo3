@@ -33,7 +33,7 @@ class Md5SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->objectInstance = $this->getMock(\TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class, array('dummy'));
+        $this->objectInstance = $this->getMock(\TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class, ['dummy']);
     }
 
     /**

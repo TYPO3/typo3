@@ -24,7 +24,7 @@ class CaseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\CaseViewHelper::class, array('buildRenderChildrenClosure'));
+        $this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\CaseViewHelper::class, ['buildRenderChildrenClosure']);
         $this->viewHelper->expects($this->any())->method('buildRenderChildrenClosure')->will($this->returnValue(function () {
             return 'ChildNodes';
         }));
@@ -48,10 +48,10 @@ class CaseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
     public function renderReturnsChildNodesIfTheSpecifiedValueIsEqualToTheSwitchExpression()
     {
         $this->viewHelperVariableContainer->expects($this->atLeastOnce())->method('exists')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack')->will($this->returnValue(true));
-        $this->viewHelperVariableContainer->expects($this->atLeastOnce())->method('get')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack')->will($this->returnValue(array(array(
+        $this->viewHelperVariableContainer->expects($this->atLeastOnce())->method('get')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack')->will($this->returnValue([[
             'break' => false,
             'expression' => 'someValue'
-        ))));
+        ]]));
 
         $renderedChildNodes = 'ChildNodes';
 
@@ -64,15 +64,15 @@ class CaseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
     public function renderSetsBreakStateInViewHelperVariableContainerIfTheSpecifiedValueIsEqualToTheSwitchExpression()
     {
         $this->viewHelperVariableContainer->expects($this->atLeastOnce())->method('exists')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack')->will($this->returnValue(true));
-        $this->viewHelperVariableContainer->expects($this->atLeastOnce())->method('get')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack')->will($this->returnValue(array(array(
+        $this->viewHelperVariableContainer->expects($this->atLeastOnce())->method('get')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack')->will($this->returnValue([[
             'break' => false,
             'expression' => 'someValue'
-        ))));
+        ]]));
 
-        $this->viewHelperVariableContainer->expects($this->once())->method('addOrUpdate')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack', array(array(
+        $this->viewHelperVariableContainer->expects($this->once())->method('addOrUpdate')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack', [[
             'break' => true,
             'expression' => 'someValue'
-        )));
+        ]]);
 
         $this->viewHelper->render('someValue');
     }
@@ -86,15 +86,15 @@ class CaseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
         $stringValue = '123';
 
         $this->viewHelperVariableContainer->expects($this->atLeastOnce())->method('exists')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack')->will($this->returnValue(true));
-        $this->viewHelperVariableContainer->expects($this->atLeastOnce())->method('get')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack')->will($this->returnValue(array(array(
+        $this->viewHelperVariableContainer->expects($this->atLeastOnce())->method('get')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack')->will($this->returnValue([[
             'break' => false,
             'expression' => $numericValue
-        ))));
+        ]]));
 
-        $this->viewHelperVariableContainer->expects($this->once())->method('addOrUpdate')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack', array(array(
+        $this->viewHelperVariableContainer->expects($this->once())->method('addOrUpdate')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack', [[
             'break' => true,
             'expression' => $numericValue
-        )));
+        ]]);
 
         $this->viewHelper->render($stringValue);
     }
@@ -105,10 +105,10 @@ class CaseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
     public function renderReturnsAnEmptyStringIfTheSpecifiedValueIsNotEqualToTheSwitchExpression()
     {
         $this->viewHelperVariableContainer->expects($this->atLeastOnce())->method('exists')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack')->will($this->returnValue(true));
-        $this->viewHelperVariableContainer->expects($this->atLeastOnce())->method('get')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack')->will($this->returnValue(array(array(
+        $this->viewHelperVariableContainer->expects($this->atLeastOnce())->method('get')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack')->will($this->returnValue([[
             'break' => false,
             'expression' => 'someValue'
-        ))));
+        ]]));
 
         $this->assertSame('', $this->viewHelper->render('someOtherValue'));
     }
@@ -127,10 +127,10 @@ class CaseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
         $this->viewHelperVariableContainer->expects(
             $this->atLeastOnce())->method('get')
             ->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack')
-            ->will($this->returnValue(array(array(
+            ->will($this->returnValue([[
                 'break' => false,
                 'expression' => 'someExpression'
-            )))
+            ]])
             );
 
         $renderedChildNodes = 'ChildNodes';
@@ -172,10 +172,10 @@ class CaseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
         $this->viewHelperVariableContainer->expects(
             $this->atLeastOnce())->method('get')
             ->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack')
-            ->will($this->returnValue(array(array(
+            ->will($this->returnValue([[
                 'break' => false,
                 'expression' => 'someValue'
-            )))
+            ]])
             );
 
         $renderedChildNodes = 'ChildNodes';

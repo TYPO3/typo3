@@ -27,7 +27,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
     /**
      * @var array
      */
-    protected $newObjects = array();
+    protected $newObjects = [];
 
     /**
      * @var ObjectStorage
@@ -279,7 +279,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      */
     public function clearState()
     {
-        $this->newObjects = array();
+        $this->newObjects = [];
         $this->addedObjects = new ObjectStorage();
         $this->removedObjects = new ObjectStorage();
         $this->changedObjects = new ObjectStorage();

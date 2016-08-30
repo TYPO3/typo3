@@ -32,7 +32,7 @@ class InputHiddenElementTest extends UnitTestCase
                 'itemFormElValue' => 'bar'
             ]
         ];
-        $subject = $this->getAccessibleMock(InputHiddenElement::class, array('dummy'), array(), '', false);
+        $subject = $this->getAccessibleMock(InputHiddenElement::class, ['dummy'], [], '', false);
         $subject->_set('data', $data);
         $result = $subject->render();
         $additionalHiddenFieldsResult = array_pop($result['additionalHiddenFields']);

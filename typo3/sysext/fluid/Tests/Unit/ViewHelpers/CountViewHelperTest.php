@@ -24,7 +24,7 @@ class CountViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\CountViewHelper::class, array('renderChildren'));
+        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\CountViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
     }
@@ -35,7 +35,7 @@ class CountViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
     public function renderReturnsNumberOfElementsInAnArray()
     {
         $expectedResult = 3;
-        $actualResult = $this->viewHelper->render(array('foo', 'bar', 'Baz'));
+        $actualResult = $this->viewHelper->render(['foo', 'bar', 'Baz']);
         $this->assertSame($expectedResult, $actualResult);
     }
 
@@ -45,7 +45,7 @@ class CountViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
     public function renderReturnsNumberOfElementsInAnArrayObject()
     {
         $expectedResult = 2;
-        $actualResult = $this->viewHelper->render(new \ArrayObject(array('foo', 'bar')));
+        $actualResult = $this->viewHelper->render(new \ArrayObject(['foo', 'bar']));
         $this->assertSame($expectedResult, $actualResult);
     }
 
@@ -55,7 +55,7 @@ class CountViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
     public function renderReturnsZeroIfGivenArrayIsEmpty()
     {
         $expectedResult = 0;
-        $actualResult = $this->viewHelper->render(array());
+        $actualResult = $this->viewHelper->render([]);
         $this->assertSame($expectedResult, $actualResult);
     }
 
@@ -64,7 +64,7 @@ class CountViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
      */
     public function renderUsesChildrenAsSubjectIfGivenSubjectIsNull()
     {
-        $this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(array('foo', 'bar', 'baz')));
+        $this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(['foo', 'bar', 'baz']));
         $expectedResult = 3;
         $actualResult = $this->viewHelper->render(null);
         $this->assertSame($expectedResult, $actualResult);

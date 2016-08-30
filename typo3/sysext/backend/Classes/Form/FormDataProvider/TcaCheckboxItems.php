@@ -40,14 +40,14 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
             }
 
             if (!is_array($fieldConfig['config']['items'])) {
-                $fieldConfig['config']['items'] = array();
+                $fieldConfig['config']['items'] = [];
             }
 
             $config = $fieldConfig['config'];
             $items = $config['items'];
 
             // Sanitize items
-            $newItems = array();
+            $newItems = [];
             foreach ($items as $itemKey => $itemValue) {
                 if (!is_array($itemValue)) {
                     throw new \UnexpectedValueException(

@@ -27,14 +27,14 @@ class TemplateVariableContainer implements \ArrayAccess
      *
      * @var array
      */
-    protected static $reservedVariableNames = array('true', 'false', 'on', 'off', 'yes', 'no', '_all');
+    protected static $reservedVariableNames = ['true', 'false', 'on', 'off', 'yes', 'no', '_all'];
 
     /**
      * Variables stored in context
      *
      * @var array
      */
-    protected $variables = array();
+    protected $variables = [];
 
     /**
      * Constructor. Can take an array, and initializes the variables with it.
@@ -42,7 +42,7 @@ class TemplateVariableContainer implements \ArrayAccess
      * @param array $variableArray
      * @api
      */
-    public function __construct(array $variableArray = array())
+    public function __construct(array $variableArray = [])
     {
         $this->variables = $variableArray;
     }
@@ -147,7 +147,7 @@ class TemplateVariableContainer implements \ArrayAccess
      */
     public function __sleep()
     {
-        return array('variables');
+        return ['variables'];
     }
 
     /**

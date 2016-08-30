@@ -29,12 +29,12 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $entries = array();
+    protected $entries = [];
 
     /**
      * @var array
      */
-    protected $loadedNamespaces = array();
+    protected $loadedNamespaces = [];
 
     /**
      * Returns a persistent entry.
@@ -80,15 +80,15 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface
         $serializedValue = serialize($value);
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_registry', 'entry_namespace = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($namespace, 'sys_registry') . ' AND entry_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($key, 'sys_registry'));
         if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) < 1) {
-            $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_registry', array(
+            $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_registry', [
                 'entry_namespace' => $namespace,
                 'entry_key' => $key,
                 'entry_value' => $serializedValue
-            ));
+            ]);
         } else {
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_registry', 'entry_namespace = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($namespace, 'sys_registry') . ' AND entry_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($key, 'sys_registry'), array(
+            $GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_registry', 'entry_namespace = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($namespace, 'sys_registry') . ' AND entry_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($key, 'sys_registry'), [
                 'entry_value' => $serializedValue
-            ));
+            ]);
         }
         $this->entries[$namespace][$key] = $value;
     }

@@ -44,9 +44,9 @@ class ImageDimensionViewHelper extends AbstractViewHelper implements CompilableI
     public function render($dimension = 'width')
     {
         return static::renderStatic(
-            array(
+            [
                 'dimension' => $dimension,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

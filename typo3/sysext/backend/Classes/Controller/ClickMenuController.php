@@ -52,7 +52,7 @@ class ClickMenuController
      *
      * @var array
      */
-    public $extClassArray = array();
+    public $extClassArray = [];
 
     /**
      * Constructor

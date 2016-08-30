@@ -29,7 +29,7 @@ class CachingFrameworkGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\Ab
      *
      * @var array Selected backends to do garbage collection for
      */
-    public $selectedBackends = array();
+    public $selectedBackends = [];
 
     /**
      * Execute garbage collection, called by scheduler.

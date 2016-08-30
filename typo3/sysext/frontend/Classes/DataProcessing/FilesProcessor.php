@@ -98,7 +98,7 @@ class FilesProcessor implements DataProcessorInterface
         if ($sortingProperty) {
             $sortingDirection = $cObj->stdWrapValue(
                 'direction',
-                isset($processorConfiguration['sorting.']) ? $processorConfiguration['sorting.'] : array(),
+                isset($processorConfiguration['sorting.']) ? $processorConfiguration['sorting.'] : [],
                 'ascending'
             );
 

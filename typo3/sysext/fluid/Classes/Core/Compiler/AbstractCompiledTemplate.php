@@ -20,7 +20,7 @@ abstract class AbstractCompiledTemplate implements \TYPO3\CMS\Fluid\Core\Parser\
     /**
      * @var array
      */
-    protected $viewHelpersByPositionAndContext = array();
+    protected $viewHelpersByPositionAndContext = [];
 
     // These tokens are replaced by the Backporter for implementing different behavior in TYPO3 v4
     /**

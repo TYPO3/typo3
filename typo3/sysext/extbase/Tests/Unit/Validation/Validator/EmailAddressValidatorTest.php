@@ -33,13 +33,13 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validAddresses()
     {
-        return array(
-            array('andreas.foerthner@netlogix.de'),
-            array('user@localhost.localdomain'),
-            array('info@guggenheim.museum'),
-            array('just@test.invalid'),
-            array('just+spam@test.de'),
-        );
+        return [
+            ['andreas.foerthner@netlogix.de'],
+            ['user@localhost.localdomain'],
+            ['info@guggenheim.museum'],
+            ['just@test.invalid'],
+            ['just+spam@test.de'],
+        ];
     }
 
     /**
@@ -50,7 +50,7 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function emailAddressValidatorReturnsNoErrorsForAValidEmailAddress($address)
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class, array('translateErrorMessage'));
+        $subject = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class, ['translateErrorMessage']);
         $this->assertFalse($subject->validate($address)->hasErrors());
     }
 
@@ -61,17 +61,17 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function invalidAddresses()
     {
-        return array(
-            array('andreas.foerthner@'),
-            array('@typo3.org'),
-            array('someone@typo3.'),
-            array('local@192.168.2'),
-            array('local@192.168.270.1'),
-            array('foo@bar.com' . chr(0)),
-            array('foo@bar.org' . chr(10)),
-            array('andreas@foerthner@example.com'),
-            array('some@one.net ')
-        );
+        return [
+            ['andreas.foerthner@'],
+            ['@typo3.org'],
+            ['someone@typo3.'],
+            ['local@192.168.2'],
+            ['local@192.168.270.1'],
+            ['foo@bar.com' . chr(0)],
+            ['foo@bar.org' . chr(10)],
+            ['andreas@foerthner@example.com'],
+            ['some@one.net ']
+        ];
     }
 
     /**
@@ -82,7 +82,7 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function emailAddressValidatorReturnsFalseForAnInvalidEmailAddress($address)
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class, array('translateErrorMessage'));
+        $subject = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class, ['translateErrorMessage']);
         $this->assertTrue($subject->validate($address)->hasErrors());
     }
 
@@ -92,7 +92,7 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function emailValidatorCreatesTheCorrectErrorForAnInvalidEmailAddress()
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class, array('translateErrorMessage'));
+        $subject = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class, ['translateErrorMessage']);
         $this->assertEquals(1, count($subject->validate('notAValidMail@Address')->getErrors()));
     }
 }

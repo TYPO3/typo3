@@ -7,14 +7,14 @@ if (TYPO3_MODE === 'BE') {
         'file',
         'list',
         '',
-        array(
+        [
             'FileList' => 'index, search',
-        ),
-        array(
+        ],
+        [
             'access' => 'user,group',
             'workspaces' => 'online,custom',
             'icon' => 'EXT:filelist/Resources/Public/Icons/module-filelist.svg',
             'labels' => 'LLL:EXT:lang/locallang_mod_file_list.xlf'
-        )
+        ]
     );
 }

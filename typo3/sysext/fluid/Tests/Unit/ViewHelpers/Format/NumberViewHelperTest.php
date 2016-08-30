@@ -26,7 +26,7 @@ class NumberViewHelperTest extends UnitTestCase
 
     protected function setUp()
     {
-        $this->fixture = $this->getMock(NumberViewHelper::class, array('renderChildren'));
+        $this->fixture = $this->getMock(NumberViewHelper::class, ['renderChildren']);
         $this->fixture->expects($this->once())->method('renderChildren')->will($this->returnValue(10000.0 / 3.0));
         $renderingContext = $this->getMock(RenderingContext::class);
         $this->fixture->setRenderingContext($renderingContext);

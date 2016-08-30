@@ -53,7 +53,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array Simulate a tt_content record
      */
-    protected $mockRecord = array(
+    protected $mockRecord = [
         'header' => 'dummy content header',
         'uid' => '1',
         'pid' => '1',
@@ -70,7 +70,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         'l18n_parent' => '0',
         'subheader' => '',
         'bodytext' => '',
-    );
+    ];
 
     /**
      * Set up
@@ -95,10 +95,10 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->iconRegistryMock->getIconIdentifierForFileExtension('png')->willReturn('mimetypes-media-image');
         $this->iconRegistryMock->getIconConfigurationByIdentifier(Argument::any())->willReturn([
             'provider' => FontawesomeIconProvider::class,
-            'options' => array(
+            'options' => [
                 'name' => 'times',
                 'additionalClasses' => 'fa-fw'
-            )
+            ]
         ]);
     }
 
@@ -163,10 +163,10 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->iconRegistryMock->getDefaultIconIdentifier(Argument::any())->willReturn('default-not-found');
         $this->iconRegistryMock->getIconConfigurationByIdentifier('default-not-found')->willReturn([
             'provider' => FontawesomeIconProvider::class,
-            'options' => array(
+            'options' => [
                 'name' => 'times-circle',
                 'additionalClasses' => 'fa-fw'
-            )
+            ]
         ]);
         $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-default-not-found" data-identifier="default-not-found">',
             $this->subject->getIcon($this->notRegisteredIconIdentifier)->render());
@@ -182,10 +182,10 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->iconRegistryMock->getDefaultIconIdentifier(Argument::any())->willReturn('default-not-found');
         $this->iconRegistryMock->getIconConfigurationByIdentifier('default-not-found')->willReturn([
             'provider' => FontawesomeIconProvider::class,
-            'options' => array(
+            'options' => [
                 'name' => 'times-circle',
                 'additionalClasses' => 'fa-fw'
-            )
+            ]
         ]);
         $this->assertContains('<span class="t3js-icon icon icon-size-' . $size['expected'] . ' icon-state-default icon-default-not-found" data-identifier="default-not-found">',
             $this->subject->getIcon($this->notRegisteredIconIdentifier, $size['input'])->render());
@@ -198,11 +198,11 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->iconRegistryMock->getIconConfigurationByIdentifier($this->registeredSpinningIconIdentifier)->willReturn([
             'provider' => FontawesomeIconProvider::class,
-            'options' => array(
+            'options' => [
                 'name' => 'times-circle',
                 'additionalClasses' => 'fa-fw',
                 'spinning' => true
-            )
+            ]
         ]);
         $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-' . $this->registeredSpinningIconIdentifier . ' icon-spin" data-identifier="spinning-icon">',
             $this->subject->getIcon($this->registeredSpinningIconIdentifier)->render());
@@ -252,7 +252,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getIconReturnsReplacementIconWhenDeprecatedDataProvider()
     {
-        return array(
+        return [
             'Deprecated icon returns replacement' => [
                 [
                     'message' => '%s is deprecated since TYPO3 CMS 7, this icon will be removed in TYPO3 CMS 8',
@@ -266,7 +266,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 ],
                 '<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-document-close" data-identifier="actions-document-close">'
             ],
-        );
+        ];
     }
 
     //
@@ -426,7 +426,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getIconForResourceWithOpenFolderReturnsOpenFolderIcon()
     {
         $folderObject = $this->getTestSubjectFolderObject('/test');
-        $result = $this->subject->getIconForResource($folderObject, Icon::SIZE_DEFAULT, null,  array('folder-open' => true))->render();
+        $result = $this->subject->getIconForResource($folderObject, Icon::SIZE_DEFAULT, null,  ['folder-open' => true])->render();
         $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-apps-filetree-folder-opened" data-identifier="apps-filetree-folder-opened">', $result);
     }
 
@@ -450,7 +450,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getIconForResourceWithMountRootReturnsMountFolderIcon()
     {
         $folderObject = $this->getTestSubjectFolderObject('/mount');
-        $result = $this->subject->getIconForResource($folderObject, Icon::SIZE_DEFAULT, null, array('mount-root' => true))->render();
+        $result = $this->subject->getIconForResource($folderObject, Icon::SIZE_DEFAULT, null, ['mount-root' => true])->render();
         $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-apps-filetree-mount" data-identifier="apps-filetree-mount">', $result);
     }
 
@@ -466,7 +466,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getIconForRecordWithNullTableReturnsMissingIcon()
     {
         $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-default-not-found" data-identifier="default-not-found">',
-            $this->subject->getIconForRecord('', array())->render());
+            $this->subject->getIconForRecord('', [])->render());
     }
 
     /**
@@ -476,17 +476,17 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getIconForRecordWithEmptyRecordReturnsNormalIcon()
     {
-        $GLOBALS['TCA'] = array(
-            'tt_content' => array(
-                'ctrl' => array(
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'ctrl' => [
                     'typeicon_column' => 'CType',
-                    'typeicon_classes' => array(
+                    'typeicon_classes' => [
                         'default' => 'mimetypes-x-content-text',
-                    ),
-                ),
-            ),
-        );
-        $result = $this->subject->getIconForRecord('tt_content', array())->render();
+                    ],
+                ],
+            ],
+        ];
+        $result = $this->subject->getIconForRecord('tt_content', [])->render();
         $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">', $result);
     }
 
@@ -497,16 +497,16 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getIconForRecordWithMockRecordReturnsNormalIcon()
     {
-        $GLOBALS['TCA'] = array(
-            'tt_content' => array(
-                'ctrl' => array(
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'ctrl' => [
                     'typeicon_column' => 'CType',
-                    'typeicon_classes' => array(
+                    'typeicon_classes' => [
                         'text' => 'mimetypes-x-content-text',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         $result = $this->subject->getIconForRecord('tt_content', $this->mockRecord)->render();
         $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">', $result);
     }
@@ -518,16 +518,16 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getIconForRecordWithMockRecordOfTypePluginReturnsPluginIcon()
     {
-        $GLOBALS['TCA'] = array(
-            'tt_content' => array(
-                'ctrl' => array(
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'ctrl' => [
                     'typeicon_column' => 'CType',
-                    'typeicon_classes' => array(
+                    'typeicon_classes' => [
                         'list' => 'mimetypes-x-content-plugin',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         $mockRecord = $this->mockRecord;
         $mockRecord['CType'] = 'list';
         $result = $this->subject->getIconForRecord('tt_content', $mockRecord)->render();
@@ -541,19 +541,19 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getIconForRecordWithMockRecordWithHiddenFlagReturnsNormalIconAndOverlay()
     {
-        $GLOBALS['TCA'] = array(
-            'tt_content' => array(
-                'ctrl' => array(
-                    'enablecolumns' => array(
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'ctrl' => [
+                    'enablecolumns' => [
                         'disabled' => 'hidden',
-                    ),
+                    ],
                     'typeicon_column' => 'CType',
-                    'typeicon_classes' => array(
+                    'typeicon_classes' => [
                         'text' => 'mimetypes-x-content-text',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         $mockRecord = $this->mockRecord;
         $mockRecord['hidden'] = '1';
         $result = $this->subject->getIconForRecord('tt_content', $mockRecord)->render();
@@ -570,8 +570,8 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function getTestSubjectFileObject($extension, $mimeType = '')
     {
-        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
-        $mockedFile = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(array(), $mockedStorage));
+        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, [], [], '', false);
+        $mockedFile = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, [], [[], $mockedStorage]);
         $mockedFile->expects($this->atMost(1))->method('getExtension')->will($this->returnValue($extension));
         $mockedFile->expects($this->atLeastOnce())->method('getMimeType')->will($this->returnValue($mimeType));
         return $mockedFile;
@@ -585,7 +585,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function getTestSubjectFolderObject($identifier)
     {
-        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, [], [], '', false);
         $mockedStorage->expects($this->any())->method('getRootLevelFolder')->will($this->returnValue(
             new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, '/', '/')
         ));

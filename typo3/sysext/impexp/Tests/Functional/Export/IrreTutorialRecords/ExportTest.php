@@ -24,9 +24,9 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array(
+    protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
-    );
+    ];
 
     protected function setUp()
     {
@@ -40,15 +40,15 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
      */
     public function exportIrreRecords()
     {
-        $recordTypesIncludeFields = array(
-            'pages' => array(
+        $recordTypesIncludeFields = [
+            'pages' => [
                 'title',
                 'deleted',
                 'doktype',
                 'hidden',
                 'perms_everybody'
-            ),
-            'tt_content' => array(
+            ],
+            'tt_content' => [
                 'CType',
                 'header',
                 'deleted',
@@ -56,8 +56,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 't3ver_oid',
                 'tx_irretutorial_1nff_hotels',
                 'tx_irretutorial_1ncsv_hotels'
-            ),
-            'tx_irretutorial_1ncsv_hotel' => array(
+            ],
+            'tx_irretutorial_1ncsv_hotel' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -66,8 +66,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'hidden',
                 'title',
                 'offers',
-            ),
-            'tx_irretutorial_1ncsv_offer' => array(
+            ],
+            'tx_irretutorial_1ncsv_offer' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -76,8 +76,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'hidden',
                 'title',
                 'prices',
-            ),
-            'tx_irretutorial_1ncsv_price' => array(
+            ],
+            'tx_irretutorial_1ncsv_price' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -86,8 +86,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'hidden',
                 'title',
                 'price',
-            ),
-            'tx_irretutorial_1nff_hotel' => array(
+            ],
+            'tx_irretutorial_1nff_hotel' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -99,8 +99,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'parentidentifier',
                 'title',
                 'offers',
-            ),
-            'tx_irretutorial_1nff_offer' => array(
+            ],
+            'tx_irretutorial_1nff_offer' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -112,8 +112,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'parentidentifier',
                 'title',
                 'prices',
-            ),
-            'tx_irretutorial_1nff_price' => array(
+            ],
+            'tx_irretutorial_1nff_price' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -125,8 +125,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'parentidentifier',
                 'title',
                 'price',
-            ),
-            'tx_irretutorial_mnasym_hotel' => array(
+            ],
+            'tx_irretutorial_mnasym_hotel' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -135,8 +135,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'hidden',
                 'title',
                 'offers',
-            ),
-            'tx_irretutorial_mnasym_hotel_offer_rel' => array(
+            ],
+            'tx_irretutorial_mnasym_hotel_offer_rel' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -147,8 +147,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'hotelsort',
                 'offersort',
                 'prices',
-            ),
-            'tx_irretutorial_mnasym_offer' => array(
+            ],
+            'tx_irretutorial_mnasym_offer' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -157,8 +157,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'hidden',
                 'title',
                 'hotels',
-            ),
-            'tx_irretutorial_mnasym_price' => array(
+            ],
+            'tx_irretutorial_mnasym_price' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -168,8 +168,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'parentid',
                 'title',
                 'price',
-            ),
-            'tx_irretutorial_mnattr_hotel' => array(
+            ],
+            'tx_irretutorial_mnattr_hotel' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -178,8 +178,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'hidden',
                 'title',
                 'offers',
-            ),
-            'tx_irretutorial_mnattr_hotel_offer_rel' => array(
+            ],
+            'tx_irretutorial_mnattr_hotel_offer_rel' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -191,8 +191,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'offersort',
                 'quality',
                 'allincl',
-            ),
-            'tx_irretutorial_mnattr_offer' => array(
+            ],
+            'tx_irretutorial_mnattr_offer' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -201,8 +201,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'hidden',
                 'title',
                 'hotels',
-            ),
-            'tx_irretutorial_mnmmasym_hotel' => array(
+            ],
+            'tx_irretutorial_mnmmasym_hotel' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -211,16 +211,16 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'hidden',
                 'title',
                 'offers',
-            ),
-            'tx_irretutorial_mnmmasym_hotel_offer_rel' => array(
+            ],
+            'tx_irretutorial_mnmmasym_hotel_offer_rel' => [
                 'uid_local',
                 'uid_foreign',
                 'tablenames',
                 'sorting',
                 'sorting_foreign',
                 'ident',
-            ),
-            'tx_irretutorial_mnmmasym_offer' => array(
+            ],
+            'tx_irretutorial_mnmmasym_offer' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -230,16 +230,16 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'title',
                 'hotels',
                 'prices',
-            ),
-            'tx_irretutorial_mnmmasym_offer_price_rel' => array(
+            ],
+            'tx_irretutorial_mnmmasym_offer_price_rel' => [
                 'uid_local',
                 'uid_foreign',
                 'tablenames',
                 'sorting',
                 'sorting_foreign',
                 'ident',
-            ),
-            'tx_irretutorial_mnmmasym_price' => array(
+            ],
+            'tx_irretutorial_mnmmasym_price' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -249,8 +249,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'title',
                 'price',
                 'offers',
-            ),
-            'tx_irretutorial_mnsym_hotel' => array(
+            ],
+            'tx_irretutorial_mnsym_hotel' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -259,8 +259,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'hidden',
                 'title',
                 'branches',
-            ),
-            'tx_irretutorial_mnsym_hotel_rel' => array(
+            ],
+            'tx_irretutorial_mnsym_hotel_rel' => [
                 'cruser_id',
                 'sys_language_uid',
                 'l18n_parent',
@@ -270,9 +270,9 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                 'branchid',
                 'hotelsort',
                 'branchsort',
-            )
+            ]
 
-        );
+        ];
 
         $this->export->setRecordTypesIncludeFields($recordTypesIncludeFields);
 

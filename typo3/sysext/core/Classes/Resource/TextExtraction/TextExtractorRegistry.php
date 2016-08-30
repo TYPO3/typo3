@@ -29,14 +29,14 @@ class TextExtractorRegistry implements SingletonInterface
      *
      * @var array
      */
-    protected $textExtractorClasses = array();
+    protected $textExtractorClasses = [];
 
     /**
      * Instance cache for text extractor classes
      *
      * @var TextExtractorInterface[]
      */
-    protected $instances = array();
+    protected $instances = [];
 
     /**
      * Returns an instance of this class

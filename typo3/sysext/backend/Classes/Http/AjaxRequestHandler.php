@@ -49,13 +49,13 @@ class AjaxRequestHandler implements RequestHandlerInterface
      * List of requests that don't need a valid BE user
      * @var array
      */
-    protected $publicAjaxIds = array(
+    protected $publicAjaxIds = [
         '/ajax/login',
         '/ajax/logout',
         '/ajax/login/refresh',
         '/ajax/login/timedout',
         '/ajax/rsa/publickey'
-    );
+    ];
 
     /**
      * Constructor handing over the bootstrap and the original request
@@ -192,7 +192,7 @@ class AjaxRequestHandler implements RequestHandlerInterface
         // Instantiating the AJAX object
         /** @var \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj */
         $ajaxObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\AjaxRequestHandler::class, $ajaxID);
-        $ajaxParams = array('request' => $request);
+        $ajaxParams = ['request' => $request];
 
         // Evaluating the arguments and calling the AJAX method/function
         if (empty($ajaxID)) {

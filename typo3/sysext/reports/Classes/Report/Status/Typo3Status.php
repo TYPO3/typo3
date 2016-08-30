@@ -28,11 +28,11 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     public function getStatus()
     {
-        $statuses = array(
+        $statuses = [
             'oldXclassStatus' => $this->getOldXclassUsageStatus(),
             'registeredXclass' => $this->getRegisteredXclassStatus(),
             'compatibility6' => $this->getCompatibility6Status(),
-        );
+        ];
         return $statuses;
     }
 
@@ -80,7 +80,7 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface
         $value = $GLOBALS['LANG']->getLL('status_none');
         $severity = ReportStatus::OK;
 
-        $xclassFoundArray = array();
+        $xclassFoundArray = [];
         if (array_key_exists('Objects', $GLOBALS['TYPO3_CONF_VARS']['SYS'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'] as $originalClass => $override) {
                 if (array_key_exists('className', $override)) {

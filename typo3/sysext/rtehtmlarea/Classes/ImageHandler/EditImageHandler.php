@@ -113,7 +113,7 @@ class EditImageHandler implements LinkHandlerInterface, LinkParameterProviderInt
         GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule('TYPO3/CMS/Rtehtmlarea/EditImage');
 
         $buttonConfig = $this->selectImageController->getButtonConfiguration();
-        $removedProperties = array();
+        $removedProperties = [];
         if (is_array($buttonConfig['properties.'])) {
             if ($buttonConfig['properties.']['removeItems']) {
                 $removedProperties = GeneralUtility::trimExplode(',', $buttonConfig['properties.']['removeItems'], true);

@@ -46,9 +46,9 @@ class Abbreviation extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'abbreviation' => 'Abbreviation'
-    );
+    ];
 
     /**
      * Absolute number of acronyms
@@ -128,7 +128,7 @@ class Abbreviation extends RteHtmlAreaApi
     public function buildJavascriptConfiguration()
     {
         $button = 'abbreviation';
-        $jsArray = array();
+        $jsArray = [];
         if (in_array($button, $this->toolbar)) {
             if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][$button . '.'])) {
                 $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = new Object();';
@@ -150,8 +150,8 @@ class Abbreviation extends RteHtmlAreaApi
         $database = $this->getDatabaseConnection();
         $backendUser = $this->getBackendUserAuthentication();
         $button = 'abbreviation';
-        $acronymArray = array();
-        $abbrArray = array();
+        $acronymArray = [];
+        $abbrArray = [];
         $tableA = 'tx_rtehtmlarea_acronym';
         $tableB = 'static_languages';
         $fields = $tableA . '.type,' . $tableA . '.term,' . $tableA . '.acronym,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2';
@@ -217,7 +217,7 @@ class Abbreviation extends RteHtmlAreaApi
             $whereClause .= BackendUtility::deleteClause($tableB);
             $res = $database->exec_SELECTquery($fields, $tableAB, $whereClause);
             while ($abbreviationRow = $database->sql_fetch_assoc($res)) {
-                $item = array('term' => $abbreviationRow['term'], 'abbr' => $abbreviationRow['acronym'], 'language' => strtolower($abbreviationRow['lg_iso_2']) . ($abbreviationRow['lg_country_iso_2'] ? '-' . $abbreviationRow['lg_country_iso_2'] : ''));
+                $item = ['term' => $abbreviationRow['term'], 'abbr' => $abbreviationRow['acronym'], 'language' => strtolower($abbreviationRow['lg_iso_2']) . ($abbreviationRow['lg_country_iso_2'] ? '-' . $abbreviationRow['lg_country_iso_2'] : '')];
                 if ($abbreviationRow['type'] == 1) {
                     $acronymArray[] = $item;
                 } elseif ($abbreviationRow['type'] == 2) {
@@ -229,7 +229,7 @@ class Abbreviation extends RteHtmlAreaApi
 
         $this->acronymIndex = count($acronymArray);
         $this->abbreviationIndex = count($abbrArray);
-        return json_encode(array('abbr' => $abbrArray, 'acronym' => $acronymArray));
+        return json_encode(['abbr' => $abbrArray, 'acronym' => $acronymArray]);
     }
 
     /**

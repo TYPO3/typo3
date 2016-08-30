@@ -32,7 +32,7 @@ class Arguments implements \ArrayAccess
     /**
      * @var array the arguments themselves
      */
-    protected $arguments = array();
+    protected $arguments = [];
 
     /**
      * Constructor.

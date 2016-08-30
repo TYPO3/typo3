@@ -127,7 +127,7 @@ class NoneElement extends AbstractFormElement
                 }
                 break;
             case 'int':
-                $baseArr = array('dec' => 'd', 'hex' => 'x', 'HEX' => 'X', 'oct' => 'o', 'bin' => 'b');
+                $baseArr = ['dec' => 'd', 'hex' => 'x', 'HEX' => 'X', 'oct' => 'o', 'bin' => 'b'];
                 $base = isset($config['format.']['base']) ? trim($config['format.']['base']) : '';
                 $format = isset($baseArr[$base]) ? $baseArr[$base] : 'd';
                 $itemValue = sprintf('%' . $format, $itemValue);

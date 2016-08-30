@@ -31,23 +31,23 @@ class DatabaseConnectionTest extends AbstractTestCase
      */
     protected function setUp()
     {
-        $GLOBALS['TYPO3_LOADED_EXT'] = array();
+        $GLOBALS['TYPO3_LOADED_EXT'] = [];
 
         /** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, array('getFieldInfoCache'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, ['getFieldInfoCache'], [], '', false);
 
         // Disable caching
-        $mockCacheFrontend = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, array(), array(), '', false);
+        $mockCacheFrontend = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, [], [], '', false);
         $subject->expects($this->any())->method('getFieldInfoCache')->will($this->returnValue($mockCacheFrontend));
 
         // Inject SqlParser - Its logic is tested with the tests, too.
-        $sqlParser = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\SqlParser::class, array('dummy'), array(), '', false);
+        $sqlParser = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\SqlParser::class, ['dummy'], [], '', false);
         $sqlParser->_set('databaseConnection', $subject);
         $subject->SQLparser = $sqlParser;
 
         // Mock away schema migration service from install tool
-        $installerSqlMock = $this->getMock(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class, array('getFieldDefinitions_fileContent'), array(), '', false);
-        $installerSqlMock->expects($this->any())->method('getFieldDefinitions_fileContent')->will($this->returnValue(array()));
+        $installerSqlMock = $this->getMock(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class, ['getFieldDefinitions_fileContent'], [], '', false);
+        $installerSqlMock->expects($this->any())->method('getFieldDefinitions_fileContent')->will($this->returnValue([]));
         $subject->_set('installerSql', $installerSqlMock);
 
         // Inject DBMS specifics
@@ -74,11 +74,11 @@ class DatabaseConnectionTest extends AbstractTestCase
             throw new \RuntimeException('Can\'t write temporary ext_tables file.');
         }
         $this->testFilesToDelete[] = $ext_tables;
-        $GLOBALS['TYPO3_LOADED_EXT'] = array(
-            'test_dbal' => array(
+        $GLOBALS['TYPO3_LOADED_EXT'] = [
+            'test_dbal' => [
                 'ext_tables.sql' => $ext_tables
-            )
-        );
+            ]
+        ];
         // Append our test table to the list of existing tables
         $this->subject->initialize();
     }
@@ -88,27 +88,27 @@ class DatabaseConnectionTest extends AbstractTestCase
      */
     public function tableWithMappingIsDetected()
     {
-        $dbalConfiguration = array(
-            'mapping' => array(
-                'cf_cache_hash' => array(),
-            ),
-        );
+        $dbalConfiguration = [
+            'mapping' => [
+                'cf_cache_hash' => [],
+            ],
+        ];
 
         /** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, array('getFieldInfoCache'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, ['getFieldInfoCache'], [], '', false);
 
-        $mockCacheFrontend = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, array(), array(), '', false);
+        $mockCacheFrontend = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, [], [], '', false);
         $subject->expects($this->any())->method('getFieldInfoCache')->will($this->returnValue($mockCacheFrontend));
 
-        $sqlParser = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\SqlParser::class, array('dummy'), array(), '', false);
+        $sqlParser = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\SqlParser::class, ['dummy'], [], '', false);
         $sqlParser->_set('databaseConnection', $subject);
         $subject->SQLparser = $sqlParser;
 
-        $installerSqlMock = $this->getMock(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class, array(), array(), '', false);
+        $installerSqlMock = $this->getMock(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class, [], [], '', false);
         $subject->_set('installerSql', $installerSqlMock);
-        $schemaMigrationResult = array(
-            'cf_cache_pages' => array(),
-        );
+        $schemaMigrationResult = [
+            'cf_cache_pages' => [],
+        ];
         $installerSqlMock->expects($this->once())->method('getFieldDefinitions_fileContent')->will($this->returnValue($schemaMigrationResult));
 
         $subject->conf = $dbalConfiguration;
@@ -126,13 +126,13 @@ class DatabaseConnectionTest extends AbstractTestCase
      */
     public function adminGetTablesReturnsArrayWithNameKey()
     {
-        $handlerMock = $this->getMock('\ADODB_mock', array('MetaTables'), array(), '', false);
-        $handlerMock->expects($this->any())->method('MetaTables')->will($this->returnValue(array('cf_cache_hash')));
+        $handlerMock = $this->getMock('\ADODB_mock', ['MetaTables'], [], '', false);
+        $handlerMock->expects($this->any())->method('MetaTables')->will($this->returnValue(['cf_cache_hash']));
         $this->subject->handlerCfg['_DEFAULT']['type'] = 'adodb';
         $this->subject->handlerInstance['_DEFAULT'] = $handlerMock;
 
         $actual = $this->subject->admin_get_tables();
-        $expected = array('cf_cache_hash' => array('Name' => 'cf_cache_hash'));
+        $expected = ['cf_cache_hash' => ['Name' => 'cf_cache_hash']];
         $this->assertSame($expected, $actual);
     }
 
@@ -160,10 +160,10 @@ class DatabaseConnectionTest extends AbstractTestCase
 				foobar int default \'0\'
 			);
 		');
-        $data = array(
+        $data = [
             'foo' => 99.12,
             'foobar' => -120
-        );
+        ];
         $result = $this->subject->INSERTquery('tx_test_dbal', $data);
         $expected = 'INSERT INTO tx_test_dbal ( foo, foobar ) VALUES ( \'99.12\', \'-120\' )';
         $this->assertEquals($expected, $this->cleanSql($result));
@@ -184,10 +184,10 @@ class DatabaseConnectionTest extends AbstractTestCase
 				foobar bigint default \'0\'
 			);
 		');
-        $data = array(
+        $data = [
             'foo' => 9223372036854775807,
             'foobar' => 9223372036854775807
-        );
+        ];
         $result = $this->subject->INSERTquery('tx_test_dbal', $data);
         $expected = 'INSERT INTO tx_test_dbal ( foo, foobar ) VALUES ( \'9223372036854775807\', \'9223372036854775807\' )';
         $this->assertEquals($expected, $this->cleanSql($result));
@@ -198,12 +198,12 @@ class DatabaseConnectionTest extends AbstractTestCase
      */
     public function sqlForInsertWithMultipleRowsIsValid()
     {
-        $fields = array('uid', 'pid', 'title', 'body');
-        $rows = array(
-            array('1', '2', 'Title #1', 'Content #1'),
-            array('3', '4', 'Title #2', 'Content #2'),
-            array('5', '6', 'Title #3', 'Content #3')
-        );
+        $fields = ['uid', 'pid', 'title', 'body'];
+        $rows = [
+            ['1', '2', 'Title #1', 'Content #1'],
+            ['3', '4', 'Title #2', 'Content #2'],
+            ['5', '6', 'Title #3', 'Content #3']
+        ];
         $result = $this->subject->INSERTmultipleRows('tt_content', $fields, $rows);
         $expected = 'INSERT INTO tt_content (uid, pid, title, body) VALUES ';
         $expected .= '(\'1\', \'2\', \'Title #1\', \'Content #1\'), ';
@@ -287,33 +287,33 @@ class DatabaseConnectionTest extends AbstractTestCase
     public function similarNamedParametersAreProperlyReplaced()
     {
         $sql = 'SELECT * FROM cache WHERE tag = :tag1 OR tag = :tag10 OR tag = :tag100';
-        $parameterValues = array(
+        $parameterValues = [
             ':tag1' => 'tag-one',
             ':tag10' => 'tag-two',
             ':tag100' => 'tag-three'
-        );
+        ];
         $className = self::buildAccessibleProxy(\TYPO3\CMS\Core\Database\PreparedStatement::class);
         $query = $sql;
-        $precompiledQueryParts = array();
+        $precompiledQueryParts = [];
         $statement = new $className($sql, 'cache');
         $statement->bindValues($parameterValues);
         $parameters = $statement->_get('parameters');
         $statement->_callRef('convertNamedPlaceholdersToQuestionMarks', $query, $parameters, $precompiledQueryParts);
         $expectedQuery = 'SELECT * FROM cache WHERE tag = ? OR tag = ? OR tag = ?';
-        $expectedParameterValues = array(
-            0 => array(
+        $expectedParameterValues = [
+            0 => [
                 'type' => \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_STR,
                 'value' => 'tag-one',
-            ),
-            1 => array(
+            ],
+            1 => [
                 'type' => \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_STR,
                 'value' => 'tag-two',
-            ),
-            2 => array(
+            ],
+            2 => [
                 'type' => \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_STR,
                 'value' => 'tag-three',
-            ),
-        );
+            ],
+        ];
         $this->assertEquals($expectedQuery, $query);
         $this->assertEquals($expectedParameterValues, $parameters);
     }
@@ -338,10 +338,10 @@ class DatabaseConnectionTest extends AbstractTestCase
      */
     public function equivalentIndexDefinitionDataProvider()
     {
-        return array(
-            array('KEY (foo,bar(199))', 'KEY (foo,bar)'),
-            array('KEY (foo(199), bar)', 'KEY (foo, bar)'),
-            array('KEY (foo(199),bar(199))', 'KEY (foo,bar)'),
-        );
+        return [
+            ['KEY (foo,bar(199))', 'KEY (foo,bar)'],
+            ['KEY (foo(199), bar)', 'KEY (foo, bar)'],
+            ['KEY (foo(199),bar(199))', 'KEY (foo,bar)'],
+        ];
     }
 }

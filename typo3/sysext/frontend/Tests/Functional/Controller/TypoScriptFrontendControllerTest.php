@@ -34,8 +34,8 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
 
         $this->tsFrontendController = $this->getAccessibleMock(
             TypoScriptFrontendController::class,
-            array('dummy'),
-            array(),
+            ['dummy'],
+            [],
             '',
             false
         );

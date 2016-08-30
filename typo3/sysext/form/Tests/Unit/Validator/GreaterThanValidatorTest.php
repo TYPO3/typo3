@@ -29,9 +29,9 @@ class GreaterThanValidatorTest extends AbstractValidatorTest
      */
     public function validNumberProvider()
     {
-        return array(
-            '13 > 12' => array(array(12, 13)),
-        );
+        return [
+            '13 > 12' => [[12, 13]],
+        ];
     }
 
     /**
@@ -39,11 +39,11 @@ class GreaterThanValidatorTest extends AbstractValidatorTest
      */
     public function invalidNumberProvider()
     {
-        return array(
-            '(int)12.1 > 12'  => array(array(12, 12.1)),
-            '(int)12 > 12'    => array(array(12, 12)),
-            '(int)11.99 > 12' => array(array(12, 11.99))
-        );
+        return [
+            '(int)12.1 > 12'  => [[12, 12.1]],
+            '(int)12 > 12'    => [[12, 12]],
+            '(int)11.99 > 12' => [[12, 11.99]]
+        ];
     }
 
     /**
@@ -52,7 +52,7 @@ class GreaterThanValidatorTest extends AbstractValidatorTest
      */
     public function validateForValidInputHasEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['minimum'] = $input[0];
         $subject = $this->createSubject($options);
 
@@ -67,7 +67,7 @@ class GreaterThanValidatorTest extends AbstractValidatorTest
      */
     public function validateForInvalidInputHasNotEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['minimum'] = $input[0];
         $subject = $this->createSubject($options);
 

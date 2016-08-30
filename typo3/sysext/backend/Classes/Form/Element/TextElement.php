@@ -78,12 +78,12 @@ class TextElement extends AbstractFormElement
             $config['cols'] = $cols;
             $config['rows'] = $rows;
             $options = $this->data;
-            $options['parameterArray'] = array(
-                'fieldConf' => array(
+            $options['parameterArray'] = [
+                'fieldConf' => [
                     'config' => $config,
-                ),
+                ],
                 'itemFormElValue' => $parameterArray['itemFormElValue'],
-            );
+            ];
             $options['renderType'] = 'none';
             return $this->nodeFactory->create($options)->render();
         }
@@ -97,11 +97,11 @@ class TextElement extends AbstractFormElement
         if ($specialConfiguration['rte_only']) {
             $html = '<p><em>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noRTEfound')) . '</em></p>';
         } else {
-            $attributes = array();
+            $attributes = [];
             // validation
             foreach ($evalList as $func) {
                 if ($func === 'required') {
-                    $attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString(array('required' => true));
+                    $attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString(['required' => true]);
                 } else {
                     // @todo: This is ugly: The code should find out on it's own whether a eval definition is a
                     // @todo: keyword like "date", or a class reference. The global registration could be dropped then
@@ -111,9 +111,9 @@ class TextElement extends AbstractFormElement
                         if (class_exists($func)) {
                             $evalObj = GeneralUtility::makeInstance($func);
                             if (method_exists($evalObj, 'deevaluateFieldValue')) {
-                                $_params = array(
+                                $_params = [
                                     'value' => $parameterArray['itemFormElValue']
-                                );
+                                ];
                                 $parameterArray['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
                             }
                         }
@@ -122,7 +122,7 @@ class TextElement extends AbstractFormElement
             }
 
             // calculate classes
-            $classes = array();
+            $classes = [];
             $classes[] = 'form-control';
             $classes[] = 't3js-formengine-textarea';
             $classes[] = 'formengine-textarea';
@@ -134,7 +134,7 @@ class TextElement extends AbstractFormElement
             }
 
             // calculate styles
-            $styles = array();
+            $styles = [];
             // add the max-height from the users' preference to it
             $maximumHeight = (int)$backendUser->uc['resizeTextareas_MaxHeight'];
             if ($maximumHeight > 0) {
@@ -176,7 +176,7 @@ class TextElement extends AbstractFormElement
 
             // Wrap a wizard around the item?
             $html = $this->renderWizards(
-                array($html),
+                [$html],
                 $config['wizards'],
                 $table,
                 $row,

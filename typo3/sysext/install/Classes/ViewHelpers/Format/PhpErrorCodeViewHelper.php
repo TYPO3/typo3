@@ -28,7 +28,7 @@ class PhpErrorCodeViewHelper extends AbstractViewHelper implements CompilableInt
     /**
      * @var array
      */
-    protected static $levelNames = array(
+    protected static $levelNames = [
         E_ERROR => 'E_ERROR',
         E_WARNING => 'E_WARNING',
         E_PARSE => 'E_PARSE',
@@ -44,7 +44,7 @@ class PhpErrorCodeViewHelper extends AbstractViewHelper implements CompilableInt
         E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
         E_DEPRECATED => 'E_DEPRECATED',
         E_USER_DEPRECATED => 'E_USER_DEPRECATED',
-    );
+    ];
 
     /**
      * Render a readable string for PHP error code
@@ -55,9 +55,9 @@ class PhpErrorCodeViewHelper extends AbstractViewHelper implements CompilableInt
     public function render($phpErrorCode)
     {
         return static::renderStatic(
-            array(
+            [
                 'phpErrorCode' => $phpErrorCode,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -73,7 +73,7 @@ class PhpErrorCodeViewHelper extends AbstractViewHelper implements CompilableInt
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $phpErrorCode = $arguments['phpErrorCode'];
-        $levels = array();
+        $levels = [];
         if (($phpErrorCode & E_ALL) == E_ALL) {
             $levels[] = 'E_ALL';
             $phpErrorCode &= ~E_ALL;

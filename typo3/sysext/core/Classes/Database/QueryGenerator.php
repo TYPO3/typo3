@@ -29,10 +29,10 @@ class QueryGenerator
     /**
      * @var array
      */
-    public $lang = array(
+    public $lang = [
         'OR' => 'or',
         'AND' => 'and',
-        'comparison' => array(
+        'comparison' => [
             // Type = text	offset = 0
             '0_' => 'contains',
             '1_' => 'does not contain',
@@ -85,13 +85,13 @@ class QueryGenerator
             '161_' => 'does not equal',
             '162_' => 'contains',
             '163_' => 'does not contain'
-        )
-    );
+        ]
+    ];
 
     /**
      * @var array
      */
-    public $compSQL = array(
+    public $compSQL = [
         // Type = text	offset = 0
         '0' => '#FIELD# LIKE \'%#VALUE#%\'',
         '1' => '#FIELD# NOT LIKE \'%#VALUE#%\'',
@@ -144,12 +144,12 @@ class QueryGenerator
         '161' => '#FIELD# != \'#VALUE#\'',
         '162' => '(#FIELD# & #VALUE#)=#VALUE#',
         '163' => '(#FIELD# & #VALUE#)=0'
-    );
+    ];
 
     /**
      * @var array
      */
-    public $comp_offsets = array(
+    public $comp_offsets = [
         'text' => 0,
         'number' => 1,
         'multiple' => 2,
@@ -159,7 +159,7 @@ class QueryGenerator
         'time' => 3,
         'boolean' => 4,
         'binary' => 5
-    );
+    ];
 
     /**
      * @var string
@@ -197,19 +197,19 @@ class QueryGenerator
      *
      * @var array
      */
-    public $fields = array();
+    public $fields = [];
 
     /**
      * @var array
      */
-    public $extFieldLists = array();
+    public $extFieldLists = [];
 
     /**
      * The query config
      *
      * @var array
      */
-    public $queryConfig = array();
+    public $queryConfig = [];
 
     /**
      * @var bool
@@ -254,7 +254,7 @@ class QueryGenerator
      */
     public function makeFieldList()
     {
-        $fieldListArr = array();
+        $fieldListArr = [];
         if (is_array($GLOBALS['TCA'][$this->table])) {
             $fieldListArr = array_keys($GLOBALS['TCA'][$this->table]['columns']);
             $fieldListArr[] = 'uid';
@@ -416,7 +416,7 @@ class QueryGenerator
     public function setAndCleanUpExternalLists($name, $list, $force = '')
     {
         $fields = array_unique(GeneralUtility::trimExplode(',', $list . ',' . $force, true));
-        $reList = array();
+        $reList = [];
         foreach ($fields as $fieldName) {
             if ($this->fields[$fieldName]) {
                 $reList[] = $fieldName;
@@ -497,11 +497,11 @@ class QueryGenerator
             $tempEl = $workArr[$ssArr[$i]];
             if (is_array($tempEl)) {
                 if ($tempEl['type'] != 'newlevel') {
-                    $workArr[$ssArr[$i]] = array(
+                    $workArr[$ssArr[$i]] = [
                         'type' => 'newlevel',
                         'operator' => $tempEl['operator'],
-                        'nl' => array($tempEl)
-                    );
+                        'nl' => [$tempEl]
+                    ];
                 }
             }
         }
@@ -543,7 +543,7 @@ class QueryGenerator
         } else {
             // queryConfig should never be empty!
             if (!$queryConfig[0] || !$queryConfig[0]['type']) {
-                $queryConfig[0] = array('type' => 'FIELD_');
+                $queryConfig[0] = ['type' => 'FIELD_'];
             }
         }
         // Traverse:
@@ -592,7 +592,7 @@ class QueryGenerator
      */
     public function getFormElements($subLevel = 0, $queryConfig = '', $parent = '')
     {
-        $codeArr = array();
+        $codeArr = [];
         if (!is_array($queryConfig)) {
             $queryConfig = $this->queryConfig;
         }
@@ -602,7 +602,7 @@ class QueryGenerator
         foreach ($queryConfig as $key => $conf) {
             $fieldName = '';
             $subscript = $parent . '[' . $key . ']';
-            $lineHTML = array();
+            $lineHTML = [];
             $lineHTML[] = $this->mkOperatorSelect($this->name . $subscript, $conf['operator'], $c, $conf['type'] != 'FIELD_');
             if (substr($conf['type'], 0, 6) === 'FIELD_') {
                 $fieldName = substr($conf['type'], 6);
@@ -750,7 +750,7 @@ class QueryGenerator
     protected function makeComparisonSelector($subscript, $fieldName, $conf)
     {
         $fieldPrefix = $this->name . $subscript;
-        $lineHTML = array();
+        $lineHTML = [];
         $lineHTML[] = $this->mkTypeSelect($fieldPrefix . '[type]', $fieldName);
         $lineHTML[] = '	<div class="input-group">';
         $lineHTML[] = $this->mkCompSelect($fieldPrefix . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
@@ -771,7 +771,7 @@ class QueryGenerator
      */
     public function makeOptionList($fieldName, $conf, $table)
     {
-        $out = array();
+        $out = [];
         $fieldSetup = $this->fields[$fieldName];
         $languageService = $this->getLanguageService();
         if ($fieldSetup['type'] === 'files') {
@@ -887,8 +887,8 @@ class QueryGenerator
             $tablePrefix = '';
             $backendUserAuthentication = $this->getBackendUserAuthentication();
             $module = $this->getModule();
-            $outArray = array();
-            $labelFieldSelect = array();
+            $outArray = [];
+            $labelFieldSelect = [];
             foreach ($from_table_Arr as $from_table) {
                 $useSelectLabels = false;
                 $useAltSelectLabels = false;
@@ -998,7 +998,7 @@ class QueryGenerator
         if ($recursionLevel) {
             $indent = 'row-group indent indent-' . (int)$recursionLevel;
         }
-        $out = array();
+        $out = [];
         foreach ($codeArr as $k => $v) {
             $out[] = '<div class="' . $indent . '">';
             $out[] = $v['html'];
@@ -1043,7 +1043,7 @@ class QueryGenerator
      */
     public function mkOperatorSelect($name, $op, $draw, $submit)
     {
-        $out = array();
+        $out = [];
         if ($draw) {
             $out[] = '<select class="form-control from-control-operator' . ($submit ? ' t3js-submit-change' : '') . '" name="' . htmlspecialchars($name) . '[operator]">';
             $out[] = '	<option value="AND"' . (!$op || $op === 'AND' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['AND']) . '</option>';
@@ -1065,7 +1065,7 @@ class QueryGenerator
      */
     public function mkTypeSelect($name, $fieldName, $prepend = 'FIELD_')
     {
-        $out = array();
+        $out = [];
         $out[] = '<select class="form-control t3js-submit-change" name="' . htmlspecialchars($name) . '">';
         $out[] = '<option value=""></option>';
         foreach ($this->fields as $key => $value) {
@@ -1129,7 +1129,7 @@ class QueryGenerator
      */
     public function mkFieldToInputSelect($name, $fieldName)
     {
-        $out = array();
+        $out = [];
         $out[] = '<div class="input-group">';
         $out[] = '	<div class="input-group-addon">';
         $out[] = '		<span class="input-group-btn">';
@@ -1159,7 +1159,7 @@ class QueryGenerator
      */
     public function mkTableSelect($name, $cur)
     {
-        $out = array();
+        $out = [];
         $out[] = '<select class="form-control t3js-submit-change" name="' . $name . '">';
         $out[] = '<option value=""></option>';
         foreach ($GLOBALS['TCA'] as $tN => $value) {
@@ -1182,7 +1182,7 @@ class QueryGenerator
     public function mkCompSelect($name, $comparison, $neg)
     {
         $compOffSet = $comparison >> 5;
-        $out = array();
+        $out = [];
         $out[] = '<select class="form-control t3js-submit-change" name="' . $name . '">';
         for ($i = 32 * $compOffSet + $neg; $i < 32 * ($compOffSet + 1); $i += 2) {
             if ($this->lang['comparison'][$i . '_']) {
@@ -1201,7 +1201,7 @@ class QueryGenerator
      */
     public function getSubscript($arr)
     {
-        $retArr = array();
+        $retArr = [];
         while (is_array($arr)) {
             reset($arr);
             list($key, ) = each($arr);
@@ -1388,7 +1388,7 @@ class QueryGenerator
      */
     public function makeSelectorTable($modSettings, $enableList = 'table,fields,query,group,order,limit')
     {
-        $out = array();
+        $out = [];
         $enableArr = explode(',', $enableList);
         $backendUserAuthentication = $this->getBackendUserAuthentication();
         // Make output
@@ -1420,7 +1420,7 @@ class QueryGenerator
             if ($this->extFieldLists['queryOrder']) {
                 $descParts = explode(',', $modSettings['queryOrderDesc'] . ',' . $modSettings['queryOrder2Desc']);
                 $orderParts = explode(',', $this->extFieldLists['queryOrder']);
-                $reList = array();
+                $reList = [];
                 foreach ($orderParts as $kk => $vv) {
                     $reList[] = $vv . ($descParts[$kk] ? ' DESC' : '');
                 }
@@ -1453,7 +1453,7 @@ class QueryGenerator
             if (in_array('order', $enableArr) && !$backendUserAuthentication->userTS['mod.']['dbint.']['disableOrderBy']) {
                 $module = $this->getModule();
                 $orderByArr = explode(',', $this->extFieldLists['queryOrder']);
-                $orderBy = array();
+                $orderBy = [];
                 $orderBy[] = $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '');
                 $orderBy[] = '<div class="checkbox">';
                 $orderBy[] = '	<label for="checkQueryOrderDesc">';
@@ -1475,7 +1475,7 @@ class QueryGenerator
                 $out[] = '</div>';
             }
             if (in_array('limit', $enableArr) && !$backendUserAuthentication->userTS['mod.']['dbint.']['disableLimit']) {
-                $limit = array();
+                $limit = [];
                 $limit[] = '<div class="input-group">';
                 $limit[] = '	<div class="input-group-addon">';
                 $limit[] = '		<span class="input-group-btn">';
@@ -1615,7 +1615,7 @@ class QueryGenerator
     public function JSbottom($formname)
     {
         GeneralUtility::logDeprecatedFunction();
-        $out = array();
+        $out = [];
         if ($this->extJSCODE) {
             $out[] = '<script language="javascript" type="text/javascript">';
             $out[] = '	' . $this->extJSCODE;
@@ -1636,7 +1636,7 @@ class QueryGenerator
         $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '%H:%M %m-%d-%Y' : '%H:%M %d-%m-%Y';
         $value = ($timestamp > 0 ? strftime($dateFormat, $timestamp) : '');
         $id = StringUtility::getUniqueId('dt_');
-        $html = array();
+        $html = [];
         $html[] = '<div class="input-group" id="' . $id . '-wrapper">';
         $html[] = '		<input data-formengine-input-name="' . htmlspecialchars($name) . '" value="' . $value . '" class="form-control t3js-datetimepicker t3js-clearable" data-date-type="' . htmlspecialchars($type) . '" data-date-offset="0" type="text" id="' . $id . '">';
         $html[] = '		<input name="' . htmlspecialchars($name) . '" value="' . (int)$timestamp . '" type="hidden">';

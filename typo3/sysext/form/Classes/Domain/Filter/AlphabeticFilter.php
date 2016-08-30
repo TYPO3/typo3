@@ -31,7 +31,7 @@ class AlphabeticFilter extends AbstractFilter implements FilterInterface
      *
      * @param array $arguments Filter configuration
      */
-    public function __construct($arguments = array())
+    public function __construct($arguments = [])
     {
         $this->setAllowWhiteSpace($arguments['allowWhiteSpace']);
     }

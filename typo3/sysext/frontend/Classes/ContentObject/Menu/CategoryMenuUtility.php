@@ -40,8 +40,8 @@ class CategoryMenuUtility
      */
     public function collectPages($selectedCategories, $configuration, $parentObject)
     {
-        $selectedPages = array();
-        $categoriesPerPage = array();
+        $selectedPages = [];
+        $categoriesPerPage = [];
         // Determine the name of the relation field
         $relationField = '';
         if (isset($configuration['relation.'])) {
@@ -72,7 +72,7 @@ class CategoryMenuUtility
                     $selectedPages[$pageItem['uid']] = $parentObject->getSysPage()->getPageOverlay($pageItem);
                     // Keep a list of the categories each page belongs to
                     if (!isset($categoriesPerPage[$pageItem['uid']])) {
-                        $categoriesPerPage[$pageItem['uid']] = array();
+                        $categoriesPerPage[$pageItem['uid']] = [];
                     }
                     $categoriesPerPage[$pageItem['uid']][] = $categoryUid;
                 }
@@ -118,10 +118,10 @@ class CategoryMenuUtility
                 }
                 uasort(
                     $pages,
-                    array(
+                    [
                         CategoryMenuUtility::class,
                         'sortPagesUtility'
-                    )
+                    ]
                 );
                 // If the sort order is descending, reverse the sorted array
                 if ($order === 'desc') {

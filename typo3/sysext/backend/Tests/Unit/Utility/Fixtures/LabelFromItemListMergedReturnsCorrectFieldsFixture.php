@@ -24,6 +24,6 @@ class LabelFromItemListMergedReturnsCorrectFieldsFixture extends \TYPO3\CMS\Back
      */
     public static function getPagesTSconfig($id, $rootLine = null, $returnPartArray = false)
     {
-        return array();
+        return [];
     }
 }

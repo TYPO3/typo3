@@ -48,7 +48,7 @@ class VersionClickMenu
      */
     public function main(&$backRef, $menuItems, $table, $uid)
     {
-        $localItems = array();
+        $localItems = [];
         if (!$backRef->cmLevel && $uid > 0 && $GLOBALS['BE_USER']->check('modules', 'web_txversionM1')) {
             // Returns directly, because the clicked item was not from the pages table
             if (in_array('versioning', $backRef->disabledItems) || !$GLOBALS['TCA'][$table] || !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
@@ -57,7 +57,7 @@ class VersionClickMenu
             // Adds the regular item
             $LL = $this->includeLL();
             // "Versioning" element added:
-            $url = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', array('table' => $table, 'uid' => $uid));
+            $url = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', ['table' => $table, 'uid' => $uid]);
             $localItems[] = $backRef->linkItem(
                 $GLOBALS['LANG']->getLLL('title', $LL),
                 $backRef->excludeIcon($this->iconFactory->getIcon('actions-version-page-open', Icon::SIZE_SMALL)->render()),

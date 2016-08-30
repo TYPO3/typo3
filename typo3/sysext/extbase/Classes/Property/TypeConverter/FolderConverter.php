@@ -24,7 +24,7 @@ class FolderConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstract
     /**
      * @var array<string>
      */
-    protected $sourceTypes = array('string');
+    protected $sourceTypes = ['string'];
 
     /**
      * @var string

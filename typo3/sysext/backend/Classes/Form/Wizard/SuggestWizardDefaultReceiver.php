@@ -70,14 +70,14 @@ class SuggestWizardDefaultReceiver
      *
      * @var array
      */
-    protected $config = array();
+    protected $config = [];
 
     /**
      * The list of pages that are allowed to perform the search for records on
      *
      * @var array Array of PIDs
      */
-    protected $allowedPages = array();
+    protected $allowedPages = [];
 
     /**
      * The maximum number of items to select.
@@ -89,7 +89,7 @@ class SuggestWizardDefaultReceiver
     /**
      * @var array
      */
-    protected $params = array();
+    protected $params = [];
 
     /**
      * @var IconFactory
@@ -148,7 +148,7 @@ class SuggestWizardDefaultReceiver
      */
     public function queryTable(&$params, $recursionCounter = 0)
     {
-        $rows = array();
+        $rows = [];
         $this->params = &$params;
         $start = $recursionCounter * 50;
         $this->prepareSelectStatement();
@@ -183,7 +183,7 @@ class SuggestWizardDefaultReceiver
                     $croppedPath = htmlspecialchars($path);
                 }
                 $label = $this->getLabel($row);
-                $entry = array(
+                $entry = [
                     'text' => '<span class="suggest-label">' . $label . '</span><span class="suggest-uid">[' . $uid . ']</span><br />
 								<span class="suggest-path">' . $croppedPath . '</span>',
                     'table' => $this->mmForeignTable ? $this->mmForeignTable : $this->table,
@@ -193,7 +193,7 @@ class SuggestWizardDefaultReceiver
                     'style' => '',
                     'class' => isset($this->config['cssClass']) ? $this->config['cssClass'] : '',
                     'sprite' => $spriteIcon
-                );
+                ];
                 $rows[$this->table . '_' . $uid] = $this->renderRecord($row, $entry);
             }
             $GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -224,7 +224,7 @@ class SuggestWizardDefaultReceiver
             $selectFieldsList = $GLOBALS['TCA'][$this->table]['ctrl']['label'] . ',' . $GLOBALS['TCA'][$this->table]['ctrl']['label_alt'] . ',' . $this->config['additionalSearchFields'];
             $selectFields = GeneralUtility::trimExplode(',', $selectFieldsList, true);
             $selectFields = array_unique($selectFields);
-            $selectParts = array();
+            $selectParts = [];
             foreach ($selectFields as $field) {
                 $selectParts[] = $field . $likeCondition;
             }
@@ -259,9 +259,9 @@ class SuggestWizardDefaultReceiver
      */
     protected function getAllSubpagesOfPage($uid, $depth = 99)
     {
-        $pageIds = array($uid);
+        $pageIds = [$uid];
         $level = 0;
-        $pages = array($uid);
+        $pages = [$uid];
         // fetch all
         while ($depth - $level > 0 && !empty($pageIds)) {
             ++$level;
@@ -399,12 +399,12 @@ class SuggestWizardDefaultReceiver
     {
         // Call renderlet if available (normal pages etc. usually don't have one)
         if ($this->config['renderFunc'] != '') {
-            $params = array(
+            $params = [
                 'table' => $this->table,
                 'uid' => $row['uid'],
                 'row' => $row,
                 'entry' => &$entry
-            );
+            ];
             GeneralUtility::callUserFunction($this->config['renderFunc'], $params, $this, '');
         }
         return $entry;

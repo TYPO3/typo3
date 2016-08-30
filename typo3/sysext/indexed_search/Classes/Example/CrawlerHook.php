@@ -50,9 +50,9 @@ class CrawlerHook
 
         // Init session data array if not already:
         if (!is_array($session_data)) {
-            $session_data = array(
+            $session_data = [
                 'step' => 0
-            );
+            ];
         }
         // Increase step counter (this is just an example of how the session data can be used - to track how many instances of indexing is left)
         $session_data['step']++;
@@ -62,18 +62,18 @@ class CrawlerHook
                 // Get rootline from the Indexing Record (needed because the indexer relates all search results to a position in the page tree!) [DON'T CHANGE]:
                 $rl = $pObj->getUidRootLineForClosestTemplate($cfgRec['pid']);
                 // Set up 2 example items to index:
-                $exampleItems = array(
-                    array(
+                $exampleItems = [
+                    [
                         'ID' => '123',
                         'title' => 'Title of Example 1',
                         'content' => 'Vestibulum leo turpis, fringilla sit amet, semper eget, vestibulum ut, arcu. Vestibulum mauris orci, vulputate quis, congue eget, nonummy'
-                    ),
-                    array(
+                    ],
+                    [
                         'ID' => 'example2',
                         'title' => 'Title of Example 2',
                         'content' => 'Cras tortor turpis, vulputate non, accumsan a, pretium in, magna. Cras turpis turpis, pretium pulvinar, pretium vel, nonummy eu.'
-                    )
-                );
+                    ]
+                ];
                 // For each item, index it (this is what you might like to do in batches of like 100 items if all your content spans thousands of items!)
                 foreach ($exampleItems as $item) {
                     // Prepare the GET variables array that must be added to the page URL in order to view result:

@@ -104,7 +104,7 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
         if (!is_object($realInstance)) {
             return null;
         }
-        return call_user_func_array(array($realInstance, $methodName), $arguments);
+        return call_user_func_array([$realInstance, $methodName], $arguments);
     }
 
     /**

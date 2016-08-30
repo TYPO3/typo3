@@ -31,9 +31,9 @@ class SqlParserTest extends AbstractTestCase
      */
     protected function setUp()
     {
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\SqlParser::class, array('dummy'), array(), '', false);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\SqlParser::class, ['dummy'], [], '', false);
 
-        $mockDatabaseConnection = $this->getMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, array(), array(), '', false);
+        $mockDatabaseConnection = $this->getMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, [], [], '', false);
         $mockDatabaseConnection->lastHandlerKey = '_DEFAULT';
         $subject->_set('databaseConnection', $mockDatabaseConnection);
         $subject->_set('sqlCompiler', GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\SqlCompilers\Adodb::class, $mockDatabaseConnection));
@@ -49,87 +49,87 @@ class SqlParserTest extends AbstractTestCase
      */
     public function compileWhereClauseDoesNotDropClauses()
     {
-        $clauses = array(
-            0 => array(
+        $clauses = [
+            0 => [
                 'modifier' => '',
                 'table' => 'pages',
                 'field' => 'fe_group',
                 'calc' => '',
                 'comparator' => '=',
-                'value' => array(
+                'value' => [
                     0 => '',
                     1 => '\''
-                )
-            ),
-            1 => array(
+                ]
+            ],
+            1 => [
                 'operator' => 'OR',
                 'modifier' => '',
-                'func' => array(
+                'func' => [
                     'type' => 'IFNULL',
-                    'default' => array(
+                    'default' => [
                         0 => '1',
                         1 => '\''
-                    ),
+                    ],
                     'table' => 'pages',
                     'field' => 'fe_group'
-                )
-            ),
-            2 => array(
+                ]
+            ],
+            2 => [
                 'operator' => 'OR',
                 'modifier' => '',
                 'table' => 'pages',
                 'field' => 'fe_group',
                 'calc' => '',
                 'comparator' => '=',
-                'value' => array(
+                'value' => [
                     0 => '0',
                     1 => '\''
-                )
-            ),
-            3 => array(
+                ]
+            ],
+            3 => [
                 'operator' => 'OR',
                 'modifier' => '',
-                'func' => array(
+                'func' => [
                     'type' => 'FIND_IN_SET',
-                    'str' => array(
+                    'str' => [
                         0 => '0',
                         1 => '\''
-                    ),
+                    ],
                     'table' => 'pages',
                     'field' => 'fe_group'
-                ),
+                ],
                 'comparator' => ''
-            ),
-            4 => array(
+            ],
+            4 => [
                 'operator' => 'OR',
                 'modifier' => '',
-                'func' => array(
+                'func' => [
                     'type' => 'FIND_IN_SET',
-                    'str' => array(
+                    'str' => [
                         0 => '-1',
                         1 => '\''
-                    ),
+                    ],
                     'table' => 'pages',
                     'field' => 'fe_group'
-                ),
+                ],
                 'comparator' => ''
-            ),
-            5 => array(
+            ],
+            5 => [
                 'operator' => 'OR',
                 'modifier' => '',
-                'func' => array(
+                'func' => [
                     'type' => 'CAST',
                     'table' => 'pages',
                     'field' => 'fe_group',
                     'datatype' => 'CHAR'
-                ),
+                ],
                 'comparator' => '=',
-                'value' => array(
+                'value' => [
                     0 => '',
                     1 => '\''
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $output = $this->subject->compileWhereClause($clauses);
         $parts = explode(' OR ', $output);
         $this->assertSame(count($clauses), count($parts));
@@ -143,18 +143,18 @@ class SqlParserTest extends AbstractTestCase
      */
     public function trimSqlReallyTrimsAllWhitespaceDataProvider()
     {
-        return array(
-            'Nothing to trim' => array('SELECT * FROM test WHERE 1=1;', 'SELECT * FROM test WHERE 1=1 '),
-            'Space after ;' => array('SELECT * FROM test WHERE 1=1; ', 'SELECT * FROM test WHERE 1=1 '),
-            'Space before ;' => array('SELECT * FROM test WHERE 1=1 ;', 'SELECT * FROM test WHERE 1=1 '),
-            'Space before and after ;' => array('SELECT * FROM test WHERE 1=1 ; ', 'SELECT * FROM test WHERE 1=1 '),
-            'Linefeed after ;' => array('SELECT * FROM test WHERE 1=1' . LF . ';', 'SELECT * FROM test WHERE 1=1 '),
-            'Linefeed before ;' => array('SELECT * FROM test WHERE 1=1;' . LF, 'SELECT * FROM test WHERE 1=1 '),
-            'Linefeed before and after ;' => array('SELECT * FROM test WHERE 1=1' . LF . ';' . LF, 'SELECT * FROM test WHERE 1=1 '),
-            'Tab after ;' => array('SELECT * FROM test WHERE 1=1' . TAB . ';', 'SELECT * FROM test WHERE 1=1 '),
-            'Tab before ;' => array('SELECT * FROM test WHERE 1=1;' . TAB, 'SELECT * FROM test WHERE 1=1 '),
-            'Tab before and after ;' => array('SELECT * FROM test WHERE 1=1' . TAB . ';' . TAB, 'SELECT * FROM test WHERE 1=1 '),
-        );
+        return [
+            'Nothing to trim' => ['SELECT * FROM test WHERE 1=1;', 'SELECT * FROM test WHERE 1=1 '],
+            'Space after ;' => ['SELECT * FROM test WHERE 1=1; ', 'SELECT * FROM test WHERE 1=1 '],
+            'Space before ;' => ['SELECT * FROM test WHERE 1=1 ;', 'SELECT * FROM test WHERE 1=1 '],
+            'Space before and after ;' => ['SELECT * FROM test WHERE 1=1 ; ', 'SELECT * FROM test WHERE 1=1 '],
+            'Linefeed after ;' => ['SELECT * FROM test WHERE 1=1' . LF . ';', 'SELECT * FROM test WHERE 1=1 '],
+            'Linefeed before ;' => ['SELECT * FROM test WHERE 1=1;' . LF, 'SELECT * FROM test WHERE 1=1 '],
+            'Linefeed before and after ;' => ['SELECT * FROM test WHERE 1=1' . LF . ';' . LF, 'SELECT * FROM test WHERE 1=1 '],
+            'Tab after ;' => ['SELECT * FROM test WHERE 1=1' . TAB . ';', 'SELECT * FROM test WHERE 1=1 '],
+            'Tab before ;' => ['SELECT * FROM test WHERE 1=1;' . TAB, 'SELECT * FROM test WHERE 1=1 '],
+            'Tab before and after ;' => ['SELECT * FROM test WHERE 1=1' . TAB . ';' . TAB, 'SELECT * FROM test WHERE 1=1 '],
+        ];
     }
 
     /**
@@ -176,20 +176,20 @@ class SqlParserTest extends AbstractTestCase
      */
     public function getValueReturnsCorrectValuesDataProvider()
     {
-        return array(
+        return [
             // description => array($parseString, $comparator, $mode, $expected)
-            'key definition without length' => array('(pid,input_1), ', '_LIST', 'INDEX', array('pid', 'input_1')),
-            'key definition with length' => array('(pid,input_1(30)), ', '_LIST', 'INDEX', array('pid', 'input_1(30)')),
-            'key definition without length (no mode)' => array('(pid,input_1), ', '_LIST', '', array('pid', 'input_1')),
-            'key definition with length (no mode)' => array('(pid,input_1(30)), ', '_LIST', '', array('pid', 'input_1(30)')),
-            'test1' => array('input_1 varchar(255) DEFAULT \'\' NOT NULL,', '', '', array('input_1')),
-            'test2' => array('varchar(255) DEFAULT \'\' NOT NULL,', '', '', array('varchar(255)')),
-            'test3' => array('DEFAULT \'\' NOT NULL,', '', '', array('DEFAULT')),
-            'test4' => array('\'\' NOT NULL,', '', '', array('', '\'')),
-            'test5' => array('NOT NULL,', '', '', array('NOT')),
-            'test6' => array('NULL,', '', '', array('NULL')),
-            'getValueOrParameter' => array('NULL,', '', '', array('NULL')),
-        );
+            'key definition without length' => ['(pid,input_1), ', '_LIST', 'INDEX', ['pid', 'input_1']],
+            'key definition with length' => ['(pid,input_1(30)), ', '_LIST', 'INDEX', ['pid', 'input_1(30)']],
+            'key definition without length (no mode)' => ['(pid,input_1), ', '_LIST', '', ['pid', 'input_1']],
+            'key definition with length (no mode)' => ['(pid,input_1(30)), ', '_LIST', '', ['pid', 'input_1(30)']],
+            'test1' => ['input_1 varchar(255) DEFAULT \'\' NOT NULL,', '', '', ['input_1']],
+            'test2' => ['varchar(255) DEFAULT \'\' NOT NULL,', '', '', ['varchar(255)']],
+            'test3' => ['DEFAULT \'\' NOT NULL,', '', '', ['DEFAULT']],
+            'test4' => ['\'\' NOT NULL,', '', '', ['', '\'']],
+            'test5' => ['NOT NULL,', '', '', ['NOT']],
+            'test6' => ['NULL,', '', '', ['NULL']],
+            'getValueOrParameter' => ['NULL,', '', '', ['NULL']],
+        ];
     }
 
     /**
@@ -213,7 +213,7 @@ class SqlParserTest extends AbstractTestCase
      */
     public function parseSQLDataProvider()
     {
-        $testSql = array();
+        $testSql = [];
         $testSql[] = 'CREATE TABLE tx_demo (';
         $testSql[] = '	uid int(11) NOT NULL auto_increment,';
         $testSql[] = '	pid int(11) DEFAULT \'0\' NOT NULL,';
@@ -235,267 +235,267 @@ class SqlParserTest extends AbstractTestCase
         $testSql[] = '	KEY bar (tstamp,input_1(200),input_2(100),endtime)';
         $testSql[] = ');';
         $testSql = implode("\n", $testSql);
-        $expected = array(
+        $expected = [
             'type' => 'CREATETABLE',
             'TABLE' => 'tx_demo',
-            'FIELDS' => array(
-                'uid' => array(
-                    'definition' => array(
+            'FIELDS' => [
+                'uid' => [
+                    'definition' => [
                         'fieldType' => 'int',
                         'value' => '11',
-                        'featureIndex' => array(
-                            'NOTNULL' => array(
+                        'featureIndex' => [
+                            'NOTNULL' => [
                                 'keyword' => 'NOT NULL'
-                            ),
-                            'AUTO_INCREMENT' => array(
+                            ],
+                            'AUTO_INCREMENT' => [
                                 'keyword' => 'auto_increment'
-                            )
-                        )
-                    )
-                ),
-                'pid' => array(
-                    'definition' => array(
+                            ]
+                        ]
+                    ]
+                ],
+                'pid' => [
+                    'definition' => [
                         'fieldType' => 'int',
                         'value' => '11',
-                        'featureIndex' => array(
-                            'DEFAULT' => array(
+                        'featureIndex' => [
+                            'DEFAULT' => [
                                 'keyword' => 'DEFAULT',
-                                'value' => array(
+                                'value' => [
                                     0 => '0',
                                     1 => '\'',
-                                )
-                            ),
-                            'NOTNULL' => array(
+                                ]
+                            ],
+                            'NOTNULL' => [
                                 'keyword' => 'NOT NULL'
-                            )
-                        )
-                    )
-                ),
-                'tstamp' => array(
-                    'definition' => array(
+                            ]
+                        ]
+                    ]
+                ],
+                'tstamp' => [
+                    'definition' => [
                         'fieldType' => 'int',
                         'value' => '11',
-                        'featureIndex' => array(
-                            'UNSIGNED' => array(
+                        'featureIndex' => [
+                            'UNSIGNED' => [
                                 'keyword' => 'unsigned'
-                            ),
-                            'DEFAULT' => array(
+                            ],
+                            'DEFAULT' => [
                                 'keyword' => 'DEFAULT',
-                                'value' => array(
+                                'value' => [
                                     0 => '0',
                                     1 => '\''
-                                )
-                            ),
-                            'NOTNULL' => array(
+                                ]
+                            ],
+                            'NOTNULL' => [
                                 'keyword' => 'NOT NULL'
-                            )
-                        )
-                    )
-                ),
-                'crdate' => array(
-                    'definition' => array(
+                            ]
+                        ]
+                    ]
+                ],
+                'crdate' => [
+                    'definition' => [
                         'fieldType' => 'int',
                         'value' => '11',
-                        'featureIndex' => array(
-                            'UNSIGNED' => array(
+                        'featureIndex' => [
+                            'UNSIGNED' => [
                                 'keyword' => 'unsigned'
-                            ),
-                            'DEFAULT' => array(
+                            ],
+                            'DEFAULT' => [
                                 'keyword' => 'DEFAULT',
-                                'value' => array(
+                                'value' => [
                                     0 => '0',
                                     1 => '\''
-                                )
-                            ),
-                            'NOTNULL' => array(
+                                ]
+                            ],
+                            'NOTNULL' => [
                                 'keyword' => 'NOT NULL'
-                            )
-                        )
-                    )
-                ),
-                'cruser_id' => array(
-                    'definition' => array(
+                            ]
+                        ]
+                    ]
+                ],
+                'cruser_id' => [
+                    'definition' => [
                         'fieldType' => 'int',
                         'value' => '11',
-                        'featureIndex' => array(
-                            'UNSIGNED' => array(
+                        'featureIndex' => [
+                            'UNSIGNED' => [
                                 'keyword' => 'unsigned'
-                            ),
-                            'DEFAULT' => array(
+                            ],
+                            'DEFAULT' => [
                                 'keyword' => 'DEFAULT',
-                                'value' => array(
+                                'value' => [
                                     0 => '0',
                                     1 => '\'',
-                                )
-                            ),
-                            'NOTNULL' => array(
+                                ]
+                            ],
+                            'NOTNULL' => [
                                 'keyword' => 'NOT NULL'
-                            )
-                        )
-                    )
-                ),
-                'deleted' => array(
-                    'definition' => array(
+                            ]
+                        ]
+                    ]
+                ],
+                'deleted' => [
+                    'definition' => [
                         'fieldType' => 'tinyint',
                         'value' => '4',
-                        'featureIndex' => array(
-                            'UNSIGNED' => array(
+                        'featureIndex' => [
+                            'UNSIGNED' => [
                                 'keyword' => 'unsigned'
-                            ),
-                            'DEFAULT' => array(
+                            ],
+                            'DEFAULT' => [
                                 'keyword' => 'DEFAULT',
-                                'value' => array(
+                                'value' => [
                                     0 => '0',
                                     1 => '\''
-                                )
-                            ),
-                            'NOTNULL' => array(
+                                ]
+                            ],
+                            'NOTNULL' => [
                                 'keyword' => 'NOT NULL'
-                            )
-                        )
-                    )
-                ),
-                'hidden' => array(
-                    'definition' => array(
+                            ]
+                        ]
+                    ]
+                ],
+                'hidden' => [
+                    'definition' => [
                         'fieldType' => 'tinyint',
                         'value' => '4',
-                        'featureIndex' => array(
-                            'UNSIGNED' => array(
+                        'featureIndex' => [
+                            'UNSIGNED' => [
                                 'keyword' => 'unsigned'
-                            ),
-                            'DEFAULT' => array(
+                            ],
+                            'DEFAULT' => [
                                 'keyword' => 'DEFAULT',
-                                'value' => array(
+                                'value' => [
                                     0 => '0',
                                     1 => '\''
-                                )
-                            ),
-                            'NOTNULL' => array(
+                                ]
+                            ],
+                            'NOTNULL' => [
                                 'keyword' => 'NOT NULL'
-                            )
-                        )
-                    )
-                ),
-                'starttime' => array(
-                    'definition' => array(
+                            ]
+                        ]
+                    ]
+                ],
+                'starttime' => [
+                    'definition' => [
                         'fieldType' => 'int',
                         'value' => '11',
-                        'featureIndex' => array(
-                            'UNSIGNED' => array(
+                        'featureIndex' => [
+                            'UNSIGNED' => [
                                 'keyword' => 'unsigned'
-                            ),
-                            'DEFAULT' => array(
+                            ],
+                            'DEFAULT' => [
                                 'keyword' => 'DEFAULT',
-                                'value' => array(
+                                'value' => [
                                     0 => '0',
                                     1 => '\''
-                                )
-                            ),
-                            'NOTNULL' => array(
+                                ]
+                            ],
+                            'NOTNULL' => [
                                 'keyword' => 'NOT NULL'
-                            )
-                        )
-                    )
-                ),
-                'endtime' => array(
-                    'definition' => array(
+                            ]
+                        ]
+                    ]
+                ],
+                'endtime' => [
+                    'definition' => [
                         'fieldType' => 'int',
                         'value' => '11',
-                        'featureIndex' => array(
-                            'UNSIGNED' => array(
+                        'featureIndex' => [
+                            'UNSIGNED' => [
                                 'keyword' => 'unsigned'
-                            ),
-                            'DEFAULT' => array(
+                            ],
+                            'DEFAULT' => [
                                 'keyword' => 'DEFAULT',
-                                'value' => array(
+                                'value' => [
                                     0 => '0',
                                     1 => '\'',
-                                )
-                            ),
-                            'NOTNULL' => array(
+                                ]
+                            ],
+                            'NOTNULL' => [
                                 'keyword' => 'NOT NULL'
-                            )
-                        )
-                    )
-                ),
-                'input_1' => array(
-                    'definition' => array(
+                            ]
+                        ]
+                    ]
+                ],
+                'input_1' => [
+                    'definition' => [
                         'fieldType' => 'varchar',
                         'value' => '255',
-                        'featureIndex' => array(
-                            'DEFAULT' => array(
+                        'featureIndex' => [
+                            'DEFAULT' => [
                                 'keyword' => 'DEFAULT',
-                                'value' => array(
+                                'value' => [
                                     0 => '',
                                     1 => '\'',
-                                )
-                            ),
-                            'NOTNULL' => array(
+                                ]
+                            ],
+                            'NOTNULL' => [
                                 'keyword' => 'NOT NULL'
-                            )
-                        )
-                    )
-                ),
-                'input_2' => array(
-                    'definition' => array(
+                            ]
+                        ]
+                    ]
+                ],
+                'input_2' => [
+                    'definition' => [
                         'fieldType' => 'varchar',
                         'value' => '255',
-                        'featureIndex' => array(
-                            'DEFAULT' => array(
+                        'featureIndex' => [
+                            'DEFAULT' => [
                                 'keyword' => 'DEFAULT',
-                                'value' => array(
+                                'value' => [
                                     0 => '',
                                     1 => '\'',
-                                )
-                            ),
-                            'NOTNULL' => array(
+                                ]
+                            ],
+                            'NOTNULL' => [
                                 'keyword' => 'NOT NULL'
-                            )
-                        )
-                    )
-                ),
-                'select_child' => array(
-                    'definition' => array(
+                            ]
+                        ]
+                    ]
+                ],
+                'select_child' => [
+                    'definition' => [
                         'fieldType' => 'int',
                         'value' => '11',
-                        'featureIndex' => array(
-                            'UNSIGNED' => array(
+                        'featureIndex' => [
+                            'UNSIGNED' => [
                                 'keyword' => 'unsigned'
-                            ),
-                            'DEFAULT' => array(
+                            ],
+                            'DEFAULT' => [
                                 'keyword' => 'DEFAULT',
-                                'value' => array(
+                                'value' => [
                                     0 => '0',
                                     1 => '\''
-                                )
-                            ),
-                            'NOTNULL' => array(
+                                ]
+                            ],
+                            'NOTNULL' => [
                                 'keyword' => 'NOT NULL'
-                            )
-                        )
-                    )
-                )
-            ),
-            'KEYS' => array(
-                'PRIMARYKEY' => array(
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'KEYS' => [
+                'PRIMARYKEY' => [
                     0 => 'uid'
-                ),
-                'parent' => array(
+                ],
+                'parent' => [
                     0 => 'pid',
                     1 => 'input_1',
-                ),
-                'bar' => array(
+                ],
+                'bar' => [
                     0 => 'tstamp',
                     1 => 'input_1(200)',
                     2 => 'input_2(100)',
                     3 => 'endtime',
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
-        return array(
-            'test1' => array($testSql, $expected)
-        );
+        return [
+            'test1' => [$testSql, $expected]
+        ];
     }
 
     /**
@@ -534,7 +534,7 @@ class SqlParserTest extends AbstractTestCase
     {
         $parseString = '1024';
         $result = $this->subject->_callRef('getValue', $parseString);
-        $expected = array(1024);
+        $expected = [1024];
         $this->assertEquals($expected, $result);
     }
 
@@ -546,7 +546,7 @@ class SqlParserTest extends AbstractTestCase
     {
         $parseString = '"some owner\\\'s string"';
         $result = $this->subject->_callRef('getValue', $parseString);
-        $expected = array('some owner\'s string', '"');
+        $expected = ['some owner\'s string', '"'];
         $this->assertEquals($expected, $result);
     }
 
@@ -558,7 +558,7 @@ class SqlParserTest extends AbstractTestCase
     {
         $parseString = '\'some owner\\\'s string\'';
         $result = $this->subject->_callRef('getValue', $parseString);
-        $expected = array('some owner\'s string', '\'');
+        $expected = ['some owner\'s string', '\''];
         $this->assertEquals($expected, $result);
     }
 
@@ -570,7 +570,7 @@ class SqlParserTest extends AbstractTestCase
     {
         $parseString = '"the \\"owner\\" is here"';
         $result = $this->subject->_callRef('getValue', $parseString);
-        $expected = array('the "owner" is here', '"');
+        $expected = ['the "owner" is here', '"'];
         $this->assertEquals($expected, $result);
     }
 
@@ -582,12 +582,12 @@ class SqlParserTest extends AbstractTestCase
         $parseString = '( 1,   2, 3  ,4)';
         $operator = 'IN';
         $result = $this->subject->_callRef('getValue', $parseString, $operator);
-        $expected = array(
-            array(1),
-            array(2),
-            array(3),
-            array(4)
-        );
+        $expected = [
+            [1],
+            [2],
+            [3],
+            [4]
+        ];
         $this->assertEquals($expected, $result);
     }
 
@@ -1338,7 +1338,7 @@ class SqlParserTest extends AbstractTestCase
     public function questionMarkParametersMayBeSafelyReplaced()
     {
         $sql = 'SELECT * FROM pages WHERE pid = ? AND timestamp < ? AND title != \'How to test?\'';
-        $parameterValues = array(12, 1281782690);
+        $parameterValues = [12, 1281782690];
         $components = $this->subject->_callRef('parseSELECT', $sql);
         $questionMarkParamCount = count($components['parameters']['?']);
         for ($i = 0; $i < $questionMarkParamCount; $i++) {

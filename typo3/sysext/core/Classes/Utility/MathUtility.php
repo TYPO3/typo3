@@ -117,7 +117,7 @@ class MathUtility
         $qm = '\\*\\/\\+-^%';
         $regex = '([' . $qm . '])([' . $qm . ']?[0-9\\.]*)';
         // Split the expression here:
-        $reg = array();
+        $reg = [];
         preg_match_all('/' . $regex . '/', $string, $reg);
         reset($reg[2]);
         $number = 0;
@@ -199,12 +199,12 @@ class MathUtility
      */
     public static function isIntegerInRange($value, $minimum, $maximum)
     {
-        $value = filter_var($value, FILTER_VALIDATE_INT, array(
-            'options' => array(
+        $value = filter_var($value, FILTER_VALIDATE_INT, [
+            'options' => [
                 'min_range' => $minimum,
                 'max_range' => $maximum
-            )
-        ));
+            ]
+        ]);
         $isInRange = is_int($value);
         return $isInRange;
     }

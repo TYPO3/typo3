@@ -31,7 +31,7 @@ class SchedulerModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->testObject = $this->getMock(\TYPO3\CMS\Scheduler\Controller\SchedulerModuleController::class, array('dummy'), array(), '', false);
+        $this->testObject = $this->getMock(\TYPO3\CMS\Scheduler\Controller\SchedulerModuleController::class, ['dummy'], [], '', false);
     }
 
     /**
@@ -42,29 +42,29 @@ class SchedulerModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkDateWithStrtotimeValuesDataProvider()
     {
-        return array(
-            'now' => array(
+        return [
+            'now' => [
                 'now',
-            ),
-            '10 September 2000' => array(
+            ],
+            '10 September 2000' => [
                 '10 September 2000',
-            ),
-            '+1 day' => array(
+            ],
+            '+1 day' => [
                 '+1 day',
-            ),
-            '+1 week' => array(
+            ],
+            '+1 week' => [
                 '+1 week',
-            ),
-            '+1 week 2 days 4 hours 2 seconds' => array(
+            ],
+            '+1 week 2 days 4 hours 2 seconds' => [
                 '+1 week 2 days 4 hours 2 seconds',
-            ),
-            'next Thursday' => array(
+            ],
+            'next Thursday' => [
                 'next Thursday',
-            ),
-            'last Monday' => array(
+            ],
+            'last Monday' => [
                 'last Monday',
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -93,44 +93,44 @@ class SchedulerModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkDateWithTypo3DateSyntaxDataProvider()
     {
-        return array(
-            '00:00 2011-05-30' => array(
+        return [
+            '00:00 2011-05-30' => [
                 '00:00 2011-05-30',
                 mktime(0, 0, 0, 5, 30, 2011)
-            ),
-            '00:01 2011-05-30' => array(
+            ],
+            '00:01 2011-05-30' => [
                 '00:01 2011-05-30',
                 mktime(0, 1, 0, 5, 30, 2011)
-            ),
-            '23:59 2011-05-30' => array(
+            ],
+            '23:59 2011-05-30' => [
                 '23:59 2011-05-30',
                 mktime(23, 59, 0, 5, 30, 2011)
-            ),
-            '15:35 2000-12-24' => array(
+            ],
+            '15:35 2000-12-24' => [
                 '15:35 2000-12-24',
                 mktime(15, 35, 0, 12, 24, 2000)
-            ),
-            '00:01 1970-01-01' => array(
+            ],
+            '00:01 1970-01-01' => [
                 '00:01 1970-01-01',
                 mktime(0, 1, 0, 1, 1, 1970)
-            ),
-            '17:26 2020-03-15' => array(
+            ],
+            '17:26 2020-03-15' => [
                 '17:26 2020-03-15',
                 mktime(17, 26, 0, 3, 15, 2020)
-            ),
-            '1:5 2020-03-15' => array(
+            ],
+            '1:5 2020-03-15' => [
                 '1:5 2020-03-15',
                 mktime(1, 5, 0, 3, 15, 2020)
-            ),
-            '10:50 2020-3-5' => array(
+            ],
+            '10:50 2020-3-5' => [
                 '10:50 2020-3-5',
                 mktime(10, 50, 0, 3, 5, 2020)
-            ),
-            '01:01 1968-01-01' => array(
+            ],
+            '01:01 1968-01-01' => [
                 '01:01 1968-01-01',
                 mktime(1, 1, 0, 1, 1, 1968)
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -152,14 +152,14 @@ class SchedulerModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkDateWithInvalidDateValuesDataProvider()
     {
-        return array(
-            'Not Good' => array(
+        return [
+            'Not Good' => [
                 'Not Good'
-            ),
-            'HH:ii yyyy-mm-dd' => array(
+            ],
+            'HH:ii yyyy-mm-dd' => [
                 'HH:ii yyyy-mm-dd'
-            )
-        );
+            ]
+        ];
     }
 
     /**

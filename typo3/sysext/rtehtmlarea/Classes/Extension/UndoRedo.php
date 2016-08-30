@@ -40,10 +40,10 @@ class UndoRedo extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'undo' => 'Undo',
         'redo' => 'Redo'
-    );
+    ];
 
     /**
      * Return JS configuration of the htmlArea plugins registered by the extension

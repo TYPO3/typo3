@@ -177,12 +177,12 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface
             // a previous decision from TRUE to FALSE to throw a specific exception in this case
             $userHasAccessBeforeHook = $userHasAccess;
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] as $methodReference) {
-                $parameters = array(
+                $parameters = [
                     'table' => $result['tableName'],
                     'uid' => $result['databaseRow']['uid'],
                     'cmd' => $result['command'],
                     'hasAccess' => $userHasAccess,
-                );
+                ];
                 $userHasAccess = (bool)GeneralUtility::callUserFunction($methodReference, $parameters, $this);
             }
             if ($userHasAccessBeforeHook && !$userHasAccess) {

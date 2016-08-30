@@ -29,7 +29,7 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
     /**
      * @var array Loaded element cache
      */
-    protected $loadedExtensionArrayElementCache = array();
+    protected $loadedExtensionArrayElementCache = [];
 
     /**
      * @var string Pointer to current position
@@ -204,7 +204,7 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
      */
     public function reset()
     {
-        $this->loadedExtensionArrayElementCache = array();
+        $this->loadedExtensionArrayElementCache = [];
         $this->rewind();
     }
 

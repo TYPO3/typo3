@@ -49,7 +49,7 @@ class VersionView
             // If more than one was found...:
             if (count($versions) > 1) {
                 // Create selector box entries:
-                $opt = array();
+                $opt = [];
                 foreach ($versions as $vRow) {
                     if ($vRow['uid'] == $onlineId) {
                         // Live version
@@ -57,13 +57,13 @@ class VersionView
                     } else {
                         $label = $vRow['t3ver_label'] . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:versionId', true) . ' ' . $vRow['t3ver_id'] . ($vRow['t3ver_wsid'] != 0 ? ' ' . $GLOBALS['LANG']->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:workspaceId', true) . ' ' . $vRow['t3ver_wsid'] : '') . ')';
                     }
-                    $opt[] = '<option value="' . htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $vRow['uid']))) . '"' . ($id == $vRow['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
+                    $opt[] = '<option value="' . htmlspecialchars(GeneralUtility::linkThisScript(['id' => $vRow['uid']])) . '"' . ($id == $vRow['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
                 }
                 /** @var $iconFactory \TYPO3\CMS\Core\Imaging\IconFactory */
                 $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                 // Add management link:
                 $management = '
-					<a class="btn btn-default" href="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', array('table' => 'pages', 'uid' => $onlineId))) . '">
+					<a class="btn btn-default" href="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', ['table' => 'pages', 'uid' => $onlineId])) . '">
 						' . $iconFactory->getIcon('actions-version-page-open', Icon::SIZE_SMALL)->render() . '
 						' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.mgm', true) . '
 					</a>';
@@ -75,7 +75,7 @@ class VersionView
                 } elseif (!$noAction) {
                     $href = BackendUtility::getLinkToDataHandlerAction(
                         '&cmd[pages][' . $onlineId . '][version][swapWith]=' . $id . '&cmd[pages][' . $onlineId . '][version][action]=swap',
-                        GeneralUtility::linkThisScript(array('id' => $onlineId))
+                        GeneralUtility::linkThisScript(['id' => $onlineId])
                     );
                     $controls = '
 						<a href="' . htmlspecialchars($href) . '" class="btn btn-default" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.swapPage', true) . '">

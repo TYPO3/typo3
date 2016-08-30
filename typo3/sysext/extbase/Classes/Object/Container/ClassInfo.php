@@ -80,7 +80,7 @@ class ClassInfo
      * @param bool $isInitializeable
      * @param array $injectProperties
      */
-    public function __construct($className, array $constructorArguments, array $injectMethods, $isSingleton = false, $isInitializeable = false, array $injectProperties = array())
+    public function __construct($className, array $constructorArguments, array $injectMethods, $isSingleton = false, $isInitializeable = false, array $injectProperties = [])
     {
         $this->className = $className;
         $this->constructorArguments = $constructorArguments;

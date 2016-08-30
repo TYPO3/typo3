@@ -51,9 +51,9 @@ class AuthenticationService extends AbstractAuthenticationService
         }
         if ((string)$this->login['uident_text'] === '') {
             // Failed Login attempt (no password given)
-            $this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s) for username \'%s\' with an empty password!', array(
+            $this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s) for username \'%s\' with an empty password!', [
                 $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']
-            ));
+            ]);
             GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), for username \'%s\' with an empty password!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
             return false;
         }
@@ -61,12 +61,12 @@ class AuthenticationService extends AbstractAuthenticationService
         $user = $this->fetchUserRecord($this->login['uname']);
         if (!is_array($user)) {
             // Failed login attempt (no username found)
-            $this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s), username \'%s\' not found!!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
+            $this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s), username \'%s\' not found!!', [$this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']]);
             // Logout written to log
             GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\' not found!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
         } else {
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($user, array($this->db_user['userid_column'], $this->db_user['username_column'])), AuthenticationService::class);
+                GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($user, [$this->db_user['userid_column'], $this->db_user['username_column']]), AuthenticationService::class);
             }
         }
         return $user;
@@ -96,7 +96,7 @@ class AuthenticationService extends AbstractAuthenticationService
             if (!$OK) {
                 // Failed login attempt (wrong password) - write that to the log!
                 if ($this->writeAttemptLog) {
-                    $this->writelog(255, 3, 3, 1, 'Login-attempt from %s (%s), username \'%s\', password not accepted!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
+                    $this->writelog(255, 3, 3, 1, 'Login-attempt from %s (%s), username \'%s\', password not accepted!', [$this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']]);
                     GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\', password not accepted!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
                 }
                 if ($this->writeDevLog) {
@@ -107,7 +107,7 @@ class AuthenticationService extends AbstractAuthenticationService
             if ($OK && $user['lockToDomain'] && $user['lockToDomain'] !== $this->authInfo['HTTP_HOST']) {
                 // Lock domain didn't match, so error:
                 if ($this->writeAttemptLog) {
-                    $this->writelog(255, 3, 3, 1, 'Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']));
+                    $this->writelog(255, 3, 3, 1, 'Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', [$this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']]);
                     GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']), 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
                 }
                 $OK = 0;
@@ -130,12 +130,12 @@ class AuthenticationService extends AbstractAuthenticationService
          * This parameter should not be removed!
          * The FrontendUserAuthentication call getGroups and handover the previous detected groups.
          */
-        $groupDataArr = array();
+        $groupDataArr = [];
         if ($this->mode === 'getGroupsFE') {
-            $groups = array();
+            $groups = [];
             if (is_array($user) && $user[$this->db_user['usergroup_column']]) {
                 $groupList = $user[$this->db_user['usergroup_column']];
-                $groups = array();
+                $groups = [];
                 $this->getSubGroups($groupList, '', $groups);
             }
             // ADD group-numbers if the IPmask matches.
@@ -198,7 +198,7 @@ class AuthenticationService extends AbstractAuthenticationService
         $hiddenP = !$this->authInfo['showHiddenRecords'] ? 'AND hidden=0 ' : '';
         $res = $this->getDatabaseConnection()->exec_SELECTquery('uid,subgroup', 'fe_groups', 'deleted=0 ' . $hiddenP . ' AND uid IN (' . $grList . ')' . $lockToDomain_SQL);
         // Internal group record storage
-        $groupRows = array();
+        $groupRows = [];
         // The groups array is filled
         while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
             if (!in_array($row['uid'], $groups)) {

@@ -52,7 +52,7 @@ class ExtensionManagerTables extends AbstractUpdate
      */
     protected function getUpdateStatements()
     {
-        $updateStatements = array();
+        $updateStatements = [];
 
         // Get all necessary statements for ext_tables.sql file
         $rawDefinitions = GeneralUtility::getUrl(ExtensionManagementUtility::extPath('extensionmanager') . '/ext_tables.sql');

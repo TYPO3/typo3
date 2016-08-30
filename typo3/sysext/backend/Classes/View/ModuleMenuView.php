@@ -85,7 +85,7 @@ class ModuleMenuView
      */
     protected function getCollapsedStates()
     {
-        $collapsedStates = array();
+        $collapsedStates = [];
         if ($GLOBALS['BE_USER']->uc['moduleData']['moduleMenu']) {
             $collapsedStates = $GLOBALS['BE_USER']->uc['moduleData']['moduleMenu'];
         }
@@ -101,7 +101,7 @@ class ModuleMenuView
      */
     public function getModuleData($params, $ajaxObj)
     {
-        $data = array('success' => true, 'root' => array());
+        $data = ['success' => true, 'root' => []];
         $rawModuleData = $this->getRawModuleData();
         $index = 0;
         $dummyLink = BackendUtility::getModuleUrl('dummy');
@@ -119,7 +119,7 @@ class ModuleMenuView
                 // Traverse submodules
                 if (is_array($moduleData['subitems'])) {
                     foreach ($moduleData['subitems'] as $subKey => $subData) {
-                        $data['root'][$num]['sub'][] = array(
+                        $data['root'][$num]['sub'][] = [
                             'name' => $subData['name'],
                             'description' => $subData['description'],
                             'label' => $subData['title'],
@@ -131,7 +131,7 @@ class ModuleMenuView
                             'navigationFrameScript' => $subData['navigationFrameScript'],
                             'navigationFrameScriptParam' => $subData['navigationFrameScriptParam'],
                             'navigationComponentId' => $subData['navigationComponentId']
-                        );
+                        ];
                     }
                 }
             }
@@ -204,7 +204,7 @@ class ModuleMenuView
      */
     public function getRawModuleData()
     {
-        $modules = array();
+        $modules = [];
 
         // Unset modules that are meant to be hidden from the menu.
         $this->unsetHiddenModules();
@@ -217,17 +217,17 @@ class ModuleMenuView
             $moduleLink = GeneralUtility::resolveBackPath($moduleLink);
             $moduleKey = 'modmenu_' . $moduleName;
             $moduleIcon = $this->getModuleIcon($moduleKey);
-            $modules[$moduleKey] = array(
+            $modules[$moduleKey] = [
                 'name' => $moduleName,
                 'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleName . '_tab'],
                 'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName) . ');',
                 'icon' => $moduleIcon,
                 'link' => $moduleLink,
                 'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey . 'label']
-            );
+            ];
             if (!is_array($moduleData['sub']) && $moduleData['script'] != $dummyScript) {
                 // Work around for modules with own main entry, but being self the only submodule
-                $modules[$moduleKey]['subitems'][$moduleKey] = array(
+                $modules[$moduleKey]['subitems'][$moduleKey] = [
                     'name' => $moduleName,
                     'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleName . '_tab'],
                     'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName) . ');',
@@ -238,7 +238,7 @@ class ModuleMenuView
                     'navigationFrameScript' => null,
                     'navigationFrameScriptParam' => null,
                     'navigationComponentId' => null
-                );
+                ];
             } elseif (is_array($moduleData['sub'])) {
                 foreach ($moduleData['sub'] as $submoduleName => $submoduleData) {
                     if (isset($submoduleData['script'])) {
@@ -251,7 +251,7 @@ class ModuleMenuView
                     $submoduleDescription = $GLOBALS['LANG']->moduleLabels['labels'][$submoduleKey . 'label'];
                     $originalLink = $submoduleLink;
                     $navigationFrameScript = $submoduleData['navFrameScript'];
-                    $modules[$moduleKey]['subitems'][$submoduleKey] = array(
+                    $modules[$moduleKey]['subitems'][$submoduleKey] = [
                         'name' => $moduleName . '_' . $submoduleName,
                         'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$submoduleKey],
                         'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName . '_' . $submoduleName) . ');',
@@ -262,7 +262,7 @@ class ModuleMenuView
                         'navigationFrameScript' => $navigationFrameScript,
                         'navigationFrameScriptParam' => $submoduleData['navFrameScriptParam'],
                         'navigationComponentId' => $submoduleData['navigationComponentId']
-                    );
+                    ];
                     // if the main module has a navframe script, inherit to the submodule,
                     // but only if it is not disabled explicitly (option is set to FALSE)
                     if ($moduleData['navFrameScript'] && $submoduleData['inheritNavigationComponentFromMainModule'] !== false) {
@@ -282,12 +282,12 @@ class ModuleMenuView
      */
     protected function getModuleIcon($moduleKey)
     {
-        $icon = array(
+        $icon = [
             'filename' => '',
             'size' => '',
             'title' => '',
             'html' => ''
-        );
+        ];
 
         if (!empty($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey])) {
             $imageReference = $GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey];

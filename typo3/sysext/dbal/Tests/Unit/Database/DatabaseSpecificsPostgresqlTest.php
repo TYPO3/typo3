@@ -26,7 +26,7 @@ class DatabaseSpecificsPostgresqlTest extends DatabaseSpecificsTest
      */
     protected function setUp()
     {
-        $GLOBALS['TYPO3_LOADED_EXT'] = array();
+        $GLOBALS['TYPO3_LOADED_EXT'] = [];
 
         /** @var \TYPO3\CMS\Dbal\Database\Specifics\AbstractSpecifics|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
         $this->subject = GeneralUtility::makeInstance($this->buildAccessibleProxy(\TYPO3\CMS\Dbal\Database\Specifics\PostgresSpecifics::class));
@@ -73,36 +73,36 @@ class DatabaseSpecificsPostgresqlTest extends DatabaseSpecificsTest
      */
     public function determineMetaTypeProvider()
     {
-        return array(
-            array('INT', 'I4'),
-            array('INTEGER', 'I4'),
-            array('TINYINT', 'I2'),
-            array('SMALLINT', 'I2'),
-            array('MEDIUMINT', 'I4'),
-            array('BIGINT', 'I8'),
-            array('DOUBLE', 'F'),
-            array('FLOAT', 'F'),
-            array('TIME', 'T'),
-            array('TIMESTAMP', 'T'),
-            array('DATETIME', 'T'),
-            array('DATE', 'D'),
-            array('YEAR', 'D'),
-            array('IMAGE', 'B'),
-            array('BLOB', 'B'),
-            array('MEDIUMBLOB', 'B'),
-            array('LONGBLOB', 'B'),
-            array('IMAGE', 'B'),
-            array('TEXT', 'XL'),
-            array('MEDIUMTEXT', 'XL'),
-            array('LONGTEXT', 'XL'),
-            array('STRING', 'C'),
-            array('CHAR', 'C'),
-            array('VARCHAR', 'C'),
-            array('TINYBLOB', 'B'),
-            array('TINYTEXT', 'C'),
-            array('ENUM', 'C'),
-            array('SET', 'C')
-        );
+        return [
+            ['INT', 'I4'],
+            ['INTEGER', 'I4'],
+            ['TINYINT', 'I2'],
+            ['SMALLINT', 'I2'],
+            ['MEDIUMINT', 'I4'],
+            ['BIGINT', 'I8'],
+            ['DOUBLE', 'F'],
+            ['FLOAT', 'F'],
+            ['TIME', 'T'],
+            ['TIMESTAMP', 'T'],
+            ['DATETIME', 'T'],
+            ['DATE', 'D'],
+            ['YEAR', 'D'],
+            ['IMAGE', 'B'],
+            ['BLOB', 'B'],
+            ['MEDIUMBLOB', 'B'],
+            ['LONGBLOB', 'B'],
+            ['IMAGE', 'B'],
+            ['TEXT', 'XL'],
+            ['MEDIUMTEXT', 'XL'],
+            ['LONGTEXT', 'XL'],
+            ['STRING', 'C'],
+            ['CHAR', 'C'],
+            ['VARCHAR', 'C'],
+            ['TINYBLOB', 'B'],
+            ['TINYTEXT', 'C'],
+            ['ENUM', 'C'],
+            ['SET', 'C']
+        ];
     }
 
     /**
@@ -110,26 +110,26 @@ class DatabaseSpecificsPostgresqlTest extends DatabaseSpecificsTest
      */
     public function determineNativeTypeProvider()
     {
-        return array(
-            array('C', 'VARCHAR'),
-            array('C2', 'VARCHAR'),
-            array('X', 'LONGTEXT'),
-            array('X2', 'LONGTEXT'),
-            array('XL', 'LONGTEXT'),
-            array('B', 'LONGBLOB'),
-            array('D', 'DATE'),
-            array('T', 'DATETIME'),
-            array('L', 'TINYINT'),
-            array('I', 'INT'),
-            array('I1', 'SMALLINT'),
-            array('I2', 'SMALLINT'),
-            array('I4', 'INT'),
-            array('I8', 'BIGINT'),
-            array('R', 'INT'),
-            array('F', 'DOUBLE'),
-            array('N', 'NUMERIC'),
-            array('U', 'U')
-        );
+        return [
+            ['C', 'VARCHAR'],
+            ['C2', 'VARCHAR'],
+            ['X', 'LONGTEXT'],
+            ['X2', 'LONGTEXT'],
+            ['XL', 'LONGTEXT'],
+            ['B', 'LONGBLOB'],
+            ['D', 'DATE'],
+            ['T', 'DATETIME'],
+            ['L', 'TINYINT'],
+            ['I', 'INT'],
+            ['I1', 'SMALLINT'],
+            ['I2', 'SMALLINT'],
+            ['I4', 'INT'],
+            ['I8', 'BIGINT'],
+            ['R', 'INT'],
+            ['F', 'DOUBLE'],
+            ['N', 'NUMERIC'],
+            ['U', 'U']
+        ];
     }
 
     /**
@@ -137,14 +137,14 @@ class DatabaseSpecificsPostgresqlTest extends DatabaseSpecificsTest
      */
     public function determineNativeFieldLengthProvider()
     {
-        return array(
-            array('SMALLINT', '2', '(6)'),
-            array('INT', '4', '(11)'),
-            array('BIGINT', '8', '(20)'),
-            array('VARCHAR', -1, ''),
-            array('VARCHAR', 30, '(30)'),
-            array('DOUBLE', 8, '')
-        );
+        return [
+            ['SMALLINT', '2', '(6)'],
+            ['INT', '4', '(11)'],
+            ['BIGINT', '8', '(20)'],
+            ['VARCHAR', -1, ''],
+            ['VARCHAR', 30, '(30)'],
+            ['DOUBLE', 8, '']
+        ];
     }
 
     /**
@@ -152,16 +152,16 @@ class DatabaseSpecificsPostgresqlTest extends DatabaseSpecificsTest
      */
     public function getNativeDefaultValueProvider()
     {
-        return array(
-            array(array('type' => 'SERIAL', 'has_default' => 1, 'default_value' => "nextval('tx_extensionmanager_domain_model_repository_uid_seq'::regclass)"), null),
-            array(array('type' => 'int4', 'has_default' => true, 'default_value' => 0), 0),
-            array(array('type' => 'int4', 'has_default' => true, 'default_value' => '(-1)'), -1),
-            array(array('type' => 'text', 'has_default' => false, 'default_value' => null), null),
-            array(array('type' => 'varchar', 'has_default' => true, 'default_value' => "''::character varying"), ''),
-            array(array('type' => 'varchar', 'has_default' => true, 'default_value' => 'NULL::character varying'), null),
-            array(array('type' => 'varchar', 'has_default' => true, 'default_value' => "'something'::character varying"), 'something'),
-            array(array('type' => 'varchar', 'has_default' => true, 'default_value' => "'some''thing'::character varying"), "some''thing"),
-        );
+        return [
+            [['type' => 'SERIAL', 'has_default' => 1, 'default_value' => "nextval('tx_extensionmanager_domain_model_repository_uid_seq'::regclass)"], null],
+            [['type' => 'int4', 'has_default' => true, 'default_value' => 0], 0],
+            [['type' => 'int4', 'has_default' => true, 'default_value' => '(-1)'], -1],
+            [['type' => 'text', 'has_default' => false, 'default_value' => null], null],
+            [['type' => 'varchar', 'has_default' => true, 'default_value' => "''::character varying"], ''],
+            [['type' => 'varchar', 'has_default' => true, 'default_value' => 'NULL::character varying'], null],
+            [['type' => 'varchar', 'has_default' => true, 'default_value' => "'something'::character varying"], 'something'],
+            [['type' => 'varchar', 'has_default' => true, 'default_value' => "'some''thing'::character varying"], "some''thing"],
+        ];
     }
 
     /**
@@ -169,11 +169,11 @@ class DatabaseSpecificsPostgresqlTest extends DatabaseSpecificsTest
      */
     public function getNativeExtraFieldAttributeProvider()
     {
-        return array(
-            array(array('type' => 'SERIAL'), 'auto_increment'),
-            array(array('type' => 'int4', 'default_value' => 'nextval(\'somesequence_seq\''), 'auto_increment'),
-            array(array('type' => 'int4', 'default_value' => 0), '')
-        );
+        return [
+            [['type' => 'SERIAL'], 'auto_increment'],
+            [['type' => 'int4', 'default_value' => 'nextval(\'somesequence_seq\''], 'auto_increment'],
+            [['type' => 'int4', 'default_value' => 0], '']
+        ];
     }
 
     /**
@@ -181,10 +181,10 @@ class DatabaseSpecificsPostgresqlTest extends DatabaseSpecificsTest
      */
     public function getNativeKeyForFieldProvider()
     {
-        return array(
-            array(array('primary_key' => true), 'PRI'),
-            array(array('unique' => true), 'UNI'),
-            array(array(), '')
-        );
+        return [
+            [['primary_key' => true], 'PRI'],
+            [['unique' => true], 'UNI'],
+            [[], '']
+        ];
     }
 }

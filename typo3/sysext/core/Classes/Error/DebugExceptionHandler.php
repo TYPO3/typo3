@@ -28,7 +28,7 @@ class DebugExceptionHandler extends AbstractExceptionHandler
      */
     public function __construct()
     {
-        set_exception_handler(array($this, 'handleException'));
+        set_exception_handler([$this, 'handleException']);
     }
 
     /**
@@ -154,13 +154,13 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
                                 ? $argument
                                 : substr($argument, 0, 50) . '#tripleDot#' . substr($argument, -50);
                             $preparedArgument = str_replace(
-                                array(
+                                [
                                     '#tripleDot#',
-                                    LF),
-                                array(
+                                    LF],
+                                [
                                     '<span style="color:white;">&hellip;</span>',
                                     '<span style="color:white;">&crarr;</span>'
-                                ),
+                                ],
                                 htmlspecialchars($preparedArgument)
                             );
                             $arguments .= '"<span style="color:#FF8700;" title="' . htmlspecialchars($argument) . '">'

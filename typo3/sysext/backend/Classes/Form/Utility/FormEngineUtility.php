@@ -44,15 +44,15 @@ class FormEngineUtility
      * @see overrideFieldConf()
      * @var array
      */
-    protected static $allowOverrideMatrix = array(
-        'input' => array('size', 'max', 'readOnly'),
-        'text' => array('cols', 'rows', 'wrap', 'readOnly'),
-        'check' => array('cols', 'showIfRTE', 'readOnly'),
-        'select' => array('size', 'autoSizeMax', 'maxitems', 'minitems', 'readOnly', 'treeConfig'),
-        'group' => array('size', 'autoSizeMax', 'max_size', 'show_thumbs', 'maxitems', 'minitems', 'disable_controls', 'readOnly'),
-        'inline' => array('appearance', 'behaviour', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label', 'readOnly'),
-        'imageManipulation' => array('ratios')
-    );
+    protected static $allowOverrideMatrix = [
+        'input' => ['size', 'max', 'readOnly'],
+        'text' => ['cols', 'rows', 'wrap', 'readOnly'],
+        'check' => ['cols', 'showIfRTE', 'readOnly'],
+        'select' => ['size', 'autoSizeMax', 'maxitems', 'minitems', 'readOnly', 'treeConfig'],
+        'group' => ['size', 'autoSizeMax', 'max_size', 'show_thumbs', 'maxitems', 'minitems', 'disable_controls', 'readOnly'],
+        'inline' => ['appearance', 'behaviour', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label', 'readOnly'],
+        'imageManipulation' => ['ratios']
+    ];
 
     /**
      * Overrides the TCA field configuration by TSconfig settings.
@@ -100,7 +100,7 @@ class FormEngineUtility
     {
         static $cache;
         if (is_null($cache)) {
-            $cache = array();
+            $cache = [];
         }
         $cacheIdentifier = $table . ':' . $row['uid'];
         if (!isset($cache[$cacheIdentifier])) {
@@ -177,7 +177,7 @@ class FormEngineUtility
                     foreach ($childElements as $childTable => $childRecords) {
                         $uids = array_keys($tce->substNEWwithIDs_table, $childTable);
                         if (!empty($uids)) {
-                            $newExpandedChildren = array();
+                            $newExpandedChildren = [];
                             foreach ($childRecords as $childUid => $state) {
                                 if ($state && in_array($childUid, $uids)) {
                                     $newChildUid = $tce->substNEWwithIDs[$childUid];

@@ -87,12 +87,12 @@ class SimpleLockStrategyTest extends UnitTestCase
      */
     public function invalidFileReferences()
     {
-        return array(
-            'not withing PATH_site' => array('/tmp/TYPO3-Lock-Test'),
-            'directory traversal' => array(PATH_site . 'typo3temp/../typo3temp/locks/foo'),
-            'directory traversal 2' => array(PATH_site . 'typo3temp/locks/../locks/foo'),
-            'within uploads' => array(PATH_site . 'uploads/TYPO3-Lock-Test')
-        );
+        return [
+            'not withing PATH_site' => ['/tmp/TYPO3-Lock-Test'],
+            'directory traversal' => [PATH_site . 'typo3temp/../typo3temp/locks/foo'],
+            'directory traversal 2' => [PATH_site . 'typo3temp/locks/../locks/foo'],
+            'within uploads' => [PATH_site . 'uploads/TYPO3-Lock-Test']
+        ];
     }
 
     /**

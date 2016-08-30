@@ -36,7 +36,7 @@ class AbstractController
     /**
      * @var array List of valid action names that need authentication
      */
-    protected $authenticationActions = array();
+    protected $authenticationActions = [];
 
     /**
      * @return bool
@@ -209,7 +209,7 @@ class AbstractController
         $action->setToken($this->generateTokenForAction('login'));
         $action->setPostValues($this->getPostValues());
         if ($message) {
-            $action->setMessages(array($message));
+            $action->setMessages([$message]);
         }
         $content = $action->handle();
         return $content;
@@ -435,12 +435,12 @@ class AbstractController
 
         $cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
 
-        $cacheConfigurationsWithCachesSetToNullBackend = array();
+        $cacheConfigurationsWithCachesSetToNullBackend = [];
         foreach ($cacheConfigurations as $cacheName => $cacheConfiguration) {
             // cache_core is handled in bootstrap already
             if (is_array($cacheConfiguration) && $cacheName !== 'cache_core') {
                 $cacheConfiguration['backend'] = NullBackend::class;
-                $cacheConfiguration['options'] = array();
+                $cacheConfiguration['options'] = [];
             }
             $cacheConfigurationsWithCachesSetToNullBackend[$cacheName] = $cacheConfiguration;
         }
@@ -518,7 +518,7 @@ class AbstractController
     {
         $postValues = GeneralUtility::_POST('install');
         if (!is_array($postValues)) {
-            $postValues = array();
+            $postValues = [];
         }
         return $postValues;
     }
@@ -535,7 +535,7 @@ class AbstractController
     {
         $getPostValues = GeneralUtility::_GP('install');
 
-        $parameters = array();
+        $parameters = [];
 
         // Current redirect count
         if (isset($getPostValues['redirectCount'])) {

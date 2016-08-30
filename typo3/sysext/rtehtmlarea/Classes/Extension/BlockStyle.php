@@ -47,8 +47,8 @@ class BlockStyle extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'blockstylelabel' => 'I[Block style label]',
         'blockstyle' => 'BlockStyle'
-    );
+    ];
 }

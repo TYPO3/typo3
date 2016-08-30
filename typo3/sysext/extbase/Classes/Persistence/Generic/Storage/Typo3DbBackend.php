@@ -47,7 +47,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      *
      * @var array
      */
-    protected $pageTSConfigCache = array();
+    protected $pageTSConfigCache = [];
 
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -84,7 +84,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      *
      * @var array
      */
-    protected $queryRuntimeCache = array();
+    protected $queryRuntimeCache = [];
 
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
@@ -319,7 +319,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      */
     protected function resolveWhereStatement(array $where, $tableName = 'foo')
     {
-        $whereStatement = array();
+        $whereStatement = [];
 
         foreach ($where as $fieldName => $fieldValue) {
             $whereStatement[] = $fieldName . ' = ' . $this->databaseHandle->fullQuoteStr($fieldValue, $tableName);
@@ -363,7 +363,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
                 1465223252
             );
         }
-        return array(
+        return [
             'selectFields' => implode(' ', $statementParts['keywords']) . ' ' . implode(',', $statementParts['fields']),
             'fromTable'    => implode(' ', $statementParts['tables']) . ' ' . implode(' ', $statementParts['unions']),
             'whereClause'  => (!empty($statementParts['where']) ? implode('', $statementParts['where']) : '1=1')
@@ -374,7 +374,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
             'orderBy'      => (!empty($statementParts['orderings']) ? implode(', ', $statementParts['orderings']) : ''),
             'limit'        => ($statementParts['offset'] ? $statementParts['offset'] . ', ' : '')
                 . ($statementParts['limit'] ? $statementParts['limit'] : '')
-        );
+        ];
     }
 
     /**
@@ -464,7 +464,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
             $result = $this->databaseHandle->sql_query($realStatement);
             $this->checkSqlErrors();
 
-            $rows = array();
+            $rows = [];
             while ($row = $this->databaseHandle->sql_fetch_assoc($result)) {
                 if (is_array($row)) {
                     $rows[] = $row;
@@ -560,7 +560,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
             $statementParts = $this->resolveParameterPlaceholders($statementParts, $parameters);
         }
 
-        return array($statementParts, $parameters);
+        return [$statementParts, $parameters];
     }
 
     /**
@@ -575,7 +575,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
         $tableName = reset($statementParts['tables']) ?: 'foo';
 
         foreach ($parameters as $parameterPlaceholder => $parameter) {
-            $parameter = $this->dataMapper->getPlainValue($parameter, null, array($this, 'quoteTextValueCallback'), array('tablename' => $tableName));
+            $parameter = $this->dataMapper->getPlainValue($parameter, null, [$this, 'quoteTextValueCallback'], ['tablename' => $tableName]);
             $statementParts['where'] = str_replace($parameterPlaceholder, $parameter, $statementParts['where']);
         }
 
@@ -603,8 +603,8 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      */
     public function getUidOfAlreadyPersistedValueObject(\TYPO3\CMS\Extbase\DomainObject\AbstractValueObject $object)
     {
-        $fields = array();
-        $parameters = array();
+        $fields = [];
+        $parameters = [];
         $dataMap = $this->dataMapper->getDataMap(get_class($object));
         $properties = $object->_getProperties();
         foreach ($properties as $propertyName => $propertyValue) {
@@ -618,8 +618,8 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
                 }
             }
         }
-        $sql = array();
-        $sql['additionalWhereClause'] = array();
+        $sql = [];
+        $sql['additionalWhereClause'] = [];
         $tableName = $dataMap->getTableName();
         $this->addVisibilityConstraintStatement(new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings(), $tableName, $sql);
         $statement = 'SELECT * FROM ' . $tableName;
@@ -664,7 +664,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
                 if ($parameter === null) {
                     $parameter = 'NULL';
                 } elseif (is_array($parameter) || $parameter instanceof \ArrayAccess || $parameter instanceof \Traversable) {
-                    $items = array();
+                    $items = [];
                     foreach ($parameter as $item) {
                         $items[] = $this->databaseHandle->fullQuoteStr($item, $tableName);
                     }
@@ -718,7 +718,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException
      * @todo remove after getUidOfAlreadyPersistedValueObject is adjusted, this was moved to queryParser
      */
-    protected function getFrontendConstraintStatement($tableName, $ignoreEnableFields, array $enableFieldsToBeIgnored = array(), $includeDeleted)
+    protected function getFrontendConstraintStatement($tableName, $ignoreEnableFields, array $enableFieldsToBeIgnored = [], $includeDeleted)
     {
         $statement = '';
         if ($ignoreEnableFields && !$includeDeleted) {
@@ -806,11 +806,11 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
                     . ' AND t3ver_move_id=' . $rows[0]['uid']
             );
             if (!empty($movePlaceholder)) {
-                $rows = array($movePlaceholder);
+                $rows = [$movePlaceholder];
             }
         }
 
-        $overlaidRows = array();
+        $overlaidRows = [];
         foreach ($rows as $row) {
             // If current row is a translation select its parent
             if (isset($tableName) && isset($GLOBALS['TCA'][$tableName])
@@ -836,7 +836,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
                 && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== ''
                 && !isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerTable'])
             ) {
-                if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1, 0))) {
+                if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], [-1, 0])) {
                     $overlayMode = $querySettings->getLanguageMode() === 'strict' ? 'hideNonTranslated' : '';
                     $row = $pageRepository->getRecordOverlay($tableName, $row, $querySettings->getLanguageUid(), $overlayMode);
                 }
@@ -899,7 +899,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
             // if disabled, return
             return;
         }
-        $pageIdsToClear = array();
+        $pageIdsToClear = [];
         $storagePage = null;
         $columns = $this->databaseHandle->admin_get_fields($tableName);
         if (array_key_exists('pid', $columns)) {
@@ -958,6 +958,6 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
     protected function setQueryCacheEntry($entryIdentifier, $variable)
     {
         $this->queryRuntimeCache[$entryIdentifier] = $variable;
-        $this->queryCache->set($entryIdentifier, $variable, array(), 0);
+        $this->queryCache->set($entryIdentifier, $variable, [], 0);
     }
 }

@@ -27,16 +27,16 @@ class StatusUtility
      * @return array With sub arrays by severity
      * @throws Exception
      */
-    public function sortBySeverity(array $statusObjects = array())
+    public function sortBySeverity(array $statusObjects = [])
     {
-        $orderedStatus = array(
+        $orderedStatus = [
             'alert' => $this->filterBySeverity($statusObjects, 'alert'),
             'error' => $this->filterBySeverity($statusObjects, 'error'),
             'warning' => $this->filterBySeverity($statusObjects, 'warning'),
             'ok' => $this->filterBySeverity($statusObjects, 'ok'),
             'information' => $this->filterBySeverity($statusObjects, 'information'),
             'notice' => $this->filterBySeverity($statusObjects, 'notice'),
-        );
+        ];
         return $orderedStatus;
     }
 
@@ -48,9 +48,9 @@ class StatusUtility
      * @throws Exception
      * @return array List of status objects with given severity
      */
-    public function filterBySeverity(array $statusObjects = array(), $severity = 'ok')
+    public function filterBySeverity(array $statusObjects = [], $severity = 'ok')
     {
-        $filteredObjects = array();
+        $filteredObjects = [];
         /** @var $status StatusInterface */
         foreach ($statusObjects as $status) {
             if (!$status instanceof StatusInterface) {

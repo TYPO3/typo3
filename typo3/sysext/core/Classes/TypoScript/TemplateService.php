@@ -65,7 +65,7 @@ class TemplateService
      *
      * @var array
      */
-    public $matchAlternative = array();
+    public $matchAlternative = [];
 
     /**
      * If set, the match-class matches everything! Used for backend modules only. Never frontend!
@@ -125,7 +125,7 @@ class TemplateService
      *
      * @var array
      */
-    public $allowedPaths = array();
+    public $allowedPaths = [];
 
     /**
      * See init(); Set if preview of some kind is enabled.
@@ -144,12 +144,12 @@ class TemplateService
     /**
      * @var array Contains TypoScript setup part after parsing
      */
-    public $setup = array();
+    public $setup = [];
 
     /**
      * @var array
      */
-    public $flatSetup = array();
+    public $flatSetup = [];
 
     /**
      * For fetching TypoScript code from template hierarchy before parsing it.
@@ -158,35 +158,35 @@ class TemplateService
      *
      * @var array
      */
-    public $config = array();
+    public $config = [];
 
     /**
      * Constant field
      *
      * @var array
      */
-    public $constants = array();
+    public $constants = [];
 
     /**
      * Holds the include paths of the templates (empty if from database)
      *
      * @var array
      */
-    protected $templateIncludePaths = array();
+    protected $templateIncludePaths = [];
 
     /**
      * For Template Analyser in backend
      *
      * @var array
      */
-    public $hierarchyInfo = array();
+    public $hierarchyInfo = [];
 
     /**
      * For Template Analyser in backend (setup content only)
      *
      * @var array
      */
-    public $hierarchyInfoToRoot = array();
+    public $hierarchyInfoToRoot = [];
 
     /**
      * Next-level flag (see runThroughTemplates())
@@ -255,38 +255,38 @@ class TemplateService
      * Used by Backend only (Typoscript Template Analyzer)
      *
      */
-    public $clearList_const = array();
+    public $clearList_const = [];
 
     /**
      * Used by Backend only (Typoscript Template Analyzer)
      *
      * @var array
      */
-    public $clearList_setup = array();
+    public $clearList_setup = [];
 
     /**
      * @var array
      */
-    public $parserErrors = array();
+    public $parserErrors = [];
 
     /**
      * @var array
      */
-    public $setup_constants = array();
+    public $setup_constants = [];
 
     /**
      * Used by getFileName for caching of references to file resources
      *
      * @var array
      */
-    public $fileCache = array();
+    public $fileCache = [];
 
     /**
      * Keys are frame names and values are type-values, which must be used to refer correctly to the content of the frames.
      *
      * @var array
      */
-    public $frames = array();
+    public $frames = [];
 
     /**
      * Contains mapping of Page id numbers to MP variables.
@@ -378,7 +378,7 @@ class TemplateService
         }
         $this->whereClause .= 'AND (starttime<=' . $GLOBALS['SIM_ACCESS_TIME'] . ') AND (endtime=0 OR endtime>' . $GLOBALS['SIM_ACCESS_TIME'] . ')';
         // Sets the paths from where TypoScript resources are allowed to be used:
-        $this->allowedPaths = array(
+        $this->allowedPaths = [
             $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
             // fileadmin/ path
             'uploads/',
@@ -386,7 +386,7 @@ class TemplateService
             TYPO3_mainDir . 'ext/',
             TYPO3_mainDir . 'sysext/',
             'typo3conf/ext/'
-        );
+        ];
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths']) {
             $pathArr = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths'], true);
             foreach ($pathArr as $p) {
@@ -429,7 +429,7 @@ class TemplateService
             /** @var $matchObj ConditionMatcher */
             $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
             $matchObj->setRootline((array)$cc['rootLine']);
-            $sectionsMatch = array();
+            $sectionsMatch = [];
             foreach ($cc['all'] as $key => $pre) {
                 if ($matchObj->match($pre)) {
                     $sectionsMatch[$key] = $pre;
@@ -489,7 +489,7 @@ class TemplateService
                 $rowSumHash = md5('ROWSUM:' . serialize($this->rowSum));
                 $result = PageRepository::getHash($rowSumHash);
                 if (is_array($result)) {
-                    $cc = array();
+                    $cc = [];
                     $cc['all'] = $result;
                     $cc['rowSum'] = $this->rowSum;
                     $cc = $this->matching($cc);
@@ -515,7 +515,7 @@ class TemplateService
                 // Make configuration
                 $this->generateConfig();
                 // This stores the template hash thing
-                $cc = array();
+                $cc = [];
                 // All sections in the template at this point is found
                 $cc['all'] = $this->sections;
                 // The line of templates is collected
@@ -543,10 +543,10 @@ class TemplateService
                 $mpvarHash = GeneralUtility::md5int($this->getTypoScriptFrontendController()->MP);
                 /** @var $pageSectionCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
                 $pageSectionCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_pagesection');
-                $pageSectionCache->set((int)$this->getTypoScriptFrontendController()->id . '_' . $mpvarHash, $cc, array(
+                $pageSectionCache->set((int)$this->getTypoScriptFrontendController()->id . '_' . $mpvarHash, $cc, [
                     'pageId_' . (int)$this->getTypoScriptFrontendController()->id,
                     'mpvarHash_' . $mpvarHash
-                ));
+                ]);
             }
             // If everything OK.
             if ($this->rootId && $this->rootLine && $this->setup) {
@@ -572,10 +572,10 @@ class TemplateService
      */
     public function runThroughTemplates($theRootLine, $start_template_uid = 0)
     {
-        $this->constants = array();
-        $this->config = array();
-        $this->rowSum = array();
-        $this->hierarchyInfoToRoot = array();
+        $this->constants = [];
+        $this->config = [];
+        $this->rowSum = [];
+        $this->hierarchyInfoToRoot = [];
         $this->absoluteRootLine = $theRootLine;
         $this->isDefaultTypoScriptAdded = false;
 
@@ -614,7 +614,7 @@ class TemplateService
 
         // Process extension static files if not done yet, but explicitly requested
         if (!$this->extensionStaticsProcessed && $this->processExtensionStatics) {
-            $this->addExtensionStatics('sys_0', 'sys_0', 0, array());
+            $this->addExtensionStatics('sys_0', 'sys_0', 0, []);
         }
 
         // Add the global default TypoScript from the TYPO3_CONF_VARS
@@ -639,7 +639,7 @@ class TemplateService
     public function processTemplate($row, $idList, $pid, $templateID = '', $templateParent = '', $includePath = '')
     {
         // Adding basic template record information to rowSum array
-        $this->rowSum[] = array($row['uid'], $row['title'], $row['tstamp']);
+        $this->rowSum[] = [$row['uid'], $row['title'], $row['tstamp']];
         // Processing "Clear"-flags
         $clConst = 0;
         $clConf = 0;
@@ -652,7 +652,7 @@ class TemplateService
                     $constantConfiguration = '';
                 }
                 unset($constantConfiguration);
-                $this->clearList_const = array();
+                $this->clearList_const = [];
             }
             if ($clConf) {
                 // Keep amount of items to stay in sync with $this->templateIncludePaths so processIncludes() does not break
@@ -660,8 +660,8 @@ class TemplateService
                     $configConfiguration = '';
                 }
                 unset($configConfiguration);
-                $this->hierarchyInfoToRoot = array();
-                $this->clearList_setup = array();
+                $this->hierarchyInfoToRoot = [];
+                $this->clearList_setup = [];
             }
         }
         // Include static records (static_template) or files (from extensions) (#1/2)
@@ -697,7 +697,7 @@ class TemplateService
             $this->includeStaticTypoScriptSources($idList, $templateID, $pid, $row);
         }
         // Creating hierarchy information; Used by backend analysis tools
-        $this->hierarchyInfo[] = ($this->hierarchyInfoToRoot[] = array(
+        $this->hierarchyInfo[] = ($this->hierarchyInfoToRoot[] = [
             'root' => trim($row['root']),
             'next' => $row['nextLevel'],
             'clConst' => $clConst,
@@ -708,7 +708,7 @@ class TemplateService
             'uid' => $row['uid'],
             'pid' => $row['pid'],
             'configLines' => substr_count($row['config'], LF) + 1
-        ));
+        ]);
         // Adding the content of the fields constants (Constants) and config (Setup)
         $this->constants[] = $row['constants'];
         $this->config[] = $row['config'];
@@ -722,7 +722,7 @@ class TemplateService
         // If the template record is a Rootlevel record, set the flag and clear the template rootLine (so it starts over from this point)
         if (trim($row['root'])) {
             $this->rootId = $pid;
-            $this->rootLine = array();
+            $this->rootLine = [];
         }
         // If a template is set to be active on the next level set this internal value to point to this UID. (See runThroughTemplates())
         if ($row['nextLevel']) {
@@ -749,7 +749,7 @@ class TemplateService
             return;
         }
 
-        $fullRootLineByUid = array();
+        $fullRootLineByUid = [];
         foreach ($fullRootLine as $rootLineData) {
             $fullRootLineByUid[$rootLineData['uid']] = $rootLineData;
         }
@@ -780,12 +780,12 @@ class TemplateService
         // Static Template Records (static_template): include_static is a list of static templates to include
         // Call function for link rendering:
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSources'])) {
-            $_params = array(
+            $_params = [
                 'idList' => &$idList,
                 'templateId' => &$templateID,
                 'pid' => &$pid,
                 'row' => &$row
-            );
+            ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSources'] as $_funcRef) {
                 GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
@@ -806,14 +806,14 @@ class TemplateService
                         $ISF_filePath = ExtensionManagementUtility::extPath($ISF_extKey) . $ISF_localPath;
                         if (@is_dir($ISF_filePath)) {
                             $mExtKey = str_replace('_', '', $ISF_extKey . '/' . $ISF_localPath);
-                            $subrow = array(
+                            $subrow = [
                                 'constants' => $this->getTypoScriptSourceFileContent($ISF_filePath, 'constants'),
                                 'config' => $this->getTypoScriptSourceFileContent($ISF_filePath, 'setup'),
                                 'include_static' => @file_exists(($ISF_filePath . 'include_static.txt')) ? implode(',', array_unique(GeneralUtility::intExplode(',', GeneralUtility::getUrl($ISF_filePath . 'include_static.txt')))) : '',
                                 'include_static_file' => @file_exists(($ISF_filePath . 'include_static_file.txt')) ? implode(',', array_unique(explode(',', GeneralUtility::getUrl($ISF_filePath . 'include_static_file.txt')))) : '',
                                 'title' => $ISF_file,
                                 'uid' => $mExtKey
-                            );
+                            ];
                             $subrow = $this->prependStaticExtra($subrow);
                             $this->processTemplate($subrow, $idList . ',ext_' . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID, $ISF_filePath);
                         }
@@ -828,12 +828,12 @@ class TemplateService
         }
         // Include Static Template Records after all other TypoScript has been included.
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'])) {
-            $_params = array(
+            $_params = [
                 'idList' => &$idList,
                 'templateId' => &$templateID,
                 'pid' => &$pid,
                 'row' => &$row
-            );
+            ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'] as $_funcRef) {
                 GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
@@ -850,7 +850,7 @@ class TemplateService
      */
     protected function getTypoScriptSourceFileContent($filePath, $baseName)
     {
-        $extensions = array('.ts', '.txt');
+        $extensions = ['.ts', '.txt'];
         foreach ($extensions as $extension) {
             $fileName = $filePath . $baseName . $extension;
             if (@file_exists($fileName)) {
@@ -879,12 +879,12 @@ class TemplateService
         foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $files) {
             if ((is_array($files) || $files instanceof \ArrayAccess) && ($files['ext_typoscript_constants.txt'] || $files['ext_typoscript_setup.txt'])) {
                 $mExtKey = str_replace('_', '', $extKey);
-                $subrow = array(
+                $subrow = [
                     'constants' => $files['ext_typoscript_constants.txt'] ? GeneralUtility::getUrl($files['ext_typoscript_constants.txt']) : '',
                     'config' => $files['ext_typoscript_setup.txt'] ? GeneralUtility::getUrl($files['ext_typoscript_setup.txt']) : '',
                     'title' => $extKey,
                     'uid' => $mExtKey
-                );
+                ];
                 $subrow = $this->prependStaticExtra($subrow);
                 $extPath = ExtensionManagementUtility::extPath($extKey);
                 $this->processTemplate($subrow, $idList . ',ext_' . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID, $extPath);
@@ -966,7 +966,7 @@ class TemplateService
         /** @var $constants Parser\TypoScriptParser */
         $constants = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
         $constants->breakPointLN = (int)$this->ext_constants_BRP;
-        $constants->setup = $this->mergeConstantsFromPageTSconfig(array());
+        $constants->setup = $this->mergeConstantsFromPageTSconfig([]);
         /** @var $matchObj ConditionMatcher */
         $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
         $matchObj->setSimulateMatchConditions($this->matchAlternative);
@@ -978,7 +978,7 @@ class TemplateService
         // Read out parse errors if any
         $this->parserErrors['constants'] = $constants->errors;
         // Then flatten the structure from a multi-dim array to a single dim array with all constants listed as key/value pairs (ready for substitution)
-        $this->flatSetup = array();
+        $this->flatSetup = [];
         $this->flattenSetup($constants->setup, '', '');
         // ***********************************************
         // Parse TypoScript Setup (here called "config")
@@ -1012,7 +1012,7 @@ class TemplateService
         // Searching for possible unsubstituted constants left (only for information)
         if ($this->verbose) {
             if (strstr($all, '{$')) {
-                $theConstList = array();
+                $theConstList = [];
                 $findConst = explode('{$', $all);
                 array_shift($findConst);
                 foreach ($findConst as $constVal) {
@@ -1085,7 +1085,7 @@ class TemplateService
         }
 
         $paths = $this->templateIncludePaths;
-        $files = array();
+        $files = [];
         foreach ($this->constants as &$value) {
             $includeData = Parser\TypoScriptParser::checkIncludeLines($value, 1, true, array_shift($paths));
             $files = array_merge($files, $includeData['files']);
@@ -1103,7 +1103,7 @@ class TemplateService
         if (!empty($files)) {
             $files = array_unique($files);
             foreach ($files as $file) {
-                $this->rowSum[] = array($file, filemtime($file));
+                $this->rowSum[] = [$file, filemtime($file)];
             }
         }
 
@@ -1119,7 +1119,7 @@ class TemplateService
      */
     public function mergeConstantsFromPageTSconfig($constArray)
     {
-        $TSdataArray = array();
+        $TSdataArray = [];
         // Setting default configuration:
         $TSdataArray[] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
         for ($a = 0; $a <= $this->outermostRootlineIndexWithTemplate; $a++) {
@@ -1216,7 +1216,7 @@ class TemplateService
         // Recursive substitution of constants (up to 10 nested levels)
         for ($i = 0; $i < 10 && !$noChange; $i++) {
             $old_all = $all;
-            $all = preg_replace_callback('/\\{\\$(.[^}]*)\\}/', array($this, 'substituteConstantsCallBack'), $all);
+            $all = preg_replace_callback('/\\{\\$(.[^}]*)\\}/', [$this, 'substituteConstantsCallBack'], $all);
             if ($old_all == $all) {
                 $noChange = true;
             }
@@ -1256,11 +1256,11 @@ class TemplateService
     {
         // Initialize variables:
         $splitCount = (int)$splitCount;
-        $conf2 = array();
+        $conf2 = [];
         if ($splitCount && is_array($conf)) {
             // Initialize output to carry at least the keys:
             for ($aKey = 0; $aKey < $splitCount; $aKey++) {
-                $conf2[$aKey] = array();
+                $conf2[$aKey] = [];
             }
             // Recursive processing of array keys:
             foreach ($conf as $cKey => $val) {
@@ -1284,12 +1284,12 @@ class TemplateService
                             $first = explode('||', $main[0]);
                             $firstC = count($first);
                         }
-                        $middle = array();
+                        $middle = [];
                         if ($main[1]) {
                             $middle = explode('||', $main[1]);
                             $middleC = count($middle);
                         }
-                        $last = array();
+                        $last = [];
                         $value = '';
                         if ($main[2]) {
                             $last = explode('||', $main[2]);
@@ -1461,7 +1461,7 @@ class TemplateService
      */
     public static function sortedKeyList($setupArr, $acceptOnlyProperties = false)
     {
-        $keyArr = array();
+        $keyArr = [];
         $setupArrKeys = array_keys($setupArr);
         foreach ($setupArrKeys as $key) {
             if ($acceptOnlyProperties || MathUtility::canBeInterpretedAsInteger($key)) {
@@ -1515,7 +1515,7 @@ class TemplateService
      */
     public function linkData($page, $oTarget, $no_cache, $script, $overrideArray = null, $addParams = '', $typeOverride = '', $targetDomain = '')
     {
-        $LD = array();
+        $LD = [];
         // Overriding some fields in the page record and still preserves the values by adding them as parameters. Little strange function.
         if (is_array($overrideArray)) {
             foreach ($overrideArray as $theKey => $theNewVal) {
@@ -1579,11 +1579,11 @@ class TemplateService
         $LD['totalURL'] = $this->removeQueryString(($LD['url'] . $LD['type'] . $LD['no_cache'] . $LD['linkVars'] . $this->getTypoScriptFrontendController()->getMethodUrlIdToken)) . $LD['sectionIndex'];
         // Call post processing function for link rendering:
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'])) {
-            $_params = array(
+            $_params = [
                 'LD' => &$LD,
-                'args' => array('page' => $page, 'oTarget' => $oTarget, 'no_cache' => $no_cache, 'script' => $script, 'overrideArray' => $overrideArray, 'addParams' => $addParams, 'typeOverride' => $typeOverride, 'targetDomain' => $targetDomain),
+                'args' => ['page' => $page, 'oTarget' => $oTarget, 'no_cache' => $no_cache, 'script' => $script, 'overrideArray' => $overrideArray, 'addParams' => $addParams, 'typeOverride' => $typeOverride, 'targetDomain' => $targetDomain],
                 'typeNum' => $typeNum
-            );
+            ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'] as $_funcRef) {
                 GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
@@ -1605,11 +1605,11 @@ class TemplateService
     {
         // Create map if not found already:
         if (!is_array($this->MPmap)) {
-            $this->MPmap = array();
+            $this->MPmap = [];
             $rootPoints = GeneralUtility::trimExplode(',', strtolower($this->getTypoScriptFrontendController()->config['config']['MP_mapRootPoints']), true);
             // Traverse rootpoints:
             foreach ($rootPoints as $p) {
-                $initMParray = array();
+                $initMParray = [];
                 if ($p == 'root') {
                     $p = $this->rootLine[0]['uid'];
                     if ($this->rootLine[0]['_MOUNT_OL'] && $this->rootLine[0]['_MP_PARAM']) {
@@ -1637,7 +1637,7 @@ class TemplateService
      * @return void
      * @see getFromMPvar()
      */
-    public function initMPmap_create($id, $MP_array = array(), $level = 0)
+    public function initMPmap_create($id, $MP_array = [], $level = 0)
     {
         $id = (int)$id;
         if ($id <= 0) {
@@ -1661,7 +1661,7 @@ class TemplateService
             }
         }
         if ($id && $level < 20) {
-            $nextLevelAcc = array();
+            $nextLevelAcc = [];
             // Select and traverse current level pages:
             $res = $this->getDatabaseConnection()->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol', 'pages', 'pid=' . (int)$id . ' AND deleted=0 AND doktype<>' . PageRepository::DOKTYPE_RECYCLER . ' AND doktype<>' . PageRepository::DOKTYPE_BE_USER_SECTION);
             while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
@@ -1684,7 +1684,7 @@ class TemplateService
                     }
                     // Register recursive call
                     // (have to do it this way since ALL of the current level should be registered BEFORE the sublevel at any time)
-                    $nextLevelAcc[] = array($next_id, $next_MP_array);
+                    $nextLevelAcc[] = [$next_id, $next_MP_array];
                 }
             }
             $this->getDatabaseConnection()->sql_free_result($res);
@@ -1715,7 +1715,7 @@ class TemplateService
             array_unshift($this->templateIncludePaths, '');
             // prepare a proper entry to hierachyInfo (used by TemplateAnalyzer in BE)
             $rootTemplateId = $this->hierarchyInfo[count($this->hierarchyInfo)-1]['templateID'];
-            $defaultTemplateInfo = array(
+            $defaultTemplateInfo = [
                 'root' => '',
                 'next' => '',
                 'clConst' => '',
@@ -1726,7 +1726,7 @@ class TemplateService
                 'uid' => '_defaultTypoScript_',
                 'pid' => '',
                 'configLines' => substr_count((string)$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'], LF) + 1
-            );
+            ];
             // push info to information arrays used in BE by TemplateTools (Analyzer)
             array_unshift($this->clearList_const, $defaultTemplateInfo['uid']);
             array_unshift($this->clearList_setup, $defaultTemplateInfo['uid']);

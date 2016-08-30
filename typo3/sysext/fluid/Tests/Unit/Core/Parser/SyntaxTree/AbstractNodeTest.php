@@ -24,9 +24,9 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->renderingContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class, array(), array(), '', false);
+        $this->renderingContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class, [], [], '', false);
 
-        $this->abstractNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode::class, array('evaluate'));
+        $this->abstractNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode::class, ['evaluate']);
 
         $this->childNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode::class);
         $this->abstractNode->addChildNode($this->childNode);
@@ -46,6 +46,6 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function childNodeCanBeReadOutAgain()
     {
-        $this->assertSame($this->abstractNode->getChildNodes(), array($this->childNode));
+        $this->assertSame($this->abstractNode->getChildNodes(), [$this->childNode]);
     }
 }

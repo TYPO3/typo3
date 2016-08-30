@@ -45,7 +45,7 @@ class DebuggerUtility
      *
      * @var array
      */
-    protected static $blacklistedClassNames = array(
+    protected static $blacklistedClassNames = [
         'PHPUnit_Framework_MockObject_InvocationMocker',
         \TYPO3\CMS\Extbase\Reflection\ReflectionService::class,
         \TYPO3\CMS\Extbase\Object\ObjectManager::class,
@@ -53,14 +53,14 @@ class DebuggerUtility
         \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class,
         \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory::class,
         \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class
-    );
+    ];
 
     /**
      * Hardcoded list of property names (regex) which should not be displayed during debugging
      *
      * @var array
      */
-    protected static $blacklistedPropertyNames = array('warning');
+    protected static $blacklistedPropertyNames = ['warning'];
 
     /**
      * Is set to TRUE once the CSS file is included in the current page to prevent double inclusions of the CSS file.

@@ -113,7 +113,7 @@ class FrontendEditingController
      * @param string $addUrlParamStr Additional URL parameters for the link pointing to FormEngine
      * @return string The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
      */
-    public function displayEditIcons($content, $params, array $conf = array(), $currentRecord = '', array $dataArray = array(), $addUrlParamStr = '')
+    public function displayEditIcons($content, $params, array $conf = [], $currentRecord = '', array $dataArray = [], $addUrlParamStr = '')
     {
         // Check incoming params:
         list($currentRecordTable, $currentRecordUID) = explode(':', $currentRecord);
@@ -207,14 +207,14 @@ class FrontendEditingController
         if ($cmd == 'save' || $cmd && $table && $uid && isset($GLOBALS['TCA'][$table])) {
             // Hook for defining custom editing actions. Naming is incorrect, but preserves compatibility.
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction'])) {
-                $_params = array();
+                $_params = [];
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction'] as $_funcRef) {
                     GeneralUtility::callUserFunction($_funcRef, $_params, $this);
                 }
             }
             // Perform the requested editing command.
             $cmdAction = 'do' . ucwords($cmd);
-            if (is_callable(array($this, $cmdAction))) {
+            if (is_callable([$this, $cmdAction])) {
                 $this->{$cmdAction}($table, $uid);
             } else {
                 throw new \UnexpectedValueException('The specified frontend edit command (' . $cmd . ') is not valid.', 1225818120);
@@ -233,10 +233,10 @@ class FrontendEditingController
     {
         $hideField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
         if ($hideField) {
-            $recData = array();
+            $recData = [];
             $recData[$table][$uid][$hideField] = 1;
             $this->initializeTceMain();
-            $this->tce->start($recData, array());
+            $this->tce->start($recData, []);
             $this->tce->process_datamap();
         }
     }
@@ -252,10 +252,10 @@ class FrontendEditingController
     {
         $hideField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
         if ($hideField) {
-            $recData = array();
+            $recData = [];
             $recData[$table][$uid][$hideField] = 0;
             $this->initializeTceMain();
-            $this->tce->start($recData, array());
+            $this->tce->start($recData, []);
             $this->tce->process_datamap();
         }
     }
@@ -308,7 +308,7 @@ class FrontendEditingController
      */
     protected function move($table, $uid, $direction = '', $afterUID = 0)
     {
-        $cmdData = array();
+        $cmdData = [];
         $sortField = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
         if ($sortField) {
             // Get self
@@ -317,7 +317,7 @@ class FrontendEditingController
             if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                 // Record before or after
                 if ($GLOBALS['BE_USER']->adminPanel instanceof \TYPO3\CMS\Frontend\View\AdminPanelView && $GLOBALS['BE_USER']->adminPanel->extGetFeAdminValue('preview')) {
-                    $ignore = array('starttime' => 1, 'endtime' => 1, 'disabled' => 1, 'fe_group' => 1);
+                    $ignore = ['starttime' => 1, 'endtime' => 1, 'disabled' => 1, 'fe_group' => 1];
                 }
                 $copyAfterFieldsQuery = '';
                 if ($GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields']) {
@@ -357,7 +357,7 @@ class FrontendEditingController
             }
             if (!empty($cmdData)) {
                 $this->initializeTceMain();
-                $this->tce->start(array(), $cmdData);
+                $this->tce->start([], $cmdData);
                 $this->tce->process_cmdmap();
             }
         }
@@ -375,7 +375,7 @@ class FrontendEditingController
         $cmdData[$table][$uid]['delete'] = 1;
         if (!empty($cmdData)) {
             $this->initializeTceMain();
-            $this->tce->start(array(), $cmdData);
+            $this->tce->start([], $cmdData);
             $this->tce->process_cmdmap();
         }
     }
@@ -392,7 +392,7 @@ class FrontendEditingController
         $data = $this->TSFE_EDIT['data'];
         if (!empty($data)) {
             $this->initializeTceMain();
-            $this->tce->start($data, array());
+            $this->tce->start($data, []);
             $this->tce->process_uploads($_FILES);
             $this->tce->process_datamap();
             // Save the new UID back into TSFE_EDIT
@@ -569,7 +569,7 @@ class FrontendEditingController
     public function getHiddenFields(array $dataArray)
     {
         // No special hidden fields needed.
-        return array();
+        return [];
     }
 
     /**

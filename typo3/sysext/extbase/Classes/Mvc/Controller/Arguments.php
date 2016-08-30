@@ -27,12 +27,12 @@ class Arguments extends \ArrayObject
     /**
      * @var array Names of the arguments contained by this object
      */
-    protected $argumentNames = array();
+    protected $argumentNames = [];
 
     /**
      * @var array
      */
-    protected $argumentShortNames = array();
+    protected $argumentShortNames = [];
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
@@ -208,7 +208,7 @@ class Arguments extends \ArrayObject
      */
     public function getArgumentShortNames()
     {
-        $argumentShortNames = array();
+        $argumentShortNames = [];
         /** @var Argument $argument */
         foreach ($this as $argument) {
             $argumentShortNames[$argument->getShortName()] = true;
@@ -275,7 +275,7 @@ class Arguments extends \ArrayObject
         foreach ($this->argumentNames as $argumentName => $booleanValue) {
             parent::offsetUnset($argumentName);
         }
-        $this->argumentNames = array();
+        $this->argumentNames = [];
     }
 
     /**

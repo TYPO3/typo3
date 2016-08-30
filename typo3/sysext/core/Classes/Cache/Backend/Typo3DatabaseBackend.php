@@ -121,7 +121,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
      * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set.
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if the data to be stored is not a string.
      */
-    public function set($entryIdentifier, $data, array $tags = array(), $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
         $this->throwExceptionIfFrontendDoesNotExist();
         if (!is_string($data)) {
@@ -141,18 +141,18 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
         if ($this->compression) {
             $data = gzcompress($data, $this->compressionLevel);
         }
-        $GLOBALS['TYPO3_DB']->exec_INSERTquery($this->cacheTable, array(
+        $GLOBALS['TYPO3_DB']->exec_INSERTquery($this->cacheTable, [
             'identifier' => $entryIdentifier,
             'expires' => $expires,
             'content' => $data
-        ));
+        ]);
         if (!empty($tags)) {
-            $fields = array();
+            $fields = [];
             $fields[] = 'identifier';
             $fields[] = 'tag';
-            $tagRows = array();
+            $tagRows = [];
             foreach ($tags as $tag) {
-                $tagRow = array();
+                $tagRow = [];
                 $tagRow[] = $entryIdentifier;
                 $tagRow[] = $tag;
                 $tagRows[] = $tagRow;
@@ -240,7 +240,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
     public function findIdentifiersByTag($tag)
     {
         $this->throwExceptionIfFrontendDoesNotExist();
-        $cacheEntryIdentifiers = array();
+        $cacheEntryIdentifiers = [];
         $cacheEntryIdentifierRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
             $this->identifierField,
             $this->tableList,
@@ -296,7 +296,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
     {
         $tagsTableWhereClause = $this->tagsTable . '.tag = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tag, $this->tagsTable);
         $cacheEntryIdentifierRowsResource = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT identifier', $this->tagsTable, $tagsTableWhereClause);
-        $cacheEntryIdentifiers = array();
+        $cacheEntryIdentifiers = [];
         while ($cacheEntryIdentifierRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($cacheEntryIdentifierRowsResource)) {
             $cacheEntryIdentifiers[] = $GLOBALS['TYPO3_DB']->fullQuoteStr($cacheEntryIdentifierRow['identifier'], $this->cacheTable);
         }
@@ -337,7 +337,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
     {
         // Get identifiers of expired cache entries
         $cacheEntryIdentifierRowsResource = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT identifier', $this->cacheTable, $this->expiredStatement);
-        $cacheEntryIdentifiers = array();
+        $cacheEntryIdentifiers = [];
         while ($cacheEntryIdentifierRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($cacheEntryIdentifierRowsResource)) {
             $cacheEntryIdentifiers[] = $GLOBALS['TYPO3_DB']->fullQuoteStr($cacheEntryIdentifierRow['identifier'], $this->tagsTable);
         }

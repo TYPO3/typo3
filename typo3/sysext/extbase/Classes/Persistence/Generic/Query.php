@@ -87,7 +87,7 @@ class Query implements QueryInterface
     /**
      * @var int
      */
-    protected $orderings = array();
+    protected $orderings = [];
 
     /**
      * @var int
@@ -368,7 +368,7 @@ class Query implements QueryInterface
      * @param array $parameters An array of parameters. These will be bound to placeholders '?' in the $statement.
      * @return QueryInterface
      */
-    public function statement($statement, array $parameters = array())
+    public function statement($statement, array $parameters = [])
     {
         $this->statement = $this->qomFactory->statement($statement, $parameters);
         return $this;
@@ -620,7 +620,7 @@ class Query implements QueryInterface
      */
     public function __sleep()
     {
-        return array('type', 'source', 'constraint', 'statement', 'orderings', 'limit', 'offset', 'querySettings');
+        return ['type', 'source', 'constraint', 'statement', 'orderings', 'limit', 'offset', 'querySettings'];
     }
 
     /**

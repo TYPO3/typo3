@@ -39,15 +39,15 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
      */
     public function findDemanded(\TYPO3\CMS\Beuser\Domain\Model\Demand $demand)
     {
-        $constraints = array();
+        $constraints = [];
         $query = $this->createQuery();
         // Find invisible as well, but not deleted
         $constraints[] = $query->equals('deleted', 0);
-        $query->setOrderings(array('userName' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
+        $query->setOrderings(['userName' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING]);
         // Username
         if ($demand->getUserName() !== '') {
-            $searchConstraints = array();
-            foreach (array('userName', 'uid', 'realName') as $field) {
+            $searchConstraints = [];
+            foreach (['userName', 'uid', 'realName'] as $field) {
                 $searchConstraints[] = $query->like(
                     $field, '%' . $GLOBALS['TYPO3_DB']->escapeStrForLike($demand->getUserName(), 'be_users') . '%'
                 );
@@ -100,7 +100,7 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
      */
     public function findOnline()
     {
-        $uids = array();
+        $uids = [];
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT ses_userid', 'be_sessions', '');
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $uids[] = $row['ses_userid'];

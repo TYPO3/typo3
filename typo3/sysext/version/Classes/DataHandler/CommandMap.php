@@ -51,7 +51,7 @@ class CommandMap
     /**
      * @var array
      */
-    protected $commandMap = array();
+    protected $commandMap = [];
 
     /**
      * @var int
@@ -264,7 +264,7 @@ class CommandMap
      * @param array $arguments Optional leading arguments for the callback method
      * @return void
      */
-    protected function invokeWorkspacesSwapItems($callbackMethod, array $arguments = array())
+    protected function invokeWorkspacesSwapItems($callbackMethod, array $arguments = [])
     {
         // Traverses the cmd[] array and fetches the accordant actions:
         foreach ($this->commandMap as $table => $liveIdCollection) {
@@ -272,7 +272,7 @@ class CommandMap
                 foreach ($commandCollection as $command => $properties) {
                     if ($command === 'version' && isset($properties['action']) && $properties['action'] === 'swap') {
                         if (isset($properties['swapWith']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($properties['swapWith'])) {
-                            call_user_func_array(array($this, $callbackMethod), array_merge($arguments, array($table, $liveId, $properties)));
+                            call_user_func_array([$this, $callbackMethod], array_merge($arguments, [$table, $liveId, $properties]));
                         }
                     }
                 }
@@ -295,7 +295,7 @@ class CommandMap
         if ($this->workspacesSwapMode === 'any' || $this->workspacesSwapMode === 'pages') {
             $this->invokeWorkspacesSwapItems('applyWorkspacesSwapBehaviour');
         }
-        $this->invokeWorkspacesSwapItems('addWorkspacesSwapElements', array($dependency));
+        $this->invokeWorkspacesSwapItems('addWorkspacesSwapElements', [$dependency]);
         $this->applyWorkspacesDependencies($dependency, $scope);
     }
 
@@ -309,15 +309,15 @@ class CommandMap
      */
     protected function applyWorkspacesSwapBehaviour($table, $liveId, array $properties)
     {
-        $extendedCommandMap = array();
-        $elementList = array();
+        $extendedCommandMap = [];
+        $elementList = [];
         // Fetch accordant elements if the swapMode is 'any' or 'pages':
         if ($this->workspacesSwapMode === 'any' || $this->workspacesSwapMode === 'pages' && $table === 'pages') {
             $elementList = $this->getParent()->findPageElementsForVersionSwap($table, $liveId, $properties['swapWith']);
         }
         foreach ($elementList as $elementTable => $elementIdArray) {
             foreach ($elementIdArray as $elementIds) {
-                $extendedCommandMap[$elementTable][$elementIds[0]]['version'] = array_merge($properties, array('swapWith' => $elementIds[1]));
+                $extendedCommandMap[$elementTable][$elementIds[0]]['version'] = array_merge($properties, ['swapWith' => $elementIds[1]]);
             }
         }
         if (!empty($elementList)) {
@@ -337,18 +337,18 @@ class CommandMap
      */
     protected function addWorkspacesSwapElements(\TYPO3\CMS\Version\Dependency\DependencyResolver $dependency, $table, $liveId, array $properties)
     {
-        $elementList = array();
+        $elementList = [];
         // Fetch accordant elements if the swapMode is 'any' or 'pages':
         if ($this->workspacesSwapMode === 'any' || $this->workspacesSwapMode === 'pages' && $table === 'pages') {
             $elementList = $this->getParent()->findPageElementsForVersionSwap($table, $liveId, $properties['swapWith']);
         }
         foreach ($elementList as $elementTable => $elementIdArray) {
             foreach ($elementIdArray as $elementIds) {
-                $dependency->addElement($elementTable, $elementIds[1], array('liveId' => $elementIds[0], 'properties' => array_merge($properties, array('swapWith' => $elementIds[1]))));
+                $dependency->addElement($elementTable, $elementIds[1], ['liveId' => $elementIds[0], 'properties' => array_merge($properties, ['swapWith' => $elementIds[1]])]);
             }
         }
         if (empty($elementList)) {
-            $dependency->addElement($table, $properties['swapWith'], array('liveId' => $liveId, 'properties' => $properties));
+            $dependency->addElement($table, $properties['swapWith'], ['liveId' => $liveId, 'properties' => $properties]);
         }
     }
 
@@ -359,7 +359,7 @@ class CommandMap
      * @param array $arguments Optional leading arguments for the callback method
      * @return void
      */
-    protected function invokeWorkspacesSetStageItems($callbackMethod, array $arguments = array())
+    protected function invokeWorkspacesSetStageItems($callbackMethod, array $arguments = [])
     {
         // Traverses the cmd[] array and fetches the accordant actions:
         foreach ($this->commandMap as $table => $versionIdCollection) {
@@ -367,7 +367,7 @@ class CommandMap
                 foreach ($commandCollection as $command => $properties) {
                     if ($command === 'version' && isset($properties['action']) && $properties['action'] === 'setStage') {
                         if (isset($properties['stageId']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($properties['stageId'])) {
-                            call_user_func_array(array($this, $callbackMethod), array_merge($arguments, array($table, $versionIdList, $properties)));
+                            call_user_func_array([$this, $callbackMethod], array_merge($arguments, [$table, $versionIdList, $properties]));
                         }
                     }
                 }
@@ -390,7 +390,7 @@ class CommandMap
             $this->invokeWorkspacesSetStageItems('applyWorkspacesSetStageBehaviour');
         }
         $this->invokeWorkspacesSetStageItems('explodeSetStage');
-        $this->invokeWorkspacesSetStageItems('addWorkspacesSetStageElements', array($dependency));
+        $this->invokeWorkspacesSetStageItems('addWorkspacesSetStageElements', [$dependency]);
         $this->applyWorkspacesDependencies($dependency, $scope);
     }
 
@@ -404,9 +404,9 @@ class CommandMap
      */
     protected function applyWorkspacesSetStageBehaviour($table, $versionIdList, array $properties)
     {
-        $extendedCommandMap = array();
+        $extendedCommandMap = [];
         $versionIds = GeneralUtility::trimExplode(',', $versionIdList, true);
-        $elementList = array($table => $versionIds);
+        $elementList = [$table => $versionIds];
         if ($this->workspacesChangeStageMode === 'any' || $this->workspacesChangeStageMode === 'pages') {
             if (count($versionIds) === 1) {
                 $workspaceRecord = BackendUtility::getRecord($table, $versionIds[0], 't3ver_wsid');
@@ -421,7 +421,7 @@ class CommandMap
                 $this->getParent()->findPageElementsForVersionStageChange($livePageIds, $workspaceId, $elementList);
             } elseif ($this->workspacesChangeStageMode === 'any') {
                 // Find page to change stage:
-                $pageIdList = array();
+                $pageIdList = [];
                 $this->getParent()->findPageIdsForVersionStateChange($table, $versionIds, $workspaceId, $pageIdList, $elementList);
                 // Find other elements from the same ws to change stage:
                 $this->getParent()->findPageElementsForVersionStageChange($pageIdList, $workspaceId, $elementList);
@@ -447,7 +447,7 @@ class CommandMap
      */
     protected function addWorkspacesSetStageElements(\TYPO3\CMS\Version\Dependency\DependencyResolver $dependency, $table, $versionId, array $properties)
     {
-        $dependency->addElement($table, $versionId, array('versionId' => $versionId, 'properties' => $properties));
+        $dependency->addElement($table, $versionId, ['versionId' => $versionId, 'properties' => $properties]);
     }
 
     /**
@@ -466,7 +466,7 @@ class CommandMap
             foreach ($versionIdCollection as $versionId => $commandCollection) {
                 foreach ($commandCollection as $command => $properties) {
                     if ($command === 'version' && isset($properties['action']) && ($properties['action'] === 'clearWSID' || $properties['action'] === 'flush')) {
-                        $dependency->addElement($table, $versionId, array('versionId' => $versionId, 'properties' => $properties));
+                        $dependency->addElement($table, $versionId, ['versionId' => $versionId, 'properties' => $properties]);
                     }
                 }
             }
@@ -485,7 +485,7 @@ class CommandMap
      */
     protected function explodeSetStage($table, $versionIdList, array $properties)
     {
-        $extractedCommandMap = array();
+        $extractedCommandMap = [];
         $versionIds = GeneralUtility::trimExplode(',', $versionIdList, true);
         if (count($versionIds) > 1) {
             foreach ($versionIds as $versionId) {
@@ -548,13 +548,13 @@ class CommandMap
         /** @var $element ElementEntity */
         foreach ($elements as $element) {
             $table = $element->getTable();
-            $id = $this->processCallback($this->getScopeData($scope, self::KEY_PurgeWithErrorMessageGetIdCallback), array($element));
+            $id = $this->processCallback($this->getScopeData($scope, self::KEY_PurgeWithErrorMessageGetIdCallback), [$element]);
             $this->remove($table, $id, 'version');
-            $this->getTceMain()->log($table, $id, 5, 0, 1, $this->getScopeData($scope, self::KEY_ScopeErrorMessage), $this->getScopeData($scope, self::KEY_ScopeErrorCode), array(
+            $this->getTceMain()->log($table, $id, 5, 0, 1, $this->getScopeData($scope, self::KEY_ScopeErrorMessage), $this->getScopeData($scope, self::KEY_ScopeErrorCode), [
                 BackendUtility::getRecordTitle($table, BackendUtility::getRecord($table, $id)),
                 $table,
                 $id
-            ));
+            ]);
         }
     }
 
@@ -568,22 +568,22 @@ class CommandMap
      */
     protected function update(ElementEntity $intersectingElement, array $elements, $scope)
     {
-        $orderedCommandMap = array();
-        $commonProperties = array();
+        $orderedCommandMap = [];
+        $commonProperties = [];
         if ($this->getScopeData($scope, self::KEY_GetCommonPropertiesCallback)) {
-            $commonProperties = $this->processCallback($this->getScopeData($scope, self::KEY_GetCommonPropertiesCallback), array($intersectingElement));
+            $commonProperties = $this->processCallback($this->getScopeData($scope, self::KEY_GetCommonPropertiesCallback), [$intersectingElement]);
         }
         /** @var $element ElementEntity */
         foreach ($elements as $element) {
             $table = $element->getTable();
-            $id = $this->processCallback($this->getScopeData($scope, self::KEY_UpdateGetIdCallback), array($element));
+            $id = $this->processCallback($this->getScopeData($scope, self::KEY_UpdateGetIdCallback), [$element]);
             $this->remove($table, $id, 'version');
             if ($element->isInvalid()) {
                 continue;
             }
             $orderedCommandMap[$table][$id]['version'] = $commonProperties;
             if ($this->getScopeData($scope, self::KEY_GetElementPropertiesCallback)) {
-                $orderedCommandMap[$table][$id]['version'] = array_merge($commonProperties, $this->processCallback($this->getScopeData($scope, self::KEY_GetElementPropertiesCallback), array($element)));
+                $orderedCommandMap[$table][$id]['version'] = array_merge($commonProperties, $this->processCallback($this->getScopeData($scope, self::KEY_GetElementPropertiesCallback), [$element]));
             }
         }
         // Ensure that ordered command map is on top of the command map:
@@ -660,9 +660,9 @@ class CommandMap
      */
     protected function getElementSwapPropertiesCallback(ElementEntity $element)
     {
-        return array(
+        return [
             'swapWith' => $element->getId()
-        );
+        ];
     }
 
     /**
@@ -673,7 +673,7 @@ class CommandMap
      */
     protected function getCommonClearPropertiesCallback(ElementEntity $element)
     {
-        $commonSwapProperties = array();
+        $commonSwapProperties = [];
         $elementProperties = $element->getDataValue('properties');
         if (isset($elementProperties['action'])) {
             $commonSwapProperties['action'] = $elementProperties['action'];
@@ -689,7 +689,7 @@ class CommandMap
      */
     protected function getCommonSwapPropertiesCallback(ElementEntity $element)
     {
-        $commonSwapProperties = array();
+        $commonSwapProperties = [];
         $elementProperties = $element->getDataValue('properties');
         if (isset($elementProperties['action'])) {
             $commonSwapProperties['action'] = $elementProperties['action'];
@@ -726,7 +726,7 @@ class CommandMap
      */
     protected function getCommonSetStagePropertiesCallback(ElementEntity $element)
     {
-        $commonSetStageProperties = array();
+        $commonSetStageProperties = [];
         $elementProperties = $element->getDataValue('properties');
         if (isset($elementProperties['stageId'])) {
             $commonSetStageProperties['stageId'] = $elementProperties['stageId'];
@@ -775,9 +775,9 @@ class CommandMap
      */
     protected function constructScopes()
     {
-        $this->scopes = array(
+        $this->scopes = [
             // settings for publishing and swapping:
-            self::SCOPE_WorkspacesSwap => array(
+            self::SCOPE_WorkspacesSwap => [
                 // error message and error code
                 self::KEY_ScopeErrorMessage => 'Record "%s" (%s:%s) cannot be swapped or published independently, because it is related to other new or modified records.',
                 self::KEY_ScopeErrorCode => 1288283630,
@@ -797,9 +797,9 @@ class CommandMap
                 self::KEY_UpdateGetIdCallback => 'getElementLiveIdCallback',
                 // setting whether to use the uid of the live record instead of the workspace record
                 self::KEY_TransformDependentElementsToUseLiveId => true
-            ),
+            ],
             // settings for modifying the stage:
-            self::SCOPE_WorkspacesSetStage => array(
+            self::SCOPE_WorkspacesSetStage => [
                 // error message and error code
                 self::KEY_ScopeErrorMessage => 'Record "%s" (%s:%s) cannot be sent to another stage independently, because it is related to other new or modified records.',
                 self::KEY_ScopeErrorCode => 1289342524,
@@ -819,9 +819,9 @@ class CommandMap
                 self::KEY_UpdateGetIdCallback => 'getElementIdCallback',
                 // setting whether to use the uid of the live record instead of the workspace record
                 self::KEY_TransformDependentElementsToUseLiveId => false
-            ),
+            ],
             // settings for clearing and flushing:
-            self::SCOPE_WorkspacesClear => array(
+            self::SCOPE_WorkspacesClear => [
                 // error message and error code
                 self::KEY_ScopeErrorMessage => 'Record "%s" (%s:%s) cannot be flushed independently, because it is related to other new or modified records.',
                 self::KEY_ScopeErrorCode => 1300467990,
@@ -841,8 +841,8 @@ class CommandMap
                 self::KEY_UpdateGetIdCallback => 'getElementIdCallback',
                 // setting whether to use the uid of the live record instead of the workspace record
                 self::KEY_TransformDependentElementsToUseLiveId => false
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -868,7 +868,7 @@ class CommandMap
      * @param array $targetArguments
      * @return \TYPO3\CMS\Version\Dependency\EventCallback
      */
-    protected function getDependencyCallback($method, array $targetArguments = array())
+    protected function getDependencyCallback($method, array $targetArguments = [])
     {
         return GeneralUtility::makeInstance(
             \TYPO3\CMS\Version\Dependency\EventCallback::class,
@@ -887,6 +887,6 @@ class CommandMap
      */
     protected function processCallback($method, array $callbackArguments)
     {
-        return call_user_func_array(array($this, $method), $callbackArguments);
+        return call_user_func_array([$this, $method], $callbackArguments);
     }
 }

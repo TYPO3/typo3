@@ -27,7 +27,7 @@ class PrintfViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getMock(PrintfViewHelper::class, array('renderChildren'));
+        $this->viewHelper = $this->getMock(PrintfViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
     }
@@ -38,7 +38,7 @@ class PrintfViewHelperTest extends ViewHelperBaseTestcase
     public function viewHelperCanUseArrayAsArgument()
     {
         $this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('%04d-%02d-%02d'));
-        $actualResult = $this->viewHelper->render(array('year' => 2009, 'month' => 4, 'day' => 5));
+        $actualResult = $this->viewHelper->render(['year' => 2009, 'month' => 4, 'day' => 5]);
         $this->assertEquals('2009-04-05', $actualResult);
     }
 
@@ -48,7 +48,7 @@ class PrintfViewHelperTest extends ViewHelperBaseTestcase
     public function viewHelperCanSwapMultipleArguments()
     {
         $this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('%2$s %1$d %3$s %2$s'));
-        $actualResult = $this->viewHelper->render(array(123, 'foo', 'bar'));
+        $actualResult = $this->viewHelper->render([123, 'foo', 'bar']);
         $this->assertEquals('foo 123 bar foo', $actualResult);
     }
 }

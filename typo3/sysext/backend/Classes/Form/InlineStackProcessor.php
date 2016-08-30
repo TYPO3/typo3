@@ -33,14 +33,14 @@ class InlineStackProcessor
      *
      * @var array
      */
-    protected $inlineStructure = array();
+    protected $inlineStructure = [];
 
     /**
      * One of two possible initialize methods setting a given structure.
      *
      * @param array $structure
      */
-    public function initializeByGivenStructure(array $structure = array())
+    public function initializeByGivenStructure(array $structure = [])
     {
         $this->inlineStructure = $structure;
     }
@@ -58,8 +58,8 @@ class InlineStackProcessor
      */
     public function initializeByParsingDomObjectIdString($domObjectId)
     {
-        $unstable = array();
-        $vector = array('table', 'uid', 'field');
+        $unstable = [];
+        $vector = ['table', 'uid', 'field'];
 
         // Substitute FlexForm addition and make parsing a bit easier
         $domObjectId = str_replace('---', ':', $domObjectId);
@@ -77,7 +77,7 @@ class InlineStackProcessor
                     $unstable['config'] = $GLOBALS['TCA'][$unstable['table']]['columns'][$unstable['field']]['config'];
                     // Fetch TSconfig:
                     // @todo: aaargs ;)
-                    $TSconfig = FormEngineUtility::getTSconfigForTableRow($unstable['table'], array('uid' => $unstable['uid'], 'pid' => $inlineFirstPid), $unstable['field']);
+                    $TSconfig = FormEngineUtility::getTSconfigForTableRow($unstable['table'], ['uid' => $unstable['uid'], 'pid' => $inlineFirstPid], $unstable['field']);
                     // Override TCA field config by TSconfig:
                     if (!$TSconfig['disabled']) {
                         $unstable['config'] = FormEngineUtility::overrideFieldConf($unstable['config'], $TSconfig);
@@ -95,7 +95,7 @@ class InlineStackProcessor
                     }
 
                     $this->inlineStructure['stable'][] = $unstable;
-                    $unstable = array();
+                    $unstable = [];
                 }
                 $unstable[$vector[$i % 3]] = $parts[$i];
             }
@@ -150,7 +150,7 @@ class InlineStackProcessor
      * @param array $structureItem
      * @return void
      */
-    public function pushStableStructureItem(array $structureItem = array())
+    public function pushStableStructureItem(array $structureItem = [])
     {
         $this->inlineStructure['stable'][] = $structureItem;
     }
@@ -251,7 +251,7 @@ class InlineStackProcessor
      */
     protected function getStructurePath($structureDepth = -1)
     {
-        $structureLevels = array();
+        $structureLevels = [];
         $structureCount = $this->getStructureDepth();
         if ($structureDepth < 0 || $structureDepth > $structureCount) {
             $structureDepth = $structureCount;
@@ -285,7 +285,7 @@ class InlineStackProcessor
         $name = null;
 
         if (is_array($levelData)) {
-            $parts = array($levelData['table'], $levelData['uid']);
+            $parts = [$levelData['table'], $levelData['uid']];
 
             if (!empty($levelData['field'])) {
                 $parts[] = $levelData['field'];

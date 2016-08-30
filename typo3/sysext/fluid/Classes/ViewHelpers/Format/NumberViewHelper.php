@@ -54,11 +54,11 @@ class NumberViewHelper extends AbstractViewHelper implements CompilableInterface
     public function render($decimals = 2, $decimalSeparator = '.', $thousandsSeparator = ',')
     {
         return static::renderStatic(
-            array(
+            [
                 'decimals' => $decimals,
                 'decimalSeparator' => $decimalSeparator,
                 'thousandsSeparator' => $thousandsSeparator,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

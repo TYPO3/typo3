@@ -32,11 +32,11 @@ class TreeDataProviderFactoryTest extends UnitTestCase
     protected function setUp()
     {
         $this->subject = new TreeDataProviderFactory();
-        $GLOBALS['TCA'] = array();
-        $GLOBALS['TCA']['foo'] = array();
-        $GLOBALS['TCA']['foo']['ctrl'] = array();
+        $GLOBALS['TCA'] = [];
+        $GLOBALS['TCA']['foo'] = [];
+        $GLOBALS['TCA']['foo']['ctrl'] = [];
         $GLOBALS['TCA']['foo']['ctrl']['label'] = 'labelFoo';
-        $GLOBALS['TCA']['foo']['columns'] = array();
+        $GLOBALS['TCA']['foo']['columns'] = [];
     }
 
     /**
@@ -44,35 +44,35 @@ class TreeDataProviderFactoryTest extends UnitTestCase
      */
     public function invalidConfigurationDataProvider()
     {
-        return array(
-            'Empty Configuration' => array(array()),
-            'File Configuration' => array(array(
+        return [
+            'Empty Configuration' => [[]],
+            'File Configuration' => [[
                 'internal_type' => 'file',
-                'treeConfig' => array(),
-            )),
-            'Unknown Type' => array(array(
+                'treeConfig' => [],
+            ]],
+            'Unknown Type' => [[
                 'internal_type' => 'foo',
-                'treeConfig' => array(),
-            )),
-            'No foreign table' => array(array(
+                'treeConfig' => [],
+            ]],
+            'No foreign table' => [[
                 'internal_type' => 'db',
-                'treeConfig' => array(),
-            )),
-            'No tree configuration' => array(array(
+                'treeConfig' => [],
+            ]],
+            'No tree configuration' => [[
                 'internal_type' => 'db',
                 'foreign_table' => 'foo',
-            )),
-            'Tree configuration not array' => array(array(
+            ]],
+            'Tree configuration not array' => [[
                 'internal_type' => 'db',
                 'foreign_table' => 'foo',
                 'treeConfig' => 'bar',
-            )),
-            'Tree configuration missing childer and parent field' => array(array(
+            ]],
+            'Tree configuration missing childer and parent field' => [[
                 'internal_type' => 'db',
                 'foreign_table' => 'foo',
-                'treeConfig' => array(),
-            )),
-        );
+                'treeConfig' => [],
+            ]],
+        ];
     }
 
     /**
@@ -83,7 +83,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
      */
     public function factoryThrowsExceptionIfInvalidConfigurationIsGiven(array $tcaConfiguration)
     {
-        $this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
+        $this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
     }
 
     /**
@@ -93,8 +93,8 @@ class TreeDataProviderFactoryTest extends UnitTestCase
     {
         $dataProviderMockClassName = TreeDataProviderFixture::class;
 
-        $tcaConfiguration = array('treeConfig' => array('dataProvider' => $dataProviderMockClassName), 'internal_type' => 'foo');
-        $dataProvider = $this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
+        $tcaConfiguration = ['treeConfig' => ['dataProvider' => $dataProviderMockClassName], 'internal_type' => 'foo'];
+        $dataProvider = $this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
 
         $this->assertInstanceOf($dataProviderMockClassName, $dataProvider);
     }
@@ -113,6 +113,6 @@ class TreeDataProviderFactoryTest extends UnitTestCase
             'internal_type' => 'foo',
         ];
         $this->setExpectedException(\RuntimeException::class, $this->anything(), 1438875249);
-        $this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
+        $this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
     }
 }

@@ -25,7 +25,7 @@ class FileContentObject extends AbstractContentObject
      * @param array $conf Array of TypoScript properties
      * @return string Output
      */
-    public function render($conf = array())
+    public function render($conf = [])
     {
         $file = isset($conf['file.']) ? $this->cObj->stdWrap($conf['file'], $conf['file.']) : $conf['file'];
         $theValue = $this->cObj->fileResource($file, trim($this->cObj->getAltParam($conf, false)));

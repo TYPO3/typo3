@@ -33,9 +33,9 @@ class SysLanguageViewHelper extends AbstractViewHelper implements CompilableInte
     public function render($uids = '')
     {
         return static::renderStatic(
-            array(
+            [
                 'uids' => $uids,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

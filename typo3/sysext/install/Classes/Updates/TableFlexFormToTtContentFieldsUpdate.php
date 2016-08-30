@@ -107,43 +107,43 @@ class TableFlexFormToTtContentFieldsUpdate extends AbstractUpdate
      */
     protected function mapFieldsFromFlexForm($flexForm)
     {
-        $fields = array();
+        $fields = [];
 
-        $mapping = array(
-            'table_caption' => array(
+        $mapping = [
+            'table_caption' => [
                 'sheet' => 'sDEF',
                 'fieldName' => 'acctables_caption',
                 'default' => '',
                 'values' => 'passthrough'
-            ),
-            'table_delimiter' => array(
+            ],
+            'table_delimiter' => [
                 'sheet' => 's_parsing',
                 'fieldName' => 'tableparsing_delimiter',
                 'default' => 124,
                 'values' => 'passthrough'
-            ),
-            'table_enclosure' => array(
+            ],
+            'table_enclosure' => [
                 'sheet' => 's_parsing',
                 'fieldName' => 'tableparsing_quote',
                 'default' => 0,
                 'values' => 'passthrough'
-            ),
-            'table_header_position' => array(
+            ],
+            'table_header_position' => [
                 'sheet' => 'sDEF',
                 'fieldName' => 'acctables_headerpos',
                 'default' => 0,
-                'values' => array(
+                'values' => [
                     'top' => 1,
                     'left' => 2
-                )
-            ),
-            'table_tfoot' => array(
+                ]
+            ],
+            'table_tfoot' => [
                 'sheet' => 'sDEF',
                 'fieldName' => 'acctables_tfoot',
                 'default' => 0,
                 'values' => 'passthrough'
-            )
-        );
+            ]
+        ];
 
         foreach ($mapping as $fieldName => $configuration) {
             $flexFormValue = $this->getFlexFormValue($flexForm, $configuration['fieldName'], $configuration['sheet']);

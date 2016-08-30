@@ -63,7 +63,7 @@ abstract class AbstractXmlParser implements \TYPO3\CMS\Core\Localization\Parser\
                 throw new FileNotFoundException('Localization file does not exist', 1306332397);
             }
         }
-        $LOCAL_LANG = array();
+        $LOCAL_LANG = [];
         $LOCAL_LANG[$languageKey] = $this->parseXmlFile();
         return $LOCAL_LANG;
     }

@@ -104,7 +104,7 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if $data is not a string
      * @api
      */
-    public function set($entryIdentifier, $data, array $tags = array(), $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
         if (!$this->cache instanceof \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface) {
             throw new \TYPO3\CMS\Core\Cache\Exception('No cache frontend has been set yet via setCache().', 1259515600);
@@ -115,13 +115,13 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
         $this->remove($entryIdentifier);
         $lifetime = $lifetime === null ? $this->defaultLifetime : $lifetime;
         $statementHandle = $this->databaseHandle->prepare('INSERT INTO "cache" ("identifier", "context", "cache", "created", "lifetime", "content") VALUES (?, ?, ?, ?, ?, ?)');
-        $result = $statementHandle->execute(array($entryIdentifier, $this->context, $this->cacheIdentifier, $GLOBALS['EXEC_TIME'], $lifetime, $data));
+        $result = $statementHandle->execute([$entryIdentifier, $this->context, $this->cacheIdentifier, $GLOBALS['EXEC_TIME'], $lifetime, $data]);
         if ($result === false) {
             throw new \TYPO3\CMS\Core\Cache\Exception('The cache entry "' . $entryIdentifier . '" could not be written.', 1259530791);
         }
         $statementHandle = $this->databaseHandle->prepare('INSERT INTO "tags" ("identifier", "context", "cache", "tag") VALUES (?, ?, ?, ?)');
         foreach ($tags as $tag) {
-            $result = $statementHandle->execute(array($entryIdentifier, $this->context, $this->cacheIdentifier, $tag));
+            $result = $statementHandle->execute([$entryIdentifier, $this->context, $this->cacheIdentifier, $tag]);
             if ($result === false) {
                 throw new \TYPO3\CMS\Core\Cache\Exception('The tag "' . $tag . ' for cache entry "' . $entryIdentifier . '" could not be written.', 1259530751);
             }
@@ -138,7 +138,7 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
     public function get($entryIdentifier)
     {
         $statementHandle = $this->databaseHandle->prepare('SELECT "content" FROM "cache" WHERE "identifier"=? AND "context"=? AND "cache"=?' . $this->getNotExpiredStatement());
-        $statementHandle->execute(array($entryIdentifier, $this->context, $this->cacheIdentifier));
+        $statementHandle->execute([$entryIdentifier, $this->context, $this->cacheIdentifier]);
         return $statementHandle->fetchColumn();
     }
 
@@ -152,7 +152,7 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
     public function has($entryIdentifier)
     {
         $statementHandle = $this->databaseHandle->prepare('SELECT COUNT("identifier") FROM "cache" WHERE "identifier"=? AND "context"=? AND "cache"=?' . $this->getNotExpiredStatement());
-        $statementHandle->execute(array($entryIdentifier, $this->context, $this->cacheIdentifier));
+        $statementHandle->execute([$entryIdentifier, $this->context, $this->cacheIdentifier]);
         return $statementHandle->fetchColumn() > 0;
     }
 
@@ -168,9 +168,9 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
     public function remove($entryIdentifier)
     {
         $statementHandle = $this->databaseHandle->prepare('DELETE FROM "tags" WHERE "identifier"=? AND "context"=? AND "cache"=?');
-        $statementHandle->execute(array($entryIdentifier, $this->context, $this->cacheIdentifier));
+        $statementHandle->execute([$entryIdentifier, $this->context, $this->cacheIdentifier]);
         $statementHandle = $this->databaseHandle->prepare('DELETE FROM "cache" WHERE "identifier"=? AND "context"=? AND "cache"=?');
-        $statementHandle->execute(array($entryIdentifier, $this->context, $this->cacheIdentifier));
+        $statementHandle->execute([$entryIdentifier, $this->context, $this->cacheIdentifier]);
         return $statementHandle->rowCount() > 0;
     }
 
@@ -183,9 +183,9 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
     public function flush()
     {
         $statementHandle = $this->databaseHandle->prepare('DELETE FROM "tags" WHERE "context"=? AND "cache"=?');
-        $statementHandle->execute(array($this->context, $this->cacheIdentifier));
+        $statementHandle->execute([$this->context, $this->cacheIdentifier]);
         $statementHandle = $this->databaseHandle->prepare('DELETE FROM "cache" WHERE "context"=? AND "cache"=?');
-        $statementHandle->execute(array($this->context, $this->cacheIdentifier));
+        $statementHandle->execute([$this->context, $this->cacheIdentifier]);
     }
 
     /**
@@ -198,9 +198,9 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
     public function flushByTag($tag)
     {
         $statementHandle = $this->databaseHandle->prepare('DELETE FROM "cache" WHERE "context"=? AND "cache"=? AND "identifier" IN (SELECT "identifier" FROM "tags" WHERE "context"=? AND "cache"=? AND "tag"=?)');
-        $statementHandle->execute(array($this->context, $this->cacheIdentifier, $this->context, $this->cacheIdentifier, $tag));
+        $statementHandle->execute([$this->context, $this->cacheIdentifier, $this->context, $this->cacheIdentifier, $tag]);
         $statementHandle = $this->databaseHandle->prepare('DELETE FROM "tags" WHERE "context"=? AND "cache"=? AND "tag"=?');
-        $statementHandle->execute(array($this->context, $this->cacheIdentifier, $tag));
+        $statementHandle->execute([$this->context, $this->cacheIdentifier, $tag]);
     }
 
     /**
@@ -214,7 +214,7 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
     public function findIdentifiersByTag($tag)
     {
         $statementHandle = $this->databaseHandle->prepare('SELECT "identifier" FROM "tags" WHERE "context"=?  AND "cache"=? AND "tag"=?');
-        $statementHandle->execute(array($this->context, $this->cacheIdentifier, $tag));
+        $statementHandle->execute([$this->context, $this->cacheIdentifier, $tag]);
         return $statementHandle->fetchAll(\PDO::FETCH_COLUMN);
     }
 
@@ -227,9 +227,9 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
     public function collectGarbage()
     {
         $statementHandle = $this->databaseHandle->prepare('DELETE FROM "tags" WHERE "context"=? AND "cache"=? AND "identifier" IN ' . '(SELECT "identifier" FROM "cache" WHERE "context"=? AND "cache"=? AND "lifetime" > 0 AND "created" + "lifetime" < ' . $GLOBALS['EXEC_TIME'] . ')');
-        $statementHandle->execute(array($this->context, $this->cacheIdentifier, $this->context, $this->cacheIdentifier));
+        $statementHandle->execute([$this->context, $this->cacheIdentifier, $this->context, $this->cacheIdentifier]);
         $statementHandle = $this->databaseHandle->prepare('DELETE FROM "cache" WHERE "context"=? AND "cache"=? AND "lifetime" > 0 AND "created" + "lifetime" < ' . $GLOBALS['EXEC_TIME']);
-        $statementHandle->execute(array($this->context, $this->cacheIdentifier));
+        $statementHandle->execute([$this->context, $this->cacheIdentifier]);
     }
 
     /**

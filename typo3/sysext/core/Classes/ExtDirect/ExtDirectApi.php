@@ -27,7 +27,7 @@ class ExtDirectApi
     /**
      * @var array
      */
-    protected $settings = array();
+    protected $settings = [];
 
     /**
      * Constructs this object.
@@ -92,7 +92,7 @@ class ExtDirectApi
      */
     protected function generateAPI(array $filterNamespaces)
     {
-        $javascriptNamespaces = array();
+        $javascriptNamespaces = [];
         if (is_array($this->settings)) {
             foreach ($this->settings as $javascriptName => $configuration) {
                 $splittedJavascriptName = explode('.', $javascriptName);
@@ -103,27 +103,27 @@ class ExtDirectApi
                     continue;
                 }
                 if (!isset($javascriptNamespaces[$javascriptNamespace])) {
-                    $javascriptNamespaces[$javascriptNamespace] = array(
+                    $javascriptNamespaces[$javascriptNamespace] = [
                         'url' => $this->getRoutingUrl($javascriptNamespace),
                         'type' => 'remoting',
-                        'actions' => array(),
+                        'actions' => [],
                         'namespace' => $javascriptNamespace
-                    );
+                    ];
                 }
                 if (is_array($configuration)) {
                     $className = $configuration['callbackClass'];
                     $serverObject = GeneralUtility::getUserObj($className);
-                    $javascriptNamespaces[$javascriptNamespace]['actions'][$javascriptObjectName] = array();
+                    $javascriptNamespaces[$javascriptNamespace]['actions'][$javascriptObjectName] = [];
                     foreach (get_class_methods($serverObject) as $methodName) {
                         $reflectionMethod = new \ReflectionMethod($serverObject, $methodName);
                         $numberOfParameters = $reflectionMethod->getNumberOfParameters();
                         $docHeader = $reflectionMethod->getDocComment();
                         $formHandler = strpos($docHeader, '@formHandler') !== false;
-                        $javascriptNamespaces[$javascriptNamespace]['actions'][$javascriptObjectName][] = array(
+                        $javascriptNamespaces[$javascriptNamespace]['actions'][$javascriptObjectName][] = [
                             'name' => $methodName,
                             'len' => $numberOfParameters,
                             'formHandler' => $formHandler
-                        );
+                        ];
                     }
                 }
             }
@@ -142,7 +142,7 @@ class ExtDirectApi
         if (TYPO3_MODE === 'FE') {
             $url = GeneralUtility::locationHeaderUrl('?eID=ExtDirect&action=route&namespace=' . rawurlencode($namespace));
         } else {
-            $url = BackendUtility::getAjaxUrl('ext_direct_route', array('namespace' => $namespace));
+            $url = BackendUtility::getAjaxUrl('ext_direct_route', ['namespace' => $namespace]);
         }
         return $url;
     }
@@ -197,7 +197,7 @@ class ExtDirectApi
      */
     protected function findNamespace($namespace, array $filterNamespaces)
     {
-        if ($filterNamespaces === array('TYPO3')) {
+        if ($filterNamespaces === ['TYPO3']) {
             return true;
         }
         $found = false;

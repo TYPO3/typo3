@@ -44,13 +44,13 @@ class SystemEnvironmentBuilder
      *         and GeneralUtility is not available yet.
      * @var array
      */
-    protected static $supportedCgiServerApis = array(
+    protected static $supportedCgiServerApis = [
         'fpm-fcgi',
         'cgi',
         'isapi',
         'cgi-fcgi',
         'srv', // HHVM with fastcgi
-    );
+    ];
 
     /**
      * An array of disabled methods
@@ -202,9 +202,9 @@ class SystemEnvironmentBuilder
     {
         // Unset variable(s) in global scope (security issue #13959)
         unset($GLOBALS['error']);
-        $GLOBALS['TYPO3_MISC'] = array();
-        $GLOBALS['T3_VAR'] = array();
-        $GLOBALS['T3_SERVICES'] = array();
+        $GLOBALS['TYPO3_MISC'] = [];
+        $GLOBALS['T3_VAR'] = [];
+        $GLOBALS['T3_SERVICES'] = [];
     }
 
     /**

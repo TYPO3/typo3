@@ -22,7 +22,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
     /**
      * @var array Default number of days by table
      */
-    protected $defaultNumberOfDays = array();
+    protected $defaultNumberOfDays = [];
 
     /**
      * Add additional fields
@@ -35,7 +35,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
     public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
     {
         $this->initDefaultNumberOfDays();
-        $additionalFields = array();
+        $additionalFields = [];
         $additionalFields['task_tableGarbageCollection_allTables'] = $this->getAllTablesAdditionalField($taskInfo, $task, $parentObject);
         $additionalFields['task_tableGarbageCollection_table'] = $this->getTableAdditionalField($taskInfo, $task, $parentObject);
         $additionalFields['task_tableGarbageCollection_numberOfDays'] = $this->getNumberOfDaysAdditionalField($taskInfo, $task, $parentObject);
@@ -75,12 +75,12 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
         $fieldName = 'tx_scheduler[scheduler_tableGarbageCollection_allTables]';
         $fieldId = 'task_tableGarbageCollection_allTables';
         $fieldHtml = '<div class="checkbox"><label><input type="checkbox" ' . $checked . ' name="' . $fieldName . '" ' . 'id="' . $fieldId . '"></label></div>';
-        $fieldConfiguration = array(
+        $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.allTables',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId
-        );
+        ];
         return $fieldConfiguration;
     }
 
@@ -95,7 +95,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
     protected function getTableAdditionalField(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
     {
         $tableConfiguration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables'];
-        $options = array();
+        $options = [];
         // Add an empty option on top if an existing task is configured
         // with a table that can not be found in configuration anymore
         if ($parentObject->CMD === 'edit' && !array_key_exists($task->table, $tableConfiguration)) {
@@ -115,19 +115,19 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
         $disabled = $task->allTables === true ? ' disabled="disabled"' : '';
         $fieldName = 'tx_scheduler[scheduler_tableGarbageCollection_table]';
         $fieldId = 'task_tableGarbageCollection_table';
-        $fieldHtml = array();
+        $fieldHtml = [];
         // Add table drop down html
         $fieldHtml[] = '<select class="form-control" name="' . $fieldName . '" ' . $disabled . ' id="' . $fieldId . '">' . implode(LF, $options) . '</select>';
         // Add js array for default 'number of days' values
         $fieldHtml[] = '<script type="text/javascript">/*<![CDATA[*/<!--';
         $fieldHtml[] = 'var defaultNumberOfDays = ' . json_encode($this->defaultNumberOfDays) . ';';
         $fieldHtml[] = '// -->/*]]>*/</script>';
-        $fieldConfiguration = array(
+        $fieldConfiguration = [
             'code' => implode(LF, $fieldHtml),
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.table',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId
-        );
+        ];
         return $fieldConfiguration;
     }
 
@@ -161,12 +161,12 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
         $fieldName = 'tx_scheduler[scheduler_tableGarbageCollection_numberOfDays]';
         $fieldId = 'task_tableGarbageCollection_numberOfDays';
         $fieldHtml = '<input class="form-control" type="text" ' . 'name="' . $fieldName . '" ' . 'id="' . $fieldId . '" ' . $disabled . 'value="' . (int)$taskInfo['scheduler_tableGarbageCollection_numberOfDays'] . '" ' . 'size="4">';
-        $fieldConfiguration = array(
+        $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.numberOfDays',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId
-        );
+        ];
         return $fieldConfiguration;
     }
 

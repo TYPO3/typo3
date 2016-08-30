@@ -28,7 +28,7 @@ class ActionToolbarItem implements ToolbarItemInterface
     /**
      * @var array List of action entries
      */
-    protected $actionEntries = array();
+    protected $actionEntries = [];
 
     /**
      * @var IconFactory
@@ -63,7 +63,7 @@ class ActionToolbarItem implements ToolbarItemInterface
      */
     public function getDropDown()
     {
-        $actionMenu = array();
+        $actionMenu = [];
         $actionMenu[] = '<ul class="dropdown-list">';
         foreach ($this->actionEntries as $linkConf) {
             $actionMenu[] = '<li>';
@@ -85,7 +85,7 @@ class ActionToolbarItem implements ToolbarItemInterface
     {
         $backendUser = $this->getBackendUser();
         $databaseConnection = $this->getDatabaseConnection();
-        $actions = array();
+        $actions = [];
         if ($backendUser->isAdmin()) {
             $queryResource = $databaseConnection->exec_SELECTquery('*', 'sys_action', 'pid = 0 AND hidden=0', '', 'sys_action.sorting');
         } else {
@@ -106,11 +106,11 @@ class ActionToolbarItem implements ToolbarItemInterface
 
         if ($queryResource) {
             while ($actionRow = $databaseConnection->sql_fetch_assoc($queryResource)) {
-                $actions[] = array(
+                $actions[] = [
                     $actionRow['title'],
                     BackendUtility::getModuleUrl('user_task') . '&SET[mode]=tasks&SET[function]=sys_action.TYPO3\\CMS\\SysAction\\ActionTask&show=' . $actionRow['uid'],
                     $this->iconFactory->getIconForRecord('sys_action', $actionRow, Icon::SIZE_SMALL)->render()
-                );
+                ];
             }
             $databaseConnection->sql_free_result($queryResource);
         }
@@ -124,7 +124,7 @@ class ActionToolbarItem implements ToolbarItemInterface
      */
     public function getAdditionalAttributes()
     {
-        return array();
+        return [];
     }
 
     /**

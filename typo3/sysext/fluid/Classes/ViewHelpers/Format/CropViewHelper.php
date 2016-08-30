@@ -81,12 +81,12 @@ class CropViewHelper extends AbstractViewHelper implements CompilableInterface
     public function render($maxCharacters, $append = '...', $respectWordBoundaries = true, $respectHtml = true)
     {
         return static::renderStatic(
-            array(
+            [
                 'maxCharacters' => $maxCharacters,
                 'append' => $append,
                 'respectWordBoundaries' => $respectWordBoundaries,
                 'respectHtml' => $respectHtml,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

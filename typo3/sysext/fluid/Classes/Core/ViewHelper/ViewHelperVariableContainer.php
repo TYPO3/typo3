@@ -22,7 +22,7 @@ class ViewHelperVariableContainer
      *
      * @var array
      */
-    protected $objects = array();
+    protected $objects = [];
 
     /**
      * @var \TYPO3\CMS\Fluid\View\AbstractTemplateView
@@ -63,7 +63,7 @@ class ViewHelperVariableContainer
     public function addOrUpdate($viewHelperName, $key, $value)
     {
         if (!isset($this->objects[$viewHelperName])) {
-            $this->objects[$viewHelperName] = array();
+            $this->objects[$viewHelperName] = [];
         }
         $this->objects[$viewHelperName][$key] = $value;
     }
@@ -145,6 +145,6 @@ class ViewHelperVariableContainer
      */
     public function __sleep()
     {
-        return array('objects');
+        return ['objects'];
     }
 }

@@ -31,26 +31,26 @@ class TextblockJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJso
      *
      * @var array
      */
-    public $configuration = array(
-        'attributes' => array(),
-        'various' => array(
+    public $configuration = [
+        'attributes' => [],
+        'various' => [
             'text' => ''
-        )
-    );
+        ]
+    ];
 
     /**
      * Allowed attributes for this object
      *
      * @var array
      */
-    protected $allowedAttributes = array(
+    protected $allowedAttributes = [
         'class',
         'dir',
         'id',
         'lang',
         'style',
         'title'
-    );
+    ];
 
     /**
      * Set all the parameters for this object

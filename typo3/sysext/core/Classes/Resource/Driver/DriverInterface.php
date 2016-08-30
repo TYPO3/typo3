@@ -381,7 +381,7 @@ interface DriverInterface
      *                                   If empty all will be extracted
      * @return array
      */
-    public function getFileInfoByIdentifier($fileIdentifier, array $propertiesToExtract = array());
+    public function getFileInfoByIdentifier($fileIdentifier, array $propertiesToExtract = []);
 
     /**
      * Returns information about a file.
@@ -416,7 +416,7 @@ interface DriverInterface
      * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
      * @return array of FileIdentifiers
      */
-    public function getFilesInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = false, array $filenameFilterCallbacks = array(), $sort = '', $sortRev = false);
+    public function getFilesInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = false, array $filenameFilterCallbacks = [], $sort = '', $sortRev = false);
 
     /**
      * Returns the identifier of a folder inside the folder
@@ -443,7 +443,7 @@ interface DriverInterface
      * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
      * @return array of Folder Identifier
      */
-    public function getFoldersInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = false, array $folderNameFilterCallbacks = array(), $sort = '', $sortRev = false);
+    public function getFoldersInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = false, array $folderNameFilterCallbacks = [], $sort = '', $sortRev = false);
 
     /**
      * Returns the number of files inside the specified path
@@ -453,7 +453,7 @@ interface DriverInterface
      * @param array   $filenameFilterCallbacks callbacks for filtering the items
      * @return int Number of files in folder
      */
-    public function countFilesInFolder($folderIdentifier, $recursive = false, array $filenameFilterCallbacks = array());
+    public function countFilesInFolder($folderIdentifier, $recursive = false, array $filenameFilterCallbacks = []);
 
     /**
      * Returns the number of folders inside the specified path
@@ -463,5 +463,5 @@ interface DriverInterface
      * @param array   $folderNameFilterCallbacks callbacks for filtering the items
      * @return int Number of folders in folder
      */
-    public function countFoldersInFolder($folderIdentifier, $recursive = false, array $folderNameFilterCallbacks = array());
+    public function countFoldersInFolder($folderIdentifier, $recursive = false, array $folderNameFilterCallbacks = []);
 }

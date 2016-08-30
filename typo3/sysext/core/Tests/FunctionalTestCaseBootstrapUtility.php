@@ -42,26 +42,26 @@ class FunctionalTestCaseBootstrapUtility
     /**
      * @var array These extensions are always loaded
      */
-    protected $defaultActivatedCoreExtensions = array(
+    protected $defaultActivatedCoreExtensions = [
         'core',
         'backend',
         'frontend',
         'lang',
         'extbase',
         'install',
-    );
+    ];
 
     /**
      * @var array These folder are always created
      */
-    protected $defaultFoldersToCreate = array(
+    protected $defaultFoldersToCreate = [
         '',
         '/fileadmin',
         '/typo3temp',
         '/typo3conf',
         '/typo3conf/ext',
         '/uploads'
-    );
+    ];
 
     /**
      * Calculate a "unique" identifier for the test database and the
@@ -191,7 +191,7 @@ class FunctionalTestCaseBootstrapUtility
      * @throws Exception
      * @return void
      */
-    protected function setUpInstanceDirectories(array $additionalFoldersToCreate = array())
+    protected function setUpInstanceDirectories(array $additionalFoldersToCreate = [])
     {
         $foldersToCreate = array_merge($this->defaultFoldersToCreate, $additionalFoldersToCreate);
         foreach ($foldersToCreate as $folder) {
@@ -216,10 +216,10 @@ class FunctionalTestCaseBootstrapUtility
      */
     protected function setUpInstanceCoreLinks()
     {
-        $linksToSet = array(
+        $linksToSet = [
             ORIGINAL_ROOT . 'typo3' => $this->instancePath . '/typo3',
             ORIGINAL_ROOT . 'index.php' => $this->instancePath . '/index.php'
-        );
+        ];
         foreach ($linksToSet as $from => $to) {
             $success = symlink($from, $to);
             if (!$success) {
@@ -307,9 +307,9 @@ class FunctionalTestCaseBootstrapUtility
         $databaseSocket = trim(getenv('typo3DatabaseSocket'));
         if ($databaseName || $databaseHost || $databaseUsername || $databasePassword || $databasePort || $databaseSocket) {
             // Try to get database credentials from environment variables first
-            $originalConfigurationArray = array(
-                'DB' => array(),
-            );
+            $originalConfigurationArray = [
+                'DB' => [],
+            ];
             if ($databaseName) {
                 $originalConfigurationArray['DB']['database'] = $databaseName;
             }
@@ -389,18 +389,18 @@ class FunctionalTestCaseBootstrapUtility
      */
     protected function setUpPackageStates(array $coreExtensionsToLoad, array $testExtensionPaths)
     {
-        $packageStates = array(
-            'packages' => array(),
+        $packageStates = [
+            'packages' => [],
             'version' => 4,
-        );
+        ];
 
         // Register default list of extensions and set active
         foreach ($this->defaultActivatedCoreExtensions as $extensionName) {
-            $packageStates['packages'][$extensionName] = array(
+            $packageStates['packages'][$extensionName] = [
                 'state' => 'active',
                 'packagePath' => 'typo3/sysext/' . $extensionName . '/',
                 'classesPath' => 'Classes/',
-            );
+            ];
         }
 
         // Register additional core extensions and set active
@@ -411,11 +411,11 @@ class FunctionalTestCaseBootstrapUtility
                     1390913893
                 );
             }
-            $packageStates['packages'][$extensionName] = array(
+            $packageStates['packages'][$extensionName] = [
                 'state' => 'active',
                 'packagePath' => 'typo3/sysext/' . $extensionName . '/',
                 'classesPath' => 'Classes/',
-            );
+            ];
         }
 
         // Activate test extensions that have been symlinked before
@@ -427,11 +427,11 @@ class FunctionalTestCaseBootstrapUtility
                     1390913894
                 );
             }
-            $packageStates['packages'][$extensionName] = array(
+            $packageStates['packages'][$extensionName] = [
                 'state' => 'active',
                 'packagePath' => 'typo3conf/ext/' . $extensionName . '/',
                 'classesPath' => 'Classes/',
-            );
+            ];
         }
 
         $result = $this->writeFile(
@@ -692,7 +692,7 @@ class FunctionalTestCaseBootstrapUtility
      * @return string String representation of array
      * @throws \RuntimeException
      */
-    protected function arrayExport(array $array = array(), $level = 0)
+    protected function arrayExport(array $array = [], $level = 0)
     {
         $lines = 'array(' . chr(10);
         $level++;

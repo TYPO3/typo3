@@ -25,7 +25,7 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
      *
      * @var array
      */
-    protected static $comparators = array('==', '!=', '%', '>=', '>', '<=', '<');
+    protected static $comparators = ['==', '!=', '%', '>=', '>', '<=', '<'];
 
     /**
      * A regular expression which checks the text nodes of a boolean expression.
@@ -103,7 +103,7 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
         } elseif (count($childNodes) === 0) {
             // In this case, we do not have child nodes; i.e. the current SyntaxTreeNode
             // is a text node with a literal comparison like "1 == 1"
-            $childNodes = array($syntaxTreeNode);
+            $childNodes = [$syntaxTreeNode];
         }
 
         $this->leftSide = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode();

@@ -235,7 +235,7 @@ class StandaloneView extends AbstractTemplateView
     public function setLayoutRootPath($layoutRootPath)
     {
         GeneralUtility::logDeprecatedFunction();
-        $this->setLayoutRootPaths(array($layoutRootPath));
+        $this->setLayoutRootPaths([$layoutRootPath]);
     }
 
     /**
@@ -278,7 +278,7 @@ class StandaloneView extends AbstractTemplateView
             throw new InvalidTemplateResourceException('No layout root path has been specified. Use setLayoutRootPaths().', 1288091419);
         }
         if ($this->layoutRootPaths === null) {
-            $this->layoutRootPaths = array(dirname($this->templatePathAndFilename) . '/Layouts');
+            $this->layoutRootPaths = [dirname($this->templatePathAndFilename) . '/Layouts'];
         }
         return $this->layoutRootPaths;
     }
@@ -296,7 +296,7 @@ class StandaloneView extends AbstractTemplateView
     public function setPartialRootPath($partialRootPath)
     {
         GeneralUtility::logDeprecatedFunction();
-        $this->setPartialRootPaths(array($partialRootPath));
+        $this->setPartialRootPaths([$partialRootPath]);
     }
 
     /**
@@ -340,7 +340,7 @@ class StandaloneView extends AbstractTemplateView
             throw new InvalidTemplateResourceException('No partial root path has been specified. Use setPartialRootPaths().', 1288094511);
         }
         if ($this->partialRootPaths === null) {
-            $this->partialRootPaths = array(dirname($this->templatePathAndFilename) . '/Partials');
+            $this->partialRootPaths = [dirname($this->templatePathAndFilename) . '/Partials'];
         }
         return $this->partialRootPaths;
     }
@@ -525,7 +525,7 @@ class StandaloneView extends AbstractTemplateView
     protected function buildListOfTemplateCandidates($templateName, array $paths, $format)
     {
         $upperCasedTemplateName = $this->ucFileNameInPath($templateName);
-        $possibleTemplatePaths = array();
+        $possibleTemplatePaths = [];
         $paths = ArrayUtility::sortArrayWithIntegerKeys($paths);
         $paths = array_reverse($paths, true);
         foreach ($paths as $layoutRootPath) {

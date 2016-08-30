@@ -24,12 +24,12 @@ class TranslationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array('typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example');
+    protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = array('extbase', 'fluid');
+    protected $coreExtensionsToLoad = ['extbase', 'fluid'];
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
@@ -80,7 +80,7 @@ class TranslationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Service\EnvironmentService::class, $environmentServiceMock);
 
         $pageRepositoryFixture = new PageRepository();
-        $frontendControllerMock = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', false);
+        $frontendControllerMock = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, [], [], '', false);
         $frontendControllerMock->sys_page = $pageRepositoryFixture;
         $GLOBALS['TSFE'] = $frontendControllerMock;
     }
@@ -93,7 +93,7 @@ class TranslationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $query = $this->postRepository->createQuery();
 
         $querySettings = $query->getQuerySettings();
-        $querySettings->setStoragePageIds(array(1));
+        $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(0);
 
@@ -109,7 +109,7 @@ class TranslationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $query = $this->postRepository->createQuery();
 
         $querySettings = $query->getQuerySettings();
-        $querySettings->setStoragePageIds(array(1));
+        $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(1);
 
@@ -125,7 +125,7 @@ class TranslationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $query = $this->postRepository->createQuery();
 
         $querySettings = $query->getQuerySettings();
-        $querySettings->setStoragePageIds(array(1));
+        $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(2);
         $postCount = $query->execute()->count();
@@ -141,7 +141,7 @@ class TranslationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $query = $this->postRepository->createQuery();
 
         $querySettings = $query->getQuerySettings();
-        $querySettings->setStoragePageIds(array(1));
+        $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(1);
 
@@ -162,7 +162,7 @@ class TranslationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $query = $this->postRepository->createQuery();
 
         $querySettings = $query->getQuerySettings();
-        $querySettings->setStoragePageIds(array(1));
+        $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(2);
 
@@ -183,11 +183,11 @@ class TranslationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $query = $this->postRepository->createQuery();
 
         $querySettings = $query->getQuerySettings();
-        $querySettings->setStoragePageIds(array(1));
+        $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(1);
 
-        $query->setOrderings(array('title' => QueryInterface::ORDER_ASCENDING));
+        $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
 
         /** @var Post[] $posts */
         $posts = $query->execute()->toArray();

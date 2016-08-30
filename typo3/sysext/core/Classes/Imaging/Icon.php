@@ -92,7 +92,7 @@ class Icon
     /**
      * @var array
      */
-    protected $alternativeMarkups = array();
+    protected $alternativeMarkups = [];
 
     /**
      * @internal this method is used for internal processing, to get the prepared and final markup use render()
@@ -264,7 +264,7 @@ class Icon
      */
     protected function wrappedIcon($alternativeMarkupIdentifier = null)
     {
-        $classes = array();
+        $classes = [];
         $classes[] = 't3js-icon';
         $classes[] = 'icon';
         $classes[] = 'icon-size-' . $this->size;
@@ -274,7 +274,7 @@ class Icon
             $classes[] = 'icon-spin';
         }
 
-        $markup = array();
+        $markup = [];
         $markup[] = '<span class="' . htmlspecialchars(implode(' ', $classes)) . '" data-identifier="' . htmlspecialchars($this->getIdentifier()) . '">';
         $markup[] = '	<span class="icon-markup">';
         $markup[] = $this->getMarkup($alternativeMarkupIdentifier);

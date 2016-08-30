@@ -64,13 +64,13 @@ class ShortcutViewHelper extends AbstractBackendViewHelper implements Compilable
      * @return string the rendered shortcut button
      * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::makeShortcutIcon()
      */
-    public function render(array $getVars = array(), array $setVars = array())
+    public function render(array $getVars = [], array $setVars = [])
     {
         return static::renderStatic(
-            array(
+            [
                 'getVars' => $getVars,
                 'setVars' => $setVars
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -96,7 +96,7 @@ class ShortcutViewHelper extends AbstractBackendViewHelper implements Compilable
             $moduleName = $currentRequest->getPluginName();
             if (count($getVars) === 0) {
                 $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-                $getVars = array('id', 'M', $modulePrefix);
+                $getVars = ['id', 'M', $modulePrefix];
             }
             $getList = implode(',', $getVars);
             $setList = implode(',', $setVars);

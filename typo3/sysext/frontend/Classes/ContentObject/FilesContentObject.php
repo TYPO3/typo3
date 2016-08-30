@@ -29,7 +29,7 @@ class FilesContentObject extends AbstractContentObject
      * @param array $conf Array of TypoScript properties
      * @return string Output
      */
-    public function render($conf = array())
+    public function render($conf = [])
     {
         if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
             return '';

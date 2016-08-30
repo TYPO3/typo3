@@ -71,7 +71,7 @@ class CacheServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->cacheManagerMock->expects($this->at(0))->method('flushCachesInGroupByTag')->with('pages', 'pageId_1');
         $this->cacheManagerMock->expects($this->at(1))->method('flushCachesInGroupByTag')->with('pages', 'pageId_2');
         $this->cacheManagerMock->expects($this->at(2))->method('flushCachesInGroupByTag')->with('pages', 'pageId_3');
-        $this->cacheService->clearPageCache(array(1, 2, 3));
+        $this->cacheService->clearPageCache([1, 2, 3]);
     }
 
     /**

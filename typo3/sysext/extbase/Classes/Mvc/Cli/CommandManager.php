@@ -53,8 +53,8 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface
     public function getAvailableCommands()
     {
         if ($this->availableCommands === null) {
-            $this->availableCommands = array();
-            $commandControllerClassNames = is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']) ? $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'] : array();
+            $this->availableCommands = [];
+            $commandControllerClassNames = is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']) ? $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'] : [];
             foreach ($commandControllerClassNames as $className) {
                 if (!class_exists($className)) {
                     continue;
@@ -86,7 +86,7 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface
         if ($commandIdentifier === 'help') {
             $commandIdentifier = 'extbase:help:help';
         }
-        $matchedCommands = array();
+        $matchedCommands = [];
         $availableCommands = $this->getAvailableCommands();
         foreach ($availableCommands as $command) {
             if ($this->commandMatchesIdentifier($command, $commandIdentifier)) {
@@ -129,14 +129,14 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface
     protected function getShortCommandIdentifiers()
     {
         if ($this->shortCommandIdentifiers === null) {
-            $commandsByCommandName = array();
+            $commandsByCommandName = [];
             foreach ($this->getAvailableCommands() as $availableCommand) {
                 list($extensionKey, $controllerName, $commandName) = explode(':', $availableCommand->getCommandIdentifier());
                 if (!isset($commandsByCommandName[$commandName])) {
-                    $commandsByCommandName[$commandName] = array();
+                    $commandsByCommandName[$commandName] = [];
                 }
                 if (!isset($commandsByCommandName[$commandName][$controllerName])) {
-                    $commandsByCommandName[$commandName][$controllerName] = array();
+                    $commandsByCommandName[$commandName][$controllerName] = [];
                 }
                 $commandsByCommandName[$commandName][$controllerName][] = $extensionKey;
             }

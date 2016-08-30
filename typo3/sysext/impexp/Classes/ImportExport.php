@@ -104,14 +104,14 @@ abstract class ImportExport
      *
      * @var array
      */
-    public $display_import_pid_record = array();
+    public $display_import_pid_record = [];
 
     /**
      * Setting import modes during update state: as_new, exclude, force_uid
      *
      * @var array
      */
-    public $import_mode = array();
+    public $import_mode = [];
 
     /**
      * If set, PID correct is ignored globally
@@ -146,21 +146,21 @@ abstract class ImportExport
      *
      * @var array
      */
-    public $softrefInputValues = array();
+    public $softrefInputValues = [];
 
     /**
      * Mapping between the fileID from import memory and the final filenames they are written to.
      *
      * @var array
      */
-    public $fileIDMap = array();
+    public $fileIDMap = [];
 
     /**
      * Migrate legacy import records
      *
      * @var array
      */
-    public $relOnlyTables = array();
+    public $relOnlyTables = [];
 
     /**
      * Add tables names here which should not be exported with the file.
@@ -168,56 +168,56 @@ abstract class ImportExport
      *
      * @var array
      */
-    public $relStaticTables = array();
+    public $relStaticTables = [];
 
     /**
      * Exclude map. Keys are table:uid  pairs and if set, records are not added to the export.
      *
      * @var array
      */
-    public $excludeMap = array();
+    public $excludeMap = [];
 
     /**
      * Soft Reference Token ID modes.
      *
      * @var array
      */
-    public $softrefCfg = array();
+    public $softrefCfg = [];
 
     /**
      * Listing extension dependencies.
      *
      * @var array
      */
-    public $extensionDependencies = array();
+    public $extensionDependencies = [];
 
     /**
      * After records are written this array is filled with [table][original_uid] = [new_uid]
      *
      * @var array
      */
-    public $import_mapId = array();
+    public $import_mapId = [];
 
     /**
      * Error log.
      *
      * @var array
      */
-    public $errorLog = array();
+    public $errorLog = [];
 
     /**
      * Cache for record paths
      *
      * @var array
      */
-    public $cache_getRecordPath = array();
+    public $cache_getRecordPath = [];
 
     /**
      * Cache of checkPID values.
      *
      * @var array
      */
-    public $checkPID_cache = array();
+    public $checkPID_cache = [];
 
     /**
      * Set internally if the gzcompress function exists
@@ -232,7 +232,7 @@ abstract class ImportExport
      *
      * @var array
      */
-    public $dat = array();
+    public $dat = [];
 
     /**
      * File processing object
@@ -244,7 +244,7 @@ abstract class ImportExport
     /**
      * @var array
      */
-    protected $remainHeader = array();
+    protected $remainHeader = [];
 
     /**
      * @var IconFactory
@@ -298,13 +298,13 @@ abstract class ImportExport
         // Probably this is done to save memory space?
         unset($this->dat['files']);
 
-        $viewData = array();
+        $viewData = [];
         // Traverse header:
         $this->remainHeader = $this->dat['header'];
         // If there is a page tree set, show that:
         if (is_array($this->dat['header']['pagetree'])) {
             reset($this->dat['header']['pagetree']);
-            $lines = array();
+            $lines = [];
             $this->traversePageTree($this->dat['header']['pagetree'], $lines);
 
             $viewData['dat'] = $this->dat;
@@ -318,12 +318,12 @@ abstract class ImportExport
                 }
                 $viewData['pagetreeLines'] = $lines;
             } else {
-                $viewData['pagetreeLines'] = array();
+                $viewData['pagetreeLines'] = [];
             }
         }
         // Print remaining records that were not contained inside the page tree:
         if (is_array($this->remainHeader['records'])) {
-            $lines = array();
+            $lines = [];
             if (is_array($this->remainHeader['records']['pages'])) {
                 $this->traversePageRecords($this->remainHeader['records']['pages'], $lines);
             }
@@ -452,7 +452,7 @@ abstract class ImportExport
             $this->error('MISSING RECORD: ' . $table . ':' . $uid);
         }
         // Begin to create the line arrays information record, pInfo:
-        $pInfo = array();
+        $pInfo = [];
         $pInfo['ref'] = $table . ':' . $uid;
         // Unknown table name:
         $lang = $this->getLanguageService();
@@ -499,7 +499,7 @@ abstract class ImportExport
                     $recInf = $this->doesRecordExist($table, $uid, $this->showDiff ? '*' : '');
                     $pInfo['updatePath'] = $recInf ? htmlspecialchars($this->getRecordPath($recInf['pid'])) : '<strong>NEW!</strong>';
                     // Mode selector:
-                    $optValues = array();
+                    $optValues = [];
                     $optValues[] = $recInf ? $lang->getLL('impexpcore_singlereco_update') : $lang->getLL('impexpcore_singlereco_insert');
                     if ($recInf) {
                         $optValues['as_new'] = $lang->getLL('impexpcore_singlereco_importAsNew');
@@ -563,7 +563,7 @@ abstract class ImportExport
             $preCode_A = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;';
             $preCode_B = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
             foreach ($record['softrefs'] as $info) {
-                $pInfo = array();
+                $pInfo = [];
                 $pInfo['preCode'] = $preCode_A . $this->iconFactory->getIcon('status-status-reference-soft', Icon::SIZE_SMALL)->render();
                 $pInfo['title'] = '<em>' . $info['field'] . ', "' . $info['spKey'] . '" </em>: <span title="' . htmlspecialchars($info['matchString']) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['matchString'], 60)) . '</span>';
                 if ($info['subst']['type']) {
@@ -589,11 +589,11 @@ abstract class ImportExport
                 // Add relations:
                 if ($info['subst']['type'] == 'db') {
                     list($tempTable, $tempUid) = explode(':', $info['subst']['recordRef']);
-                    $this->addRelations(array(array('table' => $tempTable, 'id' => $tempUid, 'tokenID' => $info['subst']['tokenID'])), $lines, $preCode_B, array(), '');
+                    $this->addRelations([['table' => $tempTable, 'id' => $tempUid, 'tokenID' => $info['subst']['tokenID']]], $lines, $preCode_B, [], '');
                 }
                 // Add files:
                 if ($info['subst']['type'] == 'file') {
-                    $this->addFiles(array($info['file_ID']), $lines, $preCode_B, '', $info['subst']['tokenID']);
+                    $this->addFiles([$info['file_ID']], $lines, $preCode_B, '', $info['subst']['tokenID']);
                 }
             }
         }
@@ -611,12 +611,12 @@ abstract class ImportExport
      * @access private
      * @see singleRecordLines()
      */
-    public function addRelations($rels, &$lines, $preCode, $recurCheck = array(), $htmlColorClass = '')
+    public function addRelations($rels, &$lines, $preCode, $recurCheck = [], $htmlColorClass = '')
     {
         foreach ($rels as $dat) {
             $table = $dat['table'];
             $uid = $dat['id'];
-            $pInfo = array();
+            $pInfo = [];
             $pInfo['ref'] = $table . ':' . $uid;
             if (in_array($pInfo['ref'], $recurCheck)) {
                 continue;
@@ -659,7 +659,7 @@ abstract class ImportExport
             if (!$staticFixed || $this->showStaticRelations) {
                 $lines[] = $pInfo;
                 if (is_array($record) && is_array($record['rels'])) {
-                    $this->addRelations($record['rels'], $lines, $preCode . '&nbsp;&nbsp;', array_merge($recurCheck, array($pInfo['ref'])), $htmlColorClass);
+                    $this->addRelations($record['rels'], $lines, $preCode . '&nbsp;&nbsp;', array_merge($recurCheck, [$pInfo['ref']]), $htmlColorClass);
                 }
             }
         }
@@ -681,7 +681,7 @@ abstract class ImportExport
     {
         foreach ($rels as $ID) {
             // Process file:
-            $pInfo = array();
+            $pInfo = [];
             $fI = $this->dat['header']['files'][$ID];
             if (!is_array($fI)) {
                 if (!$tokenID || $this->includeSoftref($tokenID)) {
@@ -735,7 +735,7 @@ abstract class ImportExport
             // RTE originals:
             if ($fI['RTE_ORIG_ID']) {
                 $ID = $fI['RTE_ORIG_ID'];
-                $pInfo = array();
+                $pInfo = [];
                 $fI = $this->dat['header']['files'][$ID];
                 if (!is_array($fI)) {
                     $pInfo['msg'] = 'MISSING RTE original FILE: ' . $ID;
@@ -754,7 +754,7 @@ abstract class ImportExport
             // External resources:
             if (is_array($fI['EXT_RES_ID'])) {
                 foreach ($fI['EXT_RES_ID'] as $extID) {
-                    $pInfo = array();
+                    $pInfo = [];
                     $fI = $this->dat['header']['files'][$extID];
                     if (!is_array($fI)) {
                         $pInfo['msg'] = 'MISSING External Resource FILE: ' . $extID;
@@ -832,11 +832,11 @@ abstract class ImportExport
     public function softrefSelector($cfg)
     {
         // Looking for file ID if any:
-        $fI = $cfg['file_ID'] ? $this->dat['header']['files'][$cfg['file_ID']] : array();
+        $fI = $cfg['file_ID'] ? $this->dat['header']['files'][$cfg['file_ID']] : [];
         // Substitution scheme has to be around and RTE images MUST be exported.
         if (is_array($cfg['subst']) && $cfg['subst']['tokenID'] && !$fI['RTE_ORIG_ID']) {
             // Create options:
-            $optValues = array();
+            $optValues = [];
             $optValues[''] = '';
             $optValues['editable'] = $this->getLanguageService()->getLL('impexpcore_softrefsel_editable');
             $optValues['exclude'] = $this->getLanguageService()->getLL('impexpcore_softrefsel_exclude');
@@ -932,7 +932,7 @@ abstract class ImportExport
      * @return array Array with uid-uid pairs for all pages in the page tree.
      * @see Import::flatInversePageTree_pid()
      */
-    public function flatInversePageTree($idH, $a = array())
+    public function flatInversePageTree($idH, $a = [])
     {
         if (is_array($idH)) {
             $idH = array_reverse($idH);
@@ -1061,7 +1061,7 @@ abstract class ImportExport
      */
     public function renderSelectBox($prefix, $value, $optValues)
     {
-        $opt = array();
+        $opt = [];
         $isSelFlag = 0;
         foreach ($optValues as $k => $v) {
             $sel = (string)$k === (string)$value ? ' selected="selected"' : '';
@@ -1089,7 +1089,7 @@ abstract class ImportExport
     public function compareRecords($databaseRecord, $importRecord, $table, $inverseDiff = false)
     {
         // Initialize:
-        $output = array();
+        $output = [];
         $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
         // Check if both inputs are records:
         if (is_array($databaseRecord) && is_array($importRecord)) {
@@ -1113,7 +1113,7 @@ abstract class ImportExport
             }
             // Create output:
             if (!empty($output)) {
-                $tRows = array();
+                $tRows = [];
                 foreach ($output as $fN => $state) {
                     $tRows[] = '
 						<tr>
@@ -1159,7 +1159,7 @@ abstract class ImportExport
     {
         if ($this->fileProcObj === null) {
             $this->fileProcObj = GeneralUtility::makeInstance(ExtendedFileUtility::class);
-            $this->fileProcObj->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+            $this->fileProcObj->init([], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
             $this->fileProcObj->setActionPermissions();
         }
         return $this->fileProcObj;

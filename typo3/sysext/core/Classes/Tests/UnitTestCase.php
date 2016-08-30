@@ -34,7 +34,7 @@ abstract class UnitTestCase extends BaseTestCase
      *
      * @var array
      */
-    protected $backupGlobalsBlacklist = array('TYPO3_LOADED_EXT');
+    protected $backupGlobalsBlacklist = ['TYPO3_LOADED_EXT'];
 
     /**
      * Absolute path to files that should be removed after a test.
@@ -43,7 +43,7 @@ abstract class UnitTestCase extends BaseTestCase
      *
      * @var array
      */
-    protected $testFilesToDelete = array();
+    protected $testFilesToDelete = [];
 
     /**
      * Unset all additional properties of test classes to help PHP
@@ -96,6 +96,6 @@ abstract class UnitTestCase extends BaseTestCase
                 throw new \RuntimeException('tearDown() cleanup: File, link or directory does not exist', 1410633510);
             }
         }
-        $this->testFilesToDelete = array();
+        $this->testFilesToDelete = [];
     }
 }

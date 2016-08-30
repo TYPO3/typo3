@@ -41,7 +41,7 @@ class BooleanConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkMetadata()
     {
-        $this->assertEquals(array('boolean', 'string'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+        $this->assertEquals(['boolean', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
         $this->assertEquals('boolean', $this->converter->getSupportedTargetType(), 'Target type does not match');
         $this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }

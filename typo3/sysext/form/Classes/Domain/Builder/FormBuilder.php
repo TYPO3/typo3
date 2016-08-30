@@ -261,7 +261,7 @@ class FormBuilder
         $userConfiguredFormTypoScript = $this->configuration->getTypoScript();
 
         if ($this->configuration->getCompatibility()) {
-            $layout = array();
+            $layout = [];
             if (isset($userConfiguredFormTypoScript['layout.'])) {
                 $layout = $userConfiguredFormTypoScript['layout.'];
                 /* use the compatibility theme whenever if a layout is defined */
@@ -343,9 +343,9 @@ class FormBuilder
                     $userConfiguredElementTypoScript['cObj']
                 );
             }
-            $element->setAdditionalArguments(array(
+            $element->setAdditionalArguments([
                 'content' => $attributeValue,
-            ));
+            ]);
             /* use the compatibility theme whenever if a layout is defined */
             if ($this->configuration->getCompatibility()) {
                 $this->compatibilityService->setElementLayouts($element, $userConfiguredElementTypoScript);
@@ -369,7 +369,7 @@ class FormBuilder
             $this->signalSlotDispatcher->dispatch(
                 __CLASS__,
                 'txFormAfterElementCreation',
-                array($element, $this)
+                [$element, $this]
             );
                 // create all child elements
             $this->setChildElementsByIntegerKey($element, $userConfiguredElementTypoScript);
@@ -398,7 +398,7 @@ class FormBuilder
                     if (isset($userConfiguredElementTypoScript[$key . '.'])) {
                         $concreteChildElementTypoScript = $userConfiguredElementTypoScript[$key . '.'];
                     } else {
-                        $concreteChildElementTypoScript = array();
+                        $concreteChildElementTypoScript = [];
                     }
                     $this->distinguishElementType($element, $concreteChildElementTypoScript, $elementType);
                 }
@@ -424,10 +424,10 @@ class FormBuilder
         if (in_array($elementType, $this->typoScriptRepository->getRegisteredElementTypes())) {
             $this->addChildElement($element, $userConfiguredElementTypoScript, $elementType);
         } elseif ($this->configuration->getContentElementRendering()) {
-            $contentObject = array(
+            $contentObject = [
                 'cObj' => $elementType,
                 'cObj.' => $userConfiguredElementTypoScript
-            );
+            ];
             $this->addChildElement($element, $contentObject, 'CONTENTELEMENT');
         }
     }
@@ -570,12 +570,12 @@ class FormBuilder
         $this->signalSlotDispatcher->dispatch(
             __CLASS__,
             'txFormHandleIncomingValues',
-            array(
+            [
                 $element,
                 $this->getIncomingData(),
                 $modelValue,
                 $this
-            )
+            ]
         );
     }
 
@@ -597,7 +597,7 @@ class FormBuilder
         ) {
             /** @var \TYPO3\CMS\Extbase\Error\Error[] $errors */
             $errors = $this->getValidationErrors()->forProperty($elementName)->getErrors();
-            $errorMessages = array();
+            $errorMessages = [];
             foreach ($errors as $error) {
                 $errorMessages[] = $error->getMessage();
             }

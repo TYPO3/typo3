@@ -74,11 +74,11 @@ class CshViewHelper extends AbstractBackendViewHelper implements CompilableInter
             );
         }
         return static::renderStatic(
-            array(
+            [
                 'table' => $table,
                 'field' => $field,
                 'wrap' => $wrap
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

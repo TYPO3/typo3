@@ -74,7 +74,7 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      * @param array $options Configuration options - unused here
      * @throws Cache\Exception
      */
-    public function __construct($context, array $options = array())
+    public function __construct($context, array $options = [])
     {
         if (!extension_loaded('apcu')) {
             throw new Cache\Exception('The PHP extension "apcu" must be installed and loaded in order to use the APCu backend.', 1232985914);
@@ -107,7 +107,7 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      */
     protected function getCurrentUserData()
     {
-        return extension_loaded('posix') ? posix_getpwuid(posix_geteuid()) : array('name' => 'default');
+        return extension_loaded('posix') ? posix_getpwuid(posix_geteuid()) : ['name' => 'default'];
     }
 
     /**
@@ -132,7 +132,7 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      * @throws Cache\Exception\InvalidDataException if $data is not a string
      * @api
      */
-    public function set($entryIdentifier, $data, array $tags = array(), $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
         if (!$this->cache instanceof Cache\Frontend\FrontendInterface) {
             throw new Cache\Exception('No cache frontend has been set yet via setCache().', 1232986118);
@@ -207,7 +207,7 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
         $success = false;
         $identifiers = apcu_fetch($this->getIdentifierPrefix() . 'tag_' . $tag, $success);
         if ($success === false) {
-            return array();
+            return [];
         } else {
             return (array)$identifiers;
         }
@@ -224,7 +224,7 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
     {
         $success = false;
         $tags = apcu_fetch($this->getIdentifierPrefix() . 'ident_' . $identifier, $success);
-        return $success ? (array)$tags : array();
+        return $success ? (array)$tags : [];
     }
 
     /**

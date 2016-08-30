@@ -125,7 +125,7 @@ class NormalizeCommand
         } else {
             // Fragment expression by , / and - and substitute three letter code of month and weekday to numbers
             $listOfCommaValues = explode(',', $expression);
-            $fieldArray = array();
+            $fieldArray = [];
             foreach ($listOfCommaValues as $listElement) {
                 if (strpos($listElement, '/') !== false) {
                     list($left, $right) = explode('/', $listElement);
@@ -169,7 +169,7 @@ class NormalizeCommand
             $fieldValues = '*';
         } else {
             $listOfCommaValues = explode(',', $expression);
-            $fieldArray = array();
+            $fieldArray = [];
             foreach ($listOfCommaValues as $listElement) {
                 if (strpos($listElement, '/') !== false) {
                     list($left, $right) = explode('/', $listElement);
@@ -237,7 +237,7 @@ class NormalizeCommand
             if ($left > $right) {
                 throw new \InvalidArgumentException('Unable to convert range to list: Left integer must not be greater than right integer.', 1291237145);
             }
-            $resultListArray = array();
+            $resultListArray = [];
             for ($i = $left; $i <= $right; $i++) {
                 $resultListArray[] = $i;
             }
@@ -281,7 +281,7 @@ class NormalizeCommand
         }
         $right = (int)$right;
         $leftArray = explode(',', $left);
-        $validValues = array();
+        $validValues = [];
         $currentStep = $right;
         foreach ($leftArray as $leftValue) {
             if (!MathUtility::canBeInterpretedAsInteger($leftValue)) {

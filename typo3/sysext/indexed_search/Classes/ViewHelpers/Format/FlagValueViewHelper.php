@@ -32,9 +32,9 @@ class FlagValueViewHelper extends AbstractViewHelper implements CompilableInterf
     public function render($flags)
     {
         return static::renderStatic(
-            array(
+            [
                 'flags' => $flags,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

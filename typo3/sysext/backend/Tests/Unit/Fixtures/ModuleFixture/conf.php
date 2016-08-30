@@ -1,3 +1,3 @@
 <?php
-$MCONF = array();
+$MCONF = [];
 $MCONF['name'] = 'module_fixture';

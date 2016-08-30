@@ -23,7 +23,7 @@ class ConcreteBackendFixture extends AbstractBackend
 {
     protected $someOption;
 
-    public function set($entryIdentifier, $data, array $tags = array(), $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
     }
 

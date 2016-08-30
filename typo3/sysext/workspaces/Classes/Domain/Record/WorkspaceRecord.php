@@ -23,29 +23,29 @@ class WorkspaceRecord extends AbstractRecord
     /**
      * @var array
      */
-    protected $internalStages = array(
-        StagesService::STAGE_EDIT_ID => array(
+    protected $internalStages = [
+        StagesService::STAGE_EDIT_ID => [
             'name' => 'edit',
             'label' => 'LLL:EXT:lang/locallang_mod_user_ws.xlf:stage_editing'
-        ),
-        StagesService::STAGE_PUBLISH_ID => array(
+        ],
+        StagesService::STAGE_PUBLISH_ID => [
             'name' => 'publish',
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_ready_to_publish'
-        ),
-        StagesService::STAGE_PUBLISH_EXECUTE_ID => array(
+        ],
+        StagesService::STAGE_PUBLISH_EXECUTE_ID => [
             'name' => 'execute',
             'label' => 'LLL:EXT:lang/locallang_mod_user_ws.xlf:stage_publish'
-        ),
-    );
+        ],
+    ];
 
     /**
      * @var array
      */
-    protected $internalStageFieldNames = array(
+    protected $internalStageFieldNames = [
         'notification_defaults',
         'notification_preselection',
         'allow_notificaton_settings'
-    );
+    ];
 
     /**
      * @var array
@@ -70,7 +70,7 @@ class WorkspaceRecord extends AbstractRecord
     public static function get($uid, array $record = null)
     {
         if (empty($uid)) {
-            $record = array();
+            $record = [];
         } elseif (empty($record)) {
             $record = static::fetch('sys_workspace', $uid);
         }
@@ -105,7 +105,7 @@ class WorkspaceRecord extends AbstractRecord
     public function getStages()
     {
         if (!isset($this->stages)) {
-            $this->stages = array();
+            $this->stages = [];
             $this->addStage($this->createInternalStage(StagesService::STAGE_EDIT_ID));
 
             $records = self::getDatabaseConnection()->exec_SELECTgetRows(
@@ -199,10 +199,10 @@ class WorkspaceRecord extends AbstractRecord
             throw new \RuntimeException('Invalid internal stage "' . $stageId . '"');
         }
 
-        $record = array(
+        $record = [
             'uid' => $stageId,
             'title' => static::getLanguageService()->sL($this->internalStages[$stageId]['label'])
-        );
+        ];
 
         $fieldNamePrefix = $this->internalStages[$stageId]['name'] . '_';
         foreach ($this->internalStageFieldNames as $fieldName) {

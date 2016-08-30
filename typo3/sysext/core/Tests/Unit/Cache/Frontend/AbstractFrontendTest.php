@@ -26,9 +26,9 @@ class AbstractFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function theConstructorAcceptsValidIdentifiers()
     {
-        $mockBackend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
-        foreach (array('x', 'someValue', '123fivesixseveneight', 'some&', 'ab_cd%', rawurlencode('resource://some/äöü$&% sadf'), str_repeat('x', 250)) as $identifier) {
-            $abstractCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('__construct', 'get', 'set', 'has', 'remove', 'getByTag', 'flush', 'flushByTag', 'collectGarbage'), array($identifier, $mockBackend));
+        $mockBackend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, ['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'], [], '', false);
+        foreach (['x', 'someValue', '123fivesixseveneight', 'some&', 'ab_cd%', rawurlencode('resource://some/äöü$&% sadf'), str_repeat('x', 250)] as $identifier) {
+            $abstractCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, ['__construct', 'get', 'set', 'has', 'remove', 'getByTag', 'flush', 'flushByTag', 'collectGarbage'], [$identifier, $mockBackend]);
         }
     }
 
@@ -37,10 +37,10 @@ class AbstractFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function theConstructorRejectsInvalidIdentifiers()
     {
-        $mockBackend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
-        foreach (array('', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#') as $identifier) {
+        $mockBackend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, ['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'], [], '', false);
+        foreach (['', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#'] as $identifier) {
             try {
-                $abstractCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('__construct', 'get', 'set', 'has', 'remove', 'getByTag', 'flush', 'flushByTag', 'collectGarbage'), array($identifier, $mockBackend));
+                $abstractCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, ['__construct', 'get', 'set', 'has', 'remove', 'getByTag', 'flush', 'flushByTag', 'collectGarbage'], [$identifier, $mockBackend]);
                 $this->fail('Identifier "' . $identifier . '" was not rejected.');
             } catch (\InvalidArgumentException $exception) {
             }
@@ -53,9 +53,9 @@ class AbstractFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function flushCallsBackend()
     {
         $identifier = 'someCacheIdentifier';
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, ['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'], [], '', false);
         $backend->expects($this->once())->method('flush');
-        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
+        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, ['__construct', 'get', 'set', 'has', 'remove', 'getByTag'], [$identifier, $backend]);
         $cache->flush();
     }
 
@@ -66,9 +66,9 @@ class AbstractFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function flushByTagRejectsInvalidTags()
     {
         $identifier = 'someCacheIdentifier';
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\BackendInterface::class, array(), array(), '', false);
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\BackendInterface::class, [], [], '', false);
         $backend->expects($this->never())->method('flushByTag');
-        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
+        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, ['__construct', 'get', 'set', 'has', 'remove', 'getByTag'], [$identifier, $backend]);
         $cache->flushByTag('SomeInvalid\\Tag');
     }
 
@@ -79,9 +79,9 @@ class AbstractFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $tag = 'sometag';
         $identifier = 'someCacheIdentifier';
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface::class, array('setCache', 'get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface::class, ['setCache', 'get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'], [], '', false);
         $backend->expects($this->once())->method('flushByTag')->with($tag);
-        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
+        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, ['__construct', 'get', 'set', 'has', 'remove', 'getByTag'], [$identifier, $backend]);
         $cache->flushByTag($tag);
     }
 
@@ -91,9 +91,9 @@ class AbstractFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function collectGarbageCallsBackend()
     {
         $identifier = 'someCacheIdentifier';
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, ['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'], [], '', false);
         $backend->expects($this->once())->method('collectGarbage');
-        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
+        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, ['__construct', 'get', 'set', 'has', 'remove', 'getByTag'], [$identifier, $backend]);
         $cache->collectGarbage();
     }
 
@@ -103,9 +103,9 @@ class AbstractFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function invalidEntryIdentifiersAreRecognizedAsInvalid()
     {
         $identifier = 'someCacheIdentifier';
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array(), array(), '', false);
-        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
-        foreach (array('', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#') as $entryIdentifier) {
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, [], [], '', false);
+        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, ['__construct', 'get', 'set', 'has', 'remove', 'getByTag'], [$identifier, $backend]);
+        foreach (['', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#'] as $entryIdentifier) {
             $this->assertFalse($cache->isValidEntryIdentifier($entryIdentifier), 'Invalid identifier "' . $entryIdentifier . '" was not rejected.');
         }
     }
@@ -116,9 +116,9 @@ class AbstractFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function validEntryIdentifiersAreRecognizedAsValid()
     {
         $identifier = 'someCacheIdentifier';
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array(), array(), '', false);
-        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
-        foreach (array('_', 'abcdef', 'foo', 'bar123', '3some', '_bl_a', 'some&', 'one%TWO', str_repeat('x', 250)) as $entryIdentifier) {
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, [], [], '', false);
+        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, ['__construct', 'get', 'set', 'has', 'remove', 'getByTag'], [$identifier, $backend]);
+        foreach (['_', 'abcdef', 'foo', 'bar123', '3some', '_bl_a', 'some&', 'one%TWO', str_repeat('x', 250)] as $entryIdentifier) {
             $this->assertTrue($cache->isValidEntryIdentifier($entryIdentifier), 'Valid identifier "' . $entryIdentifier . '" was not accepted.');
         }
     }
@@ -129,9 +129,9 @@ class AbstractFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function invalidTagsAreRecognizedAsInvalid()
     {
         $identifier = 'someCacheIdentifier';
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array(), array(), '', false);
-        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
-        foreach (array('', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#') as $tag) {
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, [], [], '', false);
+        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, ['__construct', 'get', 'set', 'has', 'remove', 'getByTag'], [$identifier, $backend]);
+        foreach (['', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#'] as $tag) {
             $this->assertFalse($cache->isValidTag($tag), 'Invalid tag "' . $tag . '" was not rejected.');
         }
     }
@@ -142,9 +142,9 @@ class AbstractFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function validTagsAreRecognizedAsValid()
     {
         $identifier = 'someCacheIdentifier';
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array(), array(), '', false);
-        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
-        foreach (array('abcdef', 'foo-bar', 'foo_baar', 'bar123', '3some', 'file%Thing', 'some&', '%x%', str_repeat('x', 250)) as $tag) {
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, [], [], '', false);
+        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, ['__construct', 'get', 'set', 'has', 'remove', 'getByTag'], [$identifier, $backend]);
+        foreach (['abcdef', 'foo-bar', 'foo_baar', 'bar123', '3some', 'file%Thing', 'some&', '%x%', str_repeat('x', 250)] as $tag) {
             $this->assertTrue($cache->isValidTag($tag), 'Valid tag "' . $tag . '" was not accepted.');
         }
     }

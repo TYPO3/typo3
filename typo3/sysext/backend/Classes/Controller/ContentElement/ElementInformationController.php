@@ -187,7 +187,7 @@ class ElementInformationController
             try {
                 $this->row = BackendUtility::getRecordWSOL($this->table, $fileOrFolderObject->getUid());
             } catch (\Exception $e) {
-                $this->row = array();
+                $this->row = [];
             }
         }
     }
@@ -255,13 +255,13 @@ class ElementInformationController
     {
         if ($this->type === 'folder') {
             $table = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:folder');
-            $title = $this->doc->getResourceHeader($this->folderObject, array(' ', ''), false);
+            $title = $this->doc->getResourceHeader($this->folderObject, [' ', ''], false);
         } elseif ($this->type === 'file') {
             $table = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
-            $title = $this->doc->getResourceHeader($this->fileObject, array(' ', ''), false);
+            $title = $this->doc->getResourceHeader($this->fileObject, [' ', ''], false);
         } else {
             $table = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
-            $title = $this->doc->getHeader($this->table, $this->row, $this->pageInfo['_thePath'], 1, array(' ', ''), false);
+            $title = $this->doc->getHeader($this->table, $this->row, $this->pageInfo['_thePath'], 1, [' ', ''], false);
         }
         // Set HTML title tag
         $this->titleTag = $table . ': ' . strip_tags(BackendUtility::getRecordTitle($this->table, $this->row));
@@ -305,7 +305,7 @@ class ElementInformationController
                     $this->fileObject,
                     '590m',
                     '400m',
-                    array(),
+                    [],
                     true
                 );
 
@@ -313,10 +313,10 @@ class ElementInformationController
             } elseif (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
                 $processedFile = $this->fileObject->process(
                     ProcessedFile::CONTEXT_IMAGEPREVIEW,
-                    array(
+                    [
                         'width' => '590m',
                         'height' => '400m'
-                    )
+                    ]
                 );
                 // Create thumbnail image?
                 if ($processedFile) {
@@ -350,11 +350,11 @@ class ElementInformationController
      */
     protected function renderPropertiesAsTable()
     {
-        $tableRows = array();
-        $extraFields = array();
+        $tableRows = [];
+        $extraFields = [];
 
         $lang = $this->getLanguageService();
-        if (in_array($this->type, array('folder', 'file'), true)) {
+        if (in_array($this->type, ['folder', 'file'], true)) {
             if ($this->type === 'file') {
                 $extraFields['creation_date'] = $lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate', true);
                 $extraFields['modification_date'] = $lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp', true);
@@ -385,7 +385,7 @@ class ElementInformationController
                 } elseif ($name === 'folder') {
                     $rowValue = $resourceObject->getParentFolder()->getReadablePath();
                 }
-            } elseif (in_array($name, array('creation_date', 'modification_date'), true)) {
+            } elseif (in_array($name, ['creation_date', 'modification_date'], true)) {
                 $rowValue = BackendUtility::datetime($this->row[$name]);
             } else {
                 $rowValue = BackendUtility::getProcessedValueExtra($this->table, $name, $this->row[$name]);
@@ -527,7 +527,7 @@ class ElementInformationController
      */
     protected function renderFileInformationAsTable($fieldList)
     {
-        $tableRows = array();
+        $tableRows = [];
         foreach ($fieldList as $name) {
             if (!isset($GLOBALS['TCA'][$this->table]['columns'][$name])) {
                 continue;
@@ -633,7 +633,7 @@ class ElementInformationController
 
         if ($table === 'pages') {
             // Recordlist button
-            $url = BackendUtility::getModuleUrl('web_list', array('id' => $uid, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')));
+            $url = BackendUtility::getModuleUrl('web_list', ['id' => $uid, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]);
             $pageActionIcons .= '
 				<a class="btn btn-default btn-sm" href="' . htmlspecialchars($url) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList') . '">
 					' . $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render() . '
@@ -678,7 +678,7 @@ class ElementInformationController
         );
 
         // Compile information for title tag:
-        $infoData = array();
+        $infoData = [];
         $infoDataHeader = '';
         if (!empty($rows)) {
             $infoDataHeader = '
@@ -788,7 +788,7 @@ class ElementInformationController
         );
 
         // Compile information for title tag:
-        $infoData = array();
+        $infoData = [];
         $infoDataHeader = '';
         if (!empty($rows)) {
             $infoDataHeader = '
@@ -884,14 +884,14 @@ class ElementInformationController
             'sys_file_reference',
             'uid=' . (int)$referenceRecord['recuid']
         );
-        return array(
+        return [
             'recuid' => $fileReference['uid_foreign'],
             'tablename' => $fileReference['tablenames'],
             'field' => $fileReference['fieldname'],
             'flexpointer' => '',
             'softref_key' => '',
             'sorting' => $fileReference['sorting_foreign']
-        );
+        ];
     }
 
     /**

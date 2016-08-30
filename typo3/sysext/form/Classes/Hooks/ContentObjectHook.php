@@ -62,10 +62,10 @@ class ContentObjectHook
                 // Disables content elements since TypoScript is handled that could contain insecure settings:
                 $mergedTypoScript[Configuration::DISABLE_CONTENT_ELEMENT_RENDERING] = true;
             }
-            $newTypoScript = array(
+            $newTypoScript = [
                 '10' => 'FORM_INT',
                 '10.' => (is_array($mergedTypoScript) ? $mergedTypoScript : $typoScript),
-            );
+            ];
             $content = $contentObject->cObjGetSingle('COA_INT', $newTypoScript);
             // Only apply stdWrap to TypoScript that was NOT created by the wizard:
             if (isset($typoScript['stdWrap.'])) {
@@ -73,16 +73,16 @@ class ContentObjectHook
             }
         } elseif ($typoScriptObjectName === 'FORM_INT') {
             $extbase = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
-            $content = $extbase->run('', array(
+            $content = $extbase->run('', [
                 'pluginName' => 'Form',
                 'extensionName' => 'Form',
                 'vendorName' => 'TYPO3\\CMS',
                 'controller' => 'Frontend',
                 'action' => 'show',
-                'settings' => array('typoscript' => $typoScript),
-                'persistence' => array(),
-                'view' => array(),
-            ));
+                'settings' => ['typoscript' => $typoScript],
+                'persistence' => [],
+                'view' => [],
+            ]);
         }
         return $content;
     }

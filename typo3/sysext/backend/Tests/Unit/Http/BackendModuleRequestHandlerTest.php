@@ -42,9 +42,9 @@ class BackendModuleRequestHandlerTest extends UnitTestCase
 
     protected function setUp()
     {
-        $this->requestMock = $this->getAccessibleMock(\TYPO3\CMS\Core\Http\ServerRequest::class, array(), array(), '', false);
-        $this->formProtectionMock = $this->getMockForAbstractClass(BackendFormProtection::class, array(), '', false, true, true, array('validateToken'));
-        $this->subject = $this->getAccessibleMock(BackendModuleRequestHandler::class, array('boot', 'getFormProtection'), array(\TYPO3\CMS\Core\Core\Bootstrap::getInstance()), '', true);
+        $this->requestMock = $this->getAccessibleMock(\TYPO3\CMS\Core\Http\ServerRequest::class, [], [], '', false);
+        $this->formProtectionMock = $this->getMockForAbstractClass(BackendFormProtection::class, [], '', false, true, true, ['validateToken']);
+        $this->subject = $this->getAccessibleMock(BackendModuleRequestHandler::class, ['boot', 'getFormProtection'], [\TYPO3\CMS\Core\Core\Bootstrap::getInstance()], '', true);
     }
 
     /**
@@ -54,13 +54,13 @@ class BackendModuleRequestHandlerTest extends UnitTestCase
      */
     public function moduleIndexIsCalled()
     {
-        $GLOBALS['TBE_MODULES'] = array(
-            '_PATHS' => array(
+        $GLOBALS['TBE_MODULES'] = [
+            '_PATHS' => [
                 'module_fixture' => __DIR__ . '/../Fixtures/ModuleFixture/'
-            )
-        );
+            ]
+        ];
 
-        $this->requestMock->expects($this->any())->method('getQueryParams')->will($this->returnValue(array('M' => 'module_fixture')));
+        $this->requestMock->expects($this->any())->method('getQueryParams')->will($this->returnValue(['M' => 'module_fixture']));
         $this->formProtectionMock->expects($this->once())->method('validateToken')->will($this->returnValue(true));
         $this->subject->expects($this->once())->method('boot');
         $this->subject->expects($this->atLeastOnce())->method('getFormProtection')->will($this->returnValue($this->formProtectionMock));
@@ -89,12 +89,12 @@ class BackendModuleRequestHandlerTest extends UnitTestCase
      */
     public function moduleDispatcherIsCalled()
     {
-        $GLOBALS['TBE_MODULES'] = array(
-            '_PATHS' => array(
+        $GLOBALS['TBE_MODULES'] = [
+            '_PATHS' => [
                 'module_fixture' => __DIR__ . '/../Fixtures/ModuleFixture/'
-            )
-        );
-        $this->requestMock->expects($this->any())->method('getQueryParams')->will($this->returnValue(array('M' => 'module_fixture')));
+            ]
+        ];
+        $this->requestMock->expects($this->any())->method('getQueryParams')->will($this->returnValue(['M' => 'module_fixture']));
         $this->formProtectionMock->expects($this->once())->method('validateToken')->will($this->returnValue(true));
         $this->subject->expects($this->once())->method('boot');
         $this->subject->expects($this->atLeastOnce())->method('getFormProtection')->will($this->returnValue($this->formProtectionMock));

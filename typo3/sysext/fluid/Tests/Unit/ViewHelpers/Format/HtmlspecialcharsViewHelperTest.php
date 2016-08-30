@@ -26,7 +26,7 @@ class HtmlspecialcharsViewHelperTest extends UnitTestCase
 
     protected function setUp()
     {
-        $this->viewHelper = $this->getMock(HtmlspecialcharsViewHelper::class, array('renderChildren'));
+        $this->viewHelper = $this->getMock(HtmlspecialcharsViewHelper::class, ['renderChildren']);
         /** @var RenderingContext $renderingContext */
         $renderingContext = $this->getMock(RenderingContext::class);
         $this->viewHelper->setRenderingContext($renderingContext);

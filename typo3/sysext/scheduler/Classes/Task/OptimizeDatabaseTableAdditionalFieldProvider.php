@@ -31,10 +31,10 @@ class OptimizeDatabaseTableAdditionalFieldProvider implements \TYPO3\CMS\Schedul
     {
         // Initialize selected fields
         if (empty($taskInfo['scheduler_optimizeDatabaseTables_selectedTables'])) {
-            $taskInfo['scheduler_optimizeDatabaseTables_selectedTables'] = array();
+            $taskInfo['scheduler_optimizeDatabaseTables_selectedTables'] = [];
             if ($parentObject->CMD === 'add') {
                 // In case of new task, select no tables by default
-                $taskInfo['scheduler_optimizeDatabaseTables_selectedTables'] = array();
+                $taskInfo['scheduler_optimizeDatabaseTables_selectedTables'] = [];
             } elseif ($parentObject->CMD === 'edit') {
                 // In case of editing the task, set to currently selected value
                 $taskInfo['scheduler_optimizeDatabaseTables_selectedTables'] = $task->selectedTables;
@@ -44,12 +44,12 @@ class OptimizeDatabaseTableAdditionalFieldProvider implements \TYPO3\CMS\Schedul
         $fieldId = 'scheduler_optimizeDatabaseTables_selectedTables';
         $fieldOptions = $this->getDatabaseTableOptions($taskInfo['scheduler_optimizeDatabaseTables_selectedTables']);
         $fieldHtml = '<select class="form-control" name="' . $fieldName . '" id="' . $fieldId . '" class="from-control" size="10" multiple="multiple">' . $fieldOptions . '</select>';
-        $additionalFields[$fieldId] = array(
+        $additionalFields[$fieldId] = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.optimizeDatabaseTables.selectTables',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId
-        );
+        ];
         return $additionalFields;
     }
 
@@ -97,7 +97,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider implements \TYPO3\CMS\Schedul
      */
     protected function getDatabaseTableOptions(array $selectedTables)
     {
-        $options = array();
+        $options = [];
         $availableTables = $this->getDatabaseTables();
         foreach ($availableTables as $tableName => $tableInformation) {
             $selected = in_array($tableName, $selectedTables, true) ? ' selected="selected"' : '';
@@ -117,7 +117,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider implements \TYPO3\CMS\Schedul
         $tables = array_filter(
             $tables,
             function ($table) {
-                return !empty($table['Engine']) && in_array($table['Engine'], array('MyISAM', 'InnoDB', 'ARCHIVE'));
+                return !empty($table['Engine']) && in_array($table['Engine'], ['MyISAM', 'InnoDB', 'ARCHIVE']);
             }
         );
         return $tables;

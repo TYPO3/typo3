@@ -37,12 +37,12 @@ abstract class AbstractPreset implements PresetInterface
     /**
      * @var array Configuration values handled by this preset
      */
-    protected $configurationValues = array();
+    protected $configurationValues = [];
 
     /**
      * @var array List of $POST values
      */
-    protected $postValues = array();
+    protected $postValues = [];
 
     /**
      * @param \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager

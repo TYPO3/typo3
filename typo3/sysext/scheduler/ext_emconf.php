@@ -1,5 +1,5 @@
 <?php
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => 'Scheduler',
     'description' => 'The TYPO3 Scheduler let\'s you register tasks to happen at a specific time',
     'category' => 'misc',
@@ -11,13 +11,13 @@ $EM_CONF[$_EXTKEY] = array(
     'author' => 'Francois Suter',
     'author_email' => 'francois@typo3.org',
     'author_company' => '',
-    'constraints' => array(
-        'depends' => array(
+    'constraints' => [
+        'depends' => [
             'typo3' => '7.6.0-7.6.99',
-        ),
-        'conflicts' => array(
+        ],
+        'conflicts' => [
             'gabriel' => ''
-        ),
-        'suggests' => array(),
-    ),
-);
+        ],
+        'suggests' => [],
+    ],
+];

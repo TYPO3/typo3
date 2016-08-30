@@ -35,14 +35,14 @@ abstract class AbstractSpecifics
      *
      * @var array
      */
-    protected $specificProperties = array();
+    protected $specificProperties = [];
 
     /**
      * Contains the DBMS specific mapping information for native MySQL to ADOdb meta field types
      *
      * @var array
      */
-    protected $nativeToMetaFieldTypeMap = array(
+    protected $nativeToMetaFieldTypeMap = [
         'STRING' => 'C',
         'CHAR' => 'C',
         'VARCHAR' => 'C',
@@ -70,19 +70,19 @@ abstract class AbstractSpecifics
         'SMALLINT' => 'I8',
         'MEDIUMINT' => 'I8',
         'BIGINT' => 'I8',
-    );
+    ];
 
     /**
      * Contains the DBMS specific mapping overrides for native MySQL to ADOdb meta field types
      */
-    protected $nativeToMetaFieldTypeOverrides = array();
+    protected $nativeToMetaFieldTypeOverrides = [];
 
     /**
      * Contains the default mapping information for ADOdb meta to MySQL native field types
      *
      * @var array
      */
-    protected $metaToNativeFieldTypeMap = array(
+    protected $metaToNativeFieldTypeMap = [
         'C' => 'VARCHAR',
         'C2' => 'VARCHAR',
         'X' => 'LONGTEXT',
@@ -99,14 +99,14 @@ abstract class AbstractSpecifics
         'I8' => 'BIGINT',
         'F' => 'DOUBLE',
         'N' => 'NUMERIC'
-    );
+    ];
 
     /**
      * Contains the DBMS specific mapping information for ADOdb meta field types to MySQL native field types
      *
      * @var array
      */
-    protected $metaToNativeFieldTypeOverrides = array();
+    protected $metaToNativeFieldTypeOverrides = [];
 
     /**
      * Constructor
@@ -149,7 +149,7 @@ abstract class AbstractSpecifics
     public function splitMaxExpressions($expressionList, $preserveArrayKeys = false)
     {
         if (!$this->specificExists(self::LIST_MAXEXPRESSIONS)) {
-            return array($expressionList);
+            return [$expressionList];
         }
 
         return array_chunk($expressionList, $this->getSpecific(self::LIST_MAXEXPRESSIONS), $preserveArrayKeys);

@@ -33,10 +33,10 @@ class JsonView extends AbstractView
             try {
                 $renderedData['status'] = $this->transformStatusMessagesToArray($renderedData['status']);
             } catch (StatusException $e) {
-                $renderedData['status'] = array(array(
+                $renderedData['status'] = [[
                     'severity' => 'error',
                     'title' => htmlspecialchars($e->getMessage())
-                ));
+                ]];
             }
         }
 
@@ -50,9 +50,9 @@ class JsonView extends AbstractView
      * @return array
      * @throws StatusException
      */
-    protected function transformStatusMessagesToArray(array $statusArray = array())
+    protected function transformStatusMessagesToArray(array $statusArray = [])
     {
-        $result = array();
+        $result = [];
         foreach ($statusArray as $status) {
             if (!$status instanceof StatusInterface) {
                 throw new StatusException(
@@ -74,7 +74,7 @@ class JsonView extends AbstractView
      */
     public function transformStatusToArray(StatusInterface $status)
     {
-        $arrayStatus = array();
+        $arrayStatus = [];
         $arrayStatus['severity'] = htmlspecialchars($status->getSeverity());
         $arrayStatus['title'] = htmlspecialchars($status->getTitle());
         $arrayStatus['message'] = htmlspecialchars($status->getMessage());

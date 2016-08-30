@@ -43,7 +43,7 @@ class TableManualRepository
      */
     public function getTableManual($table)
     {
-        $parts = array();
+        $parts = [];
 
         // Load descriptions for table $table
         $this->getLanguageService()->loadSingleTableDescription($table);
@@ -93,8 +93,8 @@ class TableManualRepository
         // Initialize
         $cshKeys = array_flip(array_keys($GLOBALS['TCA_DESCR']));
         $tcaKeys = array_keys($GLOBALS['TCA']);
-        $outputSections = array();
-        $tocArray = array();
+        $outputSections = [];
+        $tocArray = [];
         // TYPO3 Core Features
         $lang = $this->getLanguageService();
         $lang->loadSingleTableDescription('xMOD_csh_corebe');
@@ -143,10 +143,10 @@ class TableManualRepository
             return $tocArray;
         }
 
-        return array(
+        return [
             'toc' => $tocArray,
             'content' => $outputSections
-        );
+        ];
     }
 
     /**
@@ -223,7 +223,7 @@ class TableManualRepository
             // Otherwise, if it's a table, use its title
             $fieldName = $GLOBALS['TCA'][$key]['columns'][$field]['label'];
         }
-        return array($keyName, $fieldName);
+        return [$keyName, $fieldName];
     }
 
     /**
@@ -240,17 +240,17 @@ class TableManualRepository
         if (!empty($table)) {
             $field = !empty($field) ? $field : '';
             $setup = $GLOBALS['TCA_DESCR'][$table]['columns'][$field];
-            return array(
+            return [
                 'table' => $table,
                 'field' => $field,
                 'configuration' => $setup,
                 'headerLine' => $this->getTableFieldLabel($table, $field),
                 'content' => !empty($setup['description']) ? $setup['description'] : '',
-                'images' => !empty($setup['image']) ? $this->getImages($setup['image'], $setup['image_descr']) : array(),
+                'images' => !empty($setup['image']) ? $this->getImages($setup['image'], $setup['image_descr']) : [],
                 'seeAlso' => !empty($setup['seeAlso']) ? $this->getSeeAlsoLinks($setup['seeAlso'], $anchors ? $table : '') : '',
-            );
+            ];
         }
-        return array();
+        return [];
     }
 
     /**
@@ -264,7 +264,7 @@ class TableManualRepository
     {
         // Split references by comma or linebreak
         $items = preg_split('/[,' . LF . ']/', $value);
-        $lines = array();
+        $lines = [];
         foreach ($items as $itemValue) {
             $itemValue = trim($itemValue);
             if ($itemValue) {
@@ -272,21 +272,21 @@ class TableManualRepository
                 $referenceUrl = GeneralUtility::trimExplode('|', $itemValue);
                 if (substr($referenceUrl[1], 0, 4) === 'http') {
                     // URL reference
-                    $lines[] = array(
+                    $lines[] = [
                         'url' => $referenceUrl[1],
                         'title' => $referenceUrl[0],
                         'target' => '_blank'
-                    );
+                    ];
                 } elseif (substr($referenceUrl[1], 0, 5) === 'FILE:') {
                     // File reference
                     $fileName = GeneralUtility::getFileAbsFileName(substr($referenceUrl[1], 5), 1, 1);
                     if ($fileName && @is_file($fileName)) {
                         $fileName = '../' . PathUtility::stripPathSitePrefix($fileName);
-                        $lines[] = array(
+                        $lines[] = [
                             'url' => $fileName,
                             'title' => $referenceUrl[0],
                             'target' => '_blank'
-                        );
+                        ];
                     }
                 } else {
                     // Table reference
@@ -306,19 +306,19 @@ class TableManualRepository
                         // Make see-also link
                         $label = $this->getTableFieldLabel($table, $field, ' / ');
                         if ($anchorTable && $table === $anchorTable) {
-                            $lines[] = array(
+                            $lines[] = [
                                 'url' => '#' . rawurlencode(implode('.', $reference)),
                                 'title' => $label,
-                            );
+                            ];
                         } else {
-                            $lines[] = array(
+                            $lines[] = [
                                 'internal' => true,
-                                'arguments' => array(
+                                'arguments' => [
                                     'table' => $table,
                                     'field' => $field
-                                ),
+                                ],
                                 'title' => $label
-                            );
+                            ];
                         }
                     }
                 }
@@ -352,7 +352,7 @@ class TableManualRepository
      */
     protected function getImages($images, $descriptions)
     {
-        $imageData = array();
+        $imageData = [];
         // Splitting
         $imgArray = GeneralUtility::trimExplode(',', $images, true);
         if (!empty($imgArray)) {
@@ -364,10 +364,10 @@ class TableManualRepository
                     $imgFile = PathUtility::stripPathSitePrefix($absImagePath);
                     $imgInfo = @getimagesize($absImagePath);
                     if (is_array($imgInfo)) {
-                        $imageData[] = array(
+                        $imageData[] = [
                             'image' => $imgFile,
                             'description' => $descriptions
-                        );
+                        ];
                     }
                 }
             }
@@ -386,7 +386,7 @@ class TableManualRepository
         if (!empty($table) && !empty($GLOBALS['TCA'][$table])) {
             return $GLOBALS['TCA'][$table];
         }
-        return array();
+        return [];
     }
 
     /**
@@ -403,7 +403,7 @@ class TableManualRepository
         if (!empty($tableSetup) && (!empty($field) || $allowEmptyField) && !empty($tableSetup['columns'][$field])) {
             return $tableSetup['columns'][$field];
         }
-        return array();
+        return [];
     }
 
     /**

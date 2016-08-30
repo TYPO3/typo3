@@ -25,122 +25,122 @@ class TypoScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertTypoScriptArrayToPlainArrayTestdata()
     {
-        return array(
-            'simple typoscript array' => array(
-                'typoScriptSettings' => array(
-                    '10.' => array(
+        return [
+            'simple typoscript array' => [
+                'typoScriptSettings' => [
+                    '10.' => [
                         'value' => 'Hello World!',
-                        'foo.' => array(
+                        'foo.' => [
                             'bar' => 5
-                        )
-                    ),
+                        ]
+                    ],
                     '10' => 'TEXT'
-                ),
-                'expectedSettings' => array(
-                    '10' => array(
+                ],
+                'expectedSettings' => [
+                    '10' => [
                         'value' => 'Hello World!',
-                        'foo' => array(
+                        'foo' => [
                             'bar' => 5
-                        ),
+                        ],
                         '_typoScriptNodeValue' => 'TEXT'
-                    )
-                )
-            ),
-            'typoscript with intermediate dots' => array(
-                'typoScriptSettings' => array(
-                    '10.' => array(
+                    ]
+                ]
+            ],
+            'typoscript with intermediate dots' => [
+                'typoScriptSettings' => [
+                    '10.' => [
                         'value' => 'Hello World!',
-                        'foo.' => array(
+                        'foo.' => [
                             'bar' => 5
-                        )
-                    ),
+                        ]
+                    ],
                     '10' => 'TEXT'
-                ),
-                'expectedSettings' => array(
-                    '10' => array(
+                ],
+                'expectedSettings' => [
+                    '10' => [
                         'value' => 'Hello World!',
-                        'foo' => array(
+                        'foo' => [
                             'bar' => 5
-                        ),
+                        ],
                         '_typoScriptNodeValue' => 'TEXT'
-                    )
-                )
-            ),
-            'typoscript array with changed order' => array(
-                'typoScriptSettings' => array(
+                    ]
+                ]
+            ],
+            'typoscript array with changed order' => [
+                'typoScriptSettings' => [
                     '10' => 'TEXT',
-                    '10.' => array(
+                    '10.' => [
                         'value' => 'Hello World!',
-                        'foo.' => array(
+                        'foo.' => [
                             'bar' => 5
-                        )
-                    )
-                ),
-                'expectedSettings' => array(
-                    '10' => array(
+                        ]
+                    ]
+                ],
+                'expectedSettings' => [
+                    '10' => [
                         'value' => 'Hello World!',
-                        'foo' => array(
+                        'foo' => [
                             'bar' => 5
-                        ),
+                        ],
                         '_typoScriptNodeValue' => 'TEXT'
-                    )
-                )
-            ),
-            'nested typoscript array' => array(
-                'typoScriptSettings' => array(
+                    ]
+                ]
+            ],
+            'nested typoscript array' => [
+                'typoScriptSettings' => [
                     '10' => 'COA',
-                    '10.' => array(
+                    '10.' => [
                         '10' => 'TEXT',
-                        '10.' => array(
+                        '10.' => [
                             'value' => 'Hello World!',
-                            'foo.' => array(
+                            'foo.' => [
                                 'bar' => 5
-                            )
-                        ),
+                            ]
+                        ],
                         '20' => 'COA',
-                        '20.' => array(
+                        '20.' => [
                             '10' => 'TEXT',
-                            '10.' => array(
+                            '10.' => [
                                 'value' => 'Test',
                                 'wrap' => '[|]'
-                            ),
+                            ],
                             '20' => 'TEXT',
-                            '20.' => array(
+                            '20.' => [
                                 'value' => 'Test',
                                 'wrap' => '[|]'
-                            )
-                        ),
+                            ]
+                        ],
                         '30' => 'custom'
-                    )
-                ),
-                'expectedSettings' => array(
-                    '10' => array(
-                        '10' => array(
+                    ]
+                ],
+                'expectedSettings' => [
+                    '10' => [
+                        '10' => [
                             'value' => 'Hello World!',
-                            'foo' => array(
+                            'foo' => [
                                 'bar' => 5
-                            ),
+                            ],
                             '_typoScriptNodeValue' => 'TEXT'
-                        ),
-                        '20' => array(
-                            '10' => array(
+                        ],
+                        '20' => [
+                            '10' => [
                                 'value' => 'Test',
                                 'wrap' => '[|]',
                                 '_typoScriptNodeValue' => 'TEXT'
-                            ),
-                            '20' => array(
+                            ],
+                            '20' => [
                                 'value' => 'Test',
                                 'wrap' => '[|]',
                                 '_typoScriptNodeValue' => 'TEXT'
-                            ),
+                            ],
                             '_typoScriptNodeValue' => 'COA'
-                        ),
+                        ],
                         '30' => 'custom',
                         '_typoScriptNodeValue' => 'COA'
-                    )
-                )
-            ),
-        );
+                    ]
+                ]
+            ],
+        ];
     }
 
     /**
@@ -163,118 +163,118 @@ class TypoScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertPlainArrayToTypoScriptArrayTestdata()
     {
-        return array(
-            'simple typoscript' => array(
-                'extbaseTS' => array(
-                    '10' => array(
+        return [
+            'simple typoscript' => [
+                'extbaseTS' => [
+                    '10' => [
                         'value' => 'Hallo',
                         '_typoScriptNodeValue' => 'TEXT'
-                    )
-                ),
-                'classic' => array(
+                    ]
+                ],
+                'classic' => [
                     '10' => 'TEXT',
-                    '10.' => array(
+                    '10.' => [
                         'value' => 'Hallo'
-                    )
-                )
-            ),
-            'typoscript with null value' => array(
-                'extbaseTS' => array(
-                    '10' => array(
+                    ]
+                ]
+            ],
+            'typoscript with null value' => [
+                'extbaseTS' => [
+                    '10' => [
                         'value' => 'Hallo',
                         '_typoScriptNodeValue' => 'TEXT'
-                    ),
+                    ],
                     '20' => null
-                ),
-                'classic' => array(
+                ],
+                'classic' => [
                     '10' => 'TEXT',
-                    '10.' => array(
+                    '10.' => [
                         'value' => 'Hallo'
-                    ),
+                    ],
                     '20' => ''
-                )
-            ),
-            'ts with dots in key' => array(
-                'extbaseTS' => array(
-                    '1.0' => array(
+                ]
+            ],
+            'ts with dots in key' => [
+                'extbaseTS' => [
+                    '1.0' => [
                         'value' => 'Hallo',
                         '_typoScriptNodeValue' => 'TEXT'
-                    )
-                ),
-                'classic' => array(
+                    ]
+                ],
+                'classic' => [
                     '1.0' => 'TEXT',
-                    '1.0.' => array(
+                    '1.0.' => [
                         'value' => 'Hallo'
-                    )
-                )
-            ),
-            'ts with backslashes in key' => array(
-                'extbaseTS' => array(
-                    '1\\0\\' => array(
+                    ]
+                ]
+            ],
+            'ts with backslashes in key' => [
+                'extbaseTS' => [
+                    '1\\0\\' => [
                         'value' => 'Hallo',
                         '_typoScriptNodeValue' => 'TEXT'
-                    )
-                ),
-                'classic' => array(
+                    ]
+                ],
+                'classic' => [
                     '1\\0\\' => 'TEXT',
-                    '1\\0\\.' => array(
+                    '1\\0\\.' => [
                         'value' => 'Hallo'
-                    )
-                )
-            ),
-            'bigger typoscript' => array(
-                'extbaseTS' => array(
-                    '10' => array(
-                        '10' => array(
+                    ]
+                ]
+            ],
+            'bigger typoscript' => [
+                'extbaseTS' => [
+                    '10' => [
+                        '10' => [
                             'value' => 'Hello World!',
-                            'foo' => array(
+                            'foo' => [
                                 'bar' => 5
-                            ),
+                            ],
                             '_typoScriptNodeValue' => 'TEXT'
-                        ),
-                        '20' => array(
-                            '10' => array(
+                        ],
+                        '20' => [
+                            '10' => [
                                 'value' => 'Test',
                                 'wrap' => '[|]',
                                 '_typoScriptNodeValue' => 'TEXT'
-                            ),
-                            '20' => array(
+                            ],
+                            '20' => [
                                 'value' => 'Test',
                                 'wrap' => '[|]',
                                 '_typoScriptNodeValue' => 'TEXT'
-                            ),
+                            ],
                             '_typoScriptNodeValue' => 'COA'
-                        ),
+                        ],
                         '_typoScriptNodeValue' => 'COA'
-                    )
-                ),
-                'classic' => array(
+                    ]
+                ],
+                'classic' => [
                     '10' => 'COA',
-                    '10.' => array(
+                    '10.' => [
                         '10' => 'TEXT',
-                        '10.' => array(
+                        '10.' => [
                             'value' => 'Hello World!',
-                            'foo.' => array(
+                            'foo.' => [
                                 'bar' => 5
-                            )
-                        ),
+                            ]
+                        ],
                         '20' => 'COA',
-                        '20.' => array(
+                        '20.' => [
                             '10' => 'TEXT',
-                            '10.' => array(
+                            '10.' => [
                                 'value' => 'Test',
                                 'wrap' => '[|]'
-                            ),
+                            ],
                             '20' => 'TEXT',
-                            '20.' => array(
+                            '20.' => [
                                 'value' => 'Test',
                                 'wrap' => '[|]'
-                            )
-                        )
-                    )
-                )
-            ),
-        );
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+        ];
     }
 
     /**

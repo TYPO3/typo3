@@ -36,7 +36,7 @@ class PageRepository
     /**
      * @var array
      */
-    public $urltypes = array('', 'http://', 'ftp://', 'mailto:', 'https://');
+    public $urltypes = ['', 'http://', 'ftp://', 'mailto:', 'https://'];
 
     /**
      * This is not the final clauses. There will normally be conditions for the
@@ -83,7 +83,7 @@ class PageRepository
     /**
      * @var array
      */
-    public $workspaceCache = array();
+    public $workspaceCache = [];
 
     /**
      * Error string set by getRootLine()
@@ -102,42 +102,42 @@ class PageRepository
     /**
      * @var array
      */
-    protected $cache_getRootLine = array();
+    protected $cache_getRootLine = [];
 
     /**
      * @var array
      */
-    protected $cache_getPage = array();
+    protected $cache_getPage = [];
 
     /**
      * @var array
      */
-    protected $cache_getPage_noCheck = array();
+    protected $cache_getPage_noCheck = [];
 
     /**
      * @var array
      */
-    protected $cache_getPageIdFromAlias = array();
+    protected $cache_getPageIdFromAlias = [];
 
     /**
      * @var array
      */
-    protected $cache_getMountPointInfo = array();
+    protected $cache_getMountPointInfo = [];
 
     /**
      * @var array
      */
-    protected $tableNamesAllowedOnRootLevel = array(
+    protected $tableNamesAllowedOnRootLevel = [
         'sys_file_metadata',
         'sys_category',
-    );
+    ];
 
     /**
      * Computed properties that are added to database rows.
      *
      * @var array
      */
-    protected $computedPropertyNames = array(
+    protected $computedPropertyNames = [
         '_LOCALIZED_UID',
         '_MP_PARAM',
         '_ORIG_uid',
@@ -145,7 +145,7 @@ class PageRepository
         '_PAGES_OVERLAY',
         '_PAGES_OVERLAY_UID',
         '_PAGES_OVERLAY_LANGUAGE',
-    );
+    ];
 
     /**
      * Named constants for "magic numbers" of the field doktype
@@ -191,7 +191,7 @@ class PageRepository
             // add starttime / endtime, and check for hidden/deleted
             // Filter out new/deleted place-holder pages in case we are NOT in a
             // versioning preview (that means we are online!)
-            $this->where_hid_del = $this->enableFields('pages', $show_hidden, array('fe_group' => true), true);
+            $this->where_hid_del = $this->enableFields('pages', $show_hidden, ['fe_group' => true], true);
         }
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][PageRepository::class]['init'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][PageRepository::class]['init'] as $classRef) {
@@ -238,7 +238,7 @@ class PageRepository
         if (is_array($this->cache_getPage[$uid][$cacheKey])) {
             return $this->cache_getPage[$uid][$cacheKey];
         }
-        $result = array();
+        $result = [];
         $row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . (int)$uid . $this->where_hid_del . $accessCheck);
         if ($row) {
             $this->versionOL('pages', $row);
@@ -266,7 +266,7 @@ class PageRepository
         $res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'pages', 'uid=' . (int)$uid . $this->deleteClause('pages'));
         $row = $this->getDatabaseConnection()->sql_fetch_assoc($res);
         $this->getDatabaseConnection()->sql_free_result($res);
-        $result = array();
+        $result = [];
         if ($row) {
             $this->versionOL('pages', $row);
             if (is_array($row)) {
@@ -333,9 +333,9 @@ class PageRepository
      */
     public function getPageOverlay($pageInput, $lUid = -1)
     {
-        $rows = $this->getPagesOverlay(array($pageInput), $lUid);
+        $rows = $this->getPagesOverlay([$pageInput], $lUid);
         // Always an array in return
-        return isset($rows[0]) ? $rows[0] : array();
+        return isset($rows[0]) ? $rows[0] : [];
     }
 
     /**
@@ -352,7 +352,7 @@ class PageRepository
     public function getPagesOverlay(array $pagesInput, $lUid = -1)
     {
         if (empty($pagesInput)) {
-            return array();
+            return [];
         }
         // Initialize:
         if ($lUid < 0) {
@@ -374,7 +374,7 @@ class PageRepository
         // If language UID is different from zero, do overlay:
         if ($lUid) {
             $fieldArr = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields'], true);
-            $page_ids = array();
+            $page_ids = [];
 
             $origPage = reset($pagesInput);
             if (is_array($origPage)) {
@@ -408,7 +408,7 @@ class PageRepository
                     'pid IN(' . implode(',', $db->cleanIntArray($page_ids)) . ')'
                     . ' AND sys_language_uid=' . (int)$lUid . $this->enableFields('pages_language_overlay')
                 );
-                $overlays = array();
+                $overlays = [];
                 while ($row = $db->sql_fetch_assoc($res)) {
                     $this->versionOL('pages_language_overlay', $row);
                     if (is_array($row)) {
@@ -426,7 +426,7 @@ class PageRepository
             }
         }
         // Create output:
-        $pagesOutput = array();
+        $pagesOutput = [];
         foreach ($pagesInput as $key => $origPage) {
             if (is_array($origPage)) {
                 $pagesOutput[$key] = $origPage;
@@ -819,10 +819,10 @@ class PageRepository
                 if (substr($this->error_getRootLine, -7) === 'uid -1.') {
                     $this->error_getRootLine_failPid = -1;
                 }
-                return array();
+                return [];
             /** @see \TYPO3\CMS\Core\Utility\RootlineUtility::getRecordArray */
             } elseif ($ex->getCode() === 1343589451) {
-                return array();
+                return [];
             }
             throw $ex;
         }
@@ -892,7 +892,7 @@ class PageRepository
      * @return mixed Returns FALSE if no mount point was found, "-1" if there should have been one, but no connection to it, otherwise an array with information about mount pid and modes.
      * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject
      */
-    public function getMountPointInfo($pageId, $pageRec = false, $prevMountPids = array(), $firstPageUid = 0)
+    public function getMountPointInfo($pageId, $pageRec = false, $prevMountPids = [], $firstPageUid = 0)
     {
         $result = false;
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
@@ -925,13 +925,13 @@ class PageRepository
                     $prevMountPids[] = $mount_pid;
                     $recursiveMountPid = $this->getMountPointInfo($mount_pid, $mountRec, $prevMountPids, $firstPageUid);
                     // Return mount point information:
-                    $result = $recursiveMountPid ?: array(
+                    $result = $recursiveMountPid ?: [
                         'mount_pid' => $mount_pid,
                         'overlay' => $pageRec['mount_pid_ol'],
                         'MPvar' => $mount_pid . '-' . $firstPageUid,
                         'mount_point_rec' => $pageRec,
                         'mount_pid_rec' => $mountRec
-                    );
+                    ];
                 } else {
                     // Means, there SHOULD have been a mount point, but there was none!
                     $result = -1;
@@ -1030,7 +1030,7 @@ class PageRepository
     {
         if (is_array($GLOBALS['TCA'][$theTable])) {
             $res = $this->getDatabaseConnection()->exec_SELECTquery('*', $theTable, $theField . '=' . $this->getDatabaseConnection()->fullQuoteStr($theValue, $theTable) . $this->deleteClause($theTable) . ' ' . $whereClause, $groupBy, $orderBy, $limit);
-            $rows = array();
+            $rows = [];
             while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
                 if (is_array($row)) {
                     $rows[] = $row;
@@ -1089,7 +1089,7 @@ class PageRepository
      */
     public static function storeHash($hash, $data, $ident, $lifetime = 0)
     {
-        GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash')->set($hash, $data, array('ident_' . $ident), (int)$lifetime);
+        GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash')->set($hash, $data, ['ident_' . $ident], (int)$lifetime);
     }
 
     /**
@@ -1122,7 +1122,7 @@ class PageRepository
      * @return string The clause starting like " AND ...=... AND ...=...
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::enableFields(), deleteClause()
      */
-    public function enableFields($table, $show_hidden = -1, $ignore_array = array(), $noVersionPreview = false)
+    public function enableFields($table, $show_hidden = -1, $ignore_array = [], $noVersionPreview = false)
     {
         if ($show_hidden === -1 && is_object($this->getTypoScriptFrontendController())) {
             // If show_hidden was not set from outside and if TSFE is an object, set it
@@ -1187,12 +1187,12 @@ class PageRepository
                     // It is used by the extension ingmar_accessctrl which enables assigning more
                     // than one usergroup to content and page records
                     if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns'])) {
-                        $_params = array(
+                        $_params = [
                             'table' => $table,
                             'show_hidden' => $show_hidden,
                             'ignore_array' => $ignore_array,
                             'ctrl' => $ctrl
-                        );
+                        ];
                         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns'] as $_funcRef) {
                             $query .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
                         }
@@ -1217,7 +1217,7 @@ class PageRepository
     public function getMultipleGroupsWhereClause($field, $table)
     {
         $memberGroups = GeneralUtility::intExplode(',', $this->getTypoScriptFrontendController()->gr_list);
-        $orChecks = array();
+        $orChecks = [];
         // If the field is empty, then OK
         $orChecks[] = $field . '=\'\'';
         // If the field is NULL, then OK
@@ -1465,7 +1465,7 @@ class PageRepository
             $workspace = (int)$workspace;
             $uid = (int)$uid;
             // Setting up enableFields for version record
-            $enFields = $this->enableFields($table, -1, array(), true);
+            $enFields = $this->enableFields($table, -1, [], true);
             // Select workspace version of record, only testing for deleted.
             $newrow = $this->getDatabaseConnection()->exec_SELECTgetSingleRow($fields, $table, 'pid=-1 AND
 					t3ver_oid=' . $uid . ' AND
@@ -1550,7 +1550,7 @@ class PageRepository
              * We just catch the exception here
              * Reasoning: There is nothing an editor or even admin could do
              */
-            return array();
+            return [];
         } catch (\InvalidArgumentException $e) {
             /**
              * The storage does not exist anymore
@@ -1558,7 +1558,7 @@ class PageRepository
              */
             $logMessage = $e->getMessage() . ' (table: "' . $tableName . '", fieldName: "' . $fieldName . '", currentId: ' . $currentId . ')';
             GeneralUtility::sysLog($logMessage, 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
-            return array();
+            return [];
         }
 
         $localizedId = null;
@@ -1630,7 +1630,7 @@ class PageRepository
                 $checkValue = '';
             }
 
-            if ($checkValue === array() || !is_array($checkValue) && trim($checkValue) === '') {
+            if ($checkValue === [] || !is_array($checkValue) && trim($checkValue) === '') {
                 $shouldFieldBeOverlaid = false;
             }
         }

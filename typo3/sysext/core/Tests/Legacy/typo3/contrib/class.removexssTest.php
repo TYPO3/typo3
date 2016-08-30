@@ -390,32 +390,32 @@ class RemoveXSSTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function processDataProvider()
     {
-        return array(
-            'attackWithHexEncodedCharacter' => array(
+        return [
+            'attackWithHexEncodedCharacter' => [
                 '<a href="j&#x61;vascript:alert(123);">click</a>',
                 '<a href="ja<x>vascript:alert(123);">click</a>',
-            ),
-            'attackWithNestedHexEncodedCharacter' => array(
+            ],
+            'attackWithNestedHexEncodedCharacter' => [
                 '<a href="j&#x6&#x31;;vascript:alert(123);">click</a>',
                 '<a href="ja<x>vascript:alert(123);">click</a>',
-            ),
-            'attackWithUnicodeNumericalEncodedCharacter' => array(
+            ],
+            'attackWithUnicodeNumericalEncodedCharacter' => [
                 '<a href="j&#x6&#x31;;vascript:alert(123);">click</a>',
                 '<a href="ja<x>vascript:alert(123);">click</a>',
-            ),
-            'attackWithNestedUnicodeNumericalEncodedCharacter' => array(
+            ],
+            'attackWithNestedUnicodeNumericalEncodedCharacter' => [
                 '<a href="j&#6&#53;;vascript:alert(123);">click</a>',
                 '<a href="ja<x>vascript:alert(123);">click</a>',
-            ),
-            'attack with null character' => array(
+            ],
+            'attack with null character' => [
                 '<scr' . chr(0) . 'ipt></script>',
                 '<sc<x>ript></script>'
-            ),
-            'attack with null character in attribute' => array(
+            ],
+            'attack with null character in attribute' => [
                 '<a href="j' . chr(0) . 'avascript:alert(123);"></a>',
                 '<a href="ja<x>vascript:alert(123);"></a>'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -439,20 +439,20 @@ class RemoveXSSTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function processValidDataProvider()
     {
-        return array(
-            'multibyte characters' => array(
+        return [
+            'multibyte characters' => [
                 '<img®€ÜüÖöÄä></img>',
-            ),
-            'tab' => array(
+            ],
+            'tab' => [
                 '<im' . chr(9) . 'g></img>',
-            ),
-            'line feed' => array(
+            ],
+            'line feed' => [
                 '<im' . chr(10) . 'g></img>',
-            ),
-            'carriage return' => array(
+            ],
+            'carriage return' => [
                 '<im' . chr(13) . 'g></img>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**

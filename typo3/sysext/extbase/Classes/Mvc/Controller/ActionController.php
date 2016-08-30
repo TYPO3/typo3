@@ -62,7 +62,7 @@ class ActionController extends AbstractController
      *
      * @var array
      */
-    protected $viewFormatToObjectNameMap = array();
+    protected $viewFormatToObjectNameMap = [];
 
     /**
      * The default view object to use if none of the resolved views can render
@@ -165,7 +165,7 @@ class ActionController extends AbstractController
         $this->initializeAction();
         $actionInitializationMethodName = 'initialize' . ucfirst($this->actionMethodName);
         if (method_exists($this, $actionInitializationMethodName)) {
-            call_user_func(array($this, $actionInitializationMethodName));
+            call_user_func([$this, $actionInitializationMethodName]);
         }
         $this->mapRequestArgumentsToControllerArguments();
         $this->controllerContext = $this->buildControllerContext();
@@ -225,7 +225,7 @@ class ActionController extends AbstractController
         if (isset($actionMethodParameters[$this->actionMethodName])) {
             $methodParameters = $actionMethodParameters[$this->actionMethodName];
         } else {
-            $methodParameters = array();
+            $methodParameters = [];
         }
 
         /**
@@ -272,7 +272,7 @@ class ActionController extends AbstractController
      */
     protected function callActionMethod()
     {
-        $preparedArguments = array();
+        $preparedArguments = [];
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
         foreach ($this->arguments as $argument) {
             $preparedArguments[] = $argument->getValue();
@@ -280,10 +280,10 @@ class ActionController extends AbstractController
         $validationResult = $this->arguments->getValidationResults();
         if (!$validationResult->hasErrors()) {
             $this->emitBeforeCallActionMethodSignal($preparedArguments);
-            $actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
+            $actionResult = call_user_func_array([$this, $this->actionMethodName], $preparedArguments);
         } else {
             $methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
-            $ignoreValidationAnnotations = array();
+            $ignoreValidationAnnotations = [];
             if (isset($methodTagsValues['ignorevalidation'])) {
                 $ignoreValidationAnnotations = $methodTagsValues['ignorevalidation'];
             }
@@ -302,9 +302,9 @@ class ActionController extends AbstractController
             }
             if ($shouldCallActionMethod) {
                 $this->emitBeforeCallActionMethodSignal($preparedArguments);
-                $actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
+                $actionResult = call_user_func_array([$this, $this->actionMethodName], $preparedArguments);
             } else {
-                $actionResult = call_user_func(array($this, $this->errorMethodName));
+                $actionResult = call_user_func([$this, $this->errorMethodName]);
             }
         }
 
@@ -324,7 +324,7 @@ class ActionController extends AbstractController
      */
     protected function emitBeforeCallActionMethodSignal(array $preparedArguments)
     {
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeCallActionMethod', array(get_class($this), $this->actionMethodName, $preparedArguments));
+        $this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeCallActionMethod', [get_class($this), $this->actionMethodName, $preparedArguments]);
     }
 
     /**
@@ -427,7 +427,7 @@ class ActionController extends AbstractController
      */
     protected function getViewProperty($extbaseFrameworkConfiguration, $setting)
     {
-        $values = array();
+        $values = [];
         if (
             !empty($extbaseFrameworkConfiguration['view'][$setting])
             && is_array($extbaseFrameworkConfiguration['view'][$setting])
@@ -453,18 +453,18 @@ class ActionController extends AbstractController
         }
 
         $possibleViewName = str_replace(
-            array(
+            [
                 '@vendor',
                 '@extension',
                 '@controller',
                 '@action'
-            ),
-            array(
+            ],
+            [
                 $vendorName,
                 $this->request->getControllerExtensionName(),
                 $this->request->getControllerName(),
                 ucfirst($this->request->getControllerActionName())
-            ),
+            ],
             $this->namespacesViewObjectNamePattern
         );
         $format = $this->request->getFormat();
@@ -540,7 +540,7 @@ class ActionController extends AbstractController
         if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
             if (isset($GLOBALS['TSFE'])) {
                 $pageUid = $GLOBALS['TSFE']->id;
-                $this->cacheService->clearPageCache(array($pageUid));
+                $this->cacheService->clearPageCache([$pageUid]);
             }
         }
     }
@@ -620,7 +620,7 @@ class ActionController extends AbstractController
     {
         $reflectionService = $objectManager->get(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
 
-        $result = array();
+        $result = [];
 
         $className = get_called_class();
         $methodNames = get_class_methods($className);

@@ -76,11 +76,11 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $LOCAL_LANG = $this->parser->getParsedData(self::getFixtureFilePath('locallang.xml'), 'default');
         $this->assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
-        $expectedLabels = array(
+        $expectedLabels = [
             'label1' => 'This is label #1',
             'label2' => 'This is label #2',
             'label3' => 'This is label #3'
-        );
+        ];
         foreach ($expectedLabels as $key => $expectedLabel) {
             $this->assertEquals($expectedLabel, $LOCAL_LANG['default'][$key][0]['target']);
         }
@@ -93,11 +93,11 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $LOCAL_LANG = $this->parser->getParsedData(self::getFixtureFilePath('locallang.xml'), 'md5');
         $this->assertArrayHasKey('md5', $LOCAL_LANG, 'md5 key not found in $LOCAL_LANG');
-        $expectedLabels = array(
+        $expectedLabels = [
             'label1' => '409a6edbc70dbeeccbfe5f1e569d6717',
             'label2' => 'b5dc71ae9f52ecb9e7704c50562e39b0',
             'label3' => '51eac55fa5ca15789ce9bbb0cf927296'
-        );
+        ];
         foreach ($expectedLabels as $key => $expectedLabel) {
             $this->assertEquals($expectedLabel, $LOCAL_LANG['md5'][$key][0]['target']);
         }
@@ -109,11 +109,11 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function canParseLlxmlInFrenchAndReturnsNullLabelsIfNoTranslationIsFound()
     {
         $LOCAL_LANG = $this->parser->getParsedData(self::getFixtureFilePath('locallangOnlyDefaultLanguage.xml'), 'fr');
-        $expectedLabels = array(
+        $expectedLabels = [
             'label1' => null,
             'label2' => null,
             'label3' => null
-        );
+        ];
         foreach ($expectedLabels as $key => $expectedLabel) {
             $this->assertEquals($expectedLabel, $LOCAL_LANG['fr'][$key][0]['target']);
         }
@@ -134,18 +134,18 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         );
         $this->assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
         $this->assertArrayHasKey('md5', $LOCAL_LANG, 'md5 key not found in $LOCAL_LANG');
-        $expectedLabels = array(
-            'default' => array(
+        $expectedLabels = [
+            'default' => [
                 'label1' => 'This is my 1st label',
                 'label2' => 'This is my 2nd label',
                 'label3' => 'This is label #3'
-            ),
-            'md5' => array(
+            ],
+            'md5' => [
                 'label1' => '409a6edbc70dbeeccbfe5f1e569d6717',
                 'label2' => 'b5dc71ae9f52ecb9e7704c50562e39b0',
                 'label3' => '51eac55fa5ca15789ce9bbb0cf927296'
-            )
-        );
+            ]
+        ];
         foreach ($expectedLabels as $languageKey => $expectedLanguageLabels) {
             foreach ($expectedLanguageLabels as $key => $expectedLabel) {
                 $this->assertEquals($expectedLabel, $LOCAL_LANG[$languageKey][$key][0]['target']);
@@ -159,10 +159,10 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $factory = new LocalizationFactory;
 
         $LOCAL_LANG = $factory->getParsedData(self::getFixtureFilePath('locallangNumericKeys.xml'), 'default');
-        $translations = array();
+        $translations = [];
 
         foreach ($LOCAL_LANG['default'] as $key => $labelData) {
-            $translations['Numerical key ' . $key] = array($key, $labelData[0]['source'] . ' [FR]');
+            $translations['Numerical key ' . $key] = [$key, $labelData[0]['source'] . ' [FR]'];
         }
 
         return $translations;

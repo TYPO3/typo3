@@ -24,7 +24,7 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
     /**
      * @var array Configuration values handled by this preset
      */
-    protected $configurationValues = array(
+    protected $configurationValues = [
         'GFX/image_processing' => 0,
         'GFX/im' => 0,
         'GFX/im_path' => '',
@@ -33,5 +33,5 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
         'GFX/im_v5effects' => 0,
         'GFX/im_mask_temp_ext_gif' => 0,
         'GFX/colorspace' => '',
-    );
+    ];
 }

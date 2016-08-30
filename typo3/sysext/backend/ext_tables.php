@@ -7,17 +7,17 @@ if (TYPO3_MODE === 'BE') {
         'layout',
         'top',
         '',
-        array(
+        [
             'routeTarget' => \TYPO3\CMS\Backend\Controller\PageLayoutController::class . '::mainAction',
             'access' => 'user,group',
             'name' => 'web_layout',
-            'labels' => array(
-                'tabs_images' => array(
+            'labels' => [
+                'tabs_images' => [
                     'tab' => 'EXT:backend/Resources/Public/Icons/module-page.svg',
-                ),
+                ],
                 'll_ref' => 'LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf',
-            ),
-        )
+            ],
+        ]
     );
 
     // Register BackendLayoutDataProvider for PageTs

@@ -46,8 +46,8 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->simpleValueArgument = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('dummy'), array('someName', 'string'));
-        $this->objectArgument = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('dummy'), array('someName', 'DateTime'));
+        $this->simpleValueArgument = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, ['dummy'], ['someName', 'string']);
+        $this->objectArgument = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, ['dummy'], ['someName', 'DateTime']);
         $this->mockPropertyMapper = $this->getMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class);
         $this->simpleValueArgument->_set('propertyMapper', $this->mockPropertyMapper);
         $this->objectArgument->_set('propertyMapper', $this->mockPropertyMapper);
@@ -98,11 +98,11 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function invalidShortNames()
     {
-        return array(
-            array(''),
-            array('as'),
-            array(5)
-        );
+        return [
+            [''],
+            ['as'],
+            [5]
+        ];
     }
 
     /**
@@ -171,7 +171,7 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setValueUsesNullAsIs()
     {
         $this->simpleValueArgument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('dummy', 'string');
-        $this->simpleValueArgument = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('dummy'), array('dummy', 'string'));
+        $this->simpleValueArgument = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, ['dummy'], ['dummy', 'string']);
         $this->simpleValueArgument->setValue(null);
         $this->assertNull($this->simpleValueArgument->getValue());
     }
@@ -219,14 +219,14 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setValueShouldSetValidationErrorsIfValidatorIsSetAndValidationFailed()
     {
         $error = new \TYPO3\CMS\Extbase\Error\Error('Some Error', 1234);
-        $mockValidator = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class, array('validate', 'getOptions'));
+        $mockValidator = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class, ['validate', 'getOptions']);
         $validationMessages = new \TYPO3\CMS\Extbase\Error\Result();
         $validationMessages->addError($error);
         $mockValidator->expects($this->once())->method('validate')->with('convertedValue')->will($this->returnValue($validationMessages));
         $this->simpleValueArgument->setValidator($mockValidator);
         $this->setupPropertyMapperAndSetValue();
         $this->assertFalse($this->simpleValueArgument->isValid());
-        $this->assertEquals(array($error), $this->simpleValueArgument->getValidationResults()->getErrors());
+        $this->assertEquals([$error], $this->simpleValueArgument->getValidationResults()->getErrors());
     }
 
     /**

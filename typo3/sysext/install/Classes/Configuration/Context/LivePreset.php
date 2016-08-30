@@ -34,7 +34,7 @@ class LivePreset extends Configuration\AbstractPreset
     /**
      * @var array Configuration values handled by this preset
      */
-    protected $configurationValues = array(
+    protected $configurationValues = [
         'BE/debug' => false,
         'FE/debug' => false,
         'SYS/devIPmask' => '',
@@ -45,7 +45,7 @@ class LivePreset extends Configuration\AbstractPreset
         'SYS/clearCacheSystem' => false,
         // E_RECOVERABLE_ERROR | E_USER_DEPRECATED
         'SYS/exceptionalErrors' => 20480,
-    );
+    ];
 
     /**
      * Production preset is always available

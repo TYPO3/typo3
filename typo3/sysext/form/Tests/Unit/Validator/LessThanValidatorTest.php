@@ -29,10 +29,10 @@ class LessThanValidatorTest extends AbstractValidatorTest
      */
     public function validValueProvider()
     {
-        return array(
-            '4 < 8' => array(array(8, 4)),
-            '7.9 < 8' => array(array(8, 7.9)),
-        );
+        return [
+            '4 < 8' => [[8, 4]],
+            '7.9 < 8' => [[8, 7.9]],
+        ];
     }
 
     /**
@@ -40,11 +40,11 @@ class LessThanValidatorTest extends AbstractValidatorTest
      */
     public function invalidValueProvider()
     {
-        return array(
-            '8 < 4' => array(array(4, 8)),
-            '8 < 8' => array(array(8, 8)),
-            '8.1 < 8' => array(array(8, 8.1)),
-        );
+        return [
+            '8 < 4' => [[4, 8]],
+            '8 < 8' => [[8, 8]],
+            '8.1 < 8' => [[8, 8.1]],
+        ];
     }
 
     /**
@@ -53,7 +53,7 @@ class LessThanValidatorTest extends AbstractValidatorTest
      */
     public function validateForValidInputHasEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['maximum'] = $input[0];
         $subject = $this->createSubject($options);
 
@@ -68,7 +68,7 @@ class LessThanValidatorTest extends AbstractValidatorTest
      */
     public function validateForInvalidInputHasNotEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['maximum'] = $input[0];
         $subject = $this->createSubject($options);
 

@@ -41,7 +41,7 @@ abstract class AbstractConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHel
      *
      * @var array<\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode>
      */
-    private $childNodes = array();
+    private $childNodes = [];
 
     /**
      * Setter for ChildNodes - as defined in ChildNodeAccessInterface

@@ -363,7 +363,7 @@ abstract class AbstractLinkBrowserController
         }
 
         $allowedHandlers = array_flip($allowedItems);
-        $menuDef = array();
+        $menuDef = [];
         foreach ($this->linkHandlers as $identifier => $configuration) {
             if (!isset($allowedHandlers[$identifier])) {
                 continue;

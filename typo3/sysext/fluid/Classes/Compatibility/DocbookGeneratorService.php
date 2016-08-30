@@ -60,7 +60,7 @@ class DocbookGeneratorService extends \TYPO3\CMS\Fluid\Service\DocbookGenerator
         }
         $classFilePathAndName = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(\TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($namespaceParts[2])) . 'Classes/';
         $classFilePathAndName .= implode(array_slice($namespaceParts, 3, -1), '/') . '/';
-        $classNames = array();
+        $classNames = [];
         $this->recursiveClassNameSearch($namespace, $classFilePathAndName, $classNames);
         sort($classNames);
         return $classNames;

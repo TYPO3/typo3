@@ -60,7 +60,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
      *
      * @var array
      */
-    protected $servers = array();
+    protected $servers = [];
 
     /**
      * Indicates whether the memcache uses compression or not (requires zlib),
@@ -84,7 +84,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
      * @param array $options Configuration options - depends on the actual backend
      * @throws \TYPO3\CMS\Core\Cache\Exception if memcache is not installed
      */
-    public function __construct($context, array $options = array())
+    public function __construct($context, array $options = [])
     {
         if (!extension_loaded('memcache')) {
             throw new \TYPO3\CMS\Core\Cache\Exception('The PHP extension "memcache" must be installed and loaded in ' . 'order to use the Memcached backend.', 1213987706);
@@ -179,7 +179,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if $data is not a string
      * @api
      */
-    public function set($entryIdentifier, $data, array $tags = array(), $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
         if (strlen($this->identifierPrefix . $entryIdentifier) > 250) {
             throw new \InvalidArgumentException('Could not set value. Key more than 250 characters (' . $this->identifierPrefix . $entryIdentifier . ').', 1232969508);
@@ -282,7 +282,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
         if ($identifiers !== false) {
             return (array)$identifiers;
         } else {
-            return array();
+            return [];
         }
     }
 
@@ -392,7 +392,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
     protected function findTagsByIdentifier($identifier)
     {
         $tags = $this->memcache->get($this->identifierPrefix . 'ident_' . $identifier);
-        return $tags === false ? array() : (array)$tags;
+        return $tags === false ? [] : (array)$tags;
     }
 
     /**

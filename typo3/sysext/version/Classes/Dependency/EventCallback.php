@@ -41,7 +41,7 @@ class EventCallback
      * @param string $method
      * @param array $targetArguments (optional)
      */
-    public function __construct($object, $method, array $targetArguments = array())
+    public function __construct($object, $method, array $targetArguments = [])
     {
         $this->object = $object;
         $this->method = $method;
@@ -57,8 +57,8 @@ class EventCallback
      * @param string $eventName
      * @return mixed
      */
-    public function execute(array $callerArguments = array(), $caller, $eventName)
+    public function execute(array $callerArguments = [], $caller, $eventName)
     {
-        return call_user_func_array(array($this->object, $this->method), array($callerArguments, $this->targetArguments, $caller, $eventName));
+        return call_user_func_array([$this->object, $this->method], [$callerArguments, $this->targetArguments, $caller, $eventName]);
     }
 }

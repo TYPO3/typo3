@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures;
  */
 class ConstraintSyntaxTreeNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
 {
-    public $callProtocol = array();
+    public $callProtocol = [];
 
     /**
      * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
@@ -31,7 +31,7 @@ class ConstraintSyntaxTreeNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\V
     public function evaluateChildNodes(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
     {
         $identifiers = $this->variableContainer->getAllIdentifiers();
-        $callElement = array();
+        $callElement = [];
         foreach ($identifiers as $identifier) {
             $callElement[$identifier] = $this->variableContainer->get($identifier);
         }

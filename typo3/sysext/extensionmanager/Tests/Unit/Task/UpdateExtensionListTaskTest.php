@@ -23,7 +23,7 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     /**
      * @var \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper
@@ -39,7 +39,7 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $this->markTestSkipped('Tests need EXT:scheduler loaded.');
         }
         $this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-        $this->repositoryHelper = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::class, array(), array(), '', false);
+        $this->repositoryHelper = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::class, [], [], '', false);
     }
 
     /**
@@ -84,7 +84,7 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class, $objectManagerMock);
 
-        $task = $this->getMock(\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class, array('dummy'), array(), '', false);
+        $task = $this->getMock(\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class, ['dummy'], [], '', false);
         $task->execute();
     }
 
@@ -112,7 +112,7 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class, $objectManagerMock);
 
-        $task = $this->getMock(\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class, array('dummy'), array(), '', false);
+        $task = $this->getMock(\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class, ['dummy'], [], '', false);
         $task->execute();
     }
 }

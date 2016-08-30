@@ -33,12 +33,12 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface[]
      */
-    protected $caches = array();
+    protected $caches = [];
 
     /**
      * @var array
      */
-    protected $cacheConfigurations = array();
+    protected $cacheConfigurations = [];
 
     /**
      * Used to flush caches of a specific group
@@ -48,17 +48,17 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $cacheGroups = array();
+    protected $cacheGroups = [];
 
     /**
      * @var array Default cache configuration as fallback
      */
-    protected $defaultCacheConfiguration = array(
+    protected $defaultCacheConfiguration = [
         'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
         'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-        'options' => array(),
-        'groups' => array('all')
-    );
+        'options' => [],
+        'groups' => ['all']
+    ];
 
     /**
      * @param \TYPO3\CMS\Core\Cache\CacheFactory $cacheFactory
@@ -265,7 +265,7 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface
         }
         foreach ($assignedGroups as $groupIdentifier) {
             if (!isset($this->cacheGroups[$groupIdentifier])) {
-                $this->cacheGroups[$groupIdentifier] = array();
+                $this->cacheGroups[$groupIdentifier] = [];
             }
             $this->cacheGroups[$groupIdentifier][] = $identifier;
         }

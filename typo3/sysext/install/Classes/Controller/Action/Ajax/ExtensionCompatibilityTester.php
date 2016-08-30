@@ -67,7 +67,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
      */
     protected function executeAction()
     {
-        register_shutdown_function(array($this, 'logError'));
+        register_shutdown_function([$this, 'logError']);
         $getVars = GeneralUtility::_GET('install');
         if (isset($getVars['extensionCompatibilityTester']) && isset($getVars['extensionCompatibilityTester']['forceCheck']) && ($getVars['extensionCompatibilityTester']['forceCheck'] == 1)) {
             $this->deleteProtocolFile();
@@ -100,7 +100,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
      */
     protected function getExtensionsToLoad()
     {
-        $extensionsToLoad = array();
+        $extensionsToLoad = [];
         $extensionsToExclude = $this->getExtensionsToExclude();
         foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $key => $extension) {
             if (!in_array($key, $extensionsToExclude)) {
@@ -207,7 +207,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
     protected function writeCurrentExtensionToFile($extensionKey)
     {
         $incompatibleExtensions = array_filter(GeneralUtility::trimExplode(',', (string)GeneralUtility::getUrl($this->protocolFile)));
-        $incompatibleExtensions = array_merge($incompatibleExtensions, array($extensionKey));
+        $incompatibleExtensions = array_merge($incompatibleExtensions, [$extensionKey]);
         GeneralUtility::writeFile($this->protocolFile, implode(', ', $incompatibleExtensions));
         $this->logError = true;
     }
@@ -242,7 +242,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
 
         // Fetch existing errors, add last one and write to file again.
         $lastError = error_get_last();
-        $errors = array();
+        $errors = [];
 
         if (file_exists($this->errorProtocolFile)) {
             $errors = json_decode(GeneralUtility::getUrl($this->errorProtocolFile));

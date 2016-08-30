@@ -29,7 +29,7 @@ class UsernameViewHelper extends AbstractViewHelper implements CompilableInterfa
      *
      * @var array
      */
-    protected static $usernameRuntimeCache = array();
+    protected static $usernameRuntimeCache = [];
 
     /**
      * Resolve user name from backend user id.
@@ -40,9 +40,9 @@ class UsernameViewHelper extends AbstractViewHelper implements CompilableInterfa
     public function render($uid)
     {
         return static::renderStatic(
-            array(
+            [
                 'uid' => $uid
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

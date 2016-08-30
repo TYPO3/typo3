@@ -34,13 +34,13 @@ class LowerCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     public function dataProvider()
     {
-        return array(
-            'a -> a' => array('a', 'a'),
-            'A -> a' => array('A', 'a'),
-            'AaA -> aaa' => array('AaA', 'aaa'),
-            'ÜßbÉØ -> üßbéø' => array('ÜßbÉØ', 'üßbéø'),
-            '01A23b -> 01a23b' => array('01A23b', '01a23b'),
-        );
+        return [
+            'a -> a' => ['a', 'a'],
+            'A -> a' => ['A', 'a'],
+            'AaA -> aaa' => ['AaA', 'aaa'],
+            'ÜßbÉØ -> üßbéø' => ['ÜßbÉØ', 'üßbéø'],
+            '01A23b -> 01a23b' => ['01A23b', '01a23b'],
+        ];
     }
 
     /**

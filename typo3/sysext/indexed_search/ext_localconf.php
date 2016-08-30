@@ -20,7 +20,7 @@ plugin.tx_indexedsearch.userFunc = ' . \TYPO3\CMS\IndexedSearch\Controller\Searc
 );
 
 // register extbase plugin
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('TYPO3.CMS.IndexedSearch', 'Pi2', array('Search' => 'form,search'), array('Search' => 'form,search'));
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('TYPO3.CMS.IndexedSearch', 'Pi2', ['Search' => 'form,search'], ['Search' => 'form,search']);
 
 // Attach to hooks:
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'][] = \TYPO3\CMS\IndexedSearch\Indexer::class;
@@ -32,7 +32,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['crawler']['cli_hooks']['tx_indexedsearch
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['tx_indexedsearch'] = \TYPO3\CMS\IndexedSearch\Hook\CrawlerHook::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['tx_indexedsearch'] = \TYPO3\CMS\IndexedSearch\Hook\CrawlerHook::class;
 // Configure default document parsers:
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] = array(
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] = [
     'pdf'  => \TYPO3\CMS\IndexedSearch\FileContentParser::class,
     'doc'  => \TYPO3\CMS\IndexedSearch\FileContentParser::class,
     'docx' => \TYPO3\CMS\IndexedSearch\FileContentParser::class,
@@ -60,7 +60,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] = a
     'jpg'  => \TYPO3\CMS\IndexedSearch\FileContentParser::class,
     'jpeg' => \TYPO3\CMS\IndexedSearch\FileContentParser::class,
     'tif'  => \TYPO3\CMS\IndexedSearch\FileContentParser::class
-);
+];
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['use_tables'] = 'index_phash,index_fulltext,index_rel,index_words,index_section,index_grlist,index_stat_search,index_stat_word,index_debug,index_config';
 // unserializing the configuration so we can use it here:
 $_EXTCONF = unserialize($_EXTCONF);

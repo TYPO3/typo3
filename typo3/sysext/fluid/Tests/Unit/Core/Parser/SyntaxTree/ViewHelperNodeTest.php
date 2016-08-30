@@ -60,7 +60,7 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->templateVariableContainer = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer::class);
         $this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);
 
-        $this->controllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, array(), array(), '', false);
+        $this->controllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, [], [], '', false);
         $this->renderingContext->setControllerContext($this->controllerContext);
 
         $this->viewHelperVariableContainer = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer::class);
@@ -73,8 +73,8 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function constructorSetsViewHelperAndArguments()
     {
         $viewHelper = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class);
-        $arguments = array('foo' => 'bar');
-        $viewHelperNode = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class, array('dummy'), array($viewHelper, $arguments));
+        $arguments = ['foo' => 'bar'];
+        $viewHelperNode = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class, ['dummy'], [$viewHelper, $arguments]);
 
         $this->assertEquals(get_class($viewHelper), $viewHelperNode->getViewHelperClassName());
         $this->assertEquals($arguments, $viewHelperNode->_get('arguments'));
@@ -85,14 +85,14 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function childNodeAccessFacetWorksAsExpected()
     {
-        $childNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode::class, array(), array('foo'));
+        $childNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode::class, [], ['foo']);
 
-        $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\Fixtures\ChildNodeAccessFacetViewHelper::class, array('setChildNodes', 'initializeArguments', 'render', 'prepareArguments'));
+        $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\Fixtures\ChildNodeAccessFacetViewHelper::class, ['setChildNodes', 'initializeArguments', 'render', 'prepareArguments']);
 
-        $viewHelperNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($mockViewHelper, array());
+        $viewHelperNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($mockViewHelper, []);
         $viewHelperNode->addChildNode($childNode);
 
-        $mockViewHelper->expects($this->once())->method('setChildNodes')->with($this->equalTo(array($childNode)));
+        $mockViewHelper->expects($this->once())->method('setChildNodes')->with($this->equalTo([$childNode]));
 
         $viewHelperNode->evaluate($this->renderingContext);
     }
@@ -102,10 +102,10 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function initializeArgumentsAndRenderIsCalledByViewHelperNode()
     {
-        $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class, array('initializeArgumentsAndRender', 'prepareArguments'));
+        $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class, ['initializeArgumentsAndRender', 'prepareArguments']);
         $mockViewHelper->expects($this->once())->method('initializeArgumentsAndRender');
 
-        $viewHelperNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($mockViewHelper, array());
+        $viewHelperNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($mockViewHelper, []);
 
         $viewHelperNode->evaluate($this->renderingContext);
     }
@@ -115,20 +115,20 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function initializeArgumentsAndRenderIsCalledWithCorrectArguments()
     {
-        $arguments = array(
+        $arguments = [
             'param0' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param1', 'string', 'Hallo', true, null, false),
             'param1' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param1', 'string', 'Hallo', true, null, true),
             'param2' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param2', 'string', 'Hallo', true, null, true)
-        );
+        ];
 
-        $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class, array('initializeArgumentsAndRender', 'prepareArguments'));
+        $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class, ['initializeArgumentsAndRender', 'prepareArguments']);
         $mockViewHelper->expects($this->any())->method('prepareArguments')->will($this->returnValue($arguments));
         $mockViewHelper->expects($this->once())->method('initializeArgumentsAndRender');
 
-        $viewHelperNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($mockViewHelper, array(
+        $viewHelperNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($mockViewHelper, [
             'param2' => new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('b'),
             'param1' => new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('a')
-        ));
+        ]);
 
         $viewHelperNode->evaluate($this->renderingContext);
     }
@@ -138,10 +138,10 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function evaluateMethodPassesRenderingContextToViewHelper()
     {
-        $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class, array('render', 'validateArguments', 'prepareArguments', 'setRenderingContext'));
+        $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class, ['render', 'validateArguments', 'prepareArguments', 'setRenderingContext']);
         $mockViewHelper->expects($this->once())->method('setRenderingContext')->with($this->renderingContext);
 
-        $viewHelperNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($mockViewHelper, array());
+        $viewHelperNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($mockViewHelper, []);
 
         $viewHelperNode->evaluate($this->renderingContext);
     }
@@ -151,10 +151,10 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function multipleEvaluateCallsShareTheSameViewHelperInstance()
     {
-        $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class, array('render', 'validateArguments', 'prepareArguments', 'setViewHelperVariableContainer'));
+        $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class, ['render', 'validateArguments', 'prepareArguments', 'setViewHelperVariableContainer']);
         $mockViewHelper->expects($this->any())->method('render')->will($this->returnValue('String'));
 
-        $viewHelperNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($mockViewHelper, array());
+        $viewHelperNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($mockViewHelper, []);
 
         $viewHelperNode->evaluate($this->renderingContext);
         $viewHelperNode->evaluate($this->renderingContext);

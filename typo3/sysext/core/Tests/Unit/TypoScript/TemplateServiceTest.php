@@ -39,10 +39,10 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $GLOBALS['TYPO3_LOADED_EXT'] = array();
+        $GLOBALS['TYPO3_LOADED_EXT'] = [];
         $this->templateService = new \TYPO3\CMS\Core\TypoScript\TemplateService();
         $this->templateService->tt_track = false;
-        $this->templateServiceMock = $this->getAccessibleMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class, array('dummy'));
+        $this->templateServiceMock = $this->getAccessibleMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class, ['dummy']);
         $this->templateServiceMock->tt_track = false;
     }
 
@@ -51,7 +51,7 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function versionOlCallsVersionOlOfPageSelectClassWithGivenRow()
     {
-        $row = array('foo');
+        $row = ['foo'];
         $GLOBALS['TSFE'] = new \stdClass();
         $sysPageMock = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
         $sysPageMock->expects($this->once())->method('versionOL')->with('sys_template', $row);
@@ -65,15 +65,15 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function extensionStaticFilesAreNotProcessedIfNotExplicitlyRequested()
     {
         $identifier = $this->getUniqueId('test');
-        $GLOBALS['TYPO3_LOADED_EXT'] = array(
-            $identifier => array(
+        $GLOBALS['TYPO3_LOADED_EXT'] = [
+            $identifier => [
                 'ext_typoscript_setup.txt' => ExtensionManagementUtility::extPath(
                     'core', 'Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt'
                 ),
-            ),
-        );
+            ],
+        ];
 
-        $this->templateService->runThroughTemplates(array(), 0);
+        $this->templateService->runThroughTemplates([], 0);
         $this->assertFalse(
             in_array('test.Core.TypoScript = 1', $this->templateService->config)
         );
@@ -85,25 +85,25 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function extensionStaticsAreProcessedIfExplicitlyRequested()
     {
         $identifier = $this->getUniqueId('test');
-        $GLOBALS['TYPO3_LOADED_EXT'] = array(
-            $identifier => array(
+        $GLOBALS['TYPO3_LOADED_EXT'] = [
+            $identifier => [
                 'ext_typoscript_setup.txt' => ExtensionManagementUtility::extPath(
                         'core', 'Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt'
                     ),
                 'ext_typoscript_constants.txt' => ''
-            ),
-        );
+            ],
+        ];
 
-        $mockPackage = $this->getMock(\TYPO3\CMS\Core\Package\Package::class, array('getPackagePath'), array(), '', false);
+        $mockPackage = $this->getMock(\TYPO3\CMS\Core\Package\Package::class, ['getPackagePath'], [], '', false);
         $mockPackage->expects($this->any())->method('getPackagePath')->will($this->returnValue(''));
 
-        $mockPackageManager = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class, array('isPackageActive', 'getPackage'));
+        $mockPackageManager = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class, ['isPackageActive', 'getPackage']);
         $mockPackageManager->expects($this->any())->method('isPackageActive')->will($this->returnValue(true));
         $mockPackageManager->expects($this->any())->method('getPackage')->will($this->returnValue($mockPackage));
         ExtensionManagementUtility::setPackageManager($mockPackageManager);
 
         $this->templateService->setProcessExtensionStatics(true);
-        $this->templateService->runThroughTemplates(array(), 0);
+        $this->templateService->runThroughTemplates([], 0);
 
         $this->assertTrue(
             in_array('test.Core.TypoScript = 1', $this->templateService->config)
@@ -117,21 +117,21 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function updateRootlineDataOverwritesOwnArrayData()
     {
-        $originalRootline = array(
-            0 => array('uid' => 2, 'title' => 'originalTitle'),
-            1 => array('uid' => 3, 'title' => 'originalTitle2'),
-        );
+        $originalRootline = [
+            0 => ['uid' => 2, 'title' => 'originalTitle'],
+            1 => ['uid' => 3, 'title' => 'originalTitle2'],
+        ];
 
-        $updatedRootline = array(
-            0 => array('uid' => 1, 'title' => 'newTitle'),
-            1 => array('uid' => 2, 'title' => 'newTitle2'),
-            2 => array('uid' => 3, 'title' => 'newTitle3'),
-        );
+        $updatedRootline = [
+            0 => ['uid' => 1, 'title' => 'newTitle'],
+            1 => ['uid' => 2, 'title' => 'newTitle2'],
+            2 => ['uid' => 3, 'title' => 'newTitle3'],
+        ];
 
-        $expectedRootline = array(
-            0 => array('uid' => 2, 'title' => 'newTitle2'),
-            1 => array('uid' => 3, 'title' => 'newTitle3'),
-        );
+        $expectedRootline = [
+            0 => ['uid' => 2, 'title' => 'newTitle2'],
+            1 => ['uid' => 3, 'title' => 'newTitle3'],
+        ];
 
         $this->templateServiceMock->_set('rootLine', $originalRootline);
         $this->templateServiceMock->updateRootlineData($updatedRootline);
@@ -144,15 +144,15 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function updateRootlineDataWithInvalidNewRootlineThrowsException()
     {
-        $originalRootline = array(
-            0 => array('uid' => 2, 'title' => 'originalTitle'),
-            1 => array('uid' => 3, 'title' => 'originalTitle2'),
-        );
+        $originalRootline = [
+            0 => ['uid' => 2, 'title' => 'originalTitle'],
+            1 => ['uid' => 3, 'title' => 'originalTitle2'],
+        ];
 
-        $newInvalidRootline = array(
-            0 => array('uid' => 1, 'title' => 'newTitle'),
-            1 => array('uid' => 2, 'title' => 'newTitle2'),
-        );
+        $newInvalidRootline = [
+            0 => ['uid' => 1, 'title' => 'newTitle'],
+            1 => ['uid' => 2, 'title' => 'newTitle2'],
+        ];
 
         $this->templateServiceMock->_set('rootLine', $originalRootline);
         $this->templateServiceMock->updateRootlineData($newInvalidRootline);
@@ -194,110 +194,110 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     public function splitConfDataProvider()
     {
-        return array(
-            array(
-                array('splitConfiguration' => 'a'),
+        return [
+            [
+                ['splitConfiguration' => 'a'],
                 3,
-                array(
-                    0 => array('splitConfiguration' => 'a'),
-                    1 => array('splitConfiguration' => 'a'),
-                    2 => array('splitConfiguration' => 'a')
-                )
-            ),
-            array(
-                array('splitConfiguration' => 'a || b || c'),
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'a'],
+                    2 => ['splitConfiguration' => 'a']
+                ]
+            ],
+            [
+                ['splitConfiguration' => 'a || b || c'],
                 5,
-                array(
-                    0 => array('splitConfiguration' => 'a'),
-                    1 => array('splitConfiguration' => 'b'),
-                    2 => array('splitConfiguration' => 'c'),
-                    3 => array('splitConfiguration' => 'c'),
-                    4 => array('splitConfiguration' => 'c')
-                )
-            ),
-            array(
-                array('splitConfiguration' => 'a || b |*| c'),
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'b'],
+                    2 => ['splitConfiguration' => 'c'],
+                    3 => ['splitConfiguration' => 'c'],
+                    4 => ['splitConfiguration' => 'c']
+                ]
+            ],
+            [
+                ['splitConfiguration' => 'a || b |*| c'],
                 5,
-                array(
-                    0 => array('splitConfiguration' => 'a'),
-                    1 => array('splitConfiguration' => 'b'),
-                    2 => array('splitConfiguration' => 'c'),
-                    3 => array('splitConfiguration' => 'c'),
-                    4 => array('splitConfiguration' => 'c')
-                )
-            ),
-            array(
-                array('splitConfiguration' => 'a || b |*| c |*| d || e'),
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'b'],
+                    2 => ['splitConfiguration' => 'c'],
+                    3 => ['splitConfiguration' => 'c'],
+                    4 => ['splitConfiguration' => 'c']
+                ]
+            ],
+            [
+                ['splitConfiguration' => 'a || b |*| c |*| d || e'],
                 7,
-                array(
-                    0 => array('splitConfiguration' => 'a'),
-                    1 => array('splitConfiguration' => 'b'),
-                    2 => array('splitConfiguration' => 'c'),
-                    3 => array('splitConfiguration' => 'c'),
-                    4 => array('splitConfiguration' => 'c'),
-                    5 => array('splitConfiguration' => 'd'),
-                    6 => array('splitConfiguration' => 'e')
-                )
-            ),
-            array(
-                array('splitConfiguration' => 'a || b |*| c |*| d || e'),
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'b'],
+                    2 => ['splitConfiguration' => 'c'],
+                    3 => ['splitConfiguration' => 'c'],
+                    4 => ['splitConfiguration' => 'c'],
+                    5 => ['splitConfiguration' => 'd'],
+                    6 => ['splitConfiguration' => 'e']
+                ]
+            ],
+            [
+                ['splitConfiguration' => 'a || b |*| c |*| d || e'],
                 4,
-                array(
-                    0 => array('splitConfiguration' => 'a'),
-                    1 => array('splitConfiguration' => 'b'),
-                    2 => array('splitConfiguration' => 'd'),
-                    3 => array('splitConfiguration' => 'e')
-                )
-            ),
-            array(
-                array('splitConfiguration' => 'a || b |*| c |*| d || e'),
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'b'],
+                    2 => ['splitConfiguration' => 'd'],
+                    3 => ['splitConfiguration' => 'e']
+                ]
+            ],
+            [
+                ['splitConfiguration' => 'a || b |*| c |*| d || e'],
                 3,
-                array(
-                    0 => array('splitConfiguration' => 'a'),
-                    1 => array('splitConfiguration' => 'd'),
-                    2 => array('splitConfiguration' => 'e')
-                )
-            ),
-            array(
-                array('splitConfiguration' => 'a || b |*||*| c || d'),
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'd'],
+                    2 => ['splitConfiguration' => 'e']
+                ]
+            ],
+            [
+                ['splitConfiguration' => 'a || b |*||*| c || d'],
                 7,
-                array(
-                    0 => array('splitConfiguration' => 'a'),
-                    1 => array('splitConfiguration' => 'b'),
-                    2 => array('splitConfiguration' => 'b'),
-                    3 => array('splitConfiguration' => 'b'),
-                    4 => array('splitConfiguration' => 'b'),
-                    5 => array('splitConfiguration' => 'c'),
-                    6 => array('splitConfiguration' => 'd')
-                )
-            ),
-            array(
-                array('splitConfiguration' => '|*||*| a || b'),
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'b'],
+                    2 => ['splitConfiguration' => 'b'],
+                    3 => ['splitConfiguration' => 'b'],
+                    4 => ['splitConfiguration' => 'b'],
+                    5 => ['splitConfiguration' => 'c'],
+                    6 => ['splitConfiguration' => 'd']
+                ]
+            ],
+            [
+                ['splitConfiguration' => '|*||*| a || b'],
                 7,
-                array(
-                    0 => array('splitConfiguration' => 'a'),
-                    1 => array('splitConfiguration' => 'a'),
-                    2 => array('splitConfiguration' => 'a'),
-                    3 => array('splitConfiguration' => 'a'),
-                    4 => array('splitConfiguration' => 'a'),
-                    5 => array('splitConfiguration' => 'a'),
-                    6 => array('splitConfiguration' => 'b')
-                )
-            ),
-            array(
-                array('splitConfiguration' => 'a |*| b || c |*|'),
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'a'],
+                    2 => ['splitConfiguration' => 'a'],
+                    3 => ['splitConfiguration' => 'a'],
+                    4 => ['splitConfiguration' => 'a'],
+                    5 => ['splitConfiguration' => 'a'],
+                    6 => ['splitConfiguration' => 'b']
+                ]
+            ],
+            [
+                ['splitConfiguration' => 'a |*| b || c |*|'],
                 7,
-                array(
-                    0 => array('splitConfiguration' => 'a'),
-                    1 => array('splitConfiguration' => 'b'),
-                    2 => array('splitConfiguration' => 'c'),
-                    3 => array('splitConfiguration' => 'b'),
-                    4 => array('splitConfiguration' => 'c'),
-                    5 => array('splitConfiguration' => 'b'),
-                    6 => array('splitConfiguration' => 'c')
-                )
-            ),
-        );
+                [
+                    0 => ['splitConfiguration' => 'a'],
+                    1 => ['splitConfiguration' => 'b'],
+                    2 => ['splitConfiguration' => 'c'],
+                    3 => ['splitConfiguration' => 'b'],
+                    4 => ['splitConfiguration' => 'c'],
+                    5 => ['splitConfiguration' => 'b'],
+                    6 => ['splitConfiguration' => 'c']
+                ]
+            ],
+        ];
     }
 
     /**

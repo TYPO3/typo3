@@ -27,7 +27,7 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->subject = $this->getMock(\TYPO3\CMS\Core\Mail\Mailer::class, array('emitPostInitializeMailerSignal'), array(), '', false);
+        $this->subject = $this->getMock(\TYPO3\CMS\Core\Mail\Mailer::class, ['emitPostInitializeMailerSignal'], [], '', false);
     }
 
     //////////////////////////
@@ -38,8 +38,8 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function injectedSettingsAreNotReplacedByGlobalSettings()
     {
-        $settings = array('transport' => 'mbox', 'transport_mbox_file' => '/path/to/file');
-        $GLOBALS['TYPO3_CONF_VARS']['MAIL'] = array('transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail');
+        $settings = ['transport' => 'mbox', 'transport_mbox_file' => '/path/to/file'];
+        $GLOBALS['TYPO3_CONF_VARS']['MAIL'] = ['transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail'];
         $this->subject->injectMailSettings($settings);
         $this->subject->__construct();
         $this->assertAttributeSame($settings, 'mailSettings', $this->subject);
@@ -50,7 +50,7 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function globalSettingsAreUsedIfNoSettingsAreInjected()
     {
-        $settings = ($GLOBALS['TYPO3_CONF_VARS']['MAIL'] = array('transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail'));
+        $settings = ($GLOBALS['TYPO3_CONF_VARS']['MAIL'] = ['transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail']);
         $this->subject->__construct();
         $this->assertAttributeSame($settings, 'mailSettings', $this->subject);
     }
@@ -62,12 +62,12 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public static function wrongConfigigurationProvider()
     {
-        return array(
-            'smtp but no host' => array(array('transport' => 'smtp')),
-            'sendmail but no command' => array(array('transport' => 'sendmail')),
-            'mbox but no file' => array(array('transport' => 'mbox')),
-            'no instance of Swift_Transport' => array(array('transport' => \TYPO3\CMS\Core\Messaging\ErrorpageMessage::class))
-        );
+        return [
+            'smtp but no host' => [['transport' => 'smtp']],
+            'sendmail but no command' => [['transport' => 'sendmail']],
+            'mbox but no file' => [['transport' => 'mbox']],
+            'no instance of Swift_Transport' => [['transport' => \TYPO3\CMS\Core\Messaging\ErrorpageMessage::class]]
+        ];
     }
 
     /**
@@ -87,7 +87,7 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function providingCorrectClassnameDoesNotThrowException()
     {
-        $this->subject->injectMailSettings(array('transport' => FakeTransportFixture::class));
+        $this->subject->injectMailSettings(['transport' => FakeTransportFixture::class]);
         $this->subject->__construct();
     }
 
@@ -96,7 +96,7 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function noPortSettingSetsPortTo25()
     {
-        $this->subject->injectMailSettings(array('transport' => 'smtp', 'transport_smtp_server' => 'localhost'));
+        $this->subject->injectMailSettings(['transport' => 'smtp', 'transport_smtp_server' => 'localhost']);
         $this->subject->__construct();
         $port = $this->subject->getTransport()->getPort();
         $this->assertEquals(25, $port);
@@ -107,7 +107,7 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function emptyPortSettingSetsPortTo25()
     {
-        $this->subject->injectMailSettings(array('transport' => 'smtp', 'transport_smtp_server' => 'localhost:'));
+        $this->subject->injectMailSettings(['transport' => 'smtp', 'transport_smtp_server' => 'localhost:']);
         $this->subject->__construct();
         $port = $this->subject->getTransport()->getPort();
         $this->assertEquals(25, $port);
@@ -118,7 +118,7 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function givenPortSettingIsRespected()
     {
-        $this->subject->injectMailSettings(array('transport' => 'smtp', 'transport_smtp_server' => 'localhost:12345'));
+        $this->subject->injectMailSettings(['transport' => 'smtp', 'transport_smtp_server' => 'localhost:12345']);
         $this->subject->__construct();
         $port = $this->subject->getTransport()->getPort();
         $this->assertEquals(12345, $port);

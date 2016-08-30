@@ -40,15 +40,15 @@ Showing last 25 hour entries from the syslog. More features pending. This is the
     public function main()
     {
         // Initialize result array:
-        $resultArray = array(
+        $resultArray = [
             'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
-            'headers' => array(
-                'listing' => array('', '', 1),
-                'allDetails' => array('', '', 0)
-            ),
-            'listing' => array(),
-            'allDetails' => array()
-        );
+            'headers' => [
+                'listing' => ['', '', 1],
+                'allDetails' => ['', '', 0]
+            ],
+            'listing' => [],
+            'allDetails' => []
+        ];
         $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_log', 'tstamp>' . ($GLOBALS['EXEC_TIME'] - 25 * 3600));
         foreach ($rows as $r) {
             $l = unserialize($r['log_data']);
@@ -58,7 +58,7 @@ Showing last 25 hour entries from the syslog. More features pending. This is the
             }
             $explained = '#' . $r['uid'] . ' ' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($r['tstamp']) . ' USER[' . $userInformation . ']: ' . sprintf($r['details'], $l[0], $l[1], $l[2], $l[3], $l[4], $l[5]);
             $resultArray['listing'][$r['uid']] = $explained;
-            $resultArray['allDetails'][$r['uid']] = array($explained, \TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString($r, 'uid,userid,action,recuid,tablename,recpid,error,tstamp,type,details_nr,IP,event_pid,NEWid,workspace'));
+            $resultArray['allDetails'][$r['uid']] = [$explained, \TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString($r, 'uid,userid,action,recuid,tablename,recpid,error,tstamp,type,details_nr,IP,event_pid,NEWid,workspace')];
         }
         return $resultArray;
     }

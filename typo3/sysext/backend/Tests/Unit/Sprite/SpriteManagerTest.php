@@ -75,7 +75,7 @@ class SpriteManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $type = '';
         $imagePath = 'path/to/my-icon.png';
-        $icons = array($type => $imagePath);
+        $icons = [$type => $imagePath];
         $extensionKey = 'dummy';
         SpriteManager::addSingleIcons($icons, $extensionKey);
         $this->assertArrayHasKey('extensions-' . $extensionKey . '-' . $type, $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']);
@@ -88,7 +88,7 @@ class SpriteManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $type = '';
         $imagePath = 'path/to/my-icon.png';
-        $icons = array($type => $imagePath);
+        $icons = [$type => $imagePath];
         $extensionKey = 'dummy';
         SpriteManager::addSingleIcons($icons, $extensionKey);
         $this->assertEquals($imagePath, $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['extensions-' . $extensionKey . '-' . $type]);
@@ -101,7 +101,7 @@ class SpriteManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $type = 'contains-news';
         $imagePath = 'path/to/my-icon.png';
-        $icons = array($type => $imagePath);
+        $icons = [$type => $imagePath];
         $extensionKey = 'dummy';
         SpriteManager::addSingleIcons($icons, $extensionKey);
         $this->assertArrayHasKey('extensions-' . $extensionKey . '-' . $type, $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']);
@@ -114,7 +114,7 @@ class SpriteManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $type = 'contains-news';
         $imagePath = 'path/to/my-icon.png';
-        $icons = array($type => $imagePath);
+        $icons = [$type => $imagePath];
         $extensionKey = 'dummy';
         SpriteManager::addSingleIcons($icons, $extensionKey);
         $this->assertEquals($imagePath, $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['extensions-' . $extensionKey . '-' . $type]);

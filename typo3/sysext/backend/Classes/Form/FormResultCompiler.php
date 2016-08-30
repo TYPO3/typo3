@@ -37,7 +37,7 @@ class FormResultCompiler
     /**
      * @var array HTML of additional hidden fields rendered by sub containers
      */
-    protected $hiddenFieldAccum = array();
+    protected $hiddenFieldAccum = [];
 
     /**
      * Can be set to point to a field name in the form which will be set to '1' when the form
@@ -51,7 +51,7 @@ class FormResultCompiler
     /**
      * @var array Data array from IRRE pushed to frontend as json array
      */
-    protected $inlineData = array();
+    protected $inlineData = [];
 
     /**
      * List of additional style sheet files to load
@@ -65,7 +65,7 @@ class FormResultCompiler
      *
      * @var array
      */
-    protected $additionalJS_post = array();
+    protected $additionalJS_post = [];
 
     /**
      * Additional JavaScript executed on submit; If you set "OK" variable it will raise an error
@@ -73,14 +73,14 @@ class FormResultCompiler
      *
      * @var array
      */
-    protected $additionalJS_submit = array();
+    protected $additionalJS_submit = [];
 
     /**
      * Additional language label files to include.
      *
      * @var array
      */
-    protected $additionalInlineLanguageLabelFiles = array();
+    protected $additionalInlineLanguageLabelFiles = [];
 
     /**
      * Array with requireJS modules, use module name as key, the value could be callback code.
@@ -88,7 +88,7 @@ class FormResultCompiler
      *
      * @var array
      */
-    protected $requireJsModules = array();
+    protected $requireJsModules = [];
 
     /**
      * @var PageRenderer
@@ -131,7 +131,7 @@ class FormResultCompiler
                     if (!empty($this->requireJsModules[$moduleName]) && $callback !== null) {
                         $existingValue = $this->requireJsModules[$moduleName];
                         if (!is_array($existingValue)) {
-                            $existingValue = array($existingValue);
+                            $existingValue = [$existingValue];
                         }
                         $existingValue[] = $callback;
                         $this->requireJsModules[$moduleName] = $existingValue;
@@ -206,7 +206,7 @@ class FormResultCompiler
     protected function JSbottom($formname = 'forms[0]')
     {
         $languageService = $this->getLanguageService();
-        $jsFile = array();
+        $jsFile = [];
 
         // @todo: this is messy here - "additional hidden fields" should be handled elsewhere
         $html = implode(LF, $this->hiddenFieldAccum);
@@ -224,7 +224,7 @@ class FormResultCompiler
         $pageRenderer = $this->getPageRenderer();
         foreach ($this->requireJsModules as $moduleName => $callbacks) {
             if (!is_array($callbacks)) {
-                $callbacks = array($callbacks);
+                $callbacks = [$callbacks];
             }
             foreach ($callbacks as $callback) {
                 $pageRenderer->loadRequireJsModule($moduleName, $callback);
@@ -244,15 +244,15 @@ class FormResultCompiler
 
         $beUserAuth = $this->getBackendUserAuthentication();
         // Make textareas resizable and flexible ("autogrow" in height)
-        $textareaSettings = array(
+        $textareaSettings = [
             'autosize'  => (bool)$beUserAuth->uc['resizeTextareas_Flexible']
-        );
+        ];
         $pageRenderer->addInlineSettingArray('Textarea', $textareaSettings);
 
         $this->loadJavascriptLib($backendRelPath . 'Resources/Public/JavaScript/jsfunc.tbe_editor.js');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ValueSlider');
         // Needed for FormEngine manipulation (date picker)
-        $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? array('MM-DD-YYYY', 'HH:mm MM-DD-YYYY') : array('DD-MM-YYYY', 'HH:mm DD-MM-YYYY'));
+        $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? ['MM-DD-YYYY', 'HH:mm MM-DD-YYYY'] : ['DD-MM-YYYY', 'HH:mm DD-MM-YYYY']);
         $pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
         // support placeholders for IE9 and lower
@@ -308,7 +308,7 @@ class FormResultCompiler
         // $this->additionalJS_submit:
         if ($this->additionalJS_submit) {
             $additionalJS_submit = implode('', $this->additionalJS_submit);
-            $additionalJS_submit = str_replace(array(CR, LF), '', $additionalJS_submit);
+            $additionalJS_submit = str_replace([CR, LF], '', $additionalJS_submit);
             $out .= '
 			TBE_EDITOR.addActionChecks("submit", "' . addslashes($additionalJS_submit) . '");
 			';

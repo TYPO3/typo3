@@ -134,13 +134,13 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         // Bunch of label tests
         $subject->loadExtJS();
         $subject->addInlineLanguageLabel('myKey', 'myValue');
-        $subject->addInlineLanguageLabelArray(array(
+        $subject->addInlineLanguageLabelArray([
             'myKeyArray1' => 'myValueArray1',
             'myKeyArray2' => 'myValueArray2'
-        ));
-        $subject->addInlineLanguageLabelArray(array(
+        ]);
+        $subject->addInlineLanguageLabelArray([
             'myKeyArray3' => 'myValueArray3'
-        ));
+        ]);
         $expectedInlineLabelReturnValue = 'TYPO3.lang = {"myKey":"myValue","myKeyArray1":"myValueArray1","myKeyArray2":"myValueArray2","myKeyArray3":"myValueArray3"';
 
         $subject->addInlineLanguageLabelFile('EXT:lang/locallang_core.xlf');
@@ -149,13 +149,13 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 
         // Bunch of inline settings test
         $subject->addInlineSetting('myApp', 'myKey', 'myValue');
-        $subject->addInlineSettingArray('myApp', array(
+        $subject->addInlineSettingArray('myApp', [
             'myKey1' => 'myValue1',
             'myKey2' => 'myValue2'
-        ));
-        $subject->addInlineSettingArray('myApp', array(
+        ]);
+        $subject->addInlineSettingArray('myApp', [
             'myKey3' => 'myValue3'
-        ));
+        ]);
         $expectedInlineSettingsReturnValue = 'TYPO3.settings = {"myApp":{"myKey":"myValue","myKey1":"myValue1","myKey2":"myValue2","myKey3":"myValue3"}';
 
         $renderedString = $subject->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
@@ -236,28 +236,28 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function loadJqueryFromSourceDataProvider()
     {
-        return array(
-            'google with version number' => array(
+        return [
+            'google with version number' => [
                 '1.6.3',
                 'google',
                 '#<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.js" type="text/javascript"></script>#'
-            ),
-            'msn with version number' => array(
+            ],
+            'msn with version number' => [
                 '1.6.3',
                 'msn',
                 '#<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.3.js" type="text/javascript"></script>#'
-            ),
-            'jquery with version number' => array(
+            ],
+            'jquery with version number' => [
                 '1.6.3',
                 'jquery',
                 '#<script src="https://code.jquery.com/jquery-1.6.3.js" type="text/javascript"></script>#'
-            ),
-            'jquery with custom URL' => array(
+            ],
+            'jquery with custom URL' => [
                 '1.6.3',
                 'https://my.cool.cdn/foo/jquery.js',
                 '#<script src="https://my.cool.cdn/foo/jquery.js" type="text/javascript"></script>#'
-            ),
-        );
+            ],
+        ];
     }
 
     /**

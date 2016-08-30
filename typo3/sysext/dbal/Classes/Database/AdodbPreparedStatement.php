@@ -61,7 +61,7 @@ class AdodbPreparedStatement extends \TYPO3\CMS\Dbal\Database\DatabaseConnection
         $this->databaseConnection = $databaseConnection;
         $this->query = $query;
         $this->queryComponents = $queryComponents;
-        $this->parameters = array();
+        $this->parameters = [];
     }
 
     /**
@@ -102,17 +102,17 @@ class AdodbPreparedStatement extends \TYPO3\CMS\Dbal\Database\DatabaseConnection
             return false;
         }
 
-        $this->parameters = array(
-            array(
+        $this->parameters = [
+            [
                 'type' => $types{0},
                 'value' => $var1
-            ),
-        );
+            ],
+        ];
         for ($i = 1; $i < $numberOfVariables; $i++) {
-            $this->parameters[] = array(
+            $this->parameters[] = [
                 'type' => $types{$i},
                 'value' => func_get_arg($i + 1),
-            );
+            ];
         }
 
         return true;
@@ -208,7 +208,7 @@ class AdodbPreparedStatement extends \TYPO3\CMS\Dbal\Database\DatabaseConnection
      */
     public function fetch_fields()
     {
-        return $this->recordSet !== false ? $this->recordSet->_fieldobjects : array();
+        return $this->recordSet !== false ? $this->recordSet->_fieldobjects : [];
     }
 
     /**

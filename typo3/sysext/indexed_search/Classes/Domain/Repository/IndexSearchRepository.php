@@ -36,7 +36,7 @@ class IndexSearchRepository
      *
      * @var array
      */
-    protected $externalParsers = array();
+    protected $externalParsers = [];
 
     /**
      * Frontend User Group List
@@ -131,7 +131,7 @@ class IndexSearchRepository
      *
      * @var array
      */
-    protected $wSelClauses = array();
+    protected $wSelClauses = [];
 
     /**
      * Flag for exact search count
@@ -220,13 +220,13 @@ class IndexSearchRepository
             // Initialize result accumulation variables:
             $c = 0;
             // Result pointer: Counts up the position in the current search-result
-            $grouping_phashes = array();
+            $grouping_phashes = [];
             // Used to filter out duplicates.
-            $grouping_chashes = array();
+            $grouping_chashes = [];
             // Used to filter out duplicates BASED ON cHash.
-            $firstRow = array();
+            $firstRow = [];
             // Will hold the first row in result - used to calculate relative hit-ratings.
-            $resultRows = array();
+            $resultRows = [];
             // Will hold the results rows for display.
             // Now, traverse result and put the rows to be displayed into an array
             // Each row should contain the fields from 'ISEC.*, IP.*' combined
@@ -277,11 +277,11 @@ class IndexSearchRepository
 
             $this->getDatabaseConnection()->sql_free_result($res);
 
-            return array(
+            return [
                 'resultRows' => $resultRows,
                 'firstRow' => $firstRow,
                 'count' => $count
-            );
+            ];
         } else {
             // No results found
             return false;
@@ -329,8 +329,8 @@ class IndexSearchRepository
         // Initialize variables:
         $c = 0;
         // This array accumulates the phash-values
-        $totalHashList = array();
-        $this->wSelClauses = array();
+        $totalHashList = [];
+        $this->wSelClauses = [];
         // Traverse searchwords; for each, select all phash integers and merge/diff/intersect them with previous word (based on operator)
         foreach ($searchWords as $k => $v) {
             // Making the query for a single search word based on the search-type
@@ -385,7 +385,7 @@ class IndexSearchRepository
             // If there was a query to do, then select all phash-integers which resulted from this.
             if ($res) {
                 // Get phash list by searching for it:
-                $phashList = array();
+                $phashList = [];
                 while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
                     $phashList[] = $row['phash'];
                 }
@@ -605,7 +605,7 @@ class IndexSearchRepository
             if (is_array($indexCfgRec)) {
                 $refs = GeneralUtility::trimExplode(',', $indexCfgRec['indexcfgs']);
                 // Default value to protect against empty array.
-                $list = array(-99);
+                $list = [-99];
                 foreach ($refs as $ref) {
                     list($table, $uid) = GeneralUtility::revExplode('_', $ref, 2);
                     $uid = (int)$uid;
@@ -626,7 +626,7 @@ class IndexSearchRepository
                 }
                 $list = array_unique($list);
             } else {
-                $list = array($freeIndexUid);
+                $list = [$freeIndexUid];
             }
             return ' AND IP.freeIndexUid IN (' . implode(',', $list) . ')';
         }
@@ -665,7 +665,7 @@ class IndexSearchRepository
             // filtering out ALL pages that are not accessible due to enableFields.
             // Does NOT look for "no_search" field!
             $siteIdNumbers = GeneralUtility::intExplode(',', $this->searchRootPageIdList);
-            $pageIdList = array();
+            $pageIdList = [];
             foreach ($siteIdNumbers as $rootId) {
                 $pageIdList[] = $this->getTypoScriptFrontendController()->cObj->getTreeList(-1 * $rootId, 9999);
             }

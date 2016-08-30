@@ -6,7 +6,7 @@ defined('TYPO3_MODE') or die();
     'sv',
     'auth',
     \TYPO3\CMS\Sv\AuthenticationService::class,
-    array(
+    [
         'title' => 'User authentication',
         'description' => 'Authentication with username/password.',
         'subtype' => 'getUserBE,getUserFE,authUserFE,getGroupsFE,processLoginDataBE,processLoginDataFE',
@@ -16,5 +16,5 @@ defined('TYPO3_MODE') or die();
         'os' => '',
         'exec' => '',
         'className' => \TYPO3\CMS\Sv\AuthenticationService::class
-    )
+    ]
 );

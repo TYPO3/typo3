@@ -19,7 +19,7 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
     protected function setUp()
     {
         parent::setUp();
-        $this->templateVariableContainer = new \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer(array());
+        $this->templateVariableContainer = new \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer([]);
         $this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);
 
         $this->arguments['reverse'] = null;
@@ -35,19 +35,19 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
         $viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper();
 
         $viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
-        $this->arguments['each'] = array(0, 1, 2, 3);
+        $this->arguments['each'] = [0, 1, 2, 3];
         $this->arguments['as'] = 'innerVariable';
 
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setViewHelperNode($viewHelperNode);
         $viewHelper->render($this->arguments['each'], $this->arguments['as']);
 
-        $expectedCallProtocol = array(
-            array('innerVariable' => 0),
-            array('innerVariable' => 1),
-            array('innerVariable' => 2),
-            array('innerVariable' => 3)
-        );
+        $expectedCallProtocol = [
+            ['innerVariable' => 0],
+            ['innerVariable' => 1],
+            ['innerVariable' => 2],
+            ['innerVariable' => 3]
+        ];
         $this->assertEquals($expectedCallProtocol, $viewHelperNode->callProtocol, 'The call protocol differs -> The for loop does not work as it should!');
     }
 
@@ -60,7 +60,7 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 
         $viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
 
-        $this->arguments['each'] = array('key1' => 'value1', 'key2' => 'value2');
+        $this->arguments['each'] = ['key1' => 'value1', 'key2' => 'value2'];
         $this->arguments['as'] = 'innerVariable';
         $this->arguments['key'] = 'someKey';
 
@@ -68,16 +68,16 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
         $viewHelper->setViewHelperNode($viewHelperNode);
         $viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key']);
 
-        $expectedCallProtocol = array(
-            array(
+        $expectedCallProtocol = [
+            [
                 'innerVariable' => 'value1',
                 'someKey' => 'key1'
-            ),
-            array(
+            ],
+            [
                 'innerVariable' => 'value2',
                 'someKey' => 'key2'
-            )
-        );
+            ]
+        ];
         $this->assertEquals($expectedCallProtocol, $viewHelperNode->callProtocol, 'The call protocol differs -> The for loop does not work as it should!');
     }
 
@@ -103,7 +103,7 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
     {
         $viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper();
 
-        $this->arguments['each'] = array();
+        $this->arguments['each'] = [];
         $this->arguments['as'] = 'foo';
 
         $this->injectDependenciesIntoViewHelper($viewHelper);
@@ -120,7 +120,7 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 
         $viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
 
-        $this->arguments['each'] = array(0, 1, 2, 3);
+        $this->arguments['each'] = [0, 1, 2, 3];
         $this->arguments['as'] = 'innerVariable';
         $this->arguments['reverse'] = true;
 
@@ -128,12 +128,12 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
         $viewHelper->setViewHelperNode($viewHelperNode);
         $viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key'], $this->arguments['reverse']);
 
-        $expectedCallProtocol = array(
-            array('innerVariable' => 3),
-            array('innerVariable' => 2),
-            array('innerVariable' => 1),
-            array('innerVariable' => 0)
-        );
+        $expectedCallProtocol = [
+            ['innerVariable' => 3],
+            ['innerVariable' => 2],
+            ['innerVariable' => 1],
+            ['innerVariable' => 0]
+        ];
         $this->assertEquals($expectedCallProtocol, $viewHelperNode->callProtocol, 'The call protocol differs -> The for loop does not work as it should!');
     }
 
@@ -146,7 +146,7 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 
         $viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
 
-        $this->arguments['each'] = array('key1' => 'value1', 'key2' => 'value2');
+        $this->arguments['each'] = ['key1' => 'value1', 'key2' => 'value2'];
         $this->arguments['as'] = 'innerVariable';
         $this->arguments['key'] = 'someKey';
         $this->arguments['reverse'] = true;
@@ -155,16 +155,16 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
         $viewHelper->setViewHelperNode($viewHelperNode);
         $viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key'], $this->arguments['reverse']);
 
-        $expectedCallProtocol = array(
-            array(
+        $expectedCallProtocol = [
+            [
                 'innerVariable' => 'value2',
                 'someKey' => 'key2'
-            ),
-            array(
+            ],
+            [
                 'innerVariable' => 'value1',
                 'someKey' => 'key1'
-            )
-        );
+            ]
+        ];
         $this->assertEquals($expectedCallProtocol, $viewHelperNode->callProtocol, 'The call protocol differs -> The for loop does not work as it should!');
     }
 
@@ -177,7 +177,7 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 
         $viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
 
-        $this->arguments['each'] = array('foo', 'bar', 'baz');
+        $this->arguments['each'] = ['foo', 'bar', 'baz'];
         $this->arguments['as'] = 'innerVariable';
         $this->arguments['key'] = 'someKey';
 
@@ -185,20 +185,20 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
         $viewHelper->setViewHelperNode($viewHelperNode);
         $viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key']);
 
-        $expectedCallProtocol = array(
-            array(
+        $expectedCallProtocol = [
+            [
                 'innerVariable' => 'foo',
                 'someKey' => 0
-            ),
-            array(
+            ],
+            [
                 'innerVariable' => 'bar',
                 'someKey' => 1
-            ),
-            array(
+            ],
+            [
                 'innerVariable' => 'baz',
                 'someKey' => 2
-            )
-        );
+            ]
+        ];
         $this->assertSame($expectedCallProtocol, $viewHelperNode->callProtocol, 'The call protocol differs -> The for loop does not work as it should!');
     }
 
@@ -211,7 +211,7 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 
         $viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
 
-        $this->arguments['each'] = array('foo', 'bar', 'baz');
+        $this->arguments['each'] = ['foo', 'bar', 'baz'];
         $this->arguments['as'] = 'innerVariable';
         $this->arguments['key'] = 'someKey';
         $this->arguments['reverse'] = true;
@@ -220,20 +220,20 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
         $viewHelper->setViewHelperNode($viewHelperNode);
         $viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key'], $this->arguments['reverse']);
 
-        $expectedCallProtocol = array(
-            array(
+        $expectedCallProtocol = [
+            [
                 'innerVariable' => 'baz',
                 'someKey' => 0
-            ),
-            array(
+            ],
+            [
                 'innerVariable' => 'bar',
                 'someKey' => 1
-            ),
-            array(
+            ],
+            [
                 'innerVariable' => 'foo',
                 'someKey' => 2
-            )
-        );
+            ]
+        ];
         $this->assertSame($expectedCallProtocol, $viewHelperNode->callProtocol, 'The call protocol differs -> The for loop does not work as it should!');
     }
 
@@ -264,17 +264,17 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 
         $viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
 
-        $this->arguments['each'] = new \ArrayObject(array('key1' => 'value1', 'key2' => 'value2'));
+        $this->arguments['each'] = new \ArrayObject(['key1' => 'value1', 'key2' => 'value2']);
         $this->arguments['as'] = 'innerVariable';
 
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setViewHelperNode($viewHelperNode);
         $viewHelper->render($this->arguments['each'], $this->arguments['as']);
 
-        $expectedCallProtocol = array(
-            array('innerVariable' => 'value1'),
-            array('innerVariable' => 'value2')
-        );
+        $expectedCallProtocol = [
+            ['innerVariable' => 'value1'],
+            ['innerVariable' => 'value2']
+        ];
         $this->assertEquals($expectedCallProtocol, $viewHelperNode->callProtocol, 'The call protocol differs -> The for loop does not work as it should!');
     }
 
@@ -287,7 +287,7 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 
         $viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
 
-        $this->arguments['each'] = new \ArrayIterator(array('key1' => 'value1', 'key2' => 'value2'));
+        $this->arguments['each'] = new \ArrayIterator(['key1' => 'value1', 'key2' => 'value2']);
         $this->arguments['as'] = 'innerVariable';
         $this->arguments['key'] = 'someKey';
 
@@ -295,16 +295,16 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
         $viewHelper->setViewHelperNode($viewHelperNode);
         $viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key']);
 
-        $expectedCallProtocol = array(
-            array(
+        $expectedCallProtocol = [
+            [
                 'innerVariable' => 'value1',
                 'someKey' => 'key1'
-            ),
-            array(
+            ],
+            [
                 'innerVariable' => 'value2',
                 'someKey' => 'key2'
-            )
-        );
+            ]
+        ];
         $this->assertEquals($expectedCallProtocol, $viewHelperNode->callProtocol, 'The call protocol differs -> The for loop does not work as it should!');
     }
 
@@ -333,20 +333,20 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
         $viewHelper->setViewHelperNode($viewHelperNode);
         $viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key']);
 
-        $expectedCallProtocol = array(
-            array(
+        $expectedCallProtocol = [
+            [
                 'innerVariable' => $object1,
                 'someKey' => 0
-            ),
-            array(
+            ],
+            [
                 'innerVariable' => $object2,
                 'someKey' => 1
-            ),
-            array(
+            ],
+            [
                 'innerVariable' => $object3,
                 'someKey' => 2
-            )
-        );
+            ]
+        ];
         $this->assertSame($expectedCallProtocol, $viewHelperNode->callProtocol, 'The call protocol differs -> The for loop does not work as it should!');
     }
 
@@ -359,7 +359,7 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 
         $viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
 
-        $this->arguments['each'] = array('foo' => 'bar', 'FLOW3' => 'Fluid', 'TYPO3' => 'rocks');
+        $this->arguments['each'] = ['foo' => 'bar', 'FLOW3' => 'Fluid', 'TYPO3' => 'rocks'];
         $this->arguments['as'] = 'innerVariable';
         $this->arguments['iteration'] = 'iteration';
 
@@ -367,10 +367,10 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
         $viewHelper->setViewHelperNode($viewHelperNode);
         $viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key'], $this->arguments['reverse'], $this->arguments['iteration']);
 
-        $expectedCallProtocol = array(
-            array(
+        $expectedCallProtocol = [
+            [
                 'innerVariable' => 'bar',
-                'iteration' => array(
+                'iteration' => [
                     'index' => 0,
                     'cycle' => 1,
                     'total' => 3,
@@ -378,11 +378,11 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
                     'isLast' => false,
                     'isEven' => false,
                     'isOdd' => true
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'innerVariable' => 'Fluid',
-                'iteration' => array(
+                'iteration' => [
                     'index' => 1,
                     'cycle' => 2,
                     'total' => 3,
@@ -390,11 +390,11 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
                     'isLast' => false,
                     'isEven' => true,
                     'isOdd' => false
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'innerVariable' => 'rocks',
-                'iteration' => array(
+                'iteration' => [
                     'index' => 2,
                     'cycle' => 3,
                     'total' => 3,
@@ -402,9 +402,9 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
                     'isLast' => true,
                     'isEven' => false,
                     'isOdd' => true
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $this->assertSame($expectedCallProtocol, $viewHelperNode->callProtocol, 'The call protocol differs -> The for loop does not work as it should!');
     }
 

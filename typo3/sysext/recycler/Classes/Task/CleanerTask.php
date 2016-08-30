@@ -29,7 +29,7 @@ class CleanerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     /**
      * @var array The tables to clean
      */
-    protected $tcaTables = array();
+    protected $tcaTables = [];
 
     /**
      * @var \TYPO3\CMS\Core\Database\DatabaseConnection
@@ -63,7 +63,7 @@ class CleanerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     protected function cleanTable($tableName)
     {
-        $queryParts = array();
+        $queryParts = [];
         if (isset($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
             $queryParts[] = $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . ' = 1';
             if ($GLOBALS['TCA'][$tableName]['ctrl']['tstamp']) {
@@ -137,7 +137,7 @@ class CleanerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      *
      * @param array $tcaTables
      */
-    public function setTcaTables($tcaTables = array())
+    public function setTcaTables($tcaTables = [])
     {
         $this->tcaTables = $tcaTables;
     }
@@ -209,7 +209,7 @@ class CleanerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     protected function getFileResourceFields($table)
     {
-        $result = array();
+        $result = [];
         if (isset($GLOBALS['TCA'][$table]['columns'])) {
             foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $fieldConfiguration) {
                 if ($fieldConfiguration['config']['type'] === 'group'

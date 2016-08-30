@@ -34,18 +34,18 @@ class IntegerValidator extends AbstractValidator
     {
         $locale = localeconv();
         $valueFiltered = str_replace(
-            array(
+            [
                 $locale['thousands_sep'],
                 $locale['mon_thousands_sep'],
                 $locale['decimal_point'],
                 $locale['mon_decimal_point']
-            ),
-            array(
+            ],
+            [
                 '',
                 '',
                 '.',
                 '.'
-            ),
+            ],
             $value
         );
         if (strval((int)$valueFiltered) != $valueFiltered) {

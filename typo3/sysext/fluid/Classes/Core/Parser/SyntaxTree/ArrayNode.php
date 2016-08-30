@@ -21,7 +21,7 @@ class ArrayNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
      *
      * @var array
      */
-    protected $internalArray = array();
+    protected $internalArray = [];
 
     /**
      * Constructor.
@@ -41,7 +41,7 @@ class ArrayNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
      */
     public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
     {
-        $arrayToBuild = array();
+        $arrayToBuild = [];
         foreach ($this->internalArray as $key => $value) {
             if ($value instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode) {
                 $arrayToBuild[$key] = $value->evaluate($renderingContext);

@@ -55,7 +55,7 @@ class Clipboard
      *
      * @var array
      */
-    public $clipData = array();
+    public $clipData = [];
 
     /**
      * @var int
@@ -112,9 +112,9 @@ class Clipboard
             $this->numberTabs = MathUtility::forceIntegerInRange($clNP, 0, 20);
         }
         // Resets/reinstates the clipboard pads
-        $this->clipData['normal'] = is_array($clipData['normal']) ? $clipData['normal'] : array();
+        $this->clipData['normal'] = is_array($clipData['normal']) ? $clipData['normal'] : [];
         for ($a = 1; $a <= $this->numberTabs; $a++) {
-            $this->clipData['tab_' . $a] = is_array($clipData['tab_' . $a]) ? $clipData['tab_' . $a] : array();
+            $this->clipData['tab_' . $a] = is_array($clipData['tab_' . $a]) ? $clipData['tab_' . $a] : [];
         }
         // Setting the current pad pointer ($this->current))
         $this->clipData['current'] = ($this->current = isset($this->clipData[$clipData['current']]) ? $clipData['current'] : 'normal');
@@ -171,7 +171,7 @@ class Clipboard
         }
         // Remove all on current pad (value = pad-ident)
         if ($cmd['removeAll']) {
-            $this->clipData[$cmd['removeAll']] = array();
+            $this->clipData[$cmd['removeAll']] = [];
             $this->changed = 1;
         }
         // Set copy mode of the tab
@@ -250,7 +250,7 @@ class Clipboard
     public function printClipboard()
     {
         $languageService = $this->getLanguageService();
-        $out = array();
+        $out = [];
         $elementCount = count($this->elFromTable($this->fileMode ? '_FILE' : ''));
         // Copymode Selector menu
         $copymodeUrl = GeneralUtility::linkThisScript();
@@ -273,10 +273,10 @@ class Clipboard
         $deleteLink = '';
         $menuSelector = '';
         if ($elementCount) {
-            $removeAllUrl = GeneralUtility::linkThisScript(array('CB' => array('removeAll' => $this->current)));
+            $removeAllUrl = GeneralUtility::linkThisScript(['CB' => ['removeAll' => $this->current]]);
 
             // Selector menu + clear button
-            $optionArray = array();
+            $optionArray = [];
             // Import / Export link:
             if (ExtensionManagementUtility::isLoaded('impexp')) {
                 $url = BackendUtility::getModuleUrl('xMOD_tximpexp', $this->exportClipElementParameters());
@@ -342,7 +342,7 @@ class Clipboard
         $current = ($this->current == 'normal');
         $out[] = '
 			<tr>
-				<td colspan="3"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('CB' => array('setP' => 'normal')))) . '#clip_head" title="' . $this->clLabel('normal-description') . '">'
+				<td colspan="3"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(['CB' => ['setP' => 'normal']])) . '#clip_head" title="' . $this->clLabel('normal-description') . '">'
                     . '<span class="t3-icon fa ' . ($current ? 'fa-check-circle' : 'fa-circle-o') . '"></span>'
                     . $this->padTitleWrap($this->clLabel('normal'), 'normal', $current)
                     . '</a></td>
@@ -356,7 +356,7 @@ class Clipboard
             $current = ($this->current == 'tab_' . $a);
             $out[] = '
 				<tr>
-					<td colspan="3"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('CB' => array('setP' => ('tab_' . $a))))) . '#clip_head" title="' . $this->clLabel('cliptabs-description') . '">'
+					<td colspan="3"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(['CB' => ['setP' => ('tab_' . $a)]])) . '#clip_head" title="' . $this->clLabel('cliptabs-description') . '">'
                         . '<span class="t3-icon fa ' . ($current ? 'fa-check-circle' : 'fa-circle-o') . '"></span>'
                         . $this->padTitleWrap(sprintf($this->clLabel('cliptabs-name'), $a), ('tab_' . $a), $current)
                         . '</a></td>
@@ -397,7 +397,7 @@ class Clipboard
      */
     public function printContentFromTab($pad)
     {
-        $lines = array();
+        $lines = [];
         if (is_array($this->clipData[$pad]['el'])) {
             foreach ($this->clipData[$pad]['el'] as $k => $v) {
                 if ($v) {
@@ -412,7 +412,7 @@ class Clipboard
                             $size = $folder ? '' : '(' . GeneralUtility::formatSize($fileObject->getSize()) . 'bytes)';
                             $icon = '<span title="' . htmlspecialchars($fileObject->getName() . ' ' . $size) . '">' . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render() . '</span>';
                             if (!$folder && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
-                                $processedFile = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
+                                $processedFile = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, []);
                                 if ($processedFile) {
                                     $thumbUrl = $processedFile->getPublicUrl(true);
                                     $thumb = '<br /><img src="' . htmlspecialchars($thumbUrl) . '" ' .
@@ -493,10 +493,10 @@ class Clipboard
      */
     public function getLocalizations($table, $parentRec, $bgColClass, $pad)
     {
-        $lines = array();
+        $lines = [];
         $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
         if ($table != 'pages' && BackendUtility::isTableLocalizable($table) && !$tcaCtrl['transOrigPointerTable']) {
-            $where = array();
+            $where = [];
             $where[] = $tcaCtrl['transOrigPointerField'] . '=' . (int)$parentRec['uid'];
             $where[] = $tcaCtrl['languageField'] . '<>0';
             if (isset($tcaCtrl['delete']) && $tcaCtrl['delete']) {
@@ -561,14 +561,14 @@ class Clipboard
             if ($this->fileMode) {
                 $str = '<span class="text-muted">' . $str . '</span>';
             } else {
-                $str = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_list', array('id' => $rec['pid']))) . '">' . $str . '</a>';
+                $str = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_list', ['id' => $rec['pid']])) . '">' . $str . '</a>';
             }
         } elseif (file_exists($rec)) {
             if (!$this->fileMode) {
                 $str = '<span class="text-muted">' . $str . '</span>';
             } else {
                 if (ExtensionManagementUtility::isLoaded('filelist')) {
-                    $str = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('file_list', array('id' => dirname($rec)))) . '">' . $str . '</a>';
+                    $str = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('file_list', ['id' => dirname($rec)])) . '">' . $str . '</a>';
                 }
             }
         }
@@ -585,9 +585,9 @@ class Clipboard
      * @param array $baseArray The base array of GET vars to be sent in addition. Notice that current GET vars WILL automatically be included.
      * @return string URL linking to the current script but with the CB array set to select the element with table/uid
      */
-    public function selUrlDB($table, $uid, $copy = 0, $deselect = 0, $baseArray = array())
+    public function selUrlDB($table, $uid, $copy = 0, $deselect = 0, $baseArray = [])
     {
-        $CB = array('el' => array(rawurlencode($table . '|' . $uid) => $deselect ? 0 : 1));
+        $CB = ['el' => [rawurlencode($table . '|' . $uid) => $deselect ? 0 : 1]];
         if ($copy) {
             $CB['setCopyMode'] = 1;
         }
@@ -604,9 +604,9 @@ class Clipboard
      * @param array $baseArray The base array of GET vars to be sent in addition. Notice that current GET vars WILL automatically be included.
      * @return string URL linking to the current script but with the CB array set to select the path
      */
-    public function selUrlFile($path, $copy = 0, $deselect = 0, $baseArray = array())
+    public function selUrlFile($path, $copy = 0, $deselect = 0, $baseArray = [])
     {
-        $CB = array('el' => array(rawurlencode('_FILE|' . GeneralUtility::shortmd5($path)) => $deselect ? '' : $path));
+        $CB = ['el' => [rawurlencode('_FILE|' . GeneralUtility::shortmd5($path)) => $deselect ? '' : $path]];
         if ($copy) {
             $CB['setCopyMode'] = 1;
         }
@@ -635,7 +635,7 @@ class Clipboard
             'CB[pad]' => $this->current
         ];
         if ($setRedirect) {
-            $urlParameters['redirect'] = GeneralUtility::linkThisScript(array('CB' => ''));
+            $urlParameters['redirect'] = GeneralUtility::linkThisScript(['CB' => '']);
         }
         if (is_array($update)) {
             $urlParameters['CB[update]'] = $update;
@@ -660,7 +660,7 @@ class Clipboard
             'CB[pad]' => $this->current
         ];
         if ($setRedirect) {
-            $urlParameters['redirect'] = GeneralUtility::linkThisScript(array('CB' => ''));
+            $urlParameters['redirect'] = GeneralUtility::linkThisScript(['CB' => '']);
         }
         return BackendUtility::getModuleUrl($file ? 'tce_file' : 'tce_db', $urlParameters);
     }
@@ -674,7 +674,7 @@ class Clipboard
      */
     public function editUrl()
     {
-        $parameters = array();
+        $parameters = [];
         // All records
         $elements = $this->elFromTable('');
         foreach ($elements as $tP => $value) {
@@ -694,7 +694,7 @@ class Clipboard
      */
     public function removeUrl($table, $uid)
     {
-        return GeneralUtility::linkThisScript(array('CB' => array('remove' => $table . '|' . $uid)));
+        return GeneralUtility::linkThisScript(['CB' => ['remove' => $table . '|' . $uid]]);
     }
 
     /**
@@ -790,7 +790,7 @@ class Clipboard
     {
         // Init
         $pad = $this->current;
-        $params = array();
+        $params = [];
         $params['tx_impexp']['action'] = 'export';
         // Traverse items:
         if (is_array($this->clipData[$pad]['el'])) {
@@ -897,7 +897,7 @@ class Clipboard
     public function elFromTable($matchTable = '', $pad = '')
     {
         $pad = $pad ? $pad : $this->current;
-        $list = array();
+        $list = [];
         if (is_array($this->clipData[$pad]['el'])) {
             foreach ($this->clipData[$pad]['el'] as $k => $v) {
                 if ($v) {
@@ -952,7 +952,7 @@ class Clipboard
             $selRec['_RECORD_TITLE'] = BackendUtility::getRecordTitle($table, $selRec);
             return $selRec;
         }
-        return array();
+        return [];
     }
 
     /**
@@ -1003,14 +1003,14 @@ class Clipboard
             foreach ($elements as $tP => $value) {
                 list($table, $uid) = explode('|', $tP);
                 if (!is_array($CMD[$table])) {
-                    $CMD[$table] = array();
+                    $CMD[$table] = [];
                 }
                 if (is_array($update)) {
-                    $CMD[$table][$uid][$mode] = array(
+                    $CMD[$table][$uid][$mode] = [
                         'action' => 'paste',
                         'target' => $pUid,
                         'update' => $update,
-                    );
+                    ];
                 } else {
                     $CMD[$table][$uid][$mode] = $pUid;
                 }
@@ -1036,7 +1036,7 @@ class Clipboard
         foreach ($elements as $tP => $value) {
             list($table, $uid) = explode('|', $tP);
             if (!is_array($CMD[$table])) {
-                $CMD[$table] = array();
+                $CMD[$table] = [];
             }
             $CMD[$table][$uid]['delete'] = 1;
             $this->removeElement($tP);
@@ -1065,7 +1065,7 @@ class Clipboard
         $mode = $this->currentMode() == 'copy' ? 'copy' : 'move';
         // Traverse elements and make CMD array
         foreach ($elements as $tP => $path) {
-            $FILE[$mode][] = array('data' => $path, 'target' => $pUid);
+            $FILE[$mode][] = ['data' => $path, 'target' => $pUid];
             if ($mode == 'move') {
                 $this->removeElement($tP);
             }
@@ -1085,7 +1085,7 @@ class Clipboard
         $elements = $this->elFromTable('_FILE');
         // Traverse elements and make CMD array
         foreach ($elements as $tP => $path) {
-            $FILE['delete'][] = array('data' => $path);
+            $FILE['delete'][] = ['data' => $path];
             $this->removeElement($tP);
         }
         $this->endClipboard();

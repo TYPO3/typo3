@@ -50,9 +50,9 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->testTableName = 'sys_domain';
         $this->testHostName = 'hostname.tld';
         $this->testSitePath = '/';
-        $this->accessibleFixture = $this->getAccessibleMock(\TYPO3\CMS\Felogin\Controller\FrontendLoginController::class, array('dummy'));
+        $this->accessibleFixture = $this->getAccessibleMock(\TYPO3\CMS\Felogin\Controller\FrontendLoginController::class, ['dummy']);
         $this->accessibleFixture->cObj = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-        $this->accessibleFixture->_set('frontendController', $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', false));
+        $this->accessibleFixture->_set('frontendController', $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, [], [], '', false));
         $this->setUpFakeSitePathAndHost();
     }
 
@@ -71,11 +71,11 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUpDatabaseMock()
     {
-        $db = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('exec_SELECTgetRows'));
+        $db = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, ['exec_SELECTgetRows']);
         $db
             ->expects($this->any())
             ->method('exec_SELECTgetRows')
-            ->will($this->returnCallback(array($this, 'getDomainRecordsCallback')));
+            ->will($this->returnCallback([$this, 'getDomainRecordsCallback']));
         $this->accessibleFixture->_set('databaseConnection', $db);
     }
 
@@ -94,11 +94,11 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         if ($table !== $this->testTableName) {
             return false;
         }
-        return array(
-            array('domainName' => 'domainhostname.tld'),
-            array('domainName' => 'otherhostname.tld/path'),
-            array('domainName' => 'sub.domainhostname.tld/path/')
-        );
+        return [
+            ['domainName' => 'domainhostname.tld'],
+            ['domainName' => 'otherhostname.tld/path'],
+            ['domainName' => 'sub.domainhostname.tld/path/']
+        ];
     }
 
     /**
@@ -146,22 +146,22 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validateRedirectUrlClearsUrlDataProvider()
     {
-        return array(
-            'absolute URL, hostname not in sys_domain, trailing slash' => array('http://badhost.tld/'),
-            'absolute URL, hostname not in sys_domain, no trailing slash' => array('http://badhost.tld'),
-            'absolute URL, subdomain in sys_domain, but main domain not, trailing slash' => array('http://domainhostname.tld.badhost.tld/'),
-            'absolute URL, subdomain in sys_domain, but main domain not, no trailing slash' => array('http://domainhostname.tld.badhost.tld'),
-            'non http absolute URL 1' => array('its://domainhostname.tld/itunes/'),
-            'non http absolute URL 2' => array('ftp://domainhostname.tld/download/'),
-            'XSS attempt 1' => array('javascript:alert(123)'),
-            'XSS attempt 2' => array('" onmouseover="alert(123)"'),
-            'invalid URL, HTML break out attempt' => array('" >blabuubb'),
-            'invalid URL, UNC path' => array('\\\\foo\\bar\\'),
-            'invalid URL, backslashes in path' => array('http://domainhostname.tld\\bla\\blupp'),
-            'invalid URL, linefeed in path' => array('http://domainhostname.tld/bla/blupp' . LF),
-            'invalid URL, only one slash after scheme' => array('http:/domainhostname.tld/bla/blupp'),
-            'invalid URL, illegal chars' => array('http://(<>domainhostname).tld/bla/blupp'),
-        );
+        return [
+            'absolute URL, hostname not in sys_domain, trailing slash' => ['http://badhost.tld/'],
+            'absolute URL, hostname not in sys_domain, no trailing slash' => ['http://badhost.tld'],
+            'absolute URL, subdomain in sys_domain, but main domain not, trailing slash' => ['http://domainhostname.tld.badhost.tld/'],
+            'absolute URL, subdomain in sys_domain, but main domain not, no trailing slash' => ['http://domainhostname.tld.badhost.tld'],
+            'non http absolute URL 1' => ['its://domainhostname.tld/itunes/'],
+            'non http absolute URL 2' => ['ftp://domainhostname.tld/download/'],
+            'XSS attempt 1' => ['javascript:alert(123)'],
+            'XSS attempt 2' => ['" onmouseover="alert(123)"'],
+            'invalid URL, HTML break out attempt' => ['" >blabuubb'],
+            'invalid URL, UNC path' => ['\\\\foo\\bar\\'],
+            'invalid URL, backslashes in path' => ['http://domainhostname.tld\\bla\\blupp'],
+            'invalid URL, linefeed in path' => ['http://domainhostname.tld/bla/blupp' . LF],
+            'invalid URL, only one slash after scheme' => ['http:/domainhostname.tld/bla/blupp'],
+            'invalid URL, illegal chars' => ['http://(<>domainhostname).tld/bla/blupp'],
+        ];
     }
 
     /**
@@ -182,23 +182,23 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validateRedirectUrlKeepsCleanUrlDataProvider()
     {
-        return array(
-            'sane absolute URL' => array('http://domainhostname.tld/'),
-            'sane absolute URL with script' => array('http://domainhostname.tld/index.php?id=1'),
-            'sane absolute URL with realurl' => array('http://domainhostname.tld/foo/bar/foo.html'),
-            'sane absolute URL with homedir' => array('http://domainhostname.tld/~user/'),
-            'sane absolute URL with some strange chars encoded' => array('http://domainhostname.tld/~user/a%cc%88o%cc%88%c3%9fa%cc%82/foo.html'),
-            'sane absolute URL (domain record with path)' => array('http://otherhostname.tld/path/'),
-            'sane absolute URL with script (domain record with path)' => array('http://otherhostname.tld/path/index.php?id=1'),
-            'sane absolute URL with realurl (domain record with path)' => array('http://otherhostname.tld/path/foo/bar/foo.html'),
-            'sane absolute URL (domain record with path and slash)' => array('http://sub.domainhostname.tld/path/'),
-            'sane absolute URL with script (domain record with path slash)' => array('http://sub.domainhostname.tld/path/index.php?id=1'),
-            'sane absolute URL with realurl (domain record with path slash)' => array('http://sub.domainhostname.tld/path/foo/bar/foo.html'),
-            'relative URL, no leading slash 1' => array('index.php?id=1'),
-            'relative URL, no leading slash 2' => array('foo/bar/index.php?id=2'),
-            'relative URL, leading slash, no realurl' => array('/index.php?id=1'),
-            'relative URL, leading slash, realurl' => array('/de/service/imprint.html'),
-        );
+        return [
+            'sane absolute URL' => ['http://domainhostname.tld/'],
+            'sane absolute URL with script' => ['http://domainhostname.tld/index.php?id=1'],
+            'sane absolute URL with realurl' => ['http://domainhostname.tld/foo/bar/foo.html'],
+            'sane absolute URL with homedir' => ['http://domainhostname.tld/~user/'],
+            'sane absolute URL with some strange chars encoded' => ['http://domainhostname.tld/~user/a%cc%88o%cc%88%c3%9fa%cc%82/foo.html'],
+            'sane absolute URL (domain record with path)' => ['http://otherhostname.tld/path/'],
+            'sane absolute URL with script (domain record with path)' => ['http://otherhostname.tld/path/index.php?id=1'],
+            'sane absolute URL with realurl (domain record with path)' => ['http://otherhostname.tld/path/foo/bar/foo.html'],
+            'sane absolute URL (domain record with path and slash)' => ['http://sub.domainhostname.tld/path/'],
+            'sane absolute URL with script (domain record with path slash)' => ['http://sub.domainhostname.tld/path/index.php?id=1'],
+            'sane absolute URL with realurl (domain record with path slash)' => ['http://sub.domainhostname.tld/path/foo/bar/foo.html'],
+            'relative URL, no leading slash 1' => ['index.php?id=1'],
+            'relative URL, no leading slash 2' => ['foo/bar/index.php?id=2'],
+            'relative URL, leading slash, no realurl' => ['/index.php?id=1'],
+            'relative URL, leading slash, realurl' => ['/de/service/imprint.html'],
+        ];
     }
 
     /**
@@ -219,16 +219,16 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validateRedirectUrlClearsInvalidUrlInSubdirectoryDataProvider()
     {
-        return array(
-            'absolute URL, missing subdirectory' => array('http://hostname.tld/'),
-            'absolute URL, wrong subdirectory' => array('http://hostname.tld/hacker/index.php'),
-            'absolute URL, correct subdirectory, no trailing slash' => array('http://hostname.tld/subdir'),
-            'absolute URL, correct subdirectory of sys_domain record, no trailing slash' => array('http://otherhostname.tld/path'),
-            'absolute URL, correct subdirectory of sys_domain record, no trailing slash, subdomain' => array('http://sub.domainhostname.tld/path'),
-            'relative URL, leading slash, no path' => array('/index.php?id=1'),
-            'relative URL, leading slash, wrong path' => array('/de/sub/site.html'),
-            'relative URL, leading slash, slash only' => array('/'),
-        );
+        return [
+            'absolute URL, missing subdirectory' => ['http://hostname.tld/'],
+            'absolute URL, wrong subdirectory' => ['http://hostname.tld/hacker/index.php'],
+            'absolute URL, correct subdirectory, no trailing slash' => ['http://hostname.tld/subdir'],
+            'absolute URL, correct subdirectory of sys_domain record, no trailing slash' => ['http://otherhostname.tld/path'],
+            'absolute URL, correct subdirectory of sys_domain record, no trailing slash, subdomain' => ['http://sub.domainhostname.tld/path'],
+            'relative URL, leading slash, no path' => ['/index.php?id=1'],
+            'relative URL, leading slash, wrong path' => ['/de/sub/site.html'],
+            'relative URL, leading slash, slash only' => ['/'],
+        ];
     }
 
     /**
@@ -251,16 +251,16 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function validateRedirectUrlKeepsCleanUrlInSubdirectoryDataProvider()
     {
-        return array(
-            'absolute URL, correct subdirectory' => array('http://hostname.tld/subdir/'),
-            'absolute URL, correct subdirectory, realurl' => array('http://hostname.tld/subdir/de/imprint.html'),
-            'absolute URL, correct subdirectory, no realurl' => array('http://hostname.tld/subdir/index.php?id=10'),
-            'absolute URL, correct subdirectory of sys_domain record' => array('http://otherhostname.tld/path/'),
-            'absolute URL, correct subdirectory of sys_domain record, subdomain' => array('http://sub.domainhostname.tld/path/'),
-            'relative URL, no leading slash, realurl' => array('de/service/imprint.html'),
-            'relative URL, no leading slash, no realurl' => array('index.php?id=1'),
-            'relative nested URL, no leading slash, no realurl' => array('foo/bar/index.php?id=2')
-        );
+        return [
+            'absolute URL, correct subdirectory' => ['http://hostname.tld/subdir/'],
+            'absolute URL, correct subdirectory, realurl' => ['http://hostname.tld/subdir/de/imprint.html'],
+            'absolute URL, correct subdirectory, no realurl' => ['http://hostname.tld/subdir/index.php?id=10'],
+            'absolute URL, correct subdirectory of sys_domain record' => ['http://otherhostname.tld/path/'],
+            'absolute URL, correct subdirectory of sys_domain record, subdomain' => ['http://sub.domainhostname.tld/path/'],
+            'relative URL, no leading slash, realurl' => ['de/service/imprint.html'],
+            'relative URL, no leading slash, no realurl' => ['index.php?id=1'],
+            'relative nested URL, no leading slash, no realurl' => ['foo/bar/index.php?id=2']
+        ];
     }
 
     /**
@@ -285,97 +285,97 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getPreserveGetVarsReturnsCorrectResultDataProvider()
     {
-        return array(
-            'special get var id is not preserved' => array(
-                array(
+        return [
+            'special get var id is not preserved' => [
+                [
                     'id' => 42,
-                ),
+                ],
                 '',
                 '',
-            ),
-            'simple additional parameter is not preserved if not specified in preservedGETvars' => array(
-                array(
+            ],
+            'simple additional parameter is not preserved if not specified in preservedGETvars' => [
+                [
                     'id' => 42,
                     'special' => 23,
-                ),
+                ],
                 '',
                 '',
-            ),
-            'all params except ignored ones are preserved if preservedGETvars is set to "all"' => array(
-                array(
+            ],
+            'all params except ignored ones are preserved if preservedGETvars is set to "all"' => [
+                [
                     'id' => 42,
                     'special1' => 23,
-                    'special2' => array(
+                    'special2' => [
                         'foo' => 'bar',
-                    ),
-                    'tx_felogin_pi1' => array(
+                    ],
+                    'tx_felogin_pi1' => [
                         'forgot' => 1,
-                    ),
-                ),
+                    ],
+                ],
                 'all',
                 '&special1=23&special2[foo]=bar',
-            ),
-            'preserve single parameter' => array(
-                array(
+            ],
+            'preserve single parameter' => [
+                [
                     'L' => 42,
-                ),
+                ],
                 'L',
                 '&L=42'
-            ),
-            'preserve whole parameter array' => array(
-                array(
+            ],
+            'preserve whole parameter array' => [
+                [
                     'L' => 3,
-                    'tx_someext' => array(
+                    'tx_someext' => [
                         'foo' => 'simple',
-                        'bar' => array(
+                        'bar' => [
                             'baz' => 'simple',
-                        ),
-                    ),
-                ),
+                        ],
+                    ],
+                ],
                 'L,tx_someext',
                 '&L=3&tx_someext[foo]=simple&tx_someext[bar][baz]=simple',
-            ),
-            'preserve part of sub array' => array(
-                array(
+            ],
+            'preserve part of sub array' => [
+                [
                     'L' => 3,
-                    'tx_someext' => array(
+                    'tx_someext' => [
                         'foo' => 'simple',
-                        'bar' => array(
+                        'bar' => [
                             'baz' => 'simple',
-                        ),
-                    ),
-                ),
+                        ],
+                    ],
+                ],
                 'L,tx_someext[bar]',
                 '&L=3&tx_someext[bar][baz]=simple',
-            ),
-            'preserve keys on different levels' => array(
-                array(
+            ],
+            'preserve keys on different levels' => [
+                [
                     'L' => 3,
                     'no-preserve' => 'whatever',
-                    'tx_ext2' => array(
+                    'tx_ext2' => [
                         'foo' => 'simple',
-                    ),
-                    'tx_ext3' => array(
-                        'bar' => array(
+                    ],
+                    'tx_ext3' => [
+                        'bar' => [
                             'baz' => 'simple',
-                        ),
+                        ],
                         'go-away' => '',
-                    ),
-                ),
+                    ],
+                ],
                 'L,tx_ext2,tx_ext3[bar]',
                 '&L=3&tx_ext2[foo]=simple&tx_ext3[bar][baz]=simple',
-            ),
-            'preserved value that does not exist in get' => array(
-                array(),
+            ],
+            'preserved value that does not exist in get' => [
+                [],
                 'L,foo[bar]',
                 ''
-            ),
-            'url params are encoded' => array(
-                array('tx_ext1' => 'param with spaces and \\ %<>& /'),
+            ],
+            'url params are encoded' => [
+                ['tx_ext1' => 'param with spaces and \\ %<>& /'],
                 'L,tx_ext1',
                 '&tx_ext1=param%20with%20spaces%20and%20%5C%20%25%3C%3E%26%20%2F'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -404,28 +404,28 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isInCurrentDomainIgnoresSchemeDataProvider()
     {
-        return array(
-            'url https, current host http' => array(
+        return [
+            'url https, current host http' => [
                 'example.com', // HTTP_HOST
                 '0', // HTTPS
                 'https://example.com/foo.html' // URL
-            ),
-            'url http, current host https' => array(
+            ],
+            'url http, current host https' => [
                 'example.com',
                 '1',
                 'http://example.com/foo.html'
-            ),
-            'url https, current host https' => array(
+            ],
+            'url https, current host https' => [
                 'example.com',
                 '1',
                 'https://example.com/foo.html'
-            ),
-            'url http, current host http' => array(
+            ],
+            'url http, current host http' => [
                 'example.com',
                 '0',
                 'http://example.com/foo.html'
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -447,16 +447,16 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isInCurrentDomainReturnsFalseIfDomainsAreDifferentDataProvider()
     {
-        return array(
-            'simple difference' => array(
+        return [
+            'simple difference' => [
                 'example.com', // HTTP_HOST
                 'http://typo3.org/foo.html' // URL
-            ),
-            'subdomain different' => array(
+            ],
+            'subdomain different' => [
                 'example.com',
                 'http://foo.example.com/bar.html'
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -476,10 +476,10 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function processRedirectReferrerDomainsMatchesDomains()
     {
-        $conf = array(
+        $conf = [
             'redirectMode' => 'refererDomains',
             'domains' => 'example.com'
-        );
+        ];
 
         $this->accessibleFixture->_set('conf', $conf);
         $this->accessibleFixture->_set('logintype', 'login');
@@ -487,6 +487,6 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var TypoScriptFrontendController $tsfe */
         $tsfe = $this->accessibleFixture->_get('frontendController');
         $tsfe->loginUser = true;
-        $this->assertSame(array('http://www.example.com/snafu'), $this->accessibleFixture->_call('processRedirect'));
+        $this->assertSame(['http://www.example.com/snafu'], $this->accessibleFixture->_call('processRedirect'));
     }
 }

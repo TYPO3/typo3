@@ -11,6 +11,6 @@ class CheckboxElementItems
      */
     public function getItems($params)
     {
-        $params['items'][] = array('processed label', '');
+        $params['items'][] = ['processed label', ''];
     }
 }

@@ -25,7 +25,7 @@ class RenderingContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->renderingContext = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class, array('dummy'));
+        $this->renderingContext = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class, ['dummy']);
     }
 
     /**
@@ -43,7 +43,7 @@ class RenderingContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function controllerContextCanBeReadCorrectly()
     {
-        $controllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, array(), array(), '', false);
+        $controllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, [], [], '', false);
         $this->renderingContext->setControllerContext($controllerContext);
         $this->assertSame($this->renderingContext->getControllerContext(), $controllerContext);
     }

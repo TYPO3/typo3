@@ -41,7 +41,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function havingMoreThanThreeElementsInTheSyntaxTreeThrowsException()
     {
         $rootNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode::class);
-        $rootNode->expects($this->once())->method('getChildNodes')->will($this->returnValue(array(1, 2, 3, 4)));
+        $rootNode->expects($this->once())->method('getChildNodes')->will($this->returnValue([1, 2, 3, 4]));
 
         new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
     }
@@ -375,10 +375,10 @@ class BooleanNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $rootNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode();
 
-        $object1Node = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class, array('evaluate'), array('foo'));
+        $object1Node = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class, ['evaluate'], ['foo']);
         $object1Node->expects($this->any())->method('evaluate')->will($this->returnValue($object1));
 
-        $object2Node = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class, array('evaluate'), array('foo'));
+        $object2Node = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class, ['evaluate'], ['foo']);
         $object2Node->expects($this->any())->method('evaluate')->will($this->returnValue($object2));
 
         $rootNode->addChildNode($object1Node);
@@ -399,10 +399,10 @@ class BooleanNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $rootNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode();
 
-        $object1Node = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class, array('evaluate'), array('foo'));
+        $object1Node = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class, ['evaluate'], ['foo']);
         $object1Node->expects($this->any())->method('evaluate')->will($this->returnValue($object1));
 
-        $object2Node = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class, array('evaluate'), array('foo'));
+        $object2Node = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class, ['evaluate'], ['foo']);
         $object2Node->expects($this->any())->method('evaluate')->will($this->returnValue($object2));
 
         $rootNode->addChildNode($object1Node);
@@ -481,10 +481,10 @@ class BooleanNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertToBooleanProperlyConvertsValuesOfTypeArray()
     {
-        $this->assertFalse(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean(array()));
+        $this->assertFalse(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean([]));
 
-        $this->assertTrue(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean(array('foo')));
-        $this->assertTrue(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean(array('foo' => 'bar')));
+        $this->assertTrue(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean(['foo']));
+        $this->assertTrue(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean(['foo' => 'bar']));
     }
 
     /**

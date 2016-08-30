@@ -67,9 +67,9 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function createWriter($prependName = '')
     {
         /** @var \TYPO3\CMS\Core\Log\Writer\FileWriter $writer */
-        $writer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\Writer\FileWriter::class, array(
+        $writer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\Writer\FileWriter::class, [
             'logFile' => $this->getDefaultFileName($prependName)
-        ));
+        ]);
         return $writer;
     }
 
@@ -127,11 +127,11 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function logsToFileDataProvider()
     {
         $simpleRecord = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogRecord::class, $this->getUniqueId('test.core.log.fileWriter.simpleRecord.'), \TYPO3\CMS\Core\Log\LogLevel::INFO, 'test record');
-        $recordWithData = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogRecord::class, $this->getUniqueId('test.core.log.fileWriter.recordWithData.'), \TYPO3\CMS\Core\Log\LogLevel::ALERT, 'test record with data', array('foo' => array('bar' => 'baz')));
-        return array(
-            'simple record' => array($simpleRecord, trim((string)$simpleRecord)),
-            'record with data' => array($recordWithData, trim((string)$recordWithData))
-        );
+        $recordWithData = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogRecord::class, $this->getUniqueId('test.core.log.fileWriter.recordWithData.'), \TYPO3\CMS\Core\Log\LogLevel::ALERT, 'test record with data', ['foo' => ['bar' => 'baz']]);
+        return [
+            'simple record' => [$simpleRecord, trim((string)$simpleRecord)],
+            'record with data' => [$recordWithData, trim((string)$recordWithData)]
+        ];
     }
 
     /**
@@ -177,8 +177,8 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->setUpVfsStream();
 
-        $firstWriter = $this->getMock(\TYPO3\CMS\Core\Log\Writer\FileWriter::class, array('dummy'));
-        $secondWriter = $this->getMock(\TYPO3\CMS\Core\Log\Writer\FileWriter::class, array('createLogFile'));
+        $firstWriter = $this->getMock(\TYPO3\CMS\Core\Log\Writer\FileWriter::class, ['dummy']);
+        $secondWriter = $this->getMock(\TYPO3\CMS\Core\Log\Writer\FileWriter::class, ['createLogFile']);
 
         $secondWriter->expects($this->never())->method('createLogFile');
 

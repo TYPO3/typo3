@@ -32,7 +32,7 @@ class CsvUtility
      */
     public static function csvToArray($input, $fieldDelimiter = ',', $fieldEnclosure = '"', $maximumColumns = 0)
     {
-        $multiArray = array();
+        $multiArray = [];
         $maximumCellCount = 0;
 
         if (($handle = fopen('php://memory', 'r+')) !== false) {

@@ -24,18 +24,18 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = array(
+    protected $coreExtensionsToLoad = [
         'rtehtmlarea',
         'impexp'
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $pathsToLinkInTestInstance = array(
+    protected $pathsToLinkInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/_processed_' => 'fileadmin/_processed_'
-    );
+    ];
 
     protected function setUp()
     {
@@ -54,23 +54,23 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
     public function exportPagesAndRelatedTtContentWithRteImagesAndFileLink()
     {
         $this->export->setRecordTypesIncludeFields(
-            array(
-                'pages' => array(
+            [
+                'pages' => [
                     'title',
                     'deleted',
                     'doktype',
                     'hidden',
                     'perms_everybody'
-                ),
-                'tt_content' => array(
+                ],
+                'tt_content' => [
                     'CType',
                     'header',
                     'deleted',
                     'hidden',
                     'bodytext',
                     't3ver_oid'
-                ),
-                'sys_file' => array(
+                ],
+                'sys_file' => [
                     'storage',
                     'type',
                     'metadata',
@@ -84,8 +84,8 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                     'size',
                     'creation_date',
                     'modification_date',
-                ),
-                'sys_file_storage' => array(
+                ],
+                'sys_file_storage' => [
                     'name',
                     'description',
                     'driver',
@@ -95,14 +95,14 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
                     'is_public',
                     'is_writable',
                     'is_online'
-                )
-            )
+                ]
+            ]
         );
 
-        $this->export->relOnlyTables = array(
+        $this->export->relOnlyTables = [
             'sys_file',
             'sys_file_storage'
-        );
+        ];
 
         $this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 1));
         $this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 2));

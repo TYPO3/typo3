@@ -48,10 +48,10 @@ class Uri implements UriInterface
     /**
      * @var int[] Associative array containing schemes and their default ports.
      */
-    protected $supportedSchemes = array(
+    protected $supportedSchemes = [
         'http'  => 80,
         'https' => 443
-    );
+    ];
 
     /**
      * The authority part of the URI

@@ -54,14 +54,14 @@ class Configuration extends Action\AbstractAction
      */
     protected function executeAction()
     {
-        $actionMessages = array();
+        $actionMessages = [];
         if (isset($this->postValues['set']['activate'])) {
             $actionMessages[] = $this->activate();
             $this->activate();
         }
         $this->view->assign('actionMessages', $actionMessages);
 
-        $postValues = is_array($this->postValues['values']) ? $this->postValues['values'] : array();
+        $postValues = is_array($this->postValues['values']) ? $this->postValues['values'] : [];
         $this->view->assign('features', $this->featureManager->getInitializedFeatures($postValues));
 
         return $this->view->render();
@@ -81,7 +81,7 @@ class Configuration extends Action\AbstractAction
             /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
             $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
             $message->setTitle('Configuration written');
-            $messageBody = array();
+            $messageBody = [];
             foreach ($configurationValues as $configurationKey => $configurationValue) {
                 $messageBody[] = '\'' . $configurationKey . '\' => \'' . $configurationValue . '\'';
             }

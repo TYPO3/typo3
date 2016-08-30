@@ -29,7 +29,7 @@ class FileAllowedTypesValidatorTest extends AbstractValidatorTest
      */
     public function validTypesProvider()
     {
-        return array(
+        return [
             'pdf in (pdf)' => [
                 'application/pdf',
                 [
@@ -42,7 +42,7 @@ class FileAllowedTypesValidatorTest extends AbstractValidatorTest
                     'type' => 'application/pdf',
                 ],
             ],
-        );
+        ];
     }
 
     /**
@@ -50,7 +50,7 @@ class FileAllowedTypesValidatorTest extends AbstractValidatorTest
      */
     public function invalidTypesProvider()
     {
-        return array(
+        return [
             'xml in (pdf, json)' => [
                 'application/pdf, application/json',
                 [
@@ -73,7 +73,7 @@ class FileAllowedTypesValidatorTest extends AbstractValidatorTest
                 'application/pdf, application/json',
                 '',
             ],
-        );
+        ];
     }
 
     /**

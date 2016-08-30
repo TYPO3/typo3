@@ -66,7 +66,7 @@ class UriBuilder
      * @return Uri The generated Uri
      * @throws RouteNotFoundException If the named route doesn't exist
      */
-    public function buildUriFromRoute($name, $parameters = array(), $referenceType = self::ABSOLUTE_PATH)
+    public function buildUriFromRoute($name, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
     {
         $this->loadBackendRoutes();
         if (!isset($this->routes[$name])) {
@@ -80,27 +80,27 @@ class UriBuilder
         if ($route->getOption('ajax')) {
             // If the route has the "public" option set, no token is generated.
             if ($route->getOption('access') !== 'public') {
-                $parameters = array(
+                $parameters = [
                     'ajaxToken' => FormProtectionFactory::get('backend')->generateToken('ajaxCall', $name)
-                ) + $parameters;
+                ] + $parameters;
             }
 
             // Add the Route path as &ajaxID=XYZ
-            $parameters = array(
+            $parameters = [
                 'ajaxID' => $route->getPath()
-            ) + $parameters;
+            ] + $parameters;
         } else {
             // If the route has the "public" option set, no token is generated.
             if ($route->getOption('access') !== 'public') {
-                $parameters = array(
+                $parameters = [
                     'token' => FormProtectionFactory::get('backend')->generateToken('route', $name)
-                ) + $parameters;
+                ] + $parameters;
             }
 
             // Add the Route path as &route=XYZ
-            $parameters = array(
+            $parameters = [
                 'route' => $route->getPath()
-            ) + $parameters;
+            ] + $parameters;
         }
 
         return $this->buildUri($parameters, $referenceType);
@@ -115,12 +115,12 @@ class UriBuilder
      *
      * @return Uri The generated Uri
      */
-    public function buildUriFromModule($moduleName, $parameters = array(), $referenceType = self::ABSOLUTE_PATH)
+    public function buildUriFromModule($moduleName, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
     {
-        $parameters = array(
+        $parameters = [
             'M' => $moduleName,
             'moduleToken' => FormProtectionFactory::get('backend')->generateToken('moduleCall', $moduleName)
-        ) + $parameters;
+        ] + $parameters;
         return $this->buildUri($parameters, $referenceType);
     }
 
@@ -137,11 +137,11 @@ class UriBuilder
      *
      * @return Uri The generated Uri
      */
-    public function buildUriFromAjaxId($ajaxIdentifier, $parameters = array(), $referenceType = self::ABSOLUTE_PATH)
+    public function buildUriFromAjaxId($ajaxIdentifier, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
     {
-        $parameters = array(
+        $parameters = [
             'ajaxID' => $ajaxIdentifier
-        ) + $parameters;
+        ] + $parameters;
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxIdentifier]['csrfTokenCheck'])) {
             $parameters['ajaxToken'] = FormProtectionFactory::get('backend')->generateToken('ajaxCall', $ajaxIdentifier);
         }

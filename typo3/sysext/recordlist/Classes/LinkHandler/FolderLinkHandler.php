@@ -74,7 +74,7 @@ class FolderLinkHandler extends FileLinkHandler
         $fileIdentifier = $fileOrFolderObject->getCombinedIdentifier();
         $overlay = null;
         if ($fileOrFolderObject instanceof InaccessibleFolder) {
-            $overlay = array('status-overlay-locked' => array());
+            $overlay = ['status-overlay-locked' => []];
         }
         $icon = '<span title="' . htmlspecialchars($fileOrFolderObject->getName()) . '">'
             . $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL, $overlay)->render()

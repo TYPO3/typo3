@@ -11,7 +11,7 @@ if (TYPO3_MODE === 'FE' && !isset($_REQUEST['eID'])) {
 }
 
 // Register all available content objects
-$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = array_merge($GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'], array(
+$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = array_merge($GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'], [
     'TEXT'             => \TYPO3\CMS\Frontend\ContentObject\TextContentObject::class,
     'CASE'             => \TYPO3\CMS\Frontend\ContentObject\CaseContentObject::class,
     'COA'              => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject::class,
@@ -31,7 +31,7 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = array_merge($GLOBALS['TYPO
     'FLUIDTEMPLATE'    => \TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject::class,
     'SVG'              => \TYPO3\CMS\Frontend\ContentObject\ScalableVectorGraphicsContentObject::class,
     'EDITPANEL'        => \TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject::class
-));
+]);
 
 if (TYPO3_MODE === 'FE') {
 

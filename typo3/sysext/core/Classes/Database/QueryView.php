@@ -48,7 +48,7 @@ class QueryView
     /**
      * @var array
      */
-    public $hookArray = array();
+    public $hookArray = [];
 
     /**
      * @var string
@@ -96,7 +96,7 @@ class QueryView
         // Load/Save
         $storeArray = $this->initStoreArray();
 
-        $opt = array();
+        $opt = [];
         foreach ($storeArray as $k => $v) {
             $opt[] = '<option value="' . $k . '">' . htmlspecialchars($v) . '</option>';
         }
@@ -132,9 +132,9 @@ class QueryView
      */
     public function initStoreArray()
     {
-        $storeArray = array(
+        $storeArray = [
             '0' => '[New]'
-        );
+        ];
         $savedStoreArray = unserialize($GLOBALS['SOBE']->MOD_SETTINGS['storeArray']);
         if (is_array($savedStoreArray)) {
             $storeArray = array_merge($storeArray, $savedStoreArray);
@@ -171,7 +171,7 @@ class QueryView
     public function addToStoreQueryConfigs($storeQueryConfigs, $index)
     {
         $keyArr = explode(',', $this->storeList);
-        $storeQueryConfigs[$index] = array();
+        $storeQueryConfigs[$index] = [];
         foreach ($keyArr as $k) {
             $storeQueryConfigs[$index][$k] = $GLOBALS['SOBE']->MOD_SETTINGS[$k];
         }
@@ -188,7 +188,7 @@ class QueryView
     {
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('sys_action')) {
             $keyArr = explode(',', $this->storeList);
-            $saveArr = array();
+            $saveArr = [];
             foreach ($keyArr as $k) {
                 $saveArr[$k] = $GLOBALS['SOBE']->MOD_SETTINGS[$k];
             }
@@ -206,13 +206,13 @@ class QueryView
                 $res = @$GLOBALS['TYPO3_DB']->sql_query($qCount);
                 if (!$GLOBALS['TYPO3_DB']->sql_error()) {
                     $GLOBALS['TYPO3_DB']->sql_free_result($res);
-                    $dA = array();
-                    $dA['t2_data'] = serialize(array(
+                    $dA = [];
+                    $dA['t2_data'] = serialize([
                         'qC' => $saveArr,
                         'qCount' => $qCount,
                         'qSelect' => $qSelect,
                         'qString' => $qString
-                    ));
+                    ]);
                     $GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_action', 'uid=' . (int)$uid, $dA);
                     $qOK = 1;
                 }
@@ -252,7 +252,7 @@ class QueryView
         $storeControl = GeneralUtility::_GP('storeControl');
         $storeIndex = (int)$storeControl['STORE'];
         $saveStoreArray = 0;
-        $writeArray = array();
+        $writeArray = [];
         if (is_array($storeControl)) {
             $msg = '';
             if ($storeControl['LOAD']) {
@@ -264,7 +264,7 @@ class QueryView
                     $actionRecord = BackendUtility::getRecord('sys_action', abs($storeIndex));
                     if (is_array($actionRecord)) {
                         $dA = unserialize($actionRecord['t2_data']);
-                        $dbSC = array();
+                        $dbSC = [];
                         if (is_array($dA['qC'])) {
                             $dbSC[0] = $dA['qC'];
                         }
@@ -389,7 +389,7 @@ class QueryView
     public function getQueryResultCode($mQ, $res, $table)
     {
         $out = '';
-        $cPR = array();
+        $cPR = [];
         switch ($mQ) {
             case 'count':
                 $row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
@@ -397,7 +397,7 @@ class QueryView
                 $cPR['content'] = '<BR><strong>' . $row[0] . '</strong> records selected.';
                 break;
             case 'all':
-                $rowArr = array();
+                $rowArr = [];
                 while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                     $rowArr[] = $this->resultRowDisplay($row, $GLOBALS['TCA'][$table], $table);
                     $lrow = $row;
@@ -417,7 +417,7 @@ class QueryView
                 $cPR['content'] = $out;
                 break;
             case 'csv':
-                $rowArr = array();
+                $rowArr = [];
                 $first = 1;
                 while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                     if ($first) {
@@ -471,7 +471,7 @@ class QueryView
      * @param string $table
      * @return string A single line of CSV
      */
-    public function csvValues($row, $delim = ',', $quote = '"', $conf = array(), $table = '')
+    public function csvValues($row, $delim = ',', $quote = '"', $conf = [], $table = '')
     {
         $valueArray = $row;
         if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels'] && $table) {
@@ -515,11 +515,11 @@ class QueryView
                 $fieldsInDatabase = $GLOBALS['TYPO3_DB']->admin_get_fields($table);
                 $list = array_intersect(array_keys($conf['columns']), array_keys($fieldsInDatabase));
                 // Get query
-                $qp = $GLOBALS['TYPO3_DB']->searchQuery(array($swords), $list, $table);
+                $qp = $GLOBALS['TYPO3_DB']->searchQuery([$swords], $list, $table);
                 // Count:
                 $count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $table, $qp . BackendUtility::deleteClause($table));
                 if ($count) {
-                    $rowArr = array();
+                    $rowArr = [];
                     $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,' . $conf['ctrl']['label'], $table, $qp . BackendUtility::deleteClause($table), '', '', $limit);
                     while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                         $rowArr[] = $this->resultRowDisplay($row, $conf, $table);
@@ -574,23 +574,23 @@ class QueryView
             $out .= '<a class="btn btn-default" href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ',\'' . $GLOBALS['BACK_PATH'] . '\');return false;">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
-            $out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), array(
+            $out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), [
                     ('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
-                    'redirect' => GeneralUtility::linkThisScript(array())
-                )) . '" title="' . $GLOBALS['LANG']->getLL('undelete_only', true) . '">';
+                    'redirect' => GeneralUtility::linkThisScript([])
+                ]) . '" title="' . $GLOBALS['LANG']->getLL('undelete_only', true) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL)->render() . '</a>';
-            $formEngineParameters = array(
+            $formEngineParameters = [
                 'edit[' . $table . '][' . $row['uid'] . ']' => 'edit',
-                'returnUrl' => GeneralUtility::linkThisScript(array())
-            );
+                'returnUrl' => GeneralUtility::linkThisScript([])
+            ];
             $redirectUrl = BackendUtility::getModuleUrl('record_edit', $formEngineParameters);
-            $out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), array(
+            $out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), [
                     ('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
                     'redirect' => $redirectUrl
-                )) . '" title="' . $GLOBALS['LANG']->getLL('undelete_and_edit', true) . '">';
+                ]) . '" title="' . $GLOBALS['LANG']->getLL('undelete_and_edit', true) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore-edit', Icon::SIZE_SMALL)->render() . '</a>';
         }
-        $_params = array($table => $row);
+        $_params = [$table => $row];
         if (is_array($this->hookArray['additionalButtons'])) {
             foreach ($this->hookArray['additionalButtons'] as $_funcRef) {
                 $out .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
@@ -921,7 +921,7 @@ class QueryView
                     $orderBy = 'uid';
                     if (!$this->tableArray[$from_table]) {
                         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select_fields, $from_table, $where_clause, ($groupBy = ''), $orderBy, ($limit = ''));
-                        $this->tableArray[$from_table] = array();
+                        $this->tableArray[$from_table] = [];
                     }
                     if ($res) {
                         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -977,7 +977,7 @@ class QueryView
     public function resultRowTitles($row, $conf, $table)
     {
         $SET = $GLOBALS['SOBE']->MOD_SETTINGS;
-        $tableHeader = array();
+        $tableHeader = [];
         // Start header row
         $tableHeader[] = '<thead><tr>';
         // Iterate over given columns

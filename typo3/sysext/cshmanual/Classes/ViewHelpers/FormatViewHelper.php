@@ -41,9 +41,9 @@ class FormatViewHelper extends AbstractViewHelper implements CompilableInterface
     public function render($content = '')
     {
         return self::renderStatic(
-            array(
+            [
                 'content' => $content,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

@@ -22,7 +22,7 @@ class MailUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     protected function setUp()
     {
@@ -97,24 +97,24 @@ class MailUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function parseAddressesProvider()
     {
-        return array(
-            'name &ltemail&gt;' => array('name <email@example.org>', array('email@example.org' => 'name')),
-            '&lt;email&gt;' => array('<email@example.org>', array('email@example.org')),
-            '@localhost' => array('@localhost', array()),
-            '000@example.com' => array('000@example.com', array('000@example.com')),
-            'email' => array('email@example.org', array('email@example.org')),
-            'email1,email2' => array('email1@example.org,email2@example.com', array('email1@example.org', 'email2@example.com')),
-            'name &ltemail&gt;,email2' => array('name <email1@example.org>,email2@example.com', array('email1@example.org' => 'name', 'email2@example.com')),
-            '"last, first" &lt;name@example.org&gt;' => array('"last, first" <email@example.org>', array('email@example.org' => '"last, first"')),
-            'email,name &ltemail&gt;,"last, first" &lt;name@example.org&gt;' => array(
+        return [
+            'name &ltemail&gt;' => ['name <email@example.org>', ['email@example.org' => 'name']],
+            '&lt;email&gt;' => ['<email@example.org>', ['email@example.org']],
+            '@localhost' => ['@localhost', []],
+            '000@example.com' => ['000@example.com', ['000@example.com']],
+            'email' => ['email@example.org', ['email@example.org']],
+            'email1,email2' => ['email1@example.org,email2@example.com', ['email1@example.org', 'email2@example.com']],
+            'name &ltemail&gt;,email2' => ['name <email1@example.org>,email2@example.com', ['email1@example.org' => 'name', 'email2@example.com']],
+            '"last, first" &lt;name@example.org&gt;' => ['"last, first" <email@example.org>', ['email@example.org' => '"last, first"']],
+            'email,name &ltemail&gt;,"last, first" &lt;name@example.org&gt;' => [
                 'email1@example.org, name <email2@example.org>, "last, first" <email3@example.org>',
-                array(
+                [
                     'email1@example.org',
                     'email2@example.org' => 'name',
                     'email3@example.org' => '"last, first"'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**

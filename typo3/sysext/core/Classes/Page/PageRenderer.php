@@ -99,7 +99,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $languageDependencies = array();
+    protected $languageDependencies = [];
 
     /**
      * @var \TYPO3\CMS\Core\Resource\ResourceCompressor
@@ -110,32 +110,32 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $jsFiles = array();
+    protected $jsFiles = [];
 
     /**
      * @var array
      */
-    protected $jsFooterFiles = array();
+    protected $jsFooterFiles = [];
 
     /**
      * @var array
      */
-    protected $jsLibs = array();
+    protected $jsLibs = [];
 
     /**
      * @var array
      */
-    protected $jsFooterLibs = array();
+    protected $jsFooterLibs = [];
 
     /**
      * @var array
      */
-    protected $cssFiles = array();
+    protected $cssFiles = [];
 
     /**
      * @var array
      */
-    protected $cssLibs = array();
+    protected $cssLibs = [];
 
     /**
      * The title of the page
@@ -175,22 +175,22 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $metaTags = array();
+    protected $metaTags = [];
 
     /**
      * @var array
      */
-    protected $inlineComments = array();
+    protected $inlineComments = [];
 
     /**
      * @var array
      */
-    protected $headerData = array();
+    protected $headerData = [];
 
     /**
      * @var array
      */
-    protected $footerData = array();
+    protected $footerData = [];
 
     /**
      * @var string
@@ -231,22 +231,22 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $jsInline = array();
+    protected $jsInline = [];
 
     /**
      * @var array
      */
-    protected $jsFooterInline = array();
+    protected $jsFooterInline = [];
 
     /**
      * @var array
      */
-    protected $extOnReadyCode = array();
+    protected $extOnReadyCode = [];
 
     /**
      * @var array
      */
-    protected $cssInline = array();
+    protected $cssInline = [];
 
     /**
      * @var string
@@ -261,7 +261,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $jsLibraryNames = array('extjs');
+    protected $jsLibraryNames = ['extjs'];
 
     // Paths to contibuted libraries
 
@@ -301,28 +301,28 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $jQueryVersions = array();
+    protected $jQueryVersions = [];
 
     /**
      * Array of jQuery version numbers shipped with the core
      *
      * @var array
      */
-    protected $availableLocalJqueryVersions = array(
+    protected $availableLocalJqueryVersions = [
         self::JQUERY_VERSION_LATEST
-    );
+    ];
 
     /**
      * Array of jQuery CDNs with placeholders
      *
      * @var array
      */
-    protected $jQueryCdnUrls = array(
+    protected $jQueryCdnUrls = [
         'google' => 'https://ajax.googleapis.com/ajax/libs/jquery/%1$s/jquery%2$s.js',
         'msn' => 'https://ajax.aspnetcdn.com/ajax/jQuery/jquery-%1$s%2$s.js',
         'jquery' => 'https://code.jquery.com/jquery-%1$s%2$s.js',
         'cloudflare' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/%1$s/jquery%2$s.js'
-    );
+    ];
 
     /**
      * if set, the requireJS library is included
@@ -334,7 +334,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * inline configuration for requireJS
      * @var array
      */
-    protected $requireJsConfig = array();
+    protected $requireJsConfig = [];
 
     /**
      * @var bool
@@ -369,22 +369,22 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $inlineLanguageLabels = array();
+    protected $inlineLanguageLabels = [];
 
     /**
      * @var array
      */
-    protected $inlineLanguageLabelFiles = array();
+    protected $inlineLanguageLabelFiles = [];
 
     /**
      * @var array
      */
-    protected $inlineSettings = array();
+    protected $inlineSettings = [];
 
     /**
      * @var array
      */
-    protected $inlineJavascriptWrap = array();
+    protected $inlineJavascriptWrap = [];
 
     /**
      * Saves error messages generated during compression
@@ -426,14 +426,14 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             $this->templateFile = $templateFile;
         }
         $this->backPath = isset($backPath) ? $backPath : $GLOBALS['BACK_PATH'];
-        $this->inlineJavascriptWrap = array(
+        $this->inlineJavascriptWrap = [
             '<script type="text/javascript">' . LF . '/*<![CDATA[*/' . LF,
             '/*]]>*/' . LF . '</script>' . LF
-        );
-        $this->inlineCssWrap = array(
+        ];
+        $this->inlineCssWrap = [
             '<style type="text/css">' . LF . '/*<![CDATA[*/' . LF . '<!-- ' . LF,
             '-->' . LF . '/*]]>*/' . LF . '</style>' . LF
-        );
+        ];
     }
 
     /**
@@ -444,19 +444,19 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected function reset()
     {
         $this->templateFile = 'EXT:core/Resources/Private/Templates/PageRenderer.html';
-        $this->jsFiles = array();
-        $this->jsFooterFiles = array();
-        $this->jsInline = array();
-        $this->jsFooterInline = array();
-        $this->jsLibs = array();
-        $this->cssFiles = array();
-        $this->cssInline = array();
-        $this->metaTags = array();
-        $this->inlineComments = array();
-        $this->headerData = array();
-        $this->footerData = array();
-        $this->extOnReadyCode = array();
-        $this->jQueryVersions = array();
+        $this->jsFiles = [];
+        $this->jsFooterFiles = [];
+        $this->jsInline = [];
+        $this->jsFooterInline = [];
+        $this->jsLibs = [];
+        $this->cssFiles = [];
+        $this->cssInline = [];
+        $this->metaTags = [];
+        $this->inlineComments = [];
+        $this->headerData = [];
+        $this->footerData = [];
+        $this->extOnReadyCode = [];
+        $this->jQueryVersions = [];
     }
 
     /*****************************************************/
@@ -518,7 +518,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function setLanguage($lang)
     {
         $this->lang = $lang;
-        $this->languageDependencies = array();
+        $this->languageDependencies = [];
 
         // Language is found. Configure it:
         if (in_array($this->lang, $this->locales->getLocales())) {
@@ -1117,7 +1117,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             $type = 'text/javascript';
         }
         if (!in_array(strtolower($name), $this->jsLibs)) {
-            $this->jsLibs[strtolower($name)] = array(
+            $this->jsLibs[strtolower($name)] = [
                 'file' => $file,
                 'type' => $type,
                 'section' => self::PART_HEADER,
@@ -1128,7 +1128,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'splitChar' => $splitChar,
                 'async' => $async,
                 'integrity' => $integrity,
-            );
+            ];
         }
     }
 
@@ -1153,7 +1153,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             $type = 'text/javascript';
         }
         if (!in_array(strtolower($name), $this->jsLibs)) {
-            $this->jsLibs[strtolower($name)] = array(
+            $this->jsLibs[strtolower($name)] = [
                 'file' => $file,
                 'type' => $type,
                 'section' => self::PART_FOOTER,
@@ -1164,7 +1164,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'splitChar' => $splitChar,
                 'async' => $async,
                 'integrity' => $integrity,
-            );
+            ];
         }
     }
 
@@ -1188,7 +1188,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             $type = 'text/javascript';
         }
         if (!isset($this->jsFiles[$file])) {
-            $this->jsFiles[$file] = array(
+            $this->jsFiles[$file] = [
                 'file' => $file,
                 'type' => $type,
                 'section' => self::PART_HEADER,
@@ -1199,7 +1199,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'splitChar' => $splitChar,
                 'async' => $async,
                 'integrity' => $integrity,
-            );
+            ];
         }
     }
 
@@ -1223,7 +1223,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             $type = 'text/javascript';
         }
         if (!isset($this->jsFiles[$file])) {
-            $this->jsFiles[$file] = array(
+            $this->jsFiles[$file] = [
                 'file' => $file,
                 'type' => $type,
                 'section' => self::PART_FOOTER,
@@ -1234,7 +1234,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'splitChar' => $splitChar,
                 'async' => $async,
                 'integrity' => $integrity,
-            );
+            ];
         }
     }
 
@@ -1250,12 +1250,12 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function addJsInlineCode($name, $block, $compress = true, $forceOnTop = false)
     {
         if (!isset($this->jsInline[$name]) && !empty($block)) {
-            $this->jsInline[$name] = array(
+            $this->jsInline[$name] = [
                 'code' => $block . LF,
                 'section' => self::PART_HEADER,
                 'compress' => $compress,
                 'forceOnTop' => $forceOnTop
-            );
+            ];
         }
     }
 
@@ -1271,12 +1271,12 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function addJsFooterInlineCode($name, $block, $compress = true, $forceOnTop = false)
     {
         if (!isset($this->jsInline[$name]) && !empty($block)) {
-            $this->jsInline[$name] = array(
+            $this->jsInline[$name] = [
                 'code' => $block . LF,
                 'section' => self::PART_FOOTER,
                 'compress' => $compress,
                 'forceOnTop' => $forceOnTop
-            );
+            ];
         }
     }
 
@@ -1304,14 +1304,14 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $filterNamespaces Limit the output to defined namespaces. If empty, all namespaces are generated
      * @return void
      */
-    public function addExtDirectCode(array $filterNamespaces = array())
+    public function addExtDirectCode(array $filterNamespaces = [])
     {
         if ($this->extDirectCodeAdded) {
             return;
         }
         $this->extDirectCodeAdded = true;
         if (empty($filterNamespaces)) {
-            $filterNamespaces = array('TYPO3');
+            $filterNamespaces = ['TYPO3'];
         }
         // @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
         // add compatibility mapping for the old flashmessage API
@@ -1320,15 +1320,15 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
         // Add language labels for ExtDirect
         if (TYPO3_MODE === 'FE') {
-            $this->addInlineLanguageLabelArray(array(
+            $this->addInlineLanguageLabelArray([
                 'extDirect_timeoutHeader' => $this->getTypoScriptFrontendController()->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutHeader'),
                 'extDirect_timeoutMessage' => $this->getTypoScriptFrontendController()->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutMessage')
-            ));
+            ]);
         } else {
-            $this->addInlineLanguageLabelArray(array(
+            $this->addInlineLanguageLabelArray([
                 'extDirect_timeoutHeader' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutHeader'),
                 'extDirect_timeoutMessage' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutMessage')
-            ));
+            ]);
         }
 
         $token = ($api = '');
@@ -1446,7 +1446,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function addCssFile($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|')
     {
         if (!isset($this->cssFiles[$file])) {
-            $this->cssFiles[$file] = array(
+            $this->cssFiles[$file] = [
                 'file' => $file,
                 'rel' => $rel,
                 'media' => $media,
@@ -1456,7 +1456,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'allWrap' => $allWrap,
                 'excludeFromConcatenation' => $excludeFromConcatenation,
                 'splitChar' => $splitChar
-            );
+            ];
         }
     }
 
@@ -1477,7 +1477,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function addCssLibrary($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|')
     {
         if (!isset($this->cssLibs[$file])) {
-            $this->cssLibs[$file] = array(
+            $this->cssLibs[$file] = [
                 'file' => $file,
                 'rel' => $rel,
                 'media' => $media,
@@ -1487,7 +1487,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'allWrap' => $allWrap,
                 'excludeFromConcatenation' => $excludeFromConcatenation,
                 'splitChar' => $splitChar
-            );
+            ];
         }
     }
 
@@ -1503,11 +1503,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function addCssInlineBlock($name, $block, $compress = false, $forceOnTop = false)
     {
         if (!isset($this->cssInline[$name]) && !empty($block)) {
-            $this->cssInline[$name] = array(
+            $this->cssInline[$name] = [
                 'code' => $block,
                 'compress' => $compress,
                 'forceOnTop' => $forceOnTop
-            );
+            ];
         }
     }
 
@@ -1536,10 +1536,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         if (!preg_match('/^[a-zA-Z0-9]+$/', $namespace)) {
             throw new \UnexpectedValueException('The requested namespace contains non alphanumeric characters.', 1341571604);
         }
-        $this->jQueryVersions[$namespace] = array(
+        $this->jQueryVersions[$namespace] = [
             'version' => $version,
             'source' => $source
-        );
+        ];
     }
 
     /**
@@ -1563,7 +1563,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             }
             $coreRelPath = ExtensionManagementUtility::extRelPath('core');
             // first, load all paths for the namespaces, and configure contrib libs.
-            $this->requireJsConfig['paths'] = array(
+            $this->requireJsConfig['paths'] = [
                 'jquery-ui' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/jquery-ui',
                 'datatables' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/jquery.dataTables',
                 'nprogress' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/nprogress',
@@ -1576,7 +1576,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'taboverride' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/taboverride.min',
                 'twbs/bootstrap-slider' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/bootstrap-slider.min',
                 'jquery/autocomplete' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/jquery.autocomplete',
-            );
+            ];
             // get all extensions that are loaded
             $loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
             foreach ($loadedExtensions as $packageName) {
@@ -1729,12 +1729,12 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     {
         $index = md5($fileRef . $selectionPrefix . $stripFromSelectionName);
         if ($fileRef && !isset($this->inlineLanguageLabelFiles[$index])) {
-            $this->inlineLanguageLabelFiles[$index] = array(
+            $this->inlineLanguageLabelFiles[$index] = [
                 'fileRef' => $fileRef,
                 'selectionPrefix' => $selectionPrefix,
                 'stripFromSelectionName' => $stripFromSelectionName,
                 'errorMode' => $errorMode
-            );
+            ];
         }
     }
 
@@ -1862,7 +1862,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $this->prepareRendering();
         list($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs) = $this->renderJavaScriptAndCss();
         $title = $this->title ? str_replace('|', htmlspecialchars($this->title), $this->titleTag) : '';
-        $markerArray = array(
+        $markerArray = [
             '<!-- ###TITLE' . $substituteHash . '### -->' => $title,
             '<!-- ###CSS_LIBS' . $substituteHash . '### -->' => $cssLibs,
             '<!-- ###CSS_INCLUDE' . $substituteHash . '### -->' => $cssFiles,
@@ -1875,7 +1875,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             '<!-- ###JS_LIBS_FOOTER' . $substituteHash . '### -->' => $jsFooterLibs,
             '<!-- ###JS_INCLUDE_FOOTER' . $substituteHash . '### -->' => $jsFooterFiles,
             '<!-- ###JS_INLINE_FOOTER' . $substituteHash . '### -->' => $jsFooterInline
-        );
+        ];
         foreach ($markerArray as $placeHolder => $content) {
             $cachedPageContent = str_replace($placeHolder, $content, $cachedPageContent);
         }
@@ -1936,7 +1936,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             $jsInline = '';
         }
         $this->executePostRenderHook($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs);
-        return array($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs);
+        return [$jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs];
     }
 
     /**
@@ -1956,7 +1956,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getPreparedMarkerArray($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs, $metaTags)
     {
-        $markerArray = array(
+        $markerArray = [
             'XMLPROLOG_DOCTYPE' => $this->xmlPrologAndDocType,
             'HTMLTAG' => $this->htmlTag,
             'HEADTAG' => $this->headTag,
@@ -1978,7 +1978,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             'JS_INCLUDE_FOOTER' => $jsFooterFiles,
             'JS_INLINE_FOOTER' => $jsFooterInline,
             'BODY' => $this->bodyContent
-        );
+        ];
         $markerArray = array_map('trim', $markerArray);
         return $markerArray;
     }
@@ -1991,7 +1991,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getPreparedMarkerArrayForPageWithUncachedObjects($substituteHash)
     {
-        $markerArray = array(
+        $markerArray = [
             'XMLPROLOG_DOCTYPE' => $this->xmlPrologAndDocType,
             'HTMLTAG' => $this->htmlTag,
             'HEADTAG' => $this->headTag,
@@ -2013,7 +2013,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             'JS_LIBS_FOOTER' => '<!-- ###JS_LIBS_FOOTER' . $substituteHash . '### -->',
             'JS_INCLUDE_FOOTER' => '<!-- ###JS_INCLUDE_FOOTER' . $substituteHash . '### -->',
             'JS_INLINE_FOOTER' => '<!-- ###JS_INLINE_FOOTER' . $substituteHash . '### -->'
-        );
+        ];
         $markerArray = array_map('trim', $markerArray);
         return $markerArray;
     }
@@ -2029,7 +2029,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $templateFile = GeneralUtility::getFileAbsFileName($this->templateFile, true);
         $template = GeneralUtility::getUrl($templateFile);
         if ($this->removeLineBreaksFromTemplate) {
-            $template = strtr($template, array(LF => '', CR => ''));
+            $template = strtr($template, [LF => '', CR => '']);
         }
         if ($part !== self::PART_COMPLETE) {
             $templatePart = explode('###BODY###', $template);
@@ -2111,7 +2111,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                     . $code
                 . ' });'
                 . $this->inlineJavascriptWrap[1];
-            $this->extOnReadyCode = array();
+            $this->extOnReadyCode = [];
             // Include TYPO3.l10n object
             if (TYPO3_MODE === 'BE') {
                 $out .= '<script src="' . $this->processJsFile(($this->backPath . ExtensionManagementUtility::extRelPath('lang') . 'Resources/Public/JavaScript/Typo3Lang.js')) . '" type="text/javascript" charset="utf-8"></script>' . LF;
@@ -2155,7 +2155,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 $this->includeLanguageFileForInline($languageLabelFile['fileRef'], $languageLabelFile['selectionPrefix'], $languageLabelFile['stripFromSelectionName'], $languageLabelFile['errorMode']);
             }
         }
-        $this->inlineLanguageLabelFiles = array();
+        $this->inlineLanguageLabelFiles = [];
         // Convert labels/settings back to UTF-8 since json_encode() only works with UTF-8:
         if (TYPO3_MODE === 'FE' && $this->getCharSet() !== 'utf-8') {
             if ($this->inlineLanguageLabels) {
@@ -2172,7 +2172,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function addAjaxUrlsToInlineSettings()
     {
-        $ajaxUrls = array();
+        $ajaxUrls = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'] as $ajaxHandler => $_) {
             $ajaxUrls[$ajaxHandler] = BackendUtility::getAjaxUrl($ajaxHandler);
         }
@@ -2368,7 +2368,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             $jsFooterLibs = $jsLibs . LF . $jsFooterLibs;
             $jsLibs = '';
         }
-        return array($jsLibs, $jsFooterLibs);
+        return [$jsLibs, $jsFooterLibs];
     }
 
     /**
@@ -2411,7 +2411,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             $jsFooterFiles = $jsFiles . $jsFooterFiles;
             $jsFiles = '';
         }
-        return array($jsFiles, $jsFooterFiles);
+        return [$jsFiles, $jsFooterFiles];
     }
 
     /**
@@ -2451,7 +2451,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             $jsFooterInline = $jsInline . $jsFooterInline;
             $jsInline = '';
         }
-        return array($jsInline, $jsFooterInline);
+        return [$jsInline, $jsFooterInline];
     }
 
     /**
@@ -2469,7 +2469,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         if (!isset($this->lang) || !isset($this->charSet)) {
             throw new \RuntimeException('Language and character encoding are not set.', 1284906026);
         }
-        $labelsFromFile = array();
+        $labelsFromFile = [];
         $allLabels = $this->readLLfile($fileRef, $errorMode);
         if ($allLabels !== false) {
             // Merge language specific translations:
@@ -2510,10 +2510,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 $languages[] = 'default';
             }
         } else {
-            $languages = array('default');
+            $languages = ['default'];
         }
 
-        $localLanguage = array();
+        $localLanguage = [];
         foreach ($languages as $language) {
             $tempLL = $languageFactory->getParsedData($fileRef, $language, $this->charSet, $errorMode);
 
@@ -2558,13 +2558,13 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         if ($this->concatenateFiles || $this->concatenateJavascript) {
             if (!empty($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsConcatenateHandler'])) {
                 // use external concatenation routine
-                $params = array(
+                $params = [
                     'jsLibs' => &$this->jsLibs,
                     'jsFiles' => &$this->jsFiles,
                     'jsFooterFiles' => &$this->jsFooterFiles,
                     'headerData' => &$this->headerData,
                     'footerData' => &$this->footerData
-                );
+                ];
                 GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsConcatenateHandler'], $params, $this);
             } else {
                 $this->jsLibs = $this->getCompressor()->concatenateJsFiles($this->jsLibs);
@@ -2584,17 +2584,17 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         if ($this->concatenateFiles || $this->concatenateCss) {
             if (!empty($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssConcatenateHandler'])) {
                 // use external concatenation routine
-                $params = array(
+                $params = [
                     'cssFiles' => &$this->cssFiles,
                     'cssLibs' => &$this->cssLibs,
                     'headerData' => &$this->headerData,
                     'footerData' => &$this->footerData
-                );
+                ];
                 GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssConcatenateHandler'], $params, $this);
             } else {
-                $cssOptions = array();
+                $cssOptions = [];
                 if (TYPO3_MODE === 'BE') {
-                    $cssOptions = array('baseDirectories' => $GLOBALS['TBE_TEMPLATE']->getSkinStylesheetDirectories());
+                    $cssOptions = ['baseDirectories' => $GLOBALS['TBE_TEMPLATE']->getSkinStylesheetDirectories()];
                 }
                 $this->cssLibs = $this->getCompressor()->concatenateCssFiles($this->cssLibs, $cssOptions);
                 $this->cssFiles = $this->getCompressor()->concatenateCssFiles($this->cssFiles, $cssOptions);
@@ -2623,13 +2623,13 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         if ($this->compressCss) {
             if (!empty($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler'])) {
                 // Use external compression routine
-                $params = array(
+                $params = [
                     'cssInline' => &$this->cssInline,
                     'cssFiles' => &$this->cssFiles,
                     'cssLibs' => &$this->cssLibs,
                     'headerData' => &$this->headerData,
                     'footerData' => &$this->footerData
-                );
+                ];
                 GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler'], $params, $this);
             } else {
                 $this->cssLibs = $this->getCompressor()->compressCssFiles($this->cssLibs);
@@ -2648,7 +2648,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         if ($this->compressJavascript) {
             if (!empty($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsCompressHandler'])) {
                 // Use external compression routine
-                $params = array(
+                $params = [
                     'jsInline' => &$this->jsInline,
                     'jsFooterInline' => &$this->jsFooterInline,
                     'jsLibs' => &$this->jsLibs,
@@ -2656,7 +2656,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                     'jsFooterFiles' => &$this->jsFooterFiles,
                     'headerData' => &$this->headerData,
                     'footerData' => &$this->footerData
-                );
+                ];
                 GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsCompressHandler'], $params, $this);
             } else {
                 // Traverse the arrays, compress files
@@ -2751,7 +2751,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected function executePreRenderHook()
     {
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'])) {
-            $params = array(
+            $params = [
                 'jsLibs' => &$this->jsLibs,
                 'jsFooterLibs' => &$this->jsFooterLibs,
                 'jsFiles' => &$this->jsFiles,
@@ -2763,7 +2763,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'jsInline' => &$this->jsInline,
                 'jsFooterInline' => &$this->jsFooterInline,
                 'cssInline' => &$this->cssInline
-            );
+            ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'] as $hook) {
                 GeneralUtility::callUserFunction($hook, $params, $this);
             }
@@ -2778,7 +2778,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected function executeRenderPostTransformHook()
     {
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postTransform'])) {
-            $params = array(
+            $params = [
                 'jsLibs' => &$this->jsLibs,
                 'jsFooterLibs' => &$this->jsFooterLibs,
                 'jsFiles' => &$this->jsFiles,
@@ -2790,7 +2790,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'jsInline' => &$this->jsInline,
                 'jsFooterInline' => &$this->jsFooterInline,
                 'cssInline' => &$this->cssInline
-            );
+            ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postTransform'] as $hook) {
                 GeneralUtility::callUserFunction($hook, $params, $this);
             }
@@ -2814,7 +2814,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected function executePostRenderHook(&$jsLibs, &$jsFiles, &$jsFooterFiles, &$cssLibs, &$cssFiles, &$jsInline, &$cssInline, &$jsFooterInline, &$jsFooterLibs)
     {
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postProcess'])) {
-            $params = array(
+            $params = [
                 'jsLibs' => &$jsLibs,
                 'jsFiles' => &$jsFiles,
                 'jsFooterFiles' => &$jsFooterFiles,
@@ -2841,7 +2841,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'jsFooterInline' => &$jsFooterInline,
                 'jsFooterLibs' => &$jsFooterLibs,
                 'bodyContent' => &$this->bodyContent
-            );
+            ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postProcess'] as $hook) {
                 GeneralUtility::callUserFunction($hook, $params, $this);
             }

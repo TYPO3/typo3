@@ -48,10 +48,10 @@ class ExternalViewHelper extends AbstractViewHelper implements CompilableInterfa
     public function render($uri, $defaultScheme = 'http')
     {
         return static::renderStatic(
-            array(
+            [
                 'uri' => $uri,
                 'defaultScheme' => $defaultScheme
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

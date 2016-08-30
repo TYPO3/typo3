@@ -32,7 +32,7 @@ class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
 
     public function setup()
     {
-        $this->validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'));
+        $this->validator = $this->getMock($this->validatorClassName, ['translateErrorMessage']);
     }
 
     /**
@@ -42,12 +42,12 @@ class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
      */
     public function validIntegers()
     {
-        return array(
-            array(1029437),
-            array('12345'),
-            array('+12345'),
-            array('-12345')
-        );
+        return [
+            [1029437],
+            ['12345'],
+            ['+12345'],
+            ['-12345']
+        ];
     }
 
     /**
@@ -67,11 +67,11 @@ class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
      */
     public function invalidIntegers()
     {
-        return array(
-            array('not a number'),
-            array(3.1415),
-            array('12345.987')
-        );
+        return [
+            ['not a number'],
+            [3.1415],
+            ['12345.987']
+        ];
     }
 
     /**

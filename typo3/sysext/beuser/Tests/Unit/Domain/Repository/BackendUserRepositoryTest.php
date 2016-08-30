@@ -24,7 +24,7 @@ class BackendUserRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function classCanBeInstantiated()
     {
-        $objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class, array(), array(), '', false);
+        $objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class, [], [], '', false);
         new \TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository($objectManager);
     }
 }

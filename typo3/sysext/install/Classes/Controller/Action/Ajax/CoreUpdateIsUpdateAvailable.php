@@ -26,7 +26,7 @@ class CoreUpdateIsUpdateAvailable extends AbstractCoreUpdate
      */
     protected function executeAction()
     {
-        $status = array();
+        $status = [];
         if ($this->coreVersionService->isInstalledVersionAReleasedVersion()) {
             $isDevelopmentUpdateAvailable = $this->coreVersionService->isYoungerPatchDevelopmentReleaseAvailable();
             $isUpdateAvailable = $this->coreVersionService->isYoungerPatchReleaseAvailable();
@@ -53,7 +53,7 @@ class CoreUpdateIsUpdateAvailable extends AbstractCoreUpdate
         }
 
         $this->view->assign('success', true);
-        $this->view->assign('status', array($status));
+        $this->view->assign('status', [$status]);
         if (isset($action)) {
             $this->view->assign('action', $action);
         }
@@ -84,9 +84,9 @@ class CoreUpdateIsUpdateAvailable extends AbstractCoreUpdate
      */
     protected function getAction($title, $action)
     {
-        return array(
+        return [
             'title' => $title,
             'action' => $action,
-        );
+        ];
     }
 }

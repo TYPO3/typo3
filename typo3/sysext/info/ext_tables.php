@@ -7,16 +7,16 @@ if (TYPO3_MODE === 'BE') {
         'info',
         '',
         '',
-        array(
+        [
             'routeTarget' => \TYPO3\CMS\Info\Controller\InfoModuleController::class . '::mainAction',
             'access' => 'user,group',
             'name' => 'web_info',
-            'labels' => array(
-                'tabs_images' => array(
+            'labels' => [
+                'tabs_images' => [
                     'tab' => 'EXT:info/Resources/Public/Icons/module-info.svg',
-                ),
+                ],
                 'll_ref' => 'LLL:EXT:lang/locallang_mod_web_info.xlf',
-            ),
-        )
+            ],
+        ]
     );
 }

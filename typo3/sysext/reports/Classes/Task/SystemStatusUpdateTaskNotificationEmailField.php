@@ -25,7 +25,7 @@ class SystemStatusUpdateTaskNotificationEmailField implements \TYPO3\CMS\Schedul
      *
      * @var array
      */
-    protected $fields = array('notificationEmail');
+    protected $fields = ['notificationEmail'];
 
     /**
      * Field prefix.
@@ -44,7 +44,7 @@ class SystemStatusUpdateTaskNotificationEmailField implements \TYPO3\CMS\Schedul
      */
     public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule)
     {
-        $fields = array('notificationEmail' => 'textarea');
+        $fields = ['notificationEmail' => 'textarea'];
         if ($schedulerModule->CMD == 'edit') {
             $taskInfo[$this->fieldPrefix . 'NotificationEmail'] = $task->getNotificationEmail();
         }
@@ -53,13 +53,13 @@ class SystemStatusUpdateTaskNotificationEmailField implements \TYPO3\CMS\Schedul
         $fieldId = 'task_' . $fieldName;
         $fieldHtml = '<textarea class="form-control" ' . 'rows="5" cols="50" name="tx_scheduler[' . $fieldName . ']" ' . 'id="' . $fieldId . '" ' . '>' . htmlspecialchars($taskInfo[$fieldName]) . '</textarea>';
 
-        $additionalFields = array();
-        $additionalFields[$fieldId] = array(
+        $additionalFields = [];
+        $additionalFields[$fieldId] = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskField_notificationEmails',
             'cshKey' => '',
             'cshLabel' => $fieldId
-        );
+        ];
 
         return $additionalFields;
     }

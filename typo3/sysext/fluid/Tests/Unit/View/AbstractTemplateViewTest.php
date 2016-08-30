@@ -50,12 +50,12 @@ class AbstractTemplateViewTest extends UnitTestCase
      */
     protected function setUp()
     {
-        $this->templateVariableContainer = $this->getMock(TemplateVariableContainer::class, array('exists', 'remove', 'add'));
-        $this->viewHelperVariableContainer = $this->getMock(ViewHelperVariableContainer::class, array('setView'));
-        $this->renderingContext = $this->getMock(RenderingContext::class, array('getViewHelperVariableContainer', 'getTemplateVariableContainer'));
+        $this->templateVariableContainer = $this->getMock(TemplateVariableContainer::class, ['exists', 'remove', 'add']);
+        $this->viewHelperVariableContainer = $this->getMock(ViewHelperVariableContainer::class, ['setView']);
+        $this->renderingContext = $this->getMock(RenderingContext::class, ['getViewHelperVariableContainer', 'getTemplateVariableContainer']);
         $this->renderingContext->expects($this->any())->method('getViewHelperVariableContainer')->will($this->returnValue($this->viewHelperVariableContainer));
         $this->renderingContext->expects($this->any())->method('getTemplateVariableContainer')->will($this->returnValue($this->templateVariableContainer));
-        $this->view = $this->getAccessibleMock(AbstractTemplateView::class, array('getTemplateSource', 'getLayoutSource', 'getPartialSource', 'canRender', 'getTemplateIdentifier', 'getLayoutIdentifier', 'getPartialIdentifier'));
+        $this->view = $this->getAccessibleMock(AbstractTemplateView::class, ['getTemplateSource', 'getLayoutSource', 'getPartialSource', 'canRender', 'getTemplateIdentifier', 'getLayoutIdentifier', 'getPartialIdentifier']);
         $this->view->setRenderingContext($this->renderingContext);
     }
 
@@ -111,8 +111,8 @@ class AbstractTemplateViewTest extends UnitTestCase
         $this->templateVariableContainer->expects($this->at(5))->method('add')->with('baz', 'BazValue');
 
         $this->view
-            ->assignMultiple(array('foo' => 'FooValue', 'bar' => 'BarValue'))
-            ->assignMultiple(array('baz' => 'BazValue'));
+            ->assignMultiple(['foo' => 'FooValue', 'bar' => 'BarValue'])
+            ->assignMultiple(['baz' => 'BazValue']);
     }
 
     /**
@@ -129,7 +129,7 @@ class AbstractTemplateViewTest extends UnitTestCase
         $this->templateVariableContainer->expects($this->at(6))->method('add')->with('bar', 'BarValue');
 
         $this->view->assign('foo', 'FooValue');
-        $this->view->assignMultiple(array('foo' => 'FooValueOverridden', 'bar' => 'BarValue'));
+        $this->view->assignMultiple(['foo' => 'FooValueOverridden', 'bar' => 'BarValue']);
     }
 
     /**

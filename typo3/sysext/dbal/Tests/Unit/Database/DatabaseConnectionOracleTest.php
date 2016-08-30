@@ -31,78 +31,78 @@ class DatabaseConnectionOracleTest extends AbstractTestCase
      */
     protected function setUp()
     {
-        $configuration = array(
-            'handlerCfg' => array(
-                '_DEFAULT' => array(
+        $configuration = [
+            'handlerCfg' => [
+                '_DEFAULT' => [
                     'type' => 'adodb',
-                    'config' => array(
+                    'config' => [
                         'driver' => 'oci8',
-                    ),
-                ),
-            ),
-            'mapping' => array(
-                'cachingframework_cache_hash' => array(
+                    ],
+                ],
+            ],
+            'mapping' => [
+                'cachingframework_cache_hash' => [
                     'mapTableName' => 'cf_cache_hash',
-                ),
-                'cachingframework_cache_hash_tags' => array(
+                ],
+                'cachingframework_cache_hash_tags' => [
                     'mapTableName' => 'cf_cache_hash_tags',
-                ),
-                'cachingframework_cache_pages' => array(
+                ],
+                'cachingframework_cache_pages' => [
                     'mapTableName' => 'cf_cache_pages',
-                ),
-                'cpg_categories' => array(
-                    'mapFieldNames' => array(
+                ],
+                'cpg_categories' => [
+                    'mapFieldNames' => [
                         'pid' => 'page_id',
-                    ),
-                ),
-                'pages' => array(
+                    ],
+                ],
+                'pages' => [
                     'mapTableName' => 'my_pages',
-                    'mapFieldNames' => array(
+                    'mapFieldNames' => [
                         'uid' => 'page_uid',
-                    ),
-                ),
-                'tt_news' => array(
+                    ],
+                ],
+                'tt_news' => [
                     'mapTableName' => 'ext_tt_news',
-                    'mapFieldNames' => array(
+                    'mapFieldNames' => [
                         'uid' => 'news_uid',
                         'fe_group' => 'usergroup',
-                    ),
-                ),
-                'tt_news_cat' => array(
+                    ],
+                ],
+                'tt_news_cat' => [
                     'mapTableName' => 'ext_tt_news_cat',
-                    'mapFieldNames' => array(
+                    'mapFieldNames' => [
                         'uid' => 'cat_uid',
-                    ),
-                ),
-                'tt_news_cat_mm' => array(
+                    ],
+                ],
+                'tt_news_cat_mm' => [
                     'mapTableName' => 'ext_tt_news_cat_mm',
-                    'mapFieldNames' => array(
+                    'mapFieldNames' => [
                         'uid_local' => 'local_uid',
-                    ),
-                ),
-                'tx_crawler_process' => array(
+                    ],
+                ],
+                'tx_crawler_process' => [
                     'mapTableName' => 'tx_crawler_ps',
-                    'mapFieldNames' => array(
+                    'mapFieldNames' => [
                         'process_id' => 'ps_id',
                         'active' => 'is_active',
-                    ),
-                ),
-                'tx_dam_file_tracking' => array(
-                    'mapFieldNames' => array(
+                    ],
+                ],
+                'tx_dam_file_tracking' => [
+                    'mapFieldNames' => [
                         'file_name' => 'filename',
                         'file_path' => 'path',
-                    ),
-                ),
-                'tx_dbal_debuglog' => array(
-                    'mapFieldNames' => array(
+                    ],
+                ],
+                'tx_dbal_debuglog' => [
+                    'mapFieldNames' => [
                         'errorFlag' => 'errorflag',
-                    ),
-                ),
-                'tx_templavoila_datastructure' => array(
+                    ],
+                ],
+                'tx_templavoila_datastructure' => [
                     'mapTableName' => 'tx_templavoila_ds',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         $this->subject = $this->prepareSubject('oci8', $configuration);
     }
@@ -136,13 +136,13 @@ class DatabaseConnectionOracleTest extends AbstractTestCase
         $components = $this->subject->SQLparser->_callRef('parseINSERT', $parseString);
         $this->assertTrue(is_array($components), $components);
         $insert = $this->subject->SQLparser->compileSQL($components);
-        $expected = array(
+        $expected = [
             'uid' => '1',
             'pid' => '0',
             'tr_iso_nr' => '2',
             'tr_parent_iso_nr' => '0',
             'tr_name_en' => 'Africa'
-        );
+        ];
         $this->assertEquals($expected, $insert);
     }
 
@@ -151,7 +151,7 @@ class DatabaseConnectionOracleTest extends AbstractTestCase
      */
     public function canCompileExtendedInsert()
     {
-        $tableFields = array('uid', 'pid', 'tr_iso_nr', 'tr_parent_iso_nr', 'tr_name_en');
+        $tableFields = ['uid', 'pid', 'tr_iso_nr', 'tr_parent_iso_nr', 'tr_name_en'];
         $this->subject->cache_fieldType['static_territories'] = array_flip($tableFields);
         $parseString = 'INSERT INTO static_territories VALUES (\'1\', \'0\', \'2\', \'0\', \'Africa\'),(\'2\', \'0\', \'9\', \'0\', \'Oceania\'),' . '(\'3\', \'0\', \'19\', \'0\', \'Americas\'),(\'4\', \'0\', \'142\', \'0\', \'Asia\');';
         $components = $this->subject->SQLparser->_callRef('parseINSERT', $parseString);
@@ -171,12 +171,12 @@ class DatabaseConnectionOracleTest extends AbstractTestCase
      */
     public function sqlForInsertWithMultipleRowsIsValid()
     {
-        $fields = array('uid', 'pid', 'title', 'body');
-        $rows = array(
-            array('1', '2', 'Title #1', 'Content #1'),
-            array('3', '4', 'Title #2', 'Content #2'),
-            array('5', '6', 'Title #3', 'Content #3')
-        );
+        $fields = ['uid', 'pid', 'title', 'body'];
+        $rows = [
+            ['1', '2', 'Title #1', 'Content #1'],
+            ['3', '4', 'Title #2', 'Content #2'],
+            ['5', '6', 'Title #3', 'Content #3']
+        ];
         $result = $this->subject->INSERTmultipleRows('tt_content', $fields, $rows);
         $expected[0] = 'INSERT INTO "tt_content" ( "uid", "pid", "title", "body" ) VALUES ( \'1\', \'2\', \'Title #1\', \'Content #1\' )';
         $expected[1] = 'INSERT INTO "tt_content" ( "uid", "pid", "title", "body" ) VALUES ( \'3\', \'4\', \'Title #2\', \'Content #2\' )';
@@ -340,12 +340,12 @@ class DatabaseConnectionOracleTest extends AbstractTestCase
      */
     public function tablesAreUnmappedInAdminGetTables()
     {
-        $handlerMock = $this->getMock('\ADODB_mock', array('MetaTables'), array(), '', false);
-        $handlerMock->expects($this->any())->method('MetaTables')->will($this->returnValue(array('cf_cache_hash')));
+        $handlerMock = $this->getMock('\ADODB_mock', ['MetaTables'], [], '', false);
+        $handlerMock->expects($this->any())->method('MetaTables')->will($this->returnValue(['cf_cache_hash']));
         $this->subject->handlerInstance['_DEFAULT'] = $handlerMock;
 
         $actual = $this->subject->admin_get_tables();
-        $expected = array('cachingframework_cache_hash' => array('Name' => 'cachingframework_cache_hash'));
+        $expected = ['cachingframework_cache_hash' => ['Name' => 'cachingframework_cache_hash']];
         $this->assertSame($expected, $actual);
     }
 
@@ -985,7 +985,7 @@ class DatabaseConnectionOracleTest extends AbstractTestCase
     {
         $listMaxExpressions = 1000;
 
-        $mockSpecificsOci8 = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\Specifics\Oci8Specifics::class, array(), array(), '', false);
+        $mockSpecificsOci8 = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\Specifics\Oci8Specifics::class, [], [], '', false);
         $mockSpecificsOci8->expects($this->any())->method('getSpecific')->will($this->returnValue($listMaxExpressions));
 
         $items = range(0, 1250);
@@ -993,7 +993,7 @@ class DatabaseConnectionOracleTest extends AbstractTestCase
         $result = $this->subject->SELECTquery('*', 'tt_content', $where);
 
         $chunks = array_chunk($items, $listMaxExpressions);
-        $whereExpr = array();
+        $whereExpr = [];
         foreach ($chunks as $chunk) {
             $whereExpr[] = '"uid" NOT IN (' . implode(',', $chunk) . ')';
         }
@@ -1017,7 +1017,7 @@ class DatabaseConnectionOracleTest extends AbstractTestCase
     {
         $listMaxExpressions = 1000;
 
-        $mockSpecificsOci8 = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\Specifics\Oci8Specifics::class, array(), array(), '', false);
+        $mockSpecificsOci8 = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\Specifics\Oci8Specifics::class, [], [], '', false);
         $mockSpecificsOci8->expects($this->any())->method('getSpecific')->will($this->returnValue($listMaxExpressions));
 
         $items = range(0, 1250);
@@ -1025,7 +1025,7 @@ class DatabaseConnectionOracleTest extends AbstractTestCase
         $result = $this->subject->SELECTquery('*', 'tt_content', $where);
 
         $chunks = array_chunk($items, $listMaxExpressions);
-        $whereExpr = array();
+        $whereExpr = [];
         foreach ($chunks as $chunk) {
             $whereExpr[] = '"uid" IN (' . implode(',', $chunk) . ')';
         }
@@ -1049,7 +1049,7 @@ class DatabaseConnectionOracleTest extends AbstractTestCase
     {
         $listMaxExpressions = 1000;
 
-        $mockSpecificsOci8 = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\Specifics\Oci8Specifics::class, array(), array(), '', false);
+        $mockSpecificsOci8 = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\Specifics\Oci8Specifics::class, [], [], '', false);
         $mockSpecificsOci8->expects($this->any())->method('getSpecific')->will($this->returnValue($listMaxExpressions));
 
         $result = $this->subject->SELECTquery('*', 'tt_content', 'uid IN (0,1,2,3,4,5,6,7,8,9,10)');
@@ -1065,7 +1065,7 @@ class DatabaseConnectionOracleTest extends AbstractTestCase
     {
         $listMaxExpressions = 1000;
 
-        $mockSpecificsOci8 = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\Specifics\Oci8Specifics::class, array(), array(), '', false);
+        $mockSpecificsOci8 = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\Specifics\Oci8Specifics::class, [], [], '', false);
         $mockSpecificsOci8->expects($this->any())->method('getSpecific')->will($this->returnValue($listMaxExpressions));
 
         $items = range(0, 1250);
@@ -1073,7 +1073,7 @@ class DatabaseConnectionOracleTest extends AbstractTestCase
         $result = $this->subject->SELECTquery('uid, pid', 'tt_content', $where);
 
         $chunks = array_chunk($items, $listMaxExpressions);
-        $whereExpr = array();
+        $whereExpr = [];
         foreach ($chunks as $chunk) {
             $whereExpr[] = '"uid" IN (' . implode(',', $chunk) . ')';
         }
@@ -1097,7 +1097,7 @@ class DatabaseConnectionOracleTest extends AbstractTestCase
     {
         $listMaxExpressions = 1000;
 
-        $mockSpecificsOci8 = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\Specifics\Oci8Specifics::class, array(), array(), '', false);
+        $mockSpecificsOci8 = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\Specifics\Oci8Specifics::class, [], [], '', false);
         $mockSpecificsOci8->expects($this->any())->method('getSpecific')->will($this->returnValue($listMaxExpressions));
 
         $INitems = range(0, 1250);
@@ -1106,13 +1106,13 @@ class DatabaseConnectionOracleTest extends AbstractTestCase
         $result = $this->subject->SELECTquery('uid, pid', 'tt_content', $where);
 
         $chunks = array_chunk($INitems, $listMaxExpressions);
-        $INItemsWhereExpr = array();
+        $INItemsWhereExpr = [];
         foreach ($chunks as $chunk) {
             $INItemsWhereExpr[] = '"uid" IN (' . implode(',', $chunk) . ')';
         }
 
         $chunks = array_chunk($NOTINItems, $listMaxExpressions);
-        $NOTINItemsWhereExpr = array();
+        $NOTINItemsWhereExpr = [];
         foreach ($chunks as $chunk) {
             $NOTINItemsWhereExpr[] = '"uid" NOT IN (' . implode(',', $chunk) . ')';
         }

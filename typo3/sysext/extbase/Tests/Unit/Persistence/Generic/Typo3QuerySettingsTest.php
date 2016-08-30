@@ -29,7 +29,7 @@ class Typo3QuerySettingsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->typo3QuerySettings = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class, array('dummy'));
+        $this->typo3QuerySettings = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class, ['dummy']);
     }
 
     /**
@@ -37,10 +37,10 @@ class Typo3QuerySettingsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function booleanValueProvider()
     {
-        return array(
-            'TRUE setting' => array(true),
-            'FALSE setting' => array(false)
-        );
+        return [
+            'TRUE setting' => [true],
+            'FALSE setting' => [false]
+        ];
     }
 
     /**
@@ -48,22 +48,22 @@ class Typo3QuerySettingsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function arrayValueProvider()
     {
-        return array(
-            'empty array' => array(array()),
-            'two elements associative' => array(
-                array(
+        return [
+            'empty array' => [[]],
+            'two elements associative' => [
+                [
                     'one' => '42',
                     21 => 12
-                )
-            ),
-            'three elements' => array(
-                array(
+                ]
+            ],
+            'three elements' => [
+                [
                     1,
                     'dummy',
-                    array()
-                )
-            )
-        );
+                    []
+                ]
+            ]
+        ];
     }
 
     /**
@@ -102,7 +102,7 @@ class Typo3QuerySettingsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setStoragePageIdsAllowsChaining()
     {
-        $this->assertTrue($this->typo3QuerySettings->setStoragePageIds(array(1, 2, 3)) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+        $this->assertTrue($this->typo3QuerySettings->setStoragePageIds([1, 2, 3]) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
     }
 
     /**
@@ -170,7 +170,7 @@ class Typo3QuerySettingsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setEnableFieldsToBeIgnoredAllowsChaining()
     {
-        $this->assertTrue($this->typo3QuerySettings->setEnableFieldsToBeIgnored(array('starttime', 'endtime')) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+        $this->assertTrue($this->typo3QuerySettings->setEnableFieldsToBeIgnored(['starttime', 'endtime']) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
     }
 
     /**

@@ -125,7 +125,7 @@ class ThumbnailView
             }
             if ($relativeFilePath && file_exists(PATH_site . $relativeFilePath)) {
                 // Check file extension:
-                $reg = array();
+                $reg = [];
                 if (preg_match('/(.*)\\.([^\\.]*$)/', $relativeFilePath, $reg)) {
                     $ext = strtolower($reg[2]);
                     $ext = $ext == 'jpeg' ? 'jpg' : $ext;
@@ -197,7 +197,7 @@ class ThumbnailView
             // explodes the input size (and if no "x" is found this will add size again so it is the same for both dimensions)
             $sizeParts = explode('x', $this->size . 'x' . $this->size);
             // Cleaning it up, only two parameters now.
-            $sizeParts = array(MathUtility::forceIntegerInRange($sizeParts[0], 1, 1000), MathUtility::forceIntegerInRange($sizeParts[1], 1, 1000));
+            $sizeParts = [MathUtility::forceIntegerInRange($sizeParts[0], 1, 1000), MathUtility::forceIntegerInRange($sizeParts[1], 1, 1000)];
             // Imploding the cleaned size-value back to the internal variable
             $this->size = implode('x', $sizeParts);
             // Getting max value

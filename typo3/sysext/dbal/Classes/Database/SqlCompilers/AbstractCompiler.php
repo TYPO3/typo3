@@ -113,7 +113,7 @@ abstract class AbstractCompiler
         // Where clause:
         $where = $this->compileWhereClause($components['WHERE']);
         // Fields
-        $fields = array();
+        $fields = [];
         foreach ($components['FIELDS'] as $fN => $fV) {
             $fields[] = $fN . '=' . $fV[1] . $this->compileAddslashes($fV[0]) . $fV[1];
         }
@@ -253,7 +253,7 @@ abstract class AbstractCompiler
     public function compileFromTables($tablesArray)
     {
         // Prepare buffer variable:
-        $outputParts = array();
+        $outputParts = [];
         // Traverse the table names:
         if (is_array($tablesArray)) {
             foreach ($tablesArray as $k => $v) {

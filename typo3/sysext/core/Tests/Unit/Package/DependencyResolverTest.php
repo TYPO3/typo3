@@ -33,7 +33,7 @@ class DependencyResolverTest extends UnitTestCase
     public function buildDependencyGraphBuildsCorrectGraph(array $unsortedPackageStatesConfiguration, array $frameworkPackageKeys, array $expectedGraph)
     {
         /** @var DependencyResolver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $dependencyResolver */
-        $dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('findFrameworkPackages'));
+        $dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, ['findFrameworkPackages']);
         $dependencyResolver->injectDependencyOrderingService(new DependencyOrderingService());
         $dependencyResolver->expects($this->any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
         $dependencyGraph = $dependencyResolver->_call('buildDependencyGraph', $unsortedPackageStatesConfiguration);
@@ -51,7 +51,7 @@ class DependencyResolverTest extends UnitTestCase
     public function sortPackageStatesConfigurationByDependencyMakesSureThatDependantPackagesAreStandingBeforeAPackageInTheInternalPackagesAndPackagesConfigurationArrays($unsortedPackageStatesConfiguration, $frameworkPackageKeys, $expectedSortedPackageStatesConfiguration)
     {
         /** @var DependencyResolver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $dependencyResolver */
-        $dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('findFrameworkPackages'));
+        $dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, ['findFrameworkPackages']);
         $dependencyResolver->injectDependencyOrderingService(new DependencyOrderingService());
         $dependencyResolver->expects($this->any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
         $sortedPackageStatesConfiguration = $dependencyResolver->_call('sortPackageStatesConfigurationByDependency', $unsortedPackageStatesConfiguration);
@@ -65,21 +65,21 @@ class DependencyResolverTest extends UnitTestCase
      */
     public function sortPackageStatesConfigurationByDependencyThrowsExceptionWhenCycleDetected()
     {
-        $unsortedPackageStatesConfiguration = array(
-            'A' => array(
+        $unsortedPackageStatesConfiguration = [
+            'A' => [
                 'state' => 'active',
-                'dependencies' => array('B'),
-            ),
-            'B' => array(
+                'dependencies' => ['B'],
+            ],
+            'B' => [
                 'state' => 'active',
-                'dependencies' => array('A')
-            ),
-        );
+                'dependencies' => ['A']
+            ],
+        ];
 
         /** @var DependencyResolver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $dependencyResolver */
-        $dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('findFrameworkPackages'));
+        $dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, ['findFrameworkPackages']);
         $dependencyResolver->injectDependencyOrderingService(new DependencyOrderingService());
-        $dependencyResolver->expects($this->any())->method('findFrameworkPackages')->willReturn(array());
+        $dependencyResolver->expects($this->any())->method('findFrameworkPackages')->willReturn([]);
         $dependencyResolver->_call('sortPackageStatesConfigurationByDependency', $unsortedPackageStatesConfiguration);
     }
 
@@ -88,107 +88,107 @@ class DependencyResolverTest extends UnitTestCase
      */
     public function buildDependencyGraphBuildsCorrectGraphDataProvider()
     {
-        return array(
-            'TYPO3 Flow Packages' => array(
-                array(
-                    'TYPO3.Flow' => array(
+        return [
+            'TYPO3 Flow Packages' => [
+                [
+                    'TYPO3.Flow' => [
                         'state' => 'active',
-                        'dependencies' => array('Symfony.Component.Yaml', 'Doctrine.Common', 'Doctrine.DBAL', 'Doctrine.ORM')
-                    ),
-                    'Doctrine.ORM' => array(
+                        'dependencies' => ['Symfony.Component.Yaml', 'Doctrine.Common', 'Doctrine.DBAL', 'Doctrine.ORM']
+                    ],
+                    'Doctrine.ORM' => [
                         'state' => 'active',
-                        'dependencies' => array('Doctrine.Common', 'Doctrine.DBAL')
-                    ),
-                    'Doctrine.Common' => array(
+                        'dependencies' => ['Doctrine.Common', 'Doctrine.DBAL']
+                    ],
+                    'Doctrine.Common' => [
                         'state' => 'active',
-                        'dependencies' => array()
-                    ),
-                    'Doctrine.DBAL' => array(
+                        'dependencies' => []
+                    ],
+                    'Doctrine.DBAL' => [
                         'state' => 'active',
-                        'dependencies' => array('Doctrine.Common')
-                    ),
-                    'Symfony.Component.Yaml' => array(
+                        'dependencies' => ['Doctrine.Common']
+                    ],
+                    'Symfony.Component.Yaml' => [
                         'state' => 'active',
-                        'dependencies' => array()
-                    ),
-                ),
-                array(
+                        'dependencies' => []
+                    ],
+                ],
+                [
                     'Doctrine.Common'
-                ),
-                array(
-                    'TYPO3.Flow' => array(
+                ],
+                [
+                    'TYPO3.Flow' => [
                         'TYPO3.Flow' => false,
                         'Doctrine.ORM' => true,
                         'Doctrine.Common' => true,
                         'Doctrine.DBAL' => true,
                         'Symfony.Component.Yaml' => true,
-                    ),
-                    'Doctrine.ORM' => array(
+                    ],
+                    'Doctrine.ORM' => [
                         'TYPO3.Flow' => false,
                         'Doctrine.ORM' => false,
                         'Doctrine.Common' => true,
                         'Doctrine.DBAL' => true,
                         'Symfony.Component.Yaml' => false,
-                    ),
-                    'Doctrine.Common' => array(
+                    ],
+                    'Doctrine.Common' => [
                         'TYPO3.Flow' => false,
                         'Doctrine.ORM' => false,
                         'Doctrine.Common' => false,
                         'Doctrine.DBAL' => false,
                         'Symfony.Component.Yaml' => false,
-                    ),
-                    'Doctrine.DBAL' => array(
+                    ],
+                    'Doctrine.DBAL' => [
                         'TYPO3.Flow' => false,
                         'Doctrine.ORM' => false,
                         'Doctrine.Common' => true,
                         'Doctrine.DBAL' => false,
                         'Symfony.Component.Yaml' => false,
-                    ),
-                    'Symfony.Component.Yaml' => array(
+                    ],
+                    'Symfony.Component.Yaml' => [
                         'TYPO3.Flow' => false,
                         'Doctrine.ORM' => false,
                         'Doctrine.Common' => true,
                         'Doctrine.DBAL' => false,
                         'Symfony.Component.Yaml' => false,
-                    ),
-                ),
-            ),
-            'TYPO3 CMS Extensions' => array(
-                array(
-                    'core' => array(
+                    ],
+                ],
+            ],
+            'TYPO3 CMS Extensions' => [
+                [
+                    'core' => [
                         'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                    'setup' => array(
+                        'dependencies' => [],
+                    ],
+                    'setup' => [
                         'state' => 'active',
-                        'dependencies' => array('core'),
-                    ),
-                    'openid' => array(
+                        'dependencies' => ['core'],
+                    ],
+                    'openid' => [
                         'state' => 'active',
-                        'dependencies' => array('core', 'setup')
-                    ),
-                    'news' => array(
+                        'dependencies' => ['core', 'setup']
+                    ],
+                    'news' => [
                         'state' => 'active',
-                        'dependencies' => array('extbase'),
-                    ),
-                    'extbase' => array(
+                        'dependencies' => ['extbase'],
+                    ],
+                    'extbase' => [
                         'state' => 'active',
-                        'dependencies' => array('core'),
-                    ),
-                    'pt_extbase' => array(
+                        'dependencies' => ['core'],
+                    ],
+                    'pt_extbase' => [
                         'state' => 'active',
-                        'dependencies' => array('extbase'),
-                    ),
-                    'foo' => array(
+                        'dependencies' => ['extbase'],
+                    ],
+                    'foo' => [
                         'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                ),
-                array(
+                        'dependencies' => [],
+                    ],
+                ],
+                [
                     'core', 'setup', 'openid', 'extbase'
-                ),
-                array(
-                    'core' => array(
+                ],
+                [
+                    'core' => [
                         'core' => false,
                         'setup' => false,
                         'openid' => false,
@@ -196,8 +196,8 @@ class DependencyResolverTest extends UnitTestCase
                         'extbase' => false,
                         'pt_extbase' => false,
                         'foo' => false
-                    ),
-                    'setup' => array(
+                    ],
+                    'setup' => [
                         'core' => true,
                         'setup' => false,
                         'openid' => false,
@@ -205,8 +205,8 @@ class DependencyResolverTest extends UnitTestCase
                         'extbase' => false,
                         'pt_extbase' => false,
                         'foo' => false
-                    ),
-                    'openid' => array(
+                    ],
+                    'openid' => [
                         'core' => true,
                         'setup' => true,
                         'openid' => false,
@@ -214,8 +214,8 @@ class DependencyResolverTest extends UnitTestCase
                         'extbase' => false,
                         'pt_extbase' => false,
                         'foo' => false
-                    ),
-                    'news' => array(
+                    ],
+                    'news' => [
                         'core' => false,
                         'setup' => false,
                         'openid' => true,
@@ -223,8 +223,8 @@ class DependencyResolverTest extends UnitTestCase
                         'extbase' => true,
                         'pt_extbase' => false,
                         'foo' => false
-                    ),
-                    'extbase' => array(
+                    ],
+                    'extbase' => [
                         'core' => true,
                         'setup' => false,
                         'openid' => false,
@@ -232,8 +232,8 @@ class DependencyResolverTest extends UnitTestCase
                         'extbase' => false,
                         'pt_extbase' => false,
                         'foo' => false
-                    ),
-                    'pt_extbase' => array(
+                    ],
+                    'pt_extbase' => [
                         'core' => false,
                         'setup' => false,
                         'openid' => true,
@@ -241,8 +241,8 @@ class DependencyResolverTest extends UnitTestCase
                         'extbase' => true,
                         'pt_extbase' => false,
                         'foo' => false
-                    ),
-                    'foo' => array(
+                    ],
+                    'foo' => [
                         'core' => false,
                         'setup' => false,
                         'openid' => true,
@@ -250,91 +250,91 @@ class DependencyResolverTest extends UnitTestCase
                         'extbase' => true,
                         'pt_extbase' => false,
                         'foo' => false
-                    ),
-                ),
-            ),
-            'Dummy Packages' => array(
-                array(
-                    'A' => array(
+                    ],
+                ],
+            ],
+            'Dummy Packages' => [
+                [
+                    'A' => [
                         'state' => 'active',
-                        'dependencies' => array('B', 'D', 'C'),
-                    ),
-                    'B' => array(
+                        'dependencies' => ['B', 'D', 'C'],
+                    ],
+                    'B' => [
                         'state' => 'active',
-                        'dependencies' => array()
-                    ),
-                    'C' => array(
+                        'dependencies' => []
+                    ],
+                    'C' => [
                         'state' => 'active',
-                        'dependencies' => array('E')
-                    ),
-                    'D' => array(
+                        'dependencies' => ['E']
+                    ],
+                    'D' => [
                         'state' => 'active',
-                        'dependencies' => array('E'),
-                    ),
-                    'E' => array(
+                        'dependencies' => ['E'],
+                    ],
+                    'E' => [
                         'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                    'F' => array(
+                        'dependencies' => [],
+                    ],
+                    'F' => [
                         'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                ),
-                array(
+                        'dependencies' => [],
+                    ],
+                ],
+                [
                     'B', 'C', 'E'
-                ),
-                array(
-                    'A' => array(
+                ],
+                [
+                    'A' => [
                         'A' => false,
                         'B' => true,
                         'C' => true,
                         'D' => true,
                         'E' => false,
                         'F' => false,
-                    ),
-                    'B' => array(
+                    ],
+                    'B' => [
                         'A' => false,
                         'B' => false,
                         'C' => false,
                         'D' => false,
                         'E' => false,
                         'F' => false,
-                    ),
-                    'C' => array(
+                    ],
+                    'C' => [
                         'A' => false,
                         'B' => false,
                         'C' => false,
                         'D' => false,
                         'E' => true,
                         'F' => false,
-                    ),
-                    'D' => array(
+                    ],
+                    'D' => [
                         'A' => false,
                         'B' => true,
                         'C' => true,
                         'D' => false,
                         'E' => false,
                         'F' => false,
-                    ),
-                    'E' => array(
+                    ],
+                    'E' => [
                         'A' => false,
                         'B' => false,
                         'C' => false,
                         'D' => false,
                         'E' => false,
                         'F' => false,
-                    ),
-                    'F' => array(
+                    ],
+                    'F' => [
                         'A' => false,
                         'B' => true,
                         'C' => true,
                         'D' => false,
                         'E' => false,
                         'F' => false,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
     }
 
     /**
@@ -342,178 +342,178 @@ class DependencyResolverTest extends UnitTestCase
      */
     public function packageSortingDataProvider()
     {
-        return array(
-            'TYPO3 Flow Packages' => array(
-                array(
-                    'TYPO3.Flow' => array(
+        return [
+            'TYPO3 Flow Packages' => [
+                [
+                    'TYPO3.Flow' => [
                         'state' => 'active',
-                        'dependencies' => array('Symfony.Component.Yaml', 'Doctrine.Common', 'Doctrine.DBAL', 'Doctrine.ORM')
-                    ),
-                    'Doctrine.ORM' => array(
+                        'dependencies' => ['Symfony.Component.Yaml', 'Doctrine.Common', 'Doctrine.DBAL', 'Doctrine.ORM']
+                    ],
+                    'Doctrine.ORM' => [
                         'state' => 'active',
-                        'dependencies' => array('Doctrine.Common', 'Doctrine.DBAL')
-                    ),
-                    'Doctrine.Common' => array(
+                        'dependencies' => ['Doctrine.Common', 'Doctrine.DBAL']
+                    ],
+                    'Doctrine.Common' => [
                         'state' => 'active',
-                        'dependencies' => array()
-                    ),
-                    'Doctrine.DBAL' => array(
+                        'dependencies' => []
+                    ],
+                    'Doctrine.DBAL' => [
                         'state' => 'active',
-                        'dependencies' => array('Doctrine.Common')
-                    ),
-                    'Symfony.Component.Yaml' => array(
+                        'dependencies' => ['Doctrine.Common']
+                    ],
+                    'Symfony.Component.Yaml' => [
                         'state' => 'active',
-                        'dependencies' => array()
-                    ),
-                ),
-                array(
+                        'dependencies' => []
+                    ],
+                ],
+                [
                     'Doctrine.Common'
-                ),
-                array(
-                    'Doctrine.Common' => array(
+                ],
+                [
+                    'Doctrine.Common' => [
                         'state' => 'active',
-                        'dependencies' => array()
-                    ),
-                    'Doctrine.DBAL' => array(
+                        'dependencies' => []
+                    ],
+                    'Doctrine.DBAL' => [
                         'state' => 'active',
-                        'dependencies' => array('Doctrine.Common')
-                    ),
-                    'Doctrine.ORM' => array(
+                        'dependencies' => ['Doctrine.Common']
+                    ],
+                    'Doctrine.ORM' => [
                         'state' => 'active',
-                        'dependencies' => array('Doctrine.Common', 'Doctrine.DBAL')
-                    ),
-                    'Symfony.Component.Yaml' => array(
+                        'dependencies' => ['Doctrine.Common', 'Doctrine.DBAL']
+                    ],
+                    'Symfony.Component.Yaml' => [
                         'state' => 'active',
-                        'dependencies' => array()
-                    ),
-                    'TYPO3.Flow' => array(
+                        'dependencies' => []
+                    ],
+                    'TYPO3.Flow' => [
                         'state' => 'active',
-                        'dependencies' => array('Symfony.Component.Yaml', 'Doctrine.Common', 'Doctrine.DBAL', 'Doctrine.ORM')
-                    ),
-                ),
-            ),
-            'TYPO3 CMS Extensions' => array(
-                array(
-                    'core' => array(
+                        'dependencies' => ['Symfony.Component.Yaml', 'Doctrine.Common', 'Doctrine.DBAL', 'Doctrine.ORM']
+                    ],
+                ],
+            ],
+            'TYPO3 CMS Extensions' => [
+                [
+                    'core' => [
                         'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                    'setup' => array(
+                        'dependencies' => [],
+                    ],
+                    'setup' => [
                         'state' => 'active',
-                        'dependencies' => array('core'),
-                    ),
-                    'openid' => array(
+                        'dependencies' => ['core'],
+                    ],
+                    'openid' => [
                         'state' => 'active',
-                        'dependencies' => array('core', 'setup')
-                    ),
-                    'news' => array(
+                        'dependencies' => ['core', 'setup']
+                    ],
+                    'news' => [
                         'state' => 'active',
-                        'dependencies' => array('extbase'),
-                    ),
-                    'extbase' => array(
+                        'dependencies' => ['extbase'],
+                    ],
+                    'extbase' => [
                         'state' => 'active',
-                        'dependencies' => array('core'),
-                    ),
-                    'pt_extbase' => array(
+                        'dependencies' => ['core'],
+                    ],
+                    'pt_extbase' => [
                         'state' => 'active',
-                        'dependencies' => array('extbase'),
-                    ),
-                    'foo' => array(
+                        'dependencies' => ['extbase'],
+                    ],
+                    'foo' => [
                         'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                ),
-                array(
+                        'dependencies' => [],
+                    ],
+                ],
+                [
                     'core', 'setup', 'openid', 'extbase'
-                ),
-                array(
-                    'core' => array(
+                ],
+                [
+                    'core' => [
                         'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                    'setup' => array(
+                        'dependencies' => [],
+                    ],
+                    'setup' => [
                         'state' => 'active',
-                        'dependencies' => array('core'),
-                    ),
-                    'openid' => array(
+                        'dependencies' => ['core'],
+                    ],
+                    'openid' => [
                         'state' => 'active',
-                        'dependencies' => array('core', 'setup')
-                    ),
-                    'extbase' => array(
+                        'dependencies' => ['core', 'setup']
+                    ],
+                    'extbase' => [
                         'state' => 'active',
-                        'dependencies' => array('core'),
-                    ),
-                    'foo' => array(
+                        'dependencies' => ['core'],
+                    ],
+                    'foo' => [
                         'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                    'pt_extbase' => array(
+                        'dependencies' => [],
+                    ],
+                    'pt_extbase' => [
                         'state' => 'active',
-                        'dependencies' => array('extbase'),
-                    ),
-                    'news' => array(
+                        'dependencies' => ['extbase'],
+                    ],
+                    'news' => [
                         'state' => 'active',
-                        'dependencies' => array('extbase'),
-                    ),
-                ),
-            ),
-            'Dummy Packages' => array(
-                array(
-                    'A' => array(
+                        'dependencies' => ['extbase'],
+                    ],
+                ],
+            ],
+            'Dummy Packages' => [
+                [
+                    'A' => [
                         'state' => 'active',
-                        'dependencies' => array('B', 'D', 'C'),
-                    ),
-                    'B' => array(
+                        'dependencies' => ['B', 'D', 'C'],
+                    ],
+                    'B' => [
                         'state' => 'active',
-                        'dependencies' => array()
-                    ),
-                    'C' => array(
+                        'dependencies' => []
+                    ],
+                    'C' => [
                         'state' => 'active',
-                        'dependencies' => array('E')
-                    ),
-                    'D' => array(
+                        'dependencies' => ['E']
+                    ],
+                    'D' => [
                         'state' => 'active',
-                        'dependencies' => array('E'),
-                    ),
-                    'E' => array(
+                        'dependencies' => ['E'],
+                    ],
+                    'E' => [
                         'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                    'F' => array(
+                        'dependencies' => [],
+                    ],
+                    'F' => [
                         'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                ),
-                array(
+                        'dependencies' => [],
+                    ],
+                ],
+                [
                     'B', 'C', 'E'
-                ),
-                array(
-                    'B' => array(
+                ],
+                [
+                    'B' => [
                         'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                    'E' => array(
+                        'dependencies' => [],
+                    ],
+                    'E' => [
                         'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                    'C' => array(
+                        'dependencies' => [],
+                    ],
+                    'C' => [
                         'state' => 'active',
-                        'dependencies' => array('E'),
-                    ),
-                    'F' => array(
+                        'dependencies' => ['E'],
+                    ],
+                    'F' => [
                         'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                    'D' => array(
+                        'dependencies' => [],
+                    ],
+                    'D' => [
                         'state' => 'active',
-                        'dependencies' => array('E'),
-                    ),
-                    'A' => array(
+                        'dependencies' => ['E'],
+                    ],
+                    'A' => [
                         'state' => 'active',
-                        'dependencies' => array('B', 'D', 'C'),
-                    ),
-                ),
-            ),
-        );
+                        'dependencies' => ['B', 'D', 'C'],
+                    ],
+                ],
+            ],
+        ];
     }
 }

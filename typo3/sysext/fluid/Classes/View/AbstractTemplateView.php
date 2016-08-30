@@ -62,7 +62,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
      *
      * @var array
      */
-    protected $renderingStack = array();
+    protected $renderingStack = [];
 
     /**
      * Partial Name -> Partial Identifier cache.
@@ -71,7 +71,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
      *
      * @var array
      */
-    protected $partialIdentifierCache = array();
+    protected $partialIdentifierCache = [];
 
     /**
      * @param \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler
@@ -407,7 +407,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
      */
     protected function startRendering($type, \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterface $parsedTemplate, \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
     {
-        array_push($this->renderingStack, array('type' => $type, 'parsedTemplate' => $parsedTemplate, 'renderingContext' => $renderingContext));
+        array_push($this->renderingStack, ['type' => $type, 'parsedTemplate' => $parsedTemplate, 'renderingContext' => $renderingContext]);
     }
 
     /**

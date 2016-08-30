@@ -24,7 +24,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      *
      * @var array
      */
-    protected $beUserList = array();
+    protected $beUserList = [];
 
     /**
      * Initialize some local variables to be used during creation of objects
@@ -53,7 +53,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if (!empty($queryConstraints)) {
             $query->matching($query->logicalAnd($queryConstraints));
         }
-        $query->setOrderings(array('uid' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING));
+        $query->setOrderings(['uid' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING]);
         $query->setLimit($constraint->getNumber());
         return $query->execute();
     }
@@ -67,7 +67,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     protected function createQueryConstraints(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query, \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint)
     {
-        $queryConstraints = array();
+        $queryConstraints = [];
         // User / group handling
         $this->addUsersAndGroupsToQueryConstraints($constraint, $query, $queryConstraints);
         // Workspace
@@ -78,7 +78,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if ($constraint->getAction() > 0) {
             $queryConstraints[] = $query->equals('type', $constraint->getAction());
         } elseif ($constraint->getAction() == -1) {
-            $queryConstraints[] = $query->in('error', array(-1, 1, 2, 3));
+            $queryConstraints[] = $query->in('error', [-1, 1, 2, 3]);
         }
         // Start / endtime handling: The timestamp calculation was already done
         // in the controller, since we need those calculated values in the view as well.
@@ -103,14 +103,14 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if (!$constraint->getIsInPageContext()) {
             return;
         }
-        $pageIds = array();
+        $pageIds = [];
         // Check if we should get a whole tree of pages and not only a single page
         if ($constraint->getDepth() > 0) {
             /** @var $pageTree \TYPO3\CMS\Backend\Tree\View\PageTreeView */
             $pageTree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
             $pageTree->init('AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1));
             $pageTree->makeHTML = 0;
-            $pageTree->fieldArray = array('uid');
+            $pageTree->fieldArray = ['uid'];
             $pageTree->getTree($constraint->getPageId(), $constraint->getDepth());
             $pageIds = $pageTree->ids;
         }
@@ -135,7 +135,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         // Constraint for a group
         if (substr($userOrGroup, 0, 3) === 'gr-') {
             $groupId = (int)substr($userOrGroup, 3);
-            $userIds = array();
+            $userIds = [];
             foreach ($this->beUserList as $userId => $userData) {
                 if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($userData['usergroup_cached_list'], $groupId)) {
                     $userIds[] = $userId;
@@ -145,7 +145,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 $queryConstraints[] = $query->in('userid', $userIds);
             } else {
                 // If there are no group members -> use -1 as constraint to not find anything
-                $queryConstraints[] = $query->in('userid', array(-1));
+                $queryConstraints[] = $query->in('userid', [-1]);
             }
         } elseif (substr($userOrGroup, 0, 3) === 'us-') {
             $queryConstraints[] = $query->equals('userid', (int)substr($userOrGroup, 3));

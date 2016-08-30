@@ -86,7 +86,7 @@ This can either happen on demand, when the processed file is first needed, or by
 
             if ($storage->getDriverType() !== 'Local') {
                 // non-local storage, we can't treat this, skip the record and mark it done
-                $db->exec_INSERTquery('sys_registry', array('entry_namespace' => 'ProcessedFileChecksumUpdate', 'entry_key' => $processedFileRow['uid']));
+                $db->exec_INSERTquery('sys_registry', ['entry_namespace' => 'ProcessedFileChecksumUpdate', 'entry_key' => $processedFileRow['uid']]);
                 continue;
             }
 
@@ -107,7 +107,7 @@ This can either happen on demand, when the processed file is first needed, or by
                 continue;
             }
 
-            $processedFileObject = new ProcessedFile($originalFile, '', array(), $processedFileRow);
+            $processedFileObject = new ProcessedFile($originalFile, '', [], $processedFileRow);
 
             // calculate new checksum and name
             $newChecksum = $processedFileObject->calculateChecksum();
@@ -121,19 +121,19 @@ This can either happen on demand, when the processed file is first needed, or by
                 // rename file
                 if (@rename($filePath, $newFilePath)) {
                     // save result back into database
-                    $fields = array(
+                    $fields = [
                         'tstamp' => time(),
                         'identifier' => $newIdentifier,
                         'name' => $newName,
                         'checksum' => $newChecksum
-                    );
+                    ];
                     $db->exec_UPDATEquery('sys_file_processedfile', 'uid=' . $processedFileRow['uid'], $fields);
                 }
                 // if the rename of the file failed, keep the record, but do not bother with it again
             }
 
             // remember we finished this record
-            $db->exec_INSERTquery('sys_registry', array('entry_namespace' => 'ProcessedFileChecksumUpdate', 'entry_key' => $processedFileRow['uid']));
+            $db->exec_INSERTquery('sys_registry', ['entry_namespace' => 'ProcessedFileChecksumUpdate', 'entry_key' => $processedFileRow['uid']]);
         }
 
         $db->exec_DELETEquery('sys_registry', 'entry_namespace = \'ProcessedFileChecksumUpdate\'');

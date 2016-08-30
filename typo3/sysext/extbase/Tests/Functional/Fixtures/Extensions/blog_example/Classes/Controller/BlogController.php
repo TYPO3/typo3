@@ -70,10 +70,10 @@ class BlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     protected function getStructure($iterator)
     {
-        $structure = array();
+        $structure = [];
 
         if (!$iterator instanceof \Iterator) {
-            $iterator = array($iterator);
+            $iterator = [$iterator];
         }
 
         foreach ($iterator as $entity) {
@@ -82,7 +82,7 @@ class BlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $identifier = $tableName . ':' . $entity->getUid();
             $properties = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($entity);
 
-            $structureItem = array();
+            $structureItem = [];
             foreach ($properties as $propertyName => $propertyValue) {
                 $columnMap = $dataMap->getColumnMap($propertyName);
                 if ($columnMap !== null) {
@@ -105,7 +105,7 @@ class BlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     protected function getRuntimeIdentifier()
     {
-        $arguments = array();
+        $arguments = [];
         foreach ($this->request->getArguments() as $argumentName => $argumentValue) {
             $arguments[] = $argumentName . '=' . $argumentValue;
         }

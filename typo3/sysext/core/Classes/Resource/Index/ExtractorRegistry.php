@@ -27,7 +27,7 @@ class ExtractorRegistry implements SingletonInterface
      * Registered ClassNames
      * @var array
      */
-    protected $extractors = array();
+    protected $extractors = [];
 
     /**
      * Instance Cache for Extractors
@@ -71,7 +71,7 @@ class ExtractorRegistry implements SingletonInterface
     public function getExtractors()
     {
         if ($this->instances === null) {
-            $this->instances = array();
+            $this->instances = [];
 
             $extractors = array_reverse($this->extractors);
             foreach ($extractors as $className) {
@@ -81,7 +81,7 @@ class ExtractorRegistry implements SingletonInterface
             }
 
             if (count($this->instances) > 1) {
-                usort($this->instances, array($this, 'compareExtractorPriority'));
+                usort($this->instances, [$this, 'compareExtractorPriority']);
             }
         }
         return $this->instances;
@@ -97,7 +97,7 @@ class ExtractorRegistry implements SingletonInterface
     {
         $allExtractors = $this->getExtractors();
 
-        $filteredExtractors = array();
+        $filteredExtractors = [];
         foreach ($allExtractors as $priority => $extractorObject) {
             if (empty($extractorObject->getDriverRestrictions())) {
                 $filteredExtractors[$priority] = $extractorObject;

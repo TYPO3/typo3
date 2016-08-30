@@ -38,7 +38,7 @@ class TestSetup extends Action\AbstractAction
     {
         $this->imageBasePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
 
-        $actionMessages = array();
+        $actionMessages = [];
         if (isset($this->postValues['set']['testMail'])) {
             $actionMessages[] = $this->sendTestMail();
             $this->view->assign('postAction', 'testMail');
@@ -205,8 +205,8 @@ class TestSetup extends Action\AbstractAction
             'If the two images below do not look the same, please check your FreeType 2 module.'
         );
 
-        $testResults = array();
-        $testResults['ttf'] = array();
+        $testResults = [];
+        $testResults['ttf'] = [];
         $testResults['ttf']['message'] = $message;
         $testResults['ttf']['title'] = '';
         $testResults['ttf']['outputFile'] = $outputFile;
@@ -227,11 +227,11 @@ class TestSetup extends Action\AbstractAction
         $imageProcessor = $this->initializeImageProcessor();
         $parseTimeStart = GeneralUtility::milliseconds();
 
-        $inputFormatsToTest = array('jpg', 'gif', 'png', 'tif', 'bmp', 'pcx', 'tga', 'pdf', 'ai');
+        $inputFormatsToTest = ['jpg', 'gif', 'png', 'tif', 'bmp', 'pcx', 'tga', 'pdf', 'ai'];
 
-        $testResults = array();
+        $testResults = [];
         foreach ($inputFormatsToTest as $formatToTest) {
-            $result = array();
+            $result = [];
             if (!GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $formatToTest)) {
                 /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
                 $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\WarningStatus::class);
@@ -239,10 +239,10 @@ class TestSetup extends Action\AbstractAction
                 $message->setMessage('Handling format ' . $formatToTest . ' must be enabled in TYPO3_CONF_VARS[\'GFX\'][\'imagefile_ext\']');
                 $result['error'] = $message;
             } else {
-                $imageProcessor->IM_commands = array();
+                $imageProcessor->IM_commands = [];
                 $inputFile = $this->imageBasePath . 'TestInput/Test.' . $formatToTest;
                 $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('read') . '-' . $formatToTest;
-                $imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '170', '', '', '', array(), true);
+                $imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '170', '', '', '', [], true);
                 $result['title'] = 'Read ' . $formatToTest;
                 if ($imResult !== null) {
                     $result['outputFile'] = $imResult[3];
@@ -270,15 +270,15 @@ class TestSetup extends Action\AbstractAction
         $imageProcessor = $this->initializeImageProcessor();
         $parseTimeStart = GeneralUtility::milliseconds();
 
-        $testResults = array(
-            'gif' => array(),
-            'png' => array(),
-        );
+        $testResults = [
+            'gif' => [],
+            'png' => [],
+        ];
 
         // Gif
         $inputFile = $this->imageBasePath . 'TestInput/Test.gif';
         $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('write-gif');
-        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'gif', '', '', '', '', array(), true);
+        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'gif', '', '', '', '', [], true);
         if ($imResult !== null && is_file($imResult[3])) {
             if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress']) {
                 clearstatcache();
@@ -309,9 +309,9 @@ class TestSetup extends Action\AbstractAction
 
         // Png
         $inputFile = $this->imageBasePath . 'TestInput/Test.png';
-        $imageProcessor->IM_commands = array();
+        $imageProcessor->IM_commands = [];
         $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('write-png');
-        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'png', '', '', '', '', array(), true);
+        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'png', '', '', '', '', [], true);
         if ($imResult !== null) {
             $testResults['png']['title'] = 'Write png';
             $testResults['png']['outputFile'] = $imResult[3];
@@ -336,16 +336,16 @@ class TestSetup extends Action\AbstractAction
         $imageProcessor = $this->initializeImageProcessor();
         $parseTimeStart = GeneralUtility::milliseconds();
 
-        $testResults = array(
-            'gif-to-gif' => array(),
-            'png-to-png' => array(),
-            'gif-to-jpg' => array(),
-        );
+        $testResults = [
+            'gif-to-gif' => [],
+            'png-to-png' => [],
+            'gif-to-jpg' => [],
+        ];
 
-        $imageProcessor->IM_commands = array();
+        $imageProcessor->IM_commands = [];
         $inputFile = $this->imageBasePath . 'TestInput/Transparent.gif';
         $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-gif');
-        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'gif', '150', '', '', '', array(), true);
+        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'gif', '150', '', '', '', [], true);
         if ($imResult !== null) {
             $testResults['gif-to-gif']['title'] = 'gif to gif';
             $testResults['gif-to-gif']['outputFile'] = $imResult[3];
@@ -355,10 +355,10 @@ class TestSetup extends Action\AbstractAction
             $testResults['gif-to-gif']['error'] = $this->imageGenerationFailedMessage();
         }
 
-        $imageProcessor->IM_commands = array();
+        $imageProcessor->IM_commands = [];
         $inputFile = $this->imageBasePath . 'TestInput/Transparent.png';
         $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-png');
-        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'png', '150', '', '', '', array(), true);
+        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'png', '150', '', '', '', [], true);
         if ($imResult !== null) {
             $testResults['png-to-png']['title'] = 'png to png';
             $testResults['png-to-png']['outputFile'] = $imResult[3];
@@ -368,10 +368,10 @@ class TestSetup extends Action\AbstractAction
             $testResults['png-to-png']['error'] = $this->imageGenerationFailedMessage();
         }
 
-        $imageProcessor->IM_commands = array();
+        $imageProcessor->IM_commands = [];
         $inputFile = $this->imageBasePath . 'TestInput/Transparent.gif';
         $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-jpg');
-        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '150', '', '-opaque white -background white -flatten', '', array(), true);
+        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '150', '', '-opaque white -background white -flatten', '', [], true);
         if ($imResult !== null) {
             $testResults['gif-to-jpg']['title'] = 'gif to jpg';
             $testResults['gif-to-jpg']['outputFile'] = $imResult[3];
@@ -396,10 +396,10 @@ class TestSetup extends Action\AbstractAction
         $imageProcessor = $this->initializeImageProcessor();
         $parseTimeStart = GeneralUtility::milliseconds();
 
-        $testResults = array(
-            'combine1' => array(),
-            'combine2' => array(),
-        );
+        $testResults = [
+            'combine1' => [],
+            'combine2' => [],
+        ];
 
         $inputFile = $this->imageBasePath . 'TestInput/BackgroundGreen.gif';
         $overlayFile = $this->imageBasePath . 'TestInput/Test.jpg';
@@ -417,7 +417,7 @@ class TestSetup extends Action\AbstractAction
             $testResults['combine1']['error'] = $this->imageGenerationFailedMessage();
         }
 
-        $imageProcessor->IM_commands = array();
+        $imageProcessor->IM_commands = [];
         $inputFile = $this->imageBasePath . 'TestInput/BackgroundCombine.jpg';
         $overlayFile = $this->imageBasePath . 'TestInput/Test.jpg';
         $maskFile = $this->imageBasePath . 'TestInput/MaskCombine.jpg';
@@ -449,52 +449,52 @@ class TestSetup extends Action\AbstractAction
         $imageProcessor = $this->initializeImageProcessor();
         $parseTimeStart = GeneralUtility::milliseconds();
         $gifOrPng = $imageProcessor->gifExtension;
-        $testResults = array();
+        $testResults = [];
 
         // GD with simple box
-        $imageProcessor->IM_commands = array();
+        $imageProcessor->IM_commands = [];
         $image = imagecreatetruecolor(170, 136);
         $backgroundColor = imagecolorallocate($image, 0, 0, 0);
         imagefilledrectangle($image, 0, 0, 170, 136, $backgroundColor);
-        $workArea = array(0, 0, 170, 136);
-        $conf = array(
+        $workArea = [0, 0, 170, 136];
+        $conf = [
             'dimensions' => '10,50,150,36',
             'color' => 'olive',
-        );
+        ];
         $imageProcessor->makeBox($image, $conf, $workArea);
         $outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdSimple') . '.' . $gifOrPng;
         $imageProcessor->ImageWrite($image, $outputFile);
         $result = $imageProcessor->getImageDimensions($outputFile);
-        $testResults['simple'] = array();
+        $testResults['simple'] = [];
         $testResults['simple']['title'] = 'Create simple image';
         $testResults['simple']['outputFile'] = $result[3];
         $testResults['simple']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-simple.' . $gifOrPng;
 
         // GD from image with box
-        $imageProcessor->IM_commands = array();
+        $imageProcessor->IM_commands = [];
         $inputFile = $this->imageBasePath . 'TestInput/Test.' . $gifOrPng;
         $image = $imageProcessor->imageCreateFromFile($inputFile);
-        $workArea = array(0, 0, 170, 136);
-        $conf = array(
+        $workArea = [0, 0, 170, 136];
+        $conf = [
             'dimensions' => '10,50,150,36',
             'color' => 'olive',
-        );
+        ];
         $imageProcessor->makeBox($image, $conf, $workArea);
         $outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdBox') . '.' . $gifOrPng;
         $imageProcessor->ImageWrite($image, $outputFile);
         $result = $imageProcessor->getImageDimensions($outputFile);
-        $testResults['box'] = array();
+        $testResults['box'] = [];
         $testResults['box']['title'] = 'Create image from file';
         $testResults['box']['outputFile'] = $result[3];
         $testResults['box']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-box.' . $gifOrPng;
 
         // GD with text
-        $imageProcessor->IM_commands = array();
+        $imageProcessor->IM_commands = [];
         $image = imagecreatetruecolor(170, 136);
         $backgroundColor = imagecolorallocate($image, 128, 128, 150);
         imagefilledrectangle($image, 0, 0, 170, 136, $backgroundColor);
-        $workArea = array(0, 0, 170, 136);
-        $conf = array(
+        $workArea = [0, 0, 170, 136];
+        $conf = [
             'iterations' => 1,
             'angle' => 0,
             'antiAlias' => 1,
@@ -503,19 +503,19 @@ class TestSetup extends Action\AbstractAction
             'fontSize' => 18,
             'fontFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Resources/Private/Font/vera.ttf',
             'offset' => '17,40',
-        );
+        ];
         $conf['BBOX'] = $imageProcessor->calcBBox($conf);
         $imageProcessor->makeText($image, $conf, $workArea);
         $outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdText') . '.' . $gifOrPng;
         $imageProcessor->ImageWrite($image, $outputFile);
         $result = $imageProcessor->getImageDimensions($outputFile);
-        $testResults['text'] = array();
+        $testResults['text'] = [];
         $testResults['text']['title'] = 'Render text with TrueType font';
         $testResults['text']['outputFile'] = $result[3];
         $testResults['text']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-text.' . $gifOrPng;
 
         // GD with text, niceText
-        $testResults['niceText'] = array();
+        $testResults['niceText'] = [];
         if ($this->isImageMagickEnabledAndConfigured()) {
             // Warning: Re-uses $conf from above!
             $conf['offset'] = '17,65';
@@ -543,17 +543,17 @@ class TestSetup extends Action\AbstractAction
         }
 
         // GD with text, niceText, shadow
-        $testResults['shadow'] = array();
+        $testResults['shadow'] = [];
         if ($this->isImageMagickEnabledAndConfigured()) {
             // Warning: Re-uses $conf from above!
             $conf['offset'] = '17,90';
             $conf['niceText'] = 1;
-            $conf['shadow.'] = array(
+            $conf['shadow.'] = [
                 'offset' => '2,2',
                 'blur' => $imageProcessor->V5_EFFECTS ? '20' : '90',
                 'opacity' => '50',
                 'color' => 'black'
-            );
+            ];
             // Warning: Re-uses $image from above!
             $imageProcessor->makeShadow($image, $conf['shadow.'], $workArea, $conf);
             $imageProcessor->makeText($image, $conf, $workArea);
@@ -635,7 +635,7 @@ class TestSetup extends Action\AbstractAction
      */
     protected function getImageConfiguration()
     {
-        $result = array();
+        $result = [];
         $result['imageMagickOrGraphicsMagick'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] === 'gm' ? 'gm' : 'im';
         $result['imageMagickEnabled'] =  $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'];
         $result['imageMagickPath'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'];

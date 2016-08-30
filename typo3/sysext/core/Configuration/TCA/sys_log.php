@@ -1,6 +1,6 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_log',
         'label' => 'details',
         'tstamp' => 'tstamp',
@@ -8,102 +8,102 @@ return array(
         'rootLevel' => true,
         'hideTable' => true,
         'default_sortby' => 'uid DESC',
-    ),
-    'columns' => array(
-        'tstamp' => array(
+    ],
+    'columns' => [
+        'tstamp' => [
             'label' => 'tstamp',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'userid' => array(
+            ]
+        ],
+        'userid' => [
             'label' => 'userid',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'action' => array(
+            ]
+        ],
+        'action' => [
             'label' => 'action',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'recuid' => array(
+            ]
+        ],
+        'recuid' => [
             'label' => 'recuid',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'tablename' => array(
+            ]
+        ],
+        'tablename' => [
             'label' => 'tablename',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'recpid' => array(
+            ]
+        ],
+        'recpid' => [
             'label' => 'recpid',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'error' => array(
+            ]
+        ],
+        'error' => [
             'label' => 'error',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'details' => array(
+            ]
+        ],
+        'details' => [
             'label' => 'details',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'type' => array(
+            ]
+        ],
+        'type' => [
             'label' => 'type',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'details_nr' => array(
+            ]
+        ],
+        'details_nr' => [
             'label' => 'details_nr',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'IP' => array(
+            ]
+        ],
+        'IP' => [
             'label' => 'IP',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'log_data' => array(
+            ]
+        ],
+        'log_data' => [
             'label' => 'log_data',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'event_pid' => array(
+            ]
+        ],
+        'event_pid' => [
             'label' => 'event_pid',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'workspace' => array(
+            ]
+        ],
+        'workspace' => [
             'label' => 'workspace',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        ),
-        'NEWid' => array(
+            ]
+        ],
+        'NEWid' => [
             'label' => 'NEWid',
-            'config' => array(
+            'config' => [
                 'type' => 'input'
-            )
-        )
-    ),
-    'types' => array(
-        '1' => array(
+            ]
+        ]
+    ],
+    'types' => [
+        '1' => [
             'showitem' => 'tstamp, userid, action, recuid, tablename, recpid, error, details, type, details_nr, IP, log_data, event_pid, workspace, NEWid'
-        )
-    )
-);
+        ]
+    ]
+];

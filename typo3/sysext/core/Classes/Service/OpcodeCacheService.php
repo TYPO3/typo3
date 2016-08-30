@@ -31,10 +31,10 @@ class OpcodeCacheService
     {
         $xcVersion = phpversion('xcache');
 
-        $supportedCaches = array(
+        $supportedCaches = [
             // The ZendOpcache aka OPcache since PHP 5.5
             // http://php.net/manual/de/book.opcache.php
-            'OPcache' => array(
+            'OPcache' => [
                 'active' => extension_loaded('Zend OPcache') && ini_get('opcache.enable') === '1',
                 'version' => phpversion('Zend OPcache'),
                 'canReset' => true, // opcache_reset() ... it seems that it doesn't reset for current run.
@@ -50,10 +50,10 @@ class OpcodeCacheService
                         opcache_reset();
                     }
                 }
-            ),
+            ],
 
             // http://www.php.net/manual/de/book.wincache.php
-            'WinCache' => array(
+            'WinCache' => [
                 'active' => extension_loaded('wincache') && ini_get('wincache.ocenabled') === '1'
                     && version_compare(phpversion('wincache'), '2.0.0.0', '<'),
                 'version' => phpversion('wincache'),
@@ -62,16 +62,16 @@ class OpcodeCacheService
                 'error' => false,
                 'clearCallback' => function ($fileAbsPath) {
                     if ($fileAbsPath !== null) {
-                        wincache_refresh_if_changed(array($fileAbsPath));
+                        wincache_refresh_if_changed([$fileAbsPath]);
                     } else {
                         // No argument means refreshing all.
                         wincache_refresh_if_changed();
                     }
                 }
-            ),
+            ],
 
             // http://xcache.lighttpd.net/
-            'XCache' => array(
+            'XCache' => [
                 'active' => extension_loaded('xcache'),
                 'version' => $xcVersion,
                 'canReset' => !ini_get('xcache.admin.enable_auth'), // xcache_clear_cache()
@@ -82,10 +82,10 @@ class OpcodeCacheService
                         xcache_clear_cache(XC_TYPE_PHP);
                     }
                 }
-            ),
-        );
+            ],
+        ];
 
-        $activeCaches = array();
+        $activeCaches = [];
         foreach ($supportedCaches as $opcodeCache => $properties) {
             if ($properties['active']) {
                 $activeCaches[$opcodeCache] = $properties;

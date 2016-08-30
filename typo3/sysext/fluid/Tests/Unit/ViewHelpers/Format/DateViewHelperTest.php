@@ -22,7 +22,7 @@ class DateViewHelperTest extends UnitTestCase
     /**
      * @var array Backup of current locale, it is manipulated in tests
      */
-    protected $backupLocales = array();
+    protected $backupLocales = [];
 
     /**
      * @var DateViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
@@ -38,15 +38,15 @@ class DateViewHelperTest extends UnitTestCase
     {
         parent::setUp();
         // Store all locale categories manipulated in tests for reconstruction in tearDown
-        $this->backupLocales = array(
+        $this->backupLocales = [
             'LC_COLLATE' => setlocale(LC_COLLATE, 0),
             'LC_CTYPE' => setlocale(LC_CTYPE, 0),
             'LC_MONETARY' => setlocale(LC_MONETARY, 0),
             'LC_TIME' => setlocale(LC_TIME, 0),
-        );
+        ];
         $this->timezone = @date_default_timezone_get();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = 'Y-m-d';
-        $this->subject = $this->getAccessibleMock(DateViewHelper::class, array('renderChildren'));
+        $this->subject = $this->getAccessibleMock(DateViewHelper::class, ['renderChildren']);
         /** @var RenderingContext $renderingContext */
         $renderingContext = $this->getMock(RenderingContext::class);
         $this->subject->_set('renderingContext', $renderingContext);
@@ -235,16 +235,16 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function viewHelperRespectsDefaultTimezoneForIntegerTimestampDataProvider()
     {
-        return array(
-            'Europe/Berlin' => array(
+        return [
+            'Europe/Berlin' => [
                 'Europe/Berlin',
                 '2013-02-03 12:40',
-            ),
-            'Asia/Riyadh' => array(
+            ],
+            'Asia/Riyadh' => [
                 'Asia/Riyadh',
                 '2013-02-03 14:40',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -267,28 +267,28 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function viewHelperRespectsDefaultTimezoneForStringTimestampDataProvider()
     {
-        return array(
-            'Europe/Berlin UTC' => array(
+        return [
+            'Europe/Berlin UTC' => [
                 'Europe/Berlin',
                 '@1359891658',
                 '2013-02-03 12:40'
-            ),
-            'Europe/Berlin Moscow' => array(
+            ],
+            'Europe/Berlin Moscow' => [
                 'Europe/Berlin',
                 '03/Oct/2000:14:55:36 +0400',
                 '2000-10-03 12:55'
-            ),
-            'Asia/Riyadh UTC' => array(
+            ],
+            'Asia/Riyadh UTC' => [
                 'Asia/Riyadh',
                 '@1359891658',
                 '2013-02-03 14:40'
-            ),
-            'Asia/Riyadh Moscow' => array(
+            ],
+            'Asia/Riyadh Moscow' => [
                 'Asia/Riyadh',
                 '03/Oct/2000:14:55:36 +0400',
                 '2000-10-03 13:55'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -311,16 +311,16 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function dateViewHelperFormatsDateLocalizedDataProvider()
     {
-        return array(
-            'de_DE.UTF-8' => array(
+        return [
+            'de_DE.UTF-8' => [
                 'de_DE.UTF-8',
                 '03. Februar 2013'
-            ),
-            'en_ZW.utf8' => array(
+            ],
+            'en_ZW.utf8' => [
                 'en_ZW.utf8',
                 '03. February 2013'
-            )
-        );
+            ]
+        ];
     }
 
     /**

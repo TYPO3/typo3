@@ -34,8 +34,8 @@ class ClassNamingUtility
     public static function translateModelNameToRepositoryName($modelName)
     {
         return str_replace(
-            array('\\Domain\\Model', '_Domain_Model_'),
-            array('\\Domain\\Repository', '_Domain_Repository_'),
+            ['\\Domain\\Model', '_Domain_Model_'],
+            ['\\Domain\\Repository', '_Domain_Repository_'],
             $modelName
         ) . 'Repository';
     }
@@ -51,8 +51,8 @@ class ClassNamingUtility
     public static function translateModelNameToValidatorName($modelName)
     {
         return str_replace(
-            array('\\Domain\\Model\\', '_Domain_Model_'),
-            array('\\Domain\\Validator\\', '_Domain_Validator_'),
+            ['\\Domain\\Model\\', '_Domain_Model_'],
+            ['\\Domain\\Validator\\', '_Domain_Validator_'],
             $modelName
         ) . 'Validator';
     }
@@ -68,8 +68,8 @@ class ClassNamingUtility
     public static function translateRepositoryNameToModelName($repositoryName)
     {
         return preg_replace(
-            array('/\\\\Domain\\\\Repository/', '/_Domain_Repository_/', '/Repository$/'),
-            array('\\Domain\\Model', '_Domain_Model_', ''),
+            ['/\\\\Domain\\\\Repository/', '/_Domain_Repository_/', '/Repository$/'],
+            ['\\Domain\\Model', '_Domain_Model_', ''],
             $repositoryName
         );
     }
@@ -83,7 +83,7 @@ class ClassNamingUtility
      */
     public static function explodeObjectControllerName($controllerObjectName)
     {
-        $matches = array();
+        $matches = [];
 
         if (strpos($controllerObjectName, '\\') !== false) {
             if (substr($controllerObjectName, 0, 9) === 'TYPO3\\CMS') {

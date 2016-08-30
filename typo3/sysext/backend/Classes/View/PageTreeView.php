@@ -92,7 +92,7 @@ class PageTreeView extends BrowseTreeView
         // Call stats information hook
         $stat = '';
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
-            $_params = array('pages', $row['uid']);
+            $_params = ['pages', $row['uid']];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
                 $stat .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
@@ -113,7 +113,7 @@ class PageTreeView extends BrowseTreeView
     {
         // Hook for overriding the page title
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.webpagetree.php']['pageTitleOverlay'])) {
-            $_params = array('title' => &$title, 'row' => &$row);
+            $_params = ['title' => &$title, 'row' => &$row];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.webpagetree.php']['pageTitleOverlay'] as $_funcRef) {
                 GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
@@ -163,7 +163,7 @@ class PageTreeView extends BrowseTreeView
         }
         // We need to count the opened <ul>'s every time we dig into another level,
         // so we know how many we have to close when all children are done rendering
-        $closeDepth = array();
+        $closeDepth = [];
         $ajaxOutput = '';
         $invertedDepthOfAjaxRequestedItem = 0;
         foreach ($treeArr as $k => $treeItem) {
@@ -282,7 +282,7 @@ class PageTreeView extends BrowseTreeView
         // Get stored tree structure AND updating it if needed according to incoming PM GET var.
         $this->initializePositionSaving();
         // Init done:
-        $treeArr = array();
+        $treeArr = [];
         // Traverse mounts:
         $firstHtml = '';
         foreach ($this->MOUNTS as $idx => $uid) {
@@ -313,7 +313,7 @@ class PageTreeView extends BrowseTreeView
                 // In case it was swapped inside getRecord due to workspaces.
                 $uid = $rootRec['uid'];
                 // Add the root of the mount to ->tree
-                $this->tree[] = array('HTML' => $firstHtml, 'row' => $rootRec, 'bank' => $this->bank, 'hasSub' => true, 'invertedDepth' => 1000);
+                $this->tree[] = ['HTML' => $firstHtml, 'row' => $rootRec, 'bank' => $this->bank, 'hasSub' => true, 'invertedDepth' => 1000];
                 // If the mount is expanded, go down:
                 if ($isOpen) {
                     // Set depth:

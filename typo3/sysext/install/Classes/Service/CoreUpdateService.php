@@ -53,7 +53,7 @@ class CoreUpdateService
     /**
      * @var StatusInterface[]
      */
-    protected $messages = array();
+    protected $messages = [];
 
     /**
      * Absolute path to download location
@@ -166,7 +166,7 @@ class CoreUpdateService
                 'Current version specification could not be fetched from http://get.typo3.org/json.'
                 . ' This is probably a network issue, please fix it.'
             );
-            $this->messages = array($message);
+            $this->messages = [$message];
         }
         return $success;
     }
@@ -181,7 +181,7 @@ class CoreUpdateService
     public function checkPreConditions($version)
     {
         $success = true;
-        $messages = array();
+        $messages = [];
 
         /** @var StatusUtility $statusUtility */
         $statusUtility = $this->objectManager->get(StatusUtility::class);
@@ -273,7 +273,7 @@ class CoreUpdateService
      */
     public function downloadVersion($version)
     {
-        $messages = array();
+        $messages = [];
         $success = true;
 
         if ($this->checkCoreFilesAvailable($version)) {
@@ -327,7 +327,7 @@ class CoreUpdateService
      */
     public function verifyFileChecksum($version)
     {
-        $messages = array();
+        $messages = [];
         $success = true;
 
         if ($this->checkCoreFilesAvailable($version)) {
@@ -378,7 +378,7 @@ class CoreUpdateService
      */
     public function unpackVersion($version)
     {
-        $messages = array();
+        $messages = [];
         $success = true;
 
         if ($this->checkCoreFilesAvailable($version)) {
@@ -438,7 +438,7 @@ class CoreUpdateService
      */
     public function moveVersion($version)
     {
-        $messages = array();
+        $messages = [];
         $success = true;
 
         if ($this->checkCoreFilesAvailable($version)) {
@@ -486,7 +486,7 @@ class CoreUpdateService
     {
         $newCoreLocation = @realPath($this->symlinkToCoreFiles . '/../') . '/typo3_src-' . $version;
 
-        $messages = array();
+        $messages = [];
         $success = true;
 
         if (!is_dir($newCoreLocation)) {

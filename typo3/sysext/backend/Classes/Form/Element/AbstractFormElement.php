@@ -149,8 +149,8 @@ abstract class AbstractFormElement extends AbstractNode
         // Contains wizard identifiers enabled for this record type, see "special configuration" docs
         $wizardsEnabledByType = $specConf['wizards']['parameters'];
 
-        $buttonWizards = array();
-        $otherWizards = array();
+        $buttonWizards = [];
+        $otherWizards = [];
         foreach ($wizConf as $wizardIdentifier => $wizardConfiguration) {
             if (!isset($wizardConfiguration['module']['name']) && isset($wizardConfiguration['script'])) {
                 throw new \InvalidArgumentException('The way registering a wizard in TCA has changed in 6.2 and was removed in CMS 7. '
@@ -184,7 +184,7 @@ abstract class AbstractFormElement extends AbstractNode
                 $wizardIsEnabled = false;
             }
             // Wizard types script, colorbox and popup must contain a module name configuration
-            if (!isset($wizardConfiguration['module']['name']) && in_array($wizardConfiguration['type'], array('script', 'colorbox', 'popup'), true)) {
+            if (!isset($wizardConfiguration['module']['name']) && in_array($wizardConfiguration['type'], ['script', 'colorbox', 'popup'], true)) {
                 $wizardIsEnabled = false;
             }
 
@@ -202,7 +202,7 @@ abstract class AbstractFormElement extends AbstractNode
 
             switch ($wizardConfiguration['type']) {
                 case 'userFunc':
-                    $params = array();
+                    $params = [];
                     $params['params'] = $wizardConfiguration['params'];
                     $params['exampleImg'] = $wizardConfiguration['exampleImg'];
                     $params['table'] = $table;
@@ -228,7 +228,7 @@ abstract class AbstractFormElement extends AbstractNode
                     break;
 
                 case 'script':
-                    $params = array();
+                    $params = [];
                     $params['params'] = $wizardConfiguration['params'];
                     $params['exampleImg'] = $wizardConfiguration['exampleImg'];
                     $params['table'] = $table;
@@ -240,12 +240,12 @@ abstract class AbstractFormElement extends AbstractNode
                     $params['returnUrl'] = $this->data['returnUrl'];
 
                     // Resolving script filename and setting URL.
-                    $urlParameters = array();
+                    $urlParameters = [];
                     if (isset($wizardConfiguration['module']['urlParameters']) && is_array($wizardConfiguration['module']['urlParameters'])) {
                         $urlParameters = $wizardConfiguration['module']['urlParameters'];
                     }
                     $wScript = BackendUtility::getModuleUrl($wizardConfiguration['module']['name'], $urlParameters, '');
-                    $url = $wScript . (strstr($wScript, '?') ? '' : '?') . GeneralUtility::implodeArrayForUrl('', array('P' => $params));
+                    $url = $wScript . (strstr($wScript, '?') ? '' : '?') . GeneralUtility::implodeArrayForUrl('', ['P' => $params]);
                     $buttonWizards[] =
                         '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" onclick="this.blur(); return !TBE_EDITOR.isFormChanged();">'
                             . $icon .
@@ -253,7 +253,7 @@ abstract class AbstractFormElement extends AbstractNode
                     break;
 
                 case 'popup':
-                    $params = array();
+                    $params = [];
                     $params['params'] = $wizardConfiguration['params'];
                     $params['exampleImg'] = $wizardConfiguration['exampleImg'];
                     $params['table'] = $table;
@@ -271,12 +271,12 @@ abstract class AbstractFormElement extends AbstractNode
                     $params['fieldChangeFuncHash'] = GeneralUtility::hmac(serialize($fieldChangeFunc));
 
                     // Resolving script filename and setting URL.
-                    $urlParameters = array();
+                    $urlParameters = [];
                     if (isset($wizardConfiguration['module']['urlParameters']) && is_array($wizardConfiguration['module']['urlParameters'])) {
                         $urlParameters = $wizardConfiguration['module']['urlParameters'];
                     }
                     $wScript = BackendUtility::getModuleUrl($wizardConfiguration['module']['name'], $urlParameters, '');
-                    $url = $wScript . (strstr($wScript, '?') ? '' : '?') . GeneralUtility::implodeArrayForUrl('', array('P' => $params));
+                    $url = $wScript . (strstr($wScript, '?') ? '' : '?') . GeneralUtility::implodeArrayForUrl('', ['P' => $params]);
 
                     $onlyIfSelectedJS = '';
                     if (isset($wizardConfiguration['popup_onlyOpenIfSelected']) && $wizardConfiguration['popup_onlyOpenIfSelected']) {
@@ -307,7 +307,7 @@ abstract class AbstractFormElement extends AbstractNode
                     break;
 
                 case 'colorbox':
-                    $params = array();
+                    $params = [];
                     $params['params'] = $wizardConfiguration['params'];
                     $params['exampleImg'] = $wizardConfiguration['exampleImg'];
                     $params['table'] = $table;
@@ -325,12 +325,12 @@ abstract class AbstractFormElement extends AbstractNode
                     $params['fieldChangeFuncHash'] = GeneralUtility::hmac(serialize($fieldChangeFunc));
 
                     // Resolving script filename and setting URL.
-                    $urlParameters = array();
+                    $urlParameters = [];
                     if (isset($wizardConfiguration['module']['urlParameters']) && is_array($wizardConfiguration['module']['urlParameters'])) {
                         $urlParameters = $wizardConfiguration['module']['urlParameters'];
                     }
                     $wScript = BackendUtility::getModuleUrl($wizardConfiguration['module']['name'], $urlParameters, '');
-                    $url = $wScript . (strstr($wScript, '?') ? '' : '?') . GeneralUtility::implodeArrayForUrl('', array('P' => $params));
+                    $url = $wScript . (strstr($wScript, '?') ? '' : '?') . GeneralUtility::implodeArrayForUrl('', ['P' => $params]);
 
                     $aOnClick =
                         'this.blur();' .
@@ -347,7 +347,7 @@ abstract class AbstractFormElement extends AbstractNode
                     $otherWizards[] = '<a id="' . $md5ID . '" class="btn btn-default" href="#" onclick="' . htmlspecialchars($aOnClick) . '"><span class="t3-icon fa fa-eyedropper"></span></a>';
                     break;
                 case 'slider':
-                    $params = array();
+                    $params = [];
                     $params['fieldConfig'] = $PA['fieldConf']['config'];
                     $params['field'] = $field;
                     $params['table'] = $table;
@@ -438,7 +438,7 @@ abstract class AbstractFormElement extends AbstractNode
             $innerContent .= implode(' ', $otherWizards);
 
             // Position
-            $classes = array('form-wizards-wrap');
+            $classes = ['form-wizards-wrap'];
             if ($wizConf['_POSITION'] === 'left') {
                 $classes[] = 'form-wizards-aside';
                 $innerContent = '<div class="form-wizards-items">' . $innerContent . '</div><div class="form-wizards-element">' . $item . '</div>';
@@ -479,7 +479,7 @@ abstract class AbstractFormElement extends AbstractNode
      * @throws \UnexpectedValueException
      * @todo: Hack this mess into pieces and inline to group / select element depending on what they need
      */
-    protected function dbFileIcons($fName, $mode, $allowed, $itemArray, $selector = '', $params = array(), $onFocus = '', $table = '', $field = '', $uid = '', $config = array())
+    protected function dbFileIcons($fName, $mode, $allowed, $itemArray, $selector = '', $params = [], $onFocus = '', $table = '', $field = '', $uid = '', $config = [])
     {
         $languageService = $this->getLanguageService();
         $disabled = '';
@@ -487,8 +487,8 @@ abstract class AbstractFormElement extends AbstractNode
             $disabled = ' disabled="disabled"';
         }
         // INIT
-        $uidList = array();
-        $opt = array();
+        $uidList = [];
+        $opt = [];
         $itemArrayC = 0;
         // Creating <option> elements:
         if (is_array($itemArray)) {
@@ -546,10 +546,10 @@ abstract class AbstractFormElement extends AbstractNode
                 . ' data-formengine-input-name="' . htmlspecialchars($fName) . '" ' . $this->getValidationDataAsDataAttribute($config) . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt)
                 . '</select>';
         }
-        $icons = array(
-            'L' => array(),
-            'R' => array()
-        );
+        $icons = [
+            'L' => [],
+            'R' => []
+        ];
         $rOnClickInline = '';
         if (!$params['readOnly'] && !$params['noList']) {
             if (!$params['noBrowser']) {
@@ -745,7 +745,7 @@ abstract class AbstractFormElement extends AbstractNode
                 if (!$hookObject instanceof DatabaseFileIconsHookInterface) {
                     throw new \UnexpectedValueException($classRef . ' must implement interface ' . DatabaseFileIconsHookInterface::class, 1290167704);
                 }
-                $additionalParams = array(
+                $additionalParams = [
                     'mode' => $mode,
                     'allowed' => $allowed,
                     'itemArray' => $itemArray,
@@ -754,7 +754,7 @@ abstract class AbstractFormElement extends AbstractNode
                     'field' => $field,
                     'uid' => $uid,
                     'config' => $GLOBALS['TCA'][$table]['columns'][$field]
-                );
+                ];
                 $hookObject->dbFileIcons_postProcess($params, $selector, $thumbnails, $icons, $rightbox, $fName, $uidList, $additionalParams, $this);
             }
         }
@@ -807,7 +807,7 @@ abstract class AbstractFormElement extends AbstractNode
             $this->clipboard->initializeClipboard();
         }
 
-        $output = array();
+        $output = [];
         switch ($mode) {
             case 'file_reference':
 

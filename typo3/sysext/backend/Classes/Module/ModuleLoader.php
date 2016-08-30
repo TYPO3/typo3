@@ -38,28 +38,28 @@ class ModuleLoader
      *
      * @var array
      */
-    public $modules = array();
+    public $modules = [];
 
     /**
      * Array with paths pointing to the location of modules from extensions
      *
      * @var array
      */
-    public $absPathArray = array();
+    public $absPathArray = [];
 
     /**
      * This array will hold the elements that should go into the select-list of modules for groups...
      *
      * @var array
      */
-    public $modListGroup = array();
+    public $modListGroup = [];
 
     /**
      * This array will hold the elements that should go into the select-list of modules for users...
      *
      * @var array
      */
-    public $modListUser = array();
+    public $modListUser = [];
 
     /**
      * The backend user for use internally
@@ -80,7 +80,7 @@ class ModuleLoader
      *
      * @var array
      */
-    protected $navigationComponents = array();
+    protected $navigationComponents = [];
 
     /**
      * Init.
@@ -124,7 +124,7 @@ class ModuleLoader
         // User defined modules were found in ../typo3conf/
         // Today almost all modules reside in extensions and they are found by the _PATHS array of the incoming $TBE_MODULES array
         // Setting paths for 1) core modules (old concept from mod/) and 2) user-defined modules (from ../typo3conf)
-        $paths = array();
+        $paths = [];
         // Path of static modules
         $paths['defMods'] = PATH_typo3 . 'mod/';
         // Local modules (maybe frontend specific)
@@ -328,7 +328,7 @@ class ModuleLoader
                 $setupInformation['configuration']['navigationFrameModule'],
                 !empty($setupInformation['configuration']['navigationFrameModuleParameters'])
                     ? $setupInformation['configuration']['navigationFrameModuleParameters']
-                    : array()
+                    : []
             );
         } elseif (!empty($setupInformation['configuration']['navFrameScript'])) {
             GeneralUtility::deprecationLog('Loading navFrameScript "' . $setupInformation['configuration']['navFrameScript'] . '" as a standalone script. Script-based navigation frames are deprecated since TYPO3 CMS 7. Support will be removed with TYPO3 CMS 8, use "navigationFrameModule" option or the "navigationComponentId" option instead.');
@@ -374,15 +374,15 @@ class ModuleLoader
         // Because 'path/../path' does not work
         $path = preg_replace('/\\/[^\\/.]+\\/\\.\\.\\//', '/', $pathToModuleDirectory);
 
-        $moduleSetupInformation = array(
-            'configuration' => array(),
-            'labels' => array(),
+        $moduleSetupInformation = [
+            'configuration' => [],
+            'labels' => [],
             'path' => $path
-        );
+        ];
 
         if (@is_dir($path) && file_exists($path . '/conf.php')) {
-            $MCONF = array();
-            $MLANG = array();
+            $MCONF = [];
+            $MLANG = [];
 
             // The conf-file is included. This must be valid PHP.
             include $path . '/conf.php';
@@ -391,7 +391,7 @@ class ModuleLoader
             if (is_array($MCONF)) {
                 $moduleSetupInformation['configuration'] = $MCONF;
             } else {
-                $moduleSetupInformation['configuration'] = array();
+                $moduleSetupInformation['configuration'] = [];
             }
             $moduleSetupInformation['labels'] = $MLANG;
         }
@@ -488,7 +488,7 @@ class ModuleLoader
      */
     public function parseModulesArray($arr)
     {
-        $theMods = array();
+        $theMods = [];
         if (is_array($arr)) {
             foreach ($arr as $mod => $subs) {
                 // Clean module name to alphanum

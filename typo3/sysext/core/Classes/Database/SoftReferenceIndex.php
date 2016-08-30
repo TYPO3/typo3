@@ -106,30 +106,30 @@ class SoftReferenceIndex
         switch ($spKey) {
             case 'notify':
                 // Simple notification
-                $resultArray = array(
-                    'elements' => array(
-                        array(
+                $resultArray = [
+                    'elements' => [
+                        [
                             'matchString' => $content
-                        )
-                    )
-                );
+                        ]
+                    ]
+                ];
                 $retVal = $resultArray;
                 break;
             case 'substitute':
                 $tokenID = $this->makeTokenID();
-                $resultArray = array(
+                $resultArray = [
                     'content' => '{softref:' . $tokenID . '}',
-                    'elements' => array(
-                        array(
+                    'elements' => [
+                        [
                             'matchString' => $content,
-                            'subst' => array(
+                            'subst' => [
                                 'type' => 'string',
                                 'tokenID' => $tokenID,
                                 'tokenValue' => $content
-                            )
-                        )
-                    )
-                );
+                            ]
+                        ]
+                    ]
+                ];
                 $retVal = $resultArray;
                 break;
             case 'images':
@@ -177,7 +177,7 @@ class SoftReferenceIndex
         // Start HTML parser and split content by image tag:
         $htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
         $splitContent = $htmlParser->splitTags('img', $content);
-        $elements = array();
+        $elements = [];
         // Traverse splitted parts:
         foreach ($splitContent as $k => $v) {
             if ($k % 2) {
@@ -190,7 +190,7 @@ class SoftReferenceIndex
                 if (!$pI['scheme'] && !$pI['query'] && $absPath && $srcRef !== 'clear.gif') {
                     // Initialize the element entry with info text here:
                     $tokenID = $this->makeTokenID($k);
-                    $elements[$k] = array();
+                    $elements[$k] = [];
                     $elements[$k]['matchString'] = $v;
                     // If the image seems to be from fileadmin/ folder or an RTE image, then proceed to set up substitution token:
                     if (GeneralUtility::isFirstPartOfStr($srcRef, $this->fileAdminDir . '/') || GeneralUtility::isFirstPartOfStr($srcRef, 'uploads/') && preg_match('/^RTEmagicC_/', basename($srcRef))) {
@@ -199,12 +199,12 @@ class SoftReferenceIndex
                         if (strstr($splitContent[$k], $attribs[0]['src'])) {
                             // Substitute value with token (this is not be an exact method if the value is in there twice, but we assume it will not)
                             $splitContent[$k] = str_replace($attribs[0]['src'], '{softref:' . $tokenID . '}', $splitContent[$k]);
-                            $elements[$k]['subst'] = array(
+                            $elements[$k]['subst'] = [
                                 'type' => 'file',
                                 'relFileName' => $srcRef,
                                 'tokenID' => $tokenID,
                                 'tokenValue' => $attribs[0]['src']
-                            );
+                            ];
                             // Finally, notice if the file does not exist.
                             if (!@is_file($absPath)) {
                                 $elements[$k]['error'] = 'File does not exist!';
@@ -218,10 +218,10 @@ class SoftReferenceIndex
         }
         // Return result:
         if (!empty($elements)) {
-            $resultArray = array(
+            $resultArray = [
                 'content' => implode('', $splitContent),
                 'elements' => $elements
-            );
+            ];
             return $resultArray;
         }
     }
@@ -244,20 +244,20 @@ class SoftReferenceIndex
             $linkElement = explode(',', $content);
         } else {
             // If only one element, just set in this array to make it easy below.
-            $linkElement = array($content);
+            $linkElement = [$content];
         }
         // Traverse the links now:
-        $elements = array();
+        $elements = [];
         foreach ($linkElement as $k => $typolinkValue) {
             $tLP = $this->getTypoLinkParts($typolinkValue);
             $linkElement[$k] = $this->setTypoLinkPartsElement($tLP, $elements, $typolinkValue, $k);
         }
         // Return output:
         if (!empty($elements)) {
-            $resultArray = array(
+            $resultArray = [
                 'content' => implode(',', $linkElement),
                 'elements' => $elements
-            );
+            ];
             return $resultArray;
         }
     }
@@ -277,7 +277,7 @@ class SoftReferenceIndex
         $htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
         $linkTags = $htmlParser->splitTags('link', $content);
         // Traverse result:
-        $elements = array();
+        $elements = [];
         foreach ($linkTags as $k => $foundValue) {
             if ($k % 2) {
                 $typolinkValue = preg_replace('/<LINK[[:space:]]+/i', '', substr($foundValue, 0, -1));
@@ -287,10 +287,10 @@ class SoftReferenceIndex
         }
         // Return output:
         if (!empty($elements)) {
-            $resultArray = array(
+            $resultArray = [
                 'content' => implode('', $linkTags),
                 'elements' => $elements
-            );
+            ];
             return $resultArray;
         }
     }
@@ -305,7 +305,7 @@ class SoftReferenceIndex
      */
     public function findRef_TStemplate($content, $spParams)
     {
-        $elements = array();
+        $elements = [];
         // First, try to find images and links:
         $htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
         $splitContent = $htmlParser->splitTags('img,a,form', $content);
@@ -330,7 +330,7 @@ class SoftReferenceIndex
                     $srcRef = htmlspecialchars_decode($attribs[0][$attributeName]);
                     // Set entry:
                     $tokenID = $this->makeTokenID($k);
-                    $elements[$k] = array();
+                    $elements[$k] = [];
                     $elements[$k]['matchString'] = $v;
                     // OK, if it looks like a local file from fileadmin/, include it:
                     $pI = pathinfo($srcRef);
@@ -340,12 +340,12 @@ class SoftReferenceIndex
                         // Very important that the src-value is not DeHSC'ed
                         if (strstr($splitContent[$k], $attribs[0][$attributeName])) {
                             $splitContent[$k] = str_replace($attribs[0][$attributeName], '{softref:' . $tokenID . '}', $splitContent[$k]);
-                            $elements[$k]['subst'] = array(
+                            $elements[$k]['subst'] = [
                                 'type' => 'file',
                                 'relFileName' => $srcRef,
                                 'tokenID' => $tokenID,
                                 'tokenValue' => $attribs[0][$attributeName]
-                            );
+                            ];
                             if (!@is_file($absPath)) {
                                 $elements[$k]['error'] = 'File does not exist!';
                             }
@@ -361,10 +361,10 @@ class SoftReferenceIndex
         $content = $this->fileadminReferences($content, $elements);
         // Return output:
         if (!empty($elements)) {
-            $resultArray = array(
+            $resultArray = [
                 'content' => $content,
                 'elements' => $elements
-            );
+            ];
             return $resultArray;
         }
     }
@@ -379,15 +379,15 @@ class SoftReferenceIndex
      */
     public function findRef_TSconfig($content, $spParams)
     {
-        $elements = array();
+        $elements = [];
         // Process free fileadmin/ references from TSconfig
         $content = $this->fileadminReferences($content, $elements);
         // Return output:
         if (!empty($elements)) {
-            $resultArray = array(
+            $resultArray = [
                 'content' => $content,
                 'elements' => $elements
-            );
+            ];
             return $resultArray;
         }
     }
@@ -401,30 +401,30 @@ class SoftReferenceIndex
      */
     public function findRef_email($content, $spParams)
     {
-        $resultArray = array();
+        $resultArray = [];
         // Email:
         $parts = preg_split('/([^[:alnum:]]+)([A-Za-z0-9\\._-]+[@][A-Za-z0-9\\._-]+[\\.].[A-Za-z0-9]+)/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
         foreach ($parts as $idx => $value) {
             if ($idx % 3 == 2) {
                 $tokenID = $this->makeTokenID($idx);
-                $elements[$idx] = array();
+                $elements[$idx] = [];
                 $elements[$idx]['matchString'] = $value;
                 if (is_array($spParams) && in_array('subst', $spParams)) {
                     $parts[$idx] = '{softref:' . $tokenID . '}';
-                    $elements[$idx]['subst'] = array(
+                    $elements[$idx]['subst'] = [
                         'type' => 'string',
                         'tokenID' => $tokenID,
                         'tokenValue' => $value
-                    );
+                    ];
                 }
             }
         }
         // Return output:
         if (!empty($elements)) {
-            $resultArray = array(
+            $resultArray = [
                 'content' => substr(implode('', $parts), 1, -1),
                 'elements' => $elements
-            );
+            ];
             return $resultArray;
         }
     }
@@ -438,7 +438,7 @@ class SoftReferenceIndex
      */
     public function findRef_url($content, $spParams)
     {
-        $resultArray = array();
+        $resultArray = [];
         // Fileadmin files:
         $parts = preg_split('/([^[:alnum:]"\']+)((http|ftp):\\/\\/[^[:space:]"\'<>]*)([[:space:]])/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
         foreach ($parts as $idx => $value) {
@@ -447,24 +447,24 @@ class SoftReferenceIndex
             }
             if ($idx % 5 == 2) {
                 $tokenID = $this->makeTokenID($idx);
-                $elements[$idx] = array();
+                $elements[$idx] = [];
                 $elements[$idx]['matchString'] = $value;
                 if (is_array($spParams) && in_array('subst', $spParams)) {
                     $parts[$idx] = '{softref:' . $tokenID . '}';
-                    $elements[$idx]['subst'] = array(
+                    $elements[$idx]['subst'] = [
                         'type' => 'string',
                         'tokenID' => $tokenID,
                         'tokenValue' => $value
-                    );
+                    ];
                 }
             }
         }
         // Return output:
         if (!empty($elements)) {
-            $resultArray = array(
+            $resultArray = [
                 'content' => substr(implode('', $parts), 1, -1),
                 'elements' => $elements
-            );
+            ];
             return $resultArray;
         }
     }
@@ -478,22 +478,22 @@ class SoftReferenceIndex
      */
     public function findRef_extension_fileref($content, $spParams)
     {
-        $resultArray = array();
+        $resultArray = [];
         // Fileadmin files:
         $parts = preg_split('/([^[:alnum:]"\']+)(EXT:[[:alnum:]_]+\\/[^[:space:]"\',]*)/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
         foreach ($parts as $idx => $value) {
             if ($idx % 3 == 2) {
                 $tokenID = $this->makeTokenID($idx);
-                $elements[$idx] = array();
+                $elements[$idx] = [];
                 $elements[$idx]['matchString'] = $value;
             }
         }
         // Return output:
         if (!empty($elements)) {
-            $resultArray = array(
+            $resultArray = [
                 'content' => substr(implode('', $parts), 1, -1),
                 'elements' => $elements
-            );
+            ];
             return $resultArray;
         }
     }
@@ -520,14 +520,14 @@ class SoftReferenceIndex
             if ($idx % 3 == 2) {
                 // when file is found, set up an entry for the element:
                 $tokenID = $this->makeTokenID('fileadminReferences:' . $idx);
-                $elements['fileadminReferences.' . $idx] = array();
+                $elements['fileadminReferences.' . $idx] = [];
                 $elements['fileadminReferences.' . $idx]['matchString'] = $value;
-                $elements['fileadminReferences.' . $idx]['subst'] = array(
+                $elements['fileadminReferences.' . $idx]['subst'] = [
                     'type' => 'file',
                     'relFileName' => $value,
                     'tokenID' => $tokenID,
                     'tokenValue' => $value
-                );
+                ];
                 $parts[$idx] = '{softref:' . $tokenID . '}';
                 // Check if the file actually exists:
                 $absPath = GeneralUtility::getFileAbsFileName(PATH_site . $value);
@@ -659,7 +659,7 @@ class SoftReferenceIndex
     {
         // Initialize, set basic values. In any case a link will be shown
         $tokenID = $this->makeTokenID('setTypoLinkPartsElement:' . $idx);
-        $elements[$tokenID . ':' . $idx] = array();
+        $elements[$tokenID . ':' . $idx] = [];
         $elements[$tokenID . ':' . $idx]['matchString'] = $content;
         // Based on link type, maybe do more:
         switch ((string)$tLP['LINK_TYPE']) {
@@ -667,11 +667,11 @@ class SoftReferenceIndex
 
             case 'url':
                 // Mail addresses and URLs can be substituted manually:
-                $elements[$tokenID . ':' . $idx]['subst'] = array(
+                $elements[$tokenID . ':' . $idx]['subst'] = [
                     'type' => 'string',
                     'tokenID' => $tokenID,
                     'tokenValue' => $tLP['url']
-                );
+                ];
                 // Output content will be the token instead:
                 $content = '{softref:' . $tokenID . '}';
                 break;
@@ -681,12 +681,12 @@ class SoftReferenceIndex
                     list($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($tLP['identifier']), 2);
                     if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($linkHandlerValue)) {
                         // Token and substitute value
-                        $elements[$tokenID . ':' . $idx]['subst'] = array(
+                        $elements[$tokenID . ':' . $idx]['subst'] = [
                             'type' => 'db',
                             'recordRef' => 'sys_file:' . $linkHandlerValue,
                             'tokenID' => $tokenID,
                             'tokenValue' => $tLP['identifier'],
-                        );
+                        ];
                         // Output content will be the token instead:
                         $content = '{softref:' . $tokenID . '}';
                     } else {
@@ -700,12 +700,12 @@ class SoftReferenceIndex
                     // File must be inside fileadmin/
                     if (GeneralUtility::isFirstPartOfStr($tLP['filepath'], $this->fileAdminDir . '/')) {
                         // Set up the basic token and token value for the relative file:
-                        $elements[$tokenID . ':' . $idx]['subst'] = array(
+                        $elements[$tokenID . ':' . $idx]['subst'] = [
                             'type' => 'file',
                             'relFileName' => $tLP['filepath'],
                             'tokenID' => $tokenID,
                             'tokenValue' => $tLP['filepath']
-                        );
+                        ];
                         // Depending on whether the file exists or not we will set the
                         $absPath = GeneralUtility::getFileAbsFileName(PATH_site . $tLP['filepath']);
                         if (!@is_file($absPath)) {
@@ -726,12 +726,12 @@ class SoftReferenceIndex
                 // Set page id:
                 if ($tLP['page_id']) {
                     $content .= '{softref:' . $tokenID . '}';
-                    $elements[$tokenID . ':' . $idx]['subst'] = array(
+                    $elements[$tokenID . ':' . $idx]['subst'] = [
                         'type' => 'db',
                         'recordRef' => 'pages:' . $tLP['page_id'],
                         'tokenID' => $tokenID,
                         'tokenValue' => $tLP['alias'] ? $tLP['alias'] : $tLP['page_id']
-                    );
+                    ];
                 }
                 // Add type if applicable
                 if ((string)$tLP['type'] !== '') {
@@ -743,15 +743,15 @@ class SoftReferenceIndex
                     if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($tLP['anchor'])) {
                         // Initialize a new entry because we have a new relation:
                         $newTokenID = $this->makeTokenID('setTypoLinkPartsElement:anchor:' . $idx);
-                        $elements[$newTokenID . ':' . $idx] = array();
+                        $elements[$newTokenID . ':' . $idx] = [];
                         $elements[$newTokenID . ':' . $idx]['matchString'] = 'Anchor Content Element: ' . $tLP['anchor'];
                         $content .= '#{softref:' . $newTokenID . '}';
-                        $elements[$newTokenID . ':' . $idx]['subst'] = array(
+                        $elements[$newTokenID . ':' . $idx]['subst'] = [
                             'type' => 'db',
                             'recordRef' => 'tt_content:' . $tLP['anchor'],
                             'tokenID' => $newTokenID,
                             'tokenValue' => $tLP['anchor']
-                        );
+                        ];
                     } else {
                         // Anchor is a hardcoded string
                         $content .= '#' . $tLP['type'];
@@ -817,7 +817,7 @@ class SoftReferenceIndex
      */
     protected function emitGetTypoLinkParts($linkHandlerFound, $finalTagParts, $linkHandlerKeyword, $linkHandlerValue)
     {
-        return $this->getSignalSlotDispatcher()->dispatch(get_class($this), 'getTypoLinkParts', array($linkHandlerFound, $finalTagParts, $linkHandlerKeyword, $linkHandlerValue));
+        return $this->getSignalSlotDispatcher()->dispatch(get_class($this), 'getTypoLinkParts', [$linkHandlerFound, $finalTagParts, $linkHandlerKeyword, $linkHandlerValue]);
     }
 
     /**
@@ -831,6 +831,6 @@ class SoftReferenceIndex
      */
     protected function emitSetTypoLinkPartsElement($linkHandlerFound, $tLP, $content, $elements, $idx, $tokenID)
     {
-        return $this->getSignalSlotDispatcher()->dispatch(get_class($this), 'setTypoLinkPartsElement', array($linkHandlerFound, $tLP, $content, $elements, $idx, $tokenID, $this));
+        return $this->getSignalSlotDispatcher()->dispatch(get_class($this), 'setTypoLinkPartsElement', [$linkHandlerFound, $tLP, $content, $elements, $idx, $tokenID, $this]);
     }
 }

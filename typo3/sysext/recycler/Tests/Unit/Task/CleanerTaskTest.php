@@ -32,7 +32,7 @@ class CleanerTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->subject = $this->getMock(CleanerTask::class, array('dummy'), array(), '', false);
+        $this->subject = $this->getMock(CleanerTask::class, ['dummy'], [], '', false);
     }
 
     /**
@@ -51,7 +51,7 @@ class CleanerTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getTcaTablesCanBeSet()
     {
-        $tables = array('pages', 'tt_content');
+        $tables = ['pages', 'tt_content'];
         $this->subject->setTcaTables($tables);
 
         $this->assertEquals($tables, $this->subject->getTcaTables());
@@ -66,9 +66,9 @@ class CleanerTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['TCA']['pages']['ctrl']['tstamp'] = 'tstamp';
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|CleanerTask $subject */
-        $subject = $this->getMock(CleanerTask::class, array('getPeriodAsTimestamp'), array(), '', false);
+        $subject = $this->getMock(CleanerTask::class, ['getPeriodAsTimestamp'], [], '', false);
 
-        $tables = array('pages');
+        $tables = ['pages'];
         $subject->setTcaTables($tables);
 
         $period = 14;
@@ -98,7 +98,7 @@ class CleanerTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['TCA']['pages']['ctrl']['delete'] = 'deleted';
         $GLOBALS['TCA']['pages']['ctrl']['tstamp'] = 'tstamp';
 
-        $tables = array('pages');
+        $tables = ['pages'];
         $this->subject->setTcaTables($tables);
 
         $period = 14;

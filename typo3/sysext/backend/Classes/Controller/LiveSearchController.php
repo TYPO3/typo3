@@ -28,7 +28,7 @@ class LiveSearchController
     /**
      * @var array
      */
-    protected $searchResults = array();
+    protected $searchResults = [];
 
     /**
      * Processes all AJAX calls and sends back a JSON object
@@ -43,7 +43,7 @@ class LiveSearchController
         $liveSearch = GeneralUtility::makeInstance(LiveSearch::class);
         $queryParser = GeneralUtility::makeInstance(QueryParser::class);
 
-        $searchResults = array();
+        $searchResults = [];
         $liveSearch->setQueryString($queryString);
         // Jump & edit - find page and retrieve an edit link (this is only for pages
         if ($queryParser->isValidPageJump($queryString)) {

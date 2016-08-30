@@ -45,12 +45,12 @@ class Language extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'lefttoright' => 'LeftToRight',
         'righttoleft' => 'RightToLeft',
         'language' => 'Language',
         'showlanguagemarks' => 'ShowLanguageMarks'
-    );
+    ];
 
     /**
      * Returns TRUE if the plugin is available and correctly initialized
@@ -74,21 +74,21 @@ class Language extends RteHtmlAreaApi
     public function buildJavascriptConfiguration()
     {
         $button = 'language';
-        $jsArray = array();
+        $jsArray = [];
         if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][$button . '.'])) {
             $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = new Object();';
         }
-        $languages = array(
+        $languages = [
             'none' => $this->getLanguageService()->sL(
                 'LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/Language/locallang.xlf:No language mark'
             ),
-        );
+        ];
         $languages = array_flip(array_merge($languages, $this->getLanguages()));
-        $languagesJSArray = array();
+        $languagesJSArray = [];
         foreach ($languages as $key => $value) {
-            $languagesJSArray[] = array('text' => $key, 'value' => $value);
+            $languagesJSArray[] = ['text' => $key, 'value' => $value];
         }
-        $languagesJSArray = json_encode(array('options' => $languagesJSArray));
+        $languagesJSArray = json_encode(['options' => $languagesJSArray]);
         $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.dataUrl = "' . $this->writeTemporaryFile($button . '_' . $this->configuration['contentLanguageUid'], 'js', $languagesJSArray) . '";';
         return implode(LF, $jsArray);
     }
@@ -104,13 +104,13 @@ class Language extends RteHtmlAreaApi
     protected function getLanguages()
     {
         $databaseConnection = $this->getDatabaseConnection();
-        $nameArray = array();
+        $nameArray = [];
         if (ExtensionManagementUtility::isLoaded('static_info_tables')) {
             $where = '1=1';
             $table = 'static_languages';
             $lang = LocalizationUtility::getCurrentLanguage();
             $titleFields = LocalizationUtility::getLabelFields($table, $lang);
-            $prefixedTitleFields = array();
+            $prefixedTitleFields = [];
             foreach ($titleFields as $titleField) {
                 $prefixedTitleFields[] = $table . '.' . $titleField;
             }
@@ -151,7 +151,7 @@ class Language extends RteHtmlAreaApi
     public function applyToolbarConstraints($show)
     {
         if (!ExtensionManagementUtility::isLoaded('static_info_tables')) {
-            return array_diff($show, array('language'));
+            return array_diff($show, ['language']);
         } else {
             return $show;
         }

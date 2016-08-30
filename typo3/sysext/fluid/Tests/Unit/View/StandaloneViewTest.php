@@ -40,7 +40,7 @@ class StandaloneViewTest extends UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     /**
      * @var StandaloneView|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject
@@ -110,13 +110,13 @@ class StandaloneViewTest extends UnitTestCase
     protected function setUp()
     {
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
-        $this->view = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\StandaloneView::class, array('testFileExistence', 'buildParserConfiguration'), array(), '', false);
+        $this->view = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\StandaloneView::class, ['testFileExistence', 'buildParserConfiguration'], [], '', false);
         $this->mockTemplateParser = $this->getMock(TemplateParser::class);
         $this->mockParsedTemplate = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterface::class);
         $this->mockTemplateParser->expects($this->any())->method('parse')->will($this->returnValue($this->mockParsedTemplate));
         $this->mockConfigurationManager = $this->getMock(ConfigurationManagerInterface::class);
         $this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->mockObjectManager->expects($this->any())->method('get')->will($this->returnCallback(array($this, 'objectManagerCallback')));
+        $this->mockObjectManager->expects($this->any())->method('get')->will($this->returnCallback([$this, 'objectManagerCallback']));
         $this->mockRequest = $this->getMock(Request::class);
         $this->mockUriBuilder = $this->getMock(UriBuilder::class);
         $this->mockContentObject = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
@@ -134,8 +134,8 @@ class StandaloneViewTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class, $this->mockObjectManager);
         GeneralUtility::addInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, $this->mockContentObject);
 
-        $mockCacheManager = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class, array(), array(), '', false);
-        $mockCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, array(), array(), '', false);
+        $mockCacheManager = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class, [], [], '', false);
+        $mockCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, [], [], '', false);
         $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $mockCacheManager);
     }
@@ -329,9 +329,9 @@ class StandaloneViewTest extends UnitTestCase
     public function getLayoutRootPathsReturnsSpecifiedLayoutRootPathByDefault()
     {
         $templatePathAndFilename = 'some/template/RootPath/SomeTemplate.html';
-        $layoutRootPaths = array(
+        $layoutRootPaths = [
             'some/layout/RootPath'
-        );
+        ];
         $this->view->setTemplatePathAndFilename($templatePathAndFilename);
         $this->view->setLayoutRootPaths($layoutRootPaths);
         $actualResult = $this->view->getLayoutRootPaths();
@@ -357,7 +357,7 @@ class StandaloneViewTest extends UnitTestCase
     {
         $templatePathAndFilename = 'some/template/RootPath/SomeTemplate.html';
         $this->view->setTemplatePathAndFilename($templatePathAndFilename);
-        $expectedResult = array('some/template/RootPath/Layouts');
+        $expectedResult = ['some/template/RootPath/Layouts'];
         $actualResult = $this->view->getLayoutRootPaths();
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -378,7 +378,7 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getLayoutSourceThrowsExceptionIfLayoutRootPathsDoesNotExist()
     {
-        $this->view->setLayoutRootPaths(array('some/non/existing/Path'));
+        $this->view->setLayoutRootPaths(['some/non/existing/Path']);
         $this->view->_call('getLayoutSource');
     }
 
@@ -389,7 +389,7 @@ class StandaloneViewTest extends UnitTestCase
     public function getLayoutSourceThrowsExceptionIfLayoutFileDoesNotExist()
     {
         $layoutRootPath = __DIR__ . '/Fixtures';
-        $this->view->setLayoutRootPaths(array($layoutRootPath));
+        $this->view->setLayoutRootPaths([$layoutRootPath]);
         $this->view->_call('getLayoutSource', 'NonExistingLayout');
     }
 
@@ -539,8 +539,8 @@ class StandaloneViewTest extends UnitTestCase
     public function setPartialRootPathsOverridesValueSetBySetPartialRootPath()
     {
         $this->view->setPartialRootPath('/foo/bar');
-        $this->view->setPartialRootPaths(array('/overruled/path'));
-        $expected = array('/overruled/path');
+        $this->view->setPartialRootPaths(['/overruled/path']);
+        $expected = ['/overruled/path'];
         $actual = $this->view->_call('getPartialRootPaths');
         $this->assertEquals($expected, $actual, 'A set partial root path was not returned correctly.');
     }
@@ -551,8 +551,8 @@ class StandaloneViewTest extends UnitTestCase
     public function setLayoutRootPathsOverridesValuesSetBySetLayoutRootPath()
     {
         $this->view->setLayoutRootPath('/foo/bar');
-        $this->view->setLayoutRootPaths(array('/overruled/path'));
-        $expected = array('/overruled/path');
+        $this->view->setLayoutRootPaths(['/overruled/path']);
+        $expected = ['/overruled/path'];
         $actual = $this->view->_call('getLayoutRootPaths');
         $this->assertEquals($expected, $actual, 'A set layout root path was not returned correctly.');
     }
@@ -562,7 +562,7 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getLayoutPathAndFilenameRespectsCasingOfLayoutName()
     {
-        $this->view->setLayoutRootPaths(array('some/Default/Directory'));
+        $this->view->setLayoutRootPaths(['some/Default/Directory']);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/LayoutName.html')->willReturn(false);
         $this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/LayoutName')->willReturn(false);
@@ -575,7 +575,7 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getLayoutPathAndFilenameFindsUpperCasedLayoutName()
     {
-        $this->view->setLayoutRootPaths(array('some/Default/Directory'));
+        $this->view->setLayoutRootPaths(['some/Default/Directory']);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/LayoutName.html')->willReturn(true);
         $this->assertSame(PATH_site . 'some/Default/Directory/LayoutName.html', $this->view->_call('getLayoutPathAndFilename', 'layoutName'));
@@ -586,10 +586,10 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getLayoutPathAndFilenameResolvesTheSpecificFile()
     {
-        $this->view->setLayoutRootPaths(array(
+        $this->view->setLayoutRootPaths([
             'default' => 'some/Default/Directory',
             'specific' => 'specific/Layouts',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->once())->method('testFileExistence')->with(PATH_site . 'specific/Layouts/Default.html')->will($this->returnValue(true));
         $this->assertEquals(PATH_site . 'specific/Layouts/Default.html', $this->view->_call('getLayoutPathAndFilename'));
@@ -600,10 +600,10 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getLayoutPathAndFilenameResolvesTheDefaultFile()
     {
-        $this->view->setLayoutRootPaths(array(
+        $this->view->setLayoutRootPaths([
             'default' => 'some/Default/Directory',
             'specific' => 'specific/Layouts',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Default.html')->will($this->returnValue(true));
         $this->assertEquals(PATH_site . 'some/Default/Directory/Default.html', $this->view->_call('getLayoutPathAndFilename'));
@@ -614,11 +614,11 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getLayoutPathAndFilenameResolvesTheSpecificFileWithNumericIndices()
     {
-        $this->view->setLayoutRootPaths(array(
+        $this->view->setLayoutRootPaths([
             '10' => 'some/Default/Directory',
             '25' => 'evenMore/Specific/Layouts',
             '17' => 'specific/Layouts',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'specific/Layouts/Default.html')->will($this->returnValue(true));
         $this->assertEquals(PATH_site . 'specific/Layouts/Default.html', $this->view->_call('getLayoutPathAndFilename'));
@@ -629,11 +629,11 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getLayoutPathAndFilenameResolvesTheDefaultFileWithNumericIndices()
     {
-        $this->view->setLayoutRootPaths(array(
+        $this->view->setLayoutRootPaths([
             '10' => 'some/Default/Directory',
             '25' => 'evenMore/Specific/Layouts',
             '17' => 'specific/Layouts',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(4))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Default.html')->will($this->returnValue(true));
         $this->assertEquals(PATH_site . 'some/Default/Directory/Default.html', $this->view->_call('getLayoutPathAndFilename'));
@@ -646,11 +646,11 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getLayoutPathAndFilenameThrowsExceptionIfNoFileWasFound()
     {
-        $this->view->setLayoutRootPaths(array(
+        $this->view->setLayoutRootPaths([
             '10' => 'some/Default/Directory',
             '25' => 'evenMore/Specific/Layouts',
             '17' => 'specific/Layouts',
-        ));
+        ]);
         $this->view->expects($this->any())->method('testFileExistence')->will($this->returnValue(false));
         $this->view->_call('getLayoutPathAndFilename');
     }
@@ -660,7 +660,7 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getPartialPathAndFilenameRespectsCasingOfPartialName()
     {
-        $this->view->setPartialRootPaths(array('some/Default/Directory'));
+        $this->view->setPartialRootPaths(['some/Default/Directory']);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/PartialName.html')->willReturn(false);
         $this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/PartialName')->willReturn(false);
@@ -673,7 +673,7 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getPartialPathAndFilenameFindsUpperCasedPartialName()
     {
-        $this->view->setPartialRootPaths(array('some/Default/Directory'));
+        $this->view->setPartialRootPaths(['some/Default/Directory']);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/PartialName.html')->willReturn(true);
         $this->assertSame(PATH_site . 'some/Default/Directory/PartialName.html', $this->view->_call('getPartialPathAndFilename', 'partialName'));
@@ -684,10 +684,10 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getPartialPathAndFilenameResolvesTheSpecificFile()
     {
-        $this->view->setPartialRootPaths(array(
+        $this->view->setPartialRootPaths([
             'default' => 'some/Default/Directory',
             'specific' => 'specific/Partials',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->once())->method('testFileExistence')->with(PATH_site . 'specific/Partials/Partial.html')->will($this->returnValue(true));
         $this->assertEquals(PATH_site . 'specific/Partials/Partial.html', $this->view->_call('getPartialPathAndFilename', 'Partial'));
@@ -698,10 +698,10 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getPartialPathAndFilenameResolvesTheDefaultFile()
     {
-        $this->view->setPartialRootPaths(array(
+        $this->view->setPartialRootPaths([
             'default' => 'some/Default/Directory',
             'specific' => 'specific/Partials',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Partial.html')->will($this->returnValue(true));
         $this->assertEquals(PATH_site . 'some/Default/Directory/Partial.html', $this->view->_call('getPartialPathAndFilename', 'Partial'));
@@ -712,11 +712,11 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getPartialPathAndFilenameResolvesTheSpecificFileWithNumericIndices()
     {
-        $this->view->setPartialRootPaths(array(
+        $this->view->setPartialRootPaths([
             '10' => 'some/Default/Directory',
             '25' => 'evenMore/Specific/Partials',
             '17' => 'specific/Partials',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'specific/Partials/Partial.html')->will($this->returnValue(true));
         $this->assertEquals(PATH_site . 'specific/Partials/Partial.html', $this->view->_call('getPartialPathAndFilename', 'Partial'));
@@ -727,11 +727,11 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getPartialPathAndFilenameResolvesTheDefaultFileWithNumericIndices()
     {
-        $this->view->setPartialRootPaths(array(
+        $this->view->setPartialRootPaths([
             '10' => 'some/Default/Directory',
             '25' => 'evenMore/Specific/Partials',
             '17' => 'specific/Partials',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(4))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Partial.html')->will($this->returnValue(true));
         $this->assertEquals(PATH_site . 'some/Default/Directory/Partial.html', $this->view->_call('getPartialPathAndFilename', 'Partial'));
@@ -744,11 +744,11 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getPartialPathAndFilenameThrowsExceptionIfNoFileWasFound()
     {
-        $this->view->setPartialRootPaths(array(
+        $this->view->setPartialRootPaths([
             '10' => 'some/Default/Directory',
             '25' => 'evenMore/Specific/Partials',
             '17' => 'specific/Partials',
-        ));
+        ]);
         $this->view->expects($this->any())->method('testFileExistence')->will($this->returnValue(false));
         $this->view->_call('getPartialPathAndFilename', 'Partial');
     }
@@ -758,11 +758,11 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getPartialPathAndFilenameWalksNumericalIndicesInDescendingOrder()
     {
-        $this->view->setPartialRootPaths(array(
+        $this->view->setPartialRootPaths([
             '10' => 'some/Default/Directory',
             '25' => 'evenMore/Specific/Partials',
             '17' => 'specific/Partials',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Partials/Partial.html')->will($this->returnValue(false));
         $this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Partials/Partial')->will($this->returnValue(false));
@@ -778,11 +778,11 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getLayoutPathAndFilenameWalksNumericalIndicesInDescendingOrder()
     {
-        $this->view->setLayoutRootPaths(array(
+        $this->view->setLayoutRootPaths([
             '10' => 'some/Default/Directory',
             '25' => 'evenMore/Specific/Layouts',
             '17' => 'specific/Layouts',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Layouts/Default.html')->will($this->returnValue(false));
         $this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Layouts/Default')->will($this->returnValue(false));
@@ -798,11 +798,11 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getPartialPathAndFilenameWalksStringKeysInReversedOrder()
     {
-        $this->view->setPartialRootPaths(array(
+        $this->view->setPartialRootPaths([
             'default' => 'some/Default/Directory',
             'specific' => 'specific/Partials',
             'verySpecific' => 'evenMore/Specific/Partials',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Partials/Partial.html')->will($this->returnValue(false));
         $this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Partials/Partial')->will($this->returnValue(false));
@@ -818,11 +818,11 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function getLayoutPathAndFilenameWalksStringKeysInReversedOrder()
     {
-        $this->view->setLayoutRootPaths(array(
+        $this->view->setLayoutRootPaths([
             'default' => 'some/Default/Directory',
             'specific' => 'specific/Layout',
             'verySpecific' => 'evenMore/Specific/Layout',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Layout/Default.html')->will($this->returnValue(false));
         $this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Layout/Default')->will($this->returnValue(false));
@@ -848,9 +848,9 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function setTemplateThrowsExceptionIfSpecifiedTemplateNameDoesNotExist()
     {
-        $this->view->setTemplateRootPaths(array(
+        $this->view->setTemplateRootPaths([
             'Some/Template/Path'
-        ));
+        ]);
         $this->view->setTemplate('NonExistingTemplateName');
     }
 
@@ -859,7 +859,7 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function setTemplateRespectsCasingOfTemplateName()
     {
-        $this->view->setTemplateRootPaths(array('some/Default/Directory'));
+        $this->view->setTemplateRootPaths(['some/Default/Directory']);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/TemplateName.html')->willReturn(false);
         $this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/TemplateName')->willReturn(false);
@@ -874,7 +874,7 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function setTemplateSetsUpperCasedTemplateName()
     {
-        $this->view->setTemplateRootPaths(array('some/Default/Directory'));
+        $this->view->setTemplateRootPaths(['some/Default/Directory']);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/TemplateName.html')->willReturn(true);
         $this->view->setTemplate('templateName');
@@ -886,10 +886,10 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function setTemplateResolvesTheSpecificTemplateFile()
     {
-        $this->view->setTemplateRootPaths(array(
+        $this->view->setTemplateRootPaths([
             'default' => 'some/Default/Directory',
             'specific' => 'specific/Templates',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'specific/Templates/Template.html')->will($this->returnValue(true));
         $this->view->setTemplate('Template');
@@ -901,10 +901,10 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function setTemplateResolvesTheDefaultTemplateFile()
     {
-        $this->view->setTemplateRootPaths(array(
+        $this->view->setTemplateRootPaths([
             'default' => 'some/Default/Directory',
             'specific' => 'specific/Templates',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Template.html')->will($this->returnValue(true));
         $this->view->setTemplate('Template');
@@ -917,10 +917,10 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function setTemplateResolvesTemplateNameWithPath()
     {
-        $this->view->setTemplateRootPaths(array(
+        $this->view->setTemplateRootPaths([
             'default' => 'some/Default/Directory',
             'specific' => 'specific/Templates',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'specific/Templates/Email/Template.html')->will($this->returnValue(true));
         $this->view->setTemplate('Email/Template');
@@ -932,11 +932,11 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function setTemplateResolvesTheSpecificFileWithNumericIndices()
     {
-        $this->view->setTemplateRootPaths(array(
+        $this->view->setTemplateRootPaths([
             '10' => 'some/Default/Directory',
             '25' => 'evenMore/Specific/Templates',
             '17' => 'specific/Templates',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'specific/Templates/Template.html')->will($this->returnValue(true));
         $this->view->setTemplate('Template');
@@ -948,11 +948,11 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function setTemplateResolvesTheDefaultFileWithNumericIndices()
     {
-        $this->view->setTemplateRootPaths(array(
+        $this->view->setTemplateRootPaths([
             '10' => 'some/Default/Directory',
             '25' => 'evenMore/Specific/Templates',
             '17' => 'specific/Templates',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(4))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Template.html')->will($this->returnValue(true));
         $this->view->setTemplate('Template');
@@ -964,11 +964,11 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function setTemplateWalksNumericalIndicesInDescendingOrder()
     {
-        $this->view->setTemplateRootPaths(array(
+        $this->view->setTemplateRootPaths([
             '10' => 'some/Default/Directory',
             '25' => 'evenMore/Specific/Templates',
             '17' => 'specific/Templates',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Templates/Template.html')->will($this->returnValue(false));
         $this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Templates/Template')->will($this->returnValue(false));
@@ -985,11 +985,11 @@ class StandaloneViewTest extends UnitTestCase
      */
     public function setTemplateWalksStringKeysInReversedOrder()
     {
-        $this->view->setTemplateRootPaths(array(
+        $this->view->setTemplateRootPaths([
             'default' => 'some/Default/Directory',
             'specific' => 'specific/Templates',
             'verySpecific' => 'evenMore/Specific/Templates',
-        ));
+        ]);
         $this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
         $this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Templates/Template.html')->will($this->returnValue(false));
         $this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Templates/Template')->will($this->returnValue(false));

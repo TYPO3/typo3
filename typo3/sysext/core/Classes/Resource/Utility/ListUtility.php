@@ -27,7 +27,7 @@ class ListUtility
      */
     public static function resolveSpecialFolderNames(array $folders)
     {
-        $resolvedFolders = array();
+        $resolvedFolders = [];
 
         /** @var $folder \TYPO3\CMS\Core\Resource\Folder */
         foreach ($folders as $folder) {

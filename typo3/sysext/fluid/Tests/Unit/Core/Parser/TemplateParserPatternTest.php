@@ -47,39 +47,39 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function testSPLIT_PATTERN_DYNAMICTAGS()
     {
-        $pattern = $this->insertNamespaceIntoRegularExpression(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SPLIT_PATTERN_TEMPLATE_DYNAMICTAGS, array('typo3', 't3', 'f'));
+        $pattern = $this->insertNamespaceIntoRegularExpression(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SPLIT_PATTERN_TEMPLATE_DYNAMICTAGS, ['typo3', 't3', 'f']);
 
         $source = '<html><head> <f:a.testing /> <f:blablubb> {testing}</f4:blz> </t3:hi.jo>';
-        $expected = array('<html><head> ', '<f:a.testing />', ' ', '<f:blablubb>', ' {testing}</f4:blz> ', '</t3:hi.jo>');
+        $expected = ['<html><head> ', '<f:a.testing />', ' ', '<f:blablubb>', ' {testing}</f4:blz> ', '</t3:hi.jo>'];
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_DYNAMICTAGS pattern did not split the input string correctly with simple tags.');
 
         $source = 'hi<f:testing attribute="Hallo>{yep}" nested:attribute="jup" />ja';
-        $expected = array('hi', '<f:testing attribute="Hallo>{yep}" nested:attribute="jup" />', 'ja');
+        $expected = ['hi', '<f:testing attribute="Hallo>{yep}" nested:attribute="jup" />', 'ja'];
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_DYNAMICTAGS pattern did not split the input string correctly with  > inside an attribute.');
 
         $source = 'hi<f:testing attribute="Hallo\\"{yep}" nested:attribute="jup" />ja';
-        $expected = array('hi', '<f:testing attribute="Hallo\\"{yep}" nested:attribute="jup" />', 'ja');
+        $expected = ['hi', '<f:testing attribute="Hallo\\"{yep}" nested:attribute="jup" />', 'ja'];
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_DYNAMICTAGS pattern did not split the input string correctly if a " is inside a double-quoted string.');
 
         $source = 'hi<f:testing attribute=\'Hallo>{yep}\' nested:attribute="jup" />ja';
-        $expected = array('hi', '<f:testing attribute=\'Hallo>{yep}\' nested:attribute="jup" />', 'ja');
+        $expected = ['hi', '<f:testing attribute=\'Hallo>{yep}\' nested:attribute="jup" />', 'ja'];
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_DYNAMICTAGS pattern did not split the input string correctly with single quotes as attribute delimiters.');
 
         $source = 'hi<f:testing attribute=\'Hallo\\\'{yep}\' nested:attribute="jup" />ja';
-        $expected = array('hi', '<f:testing attribute=\'Hallo\\\'{yep}\' nested:attribute="jup" />', 'ja');
+        $expected = ['hi', '<f:testing attribute=\'Hallo\\\'{yep}\' nested:attribute="jup" />', 'ja'];
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_DYNAMICTAGS pattern did not split the input string correctly if \' is inside a single-quoted attribute.');
 
         $source = 'Hallo <f:testing><![CDATA[<f:notparsed>]]></f:testing>';
-        $expected = array('Hallo ', '<f:testing>', '<![CDATA[<f:notparsed>]]>', '</f:testing>');
+        $expected = ['Hallo ', '<f:testing>', '<![CDATA[<f:notparsed>]]>', '</f:testing>'];
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_DYNAMICTAGS pattern did not split the input string correctly if there is a CDATA section the parser should ignore.');
 
         $veryLongViewHelper ='<f:form enctype="multipart/form-data" onsubmit="void(0)" onreset="void(0)" action="someAction" arguments="{arg1: \'val1\', arg2: \'val2\'}" controller="someController" package="YourCompanyName.somePackage" subpackage="YourCompanyName.someSubpackage" section="someSection" format="txt" additionalParams="{param1: \'val1\', param2: \'val2\'}" absolute="true" addQueryString="true" argumentsToBeExcludedFromQueryString="{0: \'foo\'}" />';
         $source = $veryLongViewHelper . 'Begin' . $veryLongViewHelper . 'End';
-        $expected = array($veryLongViewHelper, 'Begin', $veryLongViewHelper, 'End');
+        $expected = [$veryLongViewHelper, 'Begin', $veryLongViewHelper, 'End'];
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_DYNAMICTAGS pattern did not split the input string correctly if the VH has lots of arguments.');
 
         $source = '<f:a.testing data-bar="foo"> <f:a.testing>';
-        $expected = array('<f:a.testing data-bar="foo">', ' ', '<f:a.testing>');
+        $expected = ['<f:a.testing data-bar="foo">', ' ', '<f:a.testing>'];
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_DYNAMICTAGS pattern did not split the input string correctly with data- attribute.');
     }
 
@@ -88,9 +88,9 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function testSCAN_PATTERN_DYNAMICTAG()
     {
-        $pattern = $this->insertNamespaceIntoRegularExpression(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG, array('f'));
+        $pattern = $this->insertNamespaceIntoRegularExpression(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG, ['f']);
         $source = '<f:crop attribute="Hallo">';
-        $expected = array(
+        $expected = [
             0 => '<f:crop attribute="Hallo">',
             'NamespaceIdentifier' => 'f',
             1 => 'f',
@@ -100,13 +100,13 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             3 => ' attribute="Hallo"',
             'Selfclosing' => '',
             4 => ''
-        );
+        ];
         preg_match($pattern, $source, $matches);
         $this->assertEquals($expected, $matches, 'The SCAN_PATTERN_DYNAMICTAG does not match correctly.');
 
-        $pattern = $this->insertNamespaceIntoRegularExpression(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG, array('f'));
+        $pattern = $this->insertNamespaceIntoRegularExpression(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG, ['f']);
         $source = '<f:crop data-attribute="Hallo">';
-        $expected = array(
+        $expected = [
             0 => '<f:crop data-attribute="Hallo">',
             'NamespaceIdentifier' => 'f',
             1 => 'f',
@@ -116,12 +116,12 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             3 => ' data-attribute="Hallo"',
             'Selfclosing' => '',
             4 => ''
-        );
+        ];
         preg_match($pattern, $source, $matches);
         $this->assertEquals($expected, $matches, 'The SCAN_PATTERN_DYNAMICTAG does not match correctly with data- attributes.');
 
         $source = '<f:base />';
-        $expected = array(
+        $expected = [
             0 => '<f:base />',
             'NamespaceIdentifier' => 'f',
             1 => 'f',
@@ -131,12 +131,12 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             3 => '',
             'Selfclosing' => '/',
             4 => '/'
-        );
+        ];
         preg_match($pattern, $source, $matches);
         $this->assertEquals($expected, $matches, 'The SCAN_PATTERN_DYNAMICTAG does not match correctly when there is a space before the self-closing tag.');
 
         $source = '<f:crop attribute="Ha\\"llo"/>';
-        $expected = array(
+        $expected = [
             0 => '<f:crop attribute="Ha\\"llo"/>',
             'NamespaceIdentifier' => 'f',
             1 => 'f',
@@ -146,12 +146,12 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             3 => ' attribute="Ha\\"llo"',
             'Selfclosing' => '/',
             4 => '/'
-        );
+        ];
         preg_match($pattern, $source, $matches);
         $this->assertEquals($expected, $matches, 'The SCAN_PATTERN_DYNAMICTAG does not match correctly with self-closing tags.');
 
         $source = '<f:link.uriTo complex:attribute="Ha>llo" a="b" c=\'d\'/>';
-        $expected = array(
+        $expected = [
             0 => '<f:link.uriTo complex:attribute="Ha>llo" a="b" c=\'d\'/>',
             'NamespaceIdentifier' => 'f',
             1 => 'f',
@@ -161,7 +161,7 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             3 => ' complex:attribute="Ha>llo" a="b" c=\'d\'',
             'Selfclosing' => '/',
             4 => '/'
-        );
+        ];
         preg_match($pattern, $source, $matches);
         $this->assertEquals($expected, $matches, 'The SCAN_PATTERN_DYNAMICTAG does not match correctly with complex attributes and > inside the attributes.');
     }
@@ -171,7 +171,7 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function testSCAN_PATTERN_CLOSINGDYNAMICTAG()
     {
-        $pattern = $this->insertNamespaceIntoRegularExpression(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SCAN_PATTERN_TEMPLATE_CLOSINGVIEWHELPERTAG, array('f'));
+        $pattern = $this->insertNamespaceIntoRegularExpression(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SCAN_PATTERN_TEMPLATE_CLOSINGVIEWHELPERTAG, ['f']);
         $this->assertEquals(preg_match($pattern, '</f:bla>'), 1, 'The SCAN_PATTERN_CLOSINGDYNAMICTAG does not match a tag it should match.');
         $this->assertEquals(preg_match($pattern, '</f:bla.a    >'), 1, 'The SCAN_PATTERN_CLOSINGDYNAMICTAG does not match a tag (with spaces included) it should match.');
         $this->assertEquals(preg_match($pattern, '</t:bla>'), 0, 'The SCAN_PATTERN_CLOSINGDYNAMICTAG does match match a tag it should not match.');
@@ -193,34 +193,34 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function testSPLIT_PATTERN_SHORTHANDSYNTAX()
     {
-        $pattern = $this->insertNamespaceIntoRegularExpression(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SPLIT_PATTERN_SHORTHANDSYNTAX, array('f'));
+        $pattern = $this->insertNamespaceIntoRegularExpression(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SPLIT_PATTERN_SHORTHANDSYNTAX, ['f']);
 
         $source = 'some string{Object.bla}here as well';
-        $expected = array('some string', '{Object.bla}', 'here as well');
+        $expected = ['some string', '{Object.bla}', 'here as well'];
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with a simple example.');
 
         $source = 'some {}string\\{Object.bla}here as well';
-        $expected = array('some {}string\\', '{Object.bla}','here as well');
+        $expected = ['some {}string\\', '{Object.bla}','here as well'];
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with an escaped example. (1)');
 
         $source = 'some {f:viewHelper()} as well';
-        $expected = array('some ', '{f:viewHelper()}', ' as well');
+        $expected = ['some ', '{f:viewHelper()}', ' as well'];
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with an escaped example. (2)');
 
         $source = 'abc {f:for(arg1: post)} def';
-        $expected = array('abc ', '{f:for(arg1: post)}', ' def');
+        $expected = ['abc ', '{f:for(arg1: post)}', ' def'];
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with an escaped example.(3)');
 
         $source = 'abc {bla.blubb->f:for(param:42)} def';
-        $expected = array('abc ', '{bla.blubb->f:for(param:42)}', ' def');
+        $expected = ['abc ', '{bla.blubb->f:for(param:42)}', ' def'];
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with an escaped example.(4)');
 
         $source = 'abc {f:for(bla:"post{{")} def';
-        $expected = array('abc ', '{f:for(bla:"post{{")}', ' def');
+        $expected = ['abc ', '{f:for(bla:"post{{")}', ' def'];
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with an escaped example.(5)');
 
         $source = 'abc {f:for(param:"abc\\"abc")} def';
-        $expected = array('abc ', '{f:for(param:"abc\\"abc")}', ' def');
+        $expected = ['abc ', '{f:for(param:"abc\\"abc")}', ' def'];
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with an escaped example.(6)');
     }
 
@@ -232,8 +232,8 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $pattern = \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER;
 
         $source = 'f:for(each: bla)';
-        $expected = array(
-            0 => array(
+        $expected = [
+            0 => [
                 0 => 'f:for(each: bla)',
                 1 => 'f',
                 'NamespaceIdentifier' => 'f',
@@ -241,14 +241,14 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'MethodIdentifier' => 'for',
                 3 => 'each: bla',
                 'ViewHelperArguments' => 'each: bla'
-            )
-        );
+            ]
+        ];
         preg_match_all($pattern, $source, $matches, PREG_SET_ORDER);
         $this->assertEquals($matches, $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER');
 
         $source = 'f:for(each: bla)->g:bla(a:"b\\"->(f:a()", cd: {a:b})';
-        $expected = array(
-            0 => array(
+        $expected = [
+            0 => [
                 0 => 'f:for(each: bla)',
                 1 => 'f',
                 'NamespaceIdentifier' => 'f',
@@ -256,8 +256,8 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'MethodIdentifier' => 'for',
                 3 => 'each: bla',
                 'ViewHelperArguments' => 'each: bla'
-            ),
-            1 => array(
+            ],
+            1 => [
                 0 => 'g:bla(a:"b\\"->(f:a()", cd: {a:b})',
                 1 => 'g',
                 'NamespaceIdentifier' => 'g',
@@ -265,8 +265,8 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'MethodIdentifier' => 'bla',
                 3 => 'a:"b\\"->(f:a()", cd: {a:b}',
                 'ViewHelperArguments' => 'a:"b\\"->(f:a()", cd: {a:b}'
-            )
-        );
+            ]
+        ];
         preg_match_all($pattern, $source, $matches, PREG_SET_ORDER);
         $this->assertEquals($matches, $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER');
     }
@@ -321,8 +321,8 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $source = '{a: b, e: {c:d, e:f}}';
         preg_match_all($pattern, $source, $matches, PREG_SET_ORDER);
 
-        $expected = array(
-            0 => array(
+        $expected = [
+            0 => [
                 0 => 'a: b',
                 'ArrayPart' => 'a: b',
                 1 => 'a: b',
@@ -332,8 +332,8 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 3 => '',
                 'VariableIdentifier' => 'b',
                 4 => 'b'
-            ),
-            1 => array(
+            ],
+            1 => [
                 0 => 'e: {c:d, e:f}',
                 'ArrayPart' => 'e: {c:d, e:f}',
                 1 => 'e: {c:d, e:f}',
@@ -347,8 +347,8 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 5 => '',
                 'Subarray' => 'c:d, e:f',
                 6 => 'c:d, e:f'
-            )
-        );
+            ]
+        ];
         $this->assertEquals($matches, $expected, 'The regular expression splitting the array apart does not work!');
     }
 

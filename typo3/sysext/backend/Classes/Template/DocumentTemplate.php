@@ -56,7 +56,7 @@ class DocumentTemplate
      *
      * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use pageRenderer directly
      */
-    public $JScodeLibArray = array();
+    public $JScodeLibArray = [];
 
     /**
      * Additional header code (eg. a JavaScript section) could be accommulated in this var. It will be directly outputted in the header.
@@ -77,12 +77,12 @@ class DocumentTemplate
      *
      * @var array
      */
-    public $JScodeArray = array('jumpToUrl' => '
+    public $JScodeArray = ['jumpToUrl' => '
 function jumpToUrl(URL) {
 	window.location.href = URL;
 	return false;
 }
-	');
+	'];
 
     /**
      * Additional 'page-end' code could be accumulated in this var. It will be outputted at the end of page before </body> and some other internal page-end code.
@@ -145,7 +145,7 @@ function jumpToUrl(URL) {
      *
      * @var array
      */
-    public $inDocStylesArray = array();
+    public $inDocStylesArray = [];
 
     /**
      * Compensation for large documents (used in \TYPO3\CMS\Backend\Form\FormEngine)
@@ -269,33 +269,33 @@ function jumpToUrl(URL) {
      *
      * @var array
      */
-    protected $stylesheetsCore = array(
+    protected $stylesheetsCore = [
         'generatedSprites' => '../typo3temp/sprites/'
-    );
+    ];
 
     /**
      * Include these CSS directories from skins by default
      *
      * @var array
      */
-    protected $stylesheetsSkins = array(
+    protected $stylesheetsSkins = [
         'structure' => 'Resources/Public/Css/structure/',
         'visual' => 'Resources/Public/Css/visual/'
-    );
+    ];
 
     /**
      * JavaScript files loaded for every page in the Backend
      *
      * @var array
      */
-    protected $jsFiles = array();
+    protected $jsFiles = [];
 
     /**
      * JavaScript files loaded for every page in the Backend, but explicitly excluded from concatenation (useful for libraries etc.)
      *
      * @var array
      */
-    protected $jsFilesNoConcatenation = array();
+    protected $jsFilesNoConcatenation = [];
 
     /**
      * Will output the parsetime of the scripts in milliseconds (for admin-users).
@@ -538,10 +538,10 @@ function jumpToUrl(URL) {
     public function viewPageIcon($id, $_ = '')
     {
         // If access to Web>List for user, then link to that module.
-        $str = BackendUtility::getListViewLink(array(
+        $str = BackendUtility::getListViewLink([
             'id' => $id,
             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-        ), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList'));
+        ], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList'));
         // Make link to view page
         $str .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($id, '', BackendUtility::BEgetRootLine($id))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true) . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
         return $str;
@@ -577,7 +577,7 @@ function jumpToUrl(URL) {
      * @param bool $enableClickMenu If TRUE, render click menu code around icon image
      * @return string HTML content
      */
-    public function getHeader($table, $row, $path, $noViewPageIcon = false, $tWrap = array('', ''), $enableClickMenu = true)
+    public function getHeader($table, $row, $path, $noViewPageIcon = false, $tWrap = ['', ''], $enableClickMenu = true)
     {
         $viewPage = '';
         if (is_array($row) && $row['uid']) {
@@ -605,7 +605,7 @@ function jumpToUrl(URL) {
      * @param bool $enableClickMenu If TRUE, render click menu code around icon image
      * @return string
      */
-    public function getResourceHeader(\TYPO3\CMS\Core\Resource\ResourceInterface $resource, $tWrap = array('', ''), $enableClickMenu = true)
+    public function getResourceHeader(\TYPO3\CMS\Core\Resource\ResourceInterface $resource, $tWrap = ['', ''], $enableClickMenu = true)
     {
         try {
             $path = $resource->getStorage()->getName() . $resource->getParentFolder()->getIdentifier();
@@ -682,7 +682,7 @@ function jumpToUrl(URL) {
     public function makeShortcutUrl($gvList, $setList)
     {
         $GET = GeneralUtility::_GET();
-        $storeArray = array_merge(GeneralUtility::compileSelectedGetVarsFromArray($gvList, $GET), array('SET' => GeneralUtility::compileSelectedGetVarsFromArray($setList, (array)$GLOBALS['SOBE']->MOD_SETTINGS)));
+        $storeArray = array_merge(GeneralUtility::compileSelectedGetVarsFromArray($gvList, $GET), ['SET' => GeneralUtility::compileSelectedGetVarsFromArray($setList, (array)$GLOBALS['SOBE']->MOD_SETTINGS)]);
         $storeUrl = GeneralUtility::implodeArrayForUrl('', $storeArray);
         return $storeUrl;
     }
@@ -712,12 +712,12 @@ function jumpToUrl(URL) {
      */
     public function redirectUrls($thisLocation = '')
     {
-        $thisLocation = $thisLocation ? $thisLocation : GeneralUtility::linkThisScript(array(
+        $thisLocation = $thisLocation ? $thisLocation : GeneralUtility::linkThisScript([
             'CB' => '',
             'SET' => '',
             'cmd' => '',
             'popViewId' => ''
-        ));
+        ]);
         $out = '
 	var T3_RETURN_URL = ' . GeneralUtility::quoteJSvalue(str_replace('%20', '', rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'))))) . ';
 	var T3_THIS_LOCATION = ' . GeneralUtility::quoteJSvalue(str_replace('%20', '', rawurlencode($thisLocation))) . '
@@ -796,9 +796,9 @@ function jumpToUrl(URL) {
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'])) {
             $preStartPageHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'];
             if (is_array($preStartPageHook)) {
-                $hookParameters = array(
+                $hookParameters = [
                     'title' => &$title
-                );
+                ];
                 foreach ($preStartPageHook as $hookFunction) {
                     GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
                 }
@@ -862,9 +862,9 @@ function jumpToUrl(URL) {
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preHeaderRenderHook'])) {
             $preHeaderRenderHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preHeaderRenderHook'];
             if (is_array($preHeaderRenderHook)) {
-                $hookParameters = array(
+                $hookParameters = [
                     'pageRenderer' => &$this->pageRenderer
-                );
+                ];
                 foreach ($preHeaderRenderHook as $hookFunction) {
                     GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
                 }
@@ -873,7 +873,7 @@ function jumpToUrl(URL) {
         // Construct page header.
         $str = $this->pageRenderer->render(PageRenderer::PART_HEADER);
         $this->JScode = ($this->extJScode = '');
-        $this->JScodeArray = array();
+        $this->JScodeArray = [];
         $this->endOfPageJsBlock = $this->pageRenderer->render(PageRenderer::PART_FOOTER);
         $str .= $this->docBodyTagBegin() . ($this->divClass ? '
 
@@ -907,7 +907,7 @@ function jumpToUrl(URL) {
 
         // Logging: Can't find better place to put it:
         if (TYPO3_DLOG) {
-            GeneralUtility::devLog('END of BACKEND session', \TYPO3\CMS\Backend\Template\DocumentTemplate::class, 0, array('_FLUSH' => true));
+            GeneralUtility::devLog('END of BACKEND session', \TYPO3\CMS\Backend\Template\DocumentTemplate::class, 0, ['_FLUSH' => true]);
         }
         return $str;
     }
@@ -1115,7 +1115,7 @@ function jumpToUrl(URL) {
         $inDocStyles = implode(LF, $this->inDocStylesArray);
 
         // Reset styles so they won't be added again in insertStylesAndJS()
-        $this->inDocStylesArray = array();
+        $this->inDocStylesArray = [];
 
         if ($this->styleSheetFile) {
             $this->pageRenderer->addCssFile($this->styleSheetFile);
@@ -1192,7 +1192,7 @@ function jumpToUrl(URL) {
      */
     public function getSkinStylesheetDirectories()
     {
-        $stylesheetDirectories = array();
+        $stylesheetDirectories = [];
         // Add default core stylesheets
         foreach ($this->stylesheetsCore as $stylesheetDir) {
             $stylesheetDirectories[] = $stylesheetDir;
@@ -1372,11 +1372,11 @@ function jumpToUrl(URL) {
 
     // These vars defines the layout for the table produced by the table() function.
     // You can override these values from outside if you like.
-    public $tableLayout = array(
-        'defRow' => array(
-            'defCol' => array('<td valign="top">', '</td>')
-        )
-    );
+    public $tableLayout = [
+        'defRow' => [
+            'defCol' => ['<td valign="top">', '</td>']
+        ]
+    ];
 
     public $table_TR = '<tr>';
 
@@ -1416,12 +1416,12 @@ function jumpToUrl(URL) {
                         $cellCount++;
                     }
                 }
-                $rowWrap = is_array($layout['tr']) ? $layout['tr'] : array($this->table_TR, '</tr>');
+                $rowWrap = is_array($layout['tr']) ? $layout['tr'] : [$this->table_TR, '</tr>'];
                 $rowWrap = is_array($rowLayout['tr']) ? $rowLayout['tr'] : $rowWrap;
                 $result .= $rowWrap[0] . $rowResult . $rowWrap[1];
                 $rowCount++;
             }
-            $tableWrap = is_array($tableLayout['table']) ? $tableLayout['table'] : array($this->table_TABLE, '</table>');
+            $tableWrap = is_array($tableLayout['table']) ? $tableLayout['table'] : [$this->table_TABLE, '</table>'];
             $result = $tableWrap[0] . $result . $tableWrap[1];
         }
         return $result;
@@ -1436,15 +1436,15 @@ function jumpToUrl(URL) {
      * @return string HTML content, <table>...</table>
      * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
      */
-    public function menuTable($arr1, $arr2 = array(), $arr3 = array())
+    public function menuTable($arr1, $arr2 = [], $arr3 = [])
     {
         GeneralUtility::logDeprecatedFunction();
-        $rows = max(array(count($arr1), count($arr2), count($arr3)));
+        $rows = max([count($arr1), count($arr2), count($arr3)]);
         $menu = '
 		<table border="0" cellpadding="0" cellspacing="0" id="typo3-tablemenu">';
         for ($a = 0; $a < $rows; $a++) {
             $menu .= '<tr>';
-            $cls = array();
+            $cls = [];
             $valign = 'middle';
             $cls[] = '<td valign="' . $valign . '">' . $arr1[$a][0] . '</td><td>' . $arr1[$a][1] . '</td>';
             if (!empty($arr2)) {
@@ -1539,13 +1539,13 @@ function jumpToUrl(URL) {
         $content = '';
         if (is_array($menuItems)) {
             if (!is_array($mainParams)) {
-                $mainParams = array('id' => $mainParams);
+                $mainParams = ['id' => $mainParams];
             }
             $mainParams = GeneralUtility::implodeArrayForUrl('', $mainParams);
             if (!$script) {
                 $script = basename(PATH_thisScript);
             }
-            $menuDef = array();
+            $menuDef = [];
             foreach ($menuItems as $value => $label) {
                 $menuDef[$value]['isActive'] = (string)$currentValue === (string)$value;
                 $menuDef[$value]['label'] = htmlspecialchars($label, ENT_COMPAT, 'UTF-8', false);
@@ -1605,14 +1605,14 @@ function jumpToUrl(URL) {
         $templatePathAndFileName = 'EXT:backend/Resources/Private/Templates/DocumentTemplate/' . ($collapseable ? 'Collapse.html' : 'Tabs.html');
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));
-        $view->assignMultiple(array(
+        $view->assignMultiple([
             'id' => 'DTM-' . GeneralUtility::shortMD5($identString),
             'items' => $menuItems,
             'defaultTabIndex' => $defaultTabIndex,
             'wrapContent' => $wrapContent,
             'storeLastActiveTab' => $storeLastActiveTab,
             'BACK_PATH' => $GLOBALS['BACK_PATH']
-        ));
+        ]);
         return $view->render();
     }
 
@@ -1719,7 +1719,7 @@ function jumpToUrl(URL) {
      * @param array $subpartArray HTML for the subparts
      * @return string Composite HTML
      */
-    public function moduleBody($pageRecord = array(), $buttons = array(), $markerArray = array(), $subpartArray = array())
+    public function moduleBody($pageRecord = [], $buttons = [], $markerArray = [], $subpartArray = [])
     {
         // Get the HTML template for the module
         $moduleBody = $this->templateService->getSubpart($this->moduleTemplate, '###FULLDOC###');
@@ -1751,13 +1751,13 @@ function jumpToUrl(URL) {
         }
         // Hook for adding more markers/content to the page, like the version selector
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['moduleBodyPostProcess'])) {
-            $params = array(
+            $params = [
                 'moduleTemplateFilename' => &$this->moduleTemplateFilename,
                 'moduleTemplate' => &$this->moduleTemplate,
                 'moduleBody' => &$moduleBody,
                 'markers' => &$markerArray,
                 'parentObject' => &$this
-            );
+            ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['moduleBodyPostProcess'] as $funcRef) {
                 GeneralUtility::callUserFunction($funcRef, $params, $this);
             }
@@ -1816,9 +1816,9 @@ function jumpToUrl(URL) {
      */
     protected function getDocHeaderButtons($buttons)
     {
-        $markers = array();
+        $markers = [];
         // Fill buttons for left and right float
-        $floats = array('left', 'right');
+        $floats = ['left', 'right'];
         foreach ($floats as $key) {
             // Get the template for each float
             $buttonTemplate = $this->templateService->getSubpart($this->moduleTemplate, '###BUTTON_GROUPS_' . strtoupper($key) . '###');
@@ -1842,11 +1842,11 @@ function jumpToUrl(URL) {
         }
         // Hook for manipulating docHeaderButtons
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['docHeaderButtonsHook'])) {
-            $params = array(
+            $params = [
                 'buttons' => $buttons,
                 'markers' => &$markers,
                 'pObj' => &$this
-            );
+            ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['docHeaderButtonsHook'] as $funcRef) {
                 GeneralUtility::callUserFunction($funcRef, $params, $this);
             }

@@ -31,25 +31,25 @@ class TextareaJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJson
      *
      * @var array
      */
-    public $configuration = array(
-        'attributes' => array(
+    public $configuration = [
+        'attributes' => [
             'cols' => 40,
             'rows' => 5
-        ),
-        'filters' => array(),
-        'label' => array(
+        ],
+        'filters' => [],
+        'label' => [
             'value' => ''
-        ),
+        ],
         'layout' => 'front',
-        'validation' => array()
-    );
+        'validation' => []
+    ];
 
     /**
      * Allowed attributes for this object
      *
      * @var array
      */
-    protected $allowedAttributes = array(
+    protected $allowedAttributes = [
         'accesskey',
         'class',
         'contenteditable',
@@ -82,7 +82,7 @@ class TextareaJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJson
         'selectionStart',
         'text',
         'wrap'
-    );
+    ];
 
     /**
      * Set the attributes according to the allowed attributes of this element

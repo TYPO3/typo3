@@ -78,7 +78,7 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
      * @return string the rendered record list
      * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
      */
-    public function render($tableName, array $fieldList = array(), $storagePid = null, $levels = 0, $filter = '', $recordsPerPage = 0, $sortField = '', $sortDescending = false, $readOnly = false, $enableClickMenu = true, $clickTitleMode = null, $alternateBackgroundColors = false)
+    public function render($tableName, array $fieldList = [], $storagePid = null, $levels = 0, $filter = '', $recordsPerPage = 0, $sortField = '', $sortDescending = false, $readOnly = false, $enableClickMenu = true, $clickTitleMode = null, $alternateBackgroundColors = false)
     {
         if ($alternateBackgroundColors) {
             \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
@@ -105,7 +105,7 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
         $dblist->allFields = true;
         $dblist->dontShowClipControlPanels = true;
         $dblist->displayFields = false;
-        $dblist->setFields = array($tableName => $fieldList);
+        $dblist->setFields = [$tableName => $fieldList];
         $dblist->noControlPanels = true;
         $dblist->sortField = $sortField;
         $dblist->sortRev = $sortDescending;

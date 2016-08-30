@@ -32,14 +32,14 @@ class AbstractFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $currentIdentifier = '/parent/current/';
 
         /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $mockedStorageForParent */
-        $mockedStorageForParent = $this->getMock(ResourceStorage::class, array(), array(), '', false);
+        $mockedStorageForParent = $this->getMock(ResourceStorage::class, [], [], '', false);
 
         /** @var AbstractFile $parentFolderFixture */
         $parentFolderFixture = $this->getMockForAbstractClass(AbstractFile::class);
         $parentFolderFixture->setIdentifier($parentIdentifier)->setStorage($mockedStorageForParent);
 
         /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $mockedStorage */
-        $mockedStorage = $this->getMock(ResourceStorage::class, array('getFolderIdentifierFromFileIdentifier', 'getFolder'), array(), '', false);
+        $mockedStorage = $this->getMock(ResourceStorage::class, ['getFolderIdentifierFromFileIdentifier', 'getFolder'], [], '', false);
         $mockedStorage->expects($this->once())->method('getFolderIdentifierFromFileIdentifier')->with($currentIdentifier)->will($this->returnValue($parentIdentifier));
         $mockedStorage->expects($this->once())->method('getFolder')->with($parentIdentifier)->will($this->returnValue($parentFolderFixture));
 
@@ -63,7 +63,7 @@ class AbstractFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $mockedStorage */
         $mockedStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();
         $mockedStorage->expects($this->never())->method('getFileInfoByIdentifier')->with('/foo', 'mimetype');
-        $subject = new File(array('identifier' => '/foo', 'mime_type' => 'my/mime-type'), $mockedStorage);
+        $subject = new File(['identifier' => '/foo', 'mime_type' => 'my/mime-type'], $mockedStorage);
 
         $this->assertEquals('my/mime-type', $subject->getMimeType());
     }

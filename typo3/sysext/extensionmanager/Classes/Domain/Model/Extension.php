@@ -29,7 +29,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @var array
      */
-    protected static $defaultCategories = array(
+    protected static $defaultCategories = [
         0 => 'be',
         1 => 'module',
         2 => 'fe',
@@ -40,14 +40,14 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         8 => 'doc',
         9 => 'example',
         Extension::DISTRIBUTION_CATEGORY => 'distribution'
-    );
+    ];
 
     /**
      * Contains default states.
      *
      * @var array
      */
-    protected static $defaultStates = array(
+    protected static $defaultStates = [
         0 => 'alpha',
         1 => 'beta',
         2 => 'stable',
@@ -56,7 +56,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         5 => 'obsolete',
         6 => 'excludeFromUpdates',
         999 => 'n/a'
-    );
+    ];
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManager
@@ -461,11 +461,11 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public static function returnInstallPaths()
     {
-        $installPaths = array(
+        $installPaths = [
             'System' => PATH_typo3 . 'sysext/',
             'Global' => PATH_typo3 . 'ext/',
             'Local' => PATH_typo3conf . 'ext/'
-        );
+        ];
         return $installPaths;
     }
 

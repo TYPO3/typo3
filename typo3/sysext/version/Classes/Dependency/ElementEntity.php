@@ -89,7 +89,7 @@ class ElementEntity
      * @param array $data (optional)
      * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
      */
-    public function __construct($table, $id, array $data = array(), \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency)
+    public function __construct($table, $id, array $data = [], \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency)
     {
         $this->table = $table;
         $this->id = (int)$id;
@@ -220,19 +220,19 @@ class ElementEntity
     public function getChildren()
     {
         if (!isset($this->children)) {
-            $this->children = array();
+            $this->children = [];
             $where = 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex') . ' AND recuid='
                 . $this->id . ' AND workspace=' . $this->dependency->getWorkspace();
             $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', $where, '', 'sorting');
             if (is_array($rows)) {
                 foreach ($rows as $row) {
                     if ($row['ref_table'] !== '_FILE' && $row['ref_table'] !== '_STRING') {
-                        $arguments = array(
+                        $arguments = [
                             'table' => $row['ref_table'],
                             'id' => $row['ref_uid'],
                             'field' => $row['field'],
                             'scope' => self::REFERENCES_ChildOf
-                        );
+                        ];
 
                         $callbackResponse = $this->dependency->executeEventCallback(self::EVENT_CreateChildReference, $this, $arguments);
                         if ($callbackResponse !== self::RESPONSE_Skip) {
@@ -240,7 +240,7 @@ class ElementEntity
                                 $row['ref_table'],
                                 $row['ref_uid'],
                                 $row['field'],
-                                array(),
+                                [],
                                 $this->getDependency()
                             );
                         }
@@ -259,20 +259,20 @@ class ElementEntity
     public function getParents()
     {
         if (!isset($this->parents)) {
-            $this->parents = array();
+            $this->parents = [];
             $where = 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex')
                 . ' AND deleted=0 AND ref_uid=' . $this->id . ' AND workspace=' . $this->dependency->getWorkspace();
             $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', $where, '', 'sorting');
             if (is_array($rows)) {
                 foreach ($rows as $row) {
-                    $arguments = array('table' => $row['tablename'], 'id' => $row['recuid'], 'field' => $row['field'], 'scope' => self::REFERENCES_ParentOf);
+                    $arguments = ['table' => $row['tablename'], 'id' => $row['recuid'], 'field' => $row['field'], 'scope' => self::REFERENCES_ParentOf];
                     $callbackResponse = $this->dependency->executeEventCallback(self::EVENT_CreateParentReference, $this, $arguments);
                     if ($callbackResponse !== self::RESPONSE_Skip) {
                         $this->parents[] = $this->getDependency()->getFactory()->getReferencedElement(
                             $row['tablename'],
                             $row['recuid'],
                             $row['field'],
-                            array(),
+                            [],
                             $this->getDependency()
                         );
                     }
@@ -328,11 +328,11 @@ class ElementEntity
     public function getNestedChildren()
     {
         if (!isset($this->nestedChildren)) {
-            $this->nestedChildren = array();
+            $this->nestedChildren = [];
             $children = $this->getChildren();
             /** @var $child \TYPO3\CMS\Version\Dependency\ReferenceEntity */
             foreach ($children as $child) {
-                $this->nestedChildren = array_merge($this->nestedChildren, array($child->getElement()->__toString() => $child->getElement()), $child->getElement()->getNestedChildren());
+                $this->nestedChildren = array_merge($this->nestedChildren, [$child->getElement()->__toString() => $child->getElement()], $child->getElement()->getNestedChildren());
             }
         }
         return $this->nestedChildren;
@@ -358,7 +358,7 @@ class ElementEntity
     public function getRecord()
     {
         if (empty($this->record['uid']) || (int)$this->record['uid'] !== $this->getId()) {
-            $this->record = array();
+            $this->record = [];
             $row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid,pid,t3ver_wsid,t3ver_state,t3ver_oid', $this->getTable(), 'uid=' . $this->getId());
             if (is_array($row)) {
                 $this->record = $row;

@@ -69,15 +69,15 @@ class IconViewHelper extends AbstractBackendViewHelper implements CompilableInte
      * @return string The rendered icon with or without link
      * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use \TYPO3\CMS\Core\ViewHelpers\IconViewHelper instead
      */
-    public function render($uri = '', $icon = 'actions-document-close', $title = '', $additionalAttributes = array())
+    public function render($uri = '', $icon = 'actions-document-close', $title = '', $additionalAttributes = [])
     {
         return static::renderStatic(
-            array(
+            [
                 'uri' => $uri,
                 'icon' => $icon,
                 'title' => $title,
                 'additionalAttributes' => $additionalAttributes
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

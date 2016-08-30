@@ -46,189 +46,189 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function generateMetaTagHtmlGeneratesCorrectTagsDataProvider()
     {
-        return array(
-            'simple meta' => array(
-                array(
+        return [
+            'simple meta' => [
+                [
                     'author' => 'Markus Klein',
-                ),
+                ],
                 false,
-                array(
+                [
                     '<meta name="generator" content="TYPO3 CMS">',
                     '<meta name="author" content="Markus Klein">',
-                )
-            ),
-            'simple meta xhtml' => array(
-                array(
+                ]
+            ],
+            'simple meta xhtml' => [
+                [
                     'author' => 'Markus Klein',
-                ),
+                ],
                 true,
-                array(
+                [
                     '<meta name="generator" content="TYPO3 CMS" />',
                     '<meta name="author" content="Markus Klein" />',
-                )
-            ),
-            'meta with nested stdWrap' => array(
-                array(
+                ]
+            ],
+            'meta with nested stdWrap' => [
+                [
                     'author' => 'Markus ',
-                    'author.' => array('stdWrap.' => array('wrap' => '|Klein'))
-                ),
+                    'author.' => ['stdWrap.' => ['wrap' => '|Klein']]
+                ],
                 false,
-                array(
+                [
                     '<meta name="generator" content="TYPO3 CMS">',
                     '<meta name="author" content="Markus Klein">',
-                )
-            ),
-            'httpEquivalent meta' => array(
-                array(
+                ]
+            ],
+            'httpEquivalent meta' => [
+                [
                     'X-UA-Compatible' => 'IE=edge,chrome=1',
-                    'X-UA-Compatible.' => array('httpEquivalent' => 1)
-                ),
+                    'X-UA-Compatible.' => ['httpEquivalent' => 1]
+                ],
                 false,
-                array(
+                [
                     '<meta name="generator" content="TYPO3 CMS">',
                     '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">'
-                )
-            ),
-            'httpEquivalent meta xhtml' => array(
-                array(
+                ]
+            ],
+            'httpEquivalent meta xhtml' => [
+                [
                     'X-UA-Compatible' => 'IE=edge,chrome=1',
-                    'X-UA-Compatible.' => array('httpEquivalent' => 1)
-                ),
+                    'X-UA-Compatible.' => ['httpEquivalent' => 1]
+                ],
                 true,
-                array(
+                [
                     '<meta name="generator" content="TYPO3 CMS" />',
                     '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />'
-                )
-            ),
-            'httpEquivalent meta xhtml new notation' => array(
-                array(
+                ]
+            ],
+            'httpEquivalent meta xhtml new notation' => [
+                [
                     'X-UA-Compatible' => 'IE=edge,chrome=1',
-                    'X-UA-Compatible.' => array('attribute' => 'http-equiv')
-                ),
+                    'X-UA-Compatible.' => ['attribute' => 'http-equiv']
+                ],
                 true,
-                array(
+                [
                     '<meta name="generator" content="TYPO3 CMS" />',
                     '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />'
-                )
-            ),
-            'refresh meta' => array(
-                array(
+                ]
+            ],
+            'refresh meta' => [
+                [
                     'refresh' => '10',
-                ),
+                ],
                 false,
-                array(
+                [
                     '<meta name="generator" content="TYPO3 CMS">',
                     '<meta http-equiv="refresh" content="10">',
-                )
-            ),
-            'refresh meta new notation' => array(
-                array(
+                ]
+            ],
+            'refresh meta new notation' => [
+                [
                     'refresh' => '10',
-                    'refresh.' => array('attribute' => 'http-equiv')
-                ),
+                    'refresh.' => ['attribute' => 'http-equiv']
+                ],
                 false,
-                array(
+                [
                     '<meta name="generator" content="TYPO3 CMS">',
                     '<meta http-equiv="refresh" content="10">',
-                )
-            ),
-            'refresh meta new notation wins form old' => array(
-                array(
+                ]
+            ],
+            'refresh meta new notation wins form old' => [
+                [
                     'refresh' => '10',
-                    'refresh.' => array('attribute' => 'http-equiv-new')
-                ),
+                    'refresh.' => ['attribute' => 'http-equiv-new']
+                ],
                 false,
-                array(
+                [
                     '<meta name="generator" content="TYPO3 CMS">',
                     '<meta http-equiv-new="refresh" content="10">',
-                )
-            ),
-            'meta with dot' => array(
-                array(
+                ]
+            ],
+            'meta with dot' => [
+                [
                     'DC.author' => 'Markus Klein',
-                ),
+                ],
                 false,
-                array(
+                [
                     '<meta name="generator" content="TYPO3 CMS">',
                     '<meta name="DC.author" content="Markus Klein">',
-                )
-            ),
-            'meta with colon' => array(
-                array(
+                ]
+            ],
+            'meta with colon' => [
+                [
                     'OG:title' => 'Magic Tests',
-                ),
+                ],
                 false,
-                array(
+                [
                     '<meta name="generator" content="TYPO3 CMS">',
                     '<meta name="OG:title" content="Magic Tests">',
-                )
-            ),
-            'different attribute name' => array(
-                array(
+                ]
+            ],
+            'different attribute name' => [
+                [
                     'og:site_title' => 'My TYPO3 site',
-                    'og:site_title.' => array('attribute' => 'property'),
-                ),
+                    'og:site_title.' => ['attribute' => 'property'],
+                ],
                 false,
-                array(
+                [
                     '<meta name="generator" content="TYPO3 CMS">',
                     '<meta property="og:site_title" content="My TYPO3 site">',
-                )
-            ),
-            'multi value attribute name' => array(
-                array(
-                    'og:locale:alternate.' => array(
+                ]
+            ],
+            'multi value attribute name' => [
+                [
+                    'og:locale:alternate.' => [
                         'attribute' => 'property',
-                        'value' => array(
+                        'value' => [
                             10 => 'nl_NL',
                             20 => 'de_DE',
-                        )
-                    ),
-                ),
+                        ]
+                    ],
+                ],
                 false,
-                array(
+                [
                     '<meta name="generator" content="TYPO3 CMS">',
                     '<meta property="og:locale:alternate" content="nl_NL">',
                     '<meta property="og:locale:alternate" content="de_DE">',
-                )
-            ),
-            'multi value attribute name (empty values are skipped)' => array(
-                array(
-                    'og:locale:alternate.' => array(
+                ]
+            ],
+            'multi value attribute name (empty values are skipped)' => [
+                [
+                    'og:locale:alternate.' => [
                         'attribute' => 'property',
-                        'value' => array(
+                        'value' => [
                             10 => 'nl_NL',
                             20 => '',
                             30 => 'de_DE',
-                        )
-                    ),
-                ),
+                        ]
+                    ],
+                ],
                 false,
-                array(
+                [
                     '<meta name="generator" content="TYPO3 CMS">',
                     '<meta property="og:locale:alternate" content="nl_NL">',
                     '<meta property="og:locale:alternate" content="de_DE">',
-                )
-            ),
-            'meta with empty string value' => array(
-                array(
+                ]
+            ],
+            'meta with empty string value' => [
+                [
                     'custom:key' => '',
-                ),
+                ],
                 false,
-                array(
+                [
                     '<meta name="generator" content="TYPO3 CMS">',
-                )
-            ),
-            'meta with 0 value' => array(
-                array(
+                ]
+            ],
+            'meta with 0 value' => [
+                [
                     'custom:key' => '0',
-                ),
+                ],
                 false,
-                array(
+                [
                     '<meta name="generator" content="TYPO3 CMS">',
                     '<meta name="custom:key" content="0">',
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
@@ -250,33 +250,33 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function initializeSearchWordDataInTsfeBuildsCorrectRegexDataProvider()
     {
-        return array(
-            'one simple search word' => array(
-                array('test'),
+        return [
+            'one simple search word' => [
+                ['test'],
                 false,
                 'test',
-            ),
-            'one simple search word with standalone words' => array(
-                array('test'),
+            ],
+            'one simple search word with standalone words' => [
+                ['test'],
                 true,
                 '[[:space:]]test[[:space:]]',
-            ),
-            'two simple search words' => array(
-                array('test', 'test2'),
+            ],
+            'two simple search words' => [
+                ['test', 'test2'],
                 false,
                 'test|test2',
-            ),
-            'two simple search words with standalone words' => array(
-                array('test', 'test2'),
+            ],
+            'two simple search words with standalone words' => [
+                ['test', 'test2'],
                 true,
                 '[[:space:]]test[[:space:]]|[[:space:]]test2[[:space:]]',
-            ),
-            'word with regex chars' => array(
-                array('A \\ word with / a bunch of [] regex () chars .*'),
+            ],
+            'word with regex chars' => [
+                ['A \\ word with / a bunch of [] regex () chars .*'],
                 false,
                 'A \\\\ word with \\/ a bunch of \\[\\] regex \\(\\) chars \\.\\*',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -293,7 +293,7 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $GLOBALS['TSFE'] = new \stdClass();
         if ($enableStandaloneSearchWords) {
-            $GLOBALS['TSFE']->config = array('config' => array('sword_standAlone' => 1));
+            $GLOBALS['TSFE']->config = ['config' => ['sword_standAlone' => 1]];
         }
 
         $this->pageGeneratorFixture->callInitializeSearchWordDataInTsfe();

@@ -101,11 +101,11 @@ class DateViewHelper extends AbstractViewHelper implements CompilableInterface
     public function render($date = null, $format = '', $base = null)
     {
         return static::renderStatic(
-            array(
+            [
                 'date' => $date,
                 'format' => $format,
                 'base' => $base
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

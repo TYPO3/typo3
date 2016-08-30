@@ -76,7 +76,7 @@ class UserToolbarItem implements ToolbarItemInterface
             $label = $languageService->getLL('switchtousershort') . ' ' . ($realName ? $realName . ' (' . $username . ')' : $username);
         }
 
-        $html = array();
+        $html = [];
         $html[] = $icon;
         $html[] = '<span title="' . htmlspecialchars($title) . '">';
         $html[] = htmlspecialchars($label);
@@ -95,7 +95,7 @@ class UserToolbarItem implements ToolbarItemInterface
         $backendUser = $this->getBackendUser();
         $languageService = $this->getLanguageService();
 
-        $dropdown = array();
+        $dropdown = [];
         $dropdown[] = '<ul class="dropdown-list">';
 
         /** @var BackendModuleRepository $backendModuleRepository */
@@ -143,7 +143,7 @@ class UserToolbarItem implements ToolbarItemInterface
      */
     public function getAdditionalAttributes()
     {
-        $result = array();
+        $result = [];
         if ($this->getBackendUser()->user['ses_backuserid']) {
             $result['class'] = 'su-user';
         }

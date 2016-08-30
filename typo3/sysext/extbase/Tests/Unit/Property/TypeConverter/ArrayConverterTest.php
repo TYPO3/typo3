@@ -41,7 +41,7 @@ class ArrayConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkMetadata()
     {
-        $this->assertEquals(array('array', 'string'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+        $this->assertEquals(['array', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
         $this->assertEquals('array', $this->converter->getSupportedTargetType(), 'Target type does not match');
         $this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }
@@ -51,7 +51,7 @@ class ArrayConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function convertFromDoesNotModifyTheSourceArray()
     {
-        $sourceArray = array('Foo' => 'Bar', 'Baz');
+        $sourceArray = ['Foo' => 'Bar', 'Baz'];
         $this->assertEquals($sourceArray, $this->converter->convertFrom($sourceArray, 'array'));
     }
 
@@ -60,9 +60,9 @@ class ArrayConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stringToArrayDataProvider()
     {
-        return array(
-            'Empty string to empty array' => array('', array()),
-        );
+        return [
+            'Empty string to empty array' => ['', []],
+        ];
     }
 
     /**
@@ -82,11 +82,11 @@ class ArrayConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function canConvertFromDataProvider()
     {
-        return array(
-            'Can convert empty string' => array('', true),
-            'Can not convert not empty string' => array('foo', false),
-            'Can convert array' => array(array('foo'), true),
-        );
+        return [
+            'Can convert empty string' => ['', true],
+            'Can not convert not empty string' => ['foo', false],
+            'Can convert array' => [['foo'], true],
+        ];
     }
 
     /**

@@ -40,7 +40,7 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
      */
     public function __construct()
     {
-        set_exception_handler(array($this, 'handleException'));
+        set_exception_handler([$this, 'handleException']);
     }
 
     /**

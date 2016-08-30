@@ -66,7 +66,7 @@ class LockerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorUsesDefaultValueForLoops()
     {
-        $instance = $this->getAccessibleMock(\TYPO3\CMS\Core\Locking\Locker::class, array('dummy'), array('999999999', Locker::LOCKING_METHOD_DISABLED));
+        $instance = $this->getAccessibleMock(\TYPO3\CMS\Core\Locking\Locker::class, ['dummy'], ['999999999', Locker::LOCKING_METHOD_DISABLED]);
         $this->assertSame(150, $instance->_get('loops'));
     }
 
@@ -75,7 +75,7 @@ class LockerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorSetsLoopsToGivenNumberOfLoops()
     {
-        $instance = $this->getAccessibleMock(\TYPO3\CMS\Core\Locking\Locker::class, array('dummy'), array('999999999', Locker::LOCKING_METHOD_DISABLED, 10));
+        $instance = $this->getAccessibleMock(\TYPO3\CMS\Core\Locking\Locker::class, ['dummy'], ['999999999', Locker::LOCKING_METHOD_DISABLED, 10]);
         $this->assertSame(10, $instance->_get('loops'));
     }
 
@@ -84,7 +84,7 @@ class LockerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorUsesDefaultValueForSteps()
     {
-        $instance = $this->getAccessibleMock(\TYPO3\CMS\Core\Locking\Locker::class, array('dummy'), array('999999999', Locker::LOCKING_METHOD_DISABLED));
+        $instance = $this->getAccessibleMock(\TYPO3\CMS\Core\Locking\Locker::class, ['dummy'], ['999999999', Locker::LOCKING_METHOD_DISABLED]);
         $this->assertSame(200, $instance->_get('step'));
     }
 
@@ -93,7 +93,7 @@ class LockerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructorSetsStepToGivenNumberOfStep()
     {
-        $instance = $this->getAccessibleMock(\TYPO3\CMS\Core\Locking\Locker::class, array('dummy'), array('999999999', Locker::LOCKING_METHOD_DISABLED, 0, 10));
+        $instance = $this->getAccessibleMock(\TYPO3\CMS\Core\Locking\Locker::class, ['dummy'], ['999999999', Locker::LOCKING_METHOD_DISABLED, 0, 10]);
         $this->assertSame(10, $instance->_get('step'));
     }
 
@@ -186,16 +186,16 @@ class LockerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function invalidFileReferences()
     {
-        return array(
-            'simple not within PATH_site' => array('simple', '/tmp/TYPO3-Lock-Test'),
-            'flock not withing PATH_site' => array('flock', '/tmp/TYPO3-Lock-Test'),
-            'simple directory traversal' => array('simple', PATH_site . 'typo3temp/../typo3temp/locks/foo'),
-            'flock directory traversal' => array('flock', PATH_site . 'typo3temp/../typo3temp/locks/foo'),
-            'simple directory traversal 2' => array('simple', PATH_site . 'typo3temp/locks/../locks/foo'),
-            'flock directory traversal 2' => array('flock', PATH_site . 'typo3temp/locks/../locks/foo'),
-            'simple within uploads' => array('simple', PATH_site . 'uploads/TYPO3-Lock-Test'),
-            'flock within uploads' => array('flock', PATH_site . 'uploads/TYPO3-Lock-Test')
-        );
+        return [
+            'simple not within PATH_site' => ['simple', '/tmp/TYPO3-Lock-Test'],
+            'flock not withing PATH_site' => ['flock', '/tmp/TYPO3-Lock-Test'],
+            'simple directory traversal' => ['simple', PATH_site . 'typo3temp/../typo3temp/locks/foo'],
+            'flock directory traversal' => ['flock', PATH_site . 'typo3temp/../typo3temp/locks/foo'],
+            'simple directory traversal 2' => ['simple', PATH_site . 'typo3temp/locks/../locks/foo'],
+            'flock directory traversal 2' => ['flock', PATH_site . 'typo3temp/locks/../locks/foo'],
+            'simple within uploads' => ['simple', PATH_site . 'uploads/TYPO3-Lock-Test'],
+            'flock within uploads' => ['flock', PATH_site . 'uploads/TYPO3-Lock-Test']
+        ];
     }
 
     /**

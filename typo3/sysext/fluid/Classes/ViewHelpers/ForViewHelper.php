@@ -105,11 +105,11 @@ class ForViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper 
             $arguments['each'] = array_reverse($arguments['each']);
         }
         if ($arguments['iteration'] !== null) {
-            $iterationData = array(
+            $iterationData = [
                 'index' => 0,
                 'cycle' => 1,
                 'total' => count($arguments['each'])
-            );
+            ];
         }
 
         $output = '';

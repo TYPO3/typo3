@@ -31,7 +31,7 @@ class RegExpFilter extends AbstractFilter implements FilterInterface
      *
      * @param array $arguments Filter configuration
      */
-    public function __construct(array $arguments = array())
+    public function __construct(array $arguments = [])
     {
         $this->setRegularExpression($arguments['expression']);
     }

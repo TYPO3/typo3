@@ -24,21 +24,21 @@ class CommandLineController
      *
      * @var array
      */
-    public $cli_args = array();
+    public $cli_args = [];
 
     /**
      * @var array
      */
-    public $cli_options = array(
-        array('-s', 'Silent operation, will only output errors and important messages.'),
-        array('--silent', 'Same as -s'),
-        array('-ss', 'Super silent, will not even output errors or important messages.')
-    );
+    public $cli_options = [
+        ['-s', 'Silent operation, will only output errors and important messages.'],
+        ['--silent', 'Same as -s'],
+        ['-ss', 'Super silent, will not even output errors or important messages.']
+    ];
 
     /**
      * @var array
      */
-    public $cli_help = array(
+    public $cli_help = [
         'name' => 'CLI base class (overwrite this...)',
         'synopsis' => '###OPTIONS###',
         'description' => 'Class with basic functionality for CLI scripts (overwrite this...)',
@@ -46,7 +46,7 @@ class CommandLineController
         'options' => '',
         'license' => 'GNU GPL - free software!',
         'author' => '[Author name]'
-    );
+    ];
 
     /**
      * @var resource
@@ -80,7 +80,7 @@ class CommandLineController
         }
         if ((string)$argv[0] === (string)$option) {
             array_shift($argv);
-            return !empty($argv) ? $argv : array('');
+            return !empty($argv) ? $argv : [''];
         }
     }
 
@@ -115,9 +115,9 @@ class CommandLineController
      * @param array $argv Configuration options
      * @return array
      */
-    public function cli_getArgIndex(array $argv = array())
+    public function cli_getArgIndex(array $argv = [])
     {
-        $cli_options = array();
+        $cli_options = [];
         $index = '_DEFAULT';
         foreach ($argv as $token) {
             // Options starting with a number is invalid - they could be negative values!
@@ -127,7 +127,7 @@ class CommandLineController
                     echo 'ERROR: Option ' . $index . ' was used twice!' . LF;
                     die;
                 }
-                $cli_options[$index] = array();
+                $cli_options[$index] = [];
                 if (isset($opt)) {
                     $cli_options[$index][] = $opt;
                 }
@@ -147,7 +147,7 @@ class CommandLineController
     {
         $cli_args_copy = $this->cli_args;
         unset($cli_args_copy['_DEFAULT']);
-        $allOptions = array();
+        $allOptions = [];
         foreach ($this->cli_options as $cfg) {
             $allOptions[] = $cfg[0];
             $argSplit = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $cfg[0], true);
@@ -182,7 +182,7 @@ class CommandLineController
      * @param array $argv Configuration options
      * @return void
      */
-    public function cli_setArguments(array $argv = array())
+    public function cli_setArguments(array $argv = [])
     {
         $this->cli_args = $this->cli_getArgIndex($argv);
     }

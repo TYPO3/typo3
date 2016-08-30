@@ -29,7 +29,7 @@ abstract class AbstractSpriteHandler implements SpriteIconGeneratorInterface
      *
      * @var array
      */
-    protected $iconNames = array();
+    protected $iconNames = [];
 
     /**
      * contains the content of the CSS file to write
@@ -71,7 +71,7 @@ abstract class AbstractSpriteHandler implements SpriteIconGeneratorInterface
     protected function loadRegisteredSprites()
     {
         // Saves which CSS Files are currently "allowed to be in place"
-        $allowedCssFilesinTempDir = array(basename($this->cssTcaFile));
+        $allowedCssFilesinTempDir = [basename($this->cssTcaFile)];
         // Process every registeres file
         foreach ((array)$GLOBALS['TBE_STYLES']['spritemanager']['cssFiles'] as $file) {
             $fileName = basename($file);
@@ -129,7 +129,7 @@ abstract class AbstractSpriteHandler implements SpriteIconGeneratorInterface
     protected function collectTcaSpriteIcons()
     {
         $tcaTables = array_keys($GLOBALS['TCA']);
-        $resultArray = array();
+        $resultArray = [];
         // Path (relative from typo3 dir) for skin-Images
         if (isset($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['relDir'])) {
             $skinPath = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['relDir'];

@@ -41,7 +41,7 @@ class IconUtility
     /**
      * @var string[]
      */
-    public static $fileSpriteIconNames = array(
+    public static $fileSpriteIconNames = [
         'htm' => 'mimetypes-text-html',
         'html' => 'mimetypes-text-html',
         'css' => 'mimetypes-text-css',
@@ -121,7 +121,7 @@ class IconUtility
         'mount' => 'apps-filetree-mount',
         'folder' => 'apps-filetree-folder-default',
         'default' => 'mimetypes-other-other'
-    );
+    ];
 
     /**
      * Array of icons rendered by getSpriteIcon(). This contains only icons
@@ -129,7 +129,7 @@ class IconUtility
      *
      * @var array
      */
-    protected static $spriteIconCache = array();
+    protected static $spriteIconCache = [];
 
     /**
      * Creates the icon for input table/row
@@ -141,7 +141,7 @@ class IconUtility
      * @return string Icon filename
      * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use IconUtility::getSpriteIcon() instead
      */
-    public static function getIcon($table, $row = array(), $shaded = false)
+    public static function getIcon($table, $row = [], $shaded = false)
     {
         GeneralUtility::logDeprecatedFunction();
         // Flags
@@ -299,7 +299,7 @@ class IconUtility
     public static function skinImg($backPath, $src, $wHattribs = '', $outputMode = 0)
     {
         GeneralUtility::logDeprecatedFunction();
-        static $cachedSkinImages = array();
+        static $cachedSkinImages = [];
         $imageId = md5($backPath . $src . $wHattribs . $outputMode);
         if (isset($cachedSkinImages[$imageId])) {
             return $cachedSkinImages[$imageId];
@@ -333,10 +333,10 @@ class IconUtility
             }
             // In any case, set currect src / wHattrib - this way we make sure that an entry IS found next time we hit the function,
             // regardless of whether it points to an alternative icon or just the current.
-            $GLOBALS['TBE_STYLES']['skinImg'][$srcKey] = array($src, $wHattribs);
+            $GLOBALS['TBE_STYLES']['skinImg'][$srcKey] = [$src, $wHattribs];
         }
         // Rendering disabled (greyed) icons using _i (inactive) as name suffix ("_d" is already used)
-        $matches = array();
+        $matches = [];
         $srcBasename = basename($src);
         if (preg_match('/(.*)_i(\\....)$/', $srcBasename, $matches)) {
             $temp_path = dirname(PATH_thisScript) . '/';
@@ -594,7 +594,7 @@ class IconUtility
      * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use IconFactory->getIcon instead
      * @access public
      */
-    public static function getSpriteIcon($iconName, array $options = array(), array $overlays = array())
+    public static function getSpriteIcon($iconName, array $options = [], array $overlays = [])
     {
         GeneralUtility::logDeprecatedFunction();
 
@@ -628,7 +628,7 @@ class IconUtility
 
         $availableIcons = isset($GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])
             ? (array)$GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']
-            : array();
+            : [];
         if ($iconName !== 'empty-empty' && !in_array($iconName, $availableIcons, true)) {
             $iconName = 'status-status-icon-missing';
         }
@@ -763,7 +763,7 @@ class IconUtility
      * @throws \UnexpectedValueException
      * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
      */
-    public static function getSpriteIconForResource(\TYPO3\CMS\Core\Resource\ResourceInterface $resource, array $options = array(), array $overlays = null)
+    public static function getSpriteIconForResource(\TYPO3\CMS\Core\Resource\ResourceInterface $resource, array $options = [], array $overlays = null)
     {
         GeneralUtility::logDeprecatedFunction();
         if ($overlays !== null) {
@@ -819,7 +819,7 @@ class IconUtility
      */
     public static function mapRecordTypeToSpriteIconName($table, array $row)
     {
-        $recordType = array();
+        $recordType = [];
         $ref = null;
         if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_column'])) {
             $column = $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
@@ -858,7 +858,7 @@ class IconUtility
                     $recordType[5] = str_replace('###TYPE###', $row[$column], $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['mask']);
                 }
                 if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'])) {
-                    $parameters = array('row' => $row);
+                    $parameters = ['row' => $row];
                     $recordType[6] = GeneralUtility::callUserFunction($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'], $parameters, $ref);
                 }
             } else {

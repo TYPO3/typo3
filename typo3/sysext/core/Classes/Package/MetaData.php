@@ -27,7 +27,7 @@ class MetaData
     /**
      * @var array
      */
-    protected static $CONSTRAINT_TYPES = array(self::CONSTRAINT_TYPE_DEPENDS, self::CONSTRAINT_TYPE_CONFLICTS, self::CONSTRAINT_TYPE_SUGGESTS);
+    protected static $CONSTRAINT_TYPES = [self::CONSTRAINT_TYPE_DEPENDS, self::CONSTRAINT_TYPE_CONFLICTS, self::CONSTRAINT_TYPE_SUGGESTS];
 
     /**
      * @var string
@@ -63,7 +63,7 @@ class MetaData
      * constraints by constraint type (depends, conflicts, suggests)
      * @var array
      */
-    protected $constraints = array();
+    protected $constraints = [];
 
     /**
      * Get all available constraint types
@@ -166,7 +166,7 @@ class MetaData
     public function getConstraintsByType($constraintType)
     {
         if (!isset($this->constraints[$constraintType])) {
-            return array();
+            return [];
         }
         return $this->constraints[$constraintType];
     }

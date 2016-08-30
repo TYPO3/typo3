@@ -42,19 +42,19 @@ class Dependency extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @var array
      */
-    protected static $dependencyTypes = array(
+    protected static $dependencyTypes = [
         'depends',
         'conflicts',
         'suggests'
-    );
+    ];
 
     /**
      * @var array
      */
-    public static $specialDependencies = array(
+    public static $specialDependencies = [
         'typo3',
         'php'
-    );
+    ];
 
     /**
      * @param string $highestVersion

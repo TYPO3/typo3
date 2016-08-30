@@ -90,9 +90,9 @@ class FlexFormSectionContainer extends AbstractContainer
         // "New container" handling: Creates a "template" of each possible container and stuffs it
         // somewhere into DOM to be handled with JS magic.
         // Fun part: Handle the fact that such things may be set for children
-        $containerTemplatesHtml = array();
+        $containerTemplatesHtml = [];
         foreach ($flexFormFieldsArray as $flexFormContainerName => $flexFormFieldDefinition) {
-            $containerTemplateHtml = array();
+            $containerTemplateHtml = [];
             $sectionTitle = '';
             if (!empty(trim($flexFormFieldDefinition['title']))) {
                 $sectionTitle = $languageService->sL(trim($flexFormFieldDefinition['title']));
@@ -100,7 +100,7 @@ class FlexFormSectionContainer extends AbstractContainer
 
             $options = $this->data;
             // @todo: this should use the prepared templateRow parallel to the single elements to have support of default values!
-            $options['flexFormRowData'] = array();
+            $options['flexFormRowData'] = [];
             $options['flexFormDataStructureArray'] = $flexFormFieldDefinition['el'];
             $options['flexFormFieldIdentifierPrefix'] = $flexFormFieldIdentifierPrefix;
             $options['flexFormFormPrefix'] = $this->data['flexFormFormPrefix'] . '[' . $flexFormSectionType . ']' . '[el]';
@@ -128,7 +128,7 @@ class FlexFormSectionContainer extends AbstractContainer
                 $identifierPrefixJs .= '.replace(/(tree_?)?' . $treeElementIdentifier . '/g,"$1" + (' . $uniqueId . '))';
             }
 
-            $onClickInsert = array();
+            $onClickInsert = [];
             $onClickInsert[] = 'var ' . $uniqueId . ' = "' . 'idx"+(new Date()).getTime();';
             $onClickInsert[] = 'TYPO3.jQuery("#' . $flexFormFieldIdentifierPrefix . '").append(TYPO3.jQuery(' . json_encode($flexFormContainerContainerTemplateResult['html']) . '.' . $identifierPrefixJs . '));';
             $onClickInsert[] = 'TYPO3.jQuery("#' . $flexFormFieldIdentifierPrefix . '").t3FormEngineFlexFormElement();';
@@ -149,14 +149,14 @@ class FlexFormSectionContainer extends AbstractContainer
             $containerTemplatesHtml[] = implode(LF, $containerTemplateHtml);
 
             $flexFormContainerContainerTemplateResult['html'] = '';
-            $flexFormContainerContainerTemplateResult['additionalJavaScriptPost'] = array();
-            $flexFormContainerContainerTemplateResult['additionalJavaScriptSubmit'] = array();
+            $flexFormContainerContainerTemplateResult['additionalJavaScriptPost'] = [];
+            $flexFormContainerContainerTemplateResult['additionalJavaScriptSubmit'] = [];
 
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormContainerContainerTemplateResult);
         }
 
         // Create new elements links
-        $createElementsHtml = array();
+        $createElementsHtml = [];
         if ($userHasAccessToDefaultLanguage) {
             $createElementsHtml[] = '<div class="t3-form-field-add-flexsection">';
             $createElementsHtml[] =    '<div class="btn-group">';
@@ -167,7 +167,7 @@ class FlexFormSectionContainer extends AbstractContainer
 
         // Wrap child stuff
         $toggleAll = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall', true);
-        $html = array();
+        $html = [];
         $html[] = '<div class="panel panel-tab">';
         $html[] =     '<div class="panel-body">';
         $html[] =         '<div class="t3-form-field-container t3-form-flex">';

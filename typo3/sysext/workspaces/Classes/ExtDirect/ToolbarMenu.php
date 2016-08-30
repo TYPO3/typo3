@@ -32,7 +32,7 @@ class ToolbarMenu
         \TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
         $newState = $GLOBALS['BE_USER']->user['workspace_preview'] ? '0' : '1';
         $GLOBALS['BE_USER']->setWorkspacePreview($newState);
-        return array('newWorkspacePreviewState' => $newState);
+        return ['newWorkspacePreviewState' => $newState];
     }
 
     /**
@@ -63,10 +63,10 @@ class ToolbarMenu
             $pageId = $page['pid'];
         }
 
-        return array(
+        return [
             'title' => \TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($workspaceId),
             'id' => $workspaceId,
             'page' => (isset($page['uid']) && ($parameter->pageId == $page['uid'])) ? null : (int)$page['uid']
-        );
+        ];
     }
 }

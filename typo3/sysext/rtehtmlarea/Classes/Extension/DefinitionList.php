@@ -40,10 +40,10 @@ class DefinitionList extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'definitionlist' => 'DefinitionList',
         'definitionitem' => 'DefinitionItem'
-    );
+    ];
 
     /**
      * The comma-separated list of names of prerequisite plugins

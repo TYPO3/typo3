@@ -27,7 +27,7 @@ class HierarchicalMenuContentObject extends AbstractContentObject
      * @param array $conf Array of TypoScript properties
      * @return string Output
      */
-    public function render($conf = array())
+    public function render($conf = [])
     {
         if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
             return '';
@@ -42,8 +42,8 @@ class HierarchicalMenuContentObject extends AbstractContentObject
             $GLOBALS['TSFE']->register['count_HMENU']++;
             $GLOBALS['TSFE']->register['count_HMENU_MENUOBJ'] = 0;
             $GLOBALS['TSFE']->register['count_MENUOBJ'] = 0;
-            $GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid'] = array();
-            $GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMparentId'] = array();
+            $GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid'] = [];
+            $GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMparentId'] = [];
             $menu->parent_cObj = $this->cObj;
             $menu->start($GLOBALS['TSFE']->tmpl, $GLOBALS['TSFE']->sys_page, '', $conf, 1);
             $menu->makeMenu();

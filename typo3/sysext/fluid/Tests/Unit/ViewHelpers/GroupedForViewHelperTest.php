@@ -24,7 +24,7 @@ class GroupedForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\V
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\GroupedForViewHelper::class, array('renderChildren'));
+        $this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\GroupedForViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
     }
@@ -42,7 +42,7 @@ class GroupedForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\V
      */
     public function renderReturnsEmptyStringIfObjectIsEmptyArray()
     {
-        $this->assertEquals('', $this->viewHelper->render(array(), 'foo', 'bar'));
+        $this->assertEquals('', $this->viewHelper->render([], 'foo', 'bar'));
     }
 
     /**
@@ -61,20 +61,20 @@ class GroupedForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\V
      */
     public function renderGroupsMultidimensionalArrayAndPreservesKeys()
     {
-        $photoshop = array('name' => 'Adobe Photoshop', 'license' => 'commercial');
-        $typo3 = array('name' => 'TYPO3', 'license' => 'GPL');
-        $office = array('name' => 'Microsoft Office', 'license' => 'commercial');
-        $drupal = array('name' => 'Drupal', 'license' => 'GPL');
-        $wordpress = array('name' => 'Wordpress', 'license' => 'GPL');
+        $photoshop = ['name' => 'Adobe Photoshop', 'license' => 'commercial'];
+        $typo3 = ['name' => 'TYPO3', 'license' => 'GPL'];
+        $office = ['name' => 'Microsoft Office', 'license' => 'commercial'];
+        $drupal = ['name' => 'Drupal', 'license' => 'GPL'];
+        $wordpress = ['name' => 'Wordpress', 'license' => 'GPL'];
 
-        $products = array('photoshop' => $photoshop, 'typo3' => $typo3, 'office' => $office, 'drupal' => $drupal, 'wordpress' => $wordpress);
+        $products = ['photoshop' => $photoshop, 'typo3' => $typo3, 'office' => $office, 'drupal' => $drupal, 'wordpress' => $wordpress];
 
         $this->templateVariableContainer->expects($this->at(0))->method('add')->with('myGroupKey', 'commercial');
-        $this->templateVariableContainer->expects($this->at(1))->method('add')->with('products', array('photoshop' => $photoshop, 'office' => $office));
+        $this->templateVariableContainer->expects($this->at(1))->method('add')->with('products', ['photoshop' => $photoshop, 'office' => $office]);
         $this->templateVariableContainer->expects($this->at(2))->method('remove')->with('myGroupKey');
         $this->templateVariableContainer->expects($this->at(3))->method('remove')->with('products');
         $this->templateVariableContainer->expects($this->at(4))->method('add')->with('myGroupKey', 'GPL');
-        $this->templateVariableContainer->expects($this->at(5))->method('add')->with('products', array('typo3' => $typo3, 'drupal' => $drupal, 'wordpress' => $wordpress));
+        $this->templateVariableContainer->expects($this->at(5))->method('add')->with('products', ['typo3' => $typo3, 'drupal' => $drupal, 'wordpress' => $wordpress]);
         $this->templateVariableContainer->expects($this->at(6))->method('remove')->with('myGroupKey');
         $this->templateVariableContainer->expects($this->at(7))->method('remove')->with('products');
 
@@ -86,20 +86,20 @@ class GroupedForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\V
      */
     public function renderGroupsMultidimensionalArrayObjectAndPreservesKeys()
     {
-        $photoshop = new \ArrayObject(array('name' => 'Adobe Photoshop', 'license' => 'commercial'));
-        $typo3 = new \ArrayObject(array('name' => 'TYPO3', 'license' => 'GPL'));
-        $office = new \ArrayObject(array('name' => 'Microsoft Office', 'license' => 'commercial'));
-        $drupal = new \ArrayObject(array('name' => 'Drupal', 'license' => 'GPL'));
-        $wordpress = new \ArrayObject(array('name' => 'Wordpress', 'license' => 'GPL'));
+        $photoshop = new \ArrayObject(['name' => 'Adobe Photoshop', 'license' => 'commercial']);
+        $typo3 = new \ArrayObject(['name' => 'TYPO3', 'license' => 'GPL']);
+        $office = new \ArrayObject(['name' => 'Microsoft Office', 'license' => 'commercial']);
+        $drupal = new \ArrayObject(['name' => 'Drupal', 'license' => 'GPL']);
+        $wordpress = new \ArrayObject(['name' => 'Wordpress', 'license' => 'GPL']);
 
-        $products = new \ArrayObject(array('photoshop' => $photoshop, 'typo3' => $typo3, 'office' => $office, 'drupal' => $drupal, 'wordpress' => $wordpress));
+        $products = new \ArrayObject(['photoshop' => $photoshop, 'typo3' => $typo3, 'office' => $office, 'drupal' => $drupal, 'wordpress' => $wordpress]);
 
         $this->templateVariableContainer->expects($this->at(0))->method('add')->with('myGroupKey', 'commercial');
-        $this->templateVariableContainer->expects($this->at(1))->method('add')->with('products', array('photoshop' => $photoshop, 'office' => $office));
+        $this->templateVariableContainer->expects($this->at(1))->method('add')->with('products', ['photoshop' => $photoshop, 'office' => $office]);
         $this->templateVariableContainer->expects($this->at(2))->method('remove')->with('myGroupKey');
         $this->templateVariableContainer->expects($this->at(3))->method('remove')->with('products');
         $this->templateVariableContainer->expects($this->at(4))->method('add')->with('myGroupKey', 'GPL');
-        $this->templateVariableContainer->expects($this->at(5))->method('add')->with('products', array('typo3' => $typo3, 'drupal' => $drupal, 'wordpress' => $wordpress));
+        $this->templateVariableContainer->expects($this->at(5))->method('add')->with('products', ['typo3' => $typo3, 'drupal' => $drupal, 'wordpress' => $wordpress]);
         $this->templateVariableContainer->expects($this->at(6))->method('remove')->with('myGroupKey');
         $this->templateVariableContainer->expects($this->at(7))->method('remove')->with('products');
 
@@ -127,14 +127,14 @@ class GroupedForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\V
         $wordpress->name = 'Wordpress';
         $wordpress->license = 'GPL';
 
-        $products = array('photoshop' => $photoshop, 'typo3' => $typo3, 'office' => $office, 'drupal' => $drupal, 'wordpress' => $wordpress);
+        $products = ['photoshop' => $photoshop, 'typo3' => $typo3, 'office' => $office, 'drupal' => $drupal, 'wordpress' => $wordpress];
 
         $this->templateVariableContainer->expects($this->at(0))->method('add')->with('myGroupKey', 'commercial');
-        $this->templateVariableContainer->expects($this->at(1))->method('add')->with('products', array('photoshop' => $photoshop, 'office' => $office));
+        $this->templateVariableContainer->expects($this->at(1))->method('add')->with('products', ['photoshop' => $photoshop, 'office' => $office]);
         $this->templateVariableContainer->expects($this->at(2))->method('remove')->with('myGroupKey');
         $this->templateVariableContainer->expects($this->at(3))->method('remove')->with('products');
         $this->templateVariableContainer->expects($this->at(4))->method('add')->with('myGroupKey', 'GPL');
-        $this->templateVariableContainer->expects($this->at(5))->method('add')->with('products', array('typo3' => $typo3, 'drupal' => $drupal, 'wordpress' => $wordpress));
+        $this->templateVariableContainer->expects($this->at(5))->method('add')->with('products', ['typo3' => $typo3, 'drupal' => $drupal, 'wordpress' => $wordpress]);
         $this->templateVariableContainer->expects($this->at(6))->method('remove')->with('myGroupKey');
         $this->templateVariableContainer->expects($this->at(7))->method('remove')->with('products');
 
@@ -152,18 +152,18 @@ class GroupedForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\V
         $customer2 = new \stdClass();
         $customer2->name = 'Balthasar Bux';
 
-        $invoice1 = array('date' => new \DateTime('1980-12-13'), 'customer' => $customer1);
-        $invoice2 = array('date' => new \DateTime('2010-07-01'), 'customer' => $customer1);
-        $invoice3 = array('date' => new \DateTime('2010-07-04'), 'customer' => $customer2);
+        $invoice1 = ['date' => new \DateTime('1980-12-13'), 'customer' => $customer1];
+        $invoice2 = ['date' => new \DateTime('2010-07-01'), 'customer' => $customer1];
+        $invoice3 = ['date' => new \DateTime('2010-07-04'), 'customer' => $customer2];
 
-        $invoices = array('invoice1' => $invoice1, 'invoice2' => $invoice2, 'invoice3' => $invoice3);
+        $invoices = ['invoice1' => $invoice1, 'invoice2' => $invoice2, 'invoice3' => $invoice3];
 
         $this->templateVariableContainer->expects($this->at(0))->method('add')->with('myGroupKey', $customer1);
-        $this->templateVariableContainer->expects($this->at(1))->method('add')->with('invoices', array('invoice1' => $invoice1, 'invoice2' => $invoice2));
+        $this->templateVariableContainer->expects($this->at(1))->method('add')->with('invoices', ['invoice1' => $invoice1, 'invoice2' => $invoice2]);
         $this->templateVariableContainer->expects($this->at(2))->method('remove')->with('myGroupKey');
         $this->templateVariableContainer->expects($this->at(3))->method('remove')->with('invoices');
         $this->templateVariableContainer->expects($this->at(4))->method('add')->with('myGroupKey', $customer2);
-        $this->templateVariableContainer->expects($this->at(5))->method('add')->with('invoices', array('invoice3' => $invoice3));
+        $this->templateVariableContainer->expects($this->at(5))->method('add')->with('invoices', ['invoice3' => $invoice3]);
         $this->templateVariableContainer->expects($this->at(6))->method('remove')->with('myGroupKey');
         $this->templateVariableContainer->expects($this->at(7))->method('remove')->with('invoices');
 
@@ -190,25 +190,25 @@ class GroupedForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\V
         $invoice3 = new \stdClass();
         $invoice3->customer = $customer2;
 
-        $invoices = array('invoice1' => $invoice1, 'invoice2' => $invoice2, 'invoice3' => $invoice3);
+        $invoices = ['invoice1' => $invoice1, 'invoice2' => $invoice2, 'invoice3' => $invoice3];
         $groupBy = 'customer.name';
         /** @var \TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Fluid\ViewHelpers\GroupedForViewHelper $accessibleMock */
-        $accessibleMock = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\GroupedForViewHelper::class, array('dummy'));
-        $expectedResult = array(
-            'keys' => array(
+        $accessibleMock = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\GroupedForViewHelper::class, ['dummy']);
+        $expectedResult = [
+            'keys' => [
                 'Anton Abel' => 'Anton Abel',
                 'Balthasar Bux' => 'Balthasar Bux'
-            ),
-            'values' => array(
-                'Anton Abel' => array(
+            ],
+            'values' => [
+                'Anton Abel' => [
                     'invoice1' => $invoice1,
                     'invoice2' => $invoice2
-                ),
-                'Balthasar Bux' => array(
+                ],
+                'Balthasar Bux' => [
                     'invoice3' => $invoice3
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $this->assertSame($expectedResult, $accessibleMock->_callRef('groupElements', $invoices, $groupBy));
     }
 
@@ -235,14 +235,14 @@ class GroupedForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\V
         $invoice3->date = new \DateTime('2010-07-04');
         $invoice3->customer = $customer2;
 
-        $invoices = array('invoice1' => $invoice1, 'invoice2' => $invoice2, 'invoice3' => $invoice3);
+        $invoices = ['invoice1' => $invoice1, 'invoice2' => $invoice2, 'invoice3' => $invoice3];
 
         $this->templateVariableContainer->expects($this->at(0))->method('add')->with('myGroupKey', $customer1);
-        $this->templateVariableContainer->expects($this->at(1))->method('add')->with('invoices', array('invoice1' => $invoice1, 'invoice2' => $invoice2));
+        $this->templateVariableContainer->expects($this->at(1))->method('add')->with('invoices', ['invoice1' => $invoice1, 'invoice2' => $invoice2]);
         $this->templateVariableContainer->expects($this->at(2))->method('remove')->with('myGroupKey');
         $this->templateVariableContainer->expects($this->at(3))->method('remove')->with('invoices');
         $this->templateVariableContainer->expects($this->at(4))->method('add')->with('myGroupKey', $customer2);
-        $this->templateVariableContainer->expects($this->at(5))->method('add')->with('invoices', array('invoice3' => $invoice3));
+        $this->templateVariableContainer->expects($this->at(5))->method('add')->with('invoices', ['invoice3' => $invoice3]);
         $this->templateVariableContainer->expects($this->at(6))->method('remove')->with('myGroupKey');
         $this->templateVariableContainer->expects($this->at(7))->method('remove')->with('invoices');
 
@@ -269,14 +269,14 @@ class GroupedForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\V
         $invoice3->date = $date2;
         $invoice3->id = 12342;
 
-        $invoices = array('invoice1' => $invoice1, 'invoice2' => $invoice2, 'invoice3' => $invoice3);
+        $invoices = ['invoice1' => $invoice1, 'invoice2' => $invoice2, 'invoice3' => $invoice3];
 
         $this->templateVariableContainer->expects($this->at(0))->method('add')->with('myGroupKey', $date1);
-        $this->templateVariableContainer->expects($this->at(1))->method('add')->with('invoices', array('invoice1' => $invoice1, 'invoice2' => $invoice2));
+        $this->templateVariableContainer->expects($this->at(1))->method('add')->with('invoices', ['invoice1' => $invoice1, 'invoice2' => $invoice2]);
         $this->templateVariableContainer->expects($this->at(2))->method('remove')->with('myGroupKey');
         $this->templateVariableContainer->expects($this->at(3))->method('remove')->with('invoices');
         $this->templateVariableContainer->expects($this->at(4))->method('add')->with('myGroupKey', $date2);
-        $this->templateVariableContainer->expects($this->at(5))->method('add')->with('invoices', array('invoice3' => $invoice3));
+        $this->templateVariableContainer->expects($this->at(5))->method('add')->with('invoices', ['invoice3' => $invoice3]);
         $this->templateVariableContainer->expects($this->at(6))->method('remove')->with('myGroupKey');
         $this->templateVariableContainer->expects($this->at(7))->method('remove')->with('invoices');
 
@@ -288,11 +288,11 @@ class GroupedForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\V
      */
     public function groupingByAKeyThatDoesNotExistCreatesASingleGroup()
     {
-        $photoshop = array('name' => 'Adobe Photoshop', 'license' => 'commercial');
-        $typo3 = array('name' => 'TYPO3', 'license' => 'GPL');
-        $office = array('name' => 'Microsoft Office', 'license' => 'commercial');
+        $photoshop = ['name' => 'Adobe Photoshop', 'license' => 'commercial'];
+        $typo3 = ['name' => 'TYPO3', 'license' => 'GPL'];
+        $office = ['name' => 'Microsoft Office', 'license' => 'commercial'];
 
-        $products = array('photoshop' => $photoshop, 'typo3' => $typo3, 'office' => $office);
+        $products = ['photoshop' => $photoshop, 'typo3' => $typo3, 'office' => $office];
 
         $this->templateVariableContainer->expects($this->at(0))->method('add')->with('groupKey', null);
         $this->templateVariableContainer->expects($this->at(1))->method('add')->with('innerKey', $products);
@@ -308,7 +308,7 @@ class GroupedForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\V
      */
     public function renderThrowsExceptionWhenPassingOneDimensionalArraysToEach()
     {
-        $values = array('some', 'simple', 'array');
+        $values = ['some', 'simple', 'array'];
 
         $this->viewHelper->render($values, 'innerVariable', 'someKey');
     }

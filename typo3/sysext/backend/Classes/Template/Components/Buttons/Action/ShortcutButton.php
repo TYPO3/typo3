@@ -50,12 +50,12 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     /**
      * @var array
      */
-    protected $setVariables = array();
+    protected $setVariables = [];
 
     /**
      * @var array
      */
-    protected $getVariables = array();
+    protected $getVariables = [];
 
     /**
      * @var ControllerContext
@@ -239,7 +239,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
 
         // Set default GET parameters
         if ($emptyGetVariables) {
-            $this->getVariables = array('id', 'M');
+            $this->getVariables = ['id', 'M'];
         }
 
         // Automatically determine module name in Extbase context

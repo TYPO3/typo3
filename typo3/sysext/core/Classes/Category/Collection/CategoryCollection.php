@@ -117,7 +117,7 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
     {
         $db = self::getDatabaseConnection();
 
-        $relatedRecords = array();
+        $relatedRecords = [];
         // Assemble where clause
         $where = 'AND ' . self::$storageTableName . '.uid = ' . (int)$this->getIdentifier();
         // Add condition on tablenames fields
@@ -174,11 +174,11 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
      */
     protected function getPersistableDataArray()
     {
-        return array(
+        return [
             'title' => $this->getTitle(),
             'description' => $this->getDescription(),
             'items' => $this->getItemUidList(true)
-        );
+        ];
     }
 
     /**
@@ -242,7 +242,7 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
      */
     public function getItems()
     {
-        $itemArray = array();
+        $itemArray = [];
         /** @var $item \TYPO3\CMS\Core\Resource\File */
         foreach ($this->storage as $item) {
             $itemArray[] = $item;

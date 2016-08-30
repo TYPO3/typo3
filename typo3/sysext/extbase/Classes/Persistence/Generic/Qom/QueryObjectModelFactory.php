@@ -55,7 +55,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $boundVariables An array of variables to bind to the statement
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement
      */
-    public function statement($statement, array $boundVariables = array())
+    public function statement($statement, array $boundVariables = [])
     {
         return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement::class, $statement, $boundVariables);
     }

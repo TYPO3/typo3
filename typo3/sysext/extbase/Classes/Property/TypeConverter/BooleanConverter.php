@@ -30,7 +30,7 @@ class BooleanConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstrac
     /**
      * @var array<string>
      */
-    protected $sourceTypes = array('boolean', 'string');
+    protected $sourceTypes = ['boolean', 'string'];
 
     /**
      * @var string
@@ -52,7 +52,7 @@ class BooleanConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstrac
      * @return bool
      * @api
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
     {
         return (bool)$source;
     }

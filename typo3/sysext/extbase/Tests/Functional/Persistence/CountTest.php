@@ -31,12 +31,12 @@ class CountTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array('typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example');
+    protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = array('extbase', 'fluid');
+    protected $coreExtensionsToLoad = ['extbase', 'fluid'];
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
@@ -143,7 +143,7 @@ class CountTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $query = $this->postRepository->createQuery();
 
         $query->matching(
-            $query->in('uid', array(1, 2, 3))
+            $query->in('uid', [1, 2, 3])
         );
 
         $this->assertSame(3, $query->count());

@@ -35,9 +35,9 @@ class Application implements ApplicationInterface
      * All available request handlers that can handle an install tool request
      * @var array
      */
-    protected $availableRequestHandlers = array(
+    protected $availableRequestHandlers = [
         \TYPO3\CMS\Install\Http\RequestHandler::class
-    );
+    ];
 
     /**
      * Constructor setting up legacy constant and register available Request Handlers

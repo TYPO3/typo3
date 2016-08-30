@@ -52,11 +52,11 @@ class VersionNumberUtility
             throw new \InvalidArgumentException(\TYPO3\CMS\Core\Utility\VersionNumberUtility::class . '::convertIntegerToVersionNumber() supports an integer argument only!', 1334072223);
         }
         $versionString = str_pad($versionInteger, 9, '0', STR_PAD_LEFT);
-        $parts = array(
+        $parts = [
             substr($versionString, 0, 3),
             substr($versionString, 3, 3),
             substr($versionString, 6, 3)
-        );
+        ];
         return (int)$parts[0] . '.' . (int)$parts[1] . '.' . (int)$parts[2];
     }
 
@@ -72,7 +72,7 @@ class VersionNumberUtility
      */
     public static function splitVersionRange($version)
     {
-        $versionRange = array();
+        $versionRange = [];
         if (strstr($version, '-')) {
             $versionRange = explode('-', $version, 2);
         } else {
@@ -156,7 +156,7 @@ class VersionNumberUtility
         $parts[0] = MathUtility::forceIntegerInRange($parts[0], 0, 999);
         $parts[1] = MathUtility::forceIntegerInRange($parts[1], 0, 999);
         $parts[2] = MathUtility::forceIntegerInRange($parts[2], 0, 999);
-        $result = array();
+        $result = [];
         $result['version'] = $parts[0] . '.' . $parts[1] . '.' . $parts[2];
         $result['version_int'] = (int)($parts[0] * 1000000 + $parts[1] * 1000 + $parts[2]);
         $result['version_main'] = $parts[0];
@@ -175,7 +175,7 @@ class VersionNumberUtility
      */
     public static function raiseVersionNumber($raise, $version)
     {
-        if (!in_array($raise, array('main', 'sub', 'dev'))) {
+        if (!in_array($raise, ['main', 'sub', 'dev'])) {
             throw new \TYPO3\CMS\Core\Exception('RaiseVersionNumber expects one of "main", "sub" or "dev".', 1342639555);
         }
         $parts = GeneralUtility::intExplode('.', $version . '..');

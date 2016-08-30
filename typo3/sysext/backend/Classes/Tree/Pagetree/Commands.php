@@ -60,7 +60,7 @@ class Commands
     public static function visiblyNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node)
     {
         $data['pages'][$node->getWorkspaceId()]['hidden'] = 0;
-        self::processTceCmdAndDataMap(array(), $data);
+        self::processTceCmdAndDataMap([], $data);
     }
 
     /**
@@ -72,7 +72,7 @@ class Commands
     public static function disableNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node)
     {
         $data['pages'][$node->getWorkspaceId()]['hidden'] = 1;
-        self::processTceCmdAndDataMap(array(), $data);
+        self::processTceCmdAndDataMap([], $data);
     }
 
     /**
@@ -114,9 +114,9 @@ class Commands
     {
         if ($GLOBALS['BE_USER']->checkLanguageAccess(0)) {
             $data['pages'][$node->getWorkspaceId()][$node->getTextSourceField()] = $updatedLabel;
-            self::processTceCmdAndDataMap(array(), $data);
+            self::processTceCmdAndDataMap([], $data);
         } else {
-            throw new \RuntimeException(implode(LF, array('Editing title of page id \'' . $node->getWorkspaceId() . '\' failed. Editing default language is not allowed.')), 1365513336);
+            throw new \RuntimeException(implode(LF, ['Editing title of page id \'' . $node->getWorkspaceId() . '\' failed. Editing default language is not allowed.']), 1365513336);
         }
     }
 
@@ -170,13 +170,13 @@ class Commands
         if (array_key_exists('TCAdefaults.', $pageTs) && array_key_exists('pages.', $pageTs['TCAdefaults.'])) {
             $data['pages'][$placeholder] = $pageTs['TCAdefaults.']['pages.'];
         } else {
-            $data['pages'][$placeholder] = array();
+            $data['pages'][$placeholder] = [];
         }
 
         $data['pages'][$placeholder]['pid'] = $pid;
         $data['pages'][$placeholder]['doktype'] = $pageType;
         $data['pages'][$placeholder]['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:tree.defaultPageTitle', true);
-        $newPageId = self::processTceCmdAndDataMap(array(), $data);
+        $newPageId = self::processTceCmdAndDataMap([], $data);
         $node = self::getNode($newPageId[$placeholder]);
         if ($pid !== $targetId) {
             self::moveNode($node, $targetId);
@@ -201,7 +201,7 @@ class Commands
      * @return array
      * @throws \RuntimeException if an error happened while the TCE processing
      */
-    protected static function processTceCmdAndDataMap(array $cmd, array $data = array())
+    protected static function processTceCmdAndDataMap(array $cmd, array $data = [])
     {
         /** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
         $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
@@ -215,7 +215,7 @@ class Commands
             $tce->process_datamap();
             $returnValues = $tce->substNEWwithIDs;
         } else {
-            $returnValues = array();
+            $returnValues = [];
         }
         // check errors
         if (!empty($tce->errorLog)) {
@@ -256,7 +256,7 @@ class Commands
         }
         $rootline = array_reverse(BackendUtility::BEgetRootLine($uid));
         array_shift($rootline);
-        $path = array();
+        $path = [];
         foreach ($rootline as $rootlineElement) {
             $record = self::getNodeRecord($rootlineElement['uid']);
             $text = $record['title'];
@@ -348,7 +348,7 @@ class Commands
         // Call stats information hook
         $stat = '';
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
-            $_params = array('pages', $record['uid']);
+            $_params = ['pages', $record['uid']];
             $fakeThis = null;
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
                 $stat .= GeneralUtility::callUserFunction($_funcRef, $_params, $fakeThis);

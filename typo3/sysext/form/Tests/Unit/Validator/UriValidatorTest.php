@@ -29,11 +29,11 @@ class UriValidatorTest extends AbstractValidatorTest
      */
     public function validDataProvider()
     {
-        return array(
-            'http://example.net'              => array('http://example.net'),
-            'https://example.net'             => array('https://example.net'),
-            'http://a:b@example.net'          => array('http://a:b@example.net'),
-        );
+        return [
+            'http://example.net'              => ['http://example.net'],
+            'https://example.net'             => ['https://example.net'],
+            'http://a:b@example.net'          => ['http://a:b@example.net'],
+        ];
     }
 
     /**
@@ -41,9 +41,9 @@ class UriValidatorTest extends AbstractValidatorTest
      */
     public function invalidDataProvider()
     {
-        return array(
-            'index.php' => array('index.php')
-        );
+        return [
+            'index.php' => ['index.php']
+        ];
     }
 
     /**
@@ -52,7 +52,7 @@ class UriValidatorTest extends AbstractValidatorTest
      */
     public function validateForValidInputHasEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $subject = $this->createSubject($options);
 
         $this->assertEmpty(
@@ -66,7 +66,7 @@ class UriValidatorTest extends AbstractValidatorTest
      */
     public function validateForInvalidInputHasNotEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $subject = $this->createSubject($options);
 
         $this->assertNotEmpty(

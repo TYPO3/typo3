@@ -71,30 +71,30 @@ Reports missing relations';
     {
         // Initialize result array:
         $listExplain = ' Shows the missing record as header and underneath a list of record fields in which the references are found. ' . $this->label_infoString;
-        $resultArray = array(
+        $resultArray = [
             'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
-            'headers' => array(
-                'offlineVersionRecords_m' => array('Offline version records (managed)', 'These records are offline versions having a pid=-1 and references should never occur directly to their uids.' . $listExplain, 3),
-                'deletedRecords_m' => array('Deleted-flagged records (managed)', 'These records are deleted with a flag but references are still pointing at them. Keeping the references is useful if you undelete the referenced records later, otherwise the references are lost completely when the deleted records are flushed at some point. Notice that if those records listed are themselves deleted (marked with "DELETED") it is not a problem.' . $listExplain, 2),
-                'nonExistingRecords_m' => array('Non-existing records to which there are references (managed)', 'These references can safely be removed since there is no record found in the database at all.' . $listExplain, 3),
+            'headers' => [
+                'offlineVersionRecords_m' => ['Offline version records (managed)', 'These records are offline versions having a pid=-1 and references should never occur directly to their uids.' . $listExplain, 3],
+                'deletedRecords_m' => ['Deleted-flagged records (managed)', 'These records are deleted with a flag but references are still pointing at them. Keeping the references is useful if you undelete the referenced records later, otherwise the references are lost completely when the deleted records are flushed at some point. Notice that if those records listed are themselves deleted (marked with "DELETED") it is not a problem.' . $listExplain, 2],
+                'nonExistingRecords_m' => ['Non-existing records to which there are references (managed)', 'These references can safely be removed since there is no record found in the database at all.' . $listExplain, 3],
                 // 3 = error
-                'offlineVersionRecords_s' => array('Offline version records (softref)', 'See above.' . $listExplain, 2),
-                'deletedRecords_s' => array('Deleted-flagged records (softref)', 'See above.' . $listExplain, 2),
-                'nonExistingRecords_s' => array('Non-existing records to which there are references (softref)', 'See above.' . $listExplain, 2)
-            ),
-            'offlineVersionRecords_m' => array(),
-            'deletedRecords_m' => array(),
-            'nonExistingRecords_m' => array(),
-            'offlineVersionRecords_s' => array(),
-            'deletedRecords_s' => array(),
-            'nonExistingRecords_s' => array()
-        );
+                'offlineVersionRecords_s' => ['Offline version records (softref)', 'See above.' . $listExplain, 2],
+                'deletedRecords_s' => ['Deleted-flagged records (softref)', 'See above.' . $listExplain, 2],
+                'nonExistingRecords_s' => ['Non-existing records to which there are references (softref)', 'See above.' . $listExplain, 2]
+            ],
+            'offlineVersionRecords_m' => [],
+            'deletedRecords_m' => [],
+            'nonExistingRecords_m' => [],
+            'offlineVersionRecords_s' => [],
+            'deletedRecords_s' => [],
+            'nonExistingRecords_s' => []
+        ];
         // Select DB relations from reference table
         /** @var DatabaseConnection $db */
         $db = $GLOBALS['TYPO3_DB'];
         $result = $db->exec_SELECTquery('ref_uid,ref_table,softref_key,hash,tablename,recuid,field,flexpointer,deleted', 'sys_refindex', 'ref_table <> ' . $db->fullQuoteStr('_FILE', 'sys_refindex') . ' AND ref_uid > 0', '', 'sorting DESC');
         if ($result) {
-            $tempExists = array();
+            $tempExists = [];
             while ($rec = $db->sql_fetch_assoc($result)) {
                 $suffix = $rec['softref_key'] != '' ? '_s' : '_m';
                 $idx = $rec['ref_table'] . ':' . $rec['ref_uid'];
@@ -138,7 +138,7 @@ Reports missing relations';
      */
     public function main_autoFix($resultArray)
     {
-        $trav = array('offlineVersionRecords_m', 'nonExistingRecords_m');
+        $trav = ['offlineVersionRecords_m', 'nonExistingRecords_m'];
         foreach ($trav as $tk) {
             echo 'Processing managed "' . $tk . '"...' . LF;
             foreach ($resultArray[$tk] as $key => $value) {

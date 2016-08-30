@@ -33,9 +33,9 @@ class DatabaseCheck
      *
      * @var array
      */
-    protected $incompatibleSqlModes = array(
+    protected $incompatibleSqlModes = [
         'NO_BACKSLASH_ESCAPES'
-    );
+    ];
 
     /**
      * Get all status information as array with status objects
@@ -44,7 +44,7 @@ class DatabaseCheck
      */
     public function getStatus()
     {
-        $statusArray = array();
+        $statusArray = [];
         if ($this->isDbalEnabled() || !$this->getDatabaseConnection()) {
             return $statusArray;
         }
@@ -117,7 +117,7 @@ class DatabaseCheck
      */
     protected function getIncompatibleSqlModes()
     {
-        $sqlModes = array();
+        $sqlModes = [];
         $resource = $this->getDatabaseConnection()->sql_query('SELECT @@SESSION.sql_mode;');
         if ($resource !== false) {
             $result = $this->getDatabaseConnection()->sql_fetch_row($resource);

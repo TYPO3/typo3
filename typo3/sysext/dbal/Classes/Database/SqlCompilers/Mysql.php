@@ -30,16 +30,16 @@ class Mysql extends AbstractCompiler
      */
     protected function compileINSERT($components)
     {
-        $values = array();
+        $values = [];
         if (isset($components['VALUES_ONLY']) && is_array($components['VALUES_ONLY'])) {
-            $valuesComponents = $components['EXTENDED'] === '1' ? $components['VALUES_ONLY'] : array($components['VALUES_ONLY']);
-            $tableFields = array();
+            $valuesComponents = $components['EXTENDED'] === '1' ? $components['VALUES_ONLY'] : [$components['VALUES_ONLY']];
+            $tableFields = [];
         } else {
-            $valuesComponents = $components['EXTENDED'] === '1' ? $components['FIELDS'] : array($components['FIELDS']);
+            $valuesComponents = $components['EXTENDED'] === '1' ? $components['FIELDS'] : [$components['FIELDS']];
             $tableFields = array_keys($valuesComponents[0]);
         }
         foreach ($valuesComponents as $valuesComponent) {
-            $fields = array();
+            $fields = [];
             foreach ($valuesComponent as $fV) {
                 $fields[] = $fV[1] . $this->compileAddslashes($fV[0]) . $fV[1];
             }
@@ -65,7 +65,7 @@ class Mysql extends AbstractCompiler
     protected function compileCREATETABLE($components)
     {
         // Create fields and keys:
-        $fieldsKeys = array();
+        $fieldsKeys = [];
         foreach ($components['FIELDS'] as $fN => $fCfg) {
             $fieldsKeys[] = $fN . ' ' . $this->compileFieldCfg($fCfg['definition']);
         }
@@ -144,7 +144,7 @@ class Mysql extends AbstractCompiler
         $fields = '';
         // Traverse the selectFields if any:
         if (is_array($selectFields)) {
-            $outputParts = array();
+            $outputParts = [];
             foreach ($selectFields as $k => $v) {
                 // Detecting type:
                 switch ($v['type']) {
@@ -187,8 +187,8 @@ class Mysql extends AbstractCompiler
      */
     protected function compileAddslashes($str)
     {
-        $search = array('\\', '\'', '"', "\x00", "\x0a", "\x0d", "\x1a");
-        $replace = array('\\\\', '\\\'', '\\"', '\0', '\n', '\r', '\Z');
+        $search = ['\\', '\'', '"', "\x00", "\x0a", "\x0d", "\x1a"];
+        $replace = ['\\\\', '\\\'', '\\"', '\0', '\n', '\r', '\Z'];
 
         return str_replace($search, $replace, $str);
     }
@@ -282,7 +282,7 @@ class Mysql extends AbstractCompiler
                             if (isset($v['subquery'])) {
                                 $output .= ' (' . $this->compileSELECT($v['subquery']) . ')';
                             } else {
-                                $valueBuffer = array();
+                                $valueBuffer = [];
                                 foreach ($v['value'] as $realValue) {
                                     $valueBuffer[] = $realValue[1] . $this->compileAddslashes($realValue[0]) . $realValue[1];
                                 }
@@ -296,7 +296,7 @@ class Mysql extends AbstractCompiler
                             $output .= $ubound[1] . $this->compileAddslashes($ubound[0]) . $ubound[1];
                         } else {
                             if (isset($v['value']['operator'])) {
-                                $values = array();
+                                $values = [];
                                 foreach ($v['value']['args'] as $fieldDef) {
                                     $values[] = ($fieldDef['table'] ? $fieldDef['table'] . '.' : '') . $fieldDef['field'];
                                 }

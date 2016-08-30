@@ -110,7 +110,7 @@ class AddController extends AbstractWizardController
         // Get TSconfig for it.
         $TSconfig = BackendUtility::getTCEFORM_TSconfig(
             $this->P['table'],
-            is_array($record) ? $record : array('pid' => $this->P['pid'])
+            is_array($record) ? $record : ['pid' => $this->P['pid']]
         );
         // Set [params][pid]
         if (substr($this->P['params']['pid'], 0, 3) === '###' && substr($this->P['params']['pid'], -3) === '###') {
@@ -200,7 +200,7 @@ class AddController extends AbstractWizardController
                     /** @var DataHandler $dataHandler */
                     $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
                     $dataHandler->stripslashes_values = false;
-                    $data = array();
+                    $data = [];
                     $recordId = $this->table . '_' . $this->id;
                     // Setting the new field data:
                     // If the field is a flexForm field, work with the XML structure instead:
@@ -226,7 +226,7 @@ class AddController extends AbstractWizardController
                                 break;
                         }
                         $insertValue = implode(',', GeneralUtility::trimExplode(',', $insertValue, true));
-                        $data[$this->P['table']][$this->P['uid']][$this->P['field']] = array();
+                        $data[$this->P['table']][$this->P['uid']][$this->P['field']] = [];
                         $flexFormTools->setArrayValueByPath(
                             $this->P['flexFormPath'],
                             $data[$this->P['table']][$this->P['uid']][$this->P['field']],
@@ -254,7 +254,7 @@ class AddController extends AbstractWizardController
                         );
                     }
                     // Submit the data:
-                    $dataHandler->start($data, array());
+                    $dataHandler->start($data, []);
                     $dataHandler->process_datamap();
                 }
             }
@@ -263,11 +263,11 @@ class AddController extends AbstractWizardController
         } else {
             // Redirecting to FormEngine with instructions to create a new record
             // AND when closing to return back with information about that records ID etc.
-            $redirectUrl = BackendUtility::getModuleUrl('record_edit', array(
+            $redirectUrl = BackendUtility::getModuleUrl('record_edit', [
                 'returnEditConf' => 1,
                 'edit[' . $this->P['params']['table'] . '][' . $this->pid . ']' => 'new',
                 'returnUrl' => GeneralUtility::removeXSS(GeneralUtility::getIndpEnv('REQUEST_URI'))
-            ));
+            ]);
             HttpUtility::redirect($redirectUrl);
         }
     }

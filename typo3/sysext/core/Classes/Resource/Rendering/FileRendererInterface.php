@@ -52,5 +52,5 @@ interface FileRendererInterface extends \TYPO3\CMS\Core\SingletonInterface
      * @param bool $usedPathsRelativeToCurrentScript See $file->getPublicUrl()
      * @return string
      */
-    public function render(FileInterface $file, $width, $height, array $options = array(), $usedPathsRelativeToCurrentScript = false);
+    public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false);
 }

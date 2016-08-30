@@ -50,7 +50,7 @@ class TcaRadioItems extends AbstractItemProvider implements FormDataProviderInte
             $items = $config['items'];
 
             // Sanitize items and translate labels
-            $newItems = array();
+            $newItems = [];
             foreach ($items as $itemKey => $itemValue) {
                 if (!is_array($itemValue)) {
                     throw new \UnexpectedValueException(

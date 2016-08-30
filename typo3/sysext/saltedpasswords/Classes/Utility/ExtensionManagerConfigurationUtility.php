@@ -42,12 +42,12 @@ class ExtensionManagerConfigurationUtility
     /**
      * @var array
      */
-    protected $problems = array();
+    protected $problems = [];
 
     /**
      * @var array
      */
-    protected $extConf = array();
+    protected $extConf = [];
 
     /**
      * Set the error level if no higher level
@@ -136,10 +136,10 @@ class ExtensionManagerConfigurationUtility
                     '<div class="panel-heading">' . $this->header . '</div>' .
                     '<div class="panel-body">' . $message . '</div>' .
                 '</div>';
-        return array(
+        return [
             'errorType' => $this->errorType,
             'html' => $html
-        );
+        ];
     }
 
     /**
@@ -278,7 +278,7 @@ class ExtensionManagerConfigurationUtility
     {
         $this->init();
         $extConf = $this->extConf['FE'];
-        $problems = array();
+        $problems = [];
         $lang = $this->getLanguageService();
         if ($extConf['enabled']) {
             $loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel']) ?: 'normal';
@@ -417,14 +417,14 @@ class ExtensionManagerConfigurationUtility
      * @param array $postArray Incoming POST information
      * @return array Processed and transformed POST information
      */
-    protected function processPostData(array $postArray = array())
+    protected function processPostData(array $postArray = [])
     {
         foreach ($postArray as $key => $value) {
             // @todo Explain
             $parts = explode('.', $key, 2);
             if (count($parts) == 2) {
                 // @todo Explain
-                $value = $this->processPostData(array($parts[1] => $value));
+                $value = $this->processPostData([$parts[1] => $value]);
                 $postArray[$parts[0] . '.'] = array_merge((array)$postArray[$parts[0] . '.'], $value);
             } else {
                 // @todo Explain

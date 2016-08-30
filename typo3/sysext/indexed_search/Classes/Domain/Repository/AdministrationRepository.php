@@ -36,17 +36,17 @@ class AdministrationRepository
      *
      * @var FileContentParser[]
      */
-    public $external_parsers = array();
+    public $external_parsers = [];
 
     /**
      * @var array
      */
-    protected $allPhashListed = array();
+    protected $allPhashListed = [];
 
     /**
      * @var array
      */
-    protected $iconFileNameCache = array();
+    protected $iconFileNameCache = [];
 
     /**
      * Get group list information
@@ -58,7 +58,7 @@ class AdministrationRepository
     {
         $db = $this->getDatabaseConnection();
         $res = $db->exec_SELECTquery('index_grlist.*', 'index_grlist', 'phash=' . (int)$phash);
-        $allRows = array();
+        $allRows = [];
         $numberOfRows = $db->sql_num_rows($res);
         while ($row = $db->sql_fetch_assoc($res)) {
             $row['pcount'] = $numberOfRows;
@@ -97,7 +97,7 @@ class AdministrationRepository
      */
     public function getExternalDocumentsStatistic()
     {
-        $result = array();
+        $result = [];
 
         $db = $this->getDatabaseConnection();
         $res = $db->exec_SELECTquery(
@@ -137,15 +137,15 @@ class AdministrationRepository
      */
     public function getRecordsNumbers()
     {
-        $tables = array(
+        $tables = [
             'index_phash',
             'index_words',
             'index_rel',
             'index_grlist',
             'index_section',
             'index_fulltext',
-        );
-        $recordList = array();
+        ];
+        $recordList = [];
         foreach ($tables as $tableName) {
             $recordList[$tableName] = $this->getDatabaseConnection()->exec_SELECTcountRows('*', $tableName);
         }
@@ -159,26 +159,26 @@ class AdministrationRepository
      */
     public function getPageHashTypes()
     {
-        $counts = array();
-        $types = array(
+        $counts = [];
+        $types = [
             'html' => 1,
             'htm' => 1,
             'pdf' => 2,
             'doc' => 3,
             'txt' => 4
-        );
+        ];
         $revTypes = array_flip($types);
         $revTypes[0] = 'TYPO3 page';
         $db = $this->getDatabaseConnection();
         $res = $db->exec_SELECTquery('count(*),item_type', 'index_phash', '', 'item_type', 'item_type');
         while ($row = $db->sql_fetch_row($res)) {
             $itemType = $row[1];
-            $counts[] = array(
+            $counts[] = [
                 'count' => $row[0],
                 'name' => $revTypes[$itemType],
                 'type' => $itemType,
                 'uniqueCount' => $this->countUniqueTypes($itemType),
-            );
+            ];
         }
         $db->sql_free_result($res);
 
@@ -200,7 +200,7 @@ class AdministrationRepository
             'item_type=' . $db->fullQuoteStr($itemType, 'index_phash'),
             'phash_grouping'
         );
-        $items = array();
+        $items = [];
         while ($row = $db->sql_fetch_row($res)) {
             $items[] = $row;
         }
@@ -227,7 +227,7 @@ class AdministrationRepository
      */
     public function getPageStatistic()
     {
-        $result = array();
+        $result = [];
         $db = $this->getDatabaseConnection();
         $res = $db->exec_SELECTquery(
             'count(*) AS pcount,index_phash.*',
@@ -268,14 +268,14 @@ class AdministrationRepository
      */
     public function getGeneralSearchStatistic($additionalWhere, $pageUid, $max = 50)
     {
-        $queryParts = array(
+        $queryParts = [
             'SELECT' => 'word, COUNT(*) AS c',
             'FROM' => 'index_stat_word',
             'WHERE' => sprintf('pageid= %d ' . $additionalWhere, $pageUid),
             'GROUPBY' => 'word',
             'ORDERBY' => '',
             'LIMIT' => (int)$max
-        );
+        ];
         $db = $this->getDatabaseConnection();
         $res = $db->exec_SELECTquery(
             $queryParts['SELECT'],
@@ -338,7 +338,7 @@ class AdministrationRepository
      */
     public function getTree($pageId, $depth = 4, $mode)
     {
-        $allLines = array();
+        $allLines = [];
         $pageRecord = BackendUtility::getRecord('pages', (int)$pageId);
         if (!$pageRecord) {
             return $allLines;
@@ -349,10 +349,10 @@ class AdministrationRepository
         $tree->init('AND ' . $perms_clause);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $HTML = '<span title="' . htmlspecialchars($pageRecord['title']) . '">' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
-        $tree->tree[] = array(
+        $tree->tree[] = [
             'row' => $pageRecord,
             'HTML' => $HTML
-        );
+        ];
 
         if ($depth > 0) {
             $tree->getTree((int)$pageId, $depth, '');
@@ -372,7 +372,7 @@ class AdministrationRepository
                 'IP.item_type, IP.tstamp',
                 10 + 1
             );
-            $lines = array();
+            $lines = [];
             // Collecting phash values (to remove local indexing for)
             // Traverse the result set of phash rows selected:
             while ($row = $db->sql_fetch_assoc($res)) {
@@ -452,7 +452,7 @@ class AdministrationRepository
         if ($phashList === 'ALL') {
             $this->getTree($pageId, $depth, '');
             $phashRows = $this->allPhashListed;
-            $this->allPhashListed = array();
+            $this->allPhashListed = [];
         } else {
             $phashRows = GeneralUtility::trimExplode(',', $phashList, true);
         }
@@ -461,7 +461,7 @@ class AdministrationRepository
         foreach ($phashRows as $phash) {
             $phash = (int)$phash;
             if ($phash > 0) {
-                $idList = array();
+                $idList = [];
                 $res = $db->exec_SELECTquery('page_id', 'index_section', 'phash=' . $phash);
                 while ($row = $db->sql_fetch_assoc($res)) {
                     $idList[] = (int)$row['page_id'];
@@ -477,7 +477,7 @@ class AdministrationRepository
                 }
 
                 // Removing old registrations for all tables.
-                $tableArr = array('index_phash', 'index_rel', 'index_section', 'index_grlist', 'index_fulltext', 'index_debug');
+                $tableArr = ['index_phash', 'index_rel', 'index_section', 'index_grlist', 'index_fulltext', 'index_debug'];
                 foreach ($tableArr as $table) {
                     $db->exec_DELETEquery($table, 'phash=' . $phash);
                 }
@@ -494,9 +494,9 @@ class AdministrationRepository
     public function saveStopWords(array $words)
     {
         foreach ($words as $wid => $state) {
-            $fieldArray = array(
+            $fieldArray = [
                 'is_stopword' => (int)$state
-            );
+            ];
             $this->getDatabaseConnection()->exec_UPDATEquery('index_words', 'wid=' . (int)$wid, $fieldArray);
         }
     }
@@ -525,11 +525,11 @@ class AdministrationRepository
             }
         }
         // Compile new list:
-        $data = array();
+        $data = [];
         $data['pages'][$pageId]['keywords'] = implode(', ', array_keys($keywords));
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->stripslashes_values = 0;
-        $dataHandler->start($data, array());
+        $dataHandler->start($data, []);
         $dataHandler->process_datamap();
     }
 

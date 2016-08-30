@@ -45,21 +45,21 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array(
+    protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $pathsToLinkInTestInstance = array(
+    protected $pathsToLinkInTestInstance = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $recordIds = array();
+    protected $recordIds = [];
 
     /**
      * @var \TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\ActionService
@@ -131,7 +131,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
         $fileName = GeneralUtility::getFileAbsFileName($fileName);
 
         $dataSet = DataSet::read($fileName);
-        $failMessages = array();
+        $failMessages = [];
 
         foreach ($dataSet->getTableNames() as $tableName) {
             $hasUidField = ($dataSet->getIdIndex($tableName) !== null);
@@ -223,7 +223,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
      */
     protected function getAllRecords($tableName, $hasUidField = false)
     {
-        $allRecords = array();
+        $allRecords = [];
 
         $records = $this->getDatabaseConnection()->exec_SELECTgetRows(
             '*',
@@ -248,7 +248,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
      */
     protected function arrayToString(array $array)
     {
-        $elements = array();
+        $elements = [];
         foreach ($array as $key => $value) {
             if (is_array($value)) {
                 $value = $this->arrayToString($value);
@@ -266,13 +266,13 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
     protected function renderRecords(array $assertion, array $record)
     {
         $differentFields = $this->getDifferentFields($assertion, $record);
-        $columns = array(
-            'fields' => array('Fields'),
-            'assertion' => array('Assertion'),
-            'record' => array('Record'),
-        );
-        $lines = array();
-        $linesFromXmlValues = array();
+        $columns = [
+            'fields' => ['Fields'],
+            'assertion' => ['Assertion'],
+            'record' => ['Record'],
+        ];
+        $lines = [];
+        $linesFromXmlValues = [];
         $result = '';
 
         foreach ($differentFields as $differentField) {
@@ -325,7 +325,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
      */
     protected function getDifferentFields(array $assertion, array $record)
     {
-        $differentFields = array();
+        $differentFields = [];
 
         foreach ($assertion as $field => $value) {
             if (strpos($value, '\\*') === 0) {

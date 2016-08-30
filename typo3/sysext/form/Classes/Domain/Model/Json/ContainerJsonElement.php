@@ -24,10 +24,10 @@ class ContainerJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJso
      *
      * @var array
      */
-    public $elementContainer = array(
+    public $elementContainer = [
         'hasDragAndDrop' => true,
-        'items' => array()
-    );
+        'items' => []
+    ];
 
     /**
      * Add an element to this container

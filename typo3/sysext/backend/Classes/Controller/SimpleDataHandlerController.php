@@ -207,7 +207,7 @@ class SimpleDataHandlerController
         $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
         $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
         if ($httpHost != $refInfo['host'] && $this->vC != $this->getBackendUser()->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
-            $this->tce->log('', 0, 0, 0, 1, 'Referer host "%s" and server host "%s" did not match and veriCode was not valid either!', 1, array($refInfo['host'], $httpHost));
+            $this->tce->log('', 0, 0, 0, 1, 'Referer host "%s" and server host "%s" did not match and veriCode was not valid either!', 1, [$refInfo['host'], $httpHost]);
         } else {
             // Register uploaded files
             $this->tce->process_uploads($_FILES);
@@ -285,11 +285,11 @@ class SimpleDataHandlerController
         /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 
-        $content = array(
+        $content = [
             'redirect' => $this->redirect,
-            'messages' => array(),
+            'messages' => [],
             'hasErrors' => false
-        );
+        ];
 
         // Prints errors (= write them to the message queue)
         if ($this->prErr) {
@@ -300,11 +300,11 @@ class SimpleDataHandlerController
         $messages = $flashMessageService->getMessageQueueByIdentifier()->getAllMessagesAndFlush();
         if (!empty($messages)) {
             foreach ($messages as $message) {
-                $content['messages'][] = array(
+                $content['messages'][] = [
                     'title'    => $message->getTitle(),
                     'message'  => $message->getMessage(),
                     'severity' => $message->getSeverity()
-                );
+                ];
                 if ($message->getSeverity() === AbstractMessage::ERROR) {
                     $content['hasErrors'] = true;
                 }

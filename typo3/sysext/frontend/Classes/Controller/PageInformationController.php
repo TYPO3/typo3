@@ -30,21 +30,21 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
      */
     public function modMenu()
     {
-        return array(
-            'pages' => array(
+        return [
+            'pages' => [
                 0 => $GLOBALS['LANG']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:pages_0'),
                 2 => $GLOBALS['LANG']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:pages_2'),
                 1 => $GLOBALS['LANG']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:pages_1')
-            ),
-            'depth' => array(
+            ],
+            'depth' => [
                 0 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
                 1 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
                 2 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
                 3 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
                 4 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
                 999 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -82,7 +82,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
         $footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'];
         if (is_array($footerContentHook)) {
             foreach ($footerContentHook as $hook) {
-                $params = array();
+                $params = [];
                 $theOutput .= GeneralUtility::callUserFunction($hook, $params, $this);
             }
         }

@@ -48,7 +48,7 @@ class FileWriter extends AbstractWriter
      * @static
      * @var array
      */
-    protected static $logFileHandles = array();
+    protected static $logFileHandles = [];
 
     /**
      * Constructor, opens the log file handle
@@ -56,7 +56,7 @@ class FileWriter extends AbstractWriter
      * @param array $options
      * @return FileWriter
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         // the parent constructor reads $options and sets them
         parent::__construct($options);
@@ -192,7 +192,7 @@ class FileWriter extends AbstractWriter
         if (!@is_dir($logFileDirectory)) {
             GeneralUtility::mkdir_deep($logFileDirectory);
             // create .htaccess file if log file is within the site path
-            if (PathUtility::getCommonPrefix(array(PATH_site, $logFileDirectory)) === PATH_site) {
+            if (PathUtility::getCommonPrefix([PATH_site, $logFileDirectory]) === PATH_site) {
                 // only create .htaccess, if we created the directory on our own
                 $this->createHtaccessFile($logFileDirectory . '/.htaccess');
             }

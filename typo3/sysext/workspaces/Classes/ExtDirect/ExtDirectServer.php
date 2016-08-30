@@ -51,9 +51,9 @@ class ExtDirectServer extends AbstractHandler
     {
         $integrity = $this->createIntegrityService($this->getAffectedElements($parameters));
         $integrity->check();
-        $response = array(
+        $response = [
             'result' => $integrity->getStatusRepresentation()
-        );
+        ];
         return $response;
     }
 
@@ -86,10 +86,10 @@ class ExtDirectServer extends AbstractHandler
         /** @var $historyService \TYPO3\CMS\Workspaces\Service\HistoryService */
         $historyService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\HistoryService::class);
         $history = $historyService->getHistory($parameters->table, $parameters->liveId);
-        return array(
+        return [
             'data' => $history,
             'total' => count($history)
-        );
+        ];
     }
 
     /**
@@ -101,14 +101,14 @@ class ExtDirectServer extends AbstractHandler
     public function getStageActions(\stdClass $parameter)
     {
         $currentWorkspace = $this->getCurrentWorkspace();
-        $stages = array();
+        $stages = [];
         if ($currentWorkspace != \TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES) {
             $stages = $this->getStagesService()->getStagesForWSUser();
         }
-        $data = array(
+        $data = [
             'total' => count($stages),
             'data' => $stages
-        );
+        ];
         return $data;
     }
 
@@ -120,8 +120,8 @@ class ExtDirectServer extends AbstractHandler
      */
     public function getRowDetails($parameter)
     {
-        $diffReturnArray = array();
-        $liveReturnArray = array();
+        $diffReturnArray = [];
+        $liveReturnArray = [];
         /** @var $diffUtility \TYPO3\CMS\Core\Utility\DiffUtility */
         $diffUtility = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
         /** @var $parseObj \TYPO3\CMS\Core\Html\RteHtmlParser */
@@ -184,16 +184,16 @@ class ExtDirectServer extends AbstractHandler
                         continue;
                     }
 
-                    $diffReturnArray[] = array(
+                    $diffReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
                         'content' => $fileReferenceDifferences['differences']
-                    );
-                    $liveReturnArray[] = array(
+                    ];
+                    $liveReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
                         'content' => $fileReferenceDifferences['live']
-                    );
+                    ];
                 } elseif ((string)$liveRecord[$fieldName] !== (string)$versionRecord[$fieldName]) {
                     // Select the human readable values before diff
                     $liveRecord[$fieldName] = BackendUtility::getProcessedValue(
@@ -218,27 +218,27 @@ class ExtDirectServer extends AbstractHandler
                     if ($configuration['type'] == 'group' && $configuration['internal_type'] == 'file') {
                         $versionThumb = BackendUtility::thumbCode($versionRecord, $parameter->table, $fieldName, '');
                         $liveThumb = BackendUtility::thumbCode($liveRecord, $parameter->table, $fieldName, '');
-                        $diffReturnArray[] = array(
+                        $diffReturnArray[] = [
                             'field' => $fieldName,
                             'label' => $fieldTitle,
                             'content' => $versionThumb
-                        );
-                        $liveReturnArray[] = array(
+                        ];
+                        $liveReturnArray[] = [
                             'field' => $fieldName,
                             'label' => $fieldTitle,
                             'content' => $liveThumb
-                        );
+                        ];
                     } else {
-                        $diffReturnArray[] = array(
+                        $diffReturnArray[] = [
                             'field' => $fieldName,
                             'label' => $fieldTitle,
                             'content' => $diffUtility->makeDiffDisplay($liveRecord[$fieldName], $versionRecord[$fieldName])
-                        );
-                        $liveReturnArray[] = array(
+                        ];
+                        $liveReturnArray[] = [
                             'field' => $fieldName,
                             'label' => $fieldTitle,
                             'content' => $parseObj->TS_images_rte($liveRecord[$fieldName])
-                        );
+                        ];
                     }
                 }
             }
@@ -254,10 +254,10 @@ class ExtDirectServer extends AbstractHandler
             }
         }
         $commentsForRecord = $this->getCommentsForRecord($parameter->uid, $parameter->table);
-        return array(
+        return [
             'total' => 1,
-            'data' => array(
-                array(
+            'data' => [
+                [
                     // these parts contain HTML (don't escape)
                     'diff' => $diffReturnArray,
                     'live_record' => $liveReturnArray,
@@ -270,9 +270,9 @@ class ExtDirectServer extends AbstractHandler
                     'label_Stage' => htmlspecialchars($parameter->label_Stage),
                     'stage_position' => (int)$stagePosition['position'],
                     'stage_count' => (int)$stagePosition['count']
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -287,10 +287,10 @@ class ExtDirectServer extends AbstractHandler
     {
         $randomValue = uniqid('file');
 
-        $liveValues = array();
-        $versionValues = array();
-        $candidates = array();
-        $substitutes = array();
+        $liveValues = [];
+        $versionValues = [];
+        $candidates = [];
+        $substitutes = [];
 
         // Process live references
         foreach ($liveFileReferences as $identifier => $liveFileReference) {
@@ -324,7 +324,7 @@ class ExtDirectServer extends AbstractHandler
             if ($useThumbnails) {
                 $thumbnailFile = $fileReference->getOriginalFile()->process(
                     \TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW,
-                    array('width' => 40, 'height' => 40)
+                    ['width' => 40, 'height' => 40]
                 );
                 $thumbnailMarkup = '<img src="' . $thumbnailFile->getPublicUrl(true) . '" />';
                 $substitutes[$identifierWithRandomValue] = $thumbnailMarkup;
@@ -337,10 +337,10 @@ class ExtDirectServer extends AbstractHandler
         $liveInformation = str_replace(array_keys($substitutes), array_values($substitutes), trim($liveInformation));
         $differences = str_replace(array_keys($substitutes), array_values($substitutes), trim($differences));
 
-        return array(
+        return [
             'live' => $liveInformation,
             'differences' => $differences
-        );
+        ];
     }
 
     /**
@@ -352,7 +352,7 @@ class ExtDirectServer extends AbstractHandler
      */
     public function getCommentsForRecord($uid, $table)
     {
-        $sysLogReturnArray = array();
+        $sysLogReturnArray = [];
         $sysLogRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
             'log_data,tstamp,userid',
             'sys_log',
@@ -362,7 +362,7 @@ class ExtDirectServer extends AbstractHandler
             'tstamp DESC'
         );
         foreach ($sysLogRows as $sysLogRow) {
-            $sysLogEntry = array();
+            $sysLogEntry = [];
             $data = unserialize($sysLogRow['log_data']);
             $beUserRecord = BackendUtility::getRecord('be_users', $sysLogRow['userid']);
             $sysLogEntry['stage_title'] = htmlspecialchars($this->getStagesService()->getStageTitle($data['stage']));
@@ -383,27 +383,27 @@ class ExtDirectServer extends AbstractHandler
     public function getSystemLanguages()
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $systemLanguages = array(
-            array(
+        $systemLanguages = [
+            [
                 'uid' => 'all',
                 'title' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('language.allLanguages', 'workspaces'),
                 'icon' => $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render()
-            )
-        );
+            ]
+        ];
         foreach ($this->getGridDataService()->getSystemLanguages() as $id => $systemLanguage) {
             if ($id < 0) {
                 continue;
             }
-            $systemLanguages[] = array(
+            $systemLanguages[] = [
                 'uid' => $id,
                 'title' => htmlspecialchars($systemLanguage['title']),
                 'icon' => $iconFactory->getIcon($systemLanguage['flagIcon'], Icon::SIZE_SMALL)->render()
-            );
+            ];
         }
-        $result = array(
+        $result = [
             'total' => count($systemLanguages),
             'data' => $systemLanguages
-        );
+        ];
         return $result;
     }
 

@@ -24,7 +24,7 @@ class FileCollectionRegistry implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $types = array();
+    protected $types = [];
 
     /**
      * Constructor
@@ -81,11 +81,11 @@ class FileCollectionRegistry implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $additionalColumns Additional columns configuration
      * @return array adjusted TCA for sys_file_collection
      */
-    public function addTypeToTCA($type, $label, $availableFields, array $additionalColumns = array())
+    public function addTypeToTCA($type, $label, $availableFields, array $additionalColumns = [])
     {
-        $GLOBALS['TCA']['sys_file_collection']['types'][$type] = array(
+        $GLOBALS['TCA']['sys_file_collection']['types'][$type] = [
             'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, ' . $availableFields
-        );
+        ];
 
         // search for existing type when found override label
         $typeFound = false;
@@ -96,12 +96,12 @@ class FileCollectionRegistry implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
         if (!$typeFound) {
-            $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][] = array(
+            $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][] = [
                 0 => $label,
                 1 => $type
-            );
+            ];
         }
-        if ($additionalColumns !== array()) {
+        if ($additionalColumns !== []) {
             \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TCA']['sys_file_collection']['columns'], $additionalColumns);
         }
         return $GLOBALS['TCA']['sys_file_collection'];

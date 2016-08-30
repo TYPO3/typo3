@@ -25,12 +25,12 @@ class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBacke
     /**
      * @var array
      */
-    protected $entries = array();
+    protected $entries = [];
 
     /**
      * @var array
      */
-    protected $tagsAndEntries = array();
+    protected $tagsAndEntries = [];
 
     /**
      * Saves data in the cache.
@@ -44,7 +44,7 @@ class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBacke
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      * @api
      */
-    public function set($entryIdentifier, $data, array $tags = array(), $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
         if (!$this->cache instanceof \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface) {
             throw new \TYPO3\CMS\Core\Cache\Exception('No cache frontend has been set yet via setCache().', 1238244992);
@@ -117,7 +117,7 @@ class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBacke
         if (isset($this->tagsAndEntries[$tag])) {
             return array_keys($this->tagsAndEntries[$tag]);
         } else {
-            return array();
+            return [];
         }
     }
 
@@ -129,8 +129,8 @@ class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBacke
      */
     public function flush()
     {
-        $this->entries = array();
-        $this->tagsAndEntries = array();
+        $this->entries = [];
+        $this->tagsAndEntries = [];
     }
 
     /**

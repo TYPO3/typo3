@@ -92,7 +92,7 @@ class ConfigurationController extends AbstractModuleController
             $extension = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extKey);
             // Extension has no configuration and is a distribution
             if ($extension->getCategory() === Extension::DISTRIBUTION_CATEGORY) {
-                $this->redirect('welcome', 'Distribution', null, array('extension' => $extension->getUid()));
+                $this->redirect('welcome', 'Distribution', null, ['extension' => $extension->getUid()]);
             }
             throw new ExtensionManagerException('The extension ' . $extKey . ' has no configuration.');
         }
@@ -115,9 +115,9 @@ class ConfigurationController extends AbstractModuleController
         if ($extension instanceof Extension &&
             $extension->getCategory() === Extension::DISTRIBUTION_CATEGORY
         ) {
-            $this->redirect('welcome', 'Distribution', null, array('extension' => $extension->getUid()));
+            $this->redirect('welcome', 'Distribution', null, ['extension' => $extension->getUid()]);
         } else {
-            $this->redirect('showConfigurationForm', null, null, array('extension' => array('key' => $extensionKey)));
+            $this->redirect('showConfigurationForm', null, null, ['extension' => ['key' => $extensionKey]]);
         }
     }
 
@@ -143,7 +143,7 @@ class ConfigurationController extends AbstractModuleController
      */
     protected function emitAfterExtensionConfigurationWriteSignal($extensionKey, array $newConfiguration)
     {
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionConfigurationWrite', array($extensionKey, $newConfiguration, $this));
+        $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionConfigurationWrite', [$extensionKey, $newConfiguration, $this]);
     }
 
     /**

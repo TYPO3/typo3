@@ -65,7 +65,7 @@ class RootNode extends DirectoryNode implements RootNodeInterface
      */
     public function getStatus()
     {
-        $result = array();
+        $result = [];
         if (!$this->exists()) {
             $status = new Status\ErrorStatus();
             $status->setTitle($this->getAbsolutePath() . ' does not exist');

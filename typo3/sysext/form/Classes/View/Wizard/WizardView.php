@@ -96,7 +96,7 @@ class WizardView
      */
     public function render()
     {
-        $docHeaderButtons = array();
+        $docHeaderButtons = [];
         // Check if the referenced record is available
         $this->recordIsAvailable = $this->repository->hasRecord();
         if ($this->recordIsAvailable) {
@@ -118,7 +118,7 @@ class WizardView
         $markers['CONTENT'] = $this->getBodyContent();
         // Build the HTML for the module
         $content = $this->doc->startPage($this->getLanguageService()->getLL('title', true));
-        $content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markers);
+        $content .= $this->doc->moduleBody([], $docHeaderButtons, $markers);
         $content .= $this->doc->endPage();
         return $this->doc->insertStylesAndJS($content);
     }
@@ -133,7 +133,7 @@ class WizardView
     protected function loadJavascript()
     {
         $compress = true;
-        $javascriptFiles = array(
+        $javascriptFiles = [
             'Initialize.js',
             'Ux/Ext.ux.merge.js',
             'Ux/Ext.ux.isemptyobject.js',
@@ -232,7 +232,7 @@ class WizardView
             'Viewport/Left/Form/PostProcessors/Dummy.js',
             'Viewport/Left/Form/PostProcessors/Mail.js',
             'Viewport/Left/Form/PostProcessors/Redirect.js'
-        );
+        ];
         // Load ExtJS
         $this->getPageRenderer()->loadExtJS();
         // Load the wizards javascript
@@ -253,10 +253,10 @@ class WizardView
     {
         // @todo Set to TRUE when finished
         $compress = false;
-        $cssFiles = array(
+        $cssFiles = [
             'Wizard/Form.css',
             'Wizard/Wizard.css'
-        );
+        ];
         $baseUrl = ExtensionManagementUtility::extRelPath('form') . 'Resources/Public/CSS/';
         // Load the wizards css
         foreach ($cssFiles as $cssFile) {
@@ -304,7 +304,7 @@ class WizardView
      */
     protected function callRenderHook()
     {
-        $params = array();
+        $params = [];
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['form']['hooks']['renderWizard'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['form']['hooks']['renderWizard'] as $funcRef) {
                 GeneralUtility::callUserFunction($funcRef, $params, $this);
@@ -343,14 +343,14 @@ class WizardView
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
-        $buttons = array(
+        $buttons = [
             'csh' => '',
             'csh_buttons' => '',
             'close' => '',
             'save' => '',
             'save_close' => '',
             'reload' => ''
-        );
+        ];
         // CSH
         $buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz');
         // CSH Buttons

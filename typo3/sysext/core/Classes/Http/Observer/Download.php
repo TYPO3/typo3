@@ -128,7 +128,7 @@ class Download implements \SplObserver
      */
     protected function determineFilename(\HTTP_Request2 $request, \HTTP_Request2_Response $response)
     {
-        $matches = array();
+        $matches = [];
         $disposition = $response->getHeader('content-disposition');
         if ($disposition !== null && 0 === strpos($disposition, 'attachment') && 1 === preg_match('/filename="([^"]+)"/', $disposition, $matches)) {
             $filename = basename($matches[1]);

@@ -30,7 +30,7 @@ class ArrayConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
     /**
      * @var array<string>
      */
-    protected $sourceTypes = array('array', 'string');
+    protected $sourceTypes = ['array', 'string'];
 
     /**
      * @var string
@@ -65,11 +65,11 @@ class ArrayConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
      * @return array
      * @api
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
     {
         if (is_string($source)) {
             if ($source === '') {
-                $source = array();
+                $source = [];
             }
         }
 

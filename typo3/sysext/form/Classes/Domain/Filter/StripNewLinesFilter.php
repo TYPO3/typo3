@@ -27,6 +27,6 @@ class StripNewLinesFilter extends AbstractFilter implements FilterInterface
      */
     public function filter($value)
     {
-        return str_replace(array(CRLF, LF, CR), ' ', (string)$value);
+        return str_replace([CRLF, LF, CR], ' ', (string)$value);
     }
 }

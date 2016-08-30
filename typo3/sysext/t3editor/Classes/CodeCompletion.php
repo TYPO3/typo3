@@ -87,7 +87,7 @@ class CodeCompletion
      */
     protected function getMergedTemplates($pageId, $templateId = 0)
     {
-        $result = array();
+        $result = [];
         /** @var $tsParser \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService */
         $tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
         $tsParser->tt_track = 0;
@@ -118,7 +118,7 @@ class CodeCompletion
      */
     private function treeWalkCleanup(array $treeBranch)
     {
-        $cleanedTreeBranch = array();
+        $cleanedTreeBranch = [];
         foreach ($treeBranch as $key => $value) {
             $dotCount = substr_count($key, '.');
             //type definition or value-assignment
@@ -128,7 +128,7 @@ class CodeCompletion
                         $value = substr($value, 0, 20);
                     }
                     if (!isset($cleanedTreeBranch[$key])) {
-                        $cleanedTreeBranch[$key] = array();
+                        $cleanedTreeBranch[$key] = [];
                     }
                     $cleanedTreeBranch[$key]['v'] = $value;
                 }
@@ -138,7 +138,7 @@ class CodeCompletion
                 if ($subBranch) {
                     $key = str_replace('.', '', $key);
                     if (!isset($cleanedTreeBranch[$key])) {
-                        $cleanedTreeBranch[$key] = array();
+                        $cleanedTreeBranch[$key] = [];
                     }
                     $cleanedTreeBranch[$key]['c'] = $subBranch;
                 }

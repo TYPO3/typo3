@@ -40,9 +40,9 @@ class QuickTag extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'inserttag' => 'InsertTag'
-    );
+    ];
 
     /**
      * The comma-separated list of names of prerequisite plugins

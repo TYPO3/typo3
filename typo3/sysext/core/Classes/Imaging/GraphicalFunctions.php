@@ -66,7 +66,7 @@ class GraphicalFunctions
      *
      * @var array
      */
-    protected $allowedColorSpaceNames = array(
+    protected $allowedColorSpaceNames = [
         'CMY',
         'CMYK',
         'Gray',
@@ -93,7 +93,7 @@ class GraphicalFunctions
         'YIQ',
         'YCbCr',
         'YUV'
-    );
+    ];
 
     /**
      * 16777216 Colors is the maximum value for PNG, JPEG truecolor images (24-bit, 8-bit / Channel)
@@ -125,12 +125,12 @@ class GraphicalFunctions
     /**
      * @var array
      */
-    public $cmds = array(
+    public $cmds = [
         'jpg' => '',
         'jpeg' => '',
         'gif' => '',
         'png' => '-colors 64'
-    );
+    ];
 
     /**
      * @var string
@@ -196,12 +196,12 @@ class GraphicalFunctions
      *
      * @var array
      */
-    public $IM_commands = array();
+    public $IM_commands = [];
 
     /**
      * @var array
      */
-    public $workArea = array();
+    public $workArea = [];
 
     /**
      * Preserve the alpha transparency layer of read PNG images
@@ -257,24 +257,24 @@ class GraphicalFunctions
      *
      * @var array
      */
-    public $colMap = array(
-        'aqua' => array(0, 255, 255),
-        'black' => array(0, 0, 0),
-        'blue' => array(0, 0, 255),
-        'fuchsia' => array(255, 0, 255),
-        'gray' => array(128, 128, 128),
-        'green' => array(0, 128, 0),
-        'lime' => array(0, 255, 0),
-        'maroon' => array(128, 0, 0),
-        'navy' => array(0, 0, 128),
-        'olive' => array(128, 128, 0),
-        'purple' => array(128, 0, 128),
-        'red' => array(255, 0, 0),
-        'silver' => array(192, 192, 192),
-        'teal' => array(0, 128, 128),
-        'yellow' => array(255, 255, 0),
-        'white' => array(255, 255, 255)
-    );
+    public $colMap = [
+        'aqua' => [0, 255, 255],
+        'black' => [0, 0, 0],
+        'blue' => [0, 0, 255],
+        'fuchsia' => [255, 0, 255],
+        'gray' => [128, 128, 128],
+        'green' => [0, 128, 0],
+        'lime' => [0, 255, 0],
+        'maroon' => [128, 0, 0],
+        'navy' => [0, 0, 128],
+        'olive' => [128, 128, 0],
+        'purple' => [128, 0, 128],
+        'red' => [255, 0, 0],
+        'silver' => [192, 192, 192],
+        'teal' => [0, 128, 128],
+        'yellow' => [255, 255, 0],
+        'white' => [255, 255, 255]
+    ];
 
     /**
      * Charset conversion object:
@@ -501,7 +501,7 @@ class GraphicalFunctions
         $tile = GeneralUtility::intExplode(',', $conf['tile']);
         $tile[0] = MathUtility::forceIntegerInRange($tile[0], 1, 20);
         $tile[1] = MathUtility::forceIntegerInRange($tile[1], 1, 20);
-        $cpOff = $this->objPosition($conf, $workArea, array($cpW * $tile[0], $cpH * $tile[1]));
+        $cpOff = $this->objPosition($conf, $workArea, [$cpW * $tile[0], $cpH * $tile[1]]);
         for ($xt = 0; $xt < $tile[0]; $xt++) {
             $Xstart = $cpOff[0] + $cpW * $xt;
             // If this image is inside of the workArea, then go on
@@ -717,7 +717,7 @@ class GraphicalFunctions
         $straightBB = $this->calcBBox($conf);
         // offset, align, valign, workarea
         // [0]=x, [1]=y, [2]=w, [3]=h
-        $result = array();
+        $result = [];
         $result[2] = $BB[0];
         $result[3] = $BB[1];
         $w = $workArea[2];
@@ -769,8 +769,8 @@ class GraphicalFunctions
         $charInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $theText, $conf['splitRendering.'], $sF);
         $theBBoxInfo = $charInf;
         if ($conf['angle']) {
-            $xArr = array($charInf[0], $charInf[2], $charInf[4], $charInf[6]);
-            $yArr = array($charInf[1], $charInf[3], $charInf[5], $charInf[7]);
+            $xArr = [$charInf[0], $charInf[2], $charInf[4], $charInf[6]];
+            $yArr = [$charInf[1], $charInf[3], $charInf[5], $charInf[7]];
             $x = max($xArr) - min($xArr);
             $y = max($yArr) - min($yArr);
         } else {
@@ -829,7 +829,7 @@ class GraphicalFunctions
                 unset($value);
             }
         }
-        return array($x, $y, $theBBoxInfo);
+        return [$x, $y, $theBBoxInfo];
     }
 
     /**
@@ -973,7 +973,7 @@ class GraphicalFunctions
     public function ImageTTFBBoxWrapper($fontSize, $angle, $fontFile, $string, $splitRendering, $sF = 1)
     {
         // Initialize:
-        $offsetInfo = array();
+        $offsetInfo = [];
         $stringParts = $this->splitString($string, $splitRendering, $fontSize, $fontFile);
         // Traverse string parts:
         foreach ($stringParts as $strCfg) {
@@ -1069,12 +1069,12 @@ class GraphicalFunctions
     public function splitString($string, $splitRendering, $fontSize, $fontFile)
     {
         // Initialize by setting the whole string and default configuration as the first entry.
-        $result = array();
-        $result[] = array(
+        $result = [];
+        $result[] = [
             'str' => $string,
             'fontSize' => $fontSize,
             'fontFile' => $fontFile
-        );
+        ];
         // Traverse the split-rendering configuration:
         // Splitting will create more entries in $result with individual configurations.
         if (is_array($splitRendering)) {
@@ -1086,17 +1086,17 @@ class GraphicalFunctions
                 switch ((string)$splitRendering[$key]) {
                     case 'highlightWord':
                         if ((string)$cfg['value'] !== '') {
-                            $newResult = array();
+                            $newResult = [];
                             // Traverse the current parts of the result array:
                             foreach ($result as $part) {
                                 // Explode the string value by the word value to highlight:
                                 $explodedParts = explode($cfg['value'], $part['str']);
                                 foreach ($explodedParts as $c => $expValue) {
                                     if ((string)$expValue !== '') {
-                                        $newResult[] = array_merge($part, array('str' => $expValue));
+                                        $newResult[] = array_merge($part, ['str' => $expValue]);
                                     }
                                     if ($c + 1 < count($explodedParts)) {
-                                        $newResult[] = array(
+                                        $newResult[] = [
                                             'str' => $cfg['value'],
                                             'fontSize' => $cfg['fontSize'] ? $cfg['fontSize'] : $part['fontSize'],
                                             'fontFile' => $cfg['fontFile'] ? $cfg['fontFile'] : $part['fontFile'],
@@ -1105,7 +1105,7 @@ class GraphicalFunctions
                                             'xSpaceAfter' => $cfg['xSpaceAfter'],
                                             'ySpaceBefore' => $cfg['ySpaceBefore'],
                                             'ySpaceAfter' => $cfg['ySpaceAfter']
-                                        );
+                                        ];
                                     }
                                 }
                             }
@@ -1125,7 +1125,7 @@ class GraphicalFunctions
                                     $ranges[$i][1] = $ranges[$i][0];
                                 }
                             }
-                            $newResult = array();
+                            $newResult = [];
                             // Traverse the current parts of the result array:
                             foreach ($result as $part) {
                                 // Initialize:
@@ -1151,7 +1151,7 @@ class GraphicalFunctions
                                     if ($inRange != $currentState && $uNumber !== 9 && $uNumber !== 10 && $uNumber !== 13 && $uNumber !== 32) {
                                         // Set result:
                                         if ($bankAccum !== '') {
-                                            $newResult[] = array(
+                                            $newResult[] = [
                                                 'str' => $bankAccum,
                                                 'fontSize' => $currentState && $cfg['fontSize'] ? $cfg['fontSize'] : $part['fontSize'],
                                                 'fontFile' => $currentState && $cfg['fontFile'] ? $cfg['fontFile'] : $part['fontFile'],
@@ -1160,7 +1160,7 @@ class GraphicalFunctions
                                                 'xSpaceAfter' => $currentState ? $cfg['xSpaceAfter'] : '',
                                                 'ySpaceBefore' => $currentState ? $cfg['ySpaceBefore'] : '',
                                                 'ySpaceAfter' => $currentState ? $cfg['ySpaceAfter'] : ''
-                                            );
+                                            ];
                                         }
                                         // Initialize new settings:
                                         $currentState = $inRange;
@@ -1171,7 +1171,7 @@ class GraphicalFunctions
                                 }
                                 // Set result for FINAL part:
                                 if ($bankAccum !== '') {
-                                    $newResult[] = array(
+                                    $newResult[] = [
                                         'str' => $bankAccum,
                                         'fontSize' => $currentState && $cfg['fontSize'] ? $cfg['fontSize'] : $part['fontSize'],
                                         'fontFile' => $currentState && $cfg['fontFile'] ? $cfg['fontFile'] : $part['fontFile'],
@@ -1180,7 +1180,7 @@ class GraphicalFunctions
                                         'xSpaceAfter' => $currentState ? $cfg['xSpaceAfter'] : '',
                                         'ySpaceBefore' => $currentState ? $cfg['ySpaceBefore'] : '',
                                         'ySpaceAfter' => $currentState ? $cfg['ySpaceAfter'] : ''
-                                    );
+                                    ];
                                 }
                             }
                             // Set the new result as result array:
@@ -1211,7 +1211,7 @@ class GraphicalFunctions
         $wordSpacing = $wordSpacing ?: $spacing * 2;
         $spacing *= $scaleFactor;
         $wordSpacing *= $scaleFactor;
-        return array($spacing, $wordSpacing);
+        return [$spacing, $wordSpacing];
     }
 
     /**
@@ -1289,7 +1289,7 @@ class GraphicalFunctions
      */
     protected function getWordPairsForLineBreak($string)
     {
-        $wordPairs = array();
+        $wordPairs = [];
         $wordsArray = preg_split('#([- .,!:]+)#', $string, -1, PREG_SPLIT_DELIM_CAPTURE);
         $wordsCount = count($wordsArray);
         for ($index = 0; $index < $wordsCount; $index += 2) {
@@ -1386,7 +1386,7 @@ class GraphicalFunctions
      */
     public function circleOffset($distance, $iterations)
     {
-        $res = array();
+        $res = [];
         if ($distance && $iterations) {
             for ($a = 0; $a < $iterations; $a++) {
                 $yOff = round(sin((2 * pi() / $iterations * ($a + 1))) * 100 * $distance);
@@ -1397,7 +1397,7 @@ class GraphicalFunctions
                 if ($xOff) {
                     $xOff = (int)(ceil(abs(($xOff / 100))) * ($xOff / abs($xOff)));
                 }
-                $res[$a] = array($xOff, $yOff);
+                $res[$a] = [$xOff, $yOff];
             }
         }
         return $res;
@@ -1466,7 +1466,7 @@ class GraphicalFunctions
             $Bcolor = ImageColorAllocate($blurTextImg, 0, 0, 0);
             ImageFilledRectangle($blurTextImg, 0, 0, $w + $blurBorder * 2, $h + $blurBorder * 2, $Bcolor);
             $txtConf['fontColor'] = 'white';
-            $blurBordArr = array($blurBorder, $blurBorder);
+            $blurBordArr = [$blurBorder, $blurBorder];
             $this->makeText($blurTextImg, $txtConf, $this->applyOffset($workArea, $blurBordArr));
             // Dump to temporary file
             $this->ImageWrite($blurTextImg, $fileMask);
@@ -1555,7 +1555,7 @@ class GraphicalFunctions
     {
         $cords = GeneralUtility::intExplode(',', $conf['dimensions'] . ',,,');
         $conf['offset'] = $cords[0] . ',' . $cords[1];
-        $cords = $this->objPosition($conf, $workArea, array($cords[2], $cords[3]));
+        $cords = $this->objPosition($conf, $workArea, [$cords[2], $cords[3]]);
         $cols = $this->convertColor($conf['color']);
         $opacity = 0;
         if (isset($conf['opacity'])) {
@@ -1597,7 +1597,7 @@ class GraphicalFunctions
         // Ellipse offset inside workArea (x/y)
         $conf['offset'] = $ellipseConfiguration[0] . ',' . $ellipseConfiguration[1];
         // @see objPosition
-        $imageCoordinates = $this->objPosition($conf, $workArea, array($ellipseConfiguration[2], $ellipseConfiguration[3]));
+        $imageCoordinates = $this->objPosition($conf, $workArea, [$ellipseConfiguration[2], $ellipseConfiguration[3]]);
         $color = $this->convertColor($conf['color']);
         $fillingColor = imagecolorallocate($im, $color[0], $color[1], $color[2]);
         imagefilledellipse($im, $imageCoordinates[0], $imageCoordinates[1], $imageCoordinates[2], $imageCoordinates[3], $fillingColor);
@@ -1756,13 +1756,13 @@ class GraphicalFunctions
         $this->setWorkArea('');
         $cords = GeneralUtility::intExplode(',', $conf['crop'] . ',,,');
         $conf['offset'] = $cords[0] . ',' . $cords[1];
-        $cords = $this->objPosition($conf, $this->workArea, array($cords[2], $cords[3]));
+        $cords = $this->objPosition($conf, $this->workArea, [$cords[2], $cords[3]]);
         $newIm = imagecreatetruecolor($cords[2], $cords[3]);
         $cols = $this->convertColor($conf['backColor'] ? $conf['backColor'] : $this->setup['backColor']);
         $Bcolor = ImageColorAllocate($newIm, $cols[0], $cols[1], $cols[2]);
         ImageFilledRectangle($newIm, 0, 0, $cords[2], $cords[3], $Bcolor);
-        $newConf = array();
-        $workArea = array(0, 0, $cords[2], $cords[3]);
+        $newConf = [];
+        $workArea = [0, 0, $cords[2], $cords[3]];
         if ($cords[0] < 0) {
             $workArea[0] = abs($cords[0]);
         } else {
@@ -2047,7 +2047,7 @@ class GraphicalFunctions
      */
     public function convertColor($string)
     {
-        $col = array();
+        $col = [];
         $cParts = explode(':', $string, 2);
         // Finding the RGB definitions of the color:
         $string = $cParts[0];
@@ -2067,7 +2067,7 @@ class GraphicalFunctions
             if ($this->colMap[$string]) {
                 $col = $this->colMap[$string];
             } else {
-                $col = array(0, 0, 0);
+                $col = [0, 0, 0];
             }
         }
         // ... and possibly recalculating the value
@@ -2119,7 +2119,7 @@ class GraphicalFunctions
             // Get an array of separated UTF-8 chars
             return $this->csConvObj->utf8_to_numberarray($theText, 1, $returnUnicodeNumber ? 0 : 1);
         } else {
-            $output = array();
+            $output = [];
             $c = strlen($theText);
             for ($a = 0; $a < $c; $a++) {
                 $output[] = substr($theText, $a, 1);
@@ -2141,7 +2141,7 @@ class GraphicalFunctions
     public function objPosition($conf, $workArea, $BB)
     {
         // offset, align, valign, workarea
-        $result = array();
+        $result = [];
         $result[2] = $BB[0];
         $result[3] = $BB[1];
         $w = $workArea[2];
@@ -2194,7 +2194,7 @@ class GraphicalFunctions
      * @return array [0]/[1] is w/h, [2] is file extension and [3] is the filename.
      * @see getImageScale(), typo3/show_item.php, fileList_ext::renderImage(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource(), SC_tslib_showpic::show(), maskImageOntoImage(), copyImageOntoImage(), scale()
      */
-    public function imageMagickConvert($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = array(), $mustCreate = false)
+    public function imageMagickConvert($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = [], $mustCreate = false)
     {
         if ($this->NO_IMAGE_MAGICK) {
             // Returning file info right away
@@ -2308,7 +2308,7 @@ class GraphicalFunctions
                 return $returnArr;
             } else {
                 if ($temp = @getimagesize($imageFile)) {
-                    $returnArr = array($temp[0], $temp[1], strtolower($reg[0]), $imageFile);
+                    $returnArr = [$temp[0], $temp[1], strtolower($reg[0]), $imageFile];
                 } else {
                     $returnArr = $this->imageMagickIdentify($imageFile);
                 }
@@ -2336,11 +2336,11 @@ class GraphicalFunctions
 
         /** @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $cache */
         $cache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_imagesizes');
-        $imageDimensions = array(
+        $imageDimensions = [
             'hash'        => $statusHash,
             'imagewidth'  => $identifyResult[0],
             'imageheight' => $identifyResult[1],
-        );
+        ];
         $cache->set($identifier, $imageDimensions);
 
         return true;
@@ -2371,12 +2371,12 @@ class GraphicalFunctions
             $result = false;
         } else {
             preg_match('/([^\\.]*)$/', $filePath, $imageExtension);
-            $result = array(
+            $result = [
                 (int)$cachedImageDimensions['imagewidth'],
                 (int)$cachedImageDimensions['imageheight'],
                 strtolower($imageExtension[0]),
                 $filePath
-            );
+            ];
         }
 
         return $result;
@@ -2549,10 +2549,10 @@ class GraphicalFunctions
         if (!$this->NO_IMAGE_MAGICK) {
             $frame = $this->noFramePrepended ? '' : '[0]';
             $cmd = GeneralUtility::imageMagickCommand('identify', CommandUtility::escapeShellArgument($imagefile) . $frame);
-            $returnVal = array();
+            $returnVal = [];
             \TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $returnVal);
             $splitstring = array_pop($returnVal);
-            $this->IM_commands[] = array('identify', $cmd, $splitstring);
+            $this->IM_commands[] = ['identify', $cmd, $splitstring];
             if ($splitstring) {
                 preg_match('/([^\\.]*)$/', $imagefile, $reg);
                 $splitinfo = explode(' ', $splitstring);
@@ -2567,7 +2567,7 @@ class GraphicalFunctions
                     }
                 }
                 if ($dim[0] && $dim[1]) {
-                    return array($dim[0], $dim[1], strtolower($reg[0]), $imagefile);
+                    return [$dim[0], $dim[1], strtolower($reg[0]), $imagefile];
                 }
             }
         }
@@ -2594,7 +2594,7 @@ class GraphicalFunctions
                 $frame = '';
             }
             $cmd = GeneralUtility::imageMagickCommand('convert', $params . ' ' . CommandUtility::escapeShellArgument($input . $frame) . ' ' . CommandUtility::escapeShellArgument($output));
-            $this->IM_commands[] = array($output, $cmd);
+            $this->IM_commands[] = [$output, $cmd];
             $ret = \TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
             // Change the permissions of the file
             GeneralUtility::fixPermissions($output);
@@ -2621,7 +2621,7 @@ class GraphicalFunctions
             $this->imageMagickExec($mask, $theMask, $params);
             $cmd = GeneralUtility::imageMagickCommand('combine', '-compose over +matte ' . CommandUtility::escapeShellArgument($input) . ' ' . CommandUtility::escapeShellArgument($overlay) . ' ' . CommandUtility::escapeShellArgument($theMask) . ' ' . CommandUtility::escapeShellArgument($output));
             // +matte = no alpha layer in output
-            $this->IM_commands[] = array($output, $cmd);
+            $this->IM_commands[] = [$output, $cmd];
             $ret = \TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
             // Change the permissions of the file
             GeneralUtility::fixPermissions($output);
@@ -2828,7 +2828,7 @@ class GraphicalFunctions
     public function output($file)
     {
         if ($file) {
-            $reg = array();
+            $reg = [];
             preg_match('/([^\\.]*)$/', $file, $reg);
             $ext = strtolower($reg[0]);
             switch ($ext) {

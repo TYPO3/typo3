@@ -62,7 +62,7 @@ abstract class AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\BackendI
      * @throws \InvalidArgumentException
      * @api
      */
-    public function __construct($context, array $options = array())
+    public function __construct($context, array $options = [])
     {
         $this->context = $context;
         if (is_array($options) || $options instanceof \ArrayAccess) {

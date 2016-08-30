@@ -67,7 +67,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $allowedControllerActions = array();
+    protected $allowedControllerActions = [];
 
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -137,7 +137,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
         $this->extensionName = $configuration['extensionName'];
         $this->pluginName = $configuration['pluginName'];
         $this->defaultControllerName = (string)current(array_keys($configuration['controllerConfiguration']));
-        $this->allowedControllerActions = array();
+        $this->allowedControllerActions = [];
         foreach ($configuration['controllerConfiguration'] as $controllerName => $controllerActions) {
             $this->allowedControllerActions[$controllerName] = $controllerActions['actions'];
         }
@@ -261,11 +261,11 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function untangleFilesArray(array $convolutedFiles)
     {
-        $untangledFiles = array();
-        $fieldPaths = array();
+        $untangledFiles = [];
+        $fieldPaths = [];
         foreach ($convolutedFiles as $firstLevelFieldName => $fieldInformation) {
             if (!is_array($fieldInformation['error'])) {
-                $fieldPaths[] = array($firstLevelFieldName);
+                $fieldPaths[] = [$firstLevelFieldName];
             } else {
                 $newFieldPaths = $this->calculateFieldPaths($fieldInformation['error'], $firstLevelFieldName);
                 array_walk($newFieldPaths, function (&$value, $key) {
@@ -278,7 +278,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
             if (count($fieldPath) === 1) {
                 $fileInformation = $convolutedFiles[$fieldPath[0]];
             } else {
-                $fileInformation = array();
+                $fileInformation = [];
                 foreach ($convolutedFiles[$fieldPath[0]] as $key => $subStructure) {
                     $fileInformation[$key] = \TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($subStructure, array_slice($fieldPath, 1));
                 }
@@ -297,7 +297,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function calculateFieldPaths(array $structure, $firstLevelFieldName = null)
     {
-        $fieldPaths = array();
+        $fieldPaths = [];
         if (is_array($structure)) {
             foreach ($structure as $key => $subStructure) {
                 $fieldPath = ($firstLevelFieldName !== null ? $firstLevelFieldName . '/' : '') . $key;

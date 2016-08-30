@@ -82,7 +82,7 @@ abstract class AbstractOEmbedHelper extends AbstractOnlineMediaHelper
      */
     public function getMetaData(File $file)
     {
-        $metadata = array();
+        $metadata = [];
 
         $oEmbed = $this->getOEmbedData($this->getOnlineMediaId($file));
 

@@ -52,7 +52,7 @@ class PageInfoViewHelper extends AbstractBackendViewHelper implements Compilable
     public function render()
     {
         return static::renderStatic(
-            array(),
+            [],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

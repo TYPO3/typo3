@@ -31,17 +31,17 @@ class FileMinimumSizeValidatorTest extends AbstractValidatorTest
 
     public function validSizesProvider()
     {
-        return array(
-            '12B for min. 11B' => array(array(11, 12)),
-            '12B for min. 12B' => array(array(12, 12))
-        );
+        return [
+            '12B for min. 11B' => [[11, 12]],
+            '12B for min. 12B' => [[12, 12]]
+        ];
     }
 
     public function invalidSizesProvider()
     {
-        return array(
-            '11B for min. 12B' => array(array(12, 11))
-        );
+        return [
+            '11B for min. 12B' => [[12, 11]]
+        ];
     }
 
     /**
@@ -50,7 +50,7 @@ class FileMinimumSizeValidatorTest extends AbstractValidatorTest
      */
     public function validateForValidInputHasEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['minimum'] = $input[0];
         $subject = $this->createSubject($options);
 
@@ -65,7 +65,7 @@ class FileMinimumSizeValidatorTest extends AbstractValidatorTest
      */
     public function validateForInvalidInputHasNotEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $options['minimum'] = $input[0];
         $subject = $this->createSubject($options);
 

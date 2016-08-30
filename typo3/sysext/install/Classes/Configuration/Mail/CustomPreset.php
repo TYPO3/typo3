@@ -24,7 +24,7 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
     /**
      * @var array Configuration values handled by this preset
      */
-    protected $configurationValues = array(
+    protected $configurationValues = [
         'MAIL/transport_sendmail_command' => '',
-    );
+    ];
 }

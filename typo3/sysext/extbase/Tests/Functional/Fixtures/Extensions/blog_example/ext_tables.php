@@ -14,8 +14,8 @@ defined('TYPO3_MODE') or die();
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages(
     'tx_blogexample_domain_model_blog,tx_blogexample_domain_model_post,tx_blogexample_domain_model_comment,tx_blogexample_domain_model_person,tx_blogexample_domain_model_tag'
 );
-$TCA['tx_blogexample_domain_model_blog'] = array(
-    'ctrl' => array(
+$TCA['tx_blogexample_domain_model_blog'] = [
+    'ctrl' => [
         'title'    => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_blog',
         'label' => 'title',
         'tstamp' => 'tstamp',
@@ -27,17 +27,17 @@ $TCA['tx_blogexample_domain_model_blog'] = array(
         'transOrigPointerField' => 'l18n_parent',
         'transOrigDiffSourceField' => 'l18n_diffsource',
         'delete' => 'deleted',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden',
             'fe_group' => 'fe_group',
-        ),
+        ],
         'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Blog.php',
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_blog.gif'
-    )
-);
+    ]
+];
 
-$TCA['tx_blogexample_domain_model_post'] = array(
-    'ctrl' => array(
+$TCA['tx_blogexample_domain_model_post'] = [
+    'ctrl' => [
         'title'    => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_post',
         'label' => 'title',
         'label_alt' => 'author',
@@ -51,16 +51,16 @@ $TCA['tx_blogexample_domain_model_post'] = array(
         'transOrigPointerField' => 'l18n_parent',
         'transOrigDiffSourceField' => 'l18n_diffsource',
         'delete'   => 'deleted',
-        'enablecolumns'  => array(
+        'enablecolumns'  => [
             'disabled' => 'hidden'
-        ),
+        ],
         'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Post.php',
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_post.gif'
-    )
-);
+    ]
+];
 
-$TCA['tx_blogexample_domain_model_comment'] = array(
-    'ctrl' => array(
+$TCA['tx_blogexample_domain_model_comment'] = [
+    'ctrl' => [
         'title'    => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_comment',
         'label' => 'date',
         'label_alt' => 'author',
@@ -68,16 +68,16 @@ $TCA['tx_blogexample_domain_model_comment'] = array(
         'tstamp'   => 'tstamp',
         'crdate'   => 'crdate',
         'delete'   => 'deleted',
-        'enablecolumns'  => array(
+        'enablecolumns'  => [
             'disabled' => 'hidden'
-        ),
+        ],
         'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Comment.php',
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_comment.gif'
-    )
-);
+    ]
+];
 
-$TCA['tx_blogexample_domain_model_person'] = array(
-    'ctrl' => array(
+$TCA['tx_blogexample_domain_model_person'] = [
+    'ctrl' => [
         'title'    => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_person',
         'label' => 'lastname',
         'label_alt' => 'firstname',
@@ -89,32 +89,32 @@ $TCA['tx_blogexample_domain_model_person'] = array(
         'origUid' => 't3_origuid',
         'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
         'delete' => 'deleted',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden'
-            ),
+            ],
         'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Person.php',
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_person.gif'
-    )
-);
+    ]
+];
 
-$TCA['tx_blogexample_domain_model_tag'] = array(
-    'ctrl' => array(
+$TCA['tx_blogexample_domain_model_tag'] = [
+    'ctrl' => [
         'title'    => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_tag',
         'label' => 'name',
         'tstamp'   => 'tstamp',
         'crdate'   => 'crdate',
         'delete'   => 'deleted',
-        'enablecolumns'  => array(
+        'enablecolumns'  => [
             'disabled' => 'hidden'
-        ),
+        ],
         'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Tag.php',
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_tag.gif'
-    )
-);
+    ]
+];
 
 if (is_array($TCA['fe_users']['columns']['tx_extbase_type'])) {
     $TCA['fe_users']['types']['Tx_BlogExample_Domain_Model_Administrator'] = $TCA['fe_users']['types']['0'];
-    array_push($TCA['fe_users']['columns']['tx_extbase_type']['config']['items'], array('LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:fe_users.tx_extbase_type.Tx_BlogExample_Domain_Model_Administrator', 'Tx_BlogExample_Domain_Model_Administrator'));
+    array_push($TCA['fe_users']['columns']['tx_extbase_type']['config']['items'], ['LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:fe_users.tx_extbase_type.Tx_BlogExample_Domain_Model_Administrator', 'Tx_BlogExample_Domain_Model_Administrator']);
 }
 
 // Categorize Blog,Post records

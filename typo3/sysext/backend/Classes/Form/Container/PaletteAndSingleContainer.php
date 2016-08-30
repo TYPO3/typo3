@@ -34,7 +34,7 @@ class PaletteAndSingleContainer extends AbstractContainer
      *
      * @var array
      */
-    protected $resultArray = array();
+    protected $resultArray = [];
 
     /**
      * Entry method
@@ -106,7 +106,7 @@ class PaletteAndSingleContainer extends AbstractContainer
          */
 
         // Create an intermediate structure of rendered sub elements and elements nested in palettes
-        $targetStructure = array();
+        $targetStructure = [];
         $mainStructureCounter = -1;
         $fieldsArray = $this->data['fieldsArray'];
         $this->resultArray = $this->initializeResultArray();
@@ -117,12 +117,12 @@ class PaletteAndSingleContainer extends AbstractContainer
                 $paletteElementArray = $this->createPaletteContentArray($fieldConfiguration['paletteName']);
                 if (!empty($paletteElementArray)) {
                     $mainStructureCounter ++;
-                    $targetStructure[$mainStructureCounter] = array(
+                    $targetStructure[$mainStructureCounter] = [
                         'type' => 'palette',
                         'fieldName' => $fieldConfiguration['paletteName'],
                         'fieldLabel' => $languageService->sL($fieldConfiguration['fieldLabel']),
                         'elements' => $paletteElementArray,
-                    );
+                    ];
                 }
             } else {
                 if (!is_array($this->data['processedTca']['columns'][$fieldName])) {
@@ -141,12 +141,12 @@ class PaletteAndSingleContainer extends AbstractContainer
                     if (!empty($this->data['processedTca']['columns'][$fieldName]['label'])) {
                         $fieldLabel = $this->data['processedTca']['columns'][$fieldName]['label'];
                     }
-                    $targetStructure[$mainStructureCounter] = array(
+                    $targetStructure[$mainStructureCounter] = [
                         'type' => 'single',
                         'fieldName' => $fieldConfiguration['fieldName'],
                         'fieldLabel' => $fieldLabel,
                         'fieldHtml' => $childResultArray['html'],
-                    );
+                    ];
                 }
 
                 $childResultArray['html'] = '';
@@ -155,7 +155,7 @@ class PaletteAndSingleContainer extends AbstractContainer
         }
 
         // Compile final content
-        $content = array();
+        $content = [];
         foreach ($targetStructure as $element) {
             if ($element['type'] === 'palette') {
                 $paletteName = $element['fieldName'];
@@ -191,19 +191,19 @@ class PaletteAndSingleContainer extends AbstractContainer
     {
         // palette needs a palette name reference, otherwise it does not make sense to try rendering of it
         if (empty($paletteName) || empty($this->data['processedTca']['palettes'][$paletteName]['showitem'])) {
-            return array();
+            return [];
         }
 
-        $resultStructure = array();
+        $resultStructure = [];
         $foundRealElement = false; // Set to true if not only line breaks were rendered
         $fieldsArray = GeneralUtility::trimExplode(',', $this->data['processedTca']['palettes'][$paletteName]['showitem'], true);
         foreach ($fieldsArray as $fieldString) {
             $fieldArray = $this->explodeSingleFieldShowItemConfiguration($fieldString);
             $fieldName = $fieldArray['fieldName'];
             if ($fieldName === '--linebreak--') {
-                $resultStructure[] = array(
+                $resultStructure[] = [
                     'type' => 'linebreak',
-                );
+                ];
             } else {
                 if (!is_array($this->data['processedTca']['columns'][$fieldName])) {
                     continue;
@@ -220,12 +220,12 @@ class PaletteAndSingleContainer extends AbstractContainer
                     if (!empty($this->data['processedTca']['columns'][$fieldName]['label'])) {
                         $fieldLabel = $this->data['processedTca']['columns'][$fieldName]['label'];
                     }
-                    $resultStructure[] = array(
+                    $resultStructure[] = [
                         'type' => 'single',
                         'fieldName' => $fieldName,
                         'fieldLabel' => $fieldLabel,
                         'fieldHtml' => $singleFieldContentArray['html'],
-                    );
+                    ];
                     $singleFieldContentArray['html'] = '';
                 }
                 $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $singleFieldContentArray);
@@ -235,7 +235,7 @@ class PaletteAndSingleContainer extends AbstractContainer
         if ($foundRealElement) {
             return $resultStructure;
         } else {
-            return array();
+            return [];
         }
     }
 
@@ -248,7 +248,7 @@ class PaletteAndSingleContainer extends AbstractContainer
     protected function renderInnerPaletteContent(array $elementArray)
     {
         // Group fields
-        $groupedFields = array();
+        $groupedFields = [];
         $row = 0;
         $lastLineWasLinebreak = true;
         foreach ($elementArray['elements'] as $element) {
@@ -265,37 +265,37 @@ class PaletteAndSingleContainer extends AbstractContainer
             }
         }
 
-        $result = array();
+        $result = [];
         // Process fields
         foreach ($groupedFields as $fields) {
             $numberOfItems = count($fields);
             $colWidth = (int)floor(12 / $numberOfItems);
             // Column class calculation
             $colClass = 'col-md-12';
-            $colClear = array();
+            $colClear = [];
             if ($colWidth == 6) {
                 $colClass = 'col-sm-6';
-                $colClear = array(
+                $colClear = [
                     2 => 'visible-sm-block visible-md-block visible-lg-block',
-                );
+                ];
             } elseif ($colWidth === 4) {
                 $colClass = 'col-sm-4';
-                $colClear = array(
+                $colClear = [
                     3 => 'visible-sm-block visible-md-block visible-lg-block',
-                );
+                ];
             } elseif ($colWidth === 3) {
                 $colClass = 'col-sm-6 col-md-3';
-                $colClear = array(
+                $colClear = [
                     2 => 'visible-sm-block',
                     4 => 'visible-md-block visible-lg-block',
-                );
+                ];
             } elseif ($colWidth <= 2) {
                 $colClass = 'checkbox-column col-sm-6 col-md-3 col-lg-2';
-                $colClear = array(
+                $colClear = [
                     2 => 'visible-sm-block',
                     4 => 'visible-md-block',
                     6 => 'visible-lg-block'
-                );
+                ];
             }
 
             // Render fields
@@ -306,7 +306,7 @@ class PaletteAndSingleContainer extends AbstractContainer
                         $result[] = '<div class="clearfix"></div>';
                     }
                 } else {
-                    $result[] = $this->wrapSingleFieldContentWithLabelAndOuterDiv($element, array($colClass));
+                    $result[] = $this->wrapSingleFieldContentWithLabelAndOuterDiv($element, [$colClass]);
 
                     // Breakpoints
                     if ($counter + 1 < $numberOfItems && !empty($colClear)) {
@@ -338,7 +338,7 @@ class PaletteAndSingleContainer extends AbstractContainer
             $fieldSetClass = 'hide';
         }
 
-        $result = array();
+        $result = [];
         $result[] = '<fieldset class="' . $fieldSetClass . '">';
 
         if (!empty($label)) {
@@ -357,22 +357,22 @@ class PaletteAndSingleContainer extends AbstractContainer
      * @param array $additionalPaletteClasses Additional classes to be added to HTML
      * @return string Wrapped element
      */
-    protected function wrapSingleFieldContentWithLabelAndOuterDiv(array $element, array $additionalPaletteClasses = array())
+    protected function wrapSingleFieldContentWithLabelAndOuterDiv(array $element, array $additionalPaletteClasses = [])
     {
         $fieldName = $element['fieldName'];
 
-        $paletteFieldClasses = array(
+        $paletteFieldClasses = [
             'form-group',
             't3js-formengine-validation-marker',
             't3js-formengine-palette-field',
-        );
+        ];
         foreach ($additionalPaletteClasses as $class) {
             $paletteFieldClasses[] = $class;
         }
 
         $label = BackendUtility::wrapInHelp($this->data['tableName'], $fieldName, htmlspecialchars($element['fieldLabel']));
 
-        $content = array();
+        $content = [];
         $content[] = '<div class="' . implode(' ', $paletteFieldClasses) . '">';
         $content[] =    '<label class="t3js-formengine-label">';
         $content[] =        $label;

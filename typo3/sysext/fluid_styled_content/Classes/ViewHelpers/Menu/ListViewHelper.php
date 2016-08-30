@@ -44,7 +44,7 @@ class ListViewHelper extends AbstractViewHelper
     {
         $this->registerArgument('as', 'string', 'Name of template variable which will contain selected pages', true);
         $this->registerArgument('levelAs', 'string', 'Name of template variable which will contain current level', false, null);
-        $this->registerArgument('pageUids', 'array', 'Page UIDs of parent pages', false, array());
+        $this->registerArgument('pageUids', 'array', 'Page UIDs of parent pages', false, []);
         $this->registerArgument('entryLevel', 'integer', 'The entry level', false, null);
         $this->registerArgument('maximumLevel', 'integer', 'Maximum level for rendering of nested menus', false, 10);
         $this->registerArgument('includeNotInMenu', 'boolean', 'Include pages that are marked "hide in menu"?', false, false);
@@ -90,9 +90,9 @@ class ListViewHelper extends AbstractViewHelper
                 return '';
             }
 
-            $variables = array(
+            $variables = [
                 $as => $pages
-            );
+            ];
             if (!empty($levelAs)) {
                 $variables[$levelAs] = $typoScriptFrontendController->register['ceMenuLevel_list'];
             }

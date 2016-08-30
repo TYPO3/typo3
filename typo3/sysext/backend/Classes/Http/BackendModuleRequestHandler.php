@@ -41,7 +41,7 @@ class BackendModuleRequestHandler implements RequestHandlerInterface
     /**
      * @var array
      */
-    protected $moduleRegistry = array();
+    protected $moduleRegistry = [];
 
     /**
      * @var BackendUserAuthentication
@@ -201,10 +201,10 @@ class BackendModuleRequestHandler implements RequestHandlerInterface
             $response = $dispatcher->dispatch($this->request, $response);
         } else {
             // extbase module
-            $configuration = array(
+            $configuration = [
                 'extensionName' => $moduleConfiguration['extensionName'],
                 'pluginName' => $moduleName
-            );
+            ];
             if (isset($moduleConfiguration['vendorName'])) {
                 $configuration['vendorName'] = $moduleConfiguration['vendorName'];
             }

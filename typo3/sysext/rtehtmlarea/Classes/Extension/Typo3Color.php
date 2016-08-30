@@ -41,10 +41,10 @@ class Typo3Color extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'textcolor' => 'ForeColor',
         'bgcolor' => 'HiliteColor'
-    );
+    ];
 
     /**
      * Returns TRUE if the plugin is available and correctly initialized
@@ -65,21 +65,21 @@ class Typo3Color extends RteHtmlAreaApi
      */
     public function buildJavascriptConfiguration()
     {
-        $jsArray = array();
+        $jsArray = [];
         $jsArray[] = 'RTEarea[editornumber].disableColorPicker = ' . (trim($this->configuration['thisConfig']['disableColorPicker']) ? 'true' : 'false') . ';';
         // Building the array of configured colors
-        $HTMLAreaColorName = array();
+        $HTMLAreaColorName = [];
         if (is_array($this->configuration['RTEsetup']['properties']['colors.'])) {
             foreach ($this->configuration['RTEsetup']['properties']['colors.'] as $colorName => $conf) {
                 $colorName = substr($colorName, 0, -1);
                 $colorLabel = $this->getPageConfigLabel($conf['name']);
-                $HTMLAreaColorName[$colorName] = array($colorLabel, strtoupper(substr($conf['value'], 1, 6)));
+                $HTMLAreaColorName[$colorName] = [$colorLabel, strtoupper(substr($conf['value'], 1, 6))];
             }
         }
         // Setting the list of colors if specified in the RTE config
         if ($this->configuration['thisConfig']['colors']) {
             $HTMLAreaColors = GeneralUtility::trimExplode(',', $this->cleanList($this->configuration['thisConfig']['colors']));
-            $HTMLAreaJSColors = array();
+            $HTMLAreaJSColors = [];
             foreach ($HTMLAreaColors as $colorName) {
                 if ($HTMLAreaColorName[$colorName]) {
                     $HTMLAreaJSColors[] = $HTMLAreaColorName[$colorName];

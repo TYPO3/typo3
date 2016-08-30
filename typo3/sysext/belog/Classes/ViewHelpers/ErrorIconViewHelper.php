@@ -36,9 +36,9 @@ class ErrorIconViewHelper extends AbstractBackendViewHelper implements Compilabl
     public function render($errorNumber = 0)
     {
         return static::renderStatic(
-            array(
+            [
                 'errorNumber' => $errorNumber
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -53,12 +53,12 @@ class ErrorIconViewHelper extends AbstractBackendViewHelper implements Compilabl
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $errorSymbols = array(
+        $errorSymbols = [
             '0' => '',
             '1' => DocumentTemplate::STATUS_ICON_WARNING,
             '2' => DocumentTemplate::STATUS_ICON_ERROR,
             '3' => DocumentTemplate::STATUS_ICON_ERROR
-        );
+        ];
         $doc = GeneralUtility::makeInstance(DocumentTemplate::class);
         return $doc->icons($errorSymbols[$arguments['errorNumber']]);
     }

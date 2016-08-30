@@ -77,14 +77,14 @@ class ClickMenu
      *
      * @var array
      */
-    public $iParts = array();
+    public $iParts = [];
 
     /**
      * Contains list of keywords of items to disable in the menu
      *
      * @var array
      */
-    public $disabledItems = array();
+    public $disabledItems = [];
 
     /**
      * If TRUE, Show icons on the left.
@@ -99,7 +99,7 @@ class ClickMenu
      *
      * @var array
      */
-    public $extClassArray = array();
+    public $extClassArray = [];
 
     /**
      * Set, when edit icon is drawn.
@@ -120,7 +120,7 @@ class ClickMenu
      *
      * @var array
      */
-    public $rec = array();
+    public $rec = [];
 
     /**
      * Clipboard set from the outside
@@ -233,7 +233,7 @@ class ClickMenu
         $uid = (int)$uid;
         // Get record:
         $this->rec = BackendUtility::getRecordWSOL($table, $uid);
-        $menuItems = array();
+        $menuItems = [];
         $root = 0;
         $DBmount = false;
         // Rootlevel
@@ -292,11 +292,11 @@ class ClickMenu
             $elFromAllTables = count($this->clipObj->elFromTable(''));
             if (!in_array('paste', $this->disabledItems, true) && $elFromAllTables) {
                 $selItem = $this->clipObj->getSelectedRecord();
-                $elInfo = array(
+                $elInfo = [
                     GeneralUtility::fixed_lgd_cs($selItem['_RECORD_TITLE'], $this->backendUser->uc['titleLen']),
                     $root ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] : GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $this->rec), $this->backendUser->uc['titleLen']),
                     $this->clipObj->currentMode()
-                );
+                ];
                 if ($table === 'pages' && $lCP & Permission::PAGE_NEW) {
                     if ($elFromAllTables) {
                         $menuItems['pasteinto'] = $this->DB_paste('', $uid, 'into', $elInfo);
@@ -309,7 +309,7 @@ class ClickMenu
             }
 
             // Delete:
-            $elInfo = array(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $this->rec), $this->backendUser->uc['titleLen']));
+            $elInfo = [GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $this->rec), $this->backendUser->uc['titleLen'])];
             if (!in_array('delete', $this->disabledItems, true) && !$root && !$DBmount && $this->backendUser->isPSet($lCP, $table, 'delete')) {
                 $menuItems['spacer2'] = 'spacer';
                 $menuItems['delete'] = $this->DB_delete($table, $uid, $elInfo);
@@ -318,7 +318,7 @@ class ClickMenu
                 $menuItems['history'] = $this->DB_history($table, $uid);
             }
 
-            $localItems = array();
+            $localItems = [];
             if (!$this->cmLevel && !in_array('moreoptions', $this->disabledItems, true)) {
                 // Creating menu items here:
                 if ($this->editOK) {
@@ -393,7 +393,7 @@ class ClickMenu
         // Processing by external functions?
         $menuItems = $this->externalProcessingOfDBMenuItems($menuItems);
         if (!is_array($this->rec)) {
-            $this->rec = array();
+            $this->rec = [];
         }
 
         // Return the printed elements:
@@ -413,7 +413,7 @@ class ClickMenu
         $uid = (int)$uid;
         // Setting internal record to the table/uid :
         $this->rec = BackendUtility::getRecordWSOL($table, $uid);
-        $menuItems = array();
+        $menuItems = [];
         $root = 0;
         // Rootlevel
         if ($table === 'pages' && $uid === 0) {
@@ -456,7 +456,7 @@ class ClickMenu
 
         // Return the printed elements:
         if (!is_array($menuItems)) {
-            $menuItems = array();
+            $menuItems = [];
         }
         return $this->printItems($menuItems);
     }
@@ -524,7 +524,7 @@ class ClickMenu
         if ($this->clipObj->current === 'normal') {
             $isSel = $this->clipObj->isSelected($table, $uid);
         }
-        $addParam = array();
+        $addParam = [];
         if ($this->listFrame) {
             $addParam['reloadListFrame'] = $this->alwaysContentFrame ? 2 : 1;
         }
@@ -605,7 +605,7 @@ class ClickMenu
      */
     public function DB_history($table, $uid)
     {
-        $url = BackendUtility::getModuleUrl('record_history', array('element' => $table . ':' . $uid));
+        $url = BackendUtility::getModuleUrl('record_history', ['element' => $table . ':' . $uid]);
         return $this->linkItem(
             $this->languageService->makeEntities($this->languageService->getLL('CM_history')),
             $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render(),
@@ -628,9 +628,9 @@ class ClickMenu
             return '';
         }
 
-        $parameters = array(
+        $parameters = [
             'id' => $uid,
-        );
+        ];
 
         if ($rec['perms_userid'] == $this->backendUser->user['uid'] || $this->backendUser->isAdmin()) {
             $parameters['return_id'] = $uid;
@@ -656,7 +656,7 @@ class ClickMenu
      */
     public function DB_db_list($table, $uid, $rec)
     {
-        $urlParams = array();
+        $urlParams = [];
         $urlParams['id'] = $table === 'pages' ? $uid : $rec['pid'];
         $urlParams['table'] = $table === 'pages' ? '' : $table;
         $url = BackendUtility::getModuleUrl('web_list', $urlParams, '', true);
@@ -726,10 +726,10 @@ class ClickMenu
      */
     public function DB_editAccess($table, $uid)
     {
-        $url = BackendUtility::getModuleUrl('record_edit', array(
+        $url = BackendUtility::getModuleUrl('record_edit', [
             'columnsOnly' => (implode(',', $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) . ($table === 'pages' ? ',extendToSubpages' : '')),
             'edit[' . $table . '][' . $uid . ']' => 'edit'
-        ));
+        ]);
         return $this->linkItem(
             $this->languageService->makeEntities($this->languageService->getLL('CM_editAccess')),
             $this->iconFactory->getIcon('actions-document-edit-access', Icon::SIZE_SMALL)->render(),
@@ -747,9 +747,9 @@ class ClickMenu
      */
     public function DB_editPageProperties($uid)
     {
-        $url = BackendUtility::getModuleUrl('record_edit', array(
+        $url = BackendUtility::getModuleUrl('record_edit', [
             'edit[pages][' . $uid . ']' => 'edit'
-        ));
+        ]);
         return $this->linkItem(
             $this->languageService->makeEntities($this->languageService->getLL('CM_editPageProperties')),
             $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render(),
@@ -774,9 +774,9 @@ class ClickMenu
         $loc = 'top.content.list_frame';
         $theIcon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
 
-        $link = BackendUtility::getModuleUrl('record_edit', array(
+        $link = BackendUtility::getModuleUrl('record_edit', [
             'edit[' . $table . '][' . $uid . ']' => 'edit'
-        ));
+        ]);
 
         if ($this->iParts[0] === 'pages' && $this->iParts[1] && $this->backendUser->check('modules', $pageModule)) {
             $this->editPageIconSet = true;
@@ -798,8 +798,8 @@ class ClickMenu
         $frame = 'top.content.list_frame';
         $location = $this->frameLocation($frame . '.document');
         $module = $this->listFrame
-            ? GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('record_edit', array('edit[' . $table . '][-' . $uid . ']' => 'new')) . '&returnUrl=') . '+top.rawurlencode(' . $location . '.pathname+' . $location . '.search)'
-            : GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', array('id' => (int)$uid)));
+            ? GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('record_edit', ['edit[' . $table . '][-' . $uid . ']' => 'new']) . '&returnUrl=') . '+top.rawurlencode(' . $location . '.pathname+' . $location . '.search)'
+            : GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', ['id' => (int)$uid]));
         $editOnClick = 'if(' . $frame . '){' . $frame . '.location.href=' . $module . ';}';
         $icon = $this->iconFactory->getIcon('actions-' . ($table === 'pages' ? 'page' : 'document') . '-new', Icon::SIZE_SMALL)->render();
         return $this->linkItem($this->label('new'), $icon, $editOnClick);
@@ -963,7 +963,7 @@ class ClickMenu
     public function printFileClickMenu($combinedIdentifier)
     {
         $identifier = '';
-        $menuItems = array();
+        $menuItems = [];
         $combinedIdentifier = rawurldecode($combinedIdentifier);
         $fileObject = ResourceFactory::getInstance()
                 ->retrieveFileOrFolderObject($combinedIdentifier);
@@ -1047,11 +1047,11 @@ class ClickMenu
                 $selItem = reset($elArr);
                 $clickedFileOrFolder = ResourceFactory::getInstance()->retrieveFileOrFolderObject($combinedIdentifier);
                 $fileOrFolderInClipBoard = ResourceFactory::getInstance()->retrieveFileOrFolderObject($selItem);
-                $elInfo = array(
+                $elInfo = [
                     $fileOrFolderInClipBoard->getName(),
                     $clickedFileOrFolder->getName(),
                     $this->clipObj->currentMode()
-                );
+                ];
                 if (!$fileOrFolderInClipBoard instanceof Folder || !$fileOrFolderInClipBoard->getStorage()->isWithinFolder($fileOrFolderInClipBoard, $clickedFileOrFolder)) {
                     $menuItems['pasteinto'] = $this->FILE_paste($identifier, $selItem, $elInfo);
                 }
@@ -1060,7 +1060,7 @@ class ClickMenu
             // Delete:
             if (!in_array('delete', $this->disabledItems, true) && $fileObject->checkActionPermission('delete')) {
                 if ($isStorageRoot && $userMayEditStorage) {
-                    $elInfo = array(GeneralUtility::fixed_lgd_cs($fileObject->getStorage()->getName(), $this->backendUser->uc['titleLen']));
+                    $elInfo = [GeneralUtility::fixed_lgd_cs($fileObject->getStorage()->getName(), $this->backendUser->uc['titleLen'])];
                     $menuItems['delete'] = $this->DB_delete('sys_file_storage', $fileObject->getStorage()->getUid(), $elInfo);
                 } elseif (!$isStorageRoot) {
                     $menuItems['delete'] = $this->FILE_delete($identifier);
@@ -1137,7 +1137,7 @@ class ClickMenu
         if ($this->clipObj->current === 'normal') {
             $isSel = $this->clipObj->isSelected($table, $uid);
         }
-        $addParam = array();
+        $addParam = [];
         if ($this->listFrame) {
             $addParam['reloadListFrame'] = $this->alwaysContentFrame ? 2 : 1;
         }
@@ -1259,7 +1259,7 @@ class ClickMenu
      */
     public function printDragDropClickMenu($table, $srcId, $dstId)
     {
-        $menuItems = array();
+        $menuItems = [];
         // If the drag and drop menu should apply to PAGES use this set of menu items
         if ($table === 'pages') {
             // Move Into:
@@ -1418,7 +1418,7 @@ class ClickMenu
      */
     public function menuItemsForClickMenu($menuItems)
     {
-        $out = array();
+        $out = [];
         foreach ($menuItems as $cc => $i) {
             // MAKE horizontal spacer
             if (is_string($i) && $i === 'spacer') {
@@ -1534,14 +1534,14 @@ class ClickMenu
     public function linkItem($str, $icon, $onClick, $onlyCM = 0, $dontHide = 0)
     {
         $onClick = str_replace('top.loadTopMenu', 'showClickmenu_raw', $onClick);
-        return array(
+        return [
             '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $str . $icon . '</a>',
             $str,
             $icon,
             $onClick,
             $onlyCM,
             $dontHide
-        );
+        ];
     }
 
     /**
@@ -1576,7 +1576,7 @@ class ClickMenu
             // Do filtering:
             // Transfer ONLY elements which are mentioned (or are spacers)
             if ($only) {
-                $newMenuArray = array();
+                $newMenuArray = [];
                 foreach ($menuItems as $key => $value) {
                     if (GeneralUtility::inList($this->iParts[3], $key) || is_string($value) && $value === 'spacer') {
                         $newMenuArray[$key] = $value;

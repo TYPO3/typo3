@@ -35,223 +35,223 @@ class InlineStackProcessorTest extends UnitTestCase
      */
     public function structureStringIsParsedDataProvider()
     {
-        return array(
-            'simple 1-level table structure' => array(
+        return [
+            'simple 1-level table structure' => [
                 'data-pageId-childTable',
-                array(
-                    'unstable' => array(
+                [
+                    'unstable' => [
                         'table' => 'childTable',
-                    ),
-                ),
-                array()
-            ),
-            'simple 1-level table-uid structure' => array(
+                    ],
+                ],
+                []
+            ],
+            'simple 1-level table-uid structure' => [
                 'data-pageId-childTable-childUid',
-                array(
-                    'unstable' => array(
+                [
+                    'unstable' => [
                         'table' => 'childTable',
                         'uid' => 'childUid',
-                    ),
-                ),
-                array()
-            ),
-            'simple 1-level table-uid-field structure' => array(
+                    ],
+                ],
+                []
+            ],
+            'simple 1-level table-uid-field structure' => [
                 'data-pageId-childTable-childUid-childField',
-                array(
-                    'unstable' => array(
+                [
+                    'unstable' => [
                         'table' => 'childTable',
                         'uid' => 'childUid',
                         'field' => 'childField',
-                    ),
-                ),
-                array(),
-            ),
-            'simple 2-level table structure' => array(
+                    ],
+                ],
+                [],
+            ],
+            'simple 2-level table structure' => [
                 'data-pageId-parentTable-parentUid-parentField-childTable',
-                array(
-                    'stable' => array(
-                        array(
+                [
+                    'stable' => [
+                        [
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
                             'config' => null,
                             'localizationMode' => false,
-                        ),
-                    ),
-                    'unstable' => array(
+                        ],
+                    ],
+                    'unstable' => [
                         'table' => 'childTable',
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'form' => 'data[parentTable][parentUid][parentField]',
                     'object' => 'data-pageId-parentTable-parentUid-parentField',
-                ),
-            ),
-            'simple 2-level table-uid structure' => array(
+                ],
+            ],
+            'simple 2-level table-uid structure' => [
                 'data-pageId-parentTable-parentUid-parentField-childTable-childUid',
-                array(
-                    'stable' => array(
-                        array(
+                [
+                    'stable' => [
+                        [
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
                             'config' => null,
                             'localizationMode' => false,
-                        ),
-                    ),
-                    'unstable' => array(
+                        ],
+                    ],
+                    'unstable' => [
                         'table' => 'childTable',
                         'uid' => 'childUid',
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'form' => 'data[parentTable][parentUid][parentField]',
                     'object' => 'data-pageId-parentTable-parentUid-parentField',
-                ),
-            ),
-            'simple 2-level table-uid-field structure' => array(
+                ],
+            ],
+            'simple 2-level table-uid-field structure' => [
                 'data-pageId-parentTable-parentUid-parentField-childTable-childUid-childField',
-                array(
-                    'stable' => array(
-                        array(
+                [
+                    'stable' => [
+                        [
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
                             'config' => null,
                             'localizationMode' => false,
-                        ),
-                    ),
-                    'unstable' => array(
+                        ],
+                    ],
+                    'unstable' => [
                         'table' => 'childTable',
                         'uid' => 'childUid',
                         'field' => 'childField',
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'form' => 'data[parentTable][parentUid][parentField]',
                     'object' => 'data-pageId-parentTable-parentUid-parentField',
-                ),
-            ),
-            'simple 3-level table structure' => array(
+                ],
+            ],
+            'simple 3-level table structure' => [
                 'data-pageId-grandParentTable-grandParentUid-grandParentField-parentTable-parentUid-parentField-childTable',
-                array(
-                    'stable' => array(
-                        array(
+                [
+                    'stable' => [
+                        [
                             'table' => 'grandParentTable',
                             'uid' => 'grandParentUid',
                             'field' => 'grandParentField',
                             'config' => null,
                             'localizationMode' => false,
-                        ),
-                        array(
+                        ],
+                        [
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
                             'config' => null,
                             'localizationMode' => false,
-                        ),
-                    ),
-                    'unstable' => array(
+                        ],
+                    ],
+                    'unstable' => [
                         'table' => 'childTable',
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'form' => 'data[parentTable][parentUid][parentField]',
                     'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField-parentTable-parentUid-parentField',
-                ),
-            ),
-            'simple 3-level table-uid structure' => array(
+                ],
+            ],
+            'simple 3-level table-uid structure' => [
                 'data-pageId-grandParentTable-grandParentUid-grandParentField-parentTable-parentUid-parentField-childTable-childUid',
-                array(
-                    'stable' => array(
-                        array(
+                [
+                    'stable' => [
+                        [
                             'table' => 'grandParentTable',
                             'uid' => 'grandParentUid',
                             'field' => 'grandParentField',
                             'config' => null,
                             'localizationMode' => false,
-                        ),
-                        array(
+                        ],
+                        [
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
                             'config' => null,
                             'localizationMode' => false,
-                        ),
-                    ),
-                    'unstable' => array(
+                        ],
+                    ],
+                    'unstable' => [
                         'table' => 'childTable',
                         'uid' => 'childUid',
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'form' => 'data[parentTable][parentUid][parentField]',
                     'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField-parentTable-parentUid-parentField',
-                ),
-            ),
-            'simple 3-level table-uid-field structure' => array(
+                ],
+            ],
+            'simple 3-level table-uid-field structure' => [
                 'data-pageId-grandParentTable-grandParentUid-grandParentField-parentTable-parentUid-parentField-childTable-childUid-childField',
-                array(
-                    'stable' => array(
-                        array(
+                [
+                    'stable' => [
+                        [
                             'table' => 'grandParentTable',
                             'uid' => 'grandParentUid',
                             'field' => 'grandParentField',
                             'config' => null,
                             'localizationMode' => false,
-                        ),
-                        array(
+                        ],
+                        [
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
                             'config' => null,
                             'localizationMode' => false,
-                        ),
-                    ),
-                    'unstable' => array(
+                        ],
+                    ],
+                    'unstable' => [
                         'table' => 'childTable',
                         'uid' => 'childUid',
                         'field' => 'childField',
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'form' => 'data[parentTable][parentUid][parentField]',
                     'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField-parentTable-parentUid-parentField',
-                ),
-            ),
-            'flexform 3-level table-uid structure' => array(
+                ],
+            ],
+            'flexform 3-level table-uid structure' => [
                 'data-pageId-grandParentTable-grandParentUid-grandParentField---data---sDEF---lDEF---grandParentFlexForm---vDEF-parentTable-parentUid-parentField-childTable-childUid',
-                array(
-                    'stable' => array(
-                        array(
+                [
+                    'stable' => [
+                        [
                             'table' => 'grandParentTable',
                             'uid' => 'grandParentUid',
                             'field' => 'grandParentField',
-                            'flexform' => array(
+                            'flexform' => [
                                 'data', 'sDEF', 'lDEF', 'grandParentFlexForm', 'vDEF',
-                            ),
+                            ],
                             'config' => null,
                             'localizationMode' => false,
-                        ),
-                        array(
+                        ],
+                        [
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
                             'config' => null,
                             'localizationMode' => false,
-                        ),
-                    ),
-                    'unstable' => array(
+                        ],
+                    ],
+                    'unstable' => [
                         'table' => 'childTable',
                         'uid' => 'childUid',
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'form' => 'data[parentTable][parentUid][parentField]',
                     'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField---data---sDEF---lDEF---grandParentFlexForm---vDEF-parentTable-parentUid-parentField',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -261,7 +261,7 @@ class InlineStackProcessorTest extends UnitTestCase
     public function initializeByParsingDomObjectIdStringParsesStructureString($string, array $expectedInlineStructure, array $_)
     {
         /** @var InlineStackProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(InlineStackProcessor::class, array('dummy'));
+        $subject = $this->getAccessibleMock(InlineStackProcessor::class, ['dummy']);
         $subject->initializeByParsingDomObjectIdString($string);
         $structure = $subject->_get('inlineStructure');
         $this->assertEquals($expectedInlineStructure, $structure);

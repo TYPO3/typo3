@@ -27,17 +27,17 @@ class Collector implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $structure = array();
+    protected $structure = [];
 
     /**
      * @var array
      */
-    protected $structurePaths = array();
+    protected $structurePaths = [];
 
     /**
      * @var array
      */
-    protected $records = array();
+    protected $records = [];
 
     /**
      * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
@@ -56,7 +56,7 @@ class Collector implements \TYPO3\CMS\Core\SingletonInterface
 
         if ($currentWatcherValue === $recordIdentifier) {
             $this->structure[$recordIdentifier] = $recordData;
-            $this->structurePaths[$recordIdentifier] = array(array());
+            $this->structurePaths[$recordIdentifier] = [[]];
         } elseif (!empty($position)) {
             $levelIdentifier = substr($currentWatcherValue, 0, $position);
             $this->addToStructure($levelIdentifier, $recordIdentifier, $recordData);
@@ -101,7 +101,7 @@ class Collector implements \TYPO3\CMS\Core\SingletonInterface
     protected function addToStructure($levelIdentifier, $recordIdentifier, array $recordData)
     {
         $steps = explode('/', $levelIdentifier);
-        $structurePaths = array();
+        $structurePaths = [];
         $structure = &$this->structure;
 
         foreach ($steps as $step) {
@@ -113,7 +113,7 @@ class Collector implements \TYPO3\CMS\Core\SingletonInterface
             }
             $structure = &$structure[$identifier];
             if (!isset($structure[$fieldName]) || !is_array($structure[$fieldName])) {
-                $structure[$fieldName] = array();
+                $structure[$fieldName] = [];
             }
             $structure = &$structure[$fieldName];
         }
@@ -129,11 +129,11 @@ class Collector implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function attachSection($content, array $configuration = null)
     {
-        $section = array(
+        $section = [
             'structure' => $this->structure,
             'structurePaths' => $this->structurePaths,
             'records' => $this->records,
-        );
+        ];
 
         $as = (!empty($configuration['as']) ? $configuration['as'] : null);
         $this->getRenderer()->addSection($section, $as);
@@ -154,7 +154,7 @@ class Collector implements \TYPO3\CMS\Core\SingletonInterface
             unset($fieldList);
         }
 
-        return (!empty($this->tableFields[$tableName]) ? $this->tableFields[$tableName] : array());
+        return (!empty($this->tableFields[$tableName]) ? $this->tableFields[$tableName] : []);
     }
 
     /**
@@ -194,8 +194,8 @@ class Collector implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function reset()
     {
-        $this->structure = array();
-        $this->structurePaths = array();
-        $this->records = array();
+        $this->structure = [];
+        $this->structurePaths = [];
+        $this->records = [];
     }
 }

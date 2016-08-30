@@ -40,7 +40,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @var array A backup of registered singleton instances
      */
-    protected $singletonInstances = array();
+    protected $singletonInstances = [];
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
@@ -62,7 +62,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      *
      * @var array
      */
-    protected $contentObjectMap = array(
+    protected $contentObjectMap = [
         'TEXT'             => \TYPO3\CMS\Frontend\ContentObject\TextContentObject::class,
         'CASE'             => \TYPO3\CMS\Frontend\ContentObject\CaseContentObject::class,
         'COBJ_ARRAY'       => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject::class,
@@ -84,7 +84,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         'FLUIDTEMPLATE'    => \TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject::class,
         'SVG'              => \TYPO3\CMS\Frontend\ContentObject\ScalableVectorGraphicsContentObject::class,
         'EDITPANEL'        => \TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject::class
-    );
+    ];
 
     /**
      * Set up
@@ -96,28 +96,28 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
         $this->createMockedLoggerAndLogManager();
 
-        $this->templateServiceMock = $this->getMock(TemplateService::class, array('getFileName', 'linkData'));
-        $pageRepositoryMock = $this->getMock(PageRepositoryFixture::class, array('getRawRecord'));
+        $this->templateServiceMock = $this->getMock(TemplateService::class, ['getFileName', 'linkData']);
+        $pageRepositoryMock = $this->getMock(PageRepositoryFixture::class, ['getRawRecord']);
 
-        $this->typoScriptFrontendControllerMock = $this->getAccessibleMock(TypoScriptFrontendController::class, array('dummy'), array(), '', false);
+        $this->typoScriptFrontendControllerMock = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
         $this->typoScriptFrontendControllerMock->tmpl = $this->templateServiceMock;
-        $this->typoScriptFrontendControllerMock->config = array();
-        $this->typoScriptFrontendControllerMock->page = array();
+        $this->typoScriptFrontendControllerMock->config = [];
+        $this->typoScriptFrontendControllerMock->page = [];
         $this->typoScriptFrontendControllerMock->sys_page = $pageRepositoryMock;
         $this->typoScriptFrontendControllerMock->csConvObj = new CharsetConverter();
         $this->typoScriptFrontendControllerMock->renderCharset = 'utf-8';
         $GLOBALS['TSFE'] = $this->typoScriptFrontendControllerMock;
         $GLOBALS['TT'] = new NullTimeTracker();
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array());
+        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, []);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] = 'mbstring';
 
         $this->subject = $this->getAccessibleMock(
             \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class,
-            array('getResourceFactory', 'getEnvironmentVariable'),
-            array($this->typoScriptFrontendControllerMock)
+            ['getResourceFactory', 'getEnvironmentVariable'],
+            [$this->typoScriptFrontendControllerMock]
         );
         $this->subject->setContentObjectClassMap($this->contentObjectMap);
-        $this->subject->start(array(), 'tt_content');
+        $this->subject->start([], 'tt_content');
     }
 
     protected function tearDown()
@@ -172,18 +172,18 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->with('typo3/clear.gif')
             ->will($this->returnValue('typo3/clear.gif'));
 
-        $resourceFactory = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class, array(), array(), '', false);
+        $resourceFactory = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class, [], [], '', false);
         $this->subject->expects($this->any())->method('getResourceFactory')->will($this->returnValue($resourceFactory));
 
         $className = $this->getUniqueId('tx_coretest');
-        $getImgResourceHookMock = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface::class, array('getImgResourcePostProcess'), array(), $className);
+        $getImgResourceHookMock = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface::class, ['getImgResourcePostProcess'], [], $className);
         $getImgResourceHookMock
             ->expects($this->once())
             ->method('getImgResourcePostProcess')
-            ->will($this->returnCallback(array($this, 'isGetImgResourceHookCalledCallback')));
-        $getImgResourceHookObjects = array($getImgResourceHookMock);
+            ->will($this->returnCallback([$this, 'isGetImgResourceHookCalledCallback']));
+        $getImgResourceHookObjects = [$getImgResourceHookMock];
         $this->subject->_setRef('getImgResourceHookObjects', $getImgResourceHookObjects);
-        $this->subject->getImgResource('typo3/clear.gif', array());
+        $this->subject->getImgResource('typo3/clear.gif', []);
     }
 
     /**
@@ -208,9 +208,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     public function getContentObjectValidContentObjectsDataProvider()
     {
-        $dataProvider = array();
+        $dataProvider = [];
         foreach ($this->contentObjectMap as $name => $className) {
-            $dataProvider[] = array($name, $className);
+            $dataProvider[] = [$name, $className];
         }
         return $dataProvider;
     }
@@ -223,7 +223,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getContentObjectCallsMakeInstanceForNewContentObjectInstance($name, $fullClassName)
     {
-        $contentObjectInstance = $this->getMock($fullClassName, array(), array(), '', false);
+        $contentObjectInstance = $this->getMock($fullClassName, [], [], '', false);
         \TYPO3\CMS\Core\Utility\GeneralUtility::addInstance($fullClassName, $contentObjectInstance);
         $this->assertSame($contentObjectInstance, $this->subject->getContentObject($name));
     }
@@ -239,8 +239,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->subject->expects($this->any())->method('getEnvironmentVariable')->with($this->equalTo('QUERY_STRING'))->will(
             $this->returnValue('key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322')
         );
-        $getQueryArgumentsConfiguration = array();
-        $getQueryArgumentsConfiguration['exclude'] = array();
+        $getQueryArgumentsConfiguration = [];
+        $getQueryArgumentsConfiguration['exclude'] = [];
         $getQueryArgumentsConfiguration['exclude'][] = 'key1';
         $getQueryArgumentsConfiguration['exclude'][] = 'key3[key31]';
         $getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
@@ -255,20 +255,20 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getQueryArgumentsExcludesGetParameters()
     {
-        $_GET = array(
+        $_GET = [
             'key1' => 'value1',
             'key2' => 'value2',
-            'key3' => array(
+            'key3' => [
                 'key31' => 'value31',
-                'key32' => array(
+                'key32' => [
                     'key321' => 'value321',
                     'key322' => 'value322'
-                )
-            )
-        );
-        $getQueryArgumentsConfiguration = array();
+                ]
+            ]
+        ];
+        $getQueryArgumentsConfiguration = [];
         $getQueryArgumentsConfiguration['method'] = 'GET';
-        $getQueryArgumentsConfiguration['exclude'] = array();
+        $getQueryArgumentsConfiguration['exclude'] = [];
         $getQueryArgumentsConfiguration['exclude'][] = 'key1';
         $getQueryArgumentsConfiguration['exclude'][] = 'key3[key31]';
         $getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
@@ -286,13 +286,13 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->subject->expects($this->any())->method('getEnvironmentVariable')->with($this->equalTo('QUERY_STRING'))->will(
             $this->returnValue('key1=value1')
         );
-        $getQueryArgumentsConfiguration = array();
-        $overruleArguments = array(
+        $getQueryArgumentsConfiguration = [];
+        $overruleArguments = [
             // Should be overridden
             'key1' => 'value1Overruled',
             // Shouldn't be set: Parameter doesn't exist in source array and is not forced
             'key2' => 'value2Overruled'
-        );
+        ];
         $expectedResult = '&key1=value1Overruled';
         $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments);
         $this->assertEquals($expectedResult, $actualResult);
@@ -303,38 +303,38 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getQueryArgumentsOverrulesMultiDimensionalParameters()
     {
-        $_POST = array(
+        $_POST = [
             'key1' => 'value1',
             'key2' => 'value2',
-            'key3' => array(
+            'key3' => [
                 'key31' => 'value31',
-                'key32' => array(
+                'key32' => [
                     'key321' => 'value321',
                     'key322' => 'value322'
-                )
-            )
-        );
-        $getQueryArgumentsConfiguration = array();
+                ]
+            ]
+        ];
+        $getQueryArgumentsConfiguration = [];
         $getQueryArgumentsConfiguration['method'] = 'POST';
-        $getQueryArgumentsConfiguration['exclude'] = array();
+        $getQueryArgumentsConfiguration['exclude'] = [];
         $getQueryArgumentsConfiguration['exclude'][] = 'key1';
         $getQueryArgumentsConfiguration['exclude'][] = 'key3[key31]';
         $getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
         $getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
-        $overruleArguments = array(
+        $overruleArguments = [
             // Should be overriden
             'key2' => 'value2Overruled',
-            'key3' => array(
-                'key32' => array(
+            'key3' => [
+                'key32' => [
                     // Shouldn't be set: Parameter is excluded and not forced
                     'key321' => 'value321Overruled',
                     // Should be overriden: Parameter is not excluded
                     'key322' => 'value322Overruled',
                     // Shouldn't be set: Parameter doesn't exist in source array and is not forced
                     'key323' => 'value323Overruled'
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2Overruled&key3[key32][key322]=value322Overruled');
         $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments);
         $this->assertEquals($expectedResult, $actualResult);
@@ -348,36 +348,36 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->subject->expects($this->any())->method('getEnvironmentVariable')->with($this->equalTo('QUERY_STRING'))->will(
             $this->returnValue('key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322')
         );
-        $_POST = array(
+        $_POST = [
             'key1' => 'value1',
             'key2' => 'value2',
-            'key3' => array(
+            'key3' => [
                 'key31' => 'value31',
-                'key32' => array(
+                'key32' => [
                     'key321' => 'value321',
                     'key322' => 'value322'
-                )
-            )
-        );
-        $getQueryArgumentsConfiguration = array();
-        $getQueryArgumentsConfiguration['exclude'] = array();
+                ]
+            ]
+        ];
+        $getQueryArgumentsConfiguration = [];
+        $getQueryArgumentsConfiguration['exclude'] = [];
         $getQueryArgumentsConfiguration['exclude'][] = 'key1';
         $getQueryArgumentsConfiguration['exclude'][] = 'key3[key31]';
         $getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
         $getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key322]';
         $getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
-        $overruleArguments = array(
+        $overruleArguments = [
             // Should be overriden
             'key2' => 'value2Overruled',
-            'key3' => array(
-                'key32' => array(
+            'key3' => [
+                'key32' => [
                     // Should be set: Parameter is excluded but forced
                     'key321' => 'value321Overruled',
                     // Should be set: Parameter doesn't exist in source array but is forced
                     'key323' => 'value323Overruled'
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2Overruled&key3[key32][key321]=value321Overruled&key3[key32][key323]=value323Overruled');
         $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments, true);
         $this->assertEquals($expectedResult, $actualResult);
@@ -391,28 +391,28 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getQueryArgumentsWithMethodPostGetMergesParameters()
     {
-        $_POST = array(
+        $_POST = [
             'key1' => 'POST1',
             'key2' => 'POST2',
-            'key3' => array(
+            'key3' => [
                 'key31' => 'POST31',
                 'key32' => 'POST32',
-                'key33' => array(
+                'key33' => [
                     'key331' => 'POST331',
                     'key332' => 'POST332',
-                )
-            )
-        );
-        $_GET = array(
+                ]
+            ]
+        ];
+        $_GET = [
             'key2' => 'GET2',
-            'key3' => array(
+            'key3' => [
                 'key32' => 'GET32',
-                'key33' => array(
+                'key33' => [
                     'key331' => 'GET331',
-                )
-            )
-        );
-        $getQueryArgumentsConfiguration = array();
+                ]
+            ]
+        ];
+        $getQueryArgumentsConfiguration = [];
         $getQueryArgumentsConfiguration['method'] = 'POST,GET';
         $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key1=POST1&key2=GET2&key3[key31]=POST31&key3[key32]=GET32&key3[key33][key331]=GET331&key3[key33][key332]=POST332');
         $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration);
@@ -424,28 +424,28 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getQueryArgumentsWithMethodGetPostMergesParameters()
     {
-        $_GET = array(
+        $_GET = [
             'key1' => 'GET1',
             'key2' => 'GET2',
-            'key3' => array(
+            'key3' => [
                 'key31' => 'GET31',
                 'key32' => 'GET32',
-                'key33' => array(
+                'key33' => [
                     'key331' => 'GET331',
                     'key332' => 'GET332',
-                )
-            )
-        );
-        $_POST = array(
+                ]
+            ]
+        ];
+        $_POST = [
             'key2' => 'POST2',
-            'key3' => array(
+            'key3' => [
                 'key32' => 'POST32',
-                'key33' => array(
+                'key33' => [
                     'key331' => 'POST331',
-                )
-            )
-        );
-        $getQueryArgumentsConfiguration = array();
+                ]
+            ]
+        ];
+        $getQueryArgumentsConfiguration = [];
         $getQueryArgumentsConfiguration['method'] = 'GET,POST';
         $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key1=GET1&key2=POST2&key3[key31]=GET31&key3[key32]=POST32&key3[key33][key331]=POST331&key3[key33][key332]=GET332');
         $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration);
@@ -460,7 +460,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     private function rawUrlEncodeSquareBracketsInUrl($string)
     {
-        return str_replace(array('[', ']'), array('%5B', '%5D'), $string);
+        return str_replace(['[', ']'], ['%5B', '%5D'], $string);
     }
 
     //////////////////////////
@@ -489,275 +489,275 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $plainText = 'Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j implemented the original version of the crop function.';
         $textWithMarkup = '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>' . ' implemented</strong> the original version of the crop function.';
         $textWithEntities = 'Kasper Sk&aring;rh&oslash;j implemented the; original ' . 'version of the crop function.';
-        $charsets = array('iso-8859-1', 'utf-8', 'ascii', 'big5');
-        $data = array();
+        $charsets = ['iso-8859-1', 'utf-8', 'ascii', 'big5'];
+        $data = [];
         foreach ($charsets as $charset) {
-            $data = array_merge($data, array(
-                $charset . ' plain text; 11|...' => array(
+            $data = array_merge($data, [
+                $charset . ' plain text; 11|...' => [
                     '11|...',
                     $plainText,
                     'Kasper Sk' . chr(229) . 'r...',
                     $charset
-                ),
-                $charset . ' plain text; -58|...' => array(
+                ],
+                $charset . ' plain text; -58|...' => [
                     '-58|...',
                     $plainText,
                     '...h' . chr(248) . 'j implemented the original version of the crop function.',
                     $charset
-                ),
-                $charset . ' plain text; 4|...|1' => array(
+                ],
+                $charset . ' plain text; 4|...|1' => [
                     '4|...|1',
                     $plainText,
                     'Kasp...',
                     $charset
-                ),
-                $charset . ' plain text; 20|...|1' => array(
+                ],
+                $charset . ' plain text; 20|...|1' => [
                     '20|...|1',
                     $plainText,
                     'Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j...',
                     $charset
-                ),
-                $charset . ' plain text; -5|...|1' => array(
+                ],
+                $charset . ' plain text; -5|...|1' => [
                     '-5|...|1',
                     $plainText,
                     '...tion.',
                     $charset
-                ),
-                $charset . ' plain text; -49|...|1' => array(
+                ],
+                $charset . ' plain text; -49|...|1' => [
                     '-49|...|1',
                     $plainText,
                     '...the original version of the crop function.',
                     $charset
-                ),
-                $charset . ' text with markup; 11|...' => array(
+                ],
+                $charset . ' text with markup; 11|...' => [
                     '11|...',
                     $textWithMarkup,
                     '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'r...</a></strong>',
                     $charset
-                ),
-                $charset . ' text with markup; 13|...' => array(
+                ],
+                $charset . ' text with markup; 13|...' => [
                     '13|...',
                     $textWithMarkup,
                     '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . '...</a></strong>',
                     $charset
-                ),
-                $charset . ' text with markup; 14|...' => array(
+                ],
+                $charset . ' text with markup; 14|...' => [
                     '14|...',
                     $textWithMarkup,
                     '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>...</strong>',
                     $charset
-                ),
-                $charset . ' text with markup; 15|...' => array(
+                ],
+                $charset . ' text with markup; 15|...' => [
                     '15|...',
                     $textWithMarkup,
                     '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a> ...</strong>',
                     $charset
-                ),
-                $charset . ' text with markup; 29|...' => array(
+                ],
+                $charset . ' text with markup; 29|...' => [
                     '29|...',
                     $textWithMarkup,
                     '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong> th...',
                     $charset
-                ),
-                $charset . ' text with markup; -58|...' => array(
+                ],
+                $charset . ' text with markup; -58|...' => [
                     '-58|...',
                     $textWithMarkup,
                     '<strong><a href="mailto:kasper@typo3.org">...h' . chr(248) . 'j</a> implemented</strong> the original version of the crop function.',
                     $charset
-                ),
-                $charset . ' text with markup 4|...|1' => array(
+                ],
+                $charset . ' text with markup 4|...|1' => [
                     '4|...|1',
                     $textWithMarkup,
                     '<strong><a href="mailto:kasper@typo3.org">Kasp...</a></strong>',
                     $charset
-                ),
-                $charset . ' text with markup; 11|...|1' => array(
+                ],
+                $charset . ' text with markup; 11|...|1' => [
                     '11|...|1',
                     $textWithMarkup,
                     '<strong><a href="mailto:kasper@typo3.org">Kasper...</a></strong>',
                     $charset
-                ),
-                $charset . ' text with markup; 13|...|1' => array(
+                ],
+                $charset . ' text with markup; 13|...|1' => [
                     '13|...|1',
                     $textWithMarkup,
                     '<strong><a href="mailto:kasper@typo3.org">Kasper...</a></strong>',
                     $charset
-                ),
-                $charset . ' text with markup; 14|...|1' => array(
+                ],
+                $charset . ' text with markup; 14|...|1' => [
                     '14|...|1',
                     $textWithMarkup,
                     '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>...</strong>',
                     $charset
-                ),
-                $charset . ' text with markup; 15|...|1' => array(
+                ],
+                $charset . ' text with markup; 15|...|1' => [
                     '15|...|1',
                     $textWithMarkup,
                     '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>...</strong>',
                     $charset
-                ),
-                $charset . ' text with markup; 29|...|1' => array(
+                ],
+                $charset . ' text with markup; 29|...|1' => [
                     '29|...|1',
                     $textWithMarkup,
                     '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong>...',
                     $charset
-                ),
-                $charset . ' text with markup; -66|...|1' => array(
+                ],
+                $charset . ' text with markup; -66|...|1' => [
                     '-66|...|1',
                     $textWithMarkup,
                     '<strong><a href="mailto:kasper@typo3.org">...Sk' . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong> the original version of the crop function.',
                     $charset
-                ),
-                $charset . ' text with entities 9|...' => array(
+                ],
+                $charset . ' text with entities 9|...' => [
                     '9|...',
                     $textWithEntities,
                     'Kasper Sk...',
                     $charset
-                ),
-                $charset . ' text with entities 10|...' => array(
+                ],
+                $charset . ' text with entities 10|...' => [
                     '10|...',
                     $textWithEntities,
                     'Kasper Sk&aring;...',
                     $charset
-                ),
-                $charset . ' text with entities 11|...' => array(
+                ],
+                $charset . ' text with entities 11|...' => [
                     '11|...',
                     $textWithEntities,
                     'Kasper Sk&aring;r...',
                     $charset
-                ),
-                $charset . ' text with entities 13|...' => array(
+                ],
+                $charset . ' text with entities 13|...' => [
                     '13|...',
                     $textWithEntities,
                     'Kasper Sk&aring;rh&oslash;...',
                     $charset
-                ),
-                $charset . ' text with entities 14|...' => array(
+                ],
+                $charset . ' text with entities 14|...' => [
                     '14|...',
                     $textWithEntities,
                     'Kasper Sk&aring;rh&oslash;j...',
                     $charset
-                ),
-                $charset . ' text with entities 15|...' => array(
+                ],
+                $charset . ' text with entities 15|...' => [
                     '15|...',
                     $textWithEntities,
                     'Kasper Sk&aring;rh&oslash;j ...',
                     $charset
-                ),
-                $charset . ' text with entities 16|...' => array(
+                ],
+                $charset . ' text with entities 16|...' => [
                     '16|...',
                     $textWithEntities,
                     'Kasper Sk&aring;rh&oslash;j i...',
                     $charset
-                ),
-                $charset . ' text with entities -57|...' => array(
+                ],
+                $charset . ' text with entities -57|...' => [
                     '-57|...',
                     $textWithEntities,
                     '...j implemented the; original version of the crop function.',
                     $charset
-                ),
-                $charset . ' text with entities -58|...' => array(
+                ],
+                $charset . ' text with entities -58|...' => [
                     '-58|...',
                     $textWithEntities,
                     '...&oslash;j implemented the; original version of the crop function.',
                     $charset
-                ),
-                $charset . ' text with entities -59|...' => array(
+                ],
+                $charset . ' text with entities -59|...' => [
                     '-59|...',
                     $textWithEntities,
                     '...h&oslash;j implemented the; original version of the crop function.',
                     $charset
-                ),
-                $charset . ' text with entities 4|...|1' => array(
+                ],
+                $charset . ' text with entities 4|...|1' => [
                     '4|...|1',
                     $textWithEntities,
                     'Kasp...',
                     $charset
-                ),
-                $charset . ' text with entities 9|...|1' => array(
+                ],
+                $charset . ' text with entities 9|...|1' => [
                     '9|...|1',
                     $textWithEntities,
                     'Kasper...',
                     $charset
-                ),
-                $charset . ' text with entities 10|...|1' => array(
+                ],
+                $charset . ' text with entities 10|...|1' => [
                     '10|...|1',
                     $textWithEntities,
                     'Kasper...',
                     $charset
-                ),
-                $charset . ' text with entities 11|...|1' => array(
+                ],
+                $charset . ' text with entities 11|...|1' => [
                     '11|...|1',
                     $textWithEntities,
                     'Kasper...',
                     $charset
-                ),
-                $charset . ' text with entities 13|...|1' => array(
+                ],
+                $charset . ' text with entities 13|...|1' => [
                     '13|...|1',
                     $textWithEntities,
                     'Kasper...',
                     $charset
-                ),
-                $charset . ' text with entities 14|...|1' => array(
+                ],
+                $charset . ' text with entities 14|...|1' => [
                     '14|...|1',
                     $textWithEntities,
                     'Kasper Sk&aring;rh&oslash;j...',
                     $charset
-                ),
-                $charset . ' text with entities 15|...|1' => array(
+                ],
+                $charset . ' text with entities 15|...|1' => [
                     '15|...|1',
                     $textWithEntities,
                     'Kasper Sk&aring;rh&oslash;j...',
                     $charset
-                ),
-                $charset . ' text with entities 16|...|1' => array(
+                ],
+                $charset . ' text with entities 16|...|1' => [
                     '16|...|1',
                     $textWithEntities,
                     'Kasper Sk&aring;rh&oslash;j...',
                     $charset
-                ),
-                $charset . ' text with entities -57|...|1' => array(
+                ],
+                $charset . ' text with entities -57|...|1' => [
                     '-57|...|1',
                     $textWithEntities,
                     '...implemented the; original version of the crop function.',
                     $charset
-                ),
-                $charset . ' text with entities -58|...|1' => array(
+                ],
+                $charset . ' text with entities -58|...|1' => [
                     '-58|...|1',
                     $textWithEntities,
                     '...implemented the; original version of the crop function.',
                     $charset
-                ),
-                $charset . ' text with entities -59|...|1' => array(
+                ],
+                $charset . ' text with entities -59|...|1' => [
                     '-59|...|1',
                     $textWithEntities,
                     '...implemented the; original version of the crop function.',
                     $charset
-                ),
-                $charset . ' text with dash in html-element 28|...|1' => array(
+                ],
+                $charset . ' text with dash in html-element 28|...|1' => [
                     '28|...|1',
                     'Some text with a link to <link email.address@example.org - mail "Open email window">my email.address@example.org</link> and text after it',
                     'Some text with a link to <link email.address@example.org - mail "Open email window">my...</link>',
                     $charset
-                ),
-                $charset . ' html elements with dashes in attributes' => array(
+                ],
+                $charset . ' html elements with dashes in attributes' => [
                     '9',
                     '<em data-foo="x">foobar</em>foobaz',
                     '<em data-foo="x">foobar</em>foo',
                     $charset
-                ),
-                $charset . ' html elements with iframe embedded 24|...|1' => array(
+                ],
+                $charset . ' html elements with iframe embedded 24|...|1' => [
                     '24|...|1',
                     'Text with iframe <iframe src="//what.ever/"></iframe> and text after it',
                     'Text with iframe <iframe src="//what.ever/"></iframe> and...',
                     $charset
-                ),
-                $charset . ' html elements with script tag embedded 24|...|1' => array(
+                ],
+                $charset . ' html elements with script tag embedded 24|...|1' => [
                     '24|...|1',
                     'Text with script <script>alert(\'foo\');</script> and text after it',
                     'Text with script <script>alert(\'foo\');</script> and...',
                     $charset
-                ),
-            ));
+                ],
+            ]);
         }
         return $data;
     }
@@ -888,46 +888,46 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_roundDataProvider()
     {
-        return array(
-            'rounding off without any configuration' => array(
+        return [
+            'rounding off without any configuration' => [
                 1.123456789,
-                array(),
+                [],
                 1
-            ),
-            'rounding up without any configuration' => array(
+            ],
+            'rounding up without any configuration' => [
                 1.523456789,
-                array(),
+                [],
                 2
-            ),
-            'regular rounding (off) to two decimals' => array(
+            ],
+            'regular rounding (off) to two decimals' => [
                 0.123456789,
-                array(
+                [
                     'decimals' => 2
-                ),
+                ],
                 0.12
-            ),
-            'regular rounding (up) to two decimals' => array(
+            ],
+            'regular rounding (up) to two decimals' => [
                 0.1256789,
-                array(
+                [
                     'decimals' => 2
-                ),
+                ],
                 0.13
-            ),
-            'rounding up to integer with type ceil' => array(
+            ],
+            'rounding up to integer with type ceil' => [
                 0.123456789,
-                array(
+                [
                     'roundType' => 'ceil'
-                ),
+                ],
                 1
-            ),
-            'rounding down to integer with type floor' => array(
+            ],
+            'rounding down to integer with type floor' => [
                 2.3481,
-                array(
+                [
                     'roundType' => 'floor'
-                ),
+                ],
                 2
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -942,9 +942,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_round($float, $conf, $expected)
     {
-        $conf = array(
+        $conf = [
             'round.' => $conf
-        );
+        ];
         $result = $this->subject->stdWrap_round($float, $conf);
         $this->assertEquals($expected, $result);
     }
@@ -954,63 +954,63 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_numberFormatDataProvider()
     {
-        return array(
-            'testing decimals' => array(
+        return [
+            'testing decimals' => [
                 0.8,
-                array(
-                    'numberFormat.' => array(
+                [
+                    'numberFormat.' => [
                         'decimals' => 2
-                    ),
-                ),
+                    ],
+                ],
                 '0.80'
-            ),
-            'testing decimals with input as string' => array(
+            ],
+            'testing decimals with input as string' => [
                 '0.8',
-                array(
-                    'numberFormat.' => array(
+                [
+                    'numberFormat.' => [
                         'decimals' => 2
-                    ),
-                ),
+                    ],
+                ],
                 '0.80'
-            ),
-            'testing dec_point' => array(
+            ],
+            'testing dec_point' => [
                 0.8,
-                array(
-                    'numberFormat.' => array(
+                [
+                    'numberFormat.' => [
                         'decimals' => 1,
                         'dec_point' => ','
-                    ),
-                ),
+                    ],
+                ],
                 '0,8'
-            ),
-            'testing thousands_sep' => array(
+            ],
+            'testing thousands_sep' => [
                 999.99,
-                array(
-                    'numberFormat.' => array(
+                [
+                    'numberFormat.' => [
                         'decimals' => 0,
-                        'thousands_sep.' => array(
+                        'thousands_sep.' => [
                             'char' => 46
-                        ),
-                    ),
-                ),
+                        ],
+                    ],
+                ],
                 '1.000'
-            ),
-            'testing mixture' => array(
+            ],
+            'testing mixture' => [
                 1281731.45,
-                array(
-                    'numberFormat.' => array(
+                [
+                    'numberFormat.' => [
                         'decimals' => 1,
-                        'dec_point.' => array(
+                        'dec_point.' => [
                             'char' => 44
-                        ),
-                        'thousands_sep.' => array(
+                        ],
+                        'thousands_sep.' => [
                             'char' => 46
-                        ),
-                    ),
-                ),
+                        ],
+                    ],
+                ],
                 '1.281.731,5'
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -1034,20 +1034,20 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_expandListDataProvider()
     {
-        return array(
-            'numbers' => array(
+        return [
+            'numbers' => [
                 '1,2,3',
                 '1,2,3',
-            ),
-            'range' => array(
+            ],
+            'range' => [
                 '3-5',
                 '3,4,5',
-            ),
-            'numbers and range' => array(
+            ],
+            'numbers and range' => [
                 '1,3-5,7',
                 '1,3,4,5,7',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -1070,20 +1070,20 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_trimDataProvider()
     {
-        return array(
-            'trimstring' => array(
+        return [
+            'trimstring' => [
                 'trimstring',
                 'trimstring',
-            ),
-            'trim string with space inside' => array(
+            ],
+            'trim string with space inside' => [
                 'trim string',
                 'trim string',
-            ),
-            'trim string with space at the begin and end' => array(
+            ],
+            'trim string with space at the begin and end' => [
                 ' trim string ',
                 'trim string',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -1106,40 +1106,40 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_intvalDataProvider()
     {
-        return array(
-            'number' => array(
+        return [
+            'number' => [
                 '123',
                 123,
-            ),
-            'float' => array(
+            ],
+            'float' => [
                 '123.45',
                 123,
-            ),
-            'string' => array(
+            ],
+            'string' => [
                 'string',
                 0,
-            ),
-            'zero' => array(
+            ],
+            'zero' => [
                 '0',
                 0,
-            ),
-            'empty' => array(
+            ],
+            'empty' => [
                 '',
                 0,
-            ),
-            'NULL' => array(
+            ],
+            'NULL' => [
                 null,
                 0,
-            ),
-            'bool TRUE' => array(
+            ],
+            'bool TRUE' => [
                 true,
                 1,
-            ),
-            'bool FALSE' => array(
+            ],
+            'bool FALSE' => [
                 false,
                 0,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -1162,89 +1162,89 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_strPadDataProvider()
     {
-        return array(
-            'pad string with default settings and length 10' => array(
+        return [
+            'pad string with default settings and length 10' => [
                 'Alien',
-                array(
+                [
                     'length' => '10',
-                ),
+                ],
                 'Alien     ',
-            ),
-            'pad string with padWith -= and type left and length 10' => array(
+            ],
+            'pad string with padWith -= and type left and length 10' => [
                 'Alien',
-                array(
+                [
                     'length' => '10',
                     'padWith' => '-=',
                     'type' => 'left',
-                ),
+                ],
                 '-=-=-Alien',
-            ),
-            'pad string with padWith _ and type both and length 10' => array(
+            ],
+            'pad string with padWith _ and type both and length 10' => [
                 'Alien',
-                array(
+                [
                     'length' => '10',
                     'padWith' => '_',
                     'type' => 'both',
-                ),
+                ],
                 '__Alien___',
-            ),
-            'pad string with padWith 0 and type both and length 10' => array(
+            ],
+            'pad string with padWith 0 and type both and length 10' => [
                 'Alien',
-                array(
+                [
                     'length' => '10',
                     'padWith' => '0',
                     'type' => 'both',
-                ),
+                ],
                 '00Alien000',
-            ),
-            'pad string with padWith ___ and type both and length 6' => array(
+            ],
+            'pad string with padWith ___ and type both and length 6' => [
                 'Alien',
-                array(
+                [
                     'length' => '6',
                     'padWith' => '___',
                     'type' => 'both',
-                ),
+                ],
                 'Alien_',
-            ),
-            'pad string with padWith _ and type both and length 12, using stdWrap for length' => array(
+            ],
+            'pad string with padWith _ and type both and length 12, using stdWrap for length' => [
                 'Alien',
-                array(
+                [
                     'length' => '1',
-                    'length.' => array(
+                    'length.' => [
                         'wrap' => '|2',
-                    ),
+                    ],
                     'padWith' => '_',
                     'type' => 'both',
-                ),
+                ],
                 '___Alien____',
-            ),
-            'pad string with padWith _ and type both and length 12, using stdWrap for padWidth' => array(
+            ],
+            'pad string with padWith _ and type both and length 12, using stdWrap for padWidth' => [
                 'Alien',
-                array(
+                [
                     'length' => '12',
                     'padWith' => '_',
-                    'padWith.' => array(
+                    'padWith.' => [
                         'wrap' => '-|=',
-                    ),
+                    ],
                     'type' => 'both',
-                ),
+                ],
                 '-_=Alien-_=-',
-            ),
-            'pad string with padWith _ and type both and length 12, using stdWrap for type' => array(
+            ],
+            'pad string with padWith _ and type both and length 12, using stdWrap for type' => [
                 'Alien',
-                array(
+                [
                     'length' => '12',
                     'padWith' => '_',
                     'type' => 'both',
                     // make type become "left"
-                    'type.' => array(
+                    'type.' => [
                         'substring' => '2,1',
                         'wrap' => 'lef|',
-                    ),
-                ),
+                    ],
+                ],
                 '_______Alien',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -1259,9 +1259,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_strPad($content, $conf, $expected)
     {
-        $conf = array(
+        $conf = [
             'strPad.' => $conf
-        );
+        ];
         $result = $this->subject->stdWrap_strPad($content, $conf);
         $this->assertEquals($expected, $result);
     }
@@ -1274,41 +1274,41 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function hashDataProvider()
     {
-        $data = array(
-            'testing md5' => array(
+        $data = [
+            'testing md5' => [
                 'joh316',
-                array(
+                [
                     'hash' => 'md5'
-                ),
+                ],
                 'bacb98acf97e0b6112b1d1b650b84971'
-            ),
-            'testing sha1' => array(
+            ],
+            'testing sha1' => [
                 'joh316',
-                array(
+                [
                     'hash' => 'sha1'
-                ),
+                ],
                 '063b3d108bed9f88fa618c6046de0dccadcf3158'
-            ),
-            'testing non-existing hashing algorithm' => array(
+            ],
+            'testing non-existing hashing algorithm' => [
                 'joh316',
-                array(
+                [
                     'hash' => 'non-existing'
-                ),
+                ],
                 ''
-            ),
-            'testing stdWrap capability' => array(
+            ],
+            'testing stdWrap capability' => [
                 'joh316',
-                array(
-                    'hash.' => array(
+                [
+                    'hash.' => [
                         'cObject' => 'TEXT',
-                        'cObject.' => array(
+                        'cObject.' => [
                             'value' => 'md5'
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'bacb98acf97e0b6112b1d1b650b84971'
-            )
-        );
+            ]
+        ];
         return $data;
     }
 
@@ -1333,12 +1333,12 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function recursiveStdWrapProperlyRendersBasicString()
     {
-        $stdWrapConfiguration = array(
+        $stdWrapConfiguration = [
             'noTrimWrap' => '|| 123|',
-            'stdWrap.' => array(
+            'stdWrap.' => [
                 'wrap' => '<b>|</b>'
-            )
-        );
+            ]
+        ];
         $this->assertSame(
             '<b>Test</b> 123',
             $this->subject->stdWrap('Test', $stdWrapConfiguration)
@@ -1350,25 +1350,25 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function recursiveStdWrapIsOnlyCalledOnce()
     {
-        $stdWrapConfiguration = array(
+        $stdWrapConfiguration = [
             'append' => 'TEXT',
-            'append.' => array(
+            'append.' => [
                 'data' => 'register:Counter'
-            ),
-            'stdWrap.' => array(
+            ],
+            'stdWrap.' => [
                 'append' => 'LOAD_REGISTER',
-                'append.' => array(
-                    'Counter.' => array(
+                'append.' => [
+                    'Counter.' => [
                         'prioriCalc' => 'intval',
                         'cObject' => 'TEXT',
-                        'cObject.' => array(
+                        'cObject.' => [
                             'data' => 'register:Counter',
                             'wrap' => '|+1',
-                        )
-                    )
-                )
-            )
-        );
+                        ]
+                    ]
+                ]
+            ]
+        ];
         $this->assertSame(
             'Counter:1',
             $this->subject->stdWrap('Counter:', $stdWrapConfiguration)
@@ -1383,53 +1383,53 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function numberFormatDataProvider()
     {
-        $data = array(
-            'testing decimals' => array(
+        $data = [
+            'testing decimals' => [
                 0.8,
-                array(
+                [
                     'decimals' => 2
-                ),
+                ],
                 '0.80'
-            ),
-            'testing decimals with input as string' => array(
+            ],
+            'testing decimals with input as string' => [
                 '0.8',
-                array(
+                [
                     'decimals' => 2
-                ),
+                ],
                 '0.80'
-            ),
-            'testing dec_point' => array(
+            ],
+            'testing dec_point' => [
                 0.8,
-                array(
+                [
                     'decimals' => 1,
                     'dec_point' => ','
-                ),
+                ],
                 '0,8'
-            ),
-            'testing thousands_sep' => array(
+            ],
+            'testing thousands_sep' => [
                 999.99,
-                array(
+                [
                     'decimals' => 0,
-                    'thousands_sep.' => array(
+                    'thousands_sep.' => [
                         'char' => 46
-                    )
-                ),
+                    ]
+                ],
                 '1.000'
-            ),
-            'testing mixture' => array(
+            ],
+            'testing mixture' => [
                 1281731.45,
-                array(
+                [
                     'decimals' => 1,
-                    'dec_point.' => array(
+                    'dec_point.' => [
                         'char' => 44
-                    ),
-                    'thousands_sep.' => array(
+                    ],
+                    'thousands_sep.' => [
                         'char' => 46
-                    )
-                ),
+                    ]
+                ],
                 '1.281.731,5'
-            )
-        );
+            ]
+        ];
         return $data;
     }
 
@@ -1453,56 +1453,56 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function replacementDataProvider()
     {
-        $data = array(
-            'multiple replacements, including regex' => array(
+        $data = [
+            'multiple replacements, including regex' => [
                 'There_is_a_cat,_a_dog_and_a_tiger_in_da_hood!_Yeah!',
-                array(
-                    'replacement.' => array(
-                        '120.' => array(
+                [
+                    'replacement.' => [
+                        '120.' => [
                             'search' => 'in da hood',
                             'replace' => 'around the block'
-                        ),
-                        '20.' => array(
+                        ],
+                        '20.' => [
                             'search' => '_',
-                            'replace.' => array('char' => '32')
-                        ),
-                        '130.' => array(
+                            'replace.' => ['char' => '32']
+                        ],
+                        '130.' => [
                             'search' => '#a (Cat|Dog|Tiger)#i',
                             'replace' => 'an animal',
                             'useRegExp' => '1'
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'There is an animal, an animal and an animal around the block! Yeah!'
-            ),
-            'replacement with optionSplit, normal pattern' => array(
+            ],
+            'replacement with optionSplit, normal pattern' => [
                 'There_is_a_cat,_a_dog_and_a_tiger_in_da_hood!_Yeah!',
-                array(
-                    'replacement.' => array(
-                        '10.' => array(
+                [
+                    'replacement.' => [
+                        '10.' => [
                             'search' => '_',
                             'replace' => '1 || 2 || 3',
                             'useOptionSplitReplace' => '1'
-                        ),
-                    )
-                ),
+                        ],
+                    ]
+                ],
                 'There1is2a3cat,3a3dog3and3a3tiger3in3da3hood!3Yeah!'
-            ),
-            'replacement with optionSplit, using regex' => array(
+            ],
+            'replacement with optionSplit, using regex' => [
                 'There is a cat, a dog and a tiger in da hood! Yeah!',
-                array(
-                    'replacement.' => array(
-                        '10.' => array(
+                [
+                    'replacement.' => [
+                        '10.' => [
                             'search' => '#(a) (Cat|Dog|Tiger)#i',
                             'replace' => '${1} tiny ${2} || ${1} midsized ${2} || ${1} big ${2}',
                             'useOptionSplitReplace' => '1',
                             'useRegExp' => '1'
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'There is a tiny cat, a midsized dog and a big tiger in da hood! Yeah!'
-            ),
-        );
+            ],
+        ];
         return $data;
     }
 
@@ -1526,97 +1526,97 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getQueryDataProvider()
     {
-        $data = array(
-            'testing empty conf' => array(
+        $data = [
+            'testing empty conf' => [
                 'tt_content',
-                array(),
-                array(
+                [],
+                [
                     'SELECT' => '*'
-                )
-            ),
-            'testing #17284: adding uid/pid for workspaces' => array(
+                ]
+            ],
+            'testing #17284: adding uid/pid for workspaces' => [
                 'tt_content',
-                array(
+                [
                     'selectFields' => 'header,bodytext'
-                ),
-                array(
+                ],
+                [
                     'SELECT' => 'header,bodytext, tt_content.uid as uid, tt_content.pid as pid, tt_content.t3ver_state as t3ver_state'
-                )
-            ),
-            'testing #17284: no need to add' => array(
+                ]
+            ],
+            'testing #17284: no need to add' => [
                 'tt_content',
-                array(
+                [
                     'selectFields' => 'tt_content.*'
-                ),
-                array(
+                ],
+                [
                     'SELECT' => 'tt_content.*'
-                )
-            ),
-            'testing #17284: no need to add #2' => array(
+                ]
+            ],
+            'testing #17284: no need to add #2' => [
                 'tt_content',
-                array(
+                [
                     'selectFields' => '*'
-                ),
-                array(
+                ],
+                [
                     'SELECT' => '*'
-                )
-            ),
-            'testing #29783: joined tables, prefix tablename' => array(
+                ]
+            ],
+            'testing #29783: joined tables, prefix tablename' => [
                 'tt_content',
-                array(
+                [
                     'selectFields' => 'tt_content.header,be_users.username',
                     'join' => 'be_users ON tt_content.cruser_id = be_users.uid'
-                ),
-                array(
+                ],
+                [
                     'SELECT' => 'tt_content.header,be_users.username, tt_content.uid as uid, tt_content.pid as pid, tt_content.t3ver_state as t3ver_state'
-                )
-            ),
-            'testing #34152: single count(*), add nothing' => array(
+                ]
+            ],
+            'testing #34152: single count(*), add nothing' => [
                 'tt_content',
-                array(
+                [
                     'selectFields' => 'count(*)'
-                ),
-                array(
+                ],
+                [
                     'SELECT' => 'count(*)'
-                )
-            ),
-            'testing #34152: single max(crdate), add nothing' => array(
+                ]
+            ],
+            'testing #34152: single max(crdate), add nothing' => [
                 'tt_content',
-                array(
+                [
                     'selectFields' => 'max(crdate)'
-                ),
-                array(
+                ],
+                [
                     'SELECT' => 'max(crdate)'
-                )
-            ),
-            'testing #34152: single min(crdate), add nothing' => array(
+                ]
+            ],
+            'testing #34152: single min(crdate), add nothing' => [
                 'tt_content',
-                array(
+                [
                     'selectFields' => 'min(crdate)'
-                ),
-                array(
+                ],
+                [
                     'SELECT' => 'min(crdate)'
-                )
-            ),
-            'testing #34152: single sum(is_siteroot), add nothing' => array(
+                ]
+            ],
+            'testing #34152: single sum(is_siteroot), add nothing' => [
                 'tt_content',
-                array(
+                [
                     'selectFields' => 'sum(is_siteroot)'
-                ),
-                array(
+                ],
+                [
                     'SELECT' => 'sum(is_siteroot)'
-                )
-            ),
-            'testing #34152: single avg(crdate), add nothing' => array(
+                ]
+            ],
+            'testing #34152: single avg(crdate), add nothing' => [
                 'tt_content',
-                array(
+                [
                     'selectFields' => 'avg(crdate)'
-                ),
-                array(
+                ],
+                [
                     'SELECT' => 'avg(crdate)'
-                )
-            )
-        );
+                ]
+            ]
+        ];
         return $data;
     }
 
@@ -1628,23 +1628,23 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getQuery($table, $conf, $expected)
     {
-        $GLOBALS['TCA'] = array(
-            'pages' => array(
-                'ctrl' => array(
-                    'enablecolumns' => array(
+        $GLOBALS['TCA'] = [
+            'pages' => [
+                'ctrl' => [
+                    'enablecolumns' => [
                         'disabled' => 'hidden'
-                    )
-                )
-            ),
-            'tt_content' => array(
-                'ctrl' => array(
-                    'enablecolumns' => array(
+                    ]
+                ]
+            ],
+            'tt_content' => [
+                'ctrl' => [
+                    'enablecolumns' => [
                         'disabled' => 'hidden'
-                    ),
+                    ],
                     'versioningWS' => true
-                )
-            ),
-        );
+                ]
+            ],
+        ];
         $result = $this->subject->getQuery($table, $conf, true);
         foreach ($expected as $field => $value) {
             $this->assertEquals($value, $result[$field]);
@@ -1656,28 +1656,28 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getQueryCallsGetTreeListWithNegativeValuesIfRecursiveIsSet()
     {
-        $GLOBALS['TCA'] = array(
-            'pages' => array(
-                'ctrl' => array(
-                    'enablecolumns' => array(
+        $GLOBALS['TCA'] = [
+            'pages' => [
+                'ctrl' => [
+                    'enablecolumns' => [
                         'disabled' => 'hidden'
-                    )
-                )
-            ),
-            'tt_content' => array(
-                'ctrl' => array(
-                    'enablecolumns' => array(
+                    ]
+                ]
+            ],
+            'tt_content' => [
+                'ctrl' => [
+                    'enablecolumns' => [
                         'disabled' => 'hidden'
-                    )
-                )
-            ),
-        );
-        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array('getTreeList'));
-        $this->subject->start(array(), 'tt_content');
-        $conf = array(
+                    ]
+                ]
+            ],
+        ];
+        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, ['getTreeList']);
+        $this->subject->start([], 'tt_content');
+        $conf = [
             'recursive' => '15',
             'pidInList' => '16, -35'
-        );
+        ];
         $this->subject->expects($this->at(0))
             ->method('getTreeList')
             ->with(-16, 15)
@@ -1694,29 +1694,29 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getQueryCallsGetTreeListWithCurrentPageIfThisIsSet()
     {
-        $GLOBALS['TCA'] = array(
-            'pages' => array(
-                'ctrl' => array(
-                    'enablecolumns' => array(
+        $GLOBALS['TCA'] = [
+            'pages' => [
+                'ctrl' => [
+                    'enablecolumns' => [
                         'disabled' => 'hidden'
-                    )
-                )
-            ),
-            'tt_content' => array(
-                'ctrl' => array(
-                    'enablecolumns' => array(
+                    ]
+                ]
+            ],
+            'tt_content' => [
+                'ctrl' => [
+                    'enablecolumns' => [
                         'disabled' => 'hidden'
-                    )
-                )
-            ),
-        );
-        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array('getTreeList'));
+                    ]
+                ]
+            ],
+        ];
+        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, ['getTreeList']);
         $GLOBALS['TSFE']->id = 27;
-        $this->subject->start(array(), 'tt_content');
-        $conf = array(
+        $this->subject->start([], 'tt_content');
+        $conf = [
             'pidInList' => 'this',
             'recursive' => '4'
-        );
+        ];
         $this->subject->expects($this->once())
             ->method('getTreeList')
             ->with(-27)
@@ -1732,39 +1732,39 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_dateDataProvider()
     {
-        return array(
-            'given timestamp' => array(
+        return [
+            'given timestamp' => [
                 1443780000, // This is 2015-10-02 12:00
-                array(
+                [
                     'date' => 'd.m.Y',
-                ),
+                ],
                 '02.10.2015',
-            ),
-            'empty string' => array(
+            ],
+            'empty string' => [
                 '',
-                array(
+                [
                     'date' => 'd.m.Y',
-                ),
+                ],
                 '02.10.2015',
-            ),
-            'testing null' => array(
+            ],
+            'testing null' => [
                 null,
-                array(
+                [
                     'date' => 'd.m.Y',
-                ),
+                ],
                 '02.10.2015',
-            ),
-            'given timestamp return GMT' => array(
+            ],
+            'given timestamp return GMT' => [
                 1443780000, // This is 2015-10-02 12:00
-                array(
+                [
                     'date' => 'd.m.Y H:i:s',
-                    'date.' => array(
+                    'date.' => [
                         'GMT' => true,
-                    )
-                ),
+                    ]
+                ],
                 '02.10.2015 10:00:00',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -1792,26 +1792,26 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_strftimeReturnsFormattedStringDataProvider()
     {
-        $data = array(
-            'given timestamp' => array(
+        $data = [
+            'given timestamp' => [
                 1346500800, // This is 2012-09-01 12:00 in UTC/GMT
-                array(
+                [
                     'strftime' => '%d-%m-%Y',
-                ),
-            ),
-            'empty string' => array(
+                ],
+            ],
+            'empty string' => [
                 '',
-                array(
+                [
                     'strftime' => '%d-%m-%Y',
-                ),
-            ),
-            'testing null' => array(
+                ],
+            ],
+            'testing null' => [
                 null,
-                array(
+                [
                     'strftime' => '%d-%m-%Y',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         return $data;
     }
 
@@ -1844,50 +1844,50 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_strtotimeReturnsTimestampDataProvider()
     {
-        return array(
-            'date from content' => array(
+        return [
+            'date from content' => [
                 '2014-12-04',
-                array(
+                [
                     'strtotime' => '1',
-                ),
+                ],
                 1417651200,
-            ),
-            'manipulation of date from content' => array(
+            ],
+            'manipulation of date from content' => [
                 '2014-12-04',
-                array(
+                [
                     'strtotime' => '+ 2 weekdays',
-                ),
+                ],
                 1417996800,
-            ),
-            'date from configuration' => array(
+            ],
+            'date from configuration' => [
                 '',
-                array(
+                [
                     'strtotime' => '2014-12-04',
-                ),
+                ],
                 1417651200,
-            ),
-            'manipulation of date from configuration' => array(
+            ],
+            'manipulation of date from configuration' => [
                 '',
-                array(
+                [
                     'strtotime' => '2014-12-04 + 2 weekdays',
-                ),
+                ],
                 1417996800,
-            ),
-            'empty input' => array(
+            ],
+            'empty input' => [
                 '',
-                array(
+                [
                     'strtotime' => '1',
-                ),
+                ],
                 false,
-            ),
-            'date from content and configuration' => array(
+            ],
+            'date from content and configuration' => [
                 '2014-12-04',
-                array(
+                [
                     'strtotime' => '2014-12-05',
-                ),
+                ],
                 false,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -1921,12 +1921,12 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $subject = $this->getMock(
             \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class,
-            array('calcAge')
+            ['calcAge']
         );
         // Set exec_time to a hard timestamp
         $GLOBALS['EXEC_TIME'] = 10;
         $subject->expects($this->once())->method('calcAge')->with(1, 'Min| Hrs| Days| Yrs');
-        $subject->stdWrap_age(9, array('age' => 'Min| Hrs| Days| Yrs'));
+        $subject->stdWrap_age(9, ['age' => 'Min| Hrs| Days| Yrs']);
     }
 
     /**
@@ -1937,53 +1937,53 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function calcAgeCalculatesAgeOfTimestampDataProvider()
     {
-        return array(
-            'minutes' => array(
+        return [
+            'minutes' => [
                 120,
                 ' min| hrs| days| yrs',
                 '2 min',
-            ),
-            'hours' => array(
+            ],
+            'hours' => [
                 7200,
                 ' min| hrs| days| yrs',
                 '2 hrs',
-            ),
-            'days' => array(
+            ],
+            'days' => [
                 604800,
                 ' min| hrs| days| yrs',
                 '7 days',
-            ),
-            'day with provided singular labels' => array(
+            ],
+            'day with provided singular labels' => [
                 86400,
                 ' min| hrs| days| yrs| min| hour| day| year',
                 '1 day',
-            ),
-            'years' => array(
+            ],
+            'years' => [
                 1417997800,
                 ' min| hrs| days| yrs',
                 '45 yrs',
-            ),
-            'different labels' => array(
+            ],
+            'different labels' => [
                 120,
                 ' Minutes| Hrs| Days| Yrs',
                 '2 Minutes',
-            ),
-            'negative values' => array(
+            ],
+            'negative values' => [
                 -604800,
                 ' min| hrs| days| yrs',
                 '-7 days',
-            ),
-            'default label values for wrong label input' => array(
+            ],
+            'default label values for wrong label input' => [
                 121,
                 10,
                 '2 min',
-            ),
-            'default singular label values for wrong label input' => array(
+            ],
+            'default singular label values for wrong label input' => [
                 31536000,
                 10,
                 '1 year',
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -2006,57 +2006,57 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_caseDataProvider()
     {
-        return array(
-            'lower case text to upper' => array(
+        return [
+            'lower case text to upper' => [
                 '<span>text</span>',
-                array(
+                [
                     'case' => 'upper',
-                ),
+                ],
                 '<span>TEXT</span>',
-            ),
-            'upper case text to lower' => array(
+            ],
+            'upper case text to lower' => [
                 '<span>TEXT</span>',
-                array(
+                [
                     'case' => 'lower',
-                ),
+                ],
                 '<span>text</span>',
-            ),
-            'capitalize text' => array(
+            ],
+            'capitalize text' => [
                 '<span>this is a text</span>',
-                array(
+                [
                     'case' => 'capitalize',
-                ),
+                ],
                 '<span>This Is A Text</span>',
-            ),
-            'ucfirst text' => array(
+            ],
+            'ucfirst text' => [
                 '<span>this is a text</span>',
-                array(
+                [
                     'case' => 'ucfirst',
-                ),
+                ],
                 '<span>This is a text</span>',
-            ),
-            'lcfirst text' => array(
+            ],
+            'lcfirst text' => [
                 '<span>This is a Text</span>',
-                array(
+                [
                     'case' => 'lcfirst',
-                ),
+                ],
                 '<span>this is a Text</span>',
-            ),
-            'uppercamelcase text' => array(
+            ],
+            'uppercamelcase text' => [
                 '<span>this_is_a_text</span>',
-                array(
+                [
                     'case' => 'uppercamelcase',
-                ),
+                ],
                 '<span>ThisIsAText</span>',
-            ),
-            'lowercamelcase text' => array(
+            ],
+            'lowercamelcase text' => [
                 '<span>this_is_a_text</span>',
-                array(
+                [
                     'case' => 'lowercamelcase',
-                ),
+                ],
                 '<span>thisIsAText</span>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -2079,74 +2079,74 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_bytesDataProvider()
     {
-        return array(
-            'value 1234 default' => array(
+        return [
+            'value 1234 default' => [
                 '1234',
-                array(
-                    'bytes.' => array(
+                [
+                    'bytes.' => [
                         'labels' => '',
                         'base' => 0,
-                    ),
-                ),
+                    ],
+                ],
                 '1.21 Ki',
                 'en_US.UTF-8'
-            ),
-            'value 1234 si' => array(
+            ],
+            'value 1234 si' => [
                 '1234',
-                array(
-                    'bytes.' => array(
+                [
+                    'bytes.' => [
                         'labels' => 'si',
                         'base' => 0,
-                    ),
-                ),
+                    ],
+                ],
                 '1.23 k',
                 'en_US.UTF-8'
-            ),
-            'value 1234 iec' => array(
+            ],
+            'value 1234 iec' => [
                 '1234',
-                array(
-                    'bytes.' => array(
+                [
+                    'bytes.' => [
                         'labels' => 'iec',
                         'base' => 0,
-                    ),
-                ),
+                    ],
+                ],
                 '1.21 Ki',
                 'en_US.UTF-8'
-            ),
-            'value 1234 a-i' => array(
+            ],
+            'value 1234 a-i' => [
                 '1234',
-                array(
-                    'bytes.' => array(
+                [
+                    'bytes.' => [
                         'labels' => 'a|b|c|d|e|f|g|h|i',
                         'base' => 1000,
-                    ),
-                ),
+                    ],
+                ],
                 '1.23b',
                 'en_US.UTF-8'
-            ),
-            'value 1234 a-i invalid base' => array(
+            ],
+            'value 1234 a-i invalid base' => [
                 '1234',
-                array(
-                    'bytes.' => array(
+                [
+                    'bytes.' => [
                         'labels' => 'a|b|c|d|e|f|g|h|i',
                         'base' => 54,
-                    ),
-                ),
+                    ],
+                ],
                 '1.21b',
                 'en_US.UTF-8'
-            ),
-            'value 1234567890 default' => array(
+            ],
+            'value 1234567890 default' => [
                 '1234567890',
-                array(
-                    'bytes.' => array(
+                [
+                    'bytes.' => [
                         'labels' => '',
                         'base' => 0,
-                    ),
-                ),
+                    ],
+                ],
                 '1.15 Gi',
                 'en_US.UTF-8'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -2172,99 +2172,99 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_substringDataProvider()
     {
-        return array(
-            'sub -1' => array(
+        return [
+            'sub -1' => [
                 'substring',
-                array(
+                [
                     'substring' => '-1',
-                ),
+                ],
                 'g',
-            ),
-            'sub -1,0' => array(
+            ],
+            'sub -1,0' => [
                 'substring',
-                array(
+                [
                     'substring' => '-1,0',
-                ),
+                ],
                 'g',
-            ),
-            'sub -1,-1' => array(
+            ],
+            'sub -1,-1' => [
                 'substring',
-                array(
+                [
                     'substring' => '-1,-1',
-                ),
+                ],
                 '',
-            ),
-            'sub -1,1' => array(
+            ],
+            'sub -1,1' => [
                 'substring',
-                array(
+                [
                     'substring' => '-1,1',
-                ),
+                ],
                 'g',
-            ),
-            'sub 0' => array(
+            ],
+            'sub 0' => [
                 'substring',
-                array(
+                [
                     'substring' => '0',
-                ),
+                ],
                 'substring',
-            ),
-            'sub 0,0' => array(
+            ],
+            'sub 0,0' => [
                 'substring',
-                array(
+                [
                     'substring' => '0,0',
-                ),
+                ],
                 'substring',
-            ),
-            'sub 0,-1' => array(
+            ],
+            'sub 0,-1' => [
                 'substring',
-                array(
+                [
                     'substring' => '0,-1',
-                ),
+                ],
                 'substrin',
-            ),
-            'sub 0,1' => array(
+            ],
+            'sub 0,1' => [
                 'substring',
-                array(
+                [
                     'substring' => '0,1',
-                ),
+                ],
                 's',
-            ),
-            'sub 1' => array(
+            ],
+            'sub 1' => [
                 'substring',
-                array(
+                [
                     'substring' => '1',
-                ),
+                ],
                 'ubstring',
-            ),
-            'sub 1,0' => array(
+            ],
+            'sub 1,0' => [
                 'substring',
-                array(
+                [
                     'substring' => '1,0',
-                ),
+                ],
                 'ubstring',
-            ),
-            'sub 1,-1' => array(
+            ],
+            'sub 1,-1' => [
                 'substring',
-                array(
+                [
                     'substring' => '1,-1',
-                ),
+                ],
                 'ubstrin',
-            ),
-            'sub 1,1' => array(
+            ],
+            'sub 1,1' => [
                 'substring',
-                array(
+                [
                     'substring' => '1,1',
-                ),
+                ],
                 'u',
-            ),
-            'sub' => array(
+            ],
+            'sub' => [
                 'substring',
-                array(
+                [
                     'substring' => '',
-                ),
+                ],
                 'substring',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -2287,50 +2287,50 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_stdWrapValueDataProvider()
     {
-        return array(
-            'only key returns value' => array(
+        return [
+            'only key returns value' => [
                 'ifNull',
-                array(
+                [
                     'ifNull' => '1',
-                ),
+                ],
                 '',
                 '1',
-            ),
-            'array without key returns empty string' => array(
+            ],
+            'array without key returns empty string' => [
                 'ifNull',
-                array(
+                [
                     'ifNull.' => '1',
-                ),
+                ],
                 '',
                 '',
-            ),
-            'array without key returns default' => array(
+            ],
+            'array without key returns default' => [
                 'ifNull',
-                array(
+                [
                     'ifNull.' => '1',
-                ),
+                ],
                 'default',
                 'default',
-            ),
-            'non existing key returns default' => array(
+            ],
+            'non existing key returns default' => [
                 'ifNull',
-                array(
+                [
                     'noTrimWrap' => 'test',
                     'noTrimWrap.' => '1',
-                ),
+                ],
                 'default',
                 'default',
-            ),
-            'existing key and array returns stdWrap' => array(
+            ],
+            'existing key and array returns stdWrap' => [
                 'test',
-                array(
+                [
                     'test' => 'value',
-                    'test.' => array('case' => 'upper'),
-                ),
+                    'test.' => ['case' => 'upper'],
+                ],
                 'default',
                 'VALUE'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -2367,22 +2367,22 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_ifNullDeterminesNullValuesDataProvider()
     {
-        return array(
-            'null value' => array(
+        return [
+            'null value' => [
                 null,
-                array(
+                [
                     'ifNull' => '1',
-                ),
+                ],
                 '1',
-            ),
-            'zero value' => array(
+            ],
+            'zero value' => [
                 '0',
-                array(
+                [
                     'ifNull' => '1',
-                ),
+                ],
                 '0',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -2392,36 +2392,36 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_ifEmptyDeterminesEmptyValuesDataProvider()
     {
-        return array(
-            'null value' => array(
+        return [
+            'null value' => [
                 null,
-                array(
+                [
                     'ifEmpty' => '1',
-                ),
+                ],
                 '1',
-            ),
-            'empty value' => array(
+            ],
+            'empty value' => [
                 '',
-                array(
+                [
                     'ifEmpty' => '1',
-                ),
+                ],
                 '1',
-            ),
-            'string value' => array(
+            ],
+            'string value' => [
                 'string',
-                array(
+                [
                     'ifEmpty' => '1',
-                ),
+                ],
                 'string',
-            ),
-            'empty string value' => array(
+            ],
+            'empty string value' => [
                 '        ',
-                array(
+                [
                     'ifEmpty' => '1',
-                ),
+                ],
                 '1',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -2457,59 +2457,59 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_noTrimWrapAcceptsSplitCharDataProvider()
     {
-        return array(
-            'No char given' => array(
+        return [
+            'No char given' => [
                 'middle',
-                array(
+                [
                     'noTrimWrap' => '| left | right |',
-                ),
+                ],
                 ' left middle right '
-            ),
-            'Zero char given' => array(
+            ],
+            'Zero char given' => [
                 'middle',
-                array(
+                [
                     'noTrimWrap' => '0 left 0 right 0',
-                    'noTrimWrap.' => array('splitChar' => '0'),
+                    'noTrimWrap.' => ['splitChar' => '0'],
 
-                ),
+                ],
                 ' left middle right '
-            ),
-            'Default char given' => array(
+            ],
+            'Default char given' => [
                 'middle',
-                array(
+                [
                     'noTrimWrap' => '| left | right |',
-                    'noTrimWrap.' => array('splitChar' => '|'),
-                ),
+                    'noTrimWrap.' => ['splitChar' => '|'],
+                ],
                 ' left middle right '
-            ),
-            'Split char is a' => array(
+            ],
+            'Split char is a' => [
                 'middle',
-                array(
+                [
                     'noTrimWrap' => 'a left a right a',
-                    'noTrimWrap.' => array('splitChar' => 'a'),
-                ),
+                    'noTrimWrap.' => ['splitChar' => 'a'],
+                ],
                 ' left middle right '
-            ),
-            'Split char is multi-char (ab)' => array(
+            ],
+            'Split char is multi-char (ab)' => [
                 'middle',
-                array(
+                [
                     'noTrimWrap' => 'ab left ab right ab',
-                    'noTrimWrap.' => array('splitChar' => 'ab'),
-                ),
+                    'noTrimWrap.' => ['splitChar' => 'ab'],
+                ],
                 ' left middle right '
-            ),
-            'Split char accepts stdWrap' => array(
+            ],
+            'Split char accepts stdWrap' => [
                 'middle',
-                array(
+                [
                     'noTrimWrap' => 'abc left abc right abc',
-                    'noTrimWrap.' => array(
+                    'noTrimWrap.' => [
                         'splitChar' => 'b',
-                        'splitChar.' => array('wrap' => 'a|c'),
-                    ),
-                ),
+                        'splitChar.' => ['wrap' => 'a|c'],
+                    ],
+                ],
                 ' left middle right '
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -2529,23 +2529,23 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_addPageCacheTagsAddsPageTagsDataProvider()
     {
-        return array(
-            'No Tag' => array(
-                array(),
-                array('addPageCacheTags' => ''),
-            ),
-            'Two expectedTags' => array(
-                array('tag1', 'tag2'),
-                array('addPageCacheTags' => 'tag1,tag2'),
-            ),
-            'Two expectedTags plus one with stdWrap' => array(
-                array('tag1', 'tag2', 'tag3'),
-                array(
+        return [
+            'No Tag' => [
+                [],
+                ['addPageCacheTags' => ''],
+            ],
+            'Two expectedTags' => [
+                ['tag1', 'tag2'],
+                ['addPageCacheTags' => 'tag1,tag2'],
+            ],
+            'Two expectedTags plus one with stdWrap' => [
+                ['tag1', 'tag2', 'tag3'],
+                [
                     'addPageCacheTags' => 'tag1,tag2',
-                    'addPageCacheTags.' => array('wrap' => '|,tag3')
-                ),
-            ),
-        );
+                    'addPageCacheTags.' => ['wrap' => '|,tag3']
+                ],
+            ],
+        ];
     }
 
     /**
@@ -2556,43 +2556,43 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_encodeForJavaScriptValueDataProvider()
     {
-        return array(
-            'double quote in string' => array(
+        return [
+            'double quote in string' => [
                 'double quote"',
-                array(),
+                [],
                 '\'double\u0020quote\u0022\''
-            ),
-            'backslash in string' => array(
+            ],
+            'backslash in string' => [
                 'backslash \\',
-                array(),
+                [],
                 '\'backslash\u0020\u005C\''
-            ),
-            'exclamation mark' => array(
+            ],
+            'exclamation mark' => [
                 'exclamation!',
-                array(),
+                [],
                 '\'exclamation\u0021\''
-            ),
-            'whitespace tab, newline and carriage return' => array(
+            ],
+            'whitespace tab, newline and carriage return' => [
                 "white\tspace\ns\r",
-                array(),
+                [],
                 '\'white\u0009space\u000As\u000D\''
-            ),
-            'single quote in string' => array(
+            ],
+            'single quote in string' => [
                 'single quote \'',
-                array(),
+                [],
                 '\'single\u0020quote\u0020\u0027\''
-            ),
-            'tag' => array(
+            ],
+            'tag' => [
                 '<tag>',
-                array(),
+                [],
                 '\'\u003Ctag\u003E\''
-            ),
-            'ampersand in string' => array(
+            ],
+            'ampersand in string' => [
                 'amper&sand',
-                array(),
+                [],
                 '\'amper\u0026sand\''
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -2616,11 +2616,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDataWithTypeGpDataProvider()
     {
-        return array(
-            'Value in get-data' => array('onlyInGet', 'GetValue'),
-            'Value in post-data' => array('onlyInPost', 'PostValue'),
-            'Value in post-data overriding get-data' => array('inGetAndPost', 'ValueInPost'),
-        );
+        return [
+            'Value in get-data' => ['onlyInGet', 'GetValue'],
+            'Value in post-data' => ['onlyInPost', 'PostValue'],
+            'Value in post-data overriding get-data' => ['inGetAndPost', 'ValueInPost'],
+        ];
     }
 
     /**
@@ -2631,14 +2631,14 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDataWithTypeGp($key, $expectedValue)
     {
-        $_GET = array(
+        $_GET = [
             'onlyInGet' => 'GetValue',
             'inGetAndPost' => 'ValueInGet',
-        );
-        $_POST = array(
+        ];
+        $_POST = [
             'onlyInPost' => 'PostValue',
             'inGetAndPost' => 'ValueInPost',
-        );
+        ];
         $this->assertEquals($expectedValue, $this->subject->getData('gp:' . $key));
     }
 
@@ -2686,7 +2686,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $key = 'someKey';
         $value = 'someValue';
-        $field = array($key => $value);
+        $field = [$key => $value];
 
         $this->assertEquals($value, $this->subject->getData('field:' . $key, $field));
     }
@@ -2701,7 +2701,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $key = 'somekey|level1|level2';
         $value = 'somevalue';
-        $field = array('somekey' => array('level1' => array('level2' => 'somevalue')));
+        $field = ['somekey' => ['level1' => ['level2' => 'somevalue']]];
 
         $this->assertEquals($value, $this->subject->getData('field:' . $key, $field));
     }
@@ -2714,7 +2714,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getDataWithTypeFileReturnsUidOfFileObject()
     {
         $uid = $this->getUniqueId();
-        $file = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(), '', false);
+        $file = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, [], [], '', false);
         $file->expects($this->once())->method('getUid')->will($this->returnValue($uid));
         $this->subject->setCurrentFile($file);
         $this->assertEquals($uid, $this->subject->getData('file:current:uid'));
@@ -2755,11 +2755,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDataWithTypeLevel()
     {
-        $rootline = array(
-            0 => array('uid' => 1, 'title' => 'title1'),
-            1 => array('uid' => 2, 'title' => 'title2'),
-            2 => array('uid' => 3, 'title' => 'title3'),
-        );
+        $rootline = [
+            0 => ['uid' => 1, 'title' => 'title1'],
+            1 => ['uid' => 2, 'title' => 'title2'],
+            2 => ['uid' => 3, 'title' => 'title3'],
+        ];
 
         $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
         $this->assertEquals(2, $this->subject->getData('level'));
@@ -2782,11 +2782,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDataWithTypeLeveltitle()
     {
-        $rootline = array(
-            0 => array('uid' => 1, 'title' => 'title1'),
-            1 => array('uid' => 2, 'title' => 'title2'),
-            2 => array('uid' => 3, 'title' => ''),
-        );
+        $rootline = [
+            0 => ['uid' => 1, 'title' => 'title1'],
+            1 => ['uid' => 2, 'title' => 'title2'],
+            2 => ['uid' => 3, 'title' => ''],
+        ];
 
         $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
         $this->assertEquals('', $this->subject->getData('leveltitle:-1'));
@@ -2801,11 +2801,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDataWithTypeLevelmedia()
     {
-        $rootline = array(
-            0 => array('uid' => 1, 'title' => 'title1', 'media' => 'media1'),
-            1 => array('uid' => 2, 'title' => 'title2', 'media' => 'media2'),
-            2 => array('uid' => 3, 'title' => 'title3', 'media' => ''),
-        );
+        $rootline = [
+            0 => ['uid' => 1, 'title' => 'title1', 'media' => 'media1'],
+            1 => ['uid' => 2, 'title' => 'title2', 'media' => 'media2'],
+            2 => ['uid' => 3, 'title' => 'title3', 'media' => ''],
+        ];
 
         $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
         $this->assertEquals('', $this->subject->getData('levelmedia:-1'));
@@ -2820,11 +2820,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDataWithTypeLeveluid()
     {
-        $rootline = array(
-            0 => array('uid' => 1, 'title' => 'title1'),
-            1 => array('uid' => 2, 'title' => 'title2'),
-            2 => array('uid' => 3, 'title' => 'title3'),
-        );
+        $rootline = [
+            0 => ['uid' => 1, 'title' => 'title1'],
+            1 => ['uid' => 2, 'title' => 'title2'],
+            2 => ['uid' => 3, 'title' => 'title3'],
+        ];
 
         $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
         $this->assertEquals(3, $this->subject->getData('leveluid:-1'));
@@ -2839,11 +2839,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDataWithTypeLevelfield()
     {
-        $rootline = array(
-            0 => array('uid' => 1, 'title' => 'title1', 'testfield' => 'field1'),
-            1 => array('uid' => 2, 'title' => 'title2', 'testfield' => 'field2'),
-            2 => array('uid' => 3, 'title' => 'title3', 'testfield' => ''),
-        );
+        $rootline = [
+            0 => ['uid' => 1, 'title' => 'title1', 'testfield' => 'field1'],
+            1 => ['uid' => 2, 'title' => 'title2', 'testfield' => 'field2'],
+            2 => ['uid' => 3, 'title' => 'title3', 'testfield' => ''],
+        ];
 
         $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
         $this->assertEquals('', $this->subject->getData('levelfield:-1,testfield'));
@@ -2857,14 +2857,14 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDataWithTypeFullrootline()
     {
-        $rootline1 = array(
-            0 => array('uid' => 1, 'title' => 'title1', 'testfield' => 'field1'),
-        );
-        $rootline2 = array(
-            0 => array('uid' => 1, 'title' => 'title1', 'testfield' => 'field1'),
-            1 => array('uid' => 2, 'title' => 'title2', 'testfield' => 'field2'),
-            2 => array('uid' => 3, 'title' => 'title3', 'testfield' => 'field3'),
-        );
+        $rootline1 = [
+            0 => ['uid' => 1, 'title' => 'title1', 'testfield' => 'field1'],
+        ];
+        $rootline2 = [
+            0 => ['uid' => 1, 'title' => 'title1', 'testfield' => 'field1'],
+            1 => ['uid' => 2, 'title' => 'title2', 'testfield' => 'field2'],
+            2 => ['uid' => 3, 'title' => 'title3', 'testfield' => 'field3'],
+        ];
 
         $GLOBALS['TSFE']->tmpl->rootLine = $rootline1;
         $GLOBALS['TSFE']->rootLine = $rootline2;
@@ -2918,7 +2918,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDataWithTypeDb()
     {
-        $dummyRecord = array('uid' => 5, 'title' => 'someTitle');
+        $dummyRecord = ['uid' => 5, 'title' => 'someTitle'];
 
         $GLOBALS['TSFE']->sys_page->expects($this->atLeastOnce())->method('getRawRecord')->with('tt_content', '106')->will($this->returnValue($dummyRecord));
         $this->assertEquals($dummyRecord['title'], $this->subject->getData('db:tt_content:106:title'));
@@ -2972,11 +2972,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDataWithTypeDebugRootline()
     {
-        $rootline = array(
-            0 => array('uid' => 1, 'title' => 'title1'),
-            1 => array('uid' => 2, 'title' => 'title2'),
-            2 => array('uid' => 3, 'title' => ''),
-        );
+        $rootline = [
+            0 => ['uid' => 1, 'title' => 'title1'],
+            1 => ['uid' => 2, 'title' => 'title2'],
+            2 => ['uid' => 3, 'title' => ''],
+        ];
         $expectedResult = 'array(3items)0=>array(2items)uid=>1(integer)title=>"title1"(6chars)1=>array(2items)uid=>2(integer)title=>"title2"(6chars)2=>array(2items)uid=>3(integer)title=>""(0chars)';
         $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
 
@@ -2997,11 +2997,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDataWithTypeDebugFullRootline()
     {
-        $rootline = array(
-            0 => array('uid' => 1, 'title' => 'title1'),
-            1 => array('uid' => 2, 'title' => 'title2'),
-            2 => array('uid' => 3, 'title' => ''),
-        );
+        $rootline = [
+            0 => ['uid' => 1, 'title' => 'title1'],
+            1 => ['uid' => 2, 'title' => 'title2'],
+            2 => ['uid' => 3, 'title' => ''],
+        ];
         $expectedResult = 'array(3items)0=>array(2items)uid=>1(integer)title=>"title1"(6chars)1=>array(2items)uid=>2(integer)title=>"title2"(6chars)2=>array(2items)uid=>3(integer)title=>""(0chars)';
         $GLOBALS['TSFE']->rootLine = $rootline;
 
@@ -3024,7 +3024,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $key = $this->getUniqueId('someKey');
         $value = $this->getUniqueId('someValue');
-        $this->subject->data = array($key => $value);
+        $this->subject->data = [$key => $value];
 
         $expectedResult = 'array(1item)' . $key . '=>"' . $value . '"(' . strlen($value) . 'chars)';
 
@@ -3047,7 +3047,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $key = $this->getUniqueId('someKey');
         $value = $this->getUniqueId('someValue');
-        $GLOBALS['TSFE']->register = array($key => $value);
+        $GLOBALS['TSFE']->register = [$key => $value];
 
         $expectedResult = 'array(1item)' . $key . '=>"' . $value . '"(' . strlen($value) . 'chars)';
 
@@ -3069,7 +3069,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getDataWithTypeDebugPage()
     {
         $uid = rand();
-        $GLOBALS['TSFE']->page = array('uid' => $uid);
+        $GLOBALS['TSFE']->page = ['uid' => $uid];
 
         $expectedResult = 'array(1item)uid=>' . $uid . '(integer)';
 
@@ -3094,10 +3094,10 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('getRawRecord')
             ->will(
                 $this->onConsecutiveCalls(
-                    array('uid' => 17),
-                    array('uid' => 321),
-                    array('uid' => 719),
-                    array('uid' => 42)
+                    ['uid' => 17],
+                    ['uid' => 321],
+                    ['uid' => 719],
+                    ['uid' => 42]
                 )
             );
 
@@ -3107,15 +3107,15 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('exec_SELECTgetRows')
             ->will(
                 $this->onConsecutiveCalls(
-                    array(
-                        array('uid' => 321)
-                    ),
-                    array(
-                        array('uid' => 719)
-                    ),
-                    array(
-                        array('uid' => 42)
-                    )
+                    [
+                        ['uid' => 321]
+                    ],
+                    [
+                        ['uid' => 719]
+                    ],
+                    [
+                        ['uid' => 42]
+                    ]
                 )
             );
         // 17 = pageId, 5 = recursionLevel, 0 = begin (entry to recursion, internal), TRUE = do not check enable fields
@@ -3136,10 +3136,10 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('getRawRecord')
             ->will(
                 $this->onConsecutiveCalls(
-                    array('uid' => 17),
-                    array('uid' => 321),
-                    array('uid' => 719),
-                    array('uid' => 42)
+                    ['uid' => 17],
+                    ['uid' => 321],
+                    ['uid' => 719],
+                    ['uid' => 42]
                 )
             );
 
@@ -3149,15 +3149,15 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('exec_SELECTgetRows')
             ->will(
                 $this->onConsecutiveCalls(
-                    array(
-                        array('uid' => 321)
-                    ),
-                    array(
-                        array('uid' => 719)
-                    ),
-                    array(
-                        array('uid' => 42)
-                    )
+                    [
+                        ['uid' => 321]
+                    ],
+                    [
+                        ['uid' => 719]
+                    ],
+                    [
+                        ['uid' => 42]
+                    ]
                 )
             );
         // 17 = pageId, 5 = recursionLevel, 0 = begin (entry to recursion, internal), TRUE = do not check enable fields
@@ -3172,7 +3172,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function aTagParamsHasLeadingSpaceIfNotEmpty()
     {
-        $aTagParams = $this->subject->getATagParams(array('ATagParams' => 'data-test="testdata"'));
+        $aTagParams = $this->subject->getATagParams(['ATagParams' => 'data-test="testdata"']);
         $this->assertEquals(' data-test="testdata"', $aTagParams);
     }
 
@@ -3182,7 +3182,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function aTagParamsHaveSpaceBetweenLocalAndGlobalParams()
     {
         $GLOBALS['TSFE']->ATagParams = 'data-global="dataglobal"';
-        $aTagParams = $this->subject->getATagParams(array('ATagParams' => 'data-test="testdata"'));
+        $aTagParams = $this->subject->getATagParams(['ATagParams' => 'data-test="testdata"']);
         $this->assertEquals(' data-global="dataglobal" data-test="testdata"', $aTagParams);
     }
 
@@ -3193,7 +3193,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         // make sure global ATagParams are empty
         $GLOBALS['TSFE']->ATagParams = '';
-        $aTagParams = $this->subject->getATagParams(array('ATagParams' => ''));
+        $aTagParams = $this->subject->getATagParams(['ATagParams' => '']);
         $this->assertEquals('', $aTagParams);
     }
 
@@ -3202,12 +3202,12 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFoundDataProvider()
     {
-        return array(
-            array(null, null),
-            array('', null),
-            array('', array()),
-            array('fooo', array('foo' => 'bar'))
-        );
+        return [
+            [null, null],
+            ['', null],
+            ['', []],
+            ['fooo', ['foo' => 'bar']]
+        ];
     }
 
     /**
@@ -3230,20 +3230,20 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getImageTagTemplateReturnTemplateElementIdentifiedByKeyDataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 'foo',
-                array(
-                    'layout.' => array(
-                        'foo.' => array(
+                [
+                    'layout.' => [
+                        'foo.' => [
                             'element' => '<img src="###SRC###" srcset="###SOURCES###" ###PARAMS### ###ALTPARAMS### ###FOOBAR######SELFCLOSINGTAGSLASH###>'
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 '<img src="###SRC###" srcset="###SOURCES###" ###PARAMS### ###ALTPARAMS### ###FOOBAR######SELFCLOSINGTAGSLASH###>'
-            )
+            ]
 
-        );
+        ];
     }
 
     /**
@@ -3266,11 +3266,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefinedDataProvider()
     {
-        return array(
-            array(null, null, null),
-            array('foo', null, null),
-            array('foo', array('sourceCollection.' => 1), 'bar')
-        );
+        return [
+            [null, null, null],
+            ['foo', null, null],
+            ['foo', ['sourceCollection.' => 1], 'bar']
+        ];
     }
 
     /**
@@ -3298,26 +3298,26 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var $cObj \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
         $cObj = $this->getMock(
             \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class,
-            array('stdWrap', 'getImgResource')
+            ['stdWrap', 'getImgResource']
         );
-        $cObj->start(array(), 'tt_content');
+        $cObj->start([], 'tt_content');
 
         $layoutKey = 'test';
 
-        $configuration = array(
+        $configuration = [
             'layoutKey' => 'test',
-            'layout.' => array(
-                'test.' => array(
+            'layout.' => [
+                'test.' => [
                     'element' => '<img ###SRC### ###SRCCOLLECTION### ###SELFCLOSINGTAGSLASH###>',
                     'source' => '---###SRC###---'
-                )
-            ),
-            'sourceCollection.' => array(
-                '1.' => array(
+                ]
+            ],
+            'sourceCollection.' => [
+                '1.' => [
                     'width' => '200'
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         $file = 'testImageName';
 
@@ -3332,7 +3332,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->exactly(1))
             ->method('getImgResource')
             ->with($this->equalTo('testImageName'))
-            ->will($this->returnValue(array(100, 100, null, 'bar')));
+            ->will($this->returnValue([100, 100, null, 'bar']));
 
         $result = $cObj->getImageSourceCollection($layoutKey, $configuration, $file);
 
@@ -3350,37 +3350,37 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /**
          * @see css_styled_content/static/setup.txt
          */
-        $sourceCollectionArray = array(
-            'small.' => array(
+        $sourceCollectionArray = [
+            'small.' => [
                 'width' => '200',
                 'srcsetCandidate' => '600w',
                 'mediaQuery' => '(max-device-width: 600px)',
                 'dataKey' => 'small',
-            ),
-            'smallRetina.' => array(
+            ],
+            'smallRetina.' => [
                 'if.directReturn' => 0,
                 'width' => '200',
                 'pixelDensity' => '2',
                 'srcsetCandidate' => '600w 2x',
                 'mediaQuery' => '(max-device-width: 600px) AND (min-resolution: 192dpi)',
                 'dataKey' => 'smallRetina',
-            )
-        );
-        return array(
-            array(
+            ]
+        ];
+        return [
+            [
                 'default',
-                array(
+                [
                     'layoutKey' => 'default',
-                    'layout.' => array(
-                        'default.' => array(
+                    'layout.' => [
+                        'default.' => [
                             'element' => '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER######SELFCLOSINGTAGSLASH###>',
                             'source' => ''
-                        )
-                    ),
+                        ]
+                    ],
                     'sourceCollection.' => $sourceCollectionArray
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
@@ -3396,9 +3396,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var $cObj \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
         $cObj = $this->getMock(
             \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class,
-            array('stdWrap', 'getImgResource')
+            ['stdWrap', 'getImgResource']
         );
-        $cObj->start(array(), 'tt_content');
+        $cObj->start([], 'tt_content');
 
         $file = 'testImageName';
 
@@ -3424,84 +3424,84 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /**
          * @see css_styled_content/static/setup.txt
          */
-        $sourceCollectionArray = array(
-            'small.' => array(
+        $sourceCollectionArray = [
+            'small.' => [
                 'width' => '200',
                 'srcsetCandidate' => '600w',
                 'mediaQuery' => '(max-device-width: 600px)',
                 'dataKey' => 'small',
-            ),
-            'smallRetina.' => array(
+            ],
+            'smallRetina.' => [
                 'if.directReturn' => 1,
                 'width' => '200',
                 'pixelDensity' => '2',
                 'srcsetCandidate' => '600w 2x',
                 'mediaQuery' => '(max-device-width: 600px) AND (min-resolution: 192dpi)',
                 'dataKey' => 'smallRetina',
-            )
-        );
-        return array(
-            array(
+            ]
+        ];
+        return [
+            [
                 'srcset',
-                array(
+                [
                     'layoutKey' => 'srcset',
-                    'layout.' => array(
-                        'srcset.' => array(
+                    'layout.' => [
+                        'srcset.' => [
                             'element' => '<img src="###SRC###" srcset="###SOURCECOLLECTION###" ###PARAMS### ###ALTPARAMS######SELFCLOSINGTAGSLASH###>',
                             'source' => '|*|###SRC### ###SRCSETCANDIDATE###,|*|###SRC### ###SRCSETCANDIDATE###'
-                        )
-                    ),
+                        ]
+                    ],
                     'sourceCollection.' => $sourceCollectionArray
-                ),
+                ],
                 'xhtml_strict',
                 'bar-file.jpg 600w,bar-file.jpg 600w 2x',
-            ),
-            array(
+            ],
+            [
                 'picture',
-                array(
+                [
                     'layoutKey' => 'picture',
-                    'layout.' => array(
-                        'picture.' => array(
+                    'layout.' => [
+                        'picture.' => [
                             'element' => '<picture>###SOURCECOLLECTION###<img src="###SRC###" ###PARAMS### ###ALTPARAMS######SELFCLOSINGTAGSLASH###></picture>',
                             'source' => '<source src="###SRC###" media="###MEDIAQUERY###"###SELFCLOSINGTAGSLASH###>'
-                        )
-                    ),
+                        ]
+                    ],
                     'sourceCollection.' => $sourceCollectionArray,
-                ),
+                ],
                 'xhtml_strict',
                 '<source src="bar-file.jpg" media="(max-device-width: 600px)" /><source src="bar-file.jpg" media="(max-device-width: 600px) AND (min-resolution: 192dpi)" />',
-            ),
-            array(
+            ],
+            [
                 'picture',
-                array(
+                [
                     'layoutKey' => 'picture',
-                    'layout.' => array(
-                        'picture.' => array(
+                    'layout.' => [
+                        'picture.' => [
                             'element' => '<picture>###SOURCECOLLECTION###<img src="###SRC###" ###PARAMS### ###ALTPARAMS######SELFCLOSINGTAGSLASH###></picture>',
                             'source' => '<source src="###SRC###" media="###MEDIAQUERY###"###SELFCLOSINGTAGSLASH###>'
-                        )
-                    ),
+                        ]
+                    ],
                     'sourceCollection.' => $sourceCollectionArray,
-                ),
+                ],
                 '',
                 '<source src="bar-file.jpg" media="(max-device-width: 600px)"><source src="bar-file.jpg" media="(max-device-width: 600px) AND (min-resolution: 192dpi)">',
-            ),
-            array(
+            ],
+            [
                 'data',
-                array(
+                [
                     'layoutKey' => 'data',
-                    'layout.' => array(
-                        'data.' => array(
+                    'layout.' => [
+                        'data.' => [
                             'element' => '<img src="###SRC###" ###SOURCECOLLECTION### ###PARAMS### ###ALTPARAMS######SELFCLOSINGTAGSLASH###>',
                             'source' => 'data-###DATAKEY###="###SRC###"'
-                        )
-                    ),
+                        ]
+                    ],
                     'sourceCollection.' => $sourceCollectionArray
-                ),
+                ],
                 'xhtml_strict',
                 'data-small="bar-file.jpg"data-smallRetina="bar-file.jpg"',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -3519,9 +3519,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var $cObj \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
         $cObj = $this->getMock(
             \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class,
-            array('stdWrap', 'getImgResource')
+            ['stdWrap', 'getImgResource']
         );
-        $cObj->start(array(), 'tt_content');
+        $cObj->start([], 'tt_content');
 
         $file = 'testImageName';
 
@@ -3538,7 +3538,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->expects($this->exactly(2))
             ->method('getImgResource')
             ->with($this->equalTo('testImageName'))
-            ->will($this->returnValue(array(100, 100, null, 'bar-file.jpg')));
+            ->will($this->returnValue([100, 100, null, 'bar-file.jpg']));
 
         $result = $cObj->getImageSourceCollection($layoutKey, $configuration, $file);
 
@@ -3554,9 +3554,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->subject = $this->getAccessibleMock(
             \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class,
-            array('getResourceFactory', 'stdWrap', 'getImgResource')
+            ['getResourceFactory', 'stdWrap', 'getImgResource']
         );
-        $this->subject->start(array(), 'tt_content');
+        $this->subject->start([], 'tt_content');
 
         // Avoid calling stdwrap and getImgResource
         $this->subject->expects($this->any())
@@ -3565,38 +3565,38 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $this->subject->expects($this->any())
             ->method('getImgResource')
-            ->will($this->returnValue(array(100, 100, null, 'bar-file.jpg')));
+            ->will($this->returnValue([100, 100, null, 'bar-file.jpg']));
 
-        $resourceFactory = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class, array(), array(), '', false);
+        $resourceFactory = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class, [], [], '', false);
         $this->subject->expects($this->any())->method('getResourceFactory')->will($this->returnValue($resourceFactory));
 
         $className = $this->getUniqueId('tx_coretest_getImageSourceCollectionHookCalled');
-        $getImageSourceCollectionHookMock = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectOneSourceCollectionHookInterface::class, array('getOneSourceCollection'), array(), $className);
+        $getImageSourceCollectionHookMock = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectOneSourceCollectionHookInterface::class, ['getOneSourceCollection'], [], $className);
         $GLOBALS['T3_VAR']['getUserObj'][$className] = $getImageSourceCollectionHookMock;
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection'][] = $className;
 
         $getImageSourceCollectionHookMock
             ->expects($this->exactly(1))
             ->method('getOneSourceCollection')
-            ->will($this->returnCallback(array($this, 'isGetOneSourceCollectionCalledCallback')));
+            ->will($this->returnCallback([$this, 'isGetOneSourceCollectionCalledCallback']));
 
-        $configuration = array(
+        $configuration = [
             'layoutKey' => 'data',
-            'layout.' => array(
-                'data.' => array(
+            'layout.' => [
+                'data.' => [
                     'element' => '<img src="###SRC###" ###SOURCECOLLECTION### ###PARAMS### ###ALTPARAMS######SELFCLOSINGTAGSLASH###>',
                     'source' => 'data-###DATAKEY###="###SRC###"'
-                )
-            ),
-            'sourceCollection.' => array(
-                'small.' => array(
+                ]
+            ],
+            'sourceCollection.' => [
+                'small.' => [
                     'width' => '200',
                     'srcsetCandidate' => '600w',
                     'mediaQuery' => '(max-device-width: 600px)',
                     'dataKey' => 'small',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         $result = $this->subject->getImageSourceCollection('data', $configuration, $this->getUniqueId('testImage-'));
 
@@ -3628,10 +3628,10 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         // Force hostname
         $this->subject->expects($this->any())->method('getEnvironmentVariable')->will($this->returnValueMap(
-            array(
-                array('HTTP_HOST', 'localhost'),
-                array('TYPO3_SITE_PATH', '/'),
-            )
+            [
+                ['HTTP_HOST', 'localhost'],
+                ['TYPO3_SITE_PATH', '/'],
+            ]
         ));
         $GLOBALS['TSFE']->absRefPrefix = '';
 
@@ -3643,85 +3643,85 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function forceAbsoluteUrlReturnsCorrectAbsoluteUrlDataProvider()
     {
-        return array(
-            'Missing forceAbsoluteUrl leaves URL untouched' => array(
+        return [
+            'Missing forceAbsoluteUrl leaves URL untouched' => [
                 'foo',
                 'foo',
-                array()
-            ),
-            'Absolute URL stays unchanged' => array(
+                []
+            ],
+            'Absolute URL stays unchanged' => [
                 'http://example.org/',
                 'http://example.org/',
-                array(
+                [
                     'forceAbsoluteUrl' => '1'
-                )
-            ),
-            'Absolute URL stays unchanged 2' => array(
+                ]
+            ],
+            'Absolute URL stays unchanged 2' => [
                 'http://example.org/resource.html',
                 'http://example.org/resource.html',
-                array(
+                [
                     'forceAbsoluteUrl' => '1'
-                )
-            ),
-            'Scheme and host w/o ending slash stays unchanged' => array(
+                ]
+            ],
+            'Scheme and host w/o ending slash stays unchanged' => [
                 'http://example.org',
                 'http://example.org',
-                array(
+                [
                     'forceAbsoluteUrl' => '1'
-                )
-            ),
-            'Scheme can be forced' => array(
+                ]
+            ],
+            'Scheme can be forced' => [
                 'typo3://example.org',
                 'http://example.org',
-                array(
+                [
                     'forceAbsoluteUrl' => '1',
-                    'forceAbsoluteUrl.' => array(
+                    'forceAbsoluteUrl.' => [
                         'scheme' => 'typo3'
-                    )
-                )
-            ),
-            'Relative path old-style' => array(
+                    ]
+                ]
+            ],
+            'Relative path old-style' => [
                 'http://localhost/fileadmin/dummy.txt',
                 '/fileadmin/dummy.txt',
-                array(
+                [
                     'forceAbsoluteUrl' => '1',
-                )
-            ),
-            'Relative path' => array(
+                ]
+            ],
+            'Relative path' => [
                 'http://localhost/fileadmin/dummy.txt',
                 'fileadmin/dummy.txt',
-                array(
+                [
                     'forceAbsoluteUrl' => '1',
-                )
-            ),
-            'Scheme can be forced with pseudo-relative path' => array(
+                ]
+            ],
+            'Scheme can be forced with pseudo-relative path' => [
                 'typo3://localhost/fileadmin/dummy.txt',
                 '/fileadmin/dummy.txt',
-                array(
+                [
                     'forceAbsoluteUrl' => '1',
-                    'forceAbsoluteUrl.' => array(
+                    'forceAbsoluteUrl.' => [
                         'scheme' => 'typo3'
-                    )
-                )
-            ),
-            'Hostname only is not treated as valid absolute URL' => array(
+                    ]
+                ]
+            ],
+            'Hostname only is not treated as valid absolute URL' => [
                 'http://localhost/example.org',
                 'example.org',
-                array(
+                [
                     'forceAbsoluteUrl' => '1'
-                )
-            ),
-            'Scheme and host is added to local file path' => array(
+                ]
+            ],
+            'Scheme and host is added to local file path' => [
                 'typo3://localhost/fileadmin/my.pdf',
                 'fileadmin/my.pdf',
-                array(
+                [
                     'forceAbsoluteUrl' => '1',
-                    'forceAbsoluteUrl.' => array(
+                    'forceAbsoluteUrl.' => [
                         'scheme' => 'typo3'
-                    )
-                )
-            )
-        );
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**
@@ -3732,7 +3732,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function renderingContentObjectThrowsException()
     {
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
-        $this->subject->render($contentObjectFixture, array());
+        $this->subject->render($contentObjectFixture, []);
     }
 
     /**
@@ -3744,7 +3744,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         Fixtures\GeneralUtilityFixture::setApplicationContext(new ApplicationContext('Production'));
 
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
-        $this->subject->render($contentObjectFixture, array());
+        $this->subject->render($contentObjectFixture, []);
 
         Fixtures\GeneralUtilityFixture::setApplicationContext($backupApplicationContext);
     }
@@ -3756,9 +3756,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
 
-        $configuration = array(
+        $configuration = [
             'exceptionHandler' => '1'
-        );
+        ];
         $this->subject->render($contentObjectFixture, $configuration);
     }
 
@@ -3770,7 +3770,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
 
         $this->typoScriptFrontendControllerMock->config['config']['contentObjectExceptionHandler'] = '1';
-        $this->subject->render($contentObjectFixture, array());
+        $this->subject->render($contentObjectFixture, []);
     }
 
     /**
@@ -3783,9 +3783,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
 
         $this->typoScriptFrontendControllerMock->config['config']['contentObjectExceptionHandler'] = '1';
-        $configuration = array(
+        $configuration = [
             'exceptionHandler' => '0'
-        );
+        ];
         $this->subject->render($contentObjectFixture, $configuration);
     }
 
@@ -3796,12 +3796,12 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
 
-        $configuration = array(
+        $configuration = [
             'exceptionHandler' => '1',
-            'exceptionHandler.' => array(
+            'exceptionHandler.' => [
                 'errorMessage' => 'New message for testing',
-            )
-        );
+            ]
+        ];
 
         $this->assertSame('New message for testing', $this->subject->render($contentObjectFixture, $configuration));
     }
@@ -3814,15 +3814,15 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
 
         $this->typoScriptFrontendControllerMock
-            ->config['config']['contentObjectExceptionHandler.'] = array(
+            ->config['config']['contentObjectExceptionHandler.'] = [
                 'errorMessage' => 'Global message for testing',
-            );
-        $configuration = array(
+            ];
+        $configuration = [
             'exceptionHandler' => '1',
-            'exceptionHandler.' => array(
+            'exceptionHandler.' => [
                 'errorMessage' => 'New message for testing',
-            )
-        );
+            ]
+        ];
 
         $this->assertSame('New message for testing', $this->subject->render($contentObjectFixture, $configuration));
     }
@@ -3836,12 +3836,12 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
 
-        $configuration = array(
+        $configuration = [
             'exceptionHandler' => '1',
-            'exceptionHandler.' => array(
-                'ignoreCodes.' => array('10.' => '1414513947'),
-            )
-        );
+            'exceptionHandler.' => [
+                'ignoreCodes.' => ['10.' => '1414513947'],
+            ]
+        ];
 
         $this->subject->render($contentObjectFixture, $configuration);
     }
@@ -3851,7 +3851,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function createContentObjectThrowingExceptionFixture()
     {
-        $contentObjectFixture = $this->getMock(AbstractContentObject::class, array(), array($this->subject));
+        $contentObjectFixture = $this->getMock(AbstractContentObject::class, [], [$this->subject]);
         $contentObjectFixture->expects($this->once())
             ->method('render')
             ->willReturnCallback(function () {
@@ -3867,17 +3867,17 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         // Force hostname and subfolder
         $this->subject->expects($this->any())->method('getEnvironmentVariable')->will($this->returnValueMap(
-            array(
-                array('HTTP_HOST', 'localhost'),
-                array('TYPO3_SITE_PATH', '/subfolder/'),
-            )
+            [
+                ['HTTP_HOST', 'localhost'],
+                ['TYPO3_SITE_PATH', '/subfolder/'],
+            ]
         ));
 
         $expected = 'http://localhost/subfolder/fileadmin/my.pdf';
         $url = 'fileadmin/my.pdf';
-        $configuration = array(
+        $configuration = [
             'forceAbsoluteUrl' => '1'
-        );
+        ];
 
         $this->assertEquals($expected, $this->subject->_call('forceAbsoluteUrl', $url, $configuration));
     }
@@ -3887,16 +3887,16 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function getLibParseTarget()
     {
-        return array(
+        return [
             'override' => '',
-            'override.' => array(
-                'if.' => array(
-                    'isTrue.' => array(
+            'override.' => [
+                'if.' => [
+                    'isTrue.' => [
                         'data' => 'TSFE:dtdAllowsFrames',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
     }
 
     /**
@@ -3904,47 +3904,47 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function getLibParseFunc()
     {
-        return array(
+        return [
             'makelinks' => '1',
-            'makelinks.' => array(
-                'http.' => array(
+            'makelinks.' => [
+                'http.' => [
                     'keep' => '{$styles.content.links.keep}',
                     'extTarget' => '',
                     'extTarget.' => $this->getLibParseTarget(),
-                    'mailto.' => array(
+                    'mailto.' => [
                         'keep' => 'path',
-                    ),
-                ),
-            ),
-            'tags' => array(
+                    ],
+                ],
+            ],
+            'tags' => [
                 'link' => 'TEXT',
-                'link.' => array(
+                'link.' => [
                     'current' => '1',
-                    'typolink.' => array(
-                        'parameter.' => array(
+                    'typolink.' => [
+                        'parameter.' => [
                             'data' => 'parameters : allParams',
-                        ),
+                        ],
                         'extTarget.' => $this->getLibParseTarget(),
                         'target.' => $this->getLibParseTarget(),
-                    ),
-                    'parseFunc.' => array(
+                    ],
+                    'parseFunc.' => [
                         'constants' => '1',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
 
             'allowTags' => 'a, abbr, acronym, address, article, aside, b, bdo, big, blockquote, br, caption, center, cite, code, col, colgroup, dd, del, dfn, dl, div, dt, em, font, footer, header, h1, h2, h3, h4, h5, h6, hr, i, img, ins, kbd, label, li, link, meta, nav, ol, p, pre, q, samp, sdfield, section, small, span, strike, strong, style, sub, sup, table, thead, tbody, tfoot, td, th, tr, title, tt, u, ul, var',
             'denyTags' => '*',
             'sword' => '<span class="csc-sword">|</span>',
             'constants' => '1',
-            'nonTypoTagStdWrap.' => array(
+            'nonTypoTagStdWrap.' => [
                 'HTMLparser' => '1',
-                'HTMLparser.' => array(
+                'HTMLparser.' => [
                     'keepNonMatchedTags' => '1',
                     'htmlSpecialChars' => '2',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -3952,177 +3952,177 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function getLibParseFunc_RTE()
     {
-        return array(
+        return [
             'parseFunc' => '',
-            'parseFunc.' => array(
+            'parseFunc.' => [
                 'allowTags' => 'a, abbr, acronym, address, article, aside, b, bdo, big, blockquote, br, caption, center, cite, code, col, colgroup, dd, del, dfn, dl, div, dt, em, font, footer, header, h1, h2, h3, h4, h5, h6, hr, i, img, ins, kbd, label, li, link, meta, nav, ol, p, pre, q, samp, sdfield, section, small, span, strike, strong, style, sub, sup, table, thead, tbody, tfoot, td, th, tr, title, tt, u, ul, var',
                 'constants' => '1',
                 'denyTags' => '*',
                 'externalBlocks' => 'article, aside, blockquote, div, dd, dl, footer, header, nav, ol, section, table, ul',
-                'externalBlocks.' => array(
-                    'article.' => array(
+                'externalBlocks.' => [
+                    'article.' => [
                         'callRecursive' => '1',
                         'stripNL' => '1',
-                    ),
-                    'aside.' => array(
+                    ],
+                    'aside.' => [
                         'callRecursive' => '1',
                         'stripNL' => '1',
-                    ),
-                    'blockquote.' => array(
+                    ],
+                    'blockquote.' => [
                         'callRecursive' => '1',
                         'stripNL' => '1',
-                    ),
-                    'dd.' => array(
+                    ],
+                    'dd.' => [
                         'callRecursive' => '1',
                         'stripNL' => '1',
-                    ),
-                    'div.' => array(
+                    ],
+                    'div.' => [
                         'callRecursive' => '1',
                         'stripNL' => '1',
-                    ),
-                    'dl.' => array(
+                    ],
+                    'dl.' => [
                         'callRecursive' => '1',
                         'stripNL' => '1',
-                    ),
-                    'footer.' => array(
+                    ],
+                    'footer.' => [
                         'callRecursive' => '1',
                         'stripNL' => '1',
-                    ),
-                    'header.' => array(
+                    ],
+                    'header.' => [
                         'callRecursive' => '1',
                         'stripNL' => '1',
-                    ),
-                    'nav.' => array(
+                    ],
+                    'nav.' => [
                         'callRecursive' => '1',
                         'stripNL' => '1',
-                    ),
-                    'ol.' => array(
+                    ],
+                    'ol.' => [
                         'callRecursive' => '1',
                         'stripNL' => '1',
-                    ),
-                    'section.' => array(
+                    ],
+                    'section.' => [
                         'callRecursive' => '1',
                         'stripNL' => '1',
-                    ),
-                    'table.' => array(
+                    ],
+                    'table.' => [
                         'HTMLtableCells' => '1',
-                        'HTMLtableCells.' => array(
+                        'HTMLtableCells.' => [
                             'addChr10BetweenParagraphs' => '1',
-                            'default.' => array(
-                                'stdWrap.' => array(
+                            'default.' => [
+                                'stdWrap.' => [
                                     'parseFunc' => '=< lib.parseFunc_RTE',
-                                    'parseFunc.' => array(
-                                        'nonTypoTagStdWrap.' => array(
-                                            'encapsLines.' => array(
+                                    'parseFunc.' => [
+                                        'nonTypoTagStdWrap.' => [
+                                            'encapsLines.' => [
                                                 'nonWrappedTag' => '',
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                        'stdWrap.' => array(
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'stdWrap.' => [
                             'HTMLparser' => '1',
-                            'HTMLparser.' => array(
+                            'HTMLparser.' => [
                                 'keepNonMatchedTags' => '1',
-                                'tags.' => array(
-                                    'table.' => array(
-                                        'fixAttrib.' => array(
-                                            'class.' => array(
+                                'tags.' => [
+                                    'table.' => [
+                                        'fixAttrib.' => [
+                                            'class.' => [
                                                 'always' => '1',
                                                 'default' => 'contenttable',
                                                 'list' => 'contenttable',
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
                         'stripNL' => '1',
-                    ),
-                    'ul.' => array(
+                    ],
+                    'ul.' => [
                         'callRecursive' => '1',
                         'stripNL' => '1',
-                    ),
-                ),
+                    ],
+                ],
                 'makelinks' => '1',
-                'makelinks.' => array(
-                    'http.' => array(
-                        'extTarget.' =>  array(
+                'makelinks.' => [
+                    'http.' => [
+                        'extTarget.' =>  [
                             'override' => '_blank',
-                            'override.' => array(
-                                'if.' => array(
-                                    'isTrue.' => array(
+                            'override.' => [
+                                'if.' => [
+                                    'isTrue.' => [
                                         'data' => 'TSFE:dtdAllowsFrames',
-                                    ),
-                                ),
-                            ),
-                        ),
+                                    ],
+                                ],
+                            ],
+                        ],
                         'keep' => 'path',
-                    ),
-                ),
-                'nonTypoTagStdWrap.' => array(
-                    'encapsLines.' => array(
-                        'addAttributes.' => array(
-                            'P.' => array(
+                    ],
+                ],
+                'nonTypoTagStdWrap.' => [
+                    'encapsLines.' => [
+                        'addAttributes.' => [
+                            'P.' => [
                                 'class' => 'bodytext',
-                                'class.' => array(
+                                'class.' => [
                                     'setOnly' => 'blank',
-                                ),
-                            ),
-                        ),
+                                ],
+                            ],
+                        ],
                         'encapsTagList' => 'p,pre,h1,h2,h3,h4,h5,h6,hr,dt,li',
-                        'innerStdWrap_all.' => array(
+                        'innerStdWrap_all.' => [
                             'ifBlank' => '&nbsp;',
-                        ),
+                        ],
                         'nonWrappedTag' => 'P',
-                        'remapTag.' => array(
+                        'remapTag.' => [
                             'DIV' => 'P',
-                        ),
-                    ),
+                        ],
+                    ],
                     'HTMLparser' => '1',
-                    'HTMLparser.' => array(
+                    'HTMLparser.' => [
                         'htmlSpecialChars' => '2',
                         'keepNonMatchedTags' => '1',
-                    ),
-                ),
+                    ],
+                ],
                 'sword' => '<span class="csc-sword">|</span>',
-                'tags.' => array(
+                'tags.' => [
                     'link' => 'TEXT',
-                    'link.' => array(
+                    'link.' => [
                         'current' => '1',
-                        'parseFunc.' => array(
+                        'parseFunc.' => [
                             'constants' => '1',
-                        ),
-                        'typolink.' => array(
-                            'extTarget.' =>  array(
+                        ],
+                        'typolink.' => [
+                            'extTarget.' =>  [
                                 'override' => '',
-                                'override.' => array(
-                                    'if.' => array(
-                                        'isTrue.' => array(
+                                'override.' => [
+                                    'if.' => [
+                                        'isTrue.' => [
                                             'data' => 'TSFE:dtdAllowsFrames',
-                                        ),
-                                    ),
-                                ),
-                            ),
-                            'parameter.' => array(
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'parameter.' => [
                                 'data' => 'parameters : allParams',
-                            ),
-                            'target.' =>  array(
+                            ],
+                            'target.' =>  [
                                 'override' => '',
-                                'override.' => array(
-                                    'if.' => array(
-                                        'isTrue.' => array(
+                                'override.' => [
+                                    'if.' => [
+                                        'isTrue.' => [
                                             'data' => 'TSFE:dtdAllowsFrames',
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        );
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 
     /**
@@ -4130,23 +4130,23 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function _parseFuncReturnsCorrectHtmlDataProvider()
     {
-        return array(
-            'Text without tag is wrapped with <p> tag' => array(
+        return [
+            'Text without tag is wrapped with <p> tag' => [
                 'Text without tag',
                 $this->getLibParseFunc_RTE(),
                 '<p class="bodytext">Text without tag</p>',
-            ),
-            'Text wrapped with <p> tag remains the same' => array(
+            ],
+            'Text wrapped with <p> tag remains the same' => [
                 '<p class="myclass">Text with &lt;p&gt; tag</p>',
                 $this->getLibParseFunc_RTE(),
                 '<p class="myclass">Text with &lt;p&gt; tag</p>',
-            ),
-            'Text with absolute external link' => array(
+            ],
+            'Text with absolute external link' => [
                 'Text with <link http://example.com/foo/>external link</link>',
                 $this->getLibParseFunc_RTE(),
                 '<p class="bodytext">Text with <a href="http://example.com/foo/">external link</a></p>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -4199,18 +4199,18 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function detectLinkTypeFromLinkParameter($linkParameter, $expectedResult)
     {
         /** @var TemplateService|\PHPUnit_Framework_MockObject_MockObject $templateServiceObjectMock */
-        $templateServiceObjectMock = $this->getMock(TemplateService::class, array('dummy'));
-        $templateServiceObjectMock->setup = array(
-            'lib.' => array(
+        $templateServiceObjectMock = $this->getMock(TemplateService::class, ['dummy']);
+        $templateServiceObjectMock->setup = [
+            'lib.' => [
                 'parseFunc.' => $this->getLibParseFunc(),
-            ),
-        );
+            ],
+        ];
         /** @var TypoScriptFrontendController|\PHPUnit_Framework_MockObject_MockObject $typoScriptFrontendControllerMockObject */
-        $typoScriptFrontendControllerMockObject = $this->getMock(TypoScriptFrontendController::class, array(), array(), '', false);
-        $typoScriptFrontendControllerMockObject->config = array(
-            'config' => array(),
+        $typoScriptFrontendControllerMockObject = $this->getMock(TypoScriptFrontendController::class, [], [], '', false);
+        $typoScriptFrontendControllerMockObject->config = [
+            'config' => [],
             'mainScript' => 'index.php',
-        );
+        ];
         $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
@@ -4223,83 +4223,83 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function typolinkReturnsCorrectLinksForEmailsAndUrlsDataProvider()
     {
-        return array(
-            'Link to url' => array(
+        return [
+            'Link to url' => [
                 'TYPO3',
-                array(
+                [
                     'parameter' => 'http://typo3.org',
-                ),
+                ],
                 '<a href="http://typo3.org">TYPO3</a>',
-            ),
-            'Link to url without schema' => array(
+            ],
+            'Link to url without schema' => [
                 'TYPO3',
-                array(
+                [
                     'parameter' => 'typo3.org',
-                ),
+                ],
                 '<a href="http://typo3.org">TYPO3</a>',
-            ),
-            'Link to url without link text' => array(
+            ],
+            'Link to url without link text' => [
                 '',
-                array(
+                [
                     'parameter' => 'http://typo3.org',
-                ),
+                ],
                 '<a href="http://typo3.org">http://typo3.org</a>',
-            ),
-            'Link to url with attributes' => array(
+            ],
+            'Link to url with attributes' => [
                 'TYPO3',
-                array(
+                [
                     'parameter' => 'http://typo3.org',
                     'ATagParams' => 'class="url-class"',
                     'extTarget' => '_blank',
                     'title' => 'Open new window',
-                ),
+                ],
                 '<a href="http://typo3.org" title="Open new window" target="_blank" class="url-class">TYPO3</a>',
-            ),
-            'Link to url with attributes in parameter' => array(
+            ],
+            'Link to url with attributes in parameter' => [
                 'TYPO3',
-                array(
+                [
                     'parameter' => 'http://typo3.org _blank url-class "Open new window"',
-                ),
+                ],
                 '<a href="http://typo3.org" title="Open new window" target="_blank" class="url-class">TYPO3</a>',
-            ),
-            'Link to url with script tag' => array(
+            ],
+            'Link to url with script tag' => [
                 '',
-                array(
+                [
                     'parameter' => 'http://typo3.org<script>alert(123)</script>',
-                ),
+                ],
                 '<a href="http://typo3.org&lt;script&gt;alert(123)&lt;/script&gt;">http://typo3.org&lt;script&gt;alert(123)&lt;/script&gt;</a>',
-            ),
-            'Link to email address' => array(
+            ],
+            'Link to email address' => [
                 'Email address',
-                array(
+                [
                     'parameter' => 'foo@bar.org',
-                ),
+                ],
                 '<a href="mailto:foo@bar.org">Email address</a>',
-            ),
-            'Link to email address without link text' => array(
+            ],
+            'Link to email address without link text' => [
                 '',
-                array(
+                [
                     'parameter' => 'foo@bar.org',
-                ),
+                ],
                 '<a href="mailto:foo@bar.org">foo@bar.org</a>',
-            ),
-            'Link to email with attributes' => array(
+            ],
+            'Link to email with attributes' => [
                 'Email address',
-                array(
+                [
                     'parameter' => 'foo@bar.org',
                     'ATagParams' => 'class="email-class"',
                     'title' => 'Write an email',
-                ),
+                ],
                 '<a href="mailto:foo@bar.org" title="Write an email" class="email-class">Email address</a>',
-            ),
-            'Link to email with attributes in parameter' => array(
+            ],
+            'Link to email with attributes in parameter' => [
                 'Email address',
-                array(
+                [
                     'parameter' => 'foo@bar.org - email-class "Write an email"',
-                ),
+                ],
                 '<a href="mailto:foo@bar.org" title="Write an email" class="email-class">Email address</a>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -4311,17 +4311,17 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function typolinkReturnsCorrectLinksForEmailsAndUrls($linkText, $configuration, $expectedResult)
     {
-        $templateServiceObjectMock = $this->getMock(TemplateService::class, array('dummy'));
-        $templateServiceObjectMock->setup = array(
-            'lib.' => array(
+        $templateServiceObjectMock = $this->getMock(TemplateService::class, ['dummy']);
+        $templateServiceObjectMock->setup = [
+            'lib.' => [
                 'parseFunc.' => $this->getLibParseFunc(),
-            ),
-        );
-        $typoScriptFrontendControllerMockObject = $this->getMock(TypoScriptFrontendController::class, array(), array(), '', false);
-        $typoScriptFrontendControllerMockObject->config = array(
-            'config' => array(),
+            ],
+        ];
+        $typoScriptFrontendControllerMockObject = $this->getMock(TypoScriptFrontendController::class, [], [], '', false);
+        $typoScriptFrontendControllerMockObject->config = [
+            'config' => [],
             'mainScript' => 'index.php',
-        );
+        ];
         $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
@@ -4334,77 +4334,77 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function typolinkReturnsCorrectLinksForPagesDataProvider()
     {
-        return array(
-            'Link to page' => array(
+        return [
+            'Link to page' => [
                 'My page',
-                array(
+                [
                     'parameter' => 42,
-                ),
-                array(
+                ],
+                [
                     'uid' => 42,
                     'title' => 'Page title',
-                ),
+                ],
                 '<a href="index.php?id=42">My page</a>',
-            ),
-            'Link to page without link text' => array(
+            ],
+            'Link to page without link text' => [
                 '',
-                array(
+                [
                     'parameter' => 42,
-                ),
-                array(
+                ],
+                [
                     'uid' => 42,
                     'title' => 'Page title',
-                ),
+                ],
                 '<a href="index.php?id=42">Page title</a>',
-            ),
-            'Link to page with attributes' => array(
+            ],
+            'Link to page with attributes' => [
                 'My page',
-                array(
+                [
                     'parameter' => '42',
                     'ATagParams' => 'class="page-class"',
                     'target' => '_self',
                     'title' => 'Link to internal page',
-                ),
-                array(
+                ],
+                [
                     'uid' => 42,
                     'title' => 'Page title',
-                ),
+                ],
                 '<a href="index.php?id=42" title="Link to internal page" target="_self" class="page-class">My page</a>',
-            ),
-            'Link to page with attributes in parameter' => array(
+            ],
+            'Link to page with attributes in parameter' => [
                 'My page',
-                array(
+                [
                     'parameter' => '42 _self page-class "Link to internal page"',
-                ),
-                array(
+                ],
+                [
                     'uid' => 42,
                     'title' => 'Page title',
-                ),
+                ],
                 '<a href="index.php?id=42" title="Link to internal page" target="_self" class="page-class">My page</a>',
-            ),
-            'Link to page with bold tag in title' => array(
+            ],
+            'Link to page with bold tag in title' => [
                 '',
-                array(
+                [
                     'parameter' => 42,
-                ),
-                array(
+                ],
+                [
                     'uid' => 42,
                     'title' => 'Page <b>title</b>',
-                ),
+                ],
                 '<a href="index.php?id=42">Page <b>title</b></a>',
-            ),
-            'Link to page with script tag in title' => array(
+            ],
+            'Link to page with script tag in title' => [
                 '',
-                array(
+                [
                     'parameter' => 42,
-                ),
-                array(
+                ],
+                [
                     'uid' => 42,
                     'title' => '<script>alert(123)</script>Page title',
-                ),
+                ],
                 '<a href="index.php?id=42">&lt;script&gt;alert(123)&lt;/script&gt;Page title</a>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -4419,7 +4419,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->getFrontendController()->spamProtectEmailAddresses = $settings['spamProtectEmailAddresses'];
         $this->getFrontendController()->config['config'] = $settings;
-        $typoScript = array('parameter' => $mailAddress);
+        $typoScript = ['parameter' => $mailAddress];
 
         $this->assertEquals($expected, $this->subject->typoLink($linkText, $typoScript));
     }
@@ -4429,98 +4429,98 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function typoLinkEncodesMailAddressForSpamProtectionDataProvider()
     {
-        return array(
-            'plain mail without mailto scheme' => array(
-                array(
+        return [
+            'plain mail without mailto scheme' => [
+                [
                     'spamProtectEmailAddresses' => '',
                     'spamProtectEmailAddresses_atSubst' => '',
                     'spamProtectEmailAddresses_lastDotSubst' => '',
-                ),
+                ],
                 'some.body@test.typo3.org',
                 'some.body@test.typo3.org',
                 '<a href="mailto:some.body@test.typo3.org">some.body@test.typo3.org</a>',
-            ),
-            'plain mail with mailto scheme' => array(
-                array(
+            ],
+            'plain mail with mailto scheme' => [
+                [
                     'spamProtectEmailAddresses' => '',
                     'spamProtectEmailAddresses_atSubst' => '',
                     'spamProtectEmailAddresses_lastDotSubst' => '',
-                ),
+                ],
                 'some.body@test.typo3.org',
                 'mailto:some.body@test.typo3.org',
                 '<a href="mailto:some.body@test.typo3.org">some.body@test.typo3.org</a>',
-            ),
-            'plain with at and dot substitution' => array(
-                array(
+            ],
+            'plain with at and dot substitution' => [
+                [
                     'spamProtectEmailAddresses' => '0',
                     'spamProtectEmailAddresses_atSubst' => '(at)',
                     'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
-                ),
+                ],
                 'some.body@test.typo3.org',
                 'mailto:some.body@test.typo3.org',
                 '<a href="mailto:some.body@test.typo3.org">some.body@test.typo3.org</a>',
-            ),
-            'mono-alphabetic substitution offset +1' => array(
-                array(
+            ],
+            'mono-alphabetic substitution offset +1' => [
+                [
                     'spamProtectEmailAddresses' => '1',
                     'spamProtectEmailAddresses_atSubst' => '',
                     'spamProtectEmailAddresses_lastDotSubst' => '',
-                ),
+                ],
                 'some.body@test.typo3.org',
                 'mailto:some.body@test.typo3.org',
                 '<a href="javascript:linkTo_UnCryptMailto(\'nbjmup+tpnf\/cpezAuftu\/uzqp4\/psh\');">some.body(at)test.typo3.org</a>',
-            ),
-            'mono-alphabetic substitution offset +1 with at substitution' => array(
-                array(
+            ],
+            'mono-alphabetic substitution offset +1 with at substitution' => [
+                [
                     'spamProtectEmailAddresses' => '1',
                     'spamProtectEmailAddresses_atSubst' => '@',
                     'spamProtectEmailAddresses_lastDotSubst' => '',
-                ),
+                ],
                 'some.body@test.typo3.org',
                 'mailto:some.body@test.typo3.org',
                 '<a href="javascript:linkTo_UnCryptMailto(\'nbjmup+tpnf\/cpezAuftu\/uzqp4\/psh\');">some.body@test.typo3.org</a>',
-            ),
-            'mono-alphabetic substitution offset +1 with at and dot substitution' => array(
-                array(
+            ],
+            'mono-alphabetic substitution offset +1 with at and dot substitution' => [
+                [
                     'spamProtectEmailAddresses' => '1',
                     'spamProtectEmailAddresses_atSubst' => '(at)',
                     'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
-                ),
+                ],
                 'some.body@test.typo3.org',
                 'mailto:some.body@test.typo3.org',
                 '<a href="javascript:linkTo_UnCryptMailto(\'nbjmup+tpnf\/cpezAuftu\/uzqp4\/psh\');">some.body(at)test.typo3(dot)org</a>',
-            ),
-            'mono-alphabetic substitution offset -1 with at and dot substitution' => array(
-                array(
+            ],
+            'mono-alphabetic substitution offset -1 with at and dot substitution' => [
+                [
                     'spamProtectEmailAddresses' => '-1',
                     'spamProtectEmailAddresses_atSubst' => '(at)',
                     'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
-                ),
+                ],
                 'some.body@test.typo3.org',
                 'mailto:some.body@test.typo3.org',
                 '<a href="javascript:linkTo_UnCryptMailto(\'lzhksn9rnld-ancxZsdrs-sxon2-nqf\');">some.body(at)test.typo3(dot)org</a>',
-            ),
-            'entity substitution with at and dot substitution' => array(
-                array(
+            ],
+            'entity substitution with at and dot substitution' => [
+                [
                     'spamProtectEmailAddresses' => 'ascii',
                     'spamProtectEmailAddresses_atSubst' => '',
                     'spamProtectEmailAddresses_lastDotSubst' => '',
-                ),
+                ],
                 'some.body@test.typo3.org',
                 'mailto:some.body@test.typo3.org',
                 '<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#111;&#109;&#101;&#46;&#98;&#111;&#100;&#121;&#64;&#116;&#101;&#115;&#116;&#46;&#116;&#121;&#112;&#111;&#51;&#46;&#111;&#114;&#103;">some.body(at)test.typo3.org</a>',
-            ),
-            'entity substitution with at and dot substitution with at and dot substitution' => array(
-                array(
+            ],
+            'entity substitution with at and dot substitution with at and dot substitution' => [
+                [
                     'spamProtectEmailAddresses' => 'ascii',
                     'spamProtectEmailAddresses_atSubst' => '(at)',
                     'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
-                ),
+                ],
                 'some.body@test.typo3.org',
                 'mailto:some.body@test.typo3.org',
                 '<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#111;&#109;&#101;&#46;&#98;&#111;&#100;&#121;&#64;&#116;&#101;&#115;&#116;&#46;&#116;&#121;&#112;&#111;&#51;&#46;&#111;&#114;&#103;">some.body(at)test.typo3(dot)org</a>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -4533,19 +4533,19 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function typolinkReturnsCorrectLinksForPages($linkText, $configuration, $pageArray, $expectedResult)
     {
-        $pageRepositoryMockObject = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, array('getPage'));
+        $pageRepositoryMockObject = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, ['getPage']);
         $pageRepositoryMockObject->expects($this->any())->method('getPage')->willReturn($pageArray);
-        $templateServiceObjectMock = $this->getMock(TemplateService::class, array('dummy'));
-        $templateServiceObjectMock->setup = array(
-            'lib.' => array(
+        $templateServiceObjectMock = $this->getMock(TemplateService::class, ['dummy']);
+        $templateServiceObjectMock->setup = [
+            'lib.' => [
                 'parseFunc.' => $this->getLibParseFunc(),
-            ),
-        );
-        $typoScriptFrontendControllerMockObject = $this->getMock(TypoScriptFrontendController::class, array(), array(), '', false);
-        $typoScriptFrontendControllerMockObject->config = array(
-            'config' => array(),
+            ],
+        ];
+        $typoScriptFrontendControllerMockObject = $this->getMock(TypoScriptFrontendController::class, [], [], '', false);
+        $typoScriptFrontendControllerMockObject->config = [
+            'config' => [],
             'mainScript' => 'index.php',
-        );
+        ];
         $typoScriptFrontendControllerMockObject->sys_page = $pageRepositoryMockObject;
         $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
@@ -4559,46 +4559,46 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function typolinkReturnsCorrectLinksFilesDataProvider()
     {
-        return array(
-            'Link to file' => array(
+        return [
+            'Link to file' => [
                 'My file',
-                array(
+                [
                     'parameter' => 'fileadmin/foo.bar',
-                ),
+                ],
                 '<a href="fileadmin/foo.bar">My file</a>',
-            ),
-            'Link to file without link text' => array(
+            ],
+            'Link to file without link text' => [
                 '',
-                array(
+                [
                     'parameter' => 'fileadmin/foo.bar',
-                ),
+                ],
                 '<a href="fileadmin/foo.bar">fileadmin/foo.bar</a>',
-            ),
-            'Link to file with attributes' => array(
+            ],
+            'Link to file with attributes' => [
                 'My file',
-                array(
+                [
                     'parameter' => 'fileadmin/foo.bar',
                     'ATagParams' => 'class="file-class"',
                     'fileTarget' => '_blank',
                     'title' => 'Title of the file',
-                ),
+                ],
                 '<a href="fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
-            ),
-            'Link to file with attributes in parameter' => array(
+            ],
+            'Link to file with attributes in parameter' => [
                 'My file',
-                array(
+                [
                     'parameter' => 'fileadmin/foo.bar _blank file-class "Title of the file"',
-                ),
+                ],
                 '<a href="fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
-            ),
-            'Link to file with script tag in name' => array(
+            ],
+            'Link to file with script tag in name' => [
                 '',
-                array(
+                [
                     'parameter' => 'fileadmin/<script>alert(123)</script>',
-                ),
+                ],
                 '<a href="fileadmin/&lt;script&gt;alert(123)&lt;/script&gt;">fileadmin/&lt;script&gt;alert(123)&lt;/script&gt;</a>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -4610,17 +4610,17 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function typolinkReturnsCorrectLinksFiles($linkText, $configuration, $expectedResult)
     {
-        $templateServiceObjectMock = $this->getMock(TemplateService::class, array('dummy'));
-        $templateServiceObjectMock->setup = array(
-            'lib.' => array(
+        $templateServiceObjectMock = $this->getMock(TemplateService::class, ['dummy']);
+        $templateServiceObjectMock->setup = [
+            'lib.' => [
                 'parseFunc.' => $this->getLibParseFunc(),
-            ),
-        );
-        $typoScriptFrontendControllerMockObject = $this->getMock(TypoScriptFrontendController::class, array(), array(), '', false);
-        $typoScriptFrontendControllerMockObject->config = array(
-            'config' => array(),
+            ],
+        ];
+        $typoScriptFrontendControllerMockObject = $this->getMock(TypoScriptFrontendController::class, [], [], '', false);
+        $typoScriptFrontendControllerMockObject->config = [
+            'config' => [],
             'mainScript' => 'index.php',
-        );
+        ];
         $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
@@ -4633,119 +4633,119 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function typolinkReturnsCorrectLinksForFilesWithAbsRefPrefixDataProvider()
     {
-        return array(
-            'Link to file' => array(
+        return [
+            'Link to file' => [
                 'My file',
-                array(
+                [
                     'parameter' => 'fileadmin/foo.bar',
-                ),
+                ],
                 '/',
                 '<a href="/fileadmin/foo.bar">My file</a>',
-            ),
-            'Link to file with longer absRefPrefix' => array(
+            ],
+            'Link to file with longer absRefPrefix' => [
                 'My file',
-                array(
+                [
                     'parameter' => 'fileadmin/foo.bar',
-                ),
+                ],
                 '/sub/',
                 '<a href="/sub/fileadmin/foo.bar">My file</a>',
-            ),
-            'Link to absolute file' => array(
+            ],
+            'Link to absolute file' => [
                 'My file',
-                array(
+                [
                     'parameter' => '/images/foo.bar',
-                ),
+                ],
                 '/',
                 '<a href="/images/foo.bar">My file</a>',
-            ),
-            'Link to absolute file with longer absRefPrefix' => array(
+            ],
+            'Link to absolute file with longer absRefPrefix' => [
                 'My file',
-                array(
+                [
                     'parameter' => '/images/foo.bar',
-                ),
+                ],
                 '/sub/',
                 '<a href="/images/foo.bar">My file</a>',
-            ),
-            'Link to absolute file with identical longer absRefPrefix' => array(
+            ],
+            'Link to absolute file with identical longer absRefPrefix' => [
                 'My file',
-                array(
+                [
                     'parameter' => '/sub/fileadmin/foo.bar',
-                ),
+                ],
                 '/sub/',
                 '<a href="/sub/fileadmin/foo.bar">My file</a>',
-            ),
-            'Link to file with empty absRefPrefix' => array(
+            ],
+            'Link to file with empty absRefPrefix' => [
                 'My file',
-                array(
+                [
                     'parameter' => 'fileadmin/foo.bar',
-                ),
+                ],
                 '',
                 '<a href="fileadmin/foo.bar">My file</a>',
-            ),
-            'Link to absolute file with empty absRefPrefix' => array(
+            ],
+            'Link to absolute file with empty absRefPrefix' => [
                 'My file',
-                array(
+                [
                     'parameter' => '/fileadmin/foo.bar',
-                ),
+                ],
                 '',
                 '<a href="/fileadmin/foo.bar">My file</a>',
-            ),
-            'Link to file with attributes with absRefPrefix' => array(
+            ],
+            'Link to file with attributes with absRefPrefix' => [
                 'My file',
-                array(
+                [
                     'parameter' => 'fileadmin/foo.bar',
                     'ATagParams' => 'class="file-class"',
                     'fileTarget' => '_blank',
                     'title' => 'Title of the file',
-                ),
+                ],
                 '/',
                 '<a href="/fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
-            ),
-            'Link to file with attributes with longer absRefPrefix' => array(
+            ],
+            'Link to file with attributes with longer absRefPrefix' => [
                 'My file',
-                array(
+                [
                     'parameter' => 'fileadmin/foo.bar',
                     'ATagParams' => 'class="file-class"',
                     'fileTarget' => '_blank',
                     'title' => 'Title of the file',
-                ),
+                ],
                 '/sub/',
                 '<a href="/sub/fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
-            ),
-            'Link to absolute file with attributes with absRefPrefix' => array(
+            ],
+            'Link to absolute file with attributes with absRefPrefix' => [
                 'My file',
-                array(
+                [
                     'parameter' => '/images/foo.bar',
                     'ATagParams' => 'class="file-class"',
                     'fileTarget' => '_blank',
                     'title' => 'Title of the file',
-                ),
+                ],
                 '/',
                 '<a href="/images/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
-            ),
-            'Link to absolute file with attributes with longer absRefPrefix' => array(
+            ],
+            'Link to absolute file with attributes with longer absRefPrefix' => [
                 'My file',
-                array(
+                [
                     'parameter' => '/images/foo.bar',
                     'ATagParams' => 'class="file-class"',
                     'fileTarget' => '_blank',
                     'title' => 'Title of the file',
-                ),
+                ],
                 '/sub/',
                 '<a href="/images/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
-            ),
-            'Link to absolute file with attributes with identical longer absRefPrefix' => array(
+            ],
+            'Link to absolute file with attributes with identical longer absRefPrefix' => [
                 'My file',
-                array(
+                [
                     'parameter' => '/sub/fileadmin/foo.bar',
                     'ATagParams' => 'class="file-class"',
                     'fileTarget' => '_blank',
                     'title' => 'Title of the file',
-                ),
+                ],
                 '/sub/',
                 '<a href="/sub/fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -4758,17 +4758,17 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function typolinkReturnsCorrectLinksForFilesWithAbsRefPrefix($linkText, $configuration, $absRefPrefix, $expectedResult)
     {
-        $templateServiceObjectMock = $this->getMock(TemplateService::class, array('dummy'));
-        $templateServiceObjectMock->setup = array(
-            'lib.' => array(
+        $templateServiceObjectMock = $this->getMock(TemplateService::class, ['dummy']);
+        $templateServiceObjectMock->setup = [
+            'lib.' => [
                 'parseFunc.' => $this->getLibParseFunc(),
-            ),
-        );
-        $typoScriptFrontendControllerMockObject = $this->getMock(TypoScriptFrontendController::class, array(), array(), '', false);
-        $typoScriptFrontendControllerMockObject->config = array(
-            'config' => array(),
+            ],
+        ];
+        $typoScriptFrontendControllerMockObject = $this->getMock(TypoScriptFrontendController::class, [], [], '', false);
+        $typoScriptFrontendControllerMockObject->config = [
+            'config' => [],
             'mainScript' => 'index.php',
-        );
+        ];
         $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
         $GLOBALS['TSFE']->absRefPrefix = $absRefPrefix;
@@ -4782,10 +4782,10 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stdWrap_splitObjReturnsCount()
     {
-        $conf = array(
+        $conf = [
             'token' => ',',
             'returnCount' => 1
-        );
+        ];
         $expectedResult = 5;
         $amountOfEntries = $this->subject->splitObj('1, 2, 3, 4, 5', $conf);
         $this->assertSame(
@@ -4799,76 +4799,76 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getWhereReturnCorrectQueryDataProvider()
     {
-        return array(
-            array(
-                array(
-                    'tt_content' => array(
-                        'ctrl' => array(
-                        ),
-                        'columns' => array(
-                        )
-                    ),
-                ),
+        return [
+            [
+                [
+                    'tt_content' => [
+                        'ctrl' => [
+                        ],
+                        'columns' => [
+                        ]
+                    ],
+                ],
                 'tt_content',
-                array(
+                [
                     'uidInList' => '42',
                     'pidInList' => 43,
                     'where' => 'tt_content.cruser_id=5',
                     'andWhere' => 'tt_content.crdate>0',
                     'groupBy' => 'tt_content.title',
                     'orderBy' => 'tt_content.sorting',
-                ),
+                ],
                 'WHERE tt_content.uid=42 AND tt_content.pid IN (43) AND tt_content.cruser_id=5 AND tt_content.crdate>0 GROUP BY tt_content.title ORDER BY tt_content.sorting',
-            ),
-            array(
-                array(
-                    'tt_content' => array(
-                        'ctrl' => array(
+            ],
+            [
+                [
+                    'tt_content' => [
+                        'ctrl' => [
                             'delete' => 'deleted',
-                            'enablecolumns' => array(
+                            'enablecolumns' => [
                                 'disabled' => 'hidden',
                                 'starttime' => 'startdate',
                                 'endtime' => 'enddate',
-                            ),
+                            ],
                             'languageField' => 'sys_language_uid',
                             'transOrigPointerField' => 'l18n_parent',
-                        ),
-                        'columns' => array(
-                        )
-                    ),
-                ),
+                        ],
+                        'columns' => [
+                        ]
+                    ],
+                ],
                 'tt_content',
-                array(
+                [
                     'uidInList' => 42,
                     'pidInList' => 43,
                     'where' => 'tt_content.cruser_id=5',
                     'andWhere' => 'tt_content.crdate>0',
                     'groupBy' => 'tt_content.title',
                     'orderBy' => 'tt_content.sorting',
-                ),
+                ],
                 'WHERE tt_content.uid=42 AND tt_content.pid IN (43) AND tt_content.cruser_id=5 AND (tt_content.sys_language_uid = 13) AND tt_content.crdate>0 AND tt_content.deleted=0 AND tt_content.hidden=0 AND tt_content.startdate<=4242 AND (tt_content.enddate=0 OR tt_content.enddate>4242) GROUP BY tt_content.title ORDER BY tt_content.sorting',
-            ),
-            array(
-                array(
-                    'tt_content' => array(
-                        'ctrl' => array(
+            ],
+            [
+                [
+                    'tt_content' => [
+                        'ctrl' => [
                             'languageField' => 'sys_language_uid',
                             'transOrigPointerField' => 'l18n_parent',
-                        ),
-                        'columns' => array(
-                        )
-                    ),
-                ),
+                        ],
+                        'columns' => [
+                        ]
+                    ],
+                ],
                 'tt_content',
-                array(
+                [
                     'uidInList' => 42,
                     'pidInList' => 43,
                     'where' => 'tt_content.cruser_id=5',
                     'languageField' => 0,
-                ),
+                ],
                 'WHERE tt_content.uid=42 AND tt_content.pid IN (43) AND tt_content.cruser_id=5',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -4885,7 +4885,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['SIM_ACCESS_TIME'] = '4242';
         $GLOBALS['TSFE']->sys_language_content = 13;
         /** @var \PHPUnit_Framework_MockObject_MockObject|ContentObjectRenderer $contentObjectRenderer */
-        $contentObjectRenderer = $this->getMock(ContentObjectRenderer::class, array('checkPidArray'));
+        $contentObjectRenderer = $this->getMock(ContentObjectRenderer::class, ['checkPidArray']);
         $contentObjectRenderer->expects($this->any())->method('checkPidArray')->willReturn(explode(',', $configuration['pidInList']));
         $this->assertEquals($expectedResult, $contentObjectRenderer->getWhere($table, $configuration));
     }
@@ -4905,7 +4905,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $fileName = substr($fileNameAndPath, strlen(PATH_site . 'typo3temp/'));
 
         $expectedLink = str_replace('%2F', '/', rawurlencode($relativeFileNameAndPath));
-        $result = $this->subject->filelink($fileName, array('path' => 'typo3temp/'));
+        $result = $this->subject->filelink($fileName, ['path' => 'typo3temp/']);
         $this->assertEquals('<a href="' . $expectedLink . '">' . $fileName . '</a>', $result);
 
         \TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($fileNameAndPath);
@@ -4916,102 +4916,102 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function substituteMarkerArrayCachedReturnsExpectedContentDataProvider()
     {
-        return array(
-            'no markers defined' => array(
+        return [
+            'no markers defined' => [
                 'dummy content with ###UNREPLACED### marker',
-                array(),
-                array(),
-                array(),
+                [],
+                [],
+                [],
                 'dummy content with ###UNREPLACED### marker',
                 false,
                 false
-            ),
-            'no markers used' => array(
+            ],
+            'no markers used' => [
                 'dummy content with no marker',
-                array(
+                [
                     '###REPLACED###' => '_replaced_'
-                ),
-                array(),
-                array(),
+                ],
+                [],
+                [],
                 'dummy content with no marker',
                 true,
                 false
-            ),
-            'one marker' => array(
+            ],
+            'one marker' => [
                 'dummy content with ###REPLACED### marker',
-                array(
+                [
                     '###REPLACED###' => '_replaced_'
-                ),
-                array(),
-                array(),
+                ],
+                [],
+                [],
                 'dummy content with _replaced_ marker'
-            ),
-            'one marker with lots of chars' => array(
+            ],
+            'one marker with lots of chars' => [
                 'dummy content with ###RE.:##-=_()LACED### marker',
-                array(
+                [
                     '###RE.:##-=_()LACED###' => '_replaced_'
-                ),
-                array(),
-                array(),
+                ],
+                [],
+                [],
                 'dummy content with _replaced_ marker'
-            ),
-            'markers which are special' => array(
+            ],
+            'markers which are special' => [
                 'dummy ###aa##.#######A### ######',
-                array(
+                [
                     '###aa##.###' => 'content ',
                     '###A###' => 'is',
                     '######' => '-is not considered-'
-                ),
-                array(),
-                array(),
+                ],
+                [],
+                [],
                 'dummy content #is ######'
-            ),
-            'two markers in content, but more defined' => array(
+            ],
+            'two markers in content, but more defined' => [
                 'dummy ###CONTENT### with ###REPLACED### marker',
-                array(
+                [
                     '###REPLACED###' => '_replaced_',
                     '###CONTENT###' => 'content',
                     '###NEVERUSED###' => 'bar'
-                ),
-                array(),
-                array(),
+                ],
+                [],
+                [],
                 'dummy content with _replaced_ marker'
-            ),
-            'one subpart' => array(
+            ],
+            'one subpart' => [
                 'dummy content with ###ASUBPART### around some text###ASUBPART###.',
-                array(),
-                array(
+                [],
+                [
                     '###ASUBPART###' => 'some other text'
-                ),
-                array(),
+                ],
+                [],
                 'dummy content with some other text.'
-            ),
-            'one wrapped subpart' => array(
+            ],
+            'one wrapped subpart' => [
                 'dummy content with ###AWRAPPEDSUBPART### around some text###AWRAPPEDSUBPART###.',
-                array(),
-                array(),
-                array(
-                    '###AWRAPPEDSUBPART###' => array(
+                [],
+                [],
+                [
+                    '###AWRAPPEDSUBPART###' => [
                         'more content',
                         'content'
-                    )
-                ),
+                    ]
+                ],
                 'dummy content with more content around some textcontent.'
-            ),
-            'one subpart with markers, not replaced recursively' => array(
+            ],
+            'one subpart with markers, not replaced recursively' => [
                 'dummy ###CONTENT### with ###ASUBPART### around ###SOME### text###ASUBPART###.',
-                array(
+                [
                     '###CONTENT###' => 'content',
                     '###SOME###' => '-this should never make it into output-',
                     '###OTHER_NOT_REPLACED###' => '-this should never make it into output-'
-                ),
-                array(
+                ],
+                [
                     '###ASUBPART###' => 'some ###OTHER_NOT_REPLACED### text'
-                ),
-                array(),
+                ],
+                [],
                 'dummy content with some ###OTHER_NOT_REPLACED### text.'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -5049,20 +5049,20 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $pageRepo->resetCallCount();
 
         $content = 'Please tell me this ###FOO###.';
-        $markContentArray = array(
+        $markContentArray = [
             '###FOO###' => 'foo',
             '###NOTUSED###' => 'blub'
-        );
-        $storeKey = md5('substituteMarkerArrayCached_storeKey:' . serialize(array($content, array_keys($markContentArray))));
-        $this->subject->substMarkerCache[$storeKey] = array(
-            'c' => array(
+        ];
+        $storeKey = md5('substituteMarkerArrayCached_storeKey:' . serialize([$content, array_keys($markContentArray)]));
+        $this->subject->substMarkerCache[$storeKey] = [
+            'c' => [
                 'Please tell me this ',
                 '.'
-            ),
-            'k' => array(
+            ],
+            'k' => [
                 '###FOO###'
-            ),
-        );
+            ],
+        ];
         $resultContent = $this->subject->substituteMarkerArrayCached($content, $markContentArray);
         $this->assertSame(0, $pageRepo::$getHashCallCount);
         $this->assertSame('Please tell me this foo.', $resultContent);
@@ -5078,19 +5078,19 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $pageRepo->resetCallCount();
 
         $content = 'Please tell me this ###FOO###.';
-        $markContentArray = array(
+        $markContentArray = [
             '###FOO###' => 'foo',
             '###NOTUSED###' => 'blub'
-        );
-        $pageRepo::$dbCacheContent = array(
-            'c' => array(
+        ];
+        $pageRepo::$dbCacheContent = [
+            'c' => [
                 'Please tell me this ',
                 '.'
-            ),
-            'k' => array(
+            ],
+            'k' => [
                 '###FOO###'
-            ),
-        );
+            ],
+        ];
         $resultContent = $this->subject->substituteMarkerArrayCached($content, $markContentArray);
         $this->assertSame(1, $pageRepo::$getHashCallCount, 'getHash call count mismatch');
         $this->assertSame(0, $pageRepo::$storeHashCallCount, 'storeHash call count mismatch');
@@ -5107,22 +5107,22 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $pageRepo->resetCallCount();
 
         $content = 'Please tell me this ###FOO###.';
-        $markContentArray = array(
+        $markContentArray = [
             '###FOO###' => 'foo',
             '###NOTUSED###' => 'blub'
-        );
+        ];
         $resultContent = $this->subject->substituteMarkerArrayCached($content, $markContentArray);
 
-        $storeKey = md5('substituteMarkerArrayCached_storeKey:' . serialize(array($content, array_keys($markContentArray))));
-        $storeArr = array(
-            'c' => array(
+        $storeKey = md5('substituteMarkerArrayCached_storeKey:' . serialize([$content, array_keys($markContentArray)]));
+        $storeArr = [
+            'c' => [
                 'Please tell me this ',
                 '.'
-            ),
-            'k' => array(
+            ],
+            'k' => [
                 '###FOO###'
-            ),
-        );
+            ],
+        ];
         $this->assertSame(1, $pageRepo::$getHashCallCount);
         $this->assertSame('Please tell me this foo.', $resultContent);
         $this->assertSame($storeArr, $this->subject->substMarkerCache[$storeKey]);

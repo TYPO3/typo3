@@ -62,27 +62,27 @@ This will check the system for double files relations.';
     public function main()
     {
         // Initialize result array:
-        $resultArray = array(
+        $resultArray = [
             'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
-            'headers' => array(
-                'multipleReferencesList_count' => array('Number of multi-reference files', '(See below)', 0),
-                'singleReferencesList_count' => array('Number of files correctly referenced', 'The amount of correct 1-1 references', 0),
-                'multipleReferencesList' => array('Entries with files having multiple references', 'These are serious problems that should be resolved ASAP to prevent data loss! ' . $this->label_infoString, 3),
-                'dirname_registry' => array('Registry of directories in which files are found.', 'Registry includes which table/field pairs store files in them plus how many files their store.', 0),
-                'missingFiles' => array('Tracking missing files', '(Extra feature, not related to tracking of double references. Further, the list may include more files than found in the missing_files()-test because this list includes missing files from deleted records.)', 0),
-                'warnings' => array('Warnings picked up', '', 2)
-            ),
-            'multipleReferencesList_count' => array('count' => 0),
-            'singleReferencesList_count' => array('count' => 0),
-            'multipleReferencesList' => array(),
-            'dirname_registry' => array(),
-            'missingFiles' => array(),
-            'warnings' => array()
-        );
+            'headers' => [
+                'multipleReferencesList_count' => ['Number of multi-reference files', '(See below)', 0],
+                'singleReferencesList_count' => ['Number of files correctly referenced', 'The amount of correct 1-1 references', 0],
+                'multipleReferencesList' => ['Entries with files having multiple references', 'These are serious problems that should be resolved ASAP to prevent data loss! ' . $this->label_infoString, 3],
+                'dirname_registry' => ['Registry of directories in which files are found.', 'Registry includes which table/field pairs store files in them plus how many files their store.', 0],
+                'missingFiles' => ['Tracking missing files', '(Extra feature, not related to tracking of double references. Further, the list may include more files than found in the missing_files()-test because this list includes missing files from deleted records.)', 0],
+                'warnings' => ['Warnings picked up', '', 2]
+            ],
+            'multipleReferencesList_count' => ['count' => 0],
+            'singleReferencesList_count' => ['count' => 0],
+            'multipleReferencesList' => [],
+            'dirname_registry' => [],
+            'missingFiles' => [],
+            'warnings' => []
+        ];
         // Select all files in the reference table not found by a soft reference parser (thus TCA configured)
         $recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE', 'sys_refindex') . ' AND softref_key=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('', 'sys_refindex'), '', 'sorting DESC');
         // Traverse the files and put into a large table:
-        $tempCount = array();
+        $tempCount = [];
         if (is_array($recs)) {
             foreach ($recs as $rec) {
                 // Compile info string for location of reference:
@@ -97,13 +97,13 @@ This will check the system for double files relations.';
                 // Add entry if file has multiple references pointing to it:
                 if (isset($tempCount[$rec['ref_string']])) {
                     if (!is_array($resultArray['multipleReferencesList'][$rec['ref_string']])) {
-                        $resultArray['multipleReferencesList'][$rec['ref_string']] = array();
+                        $resultArray['multipleReferencesList'][$rec['ref_string']] = [];
                         $resultArray['multipleReferencesList'][$rec['ref_string']][$tempCount[$rec['ref_string']][1]] = $tempCount[$rec['ref_string']][0];
                     }
                     $resultArray['multipleReferencesList'][$rec['ref_string']][$rec['hash']] = $infoString;
                     ksort($resultArray['multipleReferencesList'][$rec['ref_string']]);
                 } else {
-                    $tempCount[$rec['ref_string']] = array($infoString, $rec['hash']);
+                    $tempCount[$rec['ref_string']] = [$infoString, $rec['hash']];
                 }
             }
         }

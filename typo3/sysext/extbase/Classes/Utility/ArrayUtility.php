@@ -53,7 +53,7 @@ class ArrayUtility
     public static function trimExplode($delimiter, $string, $onlyNonEmptyValues = false)
     {
         $chunksArr = explode($delimiter, $string);
-        $newChunksArr = array();
+        $newChunksArr = [];
         foreach ($chunksArr as $value) {
             if ($onlyNonEmptyValues === false || trim($value) !== '') {
                 $newChunksArr[] = trim($value);
@@ -111,7 +111,7 @@ class ArrayUtility
      */
     public static function randomizeArrayOrder(array $array)
     {
-        $reorderedArray = array();
+        $reorderedArray = [];
         if (count($array) > 1) {
             $keysInRandomOrder = array_rand($array, count($array));
             foreach ($keysInRandomOrder as $key) {
@@ -214,7 +214,7 @@ class ArrayUtility
             $subject[$key] = $value;
         } else {
             if (!isset($subject[$key]) || !is_array($subject[$key])) {
-                $subject[$key] = array();
+                $subject[$key] = [];
             }
             $subject[$key] = self::setValueByPath($subject[$key], $path, $value);
         }
@@ -304,7 +304,7 @@ class ArrayUtility
         foreach ($result as $key => $value) {
             if (is_array($value)) {
                 $result[$key] = self::removeEmptyElementsRecursively($value);
-                if ($result[$key] === array()) {
+                if ($result[$key] === []) {
                     unset($result[$key]);
                 }
             } elseif ($value === null) {

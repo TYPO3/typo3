@@ -23,7 +23,7 @@ class RecordService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var DatabaseRecord[]
      */
-    protected $records = array();
+    protected $records = [];
 
     /**
      * @param string $tableName
@@ -42,10 +42,10 @@ class RecordService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getIdsPerTable()
     {
-        $idsPerTable = array();
+        $idsPerTable = [];
         foreach ($this->records as $databaseRecord) {
             if (!isset($idsPerTable[$databaseRecord->getTable()])) {
-                $idsPerTable[$databaseRecord->getTable()] = array();
+                $idsPerTable[$databaseRecord->getTable()] = [];
             }
             $idsPerTable[$databaseRecord->getTable()][] = $databaseRecord->getUid();
         }
@@ -57,7 +57,7 @@ class RecordService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getCreateUserIds()
     {
-        $createUserIds = array();
+        $createUserIds = [];
         foreach ($this->getIdsPerTable() as $tableName => $ids) {
             if (empty($GLOBALS['TCA'][$tableName]['ctrl']['cruser_id'])) {
                 continue;

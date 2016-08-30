@@ -211,14 +211,14 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      *
      * @var array
      */
-    public $modSharedTSconfig = array();
+    public $modSharedTSconfig = [];
 
     /**
      * Loaded with page record with version overlay if any.
      *
      * @var string[]
      */
-    public $pageRecord = array();
+    public $pageRecord = [];
 
     /**
      * Tables which should not get listed
@@ -239,14 +239,14 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      *
      * @var mixed[][]
      */
-    public $tableTSconfigOverTCA = array();
+    public $tableTSconfigOverTCA = [];
 
     /**
      * Array of collapsed / uncollapsed tables in multi table view
      *
      * @var int[][]
      */
-    public $tablesCollapsed = array();
+    public $tablesCollapsed = [];
 
     /**
      * JavaScript code accumulation
@@ -288,28 +288,28 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      *
      * @var mixed[]
      */
-    public $recPath_cache = array();
+    public $recPath_cache = [];
 
     /**
      * Fields to display for the current table
      *
      * @var string[]
      */
-    public $setFields = array();
+    public $setFields = [];
 
     /**
      * Used for tracking next/prev uids
      *
      * @var int[][]
      */
-    public $currentTable = array();
+    public $currentTable = [];
 
     /**
      * Used for tracking duplicate values of fields
      *
      * @var string[]
      */
-    public $duplicateStack = array();
+    public $duplicateStack = [];
 
     /**
      * @var array[] Module configuration
@@ -320,7 +320,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Override/add urlparameters in listUrl() method
      * @var string[]
      */
-    protected $overrideUrlParameters = array();
+    protected $overrideUrlParameters = [];
 
     /**
      * Array with before/after setting for tables
@@ -389,7 +389,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             }
         }
         // Get configuration of collapsed tables from user uc and merge with sanitized GP vars
-        $this->tablesCollapsed = is_array($backendUser->uc['moduleData']['list']) ? $backendUser->uc['moduleData']['list'] : array();
+        $this->tablesCollapsed = is_array($backendUser->uc['moduleData']['list']) ? $backendUser->uc['moduleData']['list'] : [];
         $collapseOverride = GeneralUtility::_GP('collapse');
         if (is_array($collapseOverride)) {
             foreach ($collapseOverride as $collapseTable => $collapseValue) {
@@ -504,10 +504,10 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                 if (is_array($this->setFields[$tableName])) {
                     $fields = array_intersect($fields, $this->setFields[$tableName]);
                 } else {
-                    $fields = array();
+                    $fields = [];
                 }
             } else {
-                $fields = array();
+                $fields = [];
             }
             // Find ID to use (might be different for "versioning_followPages" tables)
             if ($this->searchLevels === 0) {
@@ -543,12 +543,12 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $lang = $this->getLanguageService();
         // Setting form-elements, if applicable:
-        $formElements = array('', '');
+        $formElements = ['', ''];
         if ($formFields) {
-            $formElements = array('<form action="' . htmlspecialchars($this->listURL('', '-1', 'firstElementNumber,search_field')) . '" method="post">', '</form>');
+            $formElements = ['<form action="' . htmlspecialchars($this->listURL('', '-1', 'firstElementNumber,search_field')) . '" method="post">', '</form>'];
         }
         // Make level selector:
-        $opt = array();
+        $opt = [];
         $parts = explode('|', $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.enterSearchLevels'));
         foreach ($parts as $kv => $label) {
             $opt[] = '<option value="' . $kv . '"' . ($kv === $this->searchLevels ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
@@ -636,7 +636,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      */
     public function makeQueryArray($table, $id, $addWhere = '', $fieldList = '*')
     {
-        $hookObjectsArr = array();
+        $hookObjectsArr = [];
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list.inc']['makeQueryArray'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list.inc']['makeQueryArray'] as $classRef) {
                 $hookObjectsArr[] = GeneralUtility::getUserObj($classRef);
@@ -659,14 +659,14 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         // Adding search constraints:
         $search = $this->makeSearchString($table, $id);
         // Compiling query array:
-        $queryParts = array(
+        $queryParts = [
             'SELECT' => $fieldList,
             'FROM' => $table,
             'WHERE' => $this->pidSelect . ' ' . $pC . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table) . ' ' . $addWhere . ' ' . $search,
             'GROUPBY' => '',
             'ORDERBY' => $this->getDatabaseConnection()->stripOrderBy($orderBy),
             'LIMIT' => $limit
-        );
+        ];
         // Filter out records that are translated, if TSconfig mod.web_list.hideTranslations is set
         if ((in_array($table, GeneralUtility::trimExplode(',', $this->hideTranslations)) || $this->hideTranslations === '*') && !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) && $table !== 'pages_language_overlay') {
             $queryParts['WHERE'] .= ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=0 ';
@@ -674,12 +674,12 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         // Apply hook as requested in http://forge.typo3.org/issues/16634
         foreach ($hookObjectsArr as $hookObj) {
             if (method_exists($hookObj, 'makeQueryArray_post')) {
-                $_params = array(
+                $_params = [
                     'orderBy' => $orderBy,
                     'limit' => $limit,
                     'pC' => $pC,
                     'search' => $search
-                );
+                ];
                 $hookObj->makeQueryArray_post($queryParts, $this, $table, $id, $addWhere, $fieldList, $_params);
             }
         }
@@ -718,9 +718,9 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             $searchableFields = $this->getSearchFields($table);
             if (!empty($searchableFields)) {
                 if (MathUtility::canBeInterpretedAsInteger($this->searchString)) {
-                    $whereParts = array(
+                    $whereParts = [
                         'uid=' . $this->searchString
-                    );
+                    ];
                     foreach ($searchableFields as $fieldName) {
                         if (isset($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
                             $fieldConfig = &$GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
@@ -739,7 +739,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                         }
                     }
                 } else {
-                    $whereParts = array();
+                    $whereParts = [];
                     $db = $this->getDatabaseConnection();
                     $like = '\'%' . $db->quoteStr($db->escapeStrForLike($this->searchString, $table), $table) . '%\'';
                     foreach ($searchableFields as $fieldName) {
@@ -780,7 +780,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      */
     protected function getSearchFields($tableName)
     {
-        $fieldArray = array();
+        $fieldArray = [];
         $fieldListWasSet = false;
         // Get fields from ctrl section of TCA first
         if (isset($GLOBALS['TCA'][$tableName]['ctrl']['searchFields'])) {
@@ -789,12 +789,12 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         }
         // Call hook to add or change the list
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'])) {
-            $hookParameters = array(
+            $hookParameters = [
                 'tableHasSearchConfiguration' => $fieldListWasSet,
                 'tableName' => $tableName,
                 'searchFields' => &$fieldArray,
                 'searchString' => $this->searchString
-            );
+            ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'] as $hookFunction) {
                 GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
             }
@@ -915,7 +915,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      */
     public function listURL($altId = '', $table = '-1', $exclList = '')
     {
-        $urlParameters = array();
+        $urlParameters = [];
         if ((string)$altId !== '') {
             $urlParameters['id'] = $altId;
         } else {
@@ -988,7 +988,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
     {
         $backendUser = $this->getBackendUserAuthentication();
         // Init fieldlist array:
-        $fieldListArr = array();
+        $fieldListArr = [];
         // Check table:
         if (is_array($GLOBALS['TCA'][$table]) && isset($GLOBALS['TCA'][$table]['columns']) && is_array($GLOBALS['TCA'][$table]['columns'])) {
             if (isset($GLOBALS['TCA'][$table]['columns']) && is_array($GLOBALS['TCA'][$table]['columns'])) {
@@ -1047,12 +1047,12 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         $tree = GeneralUtility::makeInstance(PageTreeView::class);
         $tree->init('AND ' . $perms_clause);
         $tree->makeHTML = 0;
-        $tree->fieldArray = array('uid', 'php_tree_stop');
-        $idList = array();
+        $tree->fieldArray = ['uid', 'php_tree_stop'];
+        $idList = [];
 
         $allowedMounts = !$backendUser->isAdmin() && $id === 0
             ? $backendUser->returnWebmounts()
-            : array($id);
+            : [$id];
 
         foreach ($allowedMounts as $allowedMount) {
             $idList[] = $allowedMount;
@@ -1081,10 +1081,10 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                 $url = $this->listURL();
                 $editUserAccountUrl = BackendUtility::getModuleUrl(
                     'record_edit',
-                    array(
+                    [
                         'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
                         'returnUrl' => $url
-                    )
+                    ]
                 );
                 HttpUtility::redirect($editUserAccountUrl);
             }

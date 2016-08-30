@@ -26,10 +26,10 @@ class BackendFactory
      *
      * @var array
      */
-    protected static $availableBackends = array(
+    protected static $availableBackends = [
         PhpBackend::class,
         CommandLineBackend::class
-    );
+    ];
 
     /**
      * A flag that tells if the factory is initialized. This is to prevent

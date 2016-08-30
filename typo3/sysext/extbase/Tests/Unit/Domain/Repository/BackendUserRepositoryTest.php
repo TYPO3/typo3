@@ -39,7 +39,7 @@ class BackendUserRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         /** @var $fixture \TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository */
-        $fixture = $this->getMock(\TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository::class, array('setDefaultQuerySettings'), array($objectManager));
+        $fixture = $this->getMock(\TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository::class, ['setDefaultQuerySettings'], [$objectManager]);
         $querySettings = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
         $objectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)->will($this->returnValue($querySettings));
         $fixture->expects($this->once())->method('setDefaultQuerySettings')->with($querySettings);

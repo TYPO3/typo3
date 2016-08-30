@@ -66,7 +66,7 @@ class DataHandlerHook
      */
     protected function resetStageOfElements($stageId)
     {
-        $fields = array('t3ver_stage' => \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_EDIT_ID);
+        $fields = ['t3ver_stage' => \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_EDIT_ID];
         foreach ($this->getTcaTables() as $tcaTable) {
             if (BackendUtility::isTableWorkspaceEnabled($tcaTable)) {
                 $where = 't3ver_stage = ' . (int)$stageId;
@@ -85,7 +85,7 @@ class DataHandlerHook
      */
     protected function flushWorkspaceElements($workspaceId)
     {
-        $command = array();
+        $command = [];
         foreach ($this->getTcaTables() as $tcaTable) {
             if (BackendUtility::isTableWorkspaceEnabled($tcaTable)) {
                 $where = '1=1';
@@ -101,7 +101,7 @@ class DataHandlerHook
         }
         if (!empty($command)) {
             $tceMain = $this->getTceMain();
-            $tceMain->start(array(), $command);
+            $tceMain->start([], $command);
             $tceMain->process_cmdmap();
         }
     }

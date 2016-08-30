@@ -24,7 +24,7 @@ class AmbiguousCommandIdentifierException extends \TYPO3\CMS\Extbase\Mvc\Excepti
     /**
      * @var array<\TYPO3\CMS\Extbase\Mvc\Cli\Command>
      */
-    protected $matchingCommands = array();
+    protected $matchingCommands = [];
 
     /**
      * Overwrites parent constructor to be able to inject matching commands.

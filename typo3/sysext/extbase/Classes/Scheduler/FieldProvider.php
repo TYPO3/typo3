@@ -70,7 +70,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
         if ($this->task !== null) {
             $this->task->setScheduler();
         }
-        $fields = array();
+        $fields = [];
         $fields['action'] = $this->getCommandControllerActionField();
         if ($this->task !== null && $this->task->getCommandIdentifier()) {
             $command = $this->commandManager->getCommandByIdentifier($this->task->getCommandIdentifier());
@@ -116,10 +116,10 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
     protected function getCommandControllerActionDescriptionField()
     {
         $command = $this->commandManager->getCommandByIdentifier($this->task->getCommandIdentifier());
-        return array(
+        return [
             'code' => '',
             'label' => '<strong>' . $command->getDescription() . '</strong>'
-        );
+        ];
     }
 
     /**
@@ -130,7 +130,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
     protected function getCommandControllerActionField()
     {
         $commands = $this->commandManager->getAvailableCommands();
-        $options = array();
+        $options = [];
         foreach ($commands as $command) {
             if ($command->isInternal() === true || $command->isCliOnly() === true) {
                 continue;
@@ -157,10 +157,10 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
         }
         $name = 'action';
         $currentlySelectedCommand = $this->task !== null ? $this->task->getCommandIdentifier() : null;
-        return array(
+        return [
             'code' => $this->renderSelectField($name, $options, $currentlySelectedCommand),
             'label' => $this->getActionLabel()
-        );
+        ];
     }
 
     /**
@@ -173,17 +173,17 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
      */
     protected function getCommandControllerActionArgumentFields(array $argumentDefinitions)
     {
-        $fields = array();
+        $fields = [];
         $argumentValues = $this->task->getArguments();
         foreach ($argumentDefinitions as $argument) {
             $name = $argument->getName();
             $defaultValue = $this->getDefaultArgumentValue($argument);
             $this->task->addDefaultValue($name, $defaultValue);
             $value = isset($argumentValues[$name]) ? $argumentValues[$name] : $defaultValue;
-            $fields[$name] = array(
+            $fields[$name] = [
                 'code' => $this->renderField($argument, $value),
                 'label' => $this->getArgumentLabel($argument)
-            );
+            ];
         }
         return $fields;
     }
@@ -236,7 +236,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
     {
         $argumentName = $argument->getName();
         list($extensionName, $commandControllerName, $commandName) = explode(':', $this->task->getCommandIdentifier());
-        $path = array('command', $commandControllerName, $commandName, 'arguments', $argumentName);
+        $path = ['command', $commandControllerName, $commandName, 'arguments', $argumentName];
         $labelNameIndex = implode('.', $path);
         $label = $this->getLanguageLabel($labelNameIndex);
         if (!$label) {
@@ -297,9 +297,9 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
      */
     protected function renderSelectField($name, array $options, $selectedOptionValue)
     {
-        $html = array(
+        $html = [
             '<select class="form-control" name="tx_scheduler[task_extbase][' . htmlspecialchars($name) . ']">'
-        );
+        ];
         foreach ($options as $optionValue => $optionLabel) {
             $selected = $optionValue === $selectedOptionValue ? ' selected="selected"' : '';
             array_push($html, '<option title="test" value="' . htmlspecialchars($optionValue) . '"' . $selected . '>' . htmlspecialchars($optionLabel) . '</option>');

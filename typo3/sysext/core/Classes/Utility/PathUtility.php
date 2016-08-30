@@ -73,7 +73,7 @@ class PathUtility
         $sourcePath = rtrim(GeneralUtility::fixWindowsFilePath($sourcePath), '/');
         $targetPath = rtrim(GeneralUtility::fixWindowsFilePath($targetPath), '/');
         if ($sourcePath !== $targetPath) {
-            $commonPrefix = self::getCommonPrefix(array($sourcePath, $targetPath));
+            $commonPrefix = self::getCommonPrefix([$sourcePath, $targetPath]);
             if ($commonPrefix !== null && GeneralUtility::isAllowedAbsPath($commonPrefix)) {
                 $commonPrefixLength = strlen($commonPrefix);
                 $resolvedSourcePath = '';
@@ -106,7 +106,7 @@ class PathUtility
      */
     public static function getCommonPrefix(array $paths)
     {
-        $paths = array_map(array(\TYPO3\CMS\Core\Utility\GeneralUtility::class, 'fixWindowsFilePath'), $paths);
+        $paths = array_map([\TYPO3\CMS\Core\Utility\GeneralUtility::class, 'fixWindowsFilePath'], $paths);
         $commonPath = null;
         if (count($paths) === 1) {
             $commonPath = array_shift($paths);

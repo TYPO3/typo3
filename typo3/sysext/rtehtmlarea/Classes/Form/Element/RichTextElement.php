@@ -148,60 +148,60 @@ class RichTextElement extends AbstractFormElement
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'space' => 'space',
         'bar' => 'separator',
         'linebreak' => 'linebreak'
-    );
+    ];
 
     /**
      * Final toolbar array
      *
      * @var array
      */
-    protected $toolbar = array();
+    protected $toolbar = [];
 
     /**
      * Save the buttons for the toolbar
      *
      * @var array
      */
-    protected $toolbarOrderArray = array();
+    protected $toolbarOrderArray = [];
 
     /**
      * Plugin buttons
      *
      * @var array
      */
-    protected $pluginButton = array();
+    protected $pluginButton = [];
 
     /**
      * Plugin labels
      *
      * @var array
      */
-    protected $pluginLabel = array();
+    protected $pluginLabel = [];
 
     /**
      * Array of plugin id's enabled in the current RTE editing area
      *
      * @var array
      */
-    protected $pluginEnabledArray = array();
+    protected $pluginEnabledArray = [];
 
     /**
      * Cumulative array of plugin id's enabled so far in any of the RTE editing areas of the form
      *
      * @var array
      */
-    protected $pluginEnabledCumulativeArray = array();
+    protected $pluginEnabledCumulativeArray = [];
 
     /**
      * Array of registered plugins indexed by their plugin Id's
      *
      * @var array
      */
-    protected $registeredPlugins = array();
+    protected $registeredPlugins = [];
 
     /**
      * This will render a <textarea> OR RTE area form field,
@@ -272,7 +272,7 @@ class RichTextElement extends AbstractFormElement
         $html = $this->getMainHtml();
 
         $this->resultArray['html'] = $this->renderWizards(
-            array($html),
+            [$html],
             $parameterArray['fieldConf']['config']['wizards'],
             $table,
             $row,
@@ -336,7 +336,7 @@ class RichTextElement extends AbstractFormElement
 
         $value = $this->transformDatabaseContentToEditor($this->data['parameterArray']['itemFormElValue']);
 
-        $result = array();
+        $result = [];
         // The hidden field tells the DataHandler that processing should be done on this value.
         $result[] = '<input type="hidden" name="' . htmlspecialchars($triggerFieldName) . '" value="RTE" />';
         $result[] = '<div id="pleasewait' . $this->domIdentifier . '" class="pleasewait" style="display: block;" >';
@@ -364,7 +364,7 @@ class RichTextElement extends AbstractFormElement
                 if (is_array($pluginObjectConfiguration) && isset($pluginObjectConfiguration['objectReference'])) {
                     /** @var RteHtmlAreaApi $plugin */
                     $plugin = GeneralUtility::makeInstance($pluginObjectConfiguration['objectReference']);
-                    $configuration = array(
+                    $configuration = [
                         'language' => $this->language,
                         'contentTypo3Language' => $this->contentTypo3Language,
                         'contentISOLanguage' => $this->contentISOLanguage,
@@ -373,7 +373,7 @@ class RichTextElement extends AbstractFormElement
                         'client' => $this->client,
                         'thisConfig' => $this->processedRteConfiguration,
                         'specConf' => $this->defaultExtras,
-                    );
+                    ];
                     if ($plugin->main($configuration)) {
                         $this->registeredPlugins[$pluginId] = $plugin;
                         // Override buttons from previously registered plugins
@@ -393,7 +393,7 @@ class RichTextElement extends AbstractFormElement
             }
         }
         // Process overrides
-        $hidePlugins = array();
+        $hidePlugins = [];
         foreach ($this->registeredPlugins as $pluginId => $plugin) {
             /** @var RteHtmlAreaApi $plugin */
             if ($plugin->addsButtons() && !$this->pluginButton[$pluginId]) {
@@ -462,7 +462,7 @@ class RichTextElement extends AbstractFormElement
         $pList = is_array($this->defaultExtras['richtext']['parameters']) ? implode(',', $this->defaultExtras['richtext']['parameters']) : '';
         if ($pList !== '*') {
             // If not all
-            $show = is_array($this->defaultExtras['richtext']['parameters']) ? $this->defaultExtras['richtext']['parameters'] : array();
+            $show = is_array($this->defaultExtras['richtext']['parameters']) ? $this->defaultExtras['richtext']['parameters'] : [];
             if ($this->processedRteConfiguration['showButtons']) {
                 if (!GeneralUtility::inList($this->processedRteConfiguration['showButtons'], '*')) {
                     $show = array_unique(array_merge($show, GeneralUtility::trimExplode(',', $this->processedRteConfiguration['showButtons'], true)));
@@ -487,7 +487,7 @@ class RichTextElement extends AbstractFormElement
             $show = array_intersect($show, GeneralUtility::trimExplode(',', $RTEkeyList, true));
         }
         // Hiding buttons of disabled plugins
-        $hideButtons = array('space', 'bar', 'linebreak');
+        $hideButtons = ['space', 'bar', 'linebreak'];
         foreach ($this->pluginButton as $pluginId => $buttonList) {
             if (!$this->isPluginEnabled($pluginId)) {
                 $buttonArray = GeneralUtility::trimExplode(',', $buttonList, true);
@@ -527,7 +527,7 @@ class RichTextElement extends AbstractFormElement
     protected function setPlugins()
     {
         // Disabling a plugin that adds buttons if none of its buttons is in the toolbar
-        $hidePlugins = array();
+        $hidePlugins = [];
         foreach ($this->pluginButton as $pluginId => $buttonList) {
             /** @var RteHtmlAreaApi $plugin */
             $plugin = $this->registeredPlugins[$pluginId];
@@ -546,7 +546,7 @@ class RichTextElement extends AbstractFormElement
         }
         $this->pluginEnabledArray = array_diff($this->pluginEnabledArray, $hidePlugins);
         // Hiding labels of disabled plugins
-        $hideLabels = array();
+        $hideLabels = [];
         foreach ($this->pluginLabel as $pluginId => $label) {
             if (!$this->isPluginEnabled($pluginId)) {
                 $hideLabels[] = $label;
@@ -554,7 +554,7 @@ class RichTextElement extends AbstractFormElement
         }
         $this->toolbar = array_diff($this->toolbar, $hideLabels);
         // Adding plugins declared as prerequisites by enabled plugins
-        $requiredPlugins = array();
+        $requiredPlugins = [];
         foreach ($this->registeredPlugins as $pluginId => $plugin) {
             /** @var RteHtmlAreaApi $plugin */
             if ($this->isPluginEnabled($pluginId)) {
@@ -584,7 +584,7 @@ class RichTextElement extends AbstractFormElement
      */
     protected function loadRequireModulesForRTE()
     {
-        $this->resultArray['requireJsModules'] = array();
+        $this->resultArray['requireJsModules'] = [];
         $this->resultArray['requireJsModules'][] = 'TYPO3/CMS/Rtehtmlarea/HTMLArea/HTMLArea';
         foreach ($this->pluginEnabledCumulativeArray as $pluginId) {
             /** @var RteHtmlAreaApi $plugin */
@@ -648,7 +648,7 @@ class RichTextElement extends AbstractFormElement
     {
         $backendUser = $this->getBackendUserAuthentication();
 
-        $jsArray = array();
+        $jsArray = [];
         $jsArray[] = 'if (typeof configureEditorInstance === "undefined") {';
         $jsArray[] = '	configureEditorInstance = new Object();';
         $jsArray[] = '}';
@@ -738,7 +738,7 @@ class RichTextElement extends AbstractFormElement
         }
 
         // Setting array of content css files if specified in the RTE config
-        $versionNumberedFileNames = array();
+        $versionNumberedFileNames = [];
         $contentCssFileNames = $this->getContentCssFileNames();
         foreach ($contentCssFileNames as $contentCssFileName) {
             $versionNumberedFileNames[] = GeneralUtility::createVersionNumberedFilename($contentCssFileName);
@@ -776,11 +776,11 @@ class RichTextElement extends AbstractFormElement
      */
     protected function getContentCssFileNames()
     {
-        $contentCss = is_array($this->processedRteConfiguration['contentCSS.']) ? $this->processedRteConfiguration['contentCSS.'] : array();
+        $contentCss = is_array($this->processedRteConfiguration['contentCSS.']) ? $this->processedRteConfiguration['contentCSS.'] : [];
         if (isset($this->processedRteConfiguration['contentCSS'])) {
             $contentCss[] = trim($this->processedRteConfiguration['contentCSS']);
         }
-        $contentCssFiles = array();
+        $contentCssFiles = [];
         if (!empty($contentCss)) {
             foreach ($contentCss as $contentCssKey => $contentCssfile) {
                 $fileName = trim($contentCssfile);
@@ -816,17 +816,17 @@ class RichTextElement extends AbstractFormElement
     {
         $RTEProperties = $this->vanillaRteTsConfig['properties'];
         // Declare sub-arrays
-        $classesArray = array(
-            'labels' => array(),
-            'values' => array(),
-            'noShow' => array(),
-            'alternating' => array(),
-            'counting' => array(),
-            'selectable' => array(),
-            'requires' => array(),
-            'requiredBy' => array(),
-            'XOR' => array()
-        );
+        $classesArray = [
+            'labels' => [],
+            'values' => [],
+            'noShow' => [],
+            'alternating' => [],
+            'counting' => [],
+            'selectable' => [],
+            'requires' => [],
+            'requiredBy' => [],
+            'XOR' => []
+        ];
         $JSClassesArray = '';
         // Scanning the list of classes if specified in the RTE config
         if (is_array($RTEProperties['classes.'])) {
@@ -868,7 +868,7 @@ class RichTextElement extends AbstractFormElement
             foreach ($requiringClasses as $className) {
                 foreach ($classesArray['requires'][$className] as $requiredClass) {
                     if (!is_array($classesArray['requiredBy'][$requiredClass])) {
-                        $classesArray['requiredBy'][$requiredClass] = array();
+                        $classesArray['requiredBy'][$requiredClass] = [];
                     }
                     if (!in_array($className, $classesArray['requiredBy'][$requiredClass])) {
                         $classesArray['requiredBy'][$requiredClass][] = $className;
@@ -934,8 +934,8 @@ class RichTextElement extends AbstractFormElement
     {
         $convertedConf = GeneralUtility::removeDotsFromTS($conf);
         return str_replace(
-            array(':"0"', ':"\\/^(', ')$\\/i"', ':"\\/^(', ')$\\/"', '[]'),
-            array(':false', ':/^(', ')$/i', ':/^(', ')$/', '{}'), json_encode($convertedConf)
+            [':"0"', ':"\\/^(', ')$\\/i"', ':"\\/^(', ')$\\/"', '[]'],
+            [':false', ':/^(', ')$/i', ':/^(', ')$/', '{}'], json_encode($convertedConf)
         );
     }
 
@@ -979,9 +979,9 @@ class RichTextElement extends AbstractFormElement
      */
     protected function createJavaScriptLanguageLabelsFromFiles()
     {
-        $labelArray = array();
+        $labelArray = [];
         // Load labels of 3 base files into JS
-        foreach (array('tooltips', 'msg', 'dialogs') as $identifier) {
+        foreach (['tooltips', 'msg', 'dialogs'] as $identifier) {
             $fileName = 'EXT:rtehtmlarea/Resources/Private/Language/locallang_' . $identifier . '.xlf';
             $newLabels = $this->getMergedLabelsFromFile($fileName);
             if (!empty($newLabels)) {
@@ -1027,7 +1027,7 @@ class RichTextElement extends AbstractFormElement
                 $localizationArray[$this->language] = $localizationArray['default'];
             }
         } else {
-            $localizationArray = array();
+            $localizationArray = [];
         }
         return $localizationArray[$this->language];
     }
@@ -1040,11 +1040,11 @@ class RichTextElement extends AbstractFormElement
     protected function getJSToolbarArray()
     {
         // The toolbar array
-        $toolbar = array();
+        $toolbar = [];
         // The current row;  a "linebreak" ends the current row
-        $row = array();
+        $row = [];
         // The current group; each group is between "bar"s; a "linebreak" ends the current group
-        $group = array();
+        $group = [];
         // Process each toolbar item in the toolbar order list
         foreach ($this->toolbarOrderArray as $item) {
             switch ($item) {
@@ -1052,18 +1052,18 @@ class RichTextElement extends AbstractFormElement
                     // Add row to toolbar if not empty
                     if (!empty($group)) {
                         $row[] = $group;
-                        $group = array();
+                        $group = [];
                     }
                     if (!empty($row)) {
                         $toolbar[] = $row;
-                        $row = array();
+                        $row = [];
                     }
                     break;
                 case 'bar':
                     // Add group to row if not empty
                     if (!empty($group)) {
                         $row[] = $group;
-                        $group = array();
+                        $group = [];
                     }
                     break;
                 case 'space':
@@ -1123,7 +1123,7 @@ class RichTextElement extends AbstractFormElement
      */
     protected function addOnSubmitJavaScriptCode()
     {
-        $onSubmitCode = array();
+        $onSubmitCode = [];
         $onSubmitCode[] = 'if (RTEarea[' . GeneralUtility::quoteJSvalue($this->domIdentifier) . ']) {';
         $onSubmitCode[] =    'document.editform[' . GeneralUtility::quoteJSvalue($this->data['parameterArray']['itemFormElName']) . '].value = RTEarea[' . GeneralUtility::quoteJSvalue($this->domIdentifier) . '].editor.getHTML();';
         $onSubmitCode[] = '} else {';
@@ -1152,7 +1152,7 @@ class RichTextElement extends AbstractFormElement
         $userAgent = GeneralUtility::getIndpEnv('HTTP_USER_AGENT');
         $browserInfo = ClientUtility::getBrowserInfo($userAgent);
         // Known engines: order is not irrelevant!
-        $knownEngines = array('opera', 'msie', 'gecko', 'webkit');
+        $knownEngines = ['opera', 'msie', 'gecko', 'webkit'];
         if (is_array($browserInfo['all'])) {
             foreach ($knownEngines as $engine) {
                 if ($browserInfo['all'][$engine]) {
@@ -1254,7 +1254,7 @@ class RichTextElement extends AbstractFormElement
     protected function RTEtsConfigParams()
     {
         $parameters = BackendUtility::getSpecConfParametersFromArray($this->defaultExtras['rte_transform']['parameters']);
-        $result = array(
+        $result = [
             $this->data['tableName'],
             $this->data['databaseRow']['uid'],
             $this->data['fieldName'],
@@ -1262,7 +1262,7 @@ class RichTextElement extends AbstractFormElement
             $this->data['recordTypeValue'],
             $this->pidOfPageRecord,
             $parameters['imgpath'],
-        );
+        ];
         return implode(':', $result);
     }
 

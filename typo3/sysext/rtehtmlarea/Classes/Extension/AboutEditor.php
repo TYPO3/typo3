@@ -40,9 +40,9 @@ class AboutEditor extends RteHtmlAreaApi
      *
      * @var array
      */
-    protected $convertToolbarForHtmlAreaArray = array(
+    protected $convertToolbarForHtmlAreaArray = [
         'about' => 'About'
-    );
+    ];
 
     /**
      * Return JS configuration of the htmlArea plugins registered by the extension

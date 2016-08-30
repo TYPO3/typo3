@@ -97,7 +97,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
         $commandIdentifier = trim(array_shift($rawCommandLineArguments));
         try {
             $command = $this->commandManager->getCommandByIdentifier($commandIdentifier);
-            $this->configurationManager->setConfiguration(array('extensionName' => $command->getExtensionName()));
+            $this->configurationManager->setConfiguration(['extensionName' => $command->getExtensionName()]);
         } catch (\TYPO3\CMS\Extbase\Mvc\Exception\CommandException $exception) {
             $request->setArgument('exception', $exception);
             $request->setControllerCommandName('error');
@@ -125,19 +125,19 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function parseRawCommandLineArguments(array $rawCommandLineArguments, $controllerObjectName, $controllerCommandName)
     {
-        $commandLineArguments = array();
-        $exceedingArguments = array();
+        $commandLineArguments = [];
+        $exceedingArguments = [];
         $commandMethodName = $controllerCommandName . 'Command';
         $commandMethodParameters = $this->reflectionService->getMethodParameters($controllerObjectName, $commandMethodName);
-        $requiredArguments = array();
-        $optionalArguments = array();
-        $argumentNames = array();
+        $requiredArguments = [];
+        $optionalArguments = [];
+        $argumentNames = [];
         foreach ($commandMethodParameters as $parameterName => $parameterInfo) {
             $argumentNames[] = $parameterName;
             if ($parameterInfo['optional'] === false) {
-                $requiredArguments[strtolower($parameterName)] = array('parameterName' => $parameterName, 'type' => $parameterInfo['type']);
+                $requiredArguments[strtolower($parameterName)] = ['parameterName' => $parameterName, 'type' => $parameterInfo['type']];
             } else {
-                $optionalArguments[strtolower($parameterName)] = array('parameterName' => $parameterName, 'type' => $parameterInfo['type']);
+                $optionalArguments[strtolower($parameterName)] = ['parameterName' => $parameterName, 'type' => $parameterInfo['type']];
             }
         }
         $decidedToUseNamedArguments = false;
@@ -182,7 +182,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
             }
             $argumentIndex++;
         }
-        return array($commandLineArguments, $exceedingArguments);
+        return [$commandLineArguments, $exceedingArguments];
     }
 
     /**
@@ -216,10 +216,10 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
                 if ($expectedArgumentType !== 'boolean') {
                     return $possibleValue;
                 }
-                if (array_search($possibleValue, array('on', '1', 'y', 'yes', 'true', 'TRUE')) !== false) {
+                if (array_search($possibleValue, ['on', '1', 'y', 'yes', 'true', 'TRUE']) !== false) {
                     return true;
                 }
-                if (array_search($possibleValue, array('off', '0', 'n', 'no', 'false', 'FALSE')) !== false) {
+                if (array_search($possibleValue, ['off', '0', 'n', 'no', 'false', 'FALSE']) !== false) {
                     return false;
                 }
                 array_unshift($rawCommandLineArguments, $possibleValue);

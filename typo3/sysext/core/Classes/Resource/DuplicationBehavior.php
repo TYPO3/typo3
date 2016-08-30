@@ -49,12 +49,12 @@ class DuplicationBehavior extends \TYPO3\CMS\Core\Type\Enumeration
      * @var string[]
      * @deprecated
      */
-    protected static $legacyValueMap = array(
+    protected static $legacyValueMap = [
         '1' => self::REPLACE,
         'overrideExistingFile' => self::REPLACE,
         'renameNewFile' => self::RENAME,
         'changeName' => self::RENAME
-    );
+    ];
 
     /**
      * @param mixed $value

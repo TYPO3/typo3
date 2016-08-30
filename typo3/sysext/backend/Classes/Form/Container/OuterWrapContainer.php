@@ -112,7 +112,7 @@ class OuterWrapContainer extends AbstractContainer
             }
         }
 
-        $html = array();
+        $html = [];
         $html[] = '<h1>' . $pageTitle . '</h1>';
         $html[] = '<div class="typo3-TCEforms">';
         $html[] =    $childHtml;

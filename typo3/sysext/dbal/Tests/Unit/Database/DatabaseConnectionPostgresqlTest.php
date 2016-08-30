@@ -31,30 +31,30 @@ class DatabaseConnectionPostgresqlTest extends AbstractTestCase
      */
     protected function setUp()
     {
-        $configuration = array(
-            'handlerCfg' => array(
-                '_DEFAULT' => array(
+        $configuration = [
+            'handlerCfg' => [
+                '_DEFAULT' => [
                     'type' => 'adodb',
-                    'config' => array(
+                    'config' => [
                         'driver' => 'postgres',
-                    ),
-                ),
-            ),
-            'mapping' => array(
-                'tx_templavoila_tmplobj' => array(
-                    'mapFieldNames' => array(
+                    ],
+                ],
+            ],
+            'mapping' => [
+                'tx_templavoila_tmplobj' => [
+                    'mapFieldNames' => [
                         'datastructure' => 'ds',
-                    ),
-                ),
-                'Members' => array(
-                    'mapFieldNames' => array(
+                    ],
+                ],
+                'Members' => [
+                    'mapFieldNames' => [
                         'pid' => '0',
                         'cruser_id' => '1',
                         'uid' => 'MemberID',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         $this->subject = $this->prepareSubject('postgres7', $configuration);
     }
 
@@ -187,7 +187,7 @@ class DatabaseConnectionPostgresqlTest extends AbstractTestCase
         $this->assertInternalType('array', $components);
 
         $result = $this->subject->SQLparser->compileSQL($components);
-        $expected = array('CREATE INDEX "dd81ee97_parent" ON "sys_collection" ("pid", "deleted")');
+        $expected = ['CREATE INDEX "dd81ee97_parent" ON "sys_collection" ("pid", "deleted")'];
         $this->assertSame($expected, $this->cleanSql($result));
     }
 
@@ -202,7 +202,7 @@ class DatabaseConnectionPostgresqlTest extends AbstractTestCase
         $this->assertInternalType('array', $components);
 
         $result = $this->subject->SQLparser->compileSQL($components);
-        $expected = array('ALTER TABLE "sys_file" ADD COLUMN "uid" SERIAL');
+        $expected = ['ALTER TABLE "sys_file" ADD COLUMN "uid" SERIAL'];
         $this->assertSame($expected, $this->cleanSql($result));
     }
 
@@ -217,7 +217,7 @@ class DatabaseConnectionPostgresqlTest extends AbstractTestCase
         $this->assertInternalType('array', $components);
 
         $result = $this->subject->SQLparser->compileSQL($components);
-        $expected = array('DROP INDEX "dd81ee97_parent"');
+        $expected = ['DROP INDEX "dd81ee97_parent"'];
         $this->assertSame($expected, $this->cleanSql($result));
     }
 
@@ -294,14 +294,14 @@ class DatabaseConnectionPostgresqlTest extends AbstractTestCase
      */
     public function equivalentFieldTypeDataProvider()
     {
-        return array(
-            array('int(11) NOT NULL default \'0\'', 'int(11) NOT NULL default \'0\''),
-            array('int(10) NOT NULL', 'int(11) NOT NULL'),
-            array('tinyint(3)', 'smallint(6)'),
-            array('bigint(20) NOT NULL', 'bigint(20) NOT NULL'),
-            array('tinytext NOT NULL', 'varchar(255) NOT NULL default \'\''),
-            array('tinytext', 'varchar(255) default NULL'),
-            array('mediumtext', 'longtext')
-        );
+        return [
+            ['int(11) NOT NULL default \'0\'', 'int(11) NOT NULL default \'0\''],
+            ['int(10) NOT NULL', 'int(11) NOT NULL'],
+            ['tinyint(3)', 'smallint(6)'],
+            ['bigint(20) NOT NULL', 'bigint(20) NOT NULL'],
+            ['tinytext NOT NULL', 'varchar(255) NOT NULL default \'\''],
+            ['tinytext', 'varchar(255) default NULL'],
+            ['mediumtext', 'longtext']
+        ];
     }
 }

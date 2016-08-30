@@ -28,9 +28,9 @@ class CoreVersionServiceTest extends UnitTestCase
     public function updateVersionMatrixStoresVersionMatrixInRegistry()
     {
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(CoreVersionService::class, array('fetchVersionMatrixFromRemote'), array(), '', false);
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['fetchVersionMatrixFromRemote'], [], '', false);
         $registry = $this->getMock(Registry::class);
-        $versionArray = array(7 => []);
+        $versionArray = [7 => []];
         $registry->expects($this->once())->method('set')->with('TYPO3.CMS.Install', 'coreVersionMatrix', $versionArray);
         $instance->_set('registry', $registry);
         $instance->expects($this->once())->method('fetchVersionMatrixFromRemote')->will($this->returnValue($versionArray));
@@ -43,12 +43,12 @@ class CoreVersionServiceTest extends UnitTestCase
     public function updateVersionMatrixRemovesOldReleasesFromMatrix()
     {
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(CoreVersionService::class, array('fetchVersionMatrixFromRemote'), array(), '', false);
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['fetchVersionMatrixFromRemote'], [], '', false);
         $registry = $this->getMock(Registry::class);
-        $versionArray = array(
-            '7' => array(),
-            '6.2' => array(),
-        );
+        $versionArray = [
+            '7' => [],
+            '6.2' => [],
+        ];
         $registry
             ->expects($this->once())
             ->method('set')
@@ -64,7 +64,7 @@ class CoreVersionServiceTest extends UnitTestCase
     public function isInstalledVersionAReleasedVersionReturnsTrueForNonDevelopmentVersion()
     {
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(CoreVersionService::class, array('getInstalledVersion'), array(), '', false);
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
         $instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
         $this->assertTrue($instance->isInstalledVersionAReleasedVersion());
     }
@@ -75,7 +75,7 @@ class CoreVersionServiceTest extends UnitTestCase
     public function isInstalledVersionAReleasedVersionReturnsFalseForDevelopmentVersion()
     {
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(CoreVersionService::class, array('getInstalledVersion'), array(), '', false);
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
         $instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('7.4-dev'));
         $this->assertFalse($instance->isInstalledVersionAReleasedVersion());
     }
@@ -89,18 +89,18 @@ class CoreVersionServiceTest extends UnitTestCase
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(
             CoreVersionService::class,
-            array('getVersionMatrix', 'getMajorVersion', 'ensureVersionExistsInMatrix'),
-            array(),
+            ['getVersionMatrix', 'getMajorVersion', 'ensureVersionExistsInMatrix'],
+            [],
             '',
             false
         );
-        $versionMatrix = array(
-            '7' => array(
-                'releases' => array(
-                    '7.2.0' => array(),
-                ),
-            ),
-        );
+        $versionMatrix = [
+            '7' => [
+                'releases' => [
+                    '7.2.0' => [],
+                ],
+            ],
+        ];
         $instance->expects($this->once())->method('getMajorVersion')->will($this->returnValue('7'));
         $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue($versionMatrix));
         $this->assertTrue($instance->getTarGzSha1OfVersion('7.2.0'));
@@ -115,8 +115,8 @@ class CoreVersionServiceTest extends UnitTestCase
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(
             CoreVersionService::class,
-            array('getVersionMatrix', 'getMajorVersion', 'ensureVersionExistsInMatrix'),
-            array(),
+            ['getVersionMatrix', 'getMajorVersion', 'ensureVersionExistsInMatrix'],
+            [],
             '',
             false
         );
@@ -135,25 +135,25 @@ class CoreVersionServiceTest extends UnitTestCase
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(
             CoreVersionService::class,
-            array('getVersionMatrix', 'getInstalledVersion'),
-            array(),
+            ['getVersionMatrix', 'getInstalledVersion'],
+            [],
             '',
             false
         );
-        $versionMatrix = array(
-            '7' => array(
-                'releases' => array(
-                    '7.2.1' => array(
+        $versionMatrix = [
+            '7' => [
+                'releases' => [
+                    '7.2.1' => [
                         'type' => 'security',
                         'date' => '2013-12-01 18:24:25 UTC',
-                    ),
-                    '7.2.0' => array(
+                    ],
+                    '7.2.0' => [
                         'type' => 'regular',
                         'date' => '2013-11-01 18:24:25 UTC',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue($versionMatrix));
         $instance->expects($this->any())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
         $this->assertTrue($instance->isYoungerPatchReleaseAvailable());
@@ -169,25 +169,25 @@ class CoreVersionServiceTest extends UnitTestCase
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(
             CoreVersionService::class,
-            array('getVersionMatrix', 'getInstalledVersion'),
-            array(),
+            ['getVersionMatrix', 'getInstalledVersion'],
+            [],
             '',
             false
         );
-        $versionMatrix = array(
-            '7' => array(
-                'releases' => array(
-                    '7.2.0' => array(
+        $versionMatrix = [
+            '7' => [
+                'releases' => [
+                    '7.2.0' => [
                         'type' => 'regular',
                         'date' => '2013-12-01 18:24:25 UTC',
-                    ),
-                    '7.1.0' => array(
+                    ],
+                    '7.1.0' => [
                         'type' => 'regular',
                         'date' => '2013-11-01 18:24:25 UTC',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue($versionMatrix));
         $instance->expects($this->any())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
         $this->assertFalse($instance->isYoungerPatchReleaseAvailable());
@@ -203,25 +203,25 @@ class CoreVersionServiceTest extends UnitTestCase
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(
             CoreVersionService::class,
-            array('getVersionMatrix', 'getInstalledVersion'),
-            array(),
+            ['getVersionMatrix', 'getInstalledVersion'],
+            [],
             '',
             false
         );
-        $versionMatrix = array(
-            '7' => array(
-                'releases' => array(
-                    '7.3.0' => array(
+        $versionMatrix = [
+            '7' => [
+                'releases' => [
+                    '7.3.0' => [
                         'type' => 'development',
                         'date' => '2013-12-01 18:24:25 UTC',
-                    ),
-                    '7.2.0' => array(
+                    ],
+                    '7.2.0' => [
                         'type' => 'regular',
                         'date' => '2013-11-01 18:24:25 UTC',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue($versionMatrix));
         $instance->expects($this->any())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
         $this->assertFalse($instance->isYoungerPatchReleaseAvailable());
@@ -237,25 +237,25 @@ class CoreVersionServiceTest extends UnitTestCase
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(
             CoreVersionService::class,
-            array('getVersionMatrix', 'getInstalledVersion'),
-            array(),
+            ['getVersionMatrix', 'getInstalledVersion'],
+            [],
             '',
             false
         );
-        $versionMatrix = array(
-            '7' => array(
-                'releases' => array(
-                    '7.3.0' => array(
+        $versionMatrix = [
+            '7' => [
+                'releases' => [
+                    '7.3.0' => [
                         'type' => 'development',
                         'date' => '2013-12-01 18:24:25 UTC',
-                    ),
-                    '7.2.0' => array(
+                    ],
+                    '7.2.0' => [
                         'type' => 'regular',
                         'date' => '2013-11-01 18:24:25 UTC',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue($versionMatrix));
         $instance->expects($this->any())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
         $this->assertTrue($instance->isYoungerPatchDevelopmentReleaseAvailable());
@@ -271,25 +271,25 @@ class CoreVersionServiceTest extends UnitTestCase
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(
             CoreVersionService::class,
-            array('getVersionMatrix', 'getInstalledVersion'),
-            array(),
+            ['getVersionMatrix', 'getInstalledVersion'],
+            [],
             '',
             false
         );
-        $versionMatrix = array(
-            '7' => array(
-                'releases' => array(
-                    '7.3.0' => array(
+        $versionMatrix = [
+            '7' => [
+                'releases' => [
+                    '7.3.0' => [
                         'type' => 'security',
                         'date' => '2013-12-01 18:24:25 UTC',
-                    ),
-                    '7.2.0' => array(
+                    ],
+                    '7.2.0' => [
                         'type' => 'regular',
                         'date' => '2013-11-01 18:24:25 UTC',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue($versionMatrix));
         $instance->expects($this->any())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
         $this->assertTrue($instance->isUpdateSecurityRelevant());
@@ -305,25 +305,25 @@ class CoreVersionServiceTest extends UnitTestCase
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(
             CoreVersionService::class,
-            array('getVersionMatrix', 'getInstalledVersion'),
-            array(),
+            ['getVersionMatrix', 'getInstalledVersion'],
+            [],
             '',
             false
         );
-        $versionMatrix = array(
-            '7' => array(
-                'releases' => array(
-                    '7.3.0' => array(
+        $versionMatrix = [
+            '7' => [
+                'releases' => [
+                    '7.3.0' => [
                         'type' => 'regular',
                         'date' => '2013-12-01 18:24:25 UTC',
-                    ),
-                    '7.2.0' => array(
+                    ],
+                    '7.2.0' => [
                         'type' => 'regular',
                         'date' => '2013-11-01 18:24:25 UTC',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         $instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue($versionMatrix));
         $instance->expects($this->any())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
         $this->assertFalse($instance->isUpdateSecurityRelevant());
@@ -335,7 +335,7 @@ class CoreVersionServiceTest extends UnitTestCase
     public function getInstalledMajorVersionFetchesInstalledVersionNumber()
     {
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(CoreVersionService::class, array('getInstalledVersion'), array(), '', false);
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
         $instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
         $this->assertSame('7', $instance->_call('getInstalledMajorVersion'));
     }
@@ -345,20 +345,20 @@ class CoreVersionServiceTest extends UnitTestCase
      */
     public function getMajorVersionDataProvider()
     {
-        return array(
-            '7.2' => array(
+        return [
+            '7.2' => [
                 '7.2.0',
                 '7',
-            ),
-            '7.4-dev' => array(
+            ],
+            '7.4-dev' => [
                 '7.4-dev',
                 '7',
-            ),
-            '4.5' => array(
+            ],
+            '4.5' => [
                 '4.5.40',
                 '4',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -371,7 +371,7 @@ class CoreVersionServiceTest extends UnitTestCase
     public function getMajorVersionReturnsCorrectMajorVersion($version, $expectedMajor)
     {
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(CoreVersionService::class, array('dummy'), array(), '', false);
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['dummy'], [], '', false);
         $this->assertSame($expectedMajor, $instance->_call('getMajorVersion', $version));
     }
 
@@ -382,7 +382,7 @@ class CoreVersionServiceTest extends UnitTestCase
     public function getVersionMatrixThrowsExceptionIfVersionMatrixIsNotYetSetInRegistry()
     {
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(CoreVersionService::class, array('fetchVersionMatrixFromRemote'), array(), '', false);
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['fetchVersionMatrixFromRemote'], [], '', false);
         $registry = $this->getMock(Registry::class);
         $registry->expects($this->once())->method('get')->will($this->returnValue(null));
         $instance->_set('registry', $registry);
@@ -395,9 +395,9 @@ class CoreVersionServiceTest extends UnitTestCase
     public function getVersionMatrixReturnsMatrixFromRegistry()
     {
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(CoreVersionService::class, array('fetchVersionMatrixFromRemote'), array(), '', false);
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['fetchVersionMatrixFromRemote'], [], '', false);
         $registry = $this->getMock(Registry::class);
-        $versionArray = array($this->getUniqueId());
+        $versionArray = [$this->getUniqueId()];
         $registry->expects($this->once())->method('get')->will($this->returnValue($versionArray));
         $instance->_set('registry', $registry);
         $this->assertSame($versionArray, $instance->_call('getVersionMatrix'));
@@ -409,18 +409,18 @@ class CoreVersionServiceTest extends UnitTestCase
      */
     public function getReleaseTimestampOfVersionThrowsExceptionIfReleaseDateIsNotDefined()
     {
-        $versionMatrix = array(
-            '7' => array(
-                'releases' => array(
-                    '7.2.0' => array()
-                ),
-            ),
-        );
+        $versionMatrix = [
+            '7' => [
+                'releases' => [
+                    '7.2.0' => []
+                ],
+            ],
+        ];
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(
             CoreVersionService::class,
-            array('getVersionMatrix', 'getMajorVersion', 'ensureVersionExistsInMatrix'),
-            array(),
+            ['getVersionMatrix', 'getMajorVersion', 'ensureVersionExistsInMatrix'],
+            [],
             '',
             false
         );
@@ -438,8 +438,8 @@ class CoreVersionServiceTest extends UnitTestCase
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(
             CoreVersionService::class,
-            array('getVersionMatrix', 'getMajorVersion', 'ensureVersionExistsInMatrix'),
-            array(),
+            ['getVersionMatrix', 'getMajorVersion', 'ensureVersionExistsInMatrix'],
+            [],
             '',
             false
         );
@@ -458,8 +458,8 @@ class CoreVersionServiceTest extends UnitTestCase
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(
             CoreVersionService::class,
-            array('getVersionMatrix', 'getMajorVersion'),
-            array(),
+            ['getVersionMatrix', 'getMajorVersion'],
+            [],
             '',
             false
         );
@@ -478,8 +478,8 @@ class CoreVersionServiceTest extends UnitTestCase
         /** @var $instance CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(
             CoreVersionService::class,
-            array('getVersionMatrix', 'getMajorVersion'),
-            array(),
+            ['getVersionMatrix', 'getMajorVersion'],
+            [],
             '',
             false
         );

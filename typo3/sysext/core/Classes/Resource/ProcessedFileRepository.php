@@ -135,7 +135,7 @@ class ProcessedFileRepository extends AbstractRepository
             $insertFields = $this->cleanUnavailableColumns($insertFields);
             $this->databaseConnection->exec_INSERTquery($this->table, $insertFields);
             $uid = $this->databaseConnection->sql_insert_id();
-            $processedFile->updateProperties(array('uid' => $uid));
+            $processedFile->updateProperties(['uid' => $uid]);
         }
     }
 
@@ -194,7 +194,7 @@ class ProcessedFileRepository extends AbstractRepository
         $whereClause = 'original=' . (int)$file->getUid();
         $rows = $this->databaseConnection->exec_SELECTgetRows('*', $this->table, $whereClause);
 
-        $itemList = array();
+        $itemList = [];
         if ($rows !== null) {
             foreach ($rows as $row) {
                 $itemList[] = $this->createDomainObject($row);
@@ -225,9 +225,9 @@ class ProcessedFileRepository extends AbstractRepository
             } catch (\Exception $e) {
                 $logger->error(
                     'Failed to delete file "' . $row['identifier'] . '" in storage uid ' . $row['storage'] . '.',
-                    array(
+                    [
                         'exception' => $e
-                    )
+                    ]
                 );
                 ++$errorCount;
             }

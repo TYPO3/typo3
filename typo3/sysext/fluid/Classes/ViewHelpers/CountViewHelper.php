@@ -55,7 +55,7 @@ class CountViewHelper extends AbstractViewHelper implements CompilableInterface
     public function render($subject = null)
     {
         return static::renderStatic(
-            array('subject' => $subject),
+            ['subject' => $subject],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

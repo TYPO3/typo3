@@ -35,7 +35,7 @@ class IconViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getAccessibleMock(IconViewHelper::class, array('renderChildren'));
+        $this->viewHelper = $this->getAccessibleMock(IconViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
     }

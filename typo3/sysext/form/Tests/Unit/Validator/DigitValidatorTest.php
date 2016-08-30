@@ -29,10 +29,10 @@ class DigitValidatorTest extends AbstractValidatorTest
      */
     public function validDigitProvider()
     {
-        return array(
-            'stringified integer'                    => array('2012'),
-            'stringified integer with leading zeros' => array('0002'),
-        );
+        return [
+            'stringified integer'                    => ['2012'],
+            'stringified integer with leading zeros' => ['0002'],
+        ];
     }
 
     /**
@@ -40,10 +40,10 @@ class DigitValidatorTest extends AbstractValidatorTest
      */
     public function invalidDigitProvider()
     {
-        return array(
-            'stringified float'      => array('0.2012'),
-            'stringified scientific' => array('1.9E+11')
-        );
+        return [
+            'stringified float'      => ['0.2012'],
+            'stringified scientific' => ['1.9E+11']
+        ];
     }
 
     /**
@@ -52,7 +52,7 @@ class DigitValidatorTest extends AbstractValidatorTest
      */
     public function validateForValidInputHasEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $subject = $this->createSubject($options);
 
         $this->assertEmpty(
@@ -66,7 +66,7 @@ class DigitValidatorTest extends AbstractValidatorTest
      */
     public function validateForInvalidInputHasNotEmptyErrorResult($input)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options = ['element' => uniqid('test'), 'errorMessage' => uniqid('error')];
         $subject = $this->createSubject($options);
 
         $this->assertNotEmpty(

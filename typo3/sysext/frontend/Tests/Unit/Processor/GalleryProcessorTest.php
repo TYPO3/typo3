@@ -253,7 +253,7 @@ class GalleryProcessorTest extends UnitTestCase
     {
         $files = [];
         for ($i = 0; $i < $numberOfFiles; $i++) {
-            $files[] = $this->getMock(FileReference::class, array(), array(), '', false);
+            $files[] = $this->getMock(FileReference::class, [], [], '', false);
         }
         $this->contentObjectRenderer->data = $data;
         $processor = new GalleryProcessor();
@@ -440,7 +440,7 @@ class GalleryProcessorTest extends UnitTestCase
     {
         $files = [];
         foreach ($testFiles as $fileConfig) {
-            $fileReference = $this->getMock(FileReference::class, array(), array(), '', false);
+            $fileReference = $this->getMock(FileReference::class, [], [], '', false);
             $fileReference->expects($this->any())
                 ->method('getProperty')
                 ->will($this->returnValueMap([

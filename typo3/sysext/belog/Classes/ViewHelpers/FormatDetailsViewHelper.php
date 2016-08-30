@@ -40,9 +40,9 @@ class FormatDetailsViewHelper extends AbstractViewHelper implements CompilableIn
     public function render(LogEntry $logEntry)
     {
         return static::renderStatic(
-            array(
+            [
                 'logEntry' => $logEntry
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -78,7 +78,7 @@ class FormatDetailsViewHelper extends AbstractViewHelper implements CompilableIn
      * @param array $files
      * @return array
      */
-    protected static function stripPathFromFilenames(array $files = array())
+    protected static function stripPathFromFilenames(array $files = [])
     {
         foreach ($files as $key => $file) {
             $files[$key] = basename($file);

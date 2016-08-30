@@ -31,12 +31,12 @@ class ImageMagickCommandsViewHelper extends AbstractViewHelper implements Compil
      * @param array $commands Given commands
      * @return string Formatted commands
      */
-    public function render(array $commands = array())
+    public function render(array $commands = [])
     {
         return static::renderStatic(
-            array(
+            [
                 'commands' => $commands,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -53,7 +53,7 @@ class ImageMagickCommandsViewHelper extends AbstractViewHelper implements Compil
     {
         $commands = $arguments['commands'];
 
-        $result = array();
+        $result = [];
         foreach ($commands as $commandGroup) {
             $result[] = 'Command: ' . $commandGroup[1];
             // If 3 elements: last one is result

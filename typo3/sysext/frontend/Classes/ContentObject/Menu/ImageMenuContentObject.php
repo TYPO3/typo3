@@ -33,7 +33,7 @@ class ImageMenuContentObject extends AbstractMenuContentObject
      */
     public function generate()
     {
-        $NOconf = array();
+        $NOconf = [];
         $splitCount = count($this->menuArr);
         if ($splitCount) {
             list($NOconf) = $this->procesItemStates($splitCount);
@@ -57,7 +57,7 @@ class ImageMenuContentObject extends AbstractMenuContentObject
     public function makeImageMap($conf)
     {
         if (!is_array($conf)) {
-            $conf = array();
+            $conf = [];
         }
         if (is_array($this->mconf['main.'])) {
             $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
@@ -68,7 +68,7 @@ class ImageMenuContentObject extends AbstractMenuContentObject
                 $sKeyArray = TemplateService::sortedKeyList($conf);
                 $gifObjCount = (int)end($sKeyArray);
                 // Now we add graphical objects to the gifbuilder-setup
-                $waArr = array();
+                $waArr = [];
                 foreach ($itemsConf as $key => $val) {
                     if (is_array($val)) {
                         $gifObjCount++;
@@ -77,7 +77,7 @@ class ImageMenuContentObject extends AbstractMenuContentObject
                         foreach ($sKeyArray as $theKey) {
                             $theValue = $val[$theKey];
                             if ((int)$theKey && ($theValArr = $val[$theKey . '.'])) {
-                                $cObjData = $this->menuArr[$key] ?: array();
+                                $cObjData = $this->menuArr[$key] ?: [];
                                 $gifObjCount++;
                                 if ($theValue === 'TEXT') {
                                     $waArr[$key]['textNum'] = $gifObjCount;
@@ -86,7 +86,7 @@ class ImageMenuContentObject extends AbstractMenuContentObject
                                     // if this is not done it seems that imageMaps will be rendered wrong!!
                                     unset($theValArr['text.']);
                                     // check links
-                                    $LD = $this->menuTypoLink($this->menuArr[$key], $this->mconf['target'], '', '', array(), '', $this->mconf['forceTypeValue']);
+                                    $LD = $this->menuTypoLink($this->menuArr[$key], $this->mconf['target'], '', '', [], '', $this->mconf['forceTypeValue']);
                                     // If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
                                     $this->changeLinksForAccessRestrictedPages($LD, $this->menuArr[$key], $this->mconf['target'], $this->mconf['forceTypeValue']);
                                     // Overriding URL / Target if set to do so:
@@ -126,7 +126,7 @@ class ImageMenuContentObject extends AbstractMenuContentObject
                                         $temp_sKeyArray = TemplateService::sortedKeyList($theValArr['file.']);
                                         foreach ($temp_sKeyArray as $temp_theKey) {
                                             if ($theValArr['mask.'][$temp_theKey] === 'TEXT') {
-                                                $gifCreator->data = $this->menuArr[$key] ?: array();
+                                                $gifCreator->data = $this->menuArr[$key] ?: [];
                                                 $theValArr['mask.'][$temp_theKey . '.'] = $gifCreator->checkTextObj($theValArr['mask.'][$temp_theKey . '.']);
                                                 // If this is not done it seems that imageMaps will be rendered wrong!!
                                                 unset($theValArr['mask.'][$temp_theKey . '.']['text.']);
@@ -137,7 +137,7 @@ class ImageMenuContentObject extends AbstractMenuContentObject
                                         $temp_sKeyArray = TemplateService::sortedKeyList($theValArr['mask.']);
                                         foreach ($temp_sKeyArray as $temp_theKey) {
                                             if ($theValArr['mask.'][$temp_theKey] === 'TEXT') {
-                                                $gifCreator->data = $this->menuArr[$key] ?: array();
+                                                $gifCreator->data = $this->menuArr[$key] ?: [];
                                                 $theValArr['mask.'][$temp_theKey . '.'] = $gifCreator->checkTextObj($theValArr['mask.'][$temp_theKey . '.']);
                                                 // if this is not done it seems that imageMaps will be rendered wrong!!
                                                 unset($theValArr['mask.'][$temp_theKey . '.']['text.']);
@@ -167,13 +167,13 @@ class ImageMenuContentObject extends AbstractMenuContentObject
                 }
                 $gifCreator->start($conf, $this->getTypoScriptFrontendController()->page);
                 // calculations
-                $dConf = array();
+                $dConf = [];
                 foreach ($waArr as $key => $val) {
                     if ($dConf[$key] = $itemsConf[$key]['distrib']) {
                         $textBB = $gifCreator->objBB[$val['textNum']];
                         $dConf[$key] = str_replace(
-                            array('textX', 'textY'),
-                            array($textBB[0], $textBB[1]),
+                            ['textX', 'textY'],
+                            [$textBB[0], $textBB[1]],
                             $dConf[$key]
                         );
                         $dConf[$key] = GeneralUtility::intExplode(',', $gifCreator->calcOffset($dConf[$key]));
@@ -212,10 +212,10 @@ class ImageMenuContentObject extends AbstractMenuContentObject
                     $gifCreator->output($gifFileName);
                     $gifCreator->destroy();
                     $imgMap = $gifCreator->map;
-                    $cache->set($imgHash, $imgMap, array('ident_MENUIMAGEMAP'), 0);
+                    $cache->set($imgHash, $imgMap, ['ident_MENUIMAGEMAP'], 0);
                 }
                 $imgMap .= $this->mconf['imgMapExtras'];
-                $this->result = array('output_file' => $gifFileName, 'output_w' => $w, 'output_h' => $h, 'imgMap' => $imgMap);
+                $this->result = ['output_file' => $gifFileName, 'output_w' => $w, 'output_h' => $h, 'imgMap' => $imgMap];
             }
         }
     }

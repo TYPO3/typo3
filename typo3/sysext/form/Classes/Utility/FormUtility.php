@@ -202,7 +202,7 @@ class FormUtility
      * @param array $arrayToRender
      * @return array
      */
-    public function renderArrayItems(array &$arrayToRender = array())
+    public function renderArrayItems(array &$arrayToRender = [])
     {
         foreach ($arrayToRender as $attributeName => &$attributeValue) {
             $attributeNameWithoutDot = rtrim($attributeName, '.');

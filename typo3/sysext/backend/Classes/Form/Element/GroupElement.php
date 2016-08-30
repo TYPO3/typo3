@@ -52,11 +52,11 @@ class GroupElement extends AbstractFormElement
             $maxitems = 100000;
         }
         $minitems = MathUtility::forceIntegerInRange($config['minitems'], 0);
-        $thumbnails = array();
+        $thumbnails = [];
         $allowed = GeneralUtility::trimExplode(',', $config['allowed'], true);
         $disallowed = GeneralUtility::trimExplode(',', $config['disallowed'], true);
         $disabled = $config['readOnly'];
-        $info = array();
+        $info = [];
         $parameterArray['itemFormElID_file'] = $parameterArray['itemFormElID'] . '_files';
 
         // whether the list and delete controls should be disabled
@@ -69,10 +69,10 @@ class GroupElement extends AbstractFormElement
         // Register properties in required elements / validation
         $attributes['data-formengine-validation-rules'] = htmlspecialchars(
             $this->getValidationDataAsJsonString(
-                array(
+                [
                     'minitems' => $minitems,
                     'maxitems' => $maxitems
-                )
+                ]
             )
         );
 
@@ -93,7 +93,7 @@ class GroupElement extends AbstractFormElement
         $html = '<input type="hidden" class="t3js-group-hidden-field" data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="' . ($config['multiple'] ? 1 : 0) . '"' . $disabled . ' />';
 
         // Define parameters for all types below
-        $commonParameters = array(
+        $commonParameters = [
             'size' => $size,
             'dontShowMoveIcons' => isset($config['hideMoveIcons']) || $maxitems <= 1,
             'autoSizeMax' => MathUtility::forceIntegerInRange($config['autoSizeMax'], 0),
@@ -104,7 +104,7 @@ class GroupElement extends AbstractFormElement
             'readOnly' => $disabled,
             'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
             'noList' => $noList,
-        );
+        ];
 
         // Acting according to either "file" or "db" type:
         switch ((string)$config['internal_type']) {
@@ -114,7 +114,7 @@ class GroupElement extends AbstractFormElement
             case 'file':
                 // Creating string showing allowed types:
                 if (empty($allowed)) {
-                    $allowed = array('*');
+                    $allowed = ['*'];
                 }
                 // Making the array of file items:
                 $itemArray = GeneralUtility::trimExplode(',', $parameterArray['itemFormElValue'], true);
@@ -137,29 +137,29 @@ class GroupElement extends AbstractFormElement
                         if (MathUtility::canBeInterpretedAsInteger($imgP[0])) {
                             $fileObject = $fileFactory->getFileObject($imgP[0]);
                             if ($fileObject->isMissing()) {
-                                $thumbnails[] = array(
+                                $thumbnails[] = [
                                     'message' => '<span class="label label-danger">'
                                         . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'))
                                         . '</span>&nbsp;' . htmlspecialchars($fileObject->getName()) . '<br />'
-                                );
+                                ];
                             } elseif (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
-                                $thumbnails[] = array(
+                                $thumbnails[] = [
                                     'name' => htmlspecialchars($fileObject->getName()),
-                                    'image' => $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, array())->getPublicUrl(true)
-                                );
+                                    'image' => $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, [])->getPublicUrl(true)
+                                ];
                             } else {
                                 $name = htmlspecialchars($fileObject->getName());
                                 // Icon
-                                $thumbnails[] = array(
+                                $thumbnails[] = [
                                     'name' => $name,
                                     'image' => '<span title="' . $name . '">' . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL) . '</span>'
-                                );
+                                ];
                             }
                         } else {
-                            $rowCopy = array();
+                            $rowCopy = [];
                             $rowCopy[$fieldName] = $imgPath;
                             try {
-                                $thumbnails[] = array(
+                                $thumbnails[] = [
                                     'name' => $imgPath,
                                     'image' => BackendUtility::thumbCode(
                                         $rowCopy,
@@ -171,7 +171,7 @@ class GroupElement extends AbstractFormElement
                                         0,
                                         ' align="middle"'
                                     )
-                                );
+                                ];
                             } catch (\Exception $exception) {
                                 /** @var $flashMessage FlashMessage */
                                 $message = $exception->getMessage();
@@ -190,12 +190,12 @@ class GroupElement extends AbstractFormElement
                     }
                 }
                 // Creating the element:
-                $params = array_merge($commonParameters, array(
+                $params = array_merge($commonParameters, [
                     'allowed' => $allowed,
                     'disallowed' => $disallowed,
                     'thumbnails' => $thumbnails,
                     'noDelete' => $noDelete
-                ));
+                ]);
                 $html .= $this->dbFileIcons(
                     $parameterArray['itemFormElName'],
                     'file',
@@ -250,23 +250,23 @@ class GroupElement extends AbstractFormElement
                 // Creating string showing allowed types:
                 $languageService = $this->getLanguageService();
 
-                $allowedTables = array();
+                $allowedTables = [];
                 if ($allowed[0] === '*') {
-                    $allowedTables = array(
+                    $allowedTables = [
                         'name' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.allTables'))
-                    );
+                    ];
                 } elseif ($allowed) {
                     foreach ($allowed as $allowedTable) {
-                        $allowedTables[] = array(
+                        $allowedTables[] = [
                             // @todo: access to globals!
                             'name' => htmlspecialchars($languageService->sL($GLOBALS['TCA'][$allowedTable]['ctrl']['title'])),
-                            'icon' => $this->iconFactory->getIconForRecord($allowedTable, array(), Icon::SIZE_SMALL)->render(),
+                            'icon' => $this->iconFactory->getIconForRecord($allowedTable, [], Icon::SIZE_SMALL)->render(),
                             'onClick' => 'setFormValueOpenBrowser(\'db\', ' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName'] . '|||' . $allowedTable) . '); return false;'
-                        );
+                        ];
                     }
                 }
                 $perms_clause = $this->getBackendUserAuthentication()->getPagePermsClause(1);
-                $itemArray = array();
+                $itemArray = [];
 
                 // Thumbnails:
                 // @todo: this is data processing - must be extracted
@@ -275,7 +275,7 @@ class GroupElement extends AbstractFormElement
                     $recordParts = explode('|', $dbRead);
                     list($this_table, $this_uid) = BackendUtility::splitTable_Uid($recordParts[0]);
 
-                    $itemArray[] = array('table' => $this_table, 'id' => $this_uid);
+                    $itemArray[] = ['table' => $this_table, 'id' => $this_uid];
                     if (!$disabled && $show_thumbs) {
                         if (empty($this_table)) {
                             throw new \RuntimeException(
@@ -286,21 +286,21 @@ class GroupElement extends AbstractFormElement
                             );
                         }
                         $rr = BackendUtility::getRecordWSOL($this_table, $this_uid);
-                        $thumbnails[] = array(
+                        $thumbnails[] = [
                             'name' => BackendUtility::getRecordTitle($this_table, $rr, true),
                             'image' => $this->iconFactory->getIconForRecord($this_table, $rr, Icon::SIZE_SMALL)->render(),
                             'path' => BackendUtility::getRecordPath($rr['pid'], $perms_clause, 15),
                             'uid' => $rr['uid'],
                             'table' => $this_table
-                        );
+                        ];
                     }
                 }
                 // Creating the element:
-                $params = array_merge($commonParameters, array(
+                $params = array_merge($commonParameters, [
                     'info' => $info,
                     'allowedTables' => $allowedTables,
                     'thumbnails' => $thumbnails,
-                ));
+                ]);
                 $html .= $this->dbFileIcons(
                     $parameterArray['itemFormElName'],
                     'db',
@@ -319,7 +319,7 @@ class GroupElement extends AbstractFormElement
         // Wizards:
         if (!$disabled) {
             $html = $this->renderWizards(
-                array($html),
+                [$html],
                 $config['wizards'],
                 $table,
                 $row,

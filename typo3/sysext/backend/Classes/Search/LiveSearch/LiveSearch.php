@@ -88,8 +88,8 @@ class LiveSearch
      */
     public function find($searchQuery)
     {
-        $recordArray = array();
-        $pageList = array();
+        $recordArray = [];
+        $pageList = [];
         $mounts = $GLOBALS['BE_USER']->returnWebmounts();
         foreach ($mounts as $pageId) {
             $pageList[] = $this->getAvailablePageIds($pageId, self::RECURSIVE_PAGE_LEVEL);
@@ -118,7 +118,7 @@ class LiveSearch
      */
     protected function findPageById($id)
     {
-        $pageRecord = array();
+        $pageRecord = [];
         $row = BackendUtility::getRecord(self::PAGE_JUMP_TABLE, $id);
         if (is_array($row)) {
             $pageRecord = $row;
@@ -135,7 +135,7 @@ class LiveSearch
     protected function findByGlobalTableList($pageIdList)
     {
         $limit = $this->limitCount;
-        $getRecordArray = array();
+        $getRecordArray = [];
         foreach ($GLOBALS['TCA'] as $tableName => $value) {
             // if no access for the table (read or write), skip this table
             if (!$GLOBALS['BE_USER']->check('tables_select', $tableName) && !$GLOBALS['BE_USER']->check('tables_modify', $tableName)) {
@@ -169,7 +169,7 @@ class LiveSearch
     protected function findByTable($tableName, $pageIdList, $limit)
     {
         $fieldsToSearchWithin = $this->extractSearchableFieldsFromTable($tableName);
-        $getRecordArray = array();
+        $getRecordArray = [];
         if (!empty($fieldsToSearchWithin)) {
             $pageBasedPermission = $tableName == 'pages' && $this->userPermissions ? $this->userPermissions : '1=1 ';
             $where = 'pid IN (' . $pageIdList . ') AND ' . $pageBasedPermission . $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin);
@@ -191,26 +191,26 @@ class LiveSearch
      */
     protected function getRecordArray($tableName, $where, $orderBy, $limit)
     {
-        $collect = array();
-        $queryParts = array(
+        $collect = [];
+        $queryParts = [
             'SELECT' => '*',
             'FROM' => $tableName,
             'WHERE' => $where,
             'ORDERBY' => $orderBy,
             'LIMIT' => $limit
-        );
+        ];
         $result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
             $title = 'id=' . $row['uid'] . ', pid=' . $row['pid'];
-            $collect[] = array(
+            $collect[] = [
                 'id' => $tableName . ':' . $row['uid'],
                 'pageId' => $tableName === 'pages' ? $row['uid'] : $row['pid'],
                 'typeLabel' =>  htmlspecialchars($this->getTitleOfCurrentRecordType($tableName)),
                 'iconHTML' => '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForRecord($tableName, $row, Icon::SIZE_SMALL)->render() . '</span>',
                 'title' => htmlspecialchars(BackendUtility::getRecordTitle($tableName, $row)),
                 'editLink' => htmlspecialchars($this->getEditLink($tableName, $row))
-            );
+            ];
         }
         $GLOBALS['TYPO3_DB']->sql_free_result($result);
         return $collect;
@@ -237,11 +237,11 @@ class LiveSearch
         }
         // "Edit" link - Only if permissions to edit the page-record of the content of the parent page ($this->id)
         if ($permsEdit) {
-            $returnUrl = BackendUtility::getModuleUrl('web_list', array('id' => $row['pid']));
-            $editLink = BackendUtility::getModuleUrl('record_edit', array(
+            $returnUrl = BackendUtility::getModuleUrl('web_list', ['id' => $row['pid']]);
+            $editLink = BackendUtility::getModuleUrl('record_edit', [
                 'edit[' . $tableName . '][' . $row['uid'] . ']' => 'edit',
                 'returnUrl' => $returnUrl
-            ));
+            ]);
         }
         return $editLink;
     }
@@ -285,7 +285,7 @@ class LiveSearch
     protected function makeQuerySearchByTable($tableName, array $fieldsToSearchWithin)
     {
         $queryPart = '';
-        $whereParts = array();
+        $whereParts = [];
         // If the search string is a simple integer, assemble an equality comparison
         if (MathUtility::canBeInterpretedAsInteger($this->queryString)) {
             foreach ($fieldsToSearchWithin as $fieldName) {
@@ -372,7 +372,7 @@ class LiveSearch
         if (isset($GLOBALS['TCA'][$tableName]['ctrl']['searchFields'])) {
             $fieldListArray = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$tableName]['ctrl']['searchFields'], true);
         } else {
-            $fieldListArray = array();
+            $fieldListArray = [];
         }
         // Add special fields
         if ($GLOBALS['BE_USER']->isAdmin()) {
@@ -443,7 +443,7 @@ class LiveSearch
         $tree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
         $tree->init('AND ' . $this->userPermissions);
         $tree->makeHTML = 0;
-        $tree->fieldArray = array('uid', 'php_tree_stop');
+        $tree->fieldArray = ['uid', 'php_tree_stop'];
         if ($depth) {
             $tree->getTree($id, $depth, '');
         }

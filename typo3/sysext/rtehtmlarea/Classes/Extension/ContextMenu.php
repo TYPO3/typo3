@@ -48,7 +48,7 @@ class ContextMenu extends RteHtmlAreaApi
      */
     public function buildJavascriptConfiguration()
     {
-        $jsArray = array();
+        $jsArray = [];
         if (is_array($this->configuration['thisConfig']['contextMenu.'])) {
             $jsArray[] = 'RTEarea[editornumber].contextMenu =  ' . $this->buildNestedJSArray($this->configuration['thisConfig']['contextMenu.']) . ';';
             if ($this->configuration['thisConfig']['contextMenu.']['showButtons']) {
@@ -73,6 +73,6 @@ class ContextMenu extends RteHtmlAreaApi
     protected function buildNestedJSArray($conf)
     {
         $convertedConf = GeneralUtility::removeDotsFromTS($conf);
-        return str_replace(array(':"0"', ':"\\/^(', ')$\\/i"', ':"\\/^(', ')$\\/"', '[]'), array(':false', ':/^(', ')$/i', ':/^(', ')$/', '{}'), json_encode($convertedConf));
+        return str_replace([':"0"', ':"\\/^(', ')$\\/i"', ':"\\/^(', ')$\\/"', '[]'], [':false', ':/^(', ')$/i', ':/^(', ')$/', '{}'], json_encode($convertedConf));
     }
 }

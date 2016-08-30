@@ -25,7 +25,7 @@ abstract class AbstractLinktype implements LinktypeInterface
      *
      * @var array
      */
-    protected $errorParams = array();
+    protected $errorParams = [];
 
     /**
      * Base type fetching method, based on the type that softRefParserObj returns

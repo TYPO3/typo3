@@ -25,7 +25,7 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->subject = $this->getAccessibleMock(CurrencyViewHelper::class, array('renderChildren'));
+        $this->subject = $this->getAccessibleMock(CurrencyViewHelper::class, ['renderChildren']);
         /** @var RenderingContext $renderingContext */
         $renderingContext = $this->getMock(RenderingContext::class);
         $this->subject->_set('renderingContext', $renderingContext);

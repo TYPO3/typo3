@@ -19,13 +19,13 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Import\PagesAndTtContentWithImages;
  */
 class ImportInFilledDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Import\AbstractImportTestCase
 {
-    protected $additionalFoldersToCreate = array(
+    protected $additionalFoldersToCreate = [
         '/fileadmin/user_upload'
-    );
+    ];
 
-    protected $pathsToLinkInTestInstance = array(
+    protected $pathsToLinkInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg' => 'fileadmin/user_upload/typo3_image2.jpg',
-    );
+    ];
 
     protected $assertionDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/Import/PagesAndTtContentWithImages/DataSet/Assertion/';
 

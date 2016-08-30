@@ -32,7 +32,7 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3
     {
         // Initialize selected fields
         if (empty($taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'])) {
-            $taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'] = array();
+            $taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'] = [];
             if ($parentObject->CMD === 'add') {
                 // In case of new task, set to dbBackend if it's available
                 if (in_array(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, $this->getRegisteredBackends())) {
@@ -47,12 +47,12 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3
         $fieldId = 'task_cachingFrameworkGarbageCollection_selectedBackends';
         $fieldOptions = $this->getCacheBackendOptions($taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends']);
         $fieldHtml = '<select class="form-control" name="' . $fieldName . '" id="' . $fieldId . '" class="from-control" size="10" multiple="multiple">' . $fieldOptions . '</select>';
-        $additionalFields[$fieldId] = array(
+        $additionalFields[$fieldId] = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.cachingFrameworkGarbageCollection.selectBackends',
             'cshKey' => '_MOD_system_txschedulerM1',
             'cshLabel' => $fieldId
-        );
+        ];
         return $additionalFields;
     }
 
@@ -100,7 +100,7 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3
      */
     protected function getCacheBackendOptions(array $selectedBackends)
     {
-        $options = array();
+        $options = [];
         $availableBackends = $this->getRegisteredBackends();
         foreach ($availableBackends as $backendName) {
             if (in_array($backendName, $selectedBackends)) {
@@ -120,7 +120,7 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3
      */
     protected function getRegisteredBackends()
     {
-        $backends = array();
+        $backends = [];
         $cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
         if (is_array($cacheConfigurations)) {
             foreach ($cacheConfigurations as $cacheConfiguration) {

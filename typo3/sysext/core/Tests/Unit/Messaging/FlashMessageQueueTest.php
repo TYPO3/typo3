@@ -31,11 +31,11 @@ class FlashMessageQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->frontendUser = $this->getMock(\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class, array('dummy'));
+        $this->frontendUser = $this->getMock(\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class, ['dummy']);
         $this->flashMessageQueue = $this->getAccessibleMock(
             \TYPO3\CMS\Core\Messaging\FlashMessageQueue::class,
-            array('getUserByContext'),
-            array('core.template.flashMessages')
+            ['getUserByContext'],
+            ['core.template.flashMessages']
         );
 
         $this->flashMessageQueue->expects($this->any())->method('getUserByContext')->will($this->returnValue($this->frontendUser));
@@ -46,7 +46,7 @@ class FlashMessageQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function userSessionInitiallyIsEmpty()
     {
-        $this->assertSame(array(), $this->flashMessageQueue->_call('getFlashMessagesFromSession'));
+        $this->assertSame([], $this->flashMessageQueue->_call('getFlashMessagesFromSession'));
     }
 
     /**
@@ -56,7 +56,7 @@ class FlashMessageQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->flashMessageQueue->enqueue(new \TYPO3\CMS\Core\Messaging\FlashMessage('Foo', 'Bar', \TYPO3\CMS\Core\Messaging\FlashMessage::OK, false));
 
-        $this->assertSame(array(), $this->flashMessageQueue->_call('getFlashMessagesFromSession'));
+        $this->assertSame([], $this->flashMessageQueue->_call('getFlashMessagesFromSession'));
     }
 
     /**
@@ -67,7 +67,7 @@ class FlashMessageQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $flashMessage = new \TYPO3\CMS\Core\Messaging\FlashMessage('Foo', 'Bar', \TYPO3\CMS\Core\Messaging\FlashMessage::OK, true);
         $this->flashMessageQueue->enqueue($flashMessage);
 
-        $this->assertSame(array($flashMessage), $this->flashMessageQueue->_call('getFlashMessagesFromSession'));
+        $this->assertSame([$flashMessage], $this->flashMessageQueue->_call('getFlashMessagesFromSession'));
     }
 
     /**
@@ -115,7 +115,7 @@ class FlashMessageQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function toArrayReturnsEmptyArrayWithForEmptyQueue()
     {
-        $this->assertSame(array(), $this->flashMessageQueue->toArray());
+        $this->assertSame([], $this->flashMessageQueue->toArray());
     }
 
     /**
@@ -138,10 +138,10 @@ class FlashMessageQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function messagesCanBeFilteredBySeverity()
     {
-        $messages = array(
+        $messages = [
             0 => new \TYPO3\CMS\Core\Messaging\FlashMessage('This is a test message', 1, \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE),
             1 => new \TYPO3\CMS\Core\Messaging\FlashMessage('This is another test message', 2, \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING)
-        );
+        ];
         $this->flashMessageQueue->enqueue($messages[0]);
         $this->flashMessageQueue->enqueue($messages[1]);
 
@@ -159,10 +159,10 @@ class FlashMessageQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getMessagesAndFlushCanAlsoFilterBySeverity()
     {
-        $messages = array(
+        $messages = [
             0 => new \TYPO3\CMS\Core\Messaging\FlashMessage('This is a test message', 1, \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE),
             1 => new \TYPO3\CMS\Core\Messaging\FlashMessage('This is another test message', 2, \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING)
-        );
+        ];
         $this->flashMessageQueue->enqueue($messages[0]);
         $this->flashMessageQueue->enqueue($messages[1]);
 
@@ -174,7 +174,7 @@ class FlashMessageQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $flashMessage = current($filteredFlashMessages);
         $this->assertEquals($messages[0], $flashMessage);
 
-        $this->assertEquals(array(), $this->flashMessageQueue->getAllMessages(\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE));
-        $this->assertEquals(array($messages[1]), array_values($this->flashMessageQueue->getAllMessages()));
+        $this->assertEquals([], $this->flashMessageQueue->getAllMessages(\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE));
+        $this->assertEquals([$messages[1]], array_values($this->flashMessageQueue->getAllMessages()));
     }
 }

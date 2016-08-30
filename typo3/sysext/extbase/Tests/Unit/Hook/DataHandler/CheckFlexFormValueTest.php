@@ -24,33 +24,33 @@ class CheckFlexFormValueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkFlexFormValueBeforeMergeRemovesSwitchableControllerActions()
     {
-        $currentFlexFormDataArray = array(
-            'foo' => array(
+        $currentFlexFormDataArray = [
+            'foo' => [
                 'bar' => 'baz',
-                'qux' => array(
+                'qux' => [
                     'quux' => 'quuux',
-                    'switchableControllerActions' => array()
-                ),
-                'switchableControllerActions' => array()
-            ),
-            'switchableControllerActions' => array()
-        );
+                    'switchableControllerActions' => []
+                ],
+                'switchableControllerActions' => []
+            ],
+            'switchableControllerActions' => []
+        ];
 
-        $expectedFlexFormDataArray = array(
-            'foo' => array(
+        $expectedFlexFormDataArray = [
+            'foo' => [
                 'bar' => 'baz',
-                'qux' => array(
+                'qux' => [
                     'quux' => 'quuux',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler */
         $dataHandler = $this->getMock(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 
-        $newFlexFormDataArray = array();
+        $newFlexFormDataArray = [];
         /** @var \TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue $checkFlexFormValue */
-        $checkFlexFormValue = $this->getMock(\TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue::class, array('dummy'));
+        $checkFlexFormValue = $this->getMock(\TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue::class, ['dummy']);
         $checkFlexFormValue->checkFlexFormValue_beforeMerge($dataHandler, $currentFlexFormDataArray, $newFlexFormDataArray);
 
         $this->assertSame($expectedFlexFormDataArray, $currentFlexFormDataArray);

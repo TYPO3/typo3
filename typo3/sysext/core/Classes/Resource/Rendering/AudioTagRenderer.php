@@ -27,7 +27,7 @@ class AudioTagRenderer implements FileRendererInterface
      *
      * @var array
      */
-    protected $possibleMimeTypes = array('audio/mpeg', 'audio/wav', 'audio/ogg');
+    protected $possibleMimeTypes = ['audio/mpeg', 'audio/wav', 'audio/ogg'];
 
     /**
      * Returns the priority of the renderer
@@ -64,7 +64,7 @@ class AudioTagRenderer implements FileRendererInterface
      * @param bool $usedPathsRelativeToCurrentScript See $file->getPublicUrl()
      * @return string
      */
-    public function render(FileInterface $file, $width, $height, array $options = array(), $usedPathsRelativeToCurrentScript = false)
+    public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false)
     {
 
         // If autoplay isn't set manually check if $file is a FileReference take autoplay from there
@@ -75,7 +75,7 @@ class AudioTagRenderer implements FileRendererInterface
             }
         }
 
-        $additionalAttributes = array();
+        $additionalAttributes = [];
         if (!isset($options['controls']) || !empty($options['controls'])) {
             $additionalAttributes[] = 'controls';
         }

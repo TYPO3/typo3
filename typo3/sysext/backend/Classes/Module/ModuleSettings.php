@@ -79,14 +79,14 @@ class ModuleSettings
      *
      * @var array
      */
-    public $storeList = array();
+    public $storeList = [];
 
     /**
      * The stored settings array
      *
      * @var array
      */
-    public $storedSettings = array();
+    public $storedSettings = [];
 
     /**
      * Message from the last storage command
@@ -168,7 +168,7 @@ class ModuleSettings
      */
     public function setStoreList($storeList)
     {
-        $this->storeList = array();
+        $this->storeList = [];
         $this->addToStoreList($storeList);
     }
 
@@ -232,7 +232,7 @@ class ModuleSettings
      */
     public function cleanupStorageArray($storedSettings)
     {
-        $storedSettings = is_array($storedSettings) ? $storedSettings : array();
+        $storedSettings = is_array($storedSettings) ? $storedSettings : [];
         // Clean up the array
         foreach ($storedSettings as $id => $sdArr) {
             if (!is_array($sdArr)) {
@@ -255,17 +255,17 @@ class ModuleSettings
      */
     public function compileEntry($data)
     {
-        $storageData = array();
+        $storageData = [];
         foreach ($this->storeList as $MS_key) {
             $storageData[$MS_key] = $this->getModule()->MOD_SETTINGS[$MS_key];
         }
-        $storageArr = array(
+        $storageArr = [
             'title' => $data['title'],
             'desc' => (string)$data['desc'],
             'data' => $storageData,
             'user' => null,
             'tstamp' => $GLOBALS['EXEC_TIME']
-        );
+        ];
         $storageArr = $this->processEntry($storageArr);
         return $storageArr;
     }
@@ -277,7 +277,7 @@ class ModuleSettings
      * @param array $writeArray Preset data array. Will be overwritten by copied values.
      * @return array Data array
      */
-    public function getStoredData($storeIndex, $writeArray = array())
+    public function getStoredData($storeIndex, $writeArray = [])
     {
         if ($this->storedSettings[$storeIndex]) {
             foreach ($this->storeList as $k) {
@@ -300,7 +300,7 @@ class ModuleSettings
         $storeIndex = $storeControl['STORE'];
         $msg = '';
         $saveSettings = false;
-        $writeArray = array();
+        $writeArray = [];
         if (is_array($storeControl)) {
             if ($this->writeDevLog) {
                 GeneralUtility::devLog('Store command: ' . GeneralUtility::arrayToLogString($storeControl), __CLASS__, 0);
@@ -346,7 +346,7 @@ class ModuleSettings
      * @param string $mconfName Name of the module to store the settings for. Default: $this->getModule()->MCONF['name'] (current module)
      * @return void
      */
-    public function writeStoredSetting($writeArray = array(), $mconfName = '')
+    public function writeStoredSetting($writeArray = [], $mconfName = '')
     {
         // Making sure, index 0 is not set
         unset($this->storedSettings[0]);
@@ -380,13 +380,13 @@ class ModuleSettings
         $showElements = GeneralUtility::trimExplode(',', $showElements, true);
         $this->initStorage();
         // Preset selector
-        $opt = array();
+        $opt = [];
         $opt[] = '<option value="0">   </option>';
         foreach ($this->storedSettings as $id => $v) {
             $opt[] = '<option value="' . $id . '">' . htmlspecialchars($v['title']) . '</option>';
         }
         $storedEntries = count($opt) > 1;
-        $codeTD = array();
+        $codeTD = [];
         $code = '';
         // LOAD, REMOVE, but also show selector so you can overwrite an entry with SAVE
         if ($storedEntries && !empty($showElements)) {

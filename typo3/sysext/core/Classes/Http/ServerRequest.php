@@ -74,7 +74,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * @param array $uploadedFiles Upload file information, a tree of UploadedFiles
      * @throws \InvalidArgumentException for any invalid value.
      */
-    public function __construct($uri = null, $method = null, $body = 'php://input', array $headers = array(), array $serverParams = array(), array $uploadedFiles = null)
+    public function __construct($uri = null, $method = null, $body = 'php://input', array $headers = [], array $serverParams = [], array $uploadedFiles = null)
     {
         if ($uploadedFiles !== null) {
             $this->validateUploadedFiles($uploadedFiles);

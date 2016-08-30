@@ -59,11 +59,11 @@ class AjaxController
             $finalPageUid = (int)$page['uid'];
         }
 
-        $ajaxResponse = array(
+        $ajaxResponse = [
             'title'       => \TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($workspaceId),
             'workspaceId' => $workspaceId,
             'pageId'      => ($finalPageUid && $originalPageId == $finalPageUid) ? null : $finalPageUid
-        );
+        ];
         $response->getBody()->write(json_encode($ajaxResponse));
         return $response;
     }

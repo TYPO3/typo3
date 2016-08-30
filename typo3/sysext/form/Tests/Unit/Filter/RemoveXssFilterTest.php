@@ -31,13 +31,13 @@ class RemoveXssFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     public function maliciousStringProvider()
     {
-        return array(
-            '<IMG SRC="javascript:alert(\'XSS\');">' => array('<IMG SRC="javascript:alert(\'XSS\');">'),
-            '<SCRIPT SRC=http://ha.ckers.org/xss.js></SCRIPT>' => array('<SCRIPT SRC=http://ha.ckers.org/xss.js></SCRIPT>'),
-            '<IMG SRC=JaVaScRiPt:alert(\'XSS\')>' => array('<IMG SRC=JaVaScRiPt:alert(\'XSS\')>'),
-            '<IMG SRC=javascript:alert(&quot;XSS&quot;)>' => array('<IMG SRC=javascript:alert(&quot;XSS&quot;)>'),
-            '<IMG SRC=`javascript:alert("RSnake says, \'XSS\'")`>' => array('<IMG SRC=`javascript:alert("RSnake says, \'XSS\'")`>'),
-        );
+        return [
+            '<IMG SRC="javascript:alert(\'XSS\');">' => ['<IMG SRC="javascript:alert(\'XSS\');">'],
+            '<SCRIPT SRC=http://ha.ckers.org/xss.js></SCRIPT>' => ['<SCRIPT SRC=http://ha.ckers.org/xss.js></SCRIPT>'],
+            '<IMG SRC=JaVaScRiPt:alert(\'XSS\')>' => ['<IMG SRC=JaVaScRiPt:alert(\'XSS\')>'],
+            '<IMG SRC=javascript:alert(&quot;XSS&quot;)>' => ['<IMG SRC=javascript:alert(&quot;XSS&quot;)>'],
+            '<IMG SRC=`javascript:alert("RSnake says, \'XSS\'")`>' => ['<IMG SRC=`javascript:alert("RSnake says, \'XSS\'")`>'],
+        ];
     }
 
     /**

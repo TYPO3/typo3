@@ -72,7 +72,7 @@ class ElementEntityProcessor
      */
     public function transformDependentElementsToUseLiveId(array $elements)
     {
-        $transformedElements = array();
+        $transformedElements = [];
         /** @var $element ElementEntity */
         foreach ($elements as $element) {
             $elementName = ElementEntity::getIdentifier($element->getTable(), $element->getDataValue('liveId'));

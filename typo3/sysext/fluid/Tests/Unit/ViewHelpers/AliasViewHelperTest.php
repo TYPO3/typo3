@@ -26,7 +26,7 @@ class AliasViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        $this->subject = $this->getMock(AliasViewHelper::class, array('renderChildren'));
+        $this->subject = $this->getMock(AliasViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->subject);
     }
 
@@ -37,7 +37,7 @@ class AliasViewHelperTest extends ViewHelperBaseTestcase
     {
         $this->templateVariableContainer->expects($this->at(0))->method('add')->with('someAlias', 'someValue');
         $this->templateVariableContainer->expects($this->at(1))->method('remove')->with('someAlias');
-        $this->subject->render(array('someAlias' => 'someValue'));
+        $this->subject->render(['someAlias' => 'someValue']);
     }
 
     /**
@@ -49,7 +49,7 @@ class AliasViewHelperTest extends ViewHelperBaseTestcase
         $this->templateVariableContainer->expects($this->at(1))->method('add')->with('someOtherAlias', 'someOtherValue');
         $this->templateVariableContainer->expects($this->at(2))->method('remove')->with('someAlias');
         $this->templateVariableContainer->expects($this->at(3))->method('remove')->with('someOtherAlias');
-        $this->subject->render(array('someAlias' => 'someValue', 'someOtherAlias' => 'someOtherValue'));
+        $this->subject->render(['someAlias' => 'someValue', 'someOtherAlias' => 'someOtherValue']);
     }
 
     /**
@@ -60,6 +60,6 @@ class AliasViewHelperTest extends ViewHelperBaseTestcase
         $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
         $this->templateVariableContainer->expects($this->never())->method('add');
         $this->templateVariableContainer->expects($this->never())->method('remove');
-        $this->assertEquals('foo', $this->subject->render(array()));
+        $this->assertEquals('foo', $this->subject->render([]));
     }
 }

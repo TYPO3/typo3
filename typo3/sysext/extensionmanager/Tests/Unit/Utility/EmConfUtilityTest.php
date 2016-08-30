@@ -24,10 +24,10 @@ class EmConfUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructEmConfAddsCommentBlock()
     {
-        $extensionData = array(
+        $extensionData = [
             'extKey' => 'key',
-            'EM_CONF' => array(),
-        );
+            'EM_CONF' => [],
+        ];
         $fixture = new \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility();
         $emConf = $fixture->constructEmConf($extensionData);
         $this->assertContains('Extension Manager/Repository config file for ext', $emConf);
@@ -38,20 +38,20 @@ class EmConfUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function fixEmConfTransfersOldConflictSettingToNewFormatWithSingleConflictingExtension()
     {
-        $input = array(
+        $input = [
             'title' => 'a title',
             'conflicts' => 'foo',
-        );
-        $expected = array(
+        ];
+        $expected = [
             'title' => 'a title',
-            'constraints' => array(
-                'depends' => array(),
-                'conflicts' => array(
+            'constraints' => [
+                'depends' => [],
+                'conflicts' => [
                     'foo' => '',
-                ),
-                'suggests' => array(),
-            ),
-        );
+                ],
+                'suggests' => [],
+            ],
+        ];
         $fixture = new \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility();
         $this->assertEquals($expected, $fixture->fixEmConf($input));
     }
@@ -61,21 +61,21 @@ class EmConfUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function fixEmConfTransfersOldConflictSettingToNewFormatWithTwoConflictingExtensions()
     {
-        $input = array(
+        $input = [
             'title' => 'a title',
             'conflicts' => 'foo,bar',
-        );
-        $expected = array(
+        ];
+        $expected = [
             'title' => 'a title',
-            'constraints' => array(
-                'depends' => array(),
-                'conflicts' => array(
+            'constraints' => [
+                'depends' => [],
+                'conflicts' => [
                     'foo' => '',
                     'bar' => '',
-                ),
-                'suggests' => array(),
-            ),
-        );
+                ],
+                'suggests' => [],
+            ],
+        ];
         $fixture = new \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility();
         $this->assertEquals($expected, $fixture->fixEmConf($input));
     }

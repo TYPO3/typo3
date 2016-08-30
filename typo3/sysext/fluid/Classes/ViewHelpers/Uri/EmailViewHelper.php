@@ -41,9 +41,9 @@ class EmailViewHelper extends AbstractViewHelper implements CompilableInterface
     public function render($email)
     {
         return static::renderStatic(
-            array(
+            [
                 'email' => $email
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

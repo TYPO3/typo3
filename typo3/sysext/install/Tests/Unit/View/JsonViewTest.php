@@ -26,7 +26,7 @@ class JsonViewTest extends UnitTestCase
      */
     public function transformStatusArrayToArrayReturnsArray()
     {
-        $jsonView = $this->getAccessibleMock(\TYPO3\CMS\Install\View\JsonView::class, array('dummy'));
+        $jsonView = $this->getAccessibleMock(\TYPO3\CMS\Install\View\JsonView::class, ['dummy']);
         $this->assertInternalType('array', $jsonView->_call('transformStatusMessagesToArray'));
     }
 
@@ -36,8 +36,8 @@ class JsonViewTest extends UnitTestCase
      */
     public function transformStatusArrayToArrayThrowsExceptionIfArrayContainsNotAMessageInterfaceMessage()
     {
-        $jsonView = $this->getAccessibleMock(\TYPO3\CMS\Install\View\JsonView::class, array('dummy'));
-        $jsonView->_call('transformStatusMessagesToArray', array('foo'));
+        $jsonView = $this->getAccessibleMock(\TYPO3\CMS\Install\View\JsonView::class, ['dummy']);
+        $jsonView->_call('transformStatusMessagesToArray', ['foo']);
     }
 
     /**
@@ -49,7 +49,7 @@ class JsonViewTest extends UnitTestCase
         $status->expects($this->once())->method('getSeverity')->will($this->returnValue('aSeverity'));
         $status->expects($this->once())->method('getTitle')->will($this->returnValue('aTitle'));
         $status->expects($this->once())->method('getMessage')->will($this->returnValue('aMessage'));
-        $jsonView = $this->getAccessibleMock(\TYPO3\CMS\Install\View\JsonView::class, array('dummy'));
+        $jsonView = $this->getAccessibleMock(\TYPO3\CMS\Install\View\JsonView::class, ['dummy']);
         $return = $jsonView->_call('transformStatusToArray', $status);
         $this->assertSame('aSeverity', $return['severity']);
         $this->assertSame('aTitle', $return['title']);

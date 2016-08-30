@@ -39,10 +39,10 @@ class FileIndexRepository implements SingletonInterface
      *
      * @var array
      */
-    protected $fields = array(
+    protected $fields = [
         'uid', 'pid', 'missing', 'type', 'storage', 'identifier', 'identifier_hash', 'extension',
         'mime_type', 'name', 'sha1', 'size', 'creation_date', 'modification_date', 'folder_hash'
-    );
+    ];
 
     /**
      * Gets database instance
@@ -161,7 +161,7 @@ class FileIndexRepository implements SingletonInterface
     public function findByContentHash($hash)
     {
         if (!preg_match('/^[0-9a-f]{40}$/i', $hash)) {
-            return array();
+            return [];
         }
         $resultRows = $this->getDatabaseConnection()->exec_SELECTgetRows(
             implode(',', $this->fields),
@@ -246,7 +246,7 @@ class FileIndexRepository implements SingletonInterface
                 $file->updateProperties($this->findOneByFileObject($file));
             }
         } else {
-            $file->updateProperties(array('uid' => $this->insertRecord($file->getProperties())));
+            $file->updateProperties(['uid' => $this->insertRecord($file->getProperties())]);
         }
     }
 
@@ -299,7 +299,7 @@ class FileIndexRepository implements SingletonInterface
     public function update(File $file)
     {
         $updatedProperties = array_intersect($this->fields, $file->getUpdatedProperties());
-        $updateRow = array();
+        $updateRow = [];
         foreach ($updatedProperties as $key) {
             $updateRow[$key] = $file->getProperty($key);
         }
@@ -354,7 +354,7 @@ class FileIndexRepository implements SingletonInterface
      */
     public function updateIndexingTime($fileUid)
     {
-        $this->getDatabaseConnection()->exec_UPDATEquery($this->table, 'uid = ' . (int)$fileUid, array('last_indexed' => time()));
+        $this->getDatabaseConnection()->exec_UPDATEquery($this->table, 'uid = ' . (int)$fileUid, ['last_indexed' => time()]);
     }
 
     /**
@@ -365,7 +365,7 @@ class FileIndexRepository implements SingletonInterface
      */
     public function markFileAsMissing($fileUid)
     {
-        $this->getDatabaseConnection()->exec_UPDATEquery($this->table, 'uid = ' . (int)$fileUid, array('missing' => 1));
+        $this->getDatabaseConnection()->exec_UPDATEquery($this->table, 'uid = ' . (int)$fileUid, ['missing' => 1]);
         $this->emitRecordMarkedAsMissingSignal($fileUid);
     }
 
@@ -444,7 +444,7 @@ class FileIndexRepository implements SingletonInterface
      */
     protected function emitRecordUpdatedSignal(array $data)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class, 'recordUpdated', array($data));
+        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class, 'recordUpdated', [$data]);
     }
 
     /**
@@ -455,7 +455,7 @@ class FileIndexRepository implements SingletonInterface
      */
     protected function emitRecordCreatedSignal(array $data)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class, 'recordCreated', array($data));
+        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class, 'recordCreated', [$data]);
     }
 
     /**
@@ -466,7 +466,7 @@ class FileIndexRepository implements SingletonInterface
      */
     protected function emitRecordDeletedSignal($fileUid)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class, 'recordDeleted', array($fileUid));
+        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class, 'recordDeleted', [$fileUid]);
     }
 
     /**
@@ -477,6 +477,6 @@ class FileIndexRepository implements SingletonInterface
      */
     protected function emitRecordMarkedAsMissingSignal($fileUid)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class, 'recordMarkedAsMissing', array($fileUid));
+        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class, 'recordMarkedAsMissing', [$fileUid]);
     }
 }

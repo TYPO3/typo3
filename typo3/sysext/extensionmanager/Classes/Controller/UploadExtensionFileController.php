@@ -156,19 +156,19 @@ class UploadExtensionFileController extends AbstractController
             $emConfiguration = $this->configurationUtility->getCurrentConfiguration('extensionmanager');
             if (!$emConfiguration['automaticInstallation']['value']) {
                 $this->addFlashMessage(
-                    $this->translate('extensionList.uploadFlashMessage.message', array($extensionData['extKey'])),
+                    $this->translate('extensionList.uploadFlashMessage.message', [$extensionData['extKey']]),
                     $this->translate('extensionList.uploadFlashMessage.title'),
                     FlashMessage::OK
                 );
             } else {
                 if ($this->activateExtension($extensionData['extKey'])) {
                     $this->addFlashMessage(
-                        $this->translate('extensionList.installedFlashMessage.message', array($extensionData['extKey'])),
+                        $this->translate('extensionList.installedFlashMessage.message', [$extensionData['extKey']]),
                         '',
                         FlashMessage::OK
                     );
                 } else {
-                    $this->redirect('unresolvedDependencies', 'List', null, array('extensionKey' => $extensionData['extKey']));
+                    $this->redirect('unresolvedDependencies', 'List', null, ['extensionKey' => $extensionData['extKey']]);
                 }
             }
         } catch (\TYPO3\CMS\Extbase\Mvc\Exception\StopActionException $exception) {
@@ -179,7 +179,7 @@ class UploadExtensionFileController extends AbstractController
             $this->removeExtensionAndRestoreFromBackup($fileName);
             $this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);
         }
-        $this->redirect('index', 'List', null, array(self::TRIGGER_RefreshModuleMenu => true));
+        $this->redirect('index', 'List', null, [self::TRIGGER_RefreshModuleMenu => true]);
     }
 
     /**
@@ -300,7 +300,7 @@ class UploadExtensionFileController extends AbstractController
         $this->removeFromOriginalPath = true;
         $this->fileHandlingUtility->unzipExtensionFromFile($file, $extensionKey);
 
-        return array('extKey' => $extensionKey);
+        return ['extKey' => $extensionKey];
     }
 
     /**

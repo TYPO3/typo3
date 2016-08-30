@@ -139,28 +139,28 @@ class SpriteGenerator
      *
      * @var array
      */
-    protected $spriteBases = array();
+    protected $spriteBases = [];
 
     /**
      * Collects data about all icons to process
      *
      * @var array
      */
-    protected $iconsData = array();
+    protected $iconsData = [];
 
     /**
      * Collects all sizes of icons within this sprite and there count
      *
      * @var array
      */
-    protected $iconSizes = array();
+    protected $iconSizes = [];
 
     /**
      * Maps icon-sizes to iconnames
      *
      * @var array
      */
-    protected $iconNamesPerSize = array();
+    protected $iconNamesPerSize = [];
 
     /**
      * space in px between to icons in the sprite (gap)
@@ -285,7 +285,7 @@ class SpriteGenerator
      */
     public function generateSpriteFromFolder(array $inputFolder)
     {
-        $iconArray = array();
+        $iconArray = [];
         foreach ($inputFolder as $folder) {
             // Detect all files to be included in sprites
             $iconArray = array_merge($iconArray, $this->getFolder($folder));
@@ -316,11 +316,11 @@ class SpriteGenerator
         $this->generateCSS();
         $iconNames = array_keys($this->iconsData);
         natsort($iconNames);
-        return array(
+        return [
             'spriteImage' => PATH_site . $this->spriteFolder . $this->spriteName . '.png',
             'cssFile' => PATH_site . $this->cssFolder . $this->spriteName . '.css',
             'iconNames' => $iconNames
-        );
+        ];
     }
 
     /**
@@ -339,20 +339,20 @@ class SpriteGenerator
             $timestamp = '';
         }
         $spritePathForCSS = $this->resolveSpritePath();
-        $markerArray = array(
+        $markerArray = [
             '###NAMESPACE###' => $this->nameSpace,
             '###DEFAULTWIDTH###' => $this->defaultWidth,
             '###DEFAULTHEIGHT###' => $this->defaultHeight,
             '###SPRITENAME###' => '',
             '###SPRITEURL###' => $spritePathForCSS ? $spritePathForCSS . '/' : ''
-        );
+        ];
         $markerArray['###SPRITEURL###'] .= $this->spriteName . '.png' . $timestamp;
         foreach ($this->spriteBases as $base) {
             $markerArray['###SPRITENAME###'] = $base;
             $cssData .= $templateService->substituteMarkerArray($this->templateSprite, $markerArray);
 
             if ($this->enableHighDensitySprite) {
-                $highDensityMarkerArray = array_merge($markerArray, array(
+                $highDensityMarkerArray = array_merge($markerArray, [
                     '###BGWIDTH###' => $this->spriteWidth . 'px',
                     '###BGHEIGHT###' => $this->spriteHeight . 'px',
                     '###SPRITEURL###' => str_replace(
@@ -360,7 +360,7 @@ class SpriteGenerator
                         $this->spriteName . '@x2.png',
                         $markerArray['###SPRITEURL###']
                     )
-                ));
+                ]);
                 $cssData .= $templateService->substituteMarkerArray($this->templateSpriteHighDensity, $highDensityMarkerArray);
             }
         }
@@ -369,13 +369,13 @@ class SpriteGenerator
             $temp = $data['iconNameParts'];
             array_shift($temp);
             $cssName = implode('-', $temp);
-            $markerArrayIcons = array(
+            $markerArrayIcons = [
                 '###NAMESPACE###' => $this->nameSpace,
                 '###ICONNAME###' => $cssName,
                 '###LEFT###' => $data['left'],
                 '###TOP###' => $data['top'],
                 '###SIZE_INFO###' => ''
-            );
+            ];
             if ($data['height'] != $this->defaultHeight) {
                 $markerArrayIcons['###SIZE_INFO###'] .= TAB . 'height: ' . $data['height'] . 'px;' . LF;
             }
@@ -480,7 +480,7 @@ class SpriteGenerator
     protected function calculateSpritePositions()
     {
         // Calculate width of every icon-size-group
-        $sizes = array();
+        $sizes = [];
         foreach ($this->iconSizes as $sizeTag => $count) {
             $size = $this->explodeSizeTag($sizeTag);
             $rowWidth = (int)ceil(sqrt($count)) * $size['width'];
@@ -538,7 +538,7 @@ class SpriteGenerator
         if (!$this->omitSpriteNameInIconName) {
             $subFolders[] = '';
         }
-        $resultArray = array();
+        $resultArray = [];
         foreach ($subFolders as $folder) {
             if ($folder !== '.svn') {
                 $icons = GeneralUtility::getFilesInDir(PATH_site . $directoryPath . $folder . '/', 'gif,png,jpg');
@@ -573,7 +573,7 @@ class SpriteGenerator
             }
             $fileInfo = @pathinfo((PATH_site . $iconFile));
             $imageInfo = @getimagesize((PATH_site . $iconFile));
-            $this->iconsData[$iconName] = array(
+            $this->iconsData[$iconName] = [
                 'iconName' => $iconName,
                 'iconNameParts' => $iconNameParts,
                 'singleName' => $fileInfo['filename'],
@@ -584,7 +584,7 @@ class SpriteGenerator
                 'left' => 0,
                 'top' => 0,
                 'fileNameHighDensity' => false
-            );
+            ];
             if ($this->enableHighDensitySprite) {
                 $highDensityFile = str_replace('.' . $fileInfo['extension'], '@x2.' . $fileInfo['extension'], $iconFile);
                 if (@file_exists(PATH_site . $highDensityFile)) {
@@ -596,7 +596,7 @@ class SpriteGenerator
                 $this->iconSizes[$sizeTag] += 1;
             } else {
                 $this->iconSizes[$sizeTag] = 1;
-                $this->iconNamesPerSize[$sizeTag] = array();
+                $this->iconNamesPerSize[$sizeTag] = [];
             }
             $this->iconNamesPerSize[$sizeTag][] = $iconName;
         }
@@ -616,9 +616,9 @@ class SpriteGenerator
     protected function explodeSizeTag($tag = '')
     {
         $size = GeneralUtility::trimExplode('x', $tag);
-        return array(
+        return [
             'width' => $size[0],
             'height' => $size[1]
-        );
+        ];
     }
 }

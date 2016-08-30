@@ -57,11 +57,11 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->fileResourceMock = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, array('toArray', 'getModificationTime', 'getExtension'), array(), '', false);
-        $this->folderResourceMock = $this->getMock(\TYPO3\CMS\Core\Resource\Folder::class, array('getIdentifier'), array(), '', false);
-        $this->mockFileProcessor = $this->getMock(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class, array('getErrorMessages'), array(), '', false);
+        $this->fileResourceMock = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, ['toArray', 'getModificationTime', 'getExtension'], [], '', false);
+        $this->folderResourceMock = $this->getMock(\TYPO3\CMS\Core\Resource\Folder::class, ['getIdentifier'], [], '', false);
+        $this->mockFileProcessor = $this->getMock(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class, ['getErrorMessages'], [], '', false);
 
-        $this->fileResourceMock->expects($this->any())->method('toArray')->will($this->returnValue(array('id' => 'foo')));
+        $this->fileResourceMock->expects($this->any())->method('toArray')->will($this->returnValue(['id' => 'foo']));
         $this->fileResourceMock->expects($this->any())->method('getModificationTime')->will($this->returnValue(123456789));
         $this->fileResourceMock->expects($this->any())->method('getExtension')->will($this->returnValue('html'));
 
@@ -74,23 +74,23 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function flattenResultDataValueFlattensFileAndFolderResourcesButReturnsAnythingElseAsIs()
     {
-        $this->fileController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, array('dummy'));
+        $this->fileController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, ['dummy']);
 
         $this->folderResourceMock->expects($this->once())->method('getIdentifier')->will($this->returnValue('bar'));
 
-        $this->mockFileProcessor->expects($this->any())->method('getErrorMessages')->will($this->returnValue(array()));
+        $this->mockFileProcessor->expects($this->any())->method('getErrorMessages')->will($this->returnValue([]));
 
         $this->assertTrue($this->fileController->_call('flattenResultDataValue', true));
-        $this->assertSame(array(), $this->fileController->_call('flattenResultDataValue', array()));
+        $this->assertSame([], $this->fileController->_call('flattenResultDataValue', []));
         $result = $this->fileController->_call('flattenResultDataValue', $this->fileResourceMock);
         $this->assertContains('<span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-text-html" data-identifier="mimetypes-text-html">', $result['icon']);
         unset($result['icon']);
         $this->assertSame(
-            array(
+            [
                 'id' => 'foo',
                 'date' => '29-11-73',
                 'thumbUrl' => '',
-            ),
+            ],
             $result
         );
 
@@ -105,9 +105,9 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function processAjaxRequestDeleteProcessActuallyDoesNotChangeFileData()
     {
-        $this->fileController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, array('init', 'main'));
+        $this->fileController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, ['init', 'main']);
 
-        $fileData = array('delete' => array(true));
+        $fileData = ['delete' => [true]];
         $this->fileController->_set('fileProcessor', $this->mockFileProcessor);
         $this->fileController->_set('fileData', $fileData);
         $this->fileController->_set('redirect', false);
@@ -122,9 +122,9 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function processAjaxRequestEditFileProcessActuallyDoesNotChangeFileData()
     {
-        $this->fileController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, array('init', 'main'));
+        $this->fileController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, ['init', 'main']);
 
-        $fileData = array('editfile' => array(true));
+        $fileData = ['editfile' => [true]];
         $this->fileController->_set('fileProcessor', $this->mockFileProcessor);
         $this->fileController->_set('fileData', $fileData);
         $this->fileController->_set('redirect', false);
@@ -139,9 +139,9 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function processAjaxRequestUnzipProcessActuallyDoesNotChangeFileData()
     {
-        $this->fileController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, array('init', 'main'));
+        $this->fileController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, ['init', 'main']);
 
-        $fileData = array('unzip' => array(true));
+        $fileData = ['unzip' => [true]];
         $this->fileController->_set('fileProcessor', $this->mockFileProcessor);
         $this->fileController->_set('fileData', $fileData);
         $this->fileController->_set('redirect', false);
