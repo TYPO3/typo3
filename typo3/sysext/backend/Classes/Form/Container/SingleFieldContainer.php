@@ -141,7 +141,7 @@ class SingleFieldContainer extends AbstractContainer
             && GeneralUtility::inList(str_replace(' ', '', $this->data['processedTca']['ctrl']['requestUpdate']), $fieldName)
         ) {
             if ($backendUser->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
-                $alertMsgOnChange = 'top.TYPO3.Modal.confirm(TBE_EDITOR.labels.refreshRequired.title, TBE_EDITOR.labels.refreshRequired.content).on("button.clicked", function(e) { if (e.target.name == "ok" && TBE_EDITOR.checkSubmit(-1)) { TBE_EDITOR.submitForm() } top.TYPO3.Modal.dismiss(); });';
+                $alertMsgOnChange = 'top.TYPO3.Modal.confirm(TYPO3.lang["FormEngine.refreshRequiredTitle"], TYPO3.lang["FormEngine.refreshRequiredContent"]).on("button.clicked", function(e) { if (e.target.name == "ok" && TBE_EDITOR.checkSubmit(-1)) { TBE_EDITOR.submitForm() } top.TYPO3.Modal.dismiss(); });';
             } else {
                 $alertMsgOnChange = 'if (TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
             }

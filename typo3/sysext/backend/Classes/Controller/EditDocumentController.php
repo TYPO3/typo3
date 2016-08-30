@@ -765,11 +765,9 @@ class EditDocumentController extends AbstractModule
         $javascript = '
 			TYPO3.configuration = ' . json_encode($t3Configuration) . ';
 			// Object: TS:
-			// passwordDummy is used by tbe_editor.js and has to be declared here as
 			// TS object overwrites the object declared in tbe_editor.js
 			function typoSetup() {	//
 				this.uniqueID = "";
-				this.passwordDummy = "********";
 			}
 			var TS = new typoSetup();
 

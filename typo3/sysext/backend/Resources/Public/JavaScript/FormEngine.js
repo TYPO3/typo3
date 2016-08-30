@@ -711,7 +711,7 @@ define(['jquery',
 
 			// append the counter only at focus to avoid cluttering the DOM
 			$parent.append($('<div />', {'class': 't3js-charcounter'}).append(
-				$('<span />', {'class': maxlengthProperties.labelClass}).text(TBE_EDITOR.labels.remainingCharacters.replace('{0}', maxlengthProperties.remainingCharacters))
+				$('<span />', {'class': maxlengthProperties.labelClass}).text(TYPO3.lang['FormEngine.remainingCharacters'].replace('{0}', maxlengthProperties.remainingCharacters))
 			));
 		}).on('blur', function() {
 			var $field = $(this),
@@ -723,7 +723,7 @@ define(['jquery',
 				maxlengthProperties = FormEngine.getCharacterCounterProperties($field);
 
 			// change class and value
-			$parent.find('.t3js-charcounter span').removeClass().addClass(maxlengthProperties.labelClass).text(TBE_EDITOR.labels.remainingCharacters.replace('{0}', maxlengthProperties.remainingCharacters))
+			$parent.find('.t3js-charcounter span').removeClass().addClass(maxlengthProperties.labelClass).text(TYPO3.lang['FormEngine.remainingCharacters'].replace('{0}', maxlengthProperties.remainingCharacters))
 		});
 		$(':password').on('focus', function() {
 			$(this).attr('type', 'text').select();

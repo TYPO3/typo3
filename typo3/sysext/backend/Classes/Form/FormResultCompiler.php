@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * This is form engine - Class for creating the backend editing forms.
@@ -193,18 +192,16 @@ class FormResultCompiler
         $pageRenderer = $this->getPageRenderer();
         $pageRenderer->addInlineSetting('FormEngine', 'formName', 'editform');
 
-        return $this->JSbottom('editform');
+        return $this->JSbottom();
     }
 
     /**
      * JavaScript bottom code
      *
-     * @param string $formname The identification of the form on the page.
      * @return string A section with JavaScript - if $update is FALSE, embedded in <script></script>
      */
-    protected function JSbottom($formname = 'forms[0]')
+    protected function JSbottom()
     {
-        $languageService = $this->getLanguageService();
         $pageRenderer = $this->getPageRenderer();
 
         // @todo: this is messy here - "additional hidden fields" should be handled elsewhere
@@ -285,21 +282,20 @@ class FormResultCompiler
         }
         // We want to load jQuery-ui inside our js. Enable this using requirejs.
         $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.inline.js');
+
+        // todo: change these things in JS
+        $pageRenderer->addInlineLanguageLabelArray([
+            'FormEngine.noRecordTitle'          => 'LLL:EXT:lang/locallang_core.xlf:labels.no_title',
+            'FormEngine.fieldsChanged'          => 'LLL:EXT:lang/locallang_core.xlf:labels.fieldsChanged',
+            'FormEngine.fieldsMissing'          => 'LLL:EXT:lang/locallang_core.xlf:labels.fieldsMissing',
+            'FormEngine.maxItemsAllowed'        => 'LLL:EXT:lang/locallang_core.xlf:labels.maxItemsAllowed',
+            'FormEngine.refreshRequiredTitle'   => 'LLL:EXT:lang/locallang_core.xlf:mess.refreshRequired.title',
+            'FormEngine.refreshRequiredContent' => 'LLL:EXT:lang/locallang_core.xlf:mess.refreshRequired.content',
+            'FormEngine.remainingCharacters'    => 'LLL:EXT:lang/locallang_core.xlf:labels.remainingCharacters',
+        ], true);
+
         $out = '
-		inline.setNoTitleString(' . GeneralUtility::quoteJSvalue(BackendUtility::getNoRecordTitle(true)) . ');
-		TBE_EDITOR.formname = "' . $formname . '";
-		TBE_EDITOR.formnameUENC = "' . rawurlencode($formname) . '";
-		TBE_EDITOR.isPalettedoc = null;
 		TBE_EDITOR.doSaveFieldName = "' . ($this->doSaveFieldName ? addslashes($this->doSaveFieldName) : '') . '";
-		TBE_EDITOR.labels.fieldsChanged = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.fieldsChanged')) . ';
-		TBE_EDITOR.labels.fieldsMissing = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.fieldsMissing')) . ';
-		TBE_EDITOR.labels.maxItemsAllowed = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.maxItemsAllowed')) . ';
-		TBE_EDITOR.labels.refresh_login = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login')) . ';
-		TBE_EDITOR.labels.refreshRequired = {};
-		TBE_EDITOR.labels.refreshRequired.title = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.refreshRequired.title')) . ';
-		TBE_EDITOR.labels.refreshRequired.content = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.refreshRequired.content')) . ';
-		TBE_EDITOR.labels.remainingCharacters = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.remainingCharacters')) . ';
-		TBE_EDITOR.customEvalFunctions = {};
 		';
 
         // Add JS required for inline fields
@@ -327,14 +323,6 @@ class FormResultCompiler
     protected function getBackendUserAuthentication()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
     }
 
     /**

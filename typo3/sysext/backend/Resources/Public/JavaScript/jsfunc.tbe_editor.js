@@ -33,21 +33,14 @@ var TBE_EDITOR = {
 	nested: {'field':{}, 'level':{}},
 	ignoreElements: [],
 	actionChecks: { submit:	[] },
+	customEvalFunctions: {},
 
-	formname: '',
-	formnameUENC: '',
+	formname: 'editform',
 	isChanged: 0,
 
-	isPalettedoc: null,
 	doSaveFieldName: 0,
 
 	labels: {},
-	images: {
-		req: new Image(),
-		cm: new Image(),
-		sel: new Image(),
-		clear: new Image()
-	},
 
 	clearBeforeSettingFormValueFromBrowseWin: [],
 
@@ -81,45 +74,8 @@ var TBE_EDITOR = {
 
 		return result;
 	},
-	checkElements: function(type, recentUpdated, record, field) {
+	checkElements: function() {
 		return (document.getElementsByClassName('has-error').length == 0);
-	},
-	// Check all the input fields on a given level of nesting - if only on is unfilled, the whole level is marked as required:
-	checkNested: function(nestedLevelIdent) {
-		var nestedLevel, isClean;
-		if (nestedLevelIdent && TBE_EDITOR.nested.level && TBE_EDITOR.nested.level[nestedLevelIdent]) {
-			nestedLevel = TBE_EDITOR.nested.level[nestedLevelIdent];
-			if (!nestedLevel.clean) {
-				if (typeof nestedLevel.item === 'object') {
-					TYPO3.jQuery.each(nestedLevel.item, function(key, value) {
-							if (isClean || typeof isClean === 'undefined') {
-								isClean = (
-									TBE_EDITOR.checkElements('required', false, value[0], value[1]) &&
-									TBE_EDITOR.checkElements('range', false, value[0], value[1])
-								);
-							}
-						}
-					);
-					if (typeof isClean !== 'undefined' && !isClean) {
-						return false;
-					}
-				}
-				if (typeof nestedLevel.sub === 'object') {
-					TYPO3.jQuery.each(nestedLevel.sub, function(key, value) {
-							if (isClean || typeof isClean === 'undefined') {
-								isClean = TBE_EDITOR.checkNested(key);
-							}
-						}
-					);
-					if (typeof isClean !== 'undefined' && !isClean) {
-						return false;
-					}
-				}
-					// Store the result, that this level (the fields on this and the sub levels) are clean:
-				nestedLevel.clean = true;
-			}
-		}
-		return true;
 	},
 	addActionChecks: function(type, checks) {
 		TBE_EDITOR.actionChecks[type].push(checks);
@@ -138,7 +94,6 @@ var TBE_EDITOR = {
 	},
 	fieldChanged: function(table,uid,field,el) {
 		var theField = 'data['+table+']['+uid+']['+field+']';
-		var theRecord = 'data['+table+']['+uid+']';
 		TBE_EDITOR.isChanged = 1;
 
 		// modify the "field has changed" info by adding a class to the container element (based on palette or main field)
@@ -147,38 +102,16 @@ var TBE_EDITOR = {
 		if (!$formField.is($humanReadableField)) {
 			$humanReadableField.triggerHandler('change');
 		}
-		var $paletteField = $formField.closest('.t3js-formengine-palette-field');
-		$paletteField.addClass('has-change');
+		// add class to palette field
+		$formField.closest('.t3js-formengine-palette-field').addClass('has-change');
 
-		// Set required flag:
-		var imgReqObjName = "req_"+table+"_"+uid+"_"+field;
-		if (TBE_EDITOR.getElement(theRecord,field,'required') && document[TBE_EDITOR.formname][theField]) {
-			if (TBE_EDITOR.checkElements('required', false, theRecord, field)) {
-				TBE_EDITOR.setImage(imgReqObjName,TBE_EDITOR.images.clear);
-			} else {
-				TBE_EDITOR.setImage(imgReqObjName,TBE_EDITOR.images.req);
-			}
-		}
-		if (TBE_EDITOR.getElement(theRecord,field,'range') && document[TBE_EDITOR.formname][theField]) {
-			if (TBE_EDITOR.checkElements('range', false, theRecord, field)) {
-				TBE_EDITOR.setImage(imgReqObjName,TBE_EDITOR.images.clear);
-			} else {
-				TBE_EDITOR.setImage(imgReqObjName,TBE_EDITOR.images.req);
-			}
-		}
-		if (TBE_EDITOR.isPalettedoc) { TBE_EDITOR.setOriginalFormFieldValue(theField) }
 		if (TYPO3.FormEngine && TYPO3.FormEngine.Validation) {
 			TYPO3.FormEngine.Validation.updateInputField(theField);
 			TYPO3.FormEngine.Validation.validate();
 		}
 	},
-	setOriginalFormFieldValue: function(theField) {
-		if (TBE_EDITOR.isPalettedoc && (TBE_EDITOR.isPalettedoc).document[TBE_EDITOR.formname] && (TBE_EDITOR.isPalettedoc).document[TBE_EDITOR.formname][theField]) {
-			(TBE_EDITOR.isPalettedoc).document[TBE_EDITOR.formname][theField].value = document[TBE_EDITOR.formname][theField].value;
-		}
-	},
 	isFormChanged: function(noAlert) {
-		if (TBE_EDITOR.isChanged && !noAlert && confirm(TBE_EDITOR.labels.fieldsChanged)) {
+		if (TBE_EDITOR.isChanged && !noAlert && confirm(TYPO3.lang['FormEngine.fieldsChanged'])) {
 			return 0;
 		}
 		return TBE_EDITOR.isChanged;
@@ -218,10 +151,9 @@ var TBE_EDITOR = {
 				OK = 1;
 			}
 		}
-		// $reqLinesCheck
-		if (!TBE_EDITOR.checkElements('required', false)) { OK = 0; }
-		// $reqRangeCheck
-		if (!TBE_EDITOR.checkElements('range', false)) { OK = 0; }
+		if (!TBE_EDITOR.checkElements()) {
+			OK = 0;
+		}
 
 		if (OK || sendAlert==-1) {
 			return true;
@@ -230,7 +162,7 @@ var TBE_EDITOR = {
 				var t = (opener != null && typeof opener.top.TYPO3 !== 'undefined' ? opener.top : top);
 				t.TYPO3.Modal.confirm(
 					t.TYPO3.lang['alert'] || 'Alert',
-					TBE_EDITOR.labels.fieldsMissing,
+					t.TYPO3.lang['FormEngine.fieldsMissing'],
 					t.TYPO3.Severity.error,
 					[
 						{
@@ -245,33 +177,6 @@ var TBE_EDITOR = {
 				});
 			}
 			return false;
-		}
-	},
-	checkRange: function(numberOfElements, lower, upper) {
-			// for backwards compatibility, check if we're dealing with an element as first parameter
-		if(typeof numberOfElements == 'object') {
-			numberOfElements = numberOfElements.length;
-		}
-
-		if (numberOfElements >= lower && numberOfElements <= upper) {
-			return true;
-		} else {
-			return false;
-		}
-	},
-	setImage: function(name,image) {
-		var object;
-		if (document[name]) {
-			object = document[name];
-		} else if (document.getElementById(name)) {
-			object = document.getElementById(name);
-		}
-		if (object) {
-			if (typeof image == 'object') {
-				document[name].src = image.src;
-			} else {
-				document[name].src = eval(image+'.src');
-			}
 		}
 	},
 	submitForm: function() {
@@ -334,40 +239,16 @@ var TBE_EDITOR = {
 		output+=''+input.substr(pointer);
 		return output;
 	},
-	toggle_display_states: function(id, state_1, state_2) {
-		var node = document.getElementById(id);
-		if (node) {
-			switch (node.style.display) {
-				case state_1:
-					node.style.display = state_2;
-					break;
-				case state_2:
-					node.style.display = state_1;
-					break;
-			}
-		}
-		return false;
-	},
-
 };
-
-function typoSetup	() {
-	this.passwordDummy = '********';
-}
-// @todo: maybe obsolete, need a deeper check
-var TS = new typoSetup();
 
 // backwards compatibility for extensions
 var TBE_EDITOR_setHiddenContent = TBE_EDITOR.setHiddenContent;
 var TBE_EDITOR_isChanged = TBE_EDITOR.isChanged;
 var TBE_EDITOR_fieldChanged_fName = TBE_EDITOR.fieldChanged_fName;
 var TBE_EDITOR_fieldChanged = TBE_EDITOR.fieldChanged;
-var TBE_EDITOR_setOriginalFormFieldValue = TBE_EDITOR.setOriginalFormFieldValue;
 var TBE_EDITOR_isFormChanged = TBE_EDITOR.isFormChanged;
 var TBE_EDITOR_checkAndDoSubmit = TBE_EDITOR.checkAndDoSubmit;
 var TBE_EDITOR_checkSubmit = TBE_EDITOR.checkSubmit;
-var TBE_EDITOR_checkRange = TBE_EDITOR.checkRange;
-var TBE_EDITOR_setImage = TBE_EDITOR.setImage;
 var TBE_EDITOR_submitForm = TBE_EDITOR.submitForm;
 var TBE_EDITOR_split = TBE_EDITOR.split;
 var TBE_EDITOR_curSelected = TBE_EDITOR.curSelected;

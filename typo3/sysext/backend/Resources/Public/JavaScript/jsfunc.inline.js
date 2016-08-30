@@ -23,7 +23,7 @@ var inline = {
 	structureSeparator: '-',
 	flexFormSeparator: '---',
 	flexFormSubstitute: ':',
-	noTitleString: '[No title]',
+	noTitleString: (TYPO3.lang ? TYPO3.lang['FormEngine.noRecordTitle'] : '[No title]'),
 	lockedAjaxMethod: {},
 	sourcesLoaded: {},
 	data: {},
@@ -163,7 +163,7 @@ var inline = {
 			}
 			this.makeAjaxCall('create', [objectId], true, context);
 		} else {
-			var message = TBE_EDITOR.labels.maxItemsAllowed.replace('{0}', this.data.config[objectId].max);
+			var message = TYPO3.lang['FormEngine.maxItemsAllowed'].replace('{0}', this.data.config[objectId].max);
 			var matches = objectId.match(/^(data-\d+-.*?-\d+-.*?)-(.*?)$/);
 			var title = '';
 			if (matches) {
@@ -497,7 +497,7 @@ var inline = {
 				$insertObject.after(htmlData);
 			}
 		} else {
-			var message = TBE_EDITOR.labels.maxItemsAllowed.replace('{0}', this.data.config[objectPrefix].max);
+			var message = TYPO3.lang['FormEngine.maxItemsAllowed'].replace('{0}', this.data.config[objectPrefix].max);
 			var title = $insertObject.data('title');
 			top.TYPO3.Notification.error(title, message);
 		}

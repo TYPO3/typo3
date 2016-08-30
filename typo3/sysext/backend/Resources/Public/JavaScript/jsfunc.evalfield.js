@@ -455,7 +455,7 @@ function evalFunc_output(type,value,FObj) {
 			theString = h+':'+((m<10)?'0':'')+m + ((type=="timesec")?':'+((s<10)?'0':'')+s:'');
 			break;
 		case "password":
-			theString = (value)	? TS.passwordDummy : "";
+			theString = (value)	? "********" : "";
 			break;
 		case "int":
 			theString = (FObj.checkbox && value==FObj.checkboxValue)?'':value;
