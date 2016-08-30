@@ -27,7 +27,7 @@ class DateTimeSubFixture extends \DateTime
      */
     public static function createFromFormat($format, $time, $timezone = null)
     {
-        return new DateTimeSubFixture();
+        return new self();
     }
 
     /**

@@ -2,7 +2,6 @@
 defined('TYPO3_MODE') or die();
 
 call_user_func(function () {
-
     $languageFilePrefix = 'LLL:EXT:fluid_styled_content/Resources/Private/Language/Database.xlf:';
     $frontendLanguageFilePrefix = 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:';
 

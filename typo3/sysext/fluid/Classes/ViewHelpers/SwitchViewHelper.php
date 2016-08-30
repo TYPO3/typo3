@@ -54,12 +54,12 @@ class SwitchViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\SwitchViewHelper
         if ($node instanceof ViewHelperNode) {
             $viewHelperClassName = $node->getViewHelperClassName();
             $arguments = $node->getArguments();
-            return (
+            return
                 $viewHelperClassName === DefaultCaseViewHelper::class ||
                 (
                     $viewHelperClassName === CaseViewHelper::class && isset($arguments['default']) && $arguments['default']
                 )
-            );
+            ;
         }
         return false;
     }
@@ -72,7 +72,7 @@ class SwitchViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\SwitchViewHelper
     {
         if ($node instanceof ViewHelperNode) {
             $viewHelperClassName = $node->getViewHelperClassName();
-            return ($viewHelperClassName === CaseViewHelper::class || $viewHelperClassName === OriginalCaseViewHelper::class);
+            return $viewHelperClassName === CaseViewHelper::class || $viewHelperClassName === OriginalCaseViewHelper::class;
         }
         return false;
     }

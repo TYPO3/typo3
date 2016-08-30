@@ -125,7 +125,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
             ->shouldBeCalled()
             ->willReturn($statementProphet->reveal());
 
-        # Two instances are needed due to the push/pop behavior of addInstance()
+        // Two instances are needed due to the push/pop behavior of addInstance()
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
     }

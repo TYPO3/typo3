@@ -1023,7 +1023,7 @@ class CharsetConverter implements SingletonInterface
                     array_push($code_decomp, chr($ord));
                 }
             }
-            $ascii[$this->UnumberToChar(hexdec($from))] = join('', $code_decomp);
+            $ascii[$this->UnumberToChar(hexdec($from))] = implode('', $code_decomp);
         }
         // Add numeric decompositions
         foreach ($number as $from => $to) {

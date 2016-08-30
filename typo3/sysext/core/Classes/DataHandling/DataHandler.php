@@ -2724,7 +2724,7 @@ class DataHandler
                     }
                     $valueArray = explode('.', $value);
                     $dec = array_pop($valueArray);
-                    $value = join('', $valueArray) . '.' . $dec;
+                    $value = implode('', $valueArray) . '.' . $dec;
                     if ($negative) {
                         $value *= -1;
                     }
@@ -8462,7 +8462,7 @@ class DataHandler
         if (!isset($this->outerMostInstance)) {
             $stack = array_reverse(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS));
             foreach ($stack as $stackItem) {
-                if (isset($stackItem['object']) && $stackItem['object'] instanceof DataHandler) {
+                if (isset($stackItem['object']) && $stackItem['object'] instanceof self) {
                     $this->outerMostInstance = $stackItem['object'];
                     break;
                 }

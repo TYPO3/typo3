@@ -264,11 +264,11 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      */
     public function canBeCut()
     {
-        return (
+        return
             $this->canEdit($this->record)
             && !VersionState::cast($this->record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
             && $GLOBALS['BE_USER']->checkLanguageAccess(0)
-        );
+        ;
     }
 
     /**
@@ -288,11 +288,11 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      */
     public function canBeCopied()
     {
-        return (
+        return
             $GLOBALS['BE_USER']->doesUserHaveAccess($this->record, 1)
             && !VersionState::cast($this->record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
             && $GLOBALS['BE_USER']->checkLanguageAccess(0)
-        );
+        ;
     }
 
     /**
@@ -312,11 +312,11 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      */
     public function canBeRemoved()
     {
-        return (
+        return
             $this->canRemove($this->record)
             && !VersionState::cast($this->record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
             && $GLOBALS['BE_USER']->checkLanguageAccess(0)
-        );
+        ;
     }
 
     /**
@@ -326,11 +326,11 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      */
     public function canBePastedInto()
     {
-        return (
+        return
             $this->canCreate($this->record)
             && !VersionState::cast($this->record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
             && $GLOBALS['BE_USER']->checkLanguageAccess(0)
-        );
+        ;
     }
 
     /**
@@ -340,11 +340,11 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      */
     public function canBePastedAfter()
     {
-        return (
+        return
             $this->canCreate($this->record)
             && !VersionState::cast($this->record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
             && $GLOBALS['BE_USER']->checkLanguageAccess(0)
-        );
+        ;
     }
 
     /**
@@ -394,10 +394,10 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      */
     public function isDeleted()
     {
-        return (
+        return
             !empty($this->record['deleted'])
             || VersionState::cast($this->record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
-        );
+        ;
     }
 
     /**

@@ -51,7 +51,7 @@ class TableGarbageCollectionTask extends AbstractTask
      */
     public function execute()
     {
-        $tableConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TableGarbageCollectionTask::class]['options']['tables'];
+        $tableConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][self::class]['options']['tables'];
         $tableHandled = false;
         foreach ($tableConfigurations as $tableName => $configuration) {
             if ($this->allTables || $tableName === $this->table) {
@@ -60,7 +60,7 @@ class TableGarbageCollectionTask extends AbstractTask
             }
         }
         if (!$tableHandled) {
-            throw new \RuntimeException(TableGarbageCollectionTask::class . ' misconfiguration: ' . $this->table . ' does not exist in configuration', 1308354399);
+            throw new \RuntimeException(self::class . ' misconfiguration: ' . $this->table . ' does not exist in configuration', 1308354399);
         }
         return true;
     }
@@ -91,7 +91,7 @@ class TableGarbageCollectionTask extends AbstractTask
                 $deleteTimestamp = strtotime('-' . $this->numberOfDays . 'days');
             } else {
                 if (!isset($configuration['expirePeriod'])) {
-                    throw new \RuntimeException(TableGarbageCollectionTask::class . ' misconfiguration: No expirePeriod defined for table ' . $table, 1308355095);
+                    throw new \RuntimeException(self::class . ' misconfiguration: No expirePeriod defined for table ' . $table, 1308355095);
                 }
                 $deleteTimestamp = strtotime('-' . $configuration['expirePeriod'] . 'days');
             }
@@ -99,13 +99,13 @@ class TableGarbageCollectionTask extends AbstractTask
                 $queryBuilder->expr()->lt($configuration['dateField'], $deleteTimestamp)
             );
         } else {
-            throw new \RuntimeException(TableGarbageCollectionTask::class . ' misconfiguration: Either expireField or dateField must be defined for table ' . $table, 1308355268);
+            throw new \RuntimeException(self::class . ' misconfiguration: Either expireField or dateField must be defined for table ' . $table, 1308355268);
         }
 
         try {
             $queryBuilder->execute();
         } catch (DBALException $e) {
-            throw new \RuntimeException(TableGarbageCollectionTask::class . ' failed for table ' . $this->table . ' with error: ' . $e->getMessage(), 1308255491);
+            throw new \RuntimeException(self::class . ' failed for table ' . $this->table . ' with error: ' . $e->getMessage(), 1308255491);
         }
         return true;
     }

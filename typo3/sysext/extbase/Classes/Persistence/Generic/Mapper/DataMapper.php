@@ -528,7 +528,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
     protected function propertyMapsByForeignKey(DomainObjectInterface $parentObject, $propertyName)
     {
         $columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
-        return ($columnMap->getParentKeyFieldName() !== null);
+        return $columnMap->getParentKeyFieldName() !== null;
     }
 
     /**

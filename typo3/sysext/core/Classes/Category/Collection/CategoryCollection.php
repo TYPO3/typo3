@@ -54,7 +54,7 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
         if (!empty($tableName)) {
             $this->setItemTableName($tableName);
         } elseif (empty($this->itemTableName)) {
-            throw new \RuntimeException(CategoryCollection::class . ' needs a valid itemTableName.', 1341826168);
+            throw new \RuntimeException(self::class . ' needs a valid itemTableName.', 1341826168);
         }
         if (!empty($fieldName)) {
             $this->setRelationFieldName($fieldName);
@@ -73,7 +73,7 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
     {
         /** @var $collection CategoryCollection */
         $collection = GeneralUtility::makeInstance(
-            CategoryCollection::class,
+            self::class,
             $collectionRecord['table_name'],
             $collectionRecord['field_name']
         );

@@ -229,7 +229,7 @@ class RecordList extends AbstractModule
         // Initialize menu
         $this->menuConfig();
         // Store session data
-        $backendUser->setAndSaveSessionData(RecordList::class, $sessionData);
+        $backendUser->setAndSaveSessionData(self::class, $sessionData);
         $this->getPageRenderer()->addInlineLanguageLabelFile('EXT:lang/locallang_mod_web_list.xlf');
     }
 

@@ -191,9 +191,9 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     {
         $this->preProcess();
 
-        return (
+        return
             !empty($this->moduleName)
-        );
+        ;
     }
 
     /**

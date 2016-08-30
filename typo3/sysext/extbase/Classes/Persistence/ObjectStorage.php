@@ -361,9 +361,9 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      */
     public function isRelationDirty($object)
     {
-        return (isset($this->addedObjectsPositions[spl_object_hash($object)])
+        return isset($this->addedObjectsPositions[spl_object_hash($object)])
                 && isset($this->removedObjectsPositions[spl_object_hash($object)])
-                && ($this->addedObjectsPositions[spl_object_hash($object)] !== $this->removedObjectsPositions[spl_object_hash($object)]));
+                && ($this->addedObjectsPositions[spl_object_hash($object)] !== $this->removedObjectsPositions[spl_object_hash($object)]);
     }
 
     /**

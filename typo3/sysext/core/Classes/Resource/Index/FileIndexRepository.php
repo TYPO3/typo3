@@ -68,7 +68,7 @@ class FileIndexRepository implements SingletonInterface
      */
     public static function getInstance()
     {
-        return GeneralUtility::makeInstance(FileIndexRepository::class);
+        return GeneralUtility::makeInstance(self::class);
     }
 
     /**
@@ -563,7 +563,7 @@ class FileIndexRepository implements SingletonInterface
      */
     protected function emitRecordUpdatedSignal(array $data)
     {
-        $this->getSignalSlotDispatcher()->dispatch(FileIndexRepository::class, 'recordUpdated', [$data]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, 'recordUpdated', [$data]);
     }
 
     /**
@@ -574,7 +574,7 @@ class FileIndexRepository implements SingletonInterface
      */
     protected function emitRecordCreatedSignal(array $data)
     {
-        $this->getSignalSlotDispatcher()->dispatch(FileIndexRepository::class, 'recordCreated', [$data]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, 'recordCreated', [$data]);
     }
 
     /**
@@ -585,7 +585,7 @@ class FileIndexRepository implements SingletonInterface
      */
     protected function emitRecordDeletedSignal($fileUid)
     {
-        $this->getSignalSlotDispatcher()->dispatch(FileIndexRepository::class, 'recordDeleted', [$fileUid]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, 'recordDeleted', [$fileUid]);
     }
 
     /**
@@ -596,6 +596,6 @@ class FileIndexRepository implements SingletonInterface
      */
     protected function emitRecordMarkedAsMissingSignal($fileUid)
     {
-        $this->getSignalSlotDispatcher()->dispatch(FileIndexRepository::class, 'recordMarkedAsMissing', [$fileUid]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, 'recordMarkedAsMissing', [$fileUid]);
     }
 }

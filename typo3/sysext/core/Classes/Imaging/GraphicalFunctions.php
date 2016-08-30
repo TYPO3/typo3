@@ -1021,7 +1021,7 @@ class GraphicalFunctions
                     $offsetInfo[5] += $calc[5] - $calc[7] - (int)$splitRendering['compY'] - (int)$strCfg['ySpaceBefore'] - (int)$strCfg['ySpaceAfter'];
                 }
             } else {
-                debug('cannot read file: ' . $fontFile, GraphicalFunctions::class . '::ImageTTFBBoxWrapper()');
+                debug('cannot read file: ' . $fontFile, self::class . '::ImageTTFBBoxWrapper()');
             }
         }
         return $offsetInfo;
@@ -1072,7 +1072,7 @@ class GraphicalFunctions
                 $x += $wordInf[2] - $wordInf[0] + (int)$splitRendering['compX'] + (int)$strCfg['xSpaceAfter'];
                 $y += $wordInf[5] - $wordInf[7] - (int)$splitRendering['compY'] - (int)$strCfg['ySpaceAfter'];
             } else {
-                debug('cannot read file: ' . $fontFile, GraphicalFunctions::class . '::ImageTTFTextWrapper()');
+                debug('cannot read file: ' . $fontFile, self::class . '::ImageTTFTextWrapper()');
             }
         }
     }

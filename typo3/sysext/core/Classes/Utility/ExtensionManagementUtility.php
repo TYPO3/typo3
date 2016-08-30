@@ -856,7 +856,7 @@ class ExtensionManagementUtility
         $moduleConfiguration['name'] = $moduleSignature;
         $moduleConfiguration['script'] = 'extjspaneldummy.html';
         $moduleConfiguration['extensionName'] = $extensionName;
-        $moduleConfiguration['configureModuleFunction'] = [ExtensionManagementUtility::class, 'configureModule'];
+        $moduleConfiguration['configureModuleFunction'] = [self::class, 'configureModule'];
         $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
         self::addModule($mainModuleName, $subModuleName, $position);
     }

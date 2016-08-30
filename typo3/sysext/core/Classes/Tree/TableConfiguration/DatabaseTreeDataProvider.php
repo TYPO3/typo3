@@ -373,7 +373,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      */
     protected function getRelatedRecords(array $row)
     {
-        if ($this->getLookupMode() == DatabaseTreeDataProvider::MODE_PARENT) {
+        if ($this->getLookupMode() == self::MODE_PARENT) {
             $children = $this->getChildrenUidsFromParentRelation($row);
         } else {
             $children = $this->getChildrenUidsFromChildrenRelation($row);
@@ -511,7 +511,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     protected function emitPostProcessTreeDataSignal()
     {
         $this->getSignalSlotDispatcher()->dispatch(
-            DatabaseTreeDataProvider::class,
+            self::class,
             self::SIGNAL_PostProcessTreeData,
             [$this, $this->treeData]
         );

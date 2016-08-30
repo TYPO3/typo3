@@ -37,7 +37,7 @@ class FormBuilder
     public static function create(Configuration $configuration)
     {
         /** @var FormBuilder $formBuilder */
-        $formBuilder = \TYPO3\CMS\Form\Utility\FormUtility::getObjectManager()->get(FormBuilder::class);
+        $formBuilder = \TYPO3\CMS\Form\Utility\FormUtility::getObjectManager()->get(self::class);
         $formBuilder->setConfiguration($configuration);
         return $formBuilder;
     }

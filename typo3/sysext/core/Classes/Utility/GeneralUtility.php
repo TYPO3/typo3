@@ -2392,7 +2392,7 @@ class GeneralUtility
             $temporaryDirectory = rtrim($directory, '/') . '.' . StringUtility::getUniqueId('remove') . '/';
             if (rename($directory, $temporaryDirectory)) {
                 if ($flushOpcodeCache) {
-                    GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($directory);
+                    self::makeInstance(OpcodeCacheService::class)->clearAllActive($directory);
                 }
                 if ($keepOriginalDirectory) {
                     static::mkdir($directory);
@@ -3138,7 +3138,7 @@ class GeneralUtility
      */
     protected static function isInternalRequestType()
     {
-        return (!defined('TYPO3_REQUESTTYPE') || (defined('TYPO3_REQUESTTYPE') && TYPO3_REQUESTTYPE & (TYPO3_REQUESTTYPE_INSTALL | TYPO3_REQUESTTYPE_CLI)));
+        return !defined('TYPO3_REQUESTTYPE') || (defined('TYPO3_REQUESTTYPE') && TYPO3_REQUESTTYPE & (TYPO3_REQUESTTYPE_INSTALL | TYPO3_REQUESTTYPE_CLI));
     }
 
     /**
@@ -3516,7 +3516,7 @@ class GeneralUtility
     {
         $temporaryPath = PATH_site . 'typo3temp/var/transient/';
         if (!is_dir($temporaryPath)) {
-            GeneralUtility::mkdir_deep($temporaryPath);
+            self::mkdir_deep($temporaryPath);
         }
         if ($fileSuffix === '') {
             $tempFileName = static::fixWindowsFilePath(tempnam($temporaryPath, $filePrefix));

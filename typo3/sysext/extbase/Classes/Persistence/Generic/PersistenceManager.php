@@ -295,7 +295,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      */
     public function isNewObject($object)
     {
-        return ($this->persistenceSession->hasObject($object) === false);
+        return $this->persistenceSession->hasObject($object) === false;
     }
 
     /**

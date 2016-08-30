@@ -458,10 +458,10 @@ class GridDataService
      */
     protected function isSortable(array $a, array $b)
     {
-        return (
+        return
             $a[self::GridColumn_CollectionLevel] === 0 && $b[self::GridColumn_CollectionLevel] === 0
             || $a[self::GridColumn_CollectionParent] === $b[self::GridColumn_CollectionParent]
-        );
+        ;
     }
 
     /**

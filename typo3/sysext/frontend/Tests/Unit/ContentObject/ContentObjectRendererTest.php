@@ -4474,10 +4474,10 @@ class ContentObjectRendererTest extends UnitTestCase
         list($countCalls, $test) = [0, $this];
         $closure = function ($par1, $par2) use (
             $test, $subject, $params, &$countCalls) {
-                $test->assertSame($params, $par1);
-                $test->assertSame($subject, $par2);
-                $countCalls++;
-            };
+            $test->assertSame($params, $par1);
+            $test->assertSame($subject, $par2);
+            $countCalls++;
+        };
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore'] = [$closure, $closure, $closure];
         $this->assertSame($content,
             $subject->stdWrap_cacheStore($content, $conf));

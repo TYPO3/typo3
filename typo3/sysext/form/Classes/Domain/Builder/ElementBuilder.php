@@ -31,7 +31,7 @@ class ElementBuilder
     public static function create(FormBuilder $formBuilder, Element $element, array $userDefinedTypoScript)
     {
         /** @var ElementBuilder $elementBuilder */
-        $elementBuilder = \TYPO3\CMS\Form\Utility\FormUtility::getObjectManager()->get(ElementBuilder::class);
+        $elementBuilder = \TYPO3\CMS\Form\Utility\FormUtility::getObjectManager()->get(self::class);
         $elementBuilder->setFormBuilder($formBuilder);
         $elementBuilder->setElement($element);
         $elementBuilder->setUserConfiguredElementTyposcript($userDefinedTypoScript);
@@ -423,9 +423,9 @@ class ElementBuilder
      */
     protected function arrayKeyExists($needle, array $haystack = [])
     {
-        return (
+        return
             isset($haystack[$needle]) || isset($haystack[$needle . '.'])
-        );
+        ;
     }
 
     /**

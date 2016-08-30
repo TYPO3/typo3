@@ -73,8 +73,8 @@ class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
         // We won't backport the full flavored locale parsing of floats from Flow here
 
         if (is_string($source) && $configuration !== null) {
-            $thousandsSeparator = $configuration->getConfigurationValue(FloatConverter::class, self::CONFIGURATION_THOUSANDS_SEPARATOR);
-            $decimalPoint = $configuration->getConfigurationValue(FloatConverter::class, self::CONFIGURATION_DECIMAL_POINT);
+            $thousandsSeparator = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_THOUSANDS_SEPARATOR);
+            $decimalPoint = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_DECIMAL_POINT);
             $source = str_replace($thousandsSeparator, '', $source);
             $source = str_replace($decimalPoint, '.', $source);
         }

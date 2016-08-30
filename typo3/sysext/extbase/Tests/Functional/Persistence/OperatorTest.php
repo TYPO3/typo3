@@ -103,7 +103,9 @@ class OperatorTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         );
 
         $result = array_map(
-            function ($row) { return $row['uid']; },
+            function ($row) {
+                return $row['uid'];
+            },
             $query->execute(true)
         );
         $this->assertEquals([3, 4, 5], $result);

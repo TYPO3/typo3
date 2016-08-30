@@ -118,7 +118,7 @@ class ClassReflection extends \ReflectionClass
         $extendedInterfaces = [];
         $interfaces = parent::getInterfaces();
         foreach ($interfaces as $interface) {
-            $extendedInterfaces[] = new ClassReflection($interface->getName());
+            $extendedInterfaces[] = new self($interface->getName());
         }
         return $extendedInterfaces;
     }
@@ -133,7 +133,7 @@ class ClassReflection extends \ReflectionClass
     public function getParentClass()
     {
         $parentClass = parent::getParentClass();
-        return $parentClass === false ? false : new ClassReflection($parentClass->getName());
+        return $parentClass === false ? false : new self($parentClass->getName());
     }
 
     /**

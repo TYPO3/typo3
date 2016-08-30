@@ -1485,7 +1485,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'Hello all   together     all      there all       all   are  all    none',
                 true,
                 5,
-                ['Hello', 'together', 'there', 'are' ,'none']
+                ['Hello', 'together', 'there', 'are' , 'none']
             ],
             'can use words as delimiter and do not remove empty' => [
                 'all  there',
@@ -4514,7 +4514,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function callUserFunctionCanCallFunction()
     {
         $inputData = ['foo' => 'bar'];
-        $result = GeneralUtility::callUserFunction(function () { return 'Worked fine'; }, $inputData, $this, '');
+        $result = GeneralUtility::callUserFunction(function () {
+            return 'Worked fine';
+        }, $inputData, $this, '');
         $this->assertEquals('Worked fine', $result);
     }
 
@@ -4524,7 +4526,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function callUserFunctionCanCallMethod()
     {
         $inputData = ['foo' => 'bar'];
-        $result = GeneralUtility::callUserFunction(GeneralUtilityTest::class . '->user_calledUserFunction', $inputData, $this);
+        $result = GeneralUtility::callUserFunction(self::class . '->user_calledUserFunction', $inputData, $this);
         $this->assertEquals('Worked fine', $result);
     }
 

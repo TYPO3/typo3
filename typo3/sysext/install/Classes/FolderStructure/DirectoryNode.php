@@ -269,7 +269,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
     protected function isDirectory()
     {
         $path = $this->getAbsolutePath();
-        return (!@is_link($path) && @is_dir($path));
+        return !@is_link($path) && @is_dir($path);
     }
 
     /**

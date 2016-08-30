@@ -428,7 +428,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $user_sk = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass(2, 'Sebastian', 'Kurfuerst');
         $user_rl = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass(3, 'Robert', 'Lemke');
 
-        $this->arguments['options'] = [$user_is,$user_sk,$user_rl];
+        $this->arguments['options'] = [$user_is, $user_sk, $user_rl];
         $this->arguments['value'] = [$user_rl, $user_is];
         $this->arguments['optionLabelField'] = 'lastName';
         $this->arguments['name'] = 'myName';

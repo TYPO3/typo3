@@ -949,7 +949,7 @@ class RecordHistory
             );
         }
 
-        return ($this->pageAccessCache[$pageId] !== false);
+        return $this->pageAccessCache[$pageId] !== false;
     }
 
     /**

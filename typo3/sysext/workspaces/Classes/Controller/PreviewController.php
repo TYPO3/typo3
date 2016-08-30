@@ -132,7 +132,7 @@ class PreviewController extends AbstractController
         // @todo - handle new pages here
         // branchpoints are not handled anymore because this feature is not supposed anymore
         if (WorkspaceService::isNewPage($this->pageId)) {
-            $wsNewPageUri = $uriBuilder->uriFor('newPage', [], PreviewController::class, 'workspaces', 'web_workspacesworkspaces');
+            $wsNewPageUri = $uriBuilder->uriFor('newPage', [], self::class, 'workspaces', 'web_workspacesworkspaces');
             $wsNewPageParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Preview';
             $liveUrl = $wsSettingsPath . $wsNewPageUri . $wsNewPageParams . '&ADMCMD_prev=IGNORE';
         } else {

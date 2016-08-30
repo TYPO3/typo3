@@ -73,7 +73,7 @@ class ClientUtility
             'aol'
         ];
         $matches = [];
-        $pattern = '#(?P<browser>' . join('|', $known) . ')[/ ]+(?P<version>[0-9]+(?:\\.[0-9]+)?)#';
+        $pattern = '#(?P<browser>' . implode('|', $known) . ')[/ ]+(?P<version>[0-9]+(?:\\.[0-9]+)?)#';
         // Find all phrases (or return empty array if none found)
         if (!preg_match_all($pattern, strtolower($userAgent), $matches)) {
             // Microsoft Internet-Explorer 11 does not have a sign of "MSIE" or so in the useragent.

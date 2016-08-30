@@ -683,8 +683,8 @@ page.10.value = HELLO WORLD!
      */
     protected function getHookObjectForAction($action)
     {
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][TypoScriptTemplateModuleController::class][$action])) {
-            return $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][TypoScriptTemplateModuleController::class][$action];
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class][$action])) {
+            return $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class][$action];
         }
         return null;
     }

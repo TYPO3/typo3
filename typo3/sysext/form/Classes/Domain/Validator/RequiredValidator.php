@@ -39,10 +39,10 @@ class RequiredValidator extends AbstractValidator
     {
         if (is_array($value)) {
             array_walk_recursive($value, function ($value, $key, $validator) {
-                    if (!empty($value) || $value === '0' || $value === 0) {
-                        $validator->setAllFieldsAreEmpty(false);
-                    }
-                },
+                if (!empty($value) || $value === '0' || $value === 0) {
+                    $validator->setAllFieldsAreEmpty(false);
+                }
+            },
                 $this
             );
             if ($this->getAllFieldsAreEmpty()) {

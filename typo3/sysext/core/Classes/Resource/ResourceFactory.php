@@ -203,7 +203,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      */
     protected function emitPostProcessStorageSignal(ResourceStorage $storageObject)
     {
-        $this->signalSlotDispatcher->dispatch(ResourceFactory::class, self::SIGNAL_PostProcessStorage, [$this, $storageObject]);
+        $this->signalSlotDispatcher->dispatch(self::class, self::SIGNAL_PostProcessStorage, [$this, $storageObject]);
     }
 
     /**

@@ -288,7 +288,9 @@ class SqlSchemaMigrationService
                                         // "PRIMARY KEY" is being returned from the DB in upper case.
                                         $fieldC = preg_replace_callback(
                                             '/^([a-zA-Z0-9]+)(\([^)]*\)\s.*)/',
-                                            function ($matches) { return strtolower($matches[1]) . $matches[2]; },
+                                            function ($matches) {
+                                                return strtolower($matches[1]) . $matches[2];
+                                            },
                                             $fieldC
                                         );
 

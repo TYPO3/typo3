@@ -223,7 +223,7 @@ class Result
             return $this->recurseThroughResult(explode('.', $propertyPath));
         }
         if (!isset($this->propertyResults[$propertyPath])) {
-            $this->propertyResults[$propertyPath] = new Result();
+            $this->propertyResults[$propertyPath] = new self();
             $this->propertyResults[$propertyPath]->setParent($this);
         }
         return $this->propertyResults[$propertyPath];
@@ -244,7 +244,7 @@ class Result
         $propertyName = array_shift($pathSegments);
 
         if (!isset($this->propertyResults[$propertyName])) {
-            $this->propertyResults[$propertyName] = new Result();
+            $this->propertyResults[$propertyName] = new self();
             $this->propertyResults[$propertyName]->setParent($this);
         }
 

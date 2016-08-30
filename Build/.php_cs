@@ -69,6 +69,17 @@ return Symfony\CS\Config\Config::create()
         'phpdoc_no_package',
         'phpdoc_scalar',
         'no_empty_lines_after_phpdocs',
-        'short_array_syntax'
+        'short_array_syntax',
+        'array_element_white_space_after_comma',
+        'function_typehint_space',
+        'hash_to_slash_comment',
+        'join_function',
+        'lowercase_cast',
+        'namespace_no_leading_whitespace',
+        'native_function_casing',
+        'no_empty_statement',
+        'self_accessor',
+        'short_bool_cast',
+        'unneeded_control_parentheses'
     ])
     ->finder($finder);

@@ -29,7 +29,7 @@ class FormUtility
     public static function create(Configuration $configuration)
     {
         /** @var FormBuilder $formBuilder */
-        $formUtility = FormUtility::getObjectManager()->get(FormUtility::class);
+        $formUtility = self::getObjectManager()->get(self::class);
         $formUtility->setConfiguration($configuration);
         return $formUtility;
     }
@@ -112,13 +112,13 @@ class FormUtility
      *
      *   If $type is set and $configuration['value'] isset
      *   return the value of $configuration['value'].
-     * 
+     *
      *   If $type is set and $configuration['value'] is not set
      *   return the value of $defaultMessage.
-     * 
+     *
      *   If $type is empty and $configuration['value'] isset
      *   return the value of $configuration['value'].
-     * 
+     *
      *   If $type is empty and $configuration['value'] is not set
      *   return the value of $defaultMessage.
      *

@@ -63,7 +63,7 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
         } else {
             $iconMarkup = $node->getIcon();
         }
-        $nodeArray = array(
+        $nodeArray = [
             'iconTag' => $iconMarkup,
             'text' => htmlspecialchars($node->getLabel()),
             'leaf' => !$node->hasChildNodes(),
@@ -76,7 +76,7 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
             'identifier' => htmlspecialchars($node->getId()),
             //no need for htmlspecialhars here as d3 is using 'textContent' property of the HTML DOM node
             'name' => $node->getLabel(),
-        );
+        ];
 
         return $nodeArray;
     }

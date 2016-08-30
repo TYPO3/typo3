@@ -518,11 +518,10 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $fileHandlerMock->expects($this->exactly(2))
             ->method('createNestedDirectory')
             ->will($this->returnCallback(function ($path) {
-                    if (!in_array($path, ['foo/bar', 'baz/foo'])) {
-                        throw new \Exception('Path "' . $path . '" is not expected to be created');
-                    }
-
-                })
+                if (!in_array($path, ['foo/bar', 'baz/foo'])) {
+                    throw new \Exception('Path "' . $path . '" is not expected to be created');
+                }
+            })
             );
         $fileHandlerMock->ensureConfiguredDirectoriesExist([
                 'key' => 'foo_bar',

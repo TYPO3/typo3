@@ -71,7 +71,7 @@ class RegistryService
     {
         $namespace = (is_string($namespace) ? $namespace : $this->namespaceIdentifier);
         $value = $this->registry->get($namespace, $name, '__NOTFOUND__');
-        return ($value !== '__NOTFOUND__');
+        return $value !== '__NOTFOUND__';
     }
 
     /**

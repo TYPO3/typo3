@@ -1,5 +1,5 @@
 <?php
-declare (strict_types = 1);
+declare(strict_types=1);
 namespace TYPO3\CMS\Core\LinkHandling;
 
 /*
@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class LinkService implements SingletonInterface
 {
-
     const TYPE_PAGE = 'page';
     const TYPE_URL = 'url';
     const TYPE_EMAIL = 'email';

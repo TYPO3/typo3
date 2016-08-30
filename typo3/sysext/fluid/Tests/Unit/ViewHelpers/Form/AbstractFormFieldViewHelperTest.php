@@ -16,8 +16,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 /**
  * Test for the Abstract Form view helper
  */
-class AbstractFormFieldViewHelperTest
-    extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase
+class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase
 {
     /**
      * @test

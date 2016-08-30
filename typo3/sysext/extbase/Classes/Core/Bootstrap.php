@@ -238,6 +238,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      */
     protected function isInCliMode()
     {
-        return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
+        return TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI;
     }
 }

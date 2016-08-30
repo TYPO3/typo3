@@ -243,7 +243,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                     ) . $editActionLink,
                 'link' => $this->moduleUrl
                     . '&SET[function]=sys_action.'
-                    . ActionTask::class
+                    . self::class
                     . '&show='
                     . (int)$actionRow['uid']
             ];

@@ -23,7 +23,7 @@ class AcceptanceTester extends \Codeception\Actor
     /**
      * The session cookie that is used if the session is injected.
      * This session must exist in the database fixture to get a logged in state.
-     * 
+     *
      * @var string
      */
     protected $sessionCookie = '';

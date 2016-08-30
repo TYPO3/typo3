@@ -136,7 +136,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
     public static function initialize()
     {
         /** @var $instance Locales */
-        $instance = GeneralUtility::makeInstance(Locales::class);
+        $instance = GeneralUtility::makeInstance(self::class);
         $instance->isoMapping = array_flip($instance->isoReverseMapping);
         // Allow user-defined locales
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'])) {

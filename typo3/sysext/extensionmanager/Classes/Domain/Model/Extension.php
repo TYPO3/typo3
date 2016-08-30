@@ -39,7 +39,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         6 => 'templates',
         8 => 'doc',
         9 => 'example',
-        Extension::DISTRIBUTION_CATEGORY => 'distribution'
+        self::DISTRIBUTION_CATEGORY => 'distribution'
     ];
 
     /**

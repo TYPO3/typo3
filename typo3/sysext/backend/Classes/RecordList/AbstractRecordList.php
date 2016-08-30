@@ -442,7 +442,7 @@ abstract class AbstractRecordList
         $this->pageOverlays = [];
         while ($row = $result->fetch()) {
             $this->pageOverlays[$row['sys_language_uid']] = $row;
-        };
+        }
 
         $this->languageIconTitles = $this->getTranslateTools()->getSystemLanguages($this->id);
     }

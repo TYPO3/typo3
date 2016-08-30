@@ -554,7 +554,9 @@ class NewContentElementController extends AbstractModule
     {
         if (isset($wizardGroup[$key])) {
             $wizardGroup[$key] = GeneralUtility::trimExplode(',', $wizardGroup[$key]);
-            $wizardGroup[$key] = array_map(function ($s) {return $s . '.';}, $wizardGroup[$key]);
+            $wizardGroup[$key] = array_map(function ($s) {
+                return $s . '.';
+            }, $wizardGroup[$key]);
         }
     }
 

@@ -992,7 +992,7 @@ class HtmlParser
     public function stripEmptyTags($content, $tagList = '', $treatNonBreakingSpaceAsEmpty = false, $keepTags = false)
     {
         if (!empty($tagList)) {
-            $tagRegEx = join('|', GeneralUtility::trimExplode(',', $tagList, true));
+            $tagRegEx = implode('|', GeneralUtility::trimExplode(',', $tagList, true));
             if ($keepTags) {
                 $tagRegEx = '(?!' . $tagRegEx . ')[^ >]+';
             }

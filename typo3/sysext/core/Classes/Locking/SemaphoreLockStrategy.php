@@ -63,7 +63,7 @@ class SemaphoreLockStrategy implements LockingStrategyInterface
         if (!is_writable($path)) {
             throw new LockCreateException('Cannot write to directory ' . $path, 1460976320);
         }
-        $this->filePath = $path  . 'sem_' . md5((string)$subject);
+        $this->filePath = $path . 'sem_' . md5((string)$subject);
         touch($this->filePath);
         $this->id = ftok($this->filePath, 'A');
         if ($this->id === false) {

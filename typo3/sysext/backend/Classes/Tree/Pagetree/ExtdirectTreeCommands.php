@@ -355,7 +355,7 @@ class ExtdirectTreeCommands
             // Clean JSON-serialized ampersands ('&')
             // @see GeneralUtility::quoteJSvalue()
             $extractedLink = json_decode('"' . trim($match[1], '"') . '"', JSON_HEX_AMP);
-        };
+        }
         return $extractedLink;
     }
 

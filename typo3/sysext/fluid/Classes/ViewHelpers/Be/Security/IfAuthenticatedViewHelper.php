@@ -55,7 +55,7 @@ class IfAuthenticatedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return (isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER']->user['uid'] > 0);
+        return isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER']->user['uid'] > 0;
     }
 
     /**

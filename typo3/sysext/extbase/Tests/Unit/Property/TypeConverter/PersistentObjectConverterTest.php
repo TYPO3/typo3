@@ -78,13 +78,13 @@ class PersistentObjectConverterTest extends UnitTestCase
         $this->mockObjectManager->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($className, ...$arguments) {
-                    $reflectionClass = new \ReflectionClass($className);
-                    if (empty($arguments)) {
-                        return $reflectionClass->newInstance();
-                    } else {
-                        return $reflectionClass->newInstanceArgs($arguments);
-                    }
-                }));
+                $reflectionClass = new \ReflectionClass($className);
+                if (empty($arguments)) {
+                    return $reflectionClass->newInstance();
+                } else {
+                    return $reflectionClass->newInstanceArgs($arguments);
+                }
+            }));
         $this->inject($this->converter, 'objectManager', $this->mockObjectManager);
 
         $this->mockContainer = $this->createMock(\TYPO3\CMS\Extbase\Object\Container\Container::class);

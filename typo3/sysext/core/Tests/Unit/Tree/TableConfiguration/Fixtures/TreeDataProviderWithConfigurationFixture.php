@@ -30,7 +30,7 @@ class TreeDataProviderWithConfigurationFixture
         }
         $tcaConfiguration = [
             'treeConfig' => [
-                'dataProvider' => TreeDataProviderWithConfigurationFixture::class,
+                'dataProvider' => self::class,
             ],
             'internal_type' => 'foo',
         ];

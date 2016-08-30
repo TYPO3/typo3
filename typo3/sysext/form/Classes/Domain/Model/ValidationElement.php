@@ -81,9 +81,9 @@ class ValidationElement extends AbstractEntity
      */
     public function hasIncomingField($key)
     {
-        return (
+        return
             isset($this->incomingFields[$key])
             || array_key_exists($key, $this->incomingFields)
-        );
+        ;
     }
 }

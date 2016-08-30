@@ -162,7 +162,7 @@ abstract class AbstractItemProvider
 
         $special = $result['processedTca']['columns'][$fieldName]['config']['special'];
         switch (true) {
-            case ($special === 'tables'):
+            case $special === 'tables':
                 foreach ($GLOBALS['TCA'] as $currentTable => $_) {
                     if (!empty($GLOBALS['TCA'][$currentTable]['ctrl']['adminOnly'])) {
                         // Hide "admin only" tables
@@ -180,7 +180,7 @@ abstract class AbstractItemProvider
                     $items[] = [$label, $currentTable, $icon, $helpText];
                 }
                 break;
-            case ($special === 'pagetypes'):
+            case $special === 'pagetypes':
                 if (isset($GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'])
                     && is_array($GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'])
                 ) {
@@ -197,7 +197,7 @@ abstract class AbstractItemProvider
                     }
                 }
                 break;
-            case ($special === 'exclude'):
+            case $special === 'exclude':
                 $excludeArrays = $this->getExcludeFields();
                 foreach ($excludeArrays as $excludeArray) {
                     // If the field comes from a FlexForm, the syntax is more complex
@@ -240,7 +240,7 @@ abstract class AbstractItemProvider
                     ];
                 }
                 break;
-            case ($special === 'explicitValues'):
+            case $special === 'explicitValues':
                 $theTypes = $this->getExplicitAuthFieldValues();
                 $icons = [
                     'ALLOW' => 'status-status-permission-granted',
@@ -266,7 +266,7 @@ abstract class AbstractItemProvider
                     }
                 }
                 break;
-            case ($special === 'languages'):
+            case $special === 'languages':
                 foreach ($result['systemLanguageRows'] as $language) {
                     if ($language['uid'] !== -1) {
                         $items[] = [
@@ -277,7 +277,7 @@ abstract class AbstractItemProvider
                     }
                 }
                 break;
-            case ($special === 'custom'):
+            case $special === 'custom':
                 $customOptions = $GLOBALS['TYPO3_CONF_VARS']['BE']['customPermOptions'];
                 if (is_array($customOptions)) {
                     foreach ($customOptions as $coKey => $coValue) {
@@ -305,7 +305,7 @@ abstract class AbstractItemProvider
                     }
                 }
                 break;
-            case ($special === 'modListGroup' || $special === 'modListUser'):
+            case $special === 'modListGroup' || $special === 'modListUser':
                 /** @var ModuleLoader $loadModules */
                 $loadModules = GeneralUtility::makeInstance(ModuleLoader::class);
                 $loadModules->load($GLOBALS['TBE_MODULES']);

@@ -68,7 +68,7 @@ class AuthenticationService extends AbstractAuthenticationService
             GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\' not found!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
         } else {
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($user, [$this->db_user['userid_column'], $this->db_user['username_column']]), AuthenticationService::class);
+                GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($user, [$this->db_user['userid_column'], $this->db_user['username_column']]), self::class);
             }
         }
         return $user;
@@ -102,7 +102,7 @@ class AuthenticationService extends AbstractAuthenticationService
                     GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\', password not accepted!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
                 }
                 if ($this->writeDevLog) {
-                    GeneralUtility::devLog('Password not accepted: ' . $this->login['uident'], AuthenticationService::class, 2);
+                    GeneralUtility::devLog('Password not accepted: ' . $this->login['uident'], self::class, 2);
                 }
             }
             // Checking the domain (lockToDomain)
@@ -179,7 +179,7 @@ class AuthenticationService extends AbstractAuthenticationService
                 }
             } else {
                 if ($this->writeDevLog) {
-                    GeneralUtility::devLog('No usergroups found.', AuthenticationService::class, 2);
+                    GeneralUtility::devLog('No usergroups found.', self::class, 2);
                 }
             }
         }

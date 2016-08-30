@@ -364,7 +364,7 @@ class ResourceCompressorTest extends BaseTestCase
             2 => [
                 $path . 'comment_hacks.css',
                 $path . 'comment_hacks.css.optimized.css'
-            ],/*
+            ], /*
             // File. Tests:
             // - Any @charset declaration at the beginning of a file should be
             //   removed without breaking subsequent CSS.*/

@@ -169,7 +169,7 @@ class DefaultDataProvider implements DataProviderInterface
 
         if (!empty($GLOBALS['TCA'][$this->tableName]['ctrl']['sortby'])) {
             $queryBuilder->orderBy($GLOBALS['TCA'][$this->tableName]['ctrl']['sortby']);
-        };
+        }
 
         $results = $queryBuilder
             ->execute()

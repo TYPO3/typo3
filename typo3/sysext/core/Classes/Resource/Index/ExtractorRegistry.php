@@ -43,7 +43,7 @@ class ExtractorRegistry implements SingletonInterface
      */
     public static function getInstance()
     {
-        return GeneralUtility::makeInstance(ExtractorRegistry::class);
+        return GeneralUtility::makeInstance(self::class);
     }
 
     /**

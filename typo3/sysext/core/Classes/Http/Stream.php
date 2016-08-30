@@ -257,7 +257,7 @@ class Stream implements StreamInterface
             return false;
         }
         $mode = $this->getMetadata('mode');
-        return (strpos($mode, 'r') !== false || strpos($mode, '+') !== false);
+        return strpos($mode, 'r') !== false || strpos($mode, '+') !== false;
     }
 
     /**

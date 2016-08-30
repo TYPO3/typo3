@@ -99,7 +99,7 @@ class JsConfirmation extends Enumeration
     protected function isValid($value)
     {
         if ($value < 255) {
-            return (($value & self::$allowedValues) === $value);
+            return ($value & self::$allowedValues) === $value;
         }
 
         $value = (string)$value;

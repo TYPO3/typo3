@@ -129,7 +129,7 @@ class FormProtectionFactory
      */
     protected static function isInstallToolSession()
     {
-        return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL);
+        return TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL;
     }
 
     /**

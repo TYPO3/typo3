@@ -1,5 +1,5 @@
 <?php
-declare (strict_types = 1);
+declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Query;
 
 /*
@@ -1077,7 +1077,7 @@ class QueryBuilder
             if ($originalWhereConditions instanceof CompositeExpression) {
                 // Save the original query conditions so we can restore
                 // them after the query has been built.
-                $originalWhereConditions = clone($originalWhereConditions);
+                $originalWhereConditions = clone $originalWhereConditions;
             }
             $this->concreteQueryBuilder->andWhere($expression);
         }

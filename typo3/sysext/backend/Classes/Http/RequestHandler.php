@@ -102,7 +102,7 @@ class RequestHandler implements RequestHandlerInterface
      */
     public function canHandleRequest(ServerRequestInterface $request)
     {
-        return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI));
+        return TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
     }
 
     /**

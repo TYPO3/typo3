@@ -2421,7 +2421,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitSanitizeFileNameSignal($fileName, Folder $targetFolder)
     {
-        list($fileName) = $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_SanitizeFileName, [$fileName, $targetFolder, $this, $this->driver]);
+        list($fileName) = $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_SanitizeFileName, [$fileName, $targetFolder, $this, $this->driver]);
         return $fileName;
     }
 
@@ -2435,7 +2435,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileAddSignal($targetFileName, Folder $targetFolder, $sourceFilePath)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileAdd, [&$targetFileName, $targetFolder, $sourceFilePath, $this, $this->driver]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PreFileAdd, [&$targetFileName, $targetFolder, $sourceFilePath, $this, $this->driver]);
         return $targetFileName;
     }
 
@@ -2448,7 +2448,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileAddSignal(FileInterface $file, Folder $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileAdd, [$file, $targetFolder]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PostFileAdd, [$file, $targetFolder]);
     }
 
     /**
@@ -2460,7 +2460,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileCopySignal(FileInterface $file, Folder $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileCopy, [$file, $targetFolder]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PreFileCopy, [$file, $targetFolder]);
     }
 
     /**
@@ -2472,7 +2472,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileCopySignal(FileInterface $file, Folder $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileCopy, [$file, $targetFolder]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PostFileCopy, [$file, $targetFolder]);
     }
 
     /**
@@ -2484,7 +2484,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileMoveSignal(FileInterface $file, Folder $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileMove, [$file, $targetFolder]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PreFileMove, [$file, $targetFolder]);
     }
 
     /**
@@ -2497,7 +2497,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileMoveSignal(FileInterface $file, Folder $targetFolder, FolderInterface $originalFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileMove, [$file, $targetFolder, $originalFolder]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PostFileMove, [$file, $targetFolder, $originalFolder]);
     }
 
     /**
@@ -2509,7 +2509,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileRenameSignal(FileInterface $file, $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileRename, [$file, $targetFolder]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PreFileRename, [$file, $targetFolder]);
     }
 
     /**
@@ -2521,7 +2521,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileRenameSignal(FileInterface $file, $sanitizedTargetFileName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileRename, [$file, $sanitizedTargetFileName]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PostFileRename, [$file, $sanitizedTargetFileName]);
     }
 
     /**
@@ -2533,7 +2533,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileReplaceSignal(FileInterface $file, $localFilePath)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileReplace, [$file, $localFilePath]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PreFileReplace, [$file, $localFilePath]);
     }
 
     /**
@@ -2545,7 +2545,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileReplaceSignal(FileInterface $file, $localFilePath)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileReplace, [$file, $localFilePath]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PostFileReplace, [$file, $localFilePath]);
     }
 
     /**
@@ -2556,7 +2556,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileCreateSignal($newFileIdentifier, Folder $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileCreate, [$newFileIdentifier, $targetFolder]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PostFileCreate, [$newFileIdentifier, $targetFolder]);
     }
 
     /**
@@ -2567,7 +2567,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileDeleteSignal(FileInterface $file)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileDelete, [$file]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PreFileDelete, [$file]);
     }
 
     /**
@@ -2578,7 +2578,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileDeleteSignal(FileInterface $file)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileDelete, [$file]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PostFileDelete, [$file]);
     }
 
     /**
@@ -2590,7 +2590,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileSetContentsSignal(FileInterface $file, $content)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileSetContents, [$file, $content]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PostFileSetContents, [$file, $content]);
     }
 
     /**
@@ -2602,7 +2602,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFolderAddSignal(Folder $targetFolder, $name)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderAdd, [$targetFolder, $name]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PreFolderAdd, [$targetFolder, $name]);
     }
 
     /**
@@ -2613,7 +2613,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFolderAddSignal(Folder $folder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderAdd, [$folder]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PostFolderAdd, [$folder]);
     }
 
     /**
@@ -2626,7 +2626,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFolderCopySignal(Folder $folder, Folder $targetFolder, $newName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderCopy, [$folder, $targetFolder, $newName]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PreFolderCopy, [$folder, $targetFolder, $newName]);
     }
 
     /**
@@ -2639,7 +2639,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFolderCopySignal(Folder $folder, Folder $targetFolder, $newName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderCopy, [$folder, $targetFolder, $newName]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PostFolderCopy, [$folder, $targetFolder, $newName]);
     }
 
     /**
@@ -2652,7 +2652,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFolderMoveSignal(Folder $folder, Folder $targetFolder, $newName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderMove, [$folder, $targetFolder, $newName]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PreFolderMove, [$folder, $targetFolder, $newName]);
     }
 
     /**
@@ -2666,7 +2666,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFolderMoveSignal(Folder $folder, Folder $targetFolder, $newName, Folder $originalFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderMove, [$folder, $targetFolder, $newName, $originalFolder]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PostFolderMove, [$folder, $targetFolder, $newName, $originalFolder]);
     }
 
     /**
@@ -2678,7 +2678,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFolderRenameSignal(Folder $folder, $newName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderRename, [$folder, $newName]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PreFolderRename, [$folder, $newName]);
     }
 
     /**
@@ -2690,7 +2690,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFolderRenameSignal(Folder $folder, $newName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderRename, [$folder, $newName]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PostFolderRename, [$folder, $newName]);
     }
 
     /**
@@ -2701,7 +2701,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFolderDeleteSignal(Folder $folder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderDelete, [$folder]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PreFolderDelete, [$folder]);
     }
 
     /**
@@ -2712,7 +2712,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFolderDeleteSignal(Folder $folder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderDelete, [$folder]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PostFolderDelete, [$folder]);
     }
 
     /**
@@ -2724,7 +2724,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreGeneratePublicUrlSignal(ResourceInterface $resourceObject, $relativeToCurrentScript, array $urlData)
     {
-        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreGeneratePublicUrl, [$this, $this->driver, $resourceObject, $relativeToCurrentScript, $urlData]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PreGeneratePublicUrl, [$this, $this->driver, $resourceObject, $relativeToCurrentScript, $urlData]);
     }
 
     /**

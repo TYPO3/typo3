@@ -1,5 +1,5 @@
 <?php
-declare (strict_types = 1);
+declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database;
 
 /*
@@ -59,7 +59,7 @@ class ConnectionPool
             );
         }
 
-        $connectionName = ConnectionPool::DEFAULT_CONNECTION_NAME;
+        $connectionName = self::DEFAULT_CONNECTION_NAME;
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'][$tableName])) {
             $connectionName = (string)$GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'][$tableName];
         }

@@ -1216,7 +1216,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 
         if (!empty($GLOBALS['TCA']['pages']['ctrl']['sortby'])) {
             $queryBuilder->orderBy($GLOBALS['TCA']['pages']['ctrl']['sortby']);
-        };
+        }
 
         if ($depth >= 0) {
             $result = $queryBuilder->execute();
@@ -1278,7 +1278,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 
         if (!empty($GLOBALS['TCA']['pages']['ctrl']['sortby'])) {
             $queryBuilder->orderBy($GLOBALS['TCA']['pages']['ctrl']['sortby']);
-        };
+        }
 
         if (!empty($qWhere)) {
             $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($qWhere));

@@ -322,8 +322,8 @@ class IconFactory
         }
 
         // Hook to define an alternative iconName
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][IconFactory::class]['overrideIconOverlay'])) {
-            $hookObjects = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][IconFactory::class]['overrideIconOverlay'];
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['overrideIconOverlay'])) {
+            $hookObjects = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['overrideIconOverlay'];
             foreach ($hookObjects as $classRef) {
                 $hookObject = GeneralUtility::getUserObj($classRef);
                 if (method_exists($hookObject, 'postOverlayPriorityLookup')) {
@@ -503,7 +503,7 @@ class IconFactory
         $overlayIdentifier
     ) {
         $result = $this->getSignalSlotDispatcher()->dispatch(
-            IconFactory::class,
+            self::class,
             'buildIconForResourceSignal',
             [$resource, $size, $options, $iconIdentifier, $overlayIdentifier]
         );

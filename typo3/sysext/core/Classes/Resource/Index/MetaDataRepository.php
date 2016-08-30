@@ -246,7 +246,7 @@ class MetaDataRepository implements SingletonInterface
      */
     protected function emitRecordPostRetrievalSignal(\ArrayObject $data)
     {
-        $this->getSignalSlotDispatcher()->dispatch(MetaDataRepository::class, 'recordPostRetrieval', [$data]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, 'recordPostRetrieval', [$data]);
     }
 
     /**
@@ -257,7 +257,7 @@ class MetaDataRepository implements SingletonInterface
      */
     protected function emitRecordUpdatedSignal(array $data)
     {
-        $this->getSignalSlotDispatcher()->dispatch(MetaDataRepository::class, 'recordUpdated', [$data]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, 'recordUpdated', [$data]);
     }
 
     /**
@@ -268,7 +268,7 @@ class MetaDataRepository implements SingletonInterface
      */
     protected function emitRecordCreatedSignal(array $data)
     {
-        $this->getSignalSlotDispatcher()->dispatch(MetaDataRepository::class, 'recordCreated', [$data]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, 'recordCreated', [$data]);
     }
 
     /**
@@ -279,7 +279,7 @@ class MetaDataRepository implements SingletonInterface
      */
     protected function emitRecordDeletedSignal($fileUid)
     {
-        $this->getSignalSlotDispatcher()->dispatch(MetaDataRepository::class, 'recordDeleted', [$fileUid]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, 'recordDeleted', [$fileUid]);
     }
 
     /**
@@ -287,6 +287,6 @@ class MetaDataRepository implements SingletonInterface
      */
     public static function getInstance()
     {
-        return GeneralUtility::makeInstance(MetaDataRepository::class);
+        return GeneralUtility::makeInstance(self::class);
     }
 }

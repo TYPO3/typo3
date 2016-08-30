@@ -1069,7 +1069,7 @@ class ContentObjectRenderer
     public function convertToUserIntObject()
     {
         if ($this->userObjectType !== self::OBJECTTYPE_USER) {
-            $this->getTimeTracker()->setTSlogMessage(ContentObjectRenderer::class . '::convertToUserIntObject() is called in the wrong context or for the wrong object type', 2);
+            $this->getTimeTracker()->setTSlogMessage(self::class . '::convertToUserIntObject() is called in the wrong context or for the wrong object type', 2);
         } else {
             $this->doConvertToUserIntObject = true;
         }

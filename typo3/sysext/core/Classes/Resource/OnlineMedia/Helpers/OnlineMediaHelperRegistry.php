@@ -30,7 +30,7 @@ class OnlineMediaHelperRegistry implements \TYPO3\CMS\Core\SingletonInterface
      */
     public static function getInstance()
     {
-        return GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class);
+        return GeneralUtility::makeInstance(self::class);
     }
 
     /**

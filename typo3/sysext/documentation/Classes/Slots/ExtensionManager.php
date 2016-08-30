@@ -71,7 +71,8 @@ class ExtensionManager
                     [
                         'documentTranslation' => $documentTranslation,
                     ],
-                    function () {},
+                    function () {
+                    },
                     new RenderingContext()
                 );
             }

@@ -228,7 +228,9 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
 
-        uasort($allowedStages, function (StageRecord $first, StageRecord $second) { return $first->determineOrder($second); });
+        uasort($allowedStages, function (StageRecord $first, StageRecord $second) {
+            return $first->determineOrder($second);
+        });
         return $this->prepareStagesArray($allowedStages);
     }
 

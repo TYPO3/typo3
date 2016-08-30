@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ResourceStorageTest extends FunctionalTestCase
 {
-
     protected function tearDown()
     {
         // cleanup manually created folders

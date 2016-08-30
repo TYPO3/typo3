@@ -422,7 +422,7 @@ abstract class AbstractConditionMatcher
                 }
             }
             $arguments = trim($arguments);
-        };
+        }
         return $result;
     }
 

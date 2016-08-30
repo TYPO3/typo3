@@ -383,7 +383,7 @@ abstract class AbstractUserAuthentication
             $this->writeDevLog = true;
         }
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('## Beginning of auth logging.', AbstractUserAuthentication::class);
+            GeneralUtility::devLog('## Beginning of auth logging.', self::class);
         }
         // Init vars.
         $mode = '';
@@ -495,7 +495,7 @@ abstract class AbstractUserAuthentication
             }
             if ($this->writeDevLog) {
                 $devLogMessage = ($isRefreshTimeBasedCookie ? 'Updated Cookie: ' : 'Set Cookie: ') . $this->id;
-                GeneralUtility::devLog($devLogMessage . ($cookieDomain ? ', ' . $cookieDomain : ''), AbstractUserAuthentication::class);
+                GeneralUtility::devLog($devLogMessage . ($cookieDomain ? ', ' . $cookieDomain : ''), self::class);
             }
         }
     }
@@ -583,14 +583,14 @@ abstract class AbstractUserAuthentication
         // Indicates if an active authentication failed (not auto login)
         $this->loginFailure = false;
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('Login type: ' . $this->loginType, AbstractUserAuthentication::class);
+            GeneralUtility::devLog('Login type: ' . $this->loginType, self::class);
         }
         // The info array provide additional information for auth services
         $authInfo = $this->getAuthInfoArray();
         // Get Login/Logout data submitted by a form or params
         $loginData = $this->getLoginFormData();
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('Login data: ' . GeneralUtility::arrayToLogString($loginData), AbstractUserAuthentication::class);
+            GeneralUtility::devLog('Login data: ' . GeneralUtility::arrayToLogString($loginData), self::class);
         }
         // Active logout (eg. with "logout" button)
         if ($loginData['status'] === 'logout') {
@@ -600,7 +600,7 @@ abstract class AbstractUserAuthentication
             }
             // Logout written to log
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('User logged out. Id: ' . $this->id, AbstractUserAuthentication::class, -1);
+                GeneralUtility::devLog('User logged out. Id: ' . $this->id, self::class, -1);
             }
             $this->logoff();
         }
@@ -617,7 +617,7 @@ abstract class AbstractUserAuthentication
         if (!$haveSession && $loginData['status'] === 'login') {
             $activeLogin = true;
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('Active login (eg. with login form)', AbstractUserAuthentication::class);
+                GeneralUtility::devLog('Active login (eg. with login form)', self::class);
             }
             // check referer for submitted login values
             if ($this->formfield_status && $loginData['uident'] && $loginData['uname']) {
@@ -638,12 +638,12 @@ abstract class AbstractUserAuthentication
         }
         if ($this->writeDevLog) {
             if ($haveSession) {
-                GeneralUtility::devLog('User session found: ' . GeneralUtility::arrayToLogString($authInfo['userSession'], [$this->userid_column, $this->username_column]), AbstractUserAuthentication::class, 0);
+                GeneralUtility::devLog('User session found: ' . GeneralUtility::arrayToLogString($authInfo['userSession'], [$this->userid_column, $this->username_column]), self::class, 0);
             } else {
-                GeneralUtility::devLog('No user session found.', AbstractUserAuthentication::class, 2);
+                GeneralUtility::devLog('No user session found.', self::class, 2);
             }
             if (is_array($this->svConfig['setup'])) {
-                GeneralUtility::devLog('SV setup: ' . GeneralUtility::arrayToLogString($this->svConfig['setup']), AbstractUserAuthentication::class, 0);
+                GeneralUtility::devLog('SV setup: ' . GeneralUtility::arrayToLogString($this->svConfig['setup']), self::class, 0);
             }
         }
         // Fetch user if ...
@@ -661,7 +661,7 @@ abstract class AbstractUserAuthentication
                 if ($row = $serviceObj->getUser()) {
                     $tempuserArr[] = $row;
                     if ($this->writeDevLog) {
-                        GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($row, [$this->userid_column, $this->username_column]), AbstractUserAuthentication::class, 0);
+                        GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($row, [$this->userid_column, $this->username_column]), self::class, 0);
                     }
                     // User found, just stop to search for more if not configured to go on
                     if (!$this->svConfig['setup'][$this->loginType . '_fetchAllUsers']) {
@@ -672,16 +672,16 @@ abstract class AbstractUserAuthentication
             }
             unset($serviceObj);
             if ($this->writeDevLog && $this->svConfig['setup'][$this->loginType . '_alwaysFetchUser']) {
-                GeneralUtility::devLog($this->loginType . '_alwaysFetchUser option is enabled', AbstractUserAuthentication::class);
+                GeneralUtility::devLog($this->loginType . '_alwaysFetchUser option is enabled', self::class);
             }
             if ($this->writeDevLog && $serviceChain) {
-                GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, AbstractUserAuthentication::class);
+                GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, self::class);
             }
             if ($this->writeDevLog && empty($tempuserArr)) {
-                GeneralUtility::devLog('No user found by services', AbstractUserAuthentication::class);
+                GeneralUtility::devLog('No user found by services', self::class);
             }
             if ($this->writeDevLog && !empty($tempuserArr)) {
-                GeneralUtility::devLog(count($tempuserArr) . ' user records found by services', AbstractUserAuthentication::class);
+                GeneralUtility::devLog(count($tempuserArr) . ' user records found by services', self::class);
             }
         }
         // If no new user was set we use the already found user session
@@ -691,14 +691,14 @@ abstract class AbstractUserAuthentication
             // User is authenticated because we found a user session
             $authenticated = true;
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('User session used: ' . GeneralUtility::arrayToLogString($authInfo['userSession'], [$this->userid_column, $this->username_column]), AbstractUserAuthentication::class);
+                GeneralUtility::devLog('User session used: ' . GeneralUtility::arrayToLogString($authInfo['userSession'], [$this->userid_column, $this->username_column]), self::class);
             }
         }
         // Re-auth user when 'auth'-service option is set
         if ($this->svConfig['setup'][$this->loginType . '_alwaysAuthUser']) {
             $authenticated = false;
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('alwaysAuthUser option is enabled', AbstractUserAuthentication::class);
+                GeneralUtility::devLog('alwaysAuthUser option is enabled', self::class);
             }
         }
         // Authenticate the user if needed
@@ -708,7 +708,7 @@ abstract class AbstractUserAuthentication
                 // If one service returns FALSE then authentication failed
                 // a service might return 100 which means there's no reason to stop but the user can't be authenticated by that service
                 if ($this->writeDevLog) {
-                    GeneralUtility::devLog('Auth user: ' . GeneralUtility::arrayToLogString($tempuser), AbstractUserAuthentication::class);
+                    GeneralUtility::devLog('Auth user: ' . GeneralUtility::arrayToLogString($tempuser), self::class);
                 }
                 $serviceChain = '';
                 $subType = 'authUser' . $this->loginType;
@@ -732,7 +732,7 @@ abstract class AbstractUserAuthentication
                 }
                 unset($serviceObj);
                 if ($this->writeDevLog && $serviceChain) {
-                    GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, AbstractUserAuthentication::class);
+                    GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, self::class);
                 }
                 if ($authenticated) {
                     // Leave foreach() because a user is authenticated
@@ -756,7 +756,7 @@ abstract class AbstractUserAuthentication
                 // The login session is started.
                 $this->loginSessionStarted = true;
                 if ($this->writeDevLog && is_array($this->user)) {
-                    GeneralUtility::devLog('User session finally read: ' . GeneralUtility::arrayToLogString($this->user, [$this->userid_column, $this->username_column]), AbstractUserAuthentication::class, -1);
+                    GeneralUtility::devLog('User session finally read: ' . GeneralUtility::arrayToLogString($this->user, [$this->userid_column, $this->username_column]), self::class, -1);
                 }
             } elseif ($haveSession) {
                 $this->user = $authInfo['userSession'];
@@ -769,24 +769,24 @@ abstract class AbstractUserAuthentication
                 $this->writelog(255, 1, 0, 1, 'User %s logged in from %s (%s)', [$tempuser[$this->username_column], GeneralUtility::getIndpEnv('REMOTE_ADDR'), GeneralUtility::getIndpEnv('REMOTE_HOST')], '', '', '', -1, '', $tempuser['uid']);
             }
             if ($this->writeDevLog && $activeLogin) {
-                GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' logged in from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', AbstractUserAuthentication::class, -1);
+                GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' logged in from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', self::class, -1);
             }
             if ($this->writeDevLog && !$activeLogin) {
-                GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' authenticated from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', AbstractUserAuthentication::class, -1);
+                GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' authenticated from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', self::class, -1);
             }
         } elseif ($activeLogin || !empty($tempuserArr)) {
             $this->loginFailure = true;
             if ($this->writeDevLog && empty($tempuserArr) && $activeLogin) {
-                GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($loginData), AbstractUserAuthentication::class, 2);
+                GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($loginData), self::class, 2);
             }
             if ($this->writeDevLog && !empty($tempuserArr)) {
-                GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($tempuser, [$this->userid_column, $this->username_column]), AbstractUserAuthentication::class, 2);
+                GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($tempuser, [$this->userid_column, $this->username_column]), self::class, 2);
             }
         }
         // If there were a login failure, check to see if a warning email should be sent:
         if ($this->loginFailure && $activeLogin) {
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('Call checkLogFailures: ' . GeneralUtility::arrayToLogString(['warningEmail' => $this->warningEmail, 'warningPeriod' => $this->warningPeriod, 'warningMax' => $this->warningMax]), AbstractUserAuthentication::class, -1);
+                GeneralUtility::devLog('Call checkLogFailures: ' . GeneralUtility::arrayToLogString(['warningEmail' => $this->warningEmail, 'warningPeriod' => $this->warningPeriod, 'warningMax' => $this->warningMax]), self::class, -1);
             }
 
             // Hook to implement login failure tracking methods
@@ -850,7 +850,7 @@ abstract class AbstractUserAuthentication
     public function createUserSession($tempuser)
     {
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('Create session ses_id = ' . $this->id, AbstractUserAuthentication::class);
+            GeneralUtility::devLog('Create session ses_id = ' . $this->id, self::class);
         }
         // Delete session entry first
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table);
@@ -866,7 +866,7 @@ abstract class AbstractUserAuthentication
             $message = 'Session data could not be written to DB. Error: ' . $connection->errorInfo();
             GeneralUtility::sysLog($message, 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
             if ($this->writeDevLog) {
-                GeneralUtility::devLog($message, AbstractUserAuthentication::class, 2);
+                GeneralUtility::devLog($message, self::class, 2);
             }
         }
         // Updating lastLogin_column carrying information about last login.
@@ -911,7 +911,7 @@ abstract class AbstractUserAuthentication
     public function fetchUserSession($skipSessionUpdate = false)
     {
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('Fetch session ses_id = ' . $this->id, AbstractUserAuthentication::class);
+            GeneralUtility::devLog('Fetch session ses_id = ' . $this->id, self::class);
         }
 
         // Fetch the user session from the DB
@@ -959,7 +959,7 @@ abstract class AbstractUserAuthentication
     public function logoff()
     {
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('logoff: ses_id = ' . $this->id, AbstractUserAuthentication::class);
+            GeneralUtility::devLog('logoff: ses_id = ' . $this->id, self::class);
         }
         // Release the locked records
         BackendUtility::lockRecords();
@@ -1269,7 +1269,7 @@ abstract class AbstractUserAuthentication
             if ($this->writeDevLog) {
                 GeneralUtility::devLog(
                     'writeUC: ' . $this->userid_column . '=' . (int)$this->user[$this->userid_column],
-                    AbstractUserAuthentication::class
+                    self::class
                 );
             }
             GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table)->update(
@@ -1358,7 +1358,7 @@ abstract class AbstractUserAuthentication
         $sesDat[$key] = $data;
         $this->user['ses_data'] = serialize($sesDat);
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('setAndSaveSessionData: ses_id = ' . $this->user['ses_id'], AbstractUserAuthentication::class);
+            GeneralUtility::devLog('setAndSaveSessionData: ses_id = ' . $this->user['ses_id'], self::class);
         }
         GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table)->update(
             $this->session_table,
@@ -1411,7 +1411,7 @@ abstract class AbstractUserAuthentication
         $loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel']) ?: 'normal';
         $passwordTransmissionStrategy = $passwordTransmissionStrategy ?: $loginSecurityLevel;
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('Login data before processing: ' . GeneralUtility::arrayToLogString($loginData), AbstractUserAuthentication::class);
+            GeneralUtility::devLog('Login data before processing: ' . GeneralUtility::arrayToLogString($loginData), self::class);
         }
         $serviceChain = '';
         $subType = 'processLoginData' . $this->loginType;
@@ -1435,7 +1435,7 @@ abstract class AbstractUserAuthentication
         if ($isLoginDataProcessed) {
             $loginData = $processedLoginData;
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('Processed login data: ' . GeneralUtility::arrayToLogString($processedLoginData), AbstractUserAuthentication::class);
+                GeneralUtility::devLog('Processed login data: ' . GeneralUtility::arrayToLogString($processedLoginData), self::class);
             }
         }
         return $loginData;
