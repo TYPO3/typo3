@@ -2782,7 +2782,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @return array
-     * @internal
      */
     public function getAllRegisteredIconIdentifiers()
     {
