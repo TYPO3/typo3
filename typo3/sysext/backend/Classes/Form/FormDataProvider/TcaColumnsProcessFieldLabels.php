@@ -35,7 +35,7 @@ class TcaColumnsProcessFieldLabels implements FormDataProviderInterface
     {
         $result = $this->setLabelFromShowitemAndPalettes($result);
         $result = $this->setLabelFromPageTsConfig($result);
-        $result = $this->translatelabels($result);
+        $result = $this->translateLabels($result);
         return $result;
     }
 
