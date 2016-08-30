@@ -26,11 +26,27 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SelectTreeElement extends AbstractFormElement
 {
     /**
-     * Default height of the tree in pixels.
+     * Default number of tree nodes to show (determines tree height)
+     * when no ['config']['size'] is set
      *
-     * @const
+     * @var int
      */
-    const DEFAULT_HEIGHT = 280;
+    protected $itemsToShow = 280;
+
+    /**
+     * Number of items to show at last
+     * e.g. when you have only 2 items in a tree
+     *
+     * @var int
+     */
+    protected $minItemsToShow = 10;
+
+    /**
+     * Pixel height of a single tree node
+     *
+     * @var int
+     */
+    protected $itemHeight = 20;
 
     /**
      * Render tree widget
@@ -53,21 +69,24 @@ class SelectTreeElement extends AbstractFormElement
         $expanded = !empty($appearance['expandAll']);
         $showHeader = !empty($appearance['showHeader']);
         if (isset($config['size']) && (int)$config['size'] > 0) {
-            $height = min(count($config['items']), (int)$config['size']) * 20;
+            $height = min(max(count($config['items']), $this->minItemsToShow), (int)$config['size']);
         } else {
-            $height = static::DEFAULT_HEIGHT;
+            $height = $this->itemsToShow;
         }
+        $heightInPx = $height * $this->itemHeight;
 
         $treeWrapperId = 'tree_' . $formElementId;
 
+        $flexFormFieldName = !empty($parameterArray['fieldConf']['flexFormFieldName']) ? htmlspecialchars($parameterArray['fieldConf']['flexFormFieldName']) : '';
         $html = [];
         $html[] = '<div class="typo3-tceforms-tree">';
         $html[] = '    <input class="treeRecord" type="hidden"';
-        $html[] = '           ' . $this->getValidationDataAsDataAttribute($parameterArray['fieldConf']['config']);
+        $html[] = '           ' . $this->getValidationDataAsDataAttribute($config);
         $html[] = '           data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
         $html[] = '           data-relatedfieldname="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
         $html[] = '           data-table="' . htmlspecialchars($this->data['tableName']) . '"';
         $html[] = '           data-field="' . htmlspecialchars($this->data['fieldName']) . '"';
+        $html[] = '           data-flex-form-field-name="' . $flexFormFieldName . '"';
         $html[] = '           data-uid="' . (int)$this->data['vanillaUid'] . '"';
         $html[] = '           data-command="' . htmlspecialchars($this->data['command']) . '"';
         $html[] = '           data-read-only="' . $readOnly . '"';
@@ -79,7 +98,7 @@ class SelectTreeElement extends AbstractFormElement
         $html[] = '           value="' . htmlspecialchars(implode(',', $config['treeData']['selectedNodes'])) . '"';
         $html[] = '    />';
         $html[] = '</div>';
-        $html[] = '<div id="' . $treeWrapperId . '" class="svg-tree-wrapper" style="height: ' . $height . 'px;"></div>';
+        $html[] = '<div id="' . $treeWrapperId . '" class="svg-tree-wrapper" style="height: ' . $heightInPx . 'px;"></div>';
         $html[] = '<script type="text/javascript">var ' . $treeWrapperId . ' = ' . $this->getTreeOnChangeJs() . '</script>';
 
         $resultArray['html'] = implode(LF, $html);

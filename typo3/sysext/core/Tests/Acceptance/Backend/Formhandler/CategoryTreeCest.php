@@ -55,11 +55,11 @@ class CategoryTreeCest
         $I->click('#recordlist-sys_category tr[data-uid="7"] a[data-original-title="Edit record"]');
         // Change title and level to root
         $I->fillField('input[data-formengine-input-name="data[sys_category][7][title]"]', 'level-1-4');
-        $I->click('div[ext\:tree-node-id="7"]');
-        $I->click('div[ext\:tree-node-id="3"]');
+        $I->click('.identifier-7 text');
+        $I->click('.identifier-3 text');
         $I->click('button[name="_savedok"]');
         // Wait for tree and check if isset level-1-4
-        $I->waitForElement('.x-panel.x-tree');
-        $I->see('level-1-4', '.x-panel.x-tree');
+        $I->waitForElement('.svg-tree-wrapper svg');
+        $I->see('level-1-4', '.svg-tree-wrapper svg .node text');
     }
 }

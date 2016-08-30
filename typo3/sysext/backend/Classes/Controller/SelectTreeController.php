@@ -46,12 +46,46 @@ class SelectTreeController
             'vanillaUid' => (int)$request->getQueryParams()['uid'],
             'command' => $request->getQueryParams()['command'],
         ];
+
         $fieldName = $request->getQueryParams()['field'];
         $formData = $formDataCompiler->compile($formDataCompilerInput);
-        $treeData = $formData['processedTca']['columns'][$fieldName]['config']['treeData'];
+
+        if ($formData['processedTca']['columns'][$fieldName]['config']['type'] === 'flex') {
+            $flexFormFieldName = $request->getQueryParams()['flex_form_field_name'];
+            $value = $this->searchForFieldInFlexStructure($formData['processedTca']['columns'][$fieldName]['config'], $flexFormFieldName);
+            $treeData = $value['config']['treeData'];
+        } else {
+            $treeData = $formData['processedTca']['columns'][$fieldName]['config']['treeData'];
+        }
+
         $json = json_encode($treeData['items']);
         $response->getBody()->write($json);
         return $response;
+    }
+
+    /**
+     * A workaround for flexforms - there is no easy way to get flex field by key, so we need to search for it
+     *
+     * @todo remove me once flexforms are refactored
+     *
+     * @param array $array
+     * @param string $needle
+     * @return array
+     */
+    protected function searchForFieldInFlexStructure(array $array, $needle)
+    {
+        $needle = trim($needle);
+        $iterator  = new \RecursiveArrayIterator($array);
+        $recursive = new \RecursiveIteratorIterator(
+            $iterator,
+            \RecursiveIteratorIterator::SELF_FIRST
+        );
+        foreach ($recursive as $key => $value) {
+            if ($key === $needle) {
+                return $value;
+            }
+        }
+        return [];
     }
 
     /**

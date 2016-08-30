@@ -8047,10 +8047,9 @@ button.close {
   stroke: #ddd;
   stroke-width: 1;
 }
-.svg-tree-wrapper .node .chevron {
-  cursor: pointer;
-}
-.svg-tree-wrapper .tree-check {
+.svg-tree-wrapper .node .chevron,
+.svg-tree-wrapper .node text,
+.svg-tree-wrapper .node .tree-check {
   cursor: pointer;
 }
 /*!

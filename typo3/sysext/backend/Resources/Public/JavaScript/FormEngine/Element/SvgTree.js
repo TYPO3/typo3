@@ -390,7 +390,7 @@ define(['jquery', 'd3'], function ($, d3) {
             var nodeEnter = nodes
                 .enter()
                 .append('g')
-                .attr('class', 'node')
+                .attr('class', this.getNodeClass)
                 .attr('transform', this.getNodeTransform);
 
             // append the chevron element
@@ -451,6 +451,16 @@ define(['jquery', 'd3'], function ($, d3) {
          */
         getNodeLabel: function (node) {
             return node.data.name;
+        },
+
+        /**
+         * Computes the tree node class
+         *
+         * @param {Node} node
+         * @returns {String}
+         */
+        getNodeClass: function (node) {
+            return 'node identifier-' + node.data.identifier;
         },
 
         /**

@@ -54,22 +54,28 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
      */
     protected function getNodeArray(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node)
     {
-        $overlayIcon  = '';
-        if (is_object($node->getIcon()->getOverlayIcon())) {
-            $overlayIcon = $node->getIcon()->getOverlayIcon()->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE);
+        $overlayIconMarkup  = '';
+        if (is_object($node->getIcon())) {
+            $iconMarkup = $node->getIcon()->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE);
+            if (is_object($node->getIcon()->getOverlayIcon())) {
+                $overlayIcon = $node->getIcon()->getOverlayIcon()->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE);
+            }
+        } else {
+            $iconMarkup = $node->getIcon();
         }
         $nodeArray = array(
-            'iconTag' => $node->getIcon()->render(),
+            'iconTag' => $iconMarkup,
             'text' => htmlspecialchars($node->getLabel()),
             'leaf' => !$node->hasChildNodes(),
             'id' => htmlspecialchars($node->getId()),
             'uid' => htmlspecialchars($node->getId()),
 
             //svgtree
-            'icon' => $node->getIcon()->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE),
-            'overlayIcon' => $overlayIcon,
+            'icon' => $iconMarkup,
+            'overlayIcon' => $overlayIconMarkup,
             'identifier' => htmlspecialchars($node->getId()),
-            'name' => htmlspecialchars($node->getLabel()),
+            //no need for htmlspecialhars here as d3 is using 'textContent' property of the HTML DOM node
+            'name' => $node->getLabel(),
         );
 
         return $nodeArray;

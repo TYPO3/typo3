@@ -79,6 +79,8 @@ class FlexFormElementContainer extends AbstractContainer
                 // Set up options for single element
                 $fakeParameterArray = [
                     'fieldConf' => [
+                        // @todo review this field during flex refactoring
+                        'flexFormFieldName' => $flexFormFieldName,
                         'label' => $languageService->sL(trim($flexFormFieldArray['label'])),
                         'config' => $flexFormFieldArray['config'],
                         'children' => $flexFormFieldArray['children'],

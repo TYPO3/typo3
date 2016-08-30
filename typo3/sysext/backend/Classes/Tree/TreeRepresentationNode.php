@@ -44,7 +44,7 @@ class TreeRepresentationNode extends \TYPO3\CMS\Backend\Tree\TreeNode
     /**
      * Node Icon
      *
-     * @var string
+     * @var string | Icon
      */
     protected $icon = '';
 
