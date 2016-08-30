@@ -102,11 +102,11 @@ class FileController
     protected function init()
     {
         // Set the GPvars from outside
-        $this->file = GeneralUtility::_GP('file');
+        $this->file = GeneralUtility::_GP('data');
         $this->CB = GeneralUtility::_GP('CB');
         $this->overwriteExistingFiles = DuplicationBehavior::cast(GeneralUtility::_GP('overwriteExistingFiles'));
         $this->vC = GeneralUtility::_GP('vC');
-        $this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
+        $this->redirect = $this->file['editfile'][0]['redirect'];
         $this->initClipboard();
         $this->fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
     }

@@ -87,6 +87,11 @@ class T3editorElement extends AbstractFormElement
     protected $codeCompletionComponents = ['TsRef', 'CompletionResult', 'TsParser', 'TsCodeCompletion'];
 
     /**
+     * @var string
+     */
+    protected $ajaxSaveType = '';
+
+    /**
      * Render t3editor element
      *
      * @return array As defined in initializeResultArray() of AbstractNode
@@ -102,7 +107,8 @@ class T3editorElement extends AbstractFormElement
         $parameterArray = $this->data['parameterArray'];
 
         $rows = MathUtility::forceIntegerInRange($parameterArray['fieldConf']['config']['rows'] ?: 10, 1, 40);
-        $this->setMode(isset($parameterArray['fieldConf']['config']['format']) ? $parameterArray['fieldConf']['config']['format'] : T3editor::MODE_MIXED);
+        $this->setMode($parameterArray['fieldConf']['config']['format'] ?? T3editor::MODE_MIXED);
+        $this->ajaxSaveType = $parameterArray['fieldConf']['config']['ajaxSaveType'] ?? '';
 
         $attributes = [];
         $attributes['rows'] = $rows;
@@ -121,7 +127,10 @@ class T3editorElement extends AbstractFormElement
             $parameterArray['itemFormElValue'],
             $attributeString,
             $this->data['tableName'] . ' > ' . $this->data['fieldName'],
-            ['target' => 0]
+            [
+                'target' => 0,
+                'id' => (int)$this->data['databaseRow']['pageId']
+            ]
         );
         $this->resultArray['additionalJavaScriptPost'][] = 'require(["TYPO3/CMS/T3editor/T3editor"], function(T3editor) {T3editor.findAndInitializeEditors();});';
 
@@ -189,7 +198,7 @@ class T3editorElement extends AbstractFormElement
         $attributes['data-instance-number'] =  $this->editorCounter;
         $attributes['data-editor-path'] =  $this->relExtPath;
         $attributes['data-codemirror-path'] =  $this->codemirrorPath;
-        $attributes['data-ajaxsavetype'] = ''; // no ajax save in FormEngine at the moment
+        $attributes['data-ajaxsavetype'] = htmlspecialchars($this->ajaxSaveType);
         $attributes['data-parserfile'] = $this->getParserfileByMode($this->mode);
         $attributes['data-stylesheet'] = $this->getStylesheetByMode($this->mode);
 

@@ -168,7 +168,8 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         if ($this->id && $this->access) {
             $urlParameters = [
                 'id' => $this->id,
-                'template' => 'all'
+                'template' => 'all',
+                'e' => $this->e
             ];
             $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 

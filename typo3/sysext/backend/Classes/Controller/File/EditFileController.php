@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Controller\File;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Form\FormResultCompiler;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
@@ -146,13 +148,27 @@ class EditFileController extends AbstractModule
     public function main()
     {
         $this->getButtons();
-        // Hook	before compiling the output
+
+        $dataColumnDefinition = [
+            'label' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:file'))
+                . ' ' . htmlspecialchars($this->target),
+            'config' => [
+                'type' => 'text',
+                'cols' => 48,
+                'wrap' => 'OFF',
+                'softref' => 'email[subst],url[subst]'
+            ],
+            'defaultExtras' => 'fixed-font: enable-tab'
+        ];
+
+        // Hook before compiling the output
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'])) {
             $preOutputProcessingHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'];
             if (is_array($preOutputProcessingHook)) {
                 $hookParameters = [
                     'content' => &$this->content,
-                    'target' => &$this->target
+                    'target' => &$this->target,
+                    'dataColumnDefinition' => &$dataColumnDefinition
                 ];
                 foreach ($preOutputProcessingHook as $hookFunction) {
                     GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
@@ -180,13 +196,48 @@ class EditFileController extends AbstractModule
                 'target' => $this->origTarget,
                 'returnUrl' => $this->returnUrl
             ]);
-            $code .= '
-                <div id="c-edit">
-					<textarea rows="30" name="file[editfile][0][data]" wrap="off"  class="form-control text-monospace t3js-enable-tab">' . htmlspecialchars($fileContent) . '</textarea>
-					<input type="hidden" name="file[editfile][0][target]" value="' . $this->fileObject->getUid() . '" />
-					<input type="hidden" name="redirect" value="' . htmlspecialchars($hValue) . '" />
-				</div>
-				<br />';
+            $formData = [
+                'databaseRow' => [
+                    'uid' => 0,
+                    'data' => $fileContent,
+                    'target' => $this->fileObject->getUid(),
+                    'redirect' => $hValue
+                ],
+                'tableName' => 'editfile',
+                'processedTca' => [
+                    'columns' => [
+                        'data' => $dataColumnDefinition,
+                        'target' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'hidden'
+                            ]
+                        ],
+                        'redirect' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'hidden'
+                            ]
+                        ]
+                    ],
+                    'types' => [
+                        1 => [
+                            'showitem' => 'data,target,redirect',
+                        ],
+                    ],
+                ],
+                'recordTypeValue' => 1,
+                'inlineStructure' => [],
+                'renderType' => 'fullRecordContainer'
+            ];
+
+            $resultArray = GeneralUtility::makeInstance(NodeFactory::class)->create($formData)->render();
+            $formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
+            $formResultCompiler->mergeResult($resultArray);
+
+            $code .= $formResultCompiler->JStop()
+                . $formResultCompiler->printNeededJSFunctions()
+                . $resultArray['html'];
         } catch (\Exception $e) {
             $code .= sprintf(
                 $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.coundNot'),
@@ -197,7 +248,7 @@ class EditFileController extends AbstractModule
         // Ending of section and outputting editing form:
         $pageContent .= $code;
 
-        // Hook	after compiling the output
+        // Hook after compiling the output
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'])) {
             $postOutputProcessingHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'];
             if (is_array($postOutputProcessingHook)) {

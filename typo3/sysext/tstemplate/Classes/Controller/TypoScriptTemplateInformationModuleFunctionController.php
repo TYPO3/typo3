@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Tstemplate\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\FormResultCompiler;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -211,14 +213,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                 $recData = [];
                 $alternativeFileName = [];
                 if (is_array($POST['data'])) {
-                    foreach ($POST['data'] as $field => $val) {
-                        switch ($field) {
-                            case 'constants':
-                            case 'config':
-                                $recData['sys_template'][$saveId][$field] = $val;
-                            break;
-                        }
-                    }
+                    $recData = $POST['data'];
                 }
                 if (!empty($recData)) {
                     $recData['sys_template'][$saveId] = $this->processTemplateRowBeforeSaving($recData['sys_template'][$saveId]);
@@ -258,31 +253,96 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
             if ($manyTemplatesMenu) {
                 $theOutput .= '<div>' . $manyTemplatesMenu . '</div>';
             }
-            $theOutput .= '<div style="padding-top: 10px;"></div>';
             $numberOfRows = 35;
             // If abort pressed, nothing should be edited:
             if (isset($POST['_saveandclosedok'])) {
                 unset($e);
             }
+            $textareaFieldConfig = [
+                'config' => [
+                    'type' => 'text',
+                    'cols' => 48,
+                    'wrap' => 'OFF',
+                    'softref' => 'email[subst],url[subst]'
+                ],
+                'defaultExtras' => 'fixed-font: enable-tab'
+            ];
+            $formData = [
+                'databaseRow' => [
+                    'uid' => $tplRow['uid'],
+                    'pageId' => $this->pObj->id
+                ],
+                'tableName' => 'sys_template',
+                'processedTca' => [
+                    'columns' => [
+                        'pageId' => [
+                            'config' => [
+                                'type' => 'passthrough'
+                            ]
+                        ]
+                    ],
+                    'types' => [
+                        1 => [
+                            'showitem' => '',
+                        ],
+                    ],
+                ],
+                'recordTypeValue' => 1,
+                'inlineStructure' => [],
+                'renderType' => 'fullRecordContainer'
+            ];
             if (isset($e['constants'])) {
-                $outCode = '<textarea name="data[constants]" rows="' . $numberOfRows . '" wrap="off" class="text-monospace enable-tab" style="width:98%;height:70%" class="text-monospace">' . htmlspecialchars($tplRow['constants']) . '</textarea>';
-                $outCode .= '<input type="hidden" name="e[constants]" value="1">';
-                // Display "Include TypoScript file content?" checkbox
-                $outCode .= '<div class="checkbox"><label for="checkIncludeTypoScriptFileContent">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[constants]=1', 'id="checkIncludeTypoScriptFileContent"');
-                $outCode .= $lang->getLL('includeTypoScriptFileContent') . '</label></div><br />';
-                $theOutput .= '<div style="padding-top: 15px;"></div>';
-                $theOutput .= '<h3>' . htmlspecialchars($lang->getLL('constants')) . '</h3>';
-                $theOutput .= $outCode;
+                $formData['databaseRow']['constants'] = $tplRow['constants'];
+                $formData['processedTca']['columns']['constants'] = array_merge_recursive(
+                    $textareaFieldConfig,
+                    [
+                        'label' => $lang->getLL('constants'),
+                        'config' => [
+                            'rows' => min($numberOfRows, substr_count($tplRow['constants'], LF))
+                        ]
+                    ]
+                );
             }
             if (isset($e['config'])) {
-                $outCode = '<textarea name="data[config]" rows="' . $numberOfRows . '" wrap="off" class="text-monospace enable-tab" style="width:98%;height:70%" class="text-monospace">' . htmlspecialchars($tplRow['config']) . '</textarea>';
-                $outCode .= '<input type="hidden" name="e[config]" value="1">';
-                // Display "Include TypoScript file content?" checkbox
-                $outCode .= '<div class="checkbox"><label for="checkIncludeTypoScriptFileContent">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[config]=1', 'id="checkIncludeTypoScriptFileContent"');
-                $outCode .= $lang->getLL('includeTypoScriptFileContent') . '</label></div><br />';
-                $theOutput .= '<div style="padding-top: 15px;"></div>';
-                $theOutput .= '<h3>' . htmlspecialchars($lang->getLL('setup')) . '</h3>';
-                $theOutput .= $outCode;
+                $formData['databaseRow']['config'] = $tplRow['config'];
+                $formData['processedTca']['columns']['config'] = array_merge_recursive(
+                    $textareaFieldConfig,
+                    [
+                        'label' => $lang->getLL('setup'),
+                        'config' => [
+                            'rows' => min($numberOfRows, substr_count($tplRow['config'], LF))
+                        ]
+                    ]
+                );
+            }
+
+            // Hook before compiling the output
+            if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['preOutputProcessingHook'])) {
+                $preOutputProcessingHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['preOutputProcessingHook'];
+                if (is_array($preOutputProcessingHook)) {
+                    $hookParameters = [
+                        'formData' => &$formData
+                    ];
+                    foreach ($preOutputProcessingHook as $hookFunction) {
+                        GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
+                    }
+                }
+            }
+
+            if (!empty($formData['processedTca']['columns'])) {
+                $formData['processedTca']['types'][1]['showitem'] = implode(',', array_keys($formData['processedTca']['columns']));
+
+                $resultArray = GeneralUtility::makeInstance(NodeFactory::class)->create($formData)->render();
+                $formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
+                $formResultCompiler->mergeResult($resultArray);
+
+                $theOutput .= $formResultCompiler->JStop()
+                    . $formResultCompiler->printNeededJSFunctions()
+                    . $resultArray['html'];
+                $theOutput .= '<div class="checkbox"><label for="checkIncludeTypoScriptFileContent">' . BackendUtility::getFuncCheck($this->pObj->id,
+                    'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'],
+                    '', GeneralUtility::implodeArrayForUrl('', ['e' => $this->pObj->e]), 'id="checkIncludeTypoScriptFileContent"');
+                $theOutput .= $lang->getLL('includeTypoScriptFileContent') . '</label></div><br />';
             }
 
             // Processing:
