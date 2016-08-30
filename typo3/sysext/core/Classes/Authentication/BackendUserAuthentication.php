@@ -2302,7 +2302,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
             'workspace' => $this->workspace
         );
 
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users');
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_log');
         $connection->insert(
             'sys_log',
             $fields,
