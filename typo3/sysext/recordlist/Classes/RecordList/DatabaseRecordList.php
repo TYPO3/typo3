@@ -543,11 +543,14 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         if ($this->localizationView && $l10nEnabled) {
             $this->fieldArray[] = '_LOCALIZATION_';
             $this->fieldArray[] = '_LOCALIZATION_b';
-            $addWhere .= ' AND (
-				' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '<=0
-				OR
-				' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . ' = 0
-			)';
+            // Only restrict to the default language if no search request is in place
+            if ($this->searchString === '') {
+                $addWhere .= ' AND (
+                    ' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '<=0
+                    OR
+                    ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . ' = 0
+                )';
+            }
         }
         // Cleaning up:
         $this->fieldArray = array_unique(array_merge($this->fieldArray, $rowListArray));
@@ -762,10 +765,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         $cc++;
                         $this->translations = false;
                         $rowOutput .= $this->renderListRow($table, $row, $cc, $titleCol, $thumbsCol);
-                        // If localization view is enabled it means that the selected records are
-                        // either default or All language and here we will not select translations
+                        // If localization view is enabled and no search happened it means that the selected
+                        // records are either default or All language and here we will not select translations
                         // which point to the main record:
-                        if ($this->localizationView && $l10nEnabled) {
+                        if ($this->localizationView && $l10nEnabled && $this->searchString === '') {
                             // For each available translation, render the record:
                             if (is_array($this->translations)) {
                                 foreach ($this->translations as $lRow) {
