@@ -2017,9 +2017,9 @@ class IconRegistry implements SingletonInterface
             ]
         ],
         'mimetypes-x-sys_file_storage' => [
-            'provider' => BitmapIconProvider::class,
+            'provider' => SvgIconProvider::class,
             'options' => [
-                'source' => 'EXT:t3skin/icons/gfx/i/_icon_ftp.gif'
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-x-sys_filemounts.svg'
             ]
         ],
 
@@ -2308,13 +2308,13 @@ class IconRegistry implements SingletonInterface
         'status-warning-lock' => [
             'provider' => BitmapIconProvider::class,
             'options' => [
-                'source' => 'EXT:t3skin/images/icons/status/warning-lock.png'
+                'source' => 'EXT:backend/Resources/Public/Icons/warning-lock.png'
             ]
         ],
         'status-warning-in-use' => [
             'provider' => BitmapIconProvider::class,
             'options' => [
-                'source' => 'EXT:t3skin/images/icons/status/warning-in-use.png'
+                'source' => 'EXT:backend/Resources/Public/Icons/warning-in-use.png'
             ]
         ],
         'status-status-checked' => [
@@ -2338,7 +2338,7 @@ class IconRegistry implements SingletonInterface
         'status-status-reference-hard' => [
             'provider' => BitmapIconProvider::class,
             'options' => [
-                'source' => 'EXT:t3skin/images/icons/status/status-reference-hard.png',
+                'source' => 'EXT:impexp/Resources/Public/Icons/status-reference-hard.png',
             ]
         ],
         'status-status-sorting-asc' => [
@@ -2380,13 +2380,13 @@ class IconRegistry implements SingletonInterface
         'status-status-reference-soft' => [
             'provider' => BitmapIconProvider::class,
             'options' => [
-                'source' => 'EXT:t3skin/images/icons/status/status-reference-soft.png',
+                'source' => 'EXT:impexp/Resources/Public/Icons/status-reference-soft.png',
             ]
         ],
         'status-status-edit-read-only' => [
             'provider' => BitmapIconProvider::class,
             'options' => [
-                'source' => 'EXT:t3skin/images/icons/status/status-edit-read-only.png',
+                'source' => 'EXT:backend/Resources/Public/Icons/status-edit-read-only.png',
             ]
         ],
 
